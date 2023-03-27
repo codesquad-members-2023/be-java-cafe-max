@@ -1,22 +1,25 @@
 package kr.codesqaud.cafe.account;
 
 public class User {
-	private String nickName;
+	private String nickname;
 	private String email;
 	private String password;
 
-	public User(String nickName, String email, String password) {
-		this.nickName = nickName;
+	public User(String nickname, String email, String password) {
+		this.nickname = nickname;
 		this.email = email;
 		this.password = password;
 	}
 
-	public String getNickName() {
-		return nickName;
+	public User() {
 	}
 
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public String getEmail() {
