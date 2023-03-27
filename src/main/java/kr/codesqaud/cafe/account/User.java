@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class User {
 
-	private static AtomicLong number;
+	private static final AtomicLong number = new AtomicLong();
 	private final Long id;
 	private String nickname;
 	private String email;
