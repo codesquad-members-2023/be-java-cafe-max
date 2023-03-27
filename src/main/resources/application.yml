@@ -1,0 +1,4 @@
+spring:
+  mustache:
+    suffix: .html
+    cache: false
