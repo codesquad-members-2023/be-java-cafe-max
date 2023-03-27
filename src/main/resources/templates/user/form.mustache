@@ -75,24 +75,28 @@
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
-          <form name="question" method="get" action="/user/create">
+          <form id="signUpForm" name="signUpForm" method="post" action="/users">
               <div class="form-group">
                   <label for="userId">사용자 아이디</label>
-                  <input class="form-control" id="userId" name="userId" placeholder="User ID">
+                  <input class="form-control" id="userId" name="userId" placeholder="User ID" autocomplete="off">
               </div>
               <div class="form-group">
                   <label for="password">비밀번호</label>
                   <input type="password" class="form-control" id="password" name="password" placeholder="Password">
               </div>
               <div class="form-group">
+                  <label for="passwordCheck">비밀번호 확인</label>
+                  <input type="password" class="form-control" id="passwordCheck" name="passwordCheck" placeholder="Re-enter Password">
+              </div>
+              <div class="form-group">
                   <label for="name">이름</label>
-                  <input class="form-control" id="name" name="name" placeholder="Name">
+                  <input class="form-control" id="name" name="name" placeholder="Name" autocomplete="off">
               </div>
               <div class="form-group">
                   <label for="email">이메일</label>
-                  <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" autocomplete="off">
               </div>
-              <button type="submit" class="btn btn-success clearfix pull-right">회원가입</button>
+              <button id="submitButton" type="submit" class="btn btn-success clearfix pull-right">회원가입</button>
               <div class="clearfix" />
           </form>
         </div>
@@ -103,5 +107,6 @@
 <script src="../js/jquery-2.2.0.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
 <script src="../js/scripts.js"></script>
+<script src="../js/user.form.js"></script>
 	</body>
 </html>
