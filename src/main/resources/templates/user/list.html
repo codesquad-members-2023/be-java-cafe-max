@@ -65,7 +65,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="../index.html">Posts</a></li>
                 <li><a href="tml" role="button">로그인</a></li>
-                <li><a href="form.mustache" role="button">회원가입</a></li>
+                <li><a href="/user/signup" role="button">회원가입</a></li>
                 <li><a href="#" role="button">로그아웃</a></li>
                 <li><a href="#" role="button">개인정보수정</a></li>
             </ul>
@@ -78,15 +78,14 @@
       <div class="panel panel-default">
           <table class="table table-hover">
               <thead>
-                <a href="/user/profile"><tr>
+                <tr>
                     <th>#</th> <th>사용자 아이디</th> <th>이름</th> <th>이메일</th><th></th>
                 </tr>
-                </a>
               </thead>
               <tbody>
               {{#memberList}}
-                <tr>
-                    <th scope="row">{{index}}</th> <td>{{userId}}</td> <td>{{name}}</td> <td>{{email}}</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                <tr onclick="location.href='/user/profile/{{index}}'">
+                   <th scope="row">{{index}}</th> <td>{{userId}}</td> <td>{{name}}</td> <td>{{email}}</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
                 </tr>
 
                 {{/memberList}}
