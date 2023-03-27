@@ -1,21 +1,12 @@
 package kr.codesqaud.cafe.account;
 
-import java.util.concurrent.atomic.AtomicLong;
+public class UserForm {
 
-public class User {
-
-	private static AtomicLong number;
 	private Long id;
 	private String nickname;
 	private String email;
 	private String password;
-
-	public User(long id) {
-		this.id = id;
-	}
-
-	public static long createNewId() {
-		return number.getAndIncrement();
+	public UserForm() {
 	}
 
 	public String getNickname() {
