@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,5 +27,11 @@ public class UserController {
 	public String join(@ModelAttribute final JoinRequest request) {
 		userService.join(request);
 		return "redirect:/users";
+	}
+
+	@GetMapping("/users")
+	public String showAllUsers(final Model model) {
+		model.addAttribute("users", userService.getUsers());
+		return "user/list";
 	}
 }

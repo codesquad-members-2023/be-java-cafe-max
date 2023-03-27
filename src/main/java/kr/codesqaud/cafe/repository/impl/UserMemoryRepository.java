@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.repository.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -21,5 +23,10 @@ public class UserMemoryRepository implements UserRepository {
 		}
 		userRepository.put(user.getUserId(), user);
 		return Optional.of(user);
+	}
+
+	@Override
+	public List<User> findAll() {
+		return new ArrayList<>(userRepository.values());
 	}
 }
