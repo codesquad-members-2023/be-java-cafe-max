@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.post;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Post {
@@ -12,9 +13,12 @@ public class Post {
 
 	private String textContent;
 
+	private LocalDateTime createdDateTime;
+
 	public Post(Long id) {
 		this.id = id;
 	}
+
 
 	public static long createNewId() {
 		return postId.getAndIncrement();
@@ -46,5 +50,13 @@ public class Post {
 
 	public void setTextContent(String textContent) {
 		this.textContent = textContent;
+	}
+
+	public LocalDateTime getCreatedDateTime() {
+		return createdDateTime;
+	}
+
+	public void setCreatedDateTime(LocalDateTime createdDateTime) {
+		this.createdDateTime = createdDateTime;
 	}
 }
