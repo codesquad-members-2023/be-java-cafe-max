@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.post;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
@@ -24,5 +26,11 @@ public class PostsRepository {
 
 	public List<Post> getAllPosts() {
 		return new ArrayList<>(usersRepository);
+	}
+
+	public Optional<Post> findById(Long postId) {
+		return usersRepository.stream()
+			.filter(post -> Objects.equals(post.getId(), postId))
+			.findAny();
 	}
 }
