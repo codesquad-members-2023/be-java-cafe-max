@@ -17,11 +17,11 @@ public class User {
         this.email = email;
     }
 
-    public String getId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setId(String userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
