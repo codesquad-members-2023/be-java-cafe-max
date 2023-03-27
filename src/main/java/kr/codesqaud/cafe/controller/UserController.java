@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.member.UserLog;
 import kr.codesqaud.cafe.dto.SignUpFormDto;
+import kr.codesqaud.cafe.dto.UserDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,8 +18,8 @@ import java.util.List;
 public class UserController {
     UserService userService;
     @Autowired
-    public UserController(UserService memberService) {
-        this.userService = memberService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/signup")
@@ -32,14 +33,14 @@ public class UserController {
         String password = signUpFormDto.getPassword();
         String name = signUpFormDto.getName();
         String email = signUpFormDto.getEmail();
-        UserLog userLog = new UserLog(userId,password,name,email);
-        userService.save(userLog);
+        UserDto userDto = new UserDto(userId,password,name,email);
+        userService.signUp(userDto);
         return "redirect:/user";
     }
 
     @GetMapping("")
     public String getUserList(Model model){
-        List<UserLog> list =  userService.findAll();
+        List<UserDto> list =  userService.getList();
         model.addAttribute("memberList",list);
         return "/user/list";
     }

@@ -1,37 +1,25 @@
 package kr.codesqaud.cafe.domain.member;
 
+import kr.codesqaud.cafe.dto.UserDto;
+import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserLog {
-    private int index;
-    private String userId;
-    private String password;
-    private String name;
-    private String email;
-    public static List<UserLog> userLogList = new ArrayList<>();
-    public UserLog(String userId, String password, String name, String email) {
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
-        this.index = userLogList.size();
-    }
+@Repository
+public class UserLog implements UserRepository {
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
+    public static List<UserDto> userLogList = new ArrayList<>();
 
 
-    public String getName() {
-        return name;
-    }
-    public String getEmail() {
-        return email;
+    @Override
+    public void save(UserDto userDto) {
+        userLogList.add(userDto);
     }
 
+    @Override
+    public List<UserDto> findAll(){
+
+        return userLogList;
+    }
 }

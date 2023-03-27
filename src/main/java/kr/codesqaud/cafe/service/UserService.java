@@ -2,24 +2,29 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.member.UserLog;
 import kr.codesqaud.cafe.domain.member.UserRepository;
+import kr.codesqaud.cafe.dto.UserDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserService implements UserRepository {
+public class UserService  {
 
+    private final UserRepository userRepository;
 
-    @Override
-    public void save(UserLog userLog) {
-        UserLog.userLogList.add(userLog);
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+    public void signUp(UserDto userDto){
+        userRepository.save(userDto);
     }
 
-    @Override
-    public List<UserLog> findAll(){
-
+    public List<UserDto> getList(){
         return UserLog.userLogList;
     }
+
+
 
 
 }
