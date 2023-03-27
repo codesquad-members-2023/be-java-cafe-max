@@ -65,7 +65,7 @@
         <div class="row col-10">
             <ol class="justify-content-center" id="bookList">
                 <li class="row text-center" th:each="member : ${members}">
-                    <div class="col-2" th:text="${member.id}"></div>
+                    <div class="col-2" ><a th:href="@{/users/{id}(id = ${member.id})}" th:text="${member.id}"></a></div>
                     <div class="col-6" th:text="${member.email}"></div>
                     <div class="col-2" th:text="${member.nickname}"></div>
                 </li>
