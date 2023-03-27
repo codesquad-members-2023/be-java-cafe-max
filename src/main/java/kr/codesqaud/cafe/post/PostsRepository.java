@@ -3,6 +3,9 @@ package kr.codesqaud.cafe.post;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class PostsRepository {
 
 	private final List<Post> usersRepository;
@@ -19,4 +22,7 @@ public class PostsRepository {
 		return usersRepository.remove(post);
 	}
 
+	public List<Post> getAllPosts() {
+		return new ArrayList<>(usersRepository);
+	}
 }
