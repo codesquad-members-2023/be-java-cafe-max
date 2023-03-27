@@ -27,6 +27,6 @@ public class PureUserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.ofNullable(users.getOrDefault(id, null));
+        return Optional.ofNullable(users.get(id));
     }
 }
