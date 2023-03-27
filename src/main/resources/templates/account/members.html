@@ -46,14 +46,14 @@
             <hr>
         </div>
         <div class="row col-10 text-center">
+            <div class=" col-2">
+                아이디
+            </div>
             <div class=" col-6">
                 이메일
             </div>
             <div class=" col-2">
                 닉네임
-            </div>
-            <div class=" col-2">
-                작성일자
             </div>
             <div class=" col-2">
                 조회수
@@ -65,6 +65,7 @@
         <div class="row col-10">
             <ol class="justify-content-center" id="bookList">
                 <li class="row text-center" th:each="member : ${members}">
+                    <div class="col-2" th:text="${member.id}"></div>
                     <div class="col-6" th:text="${member.email}"></div>
                     <div class="col-2" th:text="${member.nickname}"></div>
                 </li>
