@@ -23,7 +23,8 @@ public class UserController {
 	}
 
 	@GetMapping("/users")
-	public String showUsers() {
-		return "user/list.html";
+	public String showUsers(Model model) {
+		model.addAttribute("members", usersRepository.getAllMembers());
+		return "account/members";
 	}
 }

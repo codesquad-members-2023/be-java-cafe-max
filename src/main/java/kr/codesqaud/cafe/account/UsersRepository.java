@@ -18,4 +18,8 @@ public class UsersRepository {
 	public boolean remove(User user) {
 		return usersRepository.remove(user);
 	}
+
+	public List<User> getAllMembers() {
+		return new ArrayList<>(usersRepository);
+	}
 }
