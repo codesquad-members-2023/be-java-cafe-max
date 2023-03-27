@@ -4,7 +4,7 @@
     - [ ] 회원가입
     - [ ] 회원목록 조회
     - [ ] 글쓰기 기능
-- [ ] 그림으로 배우는 http network basic
+- [ ] [그림으로 배우는 http network basic](https://github.com/yonghwankim-dev/TIL/blob/main/HttpNetworkBasic/README.md)
     - [ ] 7장, 웹을 안전하게 지켜주는 HTTPS
     - [ ] 8장, 누가 액세스하고 있는지를 확인하는 인증
 - [ ] 스프링 부트와 AWS로 혼자 구현하는 웹 서비스 3장
@@ -17,7 +17,7 @@
     - [ ] 프로젝트 환경 설정
     - [ ] 스프링 웹 개발 기초
     - [ ] 회원관리 예제
-- [ ] JVM
+- [x] [JVM](https://yonghwankim-dev.tistory.com/580)
 - [ ] 스프링 프레임 워크
     - [ ] Dependency Injection
     - [ ] Bean Lifecycle
@@ -28,12 +28,12 @@
 
 ## 2023-03-27(월)
 
-- [ ] http network basic 184p ~ 194p
-- [ ] 스프링 부트와 AWS로 혼자 구현하는 웹 서비스
-    - [ ] JPA소개
-    - [ ] 프로젝트에 Spring Data Jpa 적용하기
-- [ ] 스프링 입문 : 프로젝트 환경 설정
-- [ ] JVM
+- [x] http network basic 184p ~ 194p
+- [x] 스프링 부트와 AWS로 혼자 구현하는 웹 서비스
+    - [x] JPA소개
+    - [x] 프로젝트에 Spring Data Jpa 적용하기
+- [x] 스프링 입문 : 프로젝트 환경 설정
+- [x] JVM
 - [ ] Dependency Injection
 
 ## 2023-03-28(화)
