@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.account;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class UsersRepository {
 
@@ -21,5 +23,11 @@ public class UsersRepository {
 
 	public List<User> getAllMembers() {
 		return new ArrayList<>(usersRepository);
+	}
+
+	public Optional<User> findById(Long userId) {
+		return usersRepository.stream()
+			.filter(user -> Objects.equals(user.getId(), userId))
+			.findAny();
 	}
 }
