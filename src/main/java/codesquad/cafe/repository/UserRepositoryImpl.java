@@ -20,4 +20,8 @@ public class UserRepositoryImpl implements UserRepository {
         return Optional.ofNullable(store.get(id));
     }
 
+    @Override
+    public List<User> findAll() {
+        return new ArrayList<>(store.values());
+    }
 }
