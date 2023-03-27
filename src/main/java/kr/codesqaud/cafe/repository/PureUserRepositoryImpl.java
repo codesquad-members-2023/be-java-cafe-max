@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -22,5 +23,10 @@ public class PureUserRepositoryImpl implements UserRepository {
     private void setId(User user) {
         ++id;
         user.setId(id);
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return Optional.ofNullable(users.getOrDefault(id, null));
     }
 }
