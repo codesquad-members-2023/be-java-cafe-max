@@ -45,12 +45,12 @@
 
 ## 스프링 카페 1단계
 ### 기능에 따른 URL 컨벤션
-|URL| 기능           |
-|---|--------------|
-|POST /users| 회원 가입 기능     |
-|GET /users| 회원 목록 조회 기능  |
-|GET /users/:userId| 회원 정보 조회 기능  |
-|PUT /users/:userId| 회원 정보 수정 기능  |
-|POST /board| 글 쓰기 기능      |
-|GET /board| 글 목록 조회 기능   |
-|GET /board/:boardNo| 글 상세정보 조회 기능 |
+| URL             | 기능           |
+|-----------------|--------------|
+| POST /users/add | 회원 가입 기능     |
+| GET /users/list | 회원 목록 조회 기능  |
+| GET /users/:userId | 회원 정보 조회 기능  |
+| PUT /users/:userId | 회원 정보 수정 기능  |
+| POST /board     | 글 쓰기 기능      |
+| GET /board      | 글 목록 조회 기능   |
+| GET /board/:boardNo | 글 상세정보 조회 기능 |
