@@ -5,13 +5,17 @@ import java.util.concurrent.atomic.AtomicLong;
 public class User {
 
 	private static AtomicLong number;
-	private Long id;
+	private final Long id;
 	private String nickname;
 	private String email;
 	private String password;
 
 	public User(long id) {
 		this.id = id;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public static long createNewId() {
