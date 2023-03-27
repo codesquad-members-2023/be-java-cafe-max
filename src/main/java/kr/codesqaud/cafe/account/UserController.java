@@ -12,12 +12,17 @@ public class UserController {
 
 	@GetMapping("/users/join")
 	public String showJoinPage(Model model) {
-		model.addAttribute(new User());
+		model.addAttribute(new UserForm());
 		return "account/join";
 	}
 
 	@PostMapping("/users")
-	public String addUser(User user) {
+	public String addUser(UserForm userForm) {
+		User user = new User(User.createNewId());
+		user.setNickname(userForm.getNickname());
+		user.setEmail(userForm.getEmail());
+		user.setPassword(userForm.getPassword());
+
 		usersRepository.add(user);
 		return "redirect:/users";
 	}
