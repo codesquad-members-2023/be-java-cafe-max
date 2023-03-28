@@ -29,4 +29,9 @@ public class UserMemoryRepository implements UserRepository {
 	public List<User> findAll() {
 		return new ArrayList<>(userRepository.values());
 	}
+
+	@Override
+	public Optional<User> findByUserId(final String userId) {
+		return Optional.ofNullable(userRepository.get(userId));
+	}
 }

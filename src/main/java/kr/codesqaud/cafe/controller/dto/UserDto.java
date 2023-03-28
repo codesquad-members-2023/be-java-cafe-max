@@ -16,6 +16,10 @@ public class UserDto {
 		this.email = email;
 	}
 
+	public static UserDto from(User user) {
+		return from(user, 0);
+	}
+
 	public static UserDto from(User user, final long rowIndex) {
 		return new UserDto(rowIndex, user.getUserId(), user.getName(), user.getEmail());
 	}

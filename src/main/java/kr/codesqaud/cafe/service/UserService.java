@@ -6,10 +6,11 @@ import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
 
-import kr.codesqaud.cafe.controller.dto.UserListDto;
+import kr.codesqaud.cafe.controller.dto.UserDto;
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
 import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.exception.DuplicatedUserIdException;
+import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 
 @Service
@@ -27,10 +28,16 @@ public class UserService {
 			.orElseThrow(() -> new DuplicatedUserIdException("해당 아이디는 이미 존재합니다."));
 	}
 
-	public List<UserListDto> getUsers() {
+	public List<UserDto> getUsers() {
 		List<User> users = userRepository.findAll();
 		return IntStream.rangeClosed(1, users.size())
-			.mapToObj(index -> UserListDto.from(users.get(index - 1), index))
+			.mapToObj(index -> UserDto.from(users.get(index - 1), index))
 			.collect(Collectors.toUnmodifiableList());
+	}
+
+	public UserDto findByUserId(final String userId) {
+		return userRepository.findByUserId(userId)
+			.map(UserDto::from)
+			.orElseThrow(() -> new UserNotFoundException(userId.concat("는 존재하지 않는 아이디입니다.")));
 	}
 }

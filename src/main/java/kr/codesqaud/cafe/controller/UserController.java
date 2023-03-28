@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
@@ -33,5 +34,11 @@ public class UserController {
 	public String showAllUsers(final Model model) {
 		model.addAttribute("users", userService.getUsers());
 		return "user/list";
+	}
+
+	@GetMapping("/users/{userId}")
+	public String showProfilePage(@PathVariable final String userId, final Model model) {
+		model.addAttribute("user", userService.findByUserId(userId));
+		return "user/profile";
 	}
 }
