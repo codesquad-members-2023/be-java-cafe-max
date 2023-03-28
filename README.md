@@ -42,3 +42,5 @@ __Thymeleaf에서 어떤 요소 onclick 시 이동할 url에 pathvariable 추가
 1. ResponseBody, RequestParam, RestController
 2. 템플릿 엔진, 머스테치, 타임리프
 3. GET, POST
+
+## 2023.03.28(화)
