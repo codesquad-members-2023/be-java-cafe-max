@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,12 @@ public class UserController {
     @GetMapping("/signup")
     public String signup() {
         return "/user/form";
+    }
+
+    @GetMapping("")
+    public String userList(Model model) {
+        model.addAttribute("users", service.findAllUsers());
+        return "/user/list";
     }
 
     @PostMapping("")
