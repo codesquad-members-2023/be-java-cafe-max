@@ -29,4 +29,9 @@ public class UserService {
     public List<User> showUsers() {
         return userRepository.findAll();
     }
+
+    public User findUser(String id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+    }
 }

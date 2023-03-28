@@ -35,4 +35,11 @@ public class UserController {
         model.addAttribute("users", users);
         return "list";
     }
+
+    @GetMapping("/{userId}")
+    public String showProfile(@PathVariable("userId") String id, Model model) {
+        User user = userService.findUser(id);
+        model.addAttribute("user", user);
+        return "profile";
+    }
 }
