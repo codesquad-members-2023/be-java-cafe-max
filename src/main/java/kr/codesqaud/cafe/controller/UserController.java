@@ -4,6 +4,8 @@ import kr.codesqaud.cafe.controller.dto.UserJoinDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +20,17 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping
+    public String list(Model model) {
+        model.addAttribute("users", userService.findAll());
+
+        return "user/list";
+    }
+
     @PostMapping
     public String create(@ModelAttribute UserJoinDto userJoinDto) {
         final Long id = userService.join(userJoinDto);
 
-        return "home";
+        return "redirect:/users";
     }
 }
