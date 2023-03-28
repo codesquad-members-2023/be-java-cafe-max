@@ -3,27 +3,29 @@ package kr.codesqaud.cafe.account;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
 
 	private final UsersRepository usersRepository = new UsersRepository();
 
-
 	@GetMapping("/users/login")
-	public String showLoginPage(Model model) {
+	public String showLoginPage(Model model, @Nullable @RequestParam boolean errors) {
 		model.addAttribute(new UserForm());
+		model.addAttribute("errors", errors);
 		return "account/login";
 	}
 
 	@PostMapping("/users/login")
-	public String login(UserForm userForm,Model model) {
+	public String login(UserForm userForm, Model model) {
 		Optional<User> userOptional = usersRepository.findByEmail(userForm.getEmail());
 		if (userOptional.isEmpty()) {
 			model.addAttribute("errors", true);
