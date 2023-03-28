@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.Controller;
 
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -16,6 +17,12 @@ public class UserController {
     public String createUser(UserForm userForm){
         users.add(new User(userForm.getUserId(), userForm.getPassword(), userForm.getName(), userForm.getEmail()));
         return "redirect:/users";
+    }
+
+    @GetMapping("/users")
+    public String listUsers(Model model) {
+        model.addAttribute("users", users);
+        return "user/list";
     }
 
 
