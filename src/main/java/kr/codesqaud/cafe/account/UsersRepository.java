@@ -30,4 +30,10 @@ public class UsersRepository {
 			.filter(user -> Objects.equals(user.getId(), userId))
 			.findAny();
 	}
+
+	public Optional<User> findByEmail(String email) {
+		return usersRepository.stream()
+			.filter(user -> Objects.equals(user.getEmail(), email))
+			.findAny();
+	}
 }
