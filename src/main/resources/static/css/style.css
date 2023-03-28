@@ -51,7 +51,6 @@ a {
 
 .button {
     color: white;
-    border-radius: 40px;
     background: #afb9ea;
     font-weight: 600;
     min-width: 80px;
@@ -94,7 +93,7 @@ a {
     margin: 50px auto;
 }
 
-.countOfpost p {
+.countOfPost p {
     margin-top: 5px;
     font-size: 15px;
 }
@@ -198,6 +197,56 @@ a {
     background-color: lightgrey;
 }
 
+.keyword {
+    color: #a289bb;
+    text-align: center;
+    font-size: 30px;
+    padding-top: 150px;
+    padding-bottom: 50px;
+}
+
+form {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.box {
+    width: 40%;
+    border: 1px solid lightgrey;
+    padding: 10px;
+    margin: 5px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+label {
+    display:inline-block;
+    width: 20%;
+}
+
+.body {
+    margin: 5px;
+    border: 2px solid white;
+    width: 25%;
+    padding : 10px;
+    font-size: 15px;
+}
+
+input {
+    border: none;
+}
+
+input:focus {
+    outline: none;
+}
+
+.form-box {
+    display: flex;
+    justify-content: center;
+}
+
 @media (max-width: 700px) {
     .menu-bar {
         display: flex;
@@ -219,6 +268,7 @@ a {
     }
 
      .bar{
+        opacity: 0.9;
         display : none;
         position : absolute;
         font-weight: 400;
