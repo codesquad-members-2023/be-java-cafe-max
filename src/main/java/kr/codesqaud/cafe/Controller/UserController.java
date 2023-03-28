@@ -25,6 +25,13 @@ public class UserController {
         return "user/list";
     }
 
+    @GetMapping("/user/form")
+    public String showJoinForm() {
+        return "user/form";
+    }
+
+
+
 
 
 }
