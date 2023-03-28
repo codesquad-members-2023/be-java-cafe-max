@@ -16,4 +16,9 @@ public class UserRepository {
     public void join(User user) {
         userRepository.add(user);
     }
+
+    public List<User> findAll() {
+        return userRepository;
+    }
+
 }

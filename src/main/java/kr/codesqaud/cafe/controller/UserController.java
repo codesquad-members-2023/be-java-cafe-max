@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -27,7 +28,8 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String showUserList(){
+    public String showUserList(Model model){
+        model.addAttribute("users",userRepository.findAll());
         return "user/list";
     }
 }
