@@ -16,7 +16,6 @@ public class UserController {
 
     @PostMapping("/form")
     public String post(
-
             @RequestParam("userId") String userId,
             @RequestParam String password,
             @RequestParam String name,
@@ -26,6 +25,16 @@ public class UserController {
         User user = new User(userId, password, name, email);
         memoryUserRepository.save(user);
 
-        return "user/form";
+        System.out.println("userId = " + userId);
+        System.out.println("password = " + password);
+        System.out.println("name = " + name);
+        System.out.println("email = " + email);
+
+        return "redirect:/user/list";
+    }
+
+    @GetMapping(value = "/list")
+    public String joinSuccess() {
+        return "user/list";
     }
 }
