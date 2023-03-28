@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/new/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand bg-body-tertiary justify-content-center row-cols-auto">
+    <div class="col-10 row row-cols-auto justify-content-between">
+        <div class="nav align-self-center ms-3 ">
+            HELLO JAVA!가
+        </div>
+        <div class="container  row row-cols-auto">
+
+            <div class="nav" id="login">
+                <a class="btn btn-primary" href="Login.html" type="submit" role="button">마이페이지</a>
+            </div>
+            <div class="nav" id="logout">
+                <a class="btn btn-primary" href="Login.html" type="submit" role="button">로그아웃</a>
+            </div>
+        </div>
+    </div>
+</nav>
+<form class="container" id="postingForm" th:action="@{/users/{id}/update(id = ${userId})}" th:object="${userForm}" method="post" novalidate>
+    <input type="hidden" name="_method" value="PUT"/>
+    <div class="row justify-content-center mt-5">
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <div class="row justify-content-center mt-2">
+                        <svg width="120" height="120" data-jdenticon-value="user127"></svg>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text col-5" id="nickname">Nickname</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="nickname" th:value="${userForm.nickname}" th:field="*{nickname}" value="nickname">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text col-5" id="email">Email</span>
+                            <input type="email" class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="email" th:value="${userForm.email}" th:field="*{email}" value="email">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text col-5" id="password" >Password</span>
+                            <input type="password" class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="password" th:field="*{password}">
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button class="btn btn-primary" type="submit" >수정</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<footer class="container-fluid mt-auto bg-light py-3"></footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/jdenticon@3.2.0/dist/jdenticon.min.js" async
+        integrity="sha384-yBhgDqxM50qJV5JPdayci8wCfooqvhFYbIKhv0hTtLvfeeyJMJCscRfFNKIxt43M"
+        crossorigin="anonymous">
+</script>
+</html>
