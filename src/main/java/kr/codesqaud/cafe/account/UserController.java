@@ -37,10 +37,21 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{userId}")
-	public String showUser(Model model,@PathVariable Long userId) {
+	public String showUser(Model model, @PathVariable Long userId) {
 		Optional<User> optionalUser = usersRepository.findById(userId);
 		User user = optionalUser.get();
 		model.addAttribute("user", user);
 		return "account/profile";
+	}
+
+	@GetMapping("/users/{userId}/update")
+	public String showUserForm(Model model, @PathVariable Long userId) {
+		Optional<User> optionalUser = usersRepository.findById(userId);
+		User user = optionalUser.get();
+		UserForm userForm = new UserForm();
+		userForm.setNickname(user.getNickname());
+		userForm.setEmail(user.getEmail());
+		model.addAttribute(userForm);
+		return "account/profileUpdate";
 	}
 }
