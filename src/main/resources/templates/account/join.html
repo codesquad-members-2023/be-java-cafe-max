@@ -8,12 +8,12 @@
 <body>
 <nav class="navbar navbar-expand bg-body-tertiary justify-content-center row-cols-auto">
     <div class="col-10 row row-cols-auto justify-content-between">
-        <div class="nav align-self-center ms-3 ">
-            HELLO JAVA!
+        <div class="nav align-self-center ms-3">
+            <a class="link-offset-2 link-underline link-underline-opacity-0" th:href="@{/}">HELLO JAVA!</a>
         </div>
         <div class="container  row row-cols-auto">
             <div class="nav" id="login">
-                <a class="btn btn-primary" href="Login.html" type="submit" role="button">로그인/회원가입</a>
+                <a class="btn btn-primary" th:href="@{/users/login}" type="submit" role="button">로그인</a>
             </div>
         </div>
     </div>

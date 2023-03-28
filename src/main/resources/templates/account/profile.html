@@ -6,21 +6,7 @@
     <link rel="stylesheet" href="/css/new/bootstrap.min.css">
 </head>
 <body>
-<nav class="navbar navbar-expand bg-body-tertiary justify-content-center row-cols-auto">
-    <div class="col-10 row row-cols-auto justify-content-between">
-        <div class="nav align-self-center ms-3 ">
-            HELLO JAVA!
-        </div>
-        <div class="container  row row-cols-auto">
-
-            <div class="nav" id="login">
-                <a class="btn btn-primary" href="Login.html" type="submit" role="button">마이페이지</a>
-            </div>
-            <div class="nav" id="logout">
-                <a class="btn btn-primary" href="Login.html" type="submit" role="button">로그아웃</a>
-            </div>
-        </div>
-    </div>
+<nav th:replace="fragments/navbar.html :: user">
 </nav>
 <form class="container" id="postingForm" th:action="@{/users/{userId}/update(userId = ${user.id})}" novalidate>
     <div class="row justify-content-center mt-5">

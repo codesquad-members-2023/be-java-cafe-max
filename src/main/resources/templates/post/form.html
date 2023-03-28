@@ -6,23 +6,7 @@
     <link rel="stylesheet" href="/css/new/bootstrap.min.css">
 </head>
 <body>
-<nav class="navbar navbar-expand bg-body-tertiary justify-content-center row-cols-auto">
-    <div class="col-10 row row-cols-auto justify-content-between">
-        <div class="nav align-self-center ms-3 ">
-            HELLO JAVA!
-        </div>
-        <div class="container  row row-cols-auto">
-            <div class="nav align-self-center">
-                멤버리스트
-            </div>
-            <div class="nav" id="login">
-                <a class="btn btn-primary" href="Login.html" type="submit" role="button">마이페이지</a>
-            </div>
-            <div class="nav" id="logout">
-                <a class="btn btn-primary" href="Login.html" type="submit" role="button">로그아웃</a>
-            </div>
-        </div>
-    </div>
+<nav th:replace="fragments/navbar.html :: user">
 </nav>
 <form class="container" id="postingForm" th:action="@{/post}" th:object="${postForm}" method="post" novalidate>
     <div class="row justify-content-center">
@@ -33,7 +17,7 @@
     <div class="row justify-content-center">
         <div class="mb-3 col-6">
             <div class="form-floating">
-                <input type="text" class="form-control"  th:field="*{nickname}" id="nickName" placeholder="닉네임을 입력하세요">
+                <input type="text" class="form-control" th:field="*{nickname}" id="nickName" placeholder="닉네임을 입력하세요">
                 <label for="nickName">닉네임</label>
                 <div class="invalid-feedback">
                     공란일 수 없다.
@@ -44,7 +28,7 @@
     <div class="row justify-content-center">
         <div class="mb-3 col-6">
             <div class="form-floating">
-                <input type="text" class="form-control"  th:field="*{title}" id="title" placeholder="글의 제목을 입력하세요">
+                <input type="text" class="form-control" th:field="*{title}" id="title" placeholder="글의 제목을 입력하세요">
                 <label for="title">제목</label>
                 <div class="invalid-feedback">
                     공란일 수 없다.
@@ -79,8 +63,8 @@
 </body>
 <script>
     function validationPostingTitle() {
-        const postingTitle = document.querySelector("#postingTitle");
-        if (!postingTitle.checkValidity() || postingTitle.value < 3) {
+        const postingTitle = document.querySelector("#title");
+        if (!postingTitle.checkValidity() || postingTitle.value.length < 1) {
             postingTitle.className = 'form-control is-invalid';
             return false;
         }
@@ -88,8 +72,18 @@
         return true;
     }
 
+    function validationPostingNickName() {
+        const postingNickName = document.querySelector("#nickName");
+        if (!postingNickName.checkValidity() || postingNickName.value.length < 1) {
+            postingNickName.className = 'form-control is-invalid';
+            return false;
+        }
+        postingNickName.className = 'form-control is-valid';
+        return true;
+    }
+
     function validationPostingBody() {
-        const postingBody = document.querySelector("#postingBody");
+        const postingBody = document.querySelector("#textContent");
         if (!postingBody.checkValidity() || postingBody.value.length < 3 || postingBody.value.length > 1000) {
             postingBody.className = 'form-control is-invalid';
             return false;
@@ -101,10 +95,11 @@
 
     function validationPostingForm(event) {
 
+        let isValidatePostingNickName = validationPostingNickName();
         let isValidatePostingBody = validationPostingBody();
         let isValidatePostingTitle = validationPostingTitle();
 
-        if (!isValidatePostingBody || !isValidatePostingTitle) {
+        if (!isValidatePostingBody || !isValidatePostingTitle || !isValidatePostingNickName) {
             event.preventDefault();
             event.stopPropagation();
         }

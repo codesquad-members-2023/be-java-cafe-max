@@ -6,23 +6,7 @@
     <link rel="stylesheet" href="/css/new/bootstrap.min.css">
 </head>
 <body>
-<nav class="navbar navbar-expand bg-body-tertiary justify-content-center row-cols-auto">
-    <div class="col-10 row row-cols-auto justify-content-between">
-        <div class="nav align-self-center ms-3 ">
-            HELLO JAVA!
-        </div>
-        <div class="container  row row-cols-auto">
-            <div class="nav align-self-center">
-                멤버리스트
-            </div>
-            <div class="nav" id="login">
-                <a class="btn btn-primary" href="Login.html" type="submit" role="button">마이페이지</a>
-            </div>
-            <div class="nav" id="logout">
-                <a class="btn btn-primary" href="Login.html" type="submit" role="button">로그아웃</a>
-            </div>
-        </div>
-    </div>
+<nav th:replace="fragments/navbar.html :: anonymous">
 </nav>
 <div class="row justify-content-center">
     <div class="col-6 row row-cols-auto mt-5 mb-5">
@@ -40,7 +24,7 @@
     <div class="col-6 row text-secondary">
         <div class="col-3 row">
             <p class="col text-end pe-0">아이디:</p>
-            <p class="col text-start ps-1" id="views" th:text="${post.id}" >0</p>
+            <p class="col text-start ps-1" id="views" th:text="${post.id}">0</p>
         </div>
         <div class="col-3 row">
             <p class="col text-end pe-0 ps-0 ms-1">작성자:</p>
@@ -108,15 +92,23 @@
     <div class="col-6 row row-cols-auto justify-content-between">
         <div class="container  row row-cols-auto">
             <div class="nav ms-3" id="beforePost">
-                <button class="btn btn-primary" type="submit" role="button">이전 글:{글제목}</button>
+                <button class="btn btn-primary" type="submit" role="button" th:if="${post.id} != 0"
+                        th:onclick="|location.href='@{/post/{id}(id = ${post.id}-1)}'|">이전 글:{글제목}
+                </button>
+                <button class="btn btn-primary" type="submit" role="button" th:if="${post.id} == 0"
+                        th:onclick="|location.href='@{/post/{id}(id = ${post.id}-1)}'|" disabled>이전 글:{글제목}
+                </button>
             </div>
             <div class="nav" id="afterPost">
-                <button class="btn btn-primary" type="submit" role="button">다음 글:{글제목}</button>
+                <button class="btn btn-primary" type="submit" role="button"
+                        th:onclick="|location.href='@{/post/{id}(id = ${post.id}+1)}'|">다음 글:{글제목}
+                </button>
             </div>
         </div>
         <div class="container  row row-cols-auto">
             <div class="nav" id="list">
-                <button class="btn btn-primary" type="submit" role="button">목록으로</button>
+                <button class="btn btn-primary" type="submit" role="button" th:onclick="|location.href='@{/}'|">목록으로
+                </button>
             </div>
         </div>
     </div>

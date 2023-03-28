@@ -2,12 +2,28 @@
 
 <nav th:fragment="anonymous" class="navbar navbar-expand bg-body-tertiary justify-content-center row-cols-auto">
     <div class="col-10 row row-cols-auto justify-content-between">
-        <div class="nav align-self-center ms-3 ">
-            HELLO JAVA!
+        <div class="nav align-self-center ms-3">
+            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/}">HELLO JAVA!</a>
         </div>
         <div class="container  row row-cols-auto">
             <div class="nav" id="logout">
-                <a class="btn btn-primary" th:href="@{/users/join}" type="submit" role="button">로그인/회원가입</a>
+                <a class="btn btn-primary" th:href="@{/users/login}" type="submit" role="button">로그인</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<nav th:fragment="user" class="navbar navbar-expand bg-body-tertiary justify-content-center row-cols-auto">
+    <div class="col-10 row row-cols-auto justify-content-between">
+        <div class="nav align-self-center ms-3 ">
+            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/}">HELLO JAVA!</a>
+        </div>
+        <div class="container  row row-cols-auto">
+            <div class="nav" id="membersButton">
+                <a class="btn btn-primary" th:href="@{/users}" type="submit" role="button">맴버리스트</a>
+            </div>
+            <div class="nav" id="logout">
+                <a class="btn btn-primary" th:href="@{/}" type="submit" role="button">로그아웃</a>
             </div>
         </div>
     </div>
