@@ -16,6 +16,7 @@ public class UserController {
 
     @PostMapping("/create")
     public String register(User user) {
+        userService.register(user);
         return "redirect:";
     }
 
