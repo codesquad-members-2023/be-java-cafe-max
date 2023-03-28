@@ -4,20 +4,21 @@ import java.time.LocalDate;
 
 public class User {
 
-    private Long id;
-    private String email;
-    private String name;
+    private String id;
     private String password;
+    private String name;
+    private String email;
     private LocalDate date;
 
-    public User(String email, String name, String password, LocalDate date) {
+    public User(String id, String password, String name, String email, LocalDate date) {
+        this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
         this.date = date;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 

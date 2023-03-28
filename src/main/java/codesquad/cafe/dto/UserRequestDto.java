@@ -5,12 +5,14 @@ import codesquad.cafe.domain.User;
 import java.time.LocalDate;
 
 public class UserRequestDto {
-    private String email;
-    private String name;
+    private String id;
     private String password;
+    private String name;
+    private String email;
     private LocalDate date;
 
-    public UserRequestDto(String email, String name, String password) {
+    public UserRequestDto(String id, String password, String name, String email) {
+        this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
@@ -18,6 +20,6 @@ public class UserRequestDto {
     }
 
     public User toEntity() {
-        return new User(email, name, password, date);
+        return new User(id, password, name, email, date);
     }
 }

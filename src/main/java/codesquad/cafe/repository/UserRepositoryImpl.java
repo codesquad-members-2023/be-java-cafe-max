@@ -7,16 +7,16 @@ import java.util.*;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
-    private static Map<Long, User> store = new HashMap<>();
+    private static Map<String, User> store = new HashMap<>();
     private static Long sequence = 0L;
     @Override
     public User save(User user) {
-        store.put(++sequence, user);
+        store.put(user.getId(), user);
         return user;
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<User> findById(String id) {
         return Optional.ofNullable(store.get(id));
     }
 

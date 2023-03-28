@@ -12,7 +12,7 @@ public interface UserRepository {
 
     User save(User user);
 
-    Optional<User> findById(Long id);
+    Optional<User> findById(String id);
 
     List<User> findAll();
 }

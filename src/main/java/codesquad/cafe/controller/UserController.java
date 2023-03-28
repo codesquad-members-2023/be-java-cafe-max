@@ -33,6 +33,6 @@ public class UserController {
     public String showUsers(Model model) {
         List<User> users = userService.showUsers();
         model.addAttribute("users", users);
-        return "users";
+        return "list";
     }
 }
