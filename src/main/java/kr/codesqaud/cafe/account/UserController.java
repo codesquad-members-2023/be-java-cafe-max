@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserController {
@@ -53,7 +54,7 @@ public class UserController {
 		user.setPassword(userForm.getPassword());
 
 		usersRepository.add(user);
-		return "redirect:/users";
+		return "redirect:/users/" + user.getId();
 	}
 
 	@GetMapping("/users")
@@ -71,7 +72,7 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{userId}/update")
-	public String showUserForm(Model model, @PathVariable Long userId) {
+	public String showUserForm(Model model, @PathVariable Long userId, @Nullable @RequestParam boolean errors) {
 		Optional<User> optionalUser = usersRepository.findById(userId);
 		User user = optionalUser.get();
 		UserForm userForm = new UserForm();
@@ -79,11 +80,12 @@ public class UserController {
 		userForm.setEmail(user.getEmail());
 		model.addAttribute("userId", userId);
 		model.addAttribute(userForm);
+		model.addAttribute("errors", errors);
 		return "account/profileUpdate";
 	}
 
 	@PutMapping("/users/{userId}/update")
-	public String setUserForm(UserForm userForm, @PathVariable Long userId, Model model) {
+	public String setUserForm(UserForm userForm, @PathVariable Long userId, RedirectAttributes model) {
 		Optional<User> optionalUser = usersRepository.findById(userId);
 		User user = optionalUser.get();
 		if (!user.getPassword().equals(userForm.getPassword())) {
