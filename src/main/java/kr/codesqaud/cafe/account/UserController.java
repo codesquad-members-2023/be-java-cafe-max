@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class UserController {
@@ -51,7 +52,21 @@ public class UserController {
 		UserForm userForm = new UserForm();
 		userForm.setNickname(user.getNickname());
 		userForm.setEmail(user.getEmail());
+		model.addAttribute("userId", userId);
 		model.addAttribute(userForm);
 		return "account/profileUpdate";
+	}
+
+	@PutMapping("/users/{userId}/update")
+	public String setUserForm(UserForm userForm, @PathVariable Long userId, Model model) {
+		Optional<User> optionalUser = usersRepository.findById(userId);
+		User user = optionalUser.get();
+		if (!user.getPassword().equals(userForm.getPassword())) {
+			model.addAttribute("errors", true);
+			return "redirect:/users/" + userId + "/update";
+		}
+		user.setEmail(userForm.getEmail());
+		user.setNickname(userForm.getNickname());
+		return "redirect:/users/{userId}";
 	}
 }
