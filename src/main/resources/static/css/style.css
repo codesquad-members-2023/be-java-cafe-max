@@ -15,6 +15,11 @@ a {
     color: white;
 }
 
+.pagination {
+    list-style: none;
+    display: flex;
+}
+
 #check, .menu-bar {
     display: none;
 }
@@ -56,6 +61,141 @@ a {
     border-color:#a289bb;
     color: #a289bb;
     transition: 0.7s;
+}
+
+.description {
+    margin: 0 auto;
+    border-color: white;
+    border: solid;
+    border-radius: 20px;
+    color: white;
+    padding-left: 100px;
+    padding-right: 100px;
+    background-color: #afb9ea;
+    width: 800px;
+    height: 200px;
+    display: table;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.inbox {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.big {
+    font-weight: 700;
+    font-size: 35px;
+}
+
+.board {
+    width: 1000px;
+    margin: 50px auto;
+}
+
+.countOfpost p {
+    margin-top: 5px;
+    font-size: 15px;
+}
+
+.list {
+    width: 100%;
+    border-top: 2px solid #ae97c5;
+}
+
+.list > div {
+    border-bottom: 1px solid lightgrey;
+    font-size: 0;
+}
+
+.list > div.top {
+    border-bottom: 1px solid lightgrey;
+}
+
+.list > div:last-child {
+    border-bottom: 1px solid #ae97c5;
+}
+
+.list > div > div {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 15px;
+}
+
+.board a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.list > div.top > div {
+    font-weight: 600;
+}
+
+.list .title {
+    width: 60%;
+    text-align: left;
+    padding-left: 20px;
+    width: 580px;
+}
+
+.list .top .title {
+    text-align: center;
+}
+
+.list .writer {
+    width: 10%;
+}
+
+.list .date {
+    width: 20%;
+}
+
+.list .hits {
+    width: 10%;
+}
+
+.page {
+    margin-top: 30px;
+    font-size: 0;
+}
+
+.list .nickname {
+    width: 30%;
+}
+
+.list .top .nickname {
+    text-align: center;
+}
+
+.list .email {
+    width: 40%;
+}
+
+.list .signup-date {
+    width: 30%;
+}
+
+.page {
+    margin-top: 30px;
+    font-size: 0;
+}
+
+.page a {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    font-size: small;
+}
+
+.page a.num.on {
+    color: #cad1f3;
+}
+
+.column:hover {
+    background-color: lightgrey;
 }
 
 @media (max-width: 700px) {
@@ -106,5 +246,19 @@ a {
 
     .menu:hover .bar {
         display: block;
+    }
+
+    .description {
+        width: 350px;
+    }
+
+    .board {
+        width: 550px;
+    }
+
+    .list .title {
+        width: 55%;
+        text-align: left;
+        padding-left: 20px;
     }
 }
