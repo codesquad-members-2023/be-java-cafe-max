@@ -6,22 +6,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/user")
 public class UserController {
 
-    @GetMapping(value = "/form")
+    private final MemoryUserRepository memoryUserRepository;
+
+    public UserController(MemoryUserRepository memoryUserRepository) {
+        this.memoryUserRepository = memoryUserRepository;
+    }
+
+    @GetMapping("/user/form")
     public String form() {
         return "user/form";
     }
 
-    @PostMapping("/form")
+    @PostMapping("/user/form")
     public String post(
             @RequestParam("userId") String userId,
             @RequestParam String password,
             @RequestParam String name,
             @RequestParam String email) {
 
-        MemoryUserRepository memoryUserRepository = new MemoryUserRepository();
         User user = new User(userId, password, name, email);
         memoryUserRepository.save(user);
 
@@ -30,10 +34,10 @@ public class UserController {
         System.out.println("name = " + name);
         System.out.println("email = " + email);
 
-        return "redirect:/user/list";
+        return "redirect:/users";
     }
 
-    @GetMapping(value = "/list")
+    @GetMapping("/users")
     public String joinSuccess() {
         return "user/list";
     }
