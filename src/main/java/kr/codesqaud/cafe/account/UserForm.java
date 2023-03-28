@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.account;
 
 public class UserForm {
 
-	private Long id;
 	private String nickname;
 	private String email;
 	private String password;
