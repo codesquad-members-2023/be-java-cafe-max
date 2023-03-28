@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.account;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,28 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class UserController {
 
 	private final UsersRepository usersRepository = new UsersRepository();
+
+
+	@GetMapping("/users/login")
+	public String showLoginPage(Model model) {
+		model.addAttribute(new UserForm());
+		return "account/login";
+	}
+
+	@PostMapping("/users/login")
+	public String login(UserForm userForm,Model model) {
+		Optional<User> userOptional = usersRepository.findByEmail(userForm.getEmail());
+		if (userOptional.isEmpty()) {
+			model.addAttribute("errors", true);
+			return "redirect:/users/login";
+		}
+		User user = userOptional.get();
+		if (!Objects.equals(user.getPassword(), userForm.getPassword())) {
+			model.addAttribute("errors", true);
+			return "redirect:/users/login";
+		}
+		return "redirect:/users/" + user.getId();
+	}
 
 	@GetMapping("/users/join")
 	public String showJoinPage(Model model) {
