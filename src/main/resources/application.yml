@@ -1,0 +1,8 @@
+spring:
+  mustache:
+    suffix: .html
+    cache: false
+server:
+  servlet:
+    encoding:
+      force: true
