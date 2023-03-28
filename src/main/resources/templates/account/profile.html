@@ -22,7 +22,7 @@
         </div>
     </div>
 </nav>
-<form class="container" id="postingForm" novalidate>
+<form class="container" id="postingForm" th:action="@{/users/{userId}/update(userId = ${user.id})}" novalidate>
     <div class="row justify-content-center mt-5">
         <div class="card mb-3" style="max-width: 540px;">
             <div class="row g-0">
@@ -34,14 +34,20 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <div class="card-title row">
-                            <h5 class="col-5">nickname : </h5>
-                            <p class="col" th:text="${user.nickname}">nickname</p>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text col-5" id="nickname">Nickname</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="nickname" readonly value="nickname" th:value="${user.nickname}"
+                                   disabled>
                         </div>
-                        <div class="card-text row">
-                            <h5 class="col-5">email : </h5>
-                            <p class="col" th:text="${user.email}">email</p>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text col-5" id="email">Email</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="nickname" readonly value="email" th:value="${user.email}" disabled>
                         </div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button class="btn btn-primary" type="submit">수정</button>
                     </div>
                 </div>
             </div>
