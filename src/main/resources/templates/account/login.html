@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/new/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand bg-body-tertiary justify-content-center row-cols-auto">
+    <div class="col-10 row row-cols-auto justify-content-between">
+        <div class="nav align-self-center ms-3 ">
+            HELLO JAVA!
+        </div>
+    </div>
+</nav>
+<div class="container-fluid row-gap-3 mt-5 mb-5">
+    <div class="align-content-center justify-content-center">
+        <div class="row g-5 ">
+            <p class="fs-1 text-center fw-bold">로그인</p>
+        </div>
+    </div>
+</div>
+<form th:object="${userForm}" th:action="@{/users/login}" method="post">
+    <div class="row justify-content-center mb-3">
+        <div class="col-3">
+            <label for="email" class="form-label">이메일</label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="이메일을 입력해주세요">
+        </div>
+    </div>
+    <div class="row justify-content-center mb-5">
+        <div class="col-3">
+            <label for="password" class="form-label">비밀번호</label>
+            <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="비밀번호를 입력해주세요">
+        </div>
+    </div>
+    <div class="row justify-content-center mb-3">
+        <div class="d-grid col-3">
+            <button type="submit" class="btn btn-primary text-center">로그인</button>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-3">
+        <p class="text-center">아직 회원가입을 안하셨나요?
+            <a class="text-center" th:href="@{/users/join}">회원가입하기</a>
+        </p>
+    </div>
+</form>
+
+</body>
+</html>
