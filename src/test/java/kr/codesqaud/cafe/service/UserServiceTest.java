@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
 import kr.codesqaud.cafe.exception.DuplicatedUserIdException;
+import kr.codesqaud.cafe.exception.UserNotFoundException;
 
 @SpringBootTest
 class UserServiceTest {
@@ -46,6 +47,34 @@ class UserServiceTest {
 			// when & then
 			assertThatThrownBy(() -> userService.join(joinRequest))
 				.isInstanceOf(DuplicatedUserIdException.class);
+		}
+	}
+
+	@DisplayName("회원 아이디로 회원을 조회할 때")
+	@Nested
+	class UserFindTest {
+
+		@DisplayName("해당 아이디를 가진 회원이 있으면 회원 정보를 반환한다.")
+		@Test
+		void givenUserId_whenFindByUserId_thenReturnsUser() {
+			// given
+			String userId = "uniqueId";
+			userService.join(new JoinRequest(userId, "password", "name", "email@email.com"));
+
+			// when & then
+			assertThatCode(() -> userService.findByUserId(userId))
+				.doesNotThrowAnyException();
+		}
+
+		@DisplayName("해당 아이디를 가진 회원이 없으면 예외를 던진다.")
+		@Test
+		void givenNotExistsUserId_whenFindByUserId_thenThrowsException() {
+			// given
+			String userId = "notExistsId";
+
+			// when & then
+			assertThatThrownBy(() -> userService.findByUserId(userId))
+				.isInstanceOf(UserNotFoundException.class);
 		}
 	}
 }
