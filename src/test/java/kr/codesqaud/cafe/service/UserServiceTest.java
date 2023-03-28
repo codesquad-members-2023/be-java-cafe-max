@@ -2,24 +2,23 @@ package kr.codesqaud.cafe.service;
 
 import static org.assertj.core.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
 import kr.codesqaud.cafe.exception.DuplicatedUserIdException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
+import kr.codesqaud.cafe.repository.impl.UserMemoryRepository;
 
-@SpringBootTest
 class UserServiceTest {
 
-	private final UserService userService;
+	private UserService userService;
 
-	@Autowired
-	public UserServiceTest(UserService userService) {
-		this.userService = userService;
+	@BeforeEach
+	void setUserRepository() {
+		this.userService = new UserService(new UserMemoryRepository());
 	}
 
 	@DisplayName("회원가입을 수행할 때 ")
