@@ -43,7 +43,4 @@ public class UserService {
 		return optionalUser.map(user -> Objects.equals(user.getPassword(), password)).orElse(false);
 	}
 
-	public UserForm mappingUserform(User user) {
-		return user.mappingUserForm();
-	}
 }

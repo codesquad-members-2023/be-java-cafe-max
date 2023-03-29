@@ -71,7 +71,7 @@ public class UserController {
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
 		}
-		UserForm userForm = userService.mappingUserform(userOptional.get());
+		UserForm userForm = userOptional.get().mappingUserForm();
 		model.addAttribute("userForm", userForm);
 		model.addAttribute("userId", userId);
 		return "account/profile";
@@ -83,7 +83,7 @@ public class UserController {
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
 		}
-		UserForm userForm = userService.mappingUserform(userOptional.get());
+		UserForm userForm = userOptional.get().mappingUserForm();
 		model.addAttribute("userId", userId);
 		model.addAttribute(userForm);
 		model.addAttribute("errors", errors);
