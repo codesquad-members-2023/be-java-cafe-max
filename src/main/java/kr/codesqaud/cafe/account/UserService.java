@@ -37,9 +37,11 @@ public class UserService {
 	}
 
 	public void update(ProfileSettingForm profileSettingForm, Long userId) {
-		User user = usersRepository.findById(userId).get();
-		user.setEmail(profileSettingForm.getEmail());
-		user.setNickname(profileSettingForm.getNickname());
+		usersRepository.findById(userId).ifPresent(user -> {
+				user.setEmail(profileSettingForm.getEmail());
+				user.setNickname(profileSettingForm.getNickname());
+			}
+		);
 	}
 
 	public boolean checkPasswordByUserId(String password, Long userId) {
