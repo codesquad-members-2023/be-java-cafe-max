@@ -45,4 +45,11 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public UserForm mappingUserForm() {
+		UserForm userForm = new UserForm();
+		userForm.setNickname(getNickname());
+		userForm.setEmail(getEmail());
+		return userForm;
+	}
 }
