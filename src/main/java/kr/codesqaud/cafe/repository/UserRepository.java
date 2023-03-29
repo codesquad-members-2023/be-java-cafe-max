@@ -1,2 +1,4 @@
-package kr.codesqaud.cafe.repository;public class UserRepository {
+package kr.codesqaud.cafe.repository;
+
+public class UserRepository {
 }

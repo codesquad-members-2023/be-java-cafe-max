@@ -1,2 +1,4 @@
-package kr.codesqaud.cafe.controller;public class UserController {
+package kr.codesqaud.cafe.controller;
+
+public class UserController {
 }
