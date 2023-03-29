@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.controller.dto.UserDto;
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
+import kr.codesqaud.cafe.controller.dto.req.ProfileEditRequest;
 import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.exception.DuplicatedUserIdException;
+import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 
@@ -39,5 +41,19 @@ public class UserService {
 		return userRepository.findByUserId(userId)
 			.map(UserDto::from)
 			.orElseThrow(() -> new NotFoundException(userId.concat("는 존재하지 않는 아이디입니다.")));
+	}
+
+	public void editUserProfile(final String userId, final ProfileEditRequest request) {
+		User savedUser = userRepository.findByUserId(userId)
+			.orElseThrow(() -> new NotFoundException(userId.concat("를 가진 회원을 찾을 수 없습니다.")));
+
+		validatePassword(savedUser, request.getOriPassword());
+		savedUser.editProfile(request.getNewPassword(), request.getName(), request.getEmail());
+	}
+
+	private void validatePassword(final User user, final String password) {
+		if (!user.isSamePassword(password)) {
+			throw new InvalidPasswordException("기존 비밀번호와 일치하지 않습니다.");
+		}
 	}
 }

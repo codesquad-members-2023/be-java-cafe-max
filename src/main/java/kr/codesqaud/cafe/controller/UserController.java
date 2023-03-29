@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
+import kr.codesqaud.cafe.controller.dto.req.ProfileEditRequest;
 import kr.codesqaud.cafe.service.UserService;
 
 @Controller
@@ -41,5 +43,11 @@ public class UserController {
 	public String showProfileEditPage(@PathVariable final String userId, final Model model) {
 		model.addAttribute("userId", userId);
 		return "user/edit_form";
+	}
+
+	@PutMapping("/users/{userId}")
+	public String editUserProfile(@PathVariable final String userId, @ModelAttribute final ProfileEditRequest request) {
+		userService.editUserProfile(userId, request);
+		return "redirect:/users";
 	}
 }

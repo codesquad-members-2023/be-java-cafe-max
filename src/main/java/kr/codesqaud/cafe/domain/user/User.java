@@ -34,4 +34,14 @@ public class User {
 	public String getEmail() {
 		return email;
 	}
+
+	public boolean isSamePassword(final String password) {
+		return this.password.equals(password);
+	}
+
+	public void editProfile(final String password, final String name, final String email) {
+		this.password = password;
+		this.name = name;
+		this.email = email;
+	}
 }
