@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,14 +13,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     public Long join(User user) {
-        validateDuplicateMember(user); //중복 회원 검증
+        validateDuplicateMember(user);
         userRepository.save(user);
-        return user.getId();
+        return user.getUserId();
     }
 
     private void validateDuplicateMember(User user) {
@@ -33,7 +35,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findOne(Long memberId) {
-        return userRepository.findById(memberId);
+    public Optional<User> findOne(Long userId) {
+        return userRepository.findById(userId);
     }
 }

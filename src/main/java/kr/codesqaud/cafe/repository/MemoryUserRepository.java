@@ -13,11 +13,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MemoryUserRepository implements UserRepository {
 
     private static Map<Long, User> store = new ConcurrentHashMap<>();
-    private static long sequence = 0L;
 
     @Override
     public User save(User user) {
-        store.put(user.getId(), user);
+        store.put(user.getUserId(), user);
         return user;
     }
 
