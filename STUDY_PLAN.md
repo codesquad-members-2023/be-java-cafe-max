@@ -8,13 +8,13 @@
     - [ ] 7장, 웹을 안전하게 지켜주는 HTTPS
     - [ ] 8장, 누가 액세스하고 있는지를 확인하는 인증
 - [ ] 스프링 부트와 AWS로 혼자 구현하는 웹 서비스 3장
-    - [ ] JPA 소개
-    - [ ] 프로젝트에 Spring Data Jpa 적용하기
-    - [ ] Spring Data JPA 테스트 코드 만들기
-    - [ ] 등록/수정/조회 API 만들기
+    - [x] JPA 소개
+    - [x] 프로젝트에 Spring Data Jpa 적용하기
+    - [x] Spring Data JPA 테스트 코드 만들기
+    - [x] 등록/수정/조회 API 만들기
     - [ ] JPA Auditing으로 생성시간/수정시간 자동화하기
 - [ ] 인프런 스프링 입문
-    - [ ] 프로젝트 환경 설정
+    - [x] 프로젝트 환경 설정
     - [ ] 스프링 웹 개발 기초
     - [ ] 회원관리 예제
 - [x] [JVM](https://yonghwankim-dev.tistory.com/580)
@@ -38,10 +38,10 @@
 
 ## 2023-03-28(화)
 
-- [ ] http network basic 194p ~ 204p
-- [ ] 스프링 부트와 AWS로 혼자 구현하는 웹 서비스
-    - [ ] Spring Data JPA 테스트 코드 작성하기
-    - [ ] 등록/수정/조회 API 만들기
+- [x] http network basic 194p ~ 204p
+- [x] 스프링 부트와 AWS로 혼자 구현하는 웹 서비스
+    - [x] Spring Data JPA 테스트 코드 작성하기
+    - [x] 등록/수정/조회 API 만들기
 - [ ] 스프링 입문 : 스프링 웹 개발 기초
 - [ ] Bean Lifecycle
 
