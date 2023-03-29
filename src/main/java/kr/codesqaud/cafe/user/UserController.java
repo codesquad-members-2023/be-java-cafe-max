@@ -11,7 +11,7 @@ public class UserController {
     private final UserService userService = new UserService();
 
     @GetMapping("/signup")
-    public String signup() {
+    public String showSignup(UserForm userForm) {
         return "user/form";
     }
 
@@ -19,7 +19,7 @@ public class UserController {
     public String signup(UserForm userForm) {
         userService.saveUser(userForm);
 
-        return "redirect:/";
+        return "redirect:/user/signup";
     }
 
 }
