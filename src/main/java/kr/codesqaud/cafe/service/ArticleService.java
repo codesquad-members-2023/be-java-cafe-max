@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import java.util.List;
+import java.util.Optional;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,15 @@ public class ArticleService {
      */
     public List<Article> findArticles() {
         return articleRepository.findAll();
+    }
+
+    /**
+     * index 로 특정 게시글 조회
+     * @param index 게시글 index
+     * @return 게시글
+     */
+    public Optional<Article> findOne(long index) {
+        return articleRepository.findByIndex(index);
     }
 
 }
