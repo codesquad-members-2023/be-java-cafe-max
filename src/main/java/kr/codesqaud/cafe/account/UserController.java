@@ -41,7 +41,11 @@ public class UserController {
 	}
 
 	@PostMapping("/users/login")
-	public String login(LoginForm loginForm, RedirectAttributes model) {
+	public String login(@Valid LoginForm loginForm, Errors errors, RedirectAttributes model) {
+		if (errors.hasErrors()) {
+			model.addAttribute("errors", true);
+			return "redirect:/users/login";
+		}
 		Optional<User> userOptional = usersRepository.findByEmail(loginForm.getEmail());
 		if (userOptional.isEmpty()) {
 			model.addAttribute("errors", true);
