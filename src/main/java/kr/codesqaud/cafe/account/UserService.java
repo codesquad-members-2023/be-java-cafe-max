@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.account;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -24,8 +25,9 @@ public class UserService {
 		return user;
 	}
 
-	public Optional<User> findByEmail(String email) {
-		return usersRepository.findByEmail(email);
+	public Optional<UserForm> findByEmail(String email) {
+		Optional<User> userOptional = usersRepository.findByEmail(email);
+		return userOptional.map(User::mappingUserForm);
 	}
 
 	public List<UserForm> getAllMembers() {
@@ -37,7 +39,7 @@ public class UserService {
 
 	public Optional<UserForm> findById(Long userId) {
 		Optional<User> userOptional = usersRepository.findById(userId);
-		return Optional.of(userOptional.get().mappingUserForm());
+		return userOptional.map(User::mappingUserForm);
 	}
 
 	public void update(UserForm userForm, Long userId) {
@@ -46,9 +48,8 @@ public class UserService {
 		user.setNickname(userForm.getNickname());
 	}
 
-	public boolean checkPassword(UserForm userForm, Long userId) {
+	public boolean checkPasswordByUserId(String password, Long userId) {
 		Optional<User> optionalUser = usersRepository.findById(userId);
-		User user = optionalUser.get();
-		return user.getPassword().equals(userForm.getPassword());
+		return optionalUser.map(user -> Objects.equals(user.getPassword(), password)).orElse(false);
 	}
 }
