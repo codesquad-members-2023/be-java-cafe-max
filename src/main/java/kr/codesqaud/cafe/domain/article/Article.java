@@ -30,6 +30,22 @@ public class Article {
 		return id;
 	}
 
+	public String getWriter() {
+		return writer;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}

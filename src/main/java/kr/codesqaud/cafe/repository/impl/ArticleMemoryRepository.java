@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.repository.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -20,5 +22,10 @@ public class ArticleMemoryRepository implements ArticleRepository {
 		article.setId(sequence++);
 		articleRepository.put(article.getId(), article);
 		return Optional.of(article);
+	}
+
+	@Override
+	public List<Article> findAll() {
+		return new ArrayList<>(articleRepository.values());
 	}
 }
