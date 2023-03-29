@@ -92,13 +92,14 @@ public class UserController {
 		ProfileForm profileForm = userOptional.get().mappingProfileForm();
 		model.addAttribute("userId", userId);
 		model.addAttribute(profileForm);
-		model.addAttribute("profileSettingForm",new ProfileSettingForm());
+		model.addAttribute("profileSettingForm", new ProfileSettingForm());
 		model.addAttribute("errors", errors);
 		return "account/profileUpdate";
 	}
 
 	@PutMapping("/users/{userId}/update")
-	public String setUserProfile(ProfileSettingForm profileSettingForm, @PathVariable Long userId, RedirectAttributes model) {
+	public String setUserProfile(ProfileSettingForm profileSettingForm, @PathVariable Long userId,
+		RedirectAttributes model) {
 		Optional<User> userOptional = usersRepository.findById(userId);
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
