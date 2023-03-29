@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.codesqaud.cafe.account.form.JoinForm;
 import kr.codesqaud.cafe.account.form.LoginForm;
 
 @Controller
@@ -50,13 +51,13 @@ public class UserController {
 
 	@GetMapping("/users/join")
 	public String showJoinPage(Model model) {
-		model.addAttribute(new UserForm());
+		model.addAttribute("joinForm",new JoinForm());
 		return "account/join";
 	}
 
 	@PostMapping("/users")
-	public String addUser(UserForm userForm) {
-		User user = userService.createNewUser(userForm);
+	public String addUser(JoinForm joinForm) {
+		User user = userService.createNewUser(joinForm);
 		return "redirect:/users/" + user.getId();
 	}
 

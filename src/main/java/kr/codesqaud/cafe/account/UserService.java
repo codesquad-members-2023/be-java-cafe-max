@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import kr.codesqaud.cafe.account.form.JoinForm;
+
 @Service
 public class UserService {
 
@@ -16,11 +18,11 @@ public class UserService {
 		this.usersRepository = usersRepository;
 	}
 
-	public User createNewUser(UserForm userForm) {
+	public User createNewUser(JoinForm joinForm) {
 		User user = new User(User.createNewId());
-		user.setNickname(userForm.getNickname());
-		user.setEmail(userForm.getEmail());
-		user.setPassword(userForm.getPassword());
+		user.setNickname(joinForm.getNickname());
+		user.setEmail(joinForm.getEmail());
+		user.setPassword(joinForm.getPassword());
 		usersRepository.save(user);
 		return user;
 	}
