@@ -28,4 +28,9 @@ public class ArticleMemoryRepository implements ArticleRepository {
 	public List<Article> findAll() {
 		return new ArrayList<>(articleRepository.values());
 	}
+
+	@Override
+	public Optional<Article> findById(Long id) {
+		return Optional.ofNullable(articleRepository.get(id));
+	}
 }
