@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.account;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import kr.codesqaud.cafe.account.form.ProfileForm;
 import kr.codesqaud.cafe.account.form.UsersForm;
 
 public class User {
@@ -61,5 +62,12 @@ public class User {
 		usersForm.setEmail(getEmail());
 		usersForm.setNickname(getNickname());
 		return usersForm;
+	}
+
+	public ProfileForm mappingProfileForm() {
+		ProfileForm profileForm = new ProfileForm();
+		profileForm.setEmail(getEmail());
+		profileForm.setNickname(getNickname());
+		return profileForm;
 	}
 }
