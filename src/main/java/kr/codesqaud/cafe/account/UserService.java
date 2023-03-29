@@ -30,10 +30,9 @@ public class UserService {
 
 	public List<UserForm> getAllMembers() {
 		List<User> allMembers = usersRepository.getAllMembers();
-		List<UserForm> userForms = allMembers.stream()
-			.map(user -> user.mappingUserForm())
+		return allMembers.stream()
+			.map(User::mappingUserForm)
 			.collect(Collectors.toList());
-		return userForms;
 	}
 
 	public Optional<UserForm> findById(Long userId) {
