@@ -20,14 +20,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users/new")
+    @GetMapping("/user/create")
     public String createForm() {
-        return "users/createUserForm";
+        return "/user/form";
     }
 
-    @PostMapping("/users/new")
+    @PostMapping("/user/create")
     public String create(UserForm form) {
-        User user = new User(form.getId(), form.getPassword(), form.getName(), form.getEmail());
+        User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
 
         userService.join(user);
 
@@ -38,7 +38,7 @@ public class UserController {
     public String list(Model model) {
         List<User> users = userService.findMembers();
         model.addAttribute("users", users);
-        return "users/userList";
+        return "user/userList";
     }
 
 }
