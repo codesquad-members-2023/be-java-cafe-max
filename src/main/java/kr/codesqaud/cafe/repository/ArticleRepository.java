@@ -3,8 +3,12 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ArticleRepository {
 
-    public void save(Article article);
+    void save(Article article);
+
+    List<Article> findAll();
 }

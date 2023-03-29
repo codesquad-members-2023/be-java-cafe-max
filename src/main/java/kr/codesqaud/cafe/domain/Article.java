@@ -1,21 +1,29 @@
 package kr.codesqaud.cafe.domain;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class Article {
 
-    String writer;
+    String author;
 
     String title;
 
     String contents;
 
-    public Article(String writer, String title, String contents) {
-        this.writer = writer;
+    LocalDateTime  time;
+
+    public Article(String author, String title, String contents) {
+        this.author = author;
         this.title = title;
         this.contents = contents;
+        this.time = LocalDateTime.now();
+
     }
 
-    public String getWriter() {
-        return writer;
+    public String getAuthor() {
+        return author;
     }
 
     public String getTitle() {

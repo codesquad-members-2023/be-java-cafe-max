@@ -18,4 +18,8 @@ public class MemoryArticleRepository implements ArticleRepository {
         storage.add(article);
     }
 
+    public List<Article> findAll(){
+        return storage;
+    }
+
 }

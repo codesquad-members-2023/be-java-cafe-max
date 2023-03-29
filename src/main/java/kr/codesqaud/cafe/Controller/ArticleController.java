@@ -8,6 +8,8 @@ import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -20,11 +22,17 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @PostMapping("/user/create")
+    @PostMapping("/qna/create")
     public String createUser(ArticleFormDto articleFormDto) {
-        articleService.write(new Article(articleFormDto.getWriter(), articleFormDto.getTitle(), articleFormDto.getContents()));
+        articleService.write(new Article(articleFormDto.getAuthor(), articleFormDto.getTitle(), articleFormDto.getContents()));
         return "redirect:/";
     }
 
-    
+    @GetMapping("/")
+    public String listArticles(Model model){
+        model.addAttribute("articles", articleService.checkArticles());
+        return "/index";
+    }
+
+
 }

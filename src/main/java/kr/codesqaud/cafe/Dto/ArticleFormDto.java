@@ -1,14 +1,14 @@
 package kr.codesqaud.cafe.Dto;
 
 public class ArticleFormDto {
-    String writer;
+    String author;
 
     String title;
 
     String contents;
 
-    public void setWriter(String writer) {
-        this.writer = writer;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public void setTitle(String title) {
@@ -19,8 +19,8 @@ public class ArticleFormDto {
         this.contents = contents;
     }
 
-    public String getWriter() {
-        return writer;
+    public String getAuthor() {
+        return author;
     }
 
     public String getTitle() {
