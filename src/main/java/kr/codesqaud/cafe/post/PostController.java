@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.post;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -13,9 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class PostController {
 
 	private final PostsRepository postsRepository;
+	private final PostService postService;
 
-	public PostController(PostsRepository postsRepository) {
+	public PostController(PostsRepository postsRepository, PostService postService) {
 		this.postsRepository = postsRepository;
+		this.postService = postService;
 	}
 
 	@GetMapping("/post")
@@ -26,13 +27,7 @@ public class PostController {
 
 	@PostMapping("/post")
 	public String addPost(PostForm postForm) {
-		long newId = Post.createNewId();
-		Post post = new Post(newId);
-		post.setNickname(postForm.getNickname());
-		post.setTitle(postForm.getTitle());
-		post.setTextContent(postForm.getTextContent());
-		post.setCreatedDateTime(LocalDateTime.now());
-		postsRepository.add(post);
+		postService.createNewPost(postForm);
 		return "redirect:/";
 	}
 
