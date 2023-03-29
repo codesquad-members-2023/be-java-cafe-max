@@ -1,10 +1,30 @@
 package kr.codesqaud.cafe.domain;
 
 public class User {
+    private Long index;
     private String userID;
     private String email;
     private String nickname;
     private String password;
+    private String signUpDate;
+
+
+
+    public Long getIndex() {
+        return index;
+    }
+
+    public void setIndex(Long index) {
+        this.index = index;
+    }
+
+    public String getSignUpDate() {
+        return signUpDate;
+    }
+
+    public void setSignUpDate(String signUpDate) {
+        this.signUpDate = signUpDate;
+    }
 
     public String getUserID() {
         return userID;

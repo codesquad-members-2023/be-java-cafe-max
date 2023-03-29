@@ -250,7 +250,35 @@ input:focus {
 .message {
     text-align: center;
     font-size: small;
-  }
+}
+
+table {
+    width: 100%;
+    border: 1px solid #afb9ea;
+    border-collapse: collapse;
+}
+
+th, td {
+    border-bottom: 1px solid #afb9ea;
+    padding: 10px;
+    text-align: center;
+}
+
+#modify {
+    border: 1px solid white;
+    color: white;
+    padding: 5px;
+}
+
+#modify:hover {
+    border-color: #a289bb;
+    color: #a289bb;
+    transition: 0.7s;
+}
+
+tr:hover {
+    background-color: lightgrey;
+}
 
 @media (max-width: 700px) {
     .menu-bar {

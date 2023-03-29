@@ -2,17 +2,28 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class UserFormRepository implements UserRepository {
     private final List<User> userList = new ArrayList<>();
+    private long index = 0L;
     @Override
     public User save(User user) {
         validateDuplicateMember(user);
+        signUpDate(user);
+        user.setIndex(++index);
         userList.add(user);
         return user;
+    }
+
+    private void signUpDate(User user) {
+        LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+        user.setSignUpDate(now.format(formatter));
     }
 
     private void validateDuplicateMember(User user) {
