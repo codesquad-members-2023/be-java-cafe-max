@@ -77,8 +77,8 @@ public class UserController {
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
 		}
-		UserForm userForm = userOptional.get().mappingUserForm();
-		model.addAttribute("userForm", userForm);
+		ProfileForm profileForm = userOptional.get().mappingProfileForm();
+		model.addAttribute("profileForm", profileForm);
 		model.addAttribute("userId", userId);
 		return "account/profile";
 	}
