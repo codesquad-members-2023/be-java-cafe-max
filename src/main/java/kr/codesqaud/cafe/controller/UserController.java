@@ -5,10 +5,7 @@ import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping
-    public String getUsersList(Model model) {
+    public String listAllUsers(Model model) {
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
         return "user/list";
@@ -39,5 +36,13 @@ public class UserController {
     public String join(@ModelAttribute User user) { // ModelAttribute 이름 미지정 시 클래스 'User'의 첫 글자를 소문자로 바꾼 'user'로 자동 설정된다.
         userRepository.save(user);
         return "redirect:/users";
+    }
+
+    @GetMapping("/{userId}")
+    public String getUserProfile(@PathVariable("userId") String userId, Model model) {
+        User user = userRepository.findByUserId(userId);
+        model.addAttribute("user", user);
+
+        return "user/profile";
     }
 }
