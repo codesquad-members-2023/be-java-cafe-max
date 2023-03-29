@@ -108,8 +108,16 @@ public class UserController {
 	}
 
 	@PutMapping("/users/{userId}/update")
-	public String setUserProfile(ProfileSettingForm profileSettingForm, @PathVariable Long userId,
+	public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, Errors errors, @PathVariable Long userId,
 		RedirectAttributes model) {
+		if (errors.hasFieldErrors("email")) {
+			model.addAttribute("errors", true);
+			return "redirect:/users/" + userId + "/update";
+		}
+		if (errors.hasFieldErrors("nickName")) {
+			model.addAttribute("errors", true);
+			return "redirect:/users/" + userId + "/update";
+		}
 		Optional<User> userOptional = usersRepository.findById(userId);
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
