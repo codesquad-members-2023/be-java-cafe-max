@@ -31,10 +31,13 @@ public class UserService {
                 });
     }
 
-
     //회원목록 조회
     public List<User> checkUsers() {
         return userRepository.findAll();
     }
 
+
+    public User getUserProfile(String userId) {
+        return userRepository.findByID(userId).get();
+    }
 }
