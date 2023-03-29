@@ -29,7 +29,7 @@ public class UserController {
 
     @PostMapping
     public String create(@ModelAttribute UserJoinDto userJoinDto) {
-        final Long id = userService.join(userJoinDto);
+        userService.join(userJoinDto);
 
         return "redirect:/users";
     }

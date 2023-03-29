@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{/fragment/layout/head :: common_head}"></head>
 <body>
+    <div th:replace="~{/fragment/layout/nav :: common_nav}"></div>
     <div class="container" id="main">
        <div class="col-md-10 col-md-offset-1">
           <div class="panel panel-default">
@@ -12,8 +13,8 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr th:each="user : ${users}">
-                        <th scope="row">1</th>
+                    <tr th:each="user, userStatus : ${users}">
+                        <th scope="row" th:text="${userStatus.count}"></th>
                             <td th:text="${user.userId}"></td>
                             <td th:text="${user.name}"></td>
                             <td th:text="${user.email}"></td>

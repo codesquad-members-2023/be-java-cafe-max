@@ -20,7 +20,6 @@ public class UserService {
     }
 
     public Long join(final UserJoinDto userJoinDto) {
-
         return userRepository.save(userJoinDto.toUser());
     }
 
