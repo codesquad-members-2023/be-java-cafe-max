@@ -5,10 +5,19 @@ package kr.codesqaud.cafe.domain;
  */
 public class User {
 
+    private long sequence;
     private String userId;
     private String password;
     private String name;
     private String email;
+
+    public long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(long sequence) {
+        this.sequence = sequence;
+    }
 
     public String getUserId() {
         return userId;

@@ -1,10 +1,12 @@
 package kr.codesqaud.cafe.controller;
 
+import java.util.List;
 import kr.codesqaud.cafe.DTO.UserDTO;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -31,11 +33,15 @@ public class UserController {
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
         userService.join(user);
-        return "redirect:/user/list"; // TODO: 어떤 상황에 템플릿 or 리다이렉팅 해주는지 이해 못했다.
+        return "redirect:/users"; // TODO: 어떤 상황에 템플릿 or 리다이렉팅 해주는지 이해 못했다.
     }
 
-    @GetMapping("/user/list")
-    public String listPage() {
+    @GetMapping("/users")
+    public String listPage(Model model) {
+        List<User> users = userService.findUsers();
+        model.addAttribute("users", users);
         return "/user/list";
     }
+
+
 }
