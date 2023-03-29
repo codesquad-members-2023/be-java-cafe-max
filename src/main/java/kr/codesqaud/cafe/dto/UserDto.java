@@ -11,7 +11,6 @@ public class UserDto {
     private String email;
 
     public UserDto( String userId, String password, String name, String email) {
-        this.index = index;
         this.userId = userId;
         this.password = password;
         this.name = name;
