@@ -92,6 +92,10 @@ public class UserController {
 
 	@PutMapping("/users/{userId}/update")
 	public String setUserForm(UserForm userForm, @PathVariable Long userId, RedirectAttributes model) {
+		Optional<User> userOptional = usersRepository.findById(userId);
+		if (userOptional.isEmpty()) {
+			return "redirect:/";
+		}
 		if (!userService.checkPasswordByUserId(userForm.getPassword(), userId)) {
 			model.addAttribute("errors", true);
 			return "redirect:/users/" + userId + "/update";
