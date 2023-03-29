@@ -21,7 +21,7 @@ public class UserService {
 		user.setNickname(userForm.getNickname());
 		user.setEmail(userForm.getEmail());
 		user.setPassword(userForm.getPassword());
-		usersRepository.add(user);
+		usersRepository.save(user);
 		return user;
 	}
 

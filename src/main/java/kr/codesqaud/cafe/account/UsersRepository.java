@@ -16,7 +16,7 @@ public class UsersRepository {
 		this.usersRepository = new ArrayList<>();
 	}
 
-	public boolean add(User user) {
+	public boolean save(User user) {
 		return usersRepository.add(user);
 	}
 
