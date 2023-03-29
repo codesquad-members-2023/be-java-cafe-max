@@ -26,4 +26,8 @@ public class ArticleService {
     public List<Article> checkArticles() {
         return articleRepository.findAll();
     }
+
+    public Article checkArticleDetail(Long index) {
+        return articleRepository.findByID(index);
+    }
 }

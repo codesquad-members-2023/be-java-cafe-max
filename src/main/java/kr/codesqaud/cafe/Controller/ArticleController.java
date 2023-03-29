@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -32,6 +33,12 @@ public class ArticleController {
     public String listArticles(Model model){
         model.addAttribute("articles", articleService.checkArticles());
         return "/index";
+    }
+
+    @GetMapping("/articles/{index}")
+    public String showArticleDetail(Model model, @PathVariable Long index){
+        model.addAttribute("articleDetail", articleService.checkArticleDetail(index));
+        return "/qna/show";
     }
 
 

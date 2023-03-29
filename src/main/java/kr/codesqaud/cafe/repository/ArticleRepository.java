@@ -11,4 +11,6 @@ public interface ArticleRepository {
     void save(Article article);
 
     List<Article> findAll();
+
+    public Article findByID(Long index);
 }
