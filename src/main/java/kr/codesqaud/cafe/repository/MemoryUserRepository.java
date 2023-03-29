@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.UserRequest;
+import kr.codesqaud.cafe.dto.UserRegisterRequest;
 
 import java.util.*;
 
@@ -11,8 +11,8 @@ public class MemoryUserRepository implements UserRepository {
     private static long sequence = 0L;
 
     @Override
-    public User save(UserRequest userRequest) {
-        User user = userRequest.toEntity(++sequence);
+    public User save(UserRegisterRequest userRegisterRequest) {
+        User user = userRegisterRequest.toEntity(++sequence);
         users.put(sequence, user);
         return user;
     }

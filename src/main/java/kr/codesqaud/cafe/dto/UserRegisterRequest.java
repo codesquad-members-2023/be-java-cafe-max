@@ -2,14 +2,14 @@ package kr.codesqaud.cafe.dto;
 
 import kr.codesqaud.cafe.domain.User;
 
-public class UserRequest {
+public class UserRegisterRequest {
 
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    public UserRequest(String userId, String password, String name, String email) {
+    public UserRegisterRequest(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;

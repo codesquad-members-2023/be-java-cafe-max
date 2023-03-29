@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.dto.UserRequest;
+import kr.codesqaud.cafe.dto.UserRegisterRequest;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +19,13 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/register")
+    public String register() {
+        return "users/register";
+    }
+
     @PostMapping("/register")
-    public String register(UserRequest user) {
+    public String register(UserRegisterRequest user) {
         userService.register(user);
         return "redirect:list";
     }
@@ -31,8 +36,9 @@ public class UserController {
         return "users/list";
     }
 
-    @GetMapping("/{userId}")
-    public void showProfile(@PathVariable("userId") long userId) {
-
+    @GetMapping("/{id}")
+    public String showProfile(@PathVariable("id") long id, Model model) {
+        userService.showProfile(id, model);
+        return "users/profile";
     }
 }

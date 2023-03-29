@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.dto.UserResponse;
+import kr.codesqaud.cafe.dto.UserListResponse;
+import kr.codesqaud.cafe.dto.UserProfileResponse;
 
 public class User {
 
@@ -18,7 +19,11 @@ public class User {
         this.email = email;
     }
 
-    public UserResponse toResponse() {
-        return new UserResponse(id, userId, name, email);
+    public UserListResponse toListResponse() {
+        return new UserListResponse(id, userId, name, email);
+    }
+
+    public UserProfileResponse toProfileResponse() {
+        return new UserProfileResponse(name, email);
     }
 }
