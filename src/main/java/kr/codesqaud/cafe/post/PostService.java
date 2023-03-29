@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
+import kr.codesqaud.cafe.post.form.PostForm;
+
 @Service
 public class PostService {
 

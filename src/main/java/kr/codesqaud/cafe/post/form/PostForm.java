@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.post;
+package kr.codesqaud.cafe.post.form;
 
 public class PostForm {
 
