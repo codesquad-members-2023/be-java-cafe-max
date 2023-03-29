@@ -53,3 +53,28 @@
    - Thymeleaf의 `Layout`을 사용하여 공통된 부분을 관리할 수 있다.
 4. 알고리즘 문제 풀기 (1H) ✔️
 5. Spring 강의 듣기 (2H) ✔️
+
+## 3월 30일 목요일 학습 계획
+
+> 미션 순서에 따라 구현을 진행하면서 필요한 부분을 찾아 학습한다.
+
+1. 글 작성 기능 구현 (1H)   
+   `ArticleController`를 추가한다.
+   - [WebMVCConfigurer](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/servlet/config/annotation/WebMvcConfigurer.html#addCorsMappings-org.springframework.web.servlet.config.annotation.CorsRegistry-)  
+   Spring MVC의 `DispatcherServlet`은 전달받은 설정 파일을 바탕으로 스프링 컨테이너를 생성한다.  
+   설정 클래스에는 HandlerMapping의 bean과 HandlerAdapter의 bean이 등록되어 있어야 한다.  
+   `@EnableWebMvc`은 **RequestMappingHandlerMapping** 클래스와 **RequestMappingHandlerAdapter** 클래스를 포함한다.  
+   `@EnableWebMvc`을 사용하면 `@Controller`를 붙인 컨트롤러를 위한 설정을 생성한다.  
+   이 마저도 SpringBoot에서는 `@SpringBootApplication`이 갖고 있는 `@EnableAutoConfiguration`을 통해 자동화하고 있다.
+   스프링에서는 `@Enable~`로 적용되는 인프라 bean에 대해 추가적인 설정을 할 수 있도록 `~Configurer`로 끝나는 인터페이스를 제공하고 있다.  
+   이를 구현한 클래스를 만들어 bean으로 등록하면 `@Enable~` 전용 어노테이션을 처리하는 단계에서 설정용 bean을 활용해 인프라 bean의 설정을 마무리한다.  
+   `@EnableWebMvc`의 빈 설정자는 `WebMvcConfigurer`이며, 이를 구현한 클래스를 만들고 `@Configuration`을 붙여 bean으로 등록하면 된다.
+   - [redirect](https://ko.wikipedia.org/wiki/URL_%EB%A6%AC%EB%8B%A4%EC%9D%B4%EB%A0%89%EC%85%98)
+2. 글 목록 조회 기능 구현 (1H) 
+    - 글 목록은 메인 페이지로 사용한다.
+3. 게시글 상세보기 기능 구현 (1H) ️
+    - 글 목록에서 글의 제목을 클릭하면 해당하는 글의 상세 페이지로 이동한다.
+4. 회원 정보 수정 기능 구현 (1H) ️
+   - 수정된 값을 전송할 때 `PUT` 값을 `hidden`으로 전송힌디.
+5. 알고리즘 문제 풀기 (1H) 
+6. Spring 강의 듣기 (2H)
