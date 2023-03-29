@@ -82,7 +82,7 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{userId}/update")
-	public String showUserForm(Model model, @PathVariable Long userId, @Nullable @RequestParam boolean errors) {
+	public String showUserProfile(Model model, @PathVariable Long userId, @Nullable @RequestParam boolean errors) {
 		Optional<User> userOptional = usersRepository.findById(userId);
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
@@ -95,7 +95,7 @@ public class UserController {
 	}
 
 	@PutMapping("/users/{userId}/update")
-	public String setUserForm(UserForm userForm, @PathVariable Long userId, RedirectAttributes model) {
+	public String setUserProfile(UserForm userForm, @PathVariable Long userId, RedirectAttributes model) {
 		Optional<User> userOptional = usersRepository.findById(userId);
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
