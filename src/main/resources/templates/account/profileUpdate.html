@@ -13,7 +13,7 @@
             <div class="row g-0">
                 <div class="col-md-4">
                     <div class="row justify-content-center mt-2">
-                        <svg width="120" height="120" data-jdenticon-value="user127"></svg>
+                        <svg width="120" height="120" data-jdenticon-value="user127" th:data-jdenticon-value="${profileSettingForm.getNickname()}"></svg>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -21,7 +21,7 @@
                         <div class="input-group mb-3">
                             <span class="input-group-text col-5">Nickname</span>
                             <input id="nickname" type="text" class="form-control" aria-label="Sizing example input"
-                                   aria-describedby="nickname" th:value="${profileForm.nickname}" th:field="*{nickname}"
+                                   aria-describedby="nickname" th:value="${profileSettingForm.nickname}" th:field="*{nickname}"
                                    value="nickname">
                             <div class="invalid-feedback">
                                 닉네임을 정확히 입력해주세요(글자수 2~64)
@@ -30,7 +30,7 @@
                         <div class="input-group mb-3">
                             <span class="input-group-text col-5">Email</span>
                             <input id="email" type="email" class="form-control" aria-label="Sizing example input"
-                                   aria-describedby="email" th:value="${profileForm.email}" th:field="*{email}"
+                                   aria-describedby="email" th:value="${profileSettingForm.email}" th:field="*{email}"
                                    value="email">
                             <div class="invalid-feedback">
                                 이메일을 정확히 입력해주세요
