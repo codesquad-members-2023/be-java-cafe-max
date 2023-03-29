@@ -79,8 +79,11 @@ public class UserController {
 
 	@GetMapping("/users/{userId}/update")
 	public String showUserForm(Model model, @PathVariable Long userId, @Nullable @RequestParam boolean errors) {
-		Optional<UserForm> optionalUser = userService.findById(userId);
-		UserForm userForm = optionalUser.get();
+		Optional<User> userOptional = usersRepository.findById(userId);
+		if (userOptional.isEmpty()) {
+			return "redirect:/";
+		}
+		UserForm userForm = userService.mappingUserform(userOptional.get());
 		model.addAttribute("userId", userId);
 		model.addAttribute(userForm);
 		model.addAttribute("errors", errors);
