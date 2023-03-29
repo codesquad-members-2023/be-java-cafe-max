@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class UsersRepository {
 
 	private final List<User> usersRepository;
