@@ -18,7 +18,7 @@
 </div>
 <div class="container-fluid">
     <div class="row justify-content-center text-light-emphasis">
-        <div class="col-10 row " th:text="'전체 글 '+${members.size()}+'개'">
+        <div class="col-10 row " th:text="'전체 글 '+${users.size()}+'개'">
             전체 글 60개
         </div>
         <div class="text-success col-10 row mt-3">
@@ -43,12 +43,12 @@
         </div>
         <div class="row col-10">
             <ol class="justify-content-center" id="memberList">
-                <li class="row text-center" th:each="member : ${members}">
+                <li class="row text-center" th:each="usersForm : ${users}">
                     <div class="col-2 align-self-center">
-                        <a th:href="@{/users/{id}(id = ${member.id})}" th:text="${member.id}"></a>
+                        <a th:href="@{/users/{id}(id = ${usersForm.id})}" th:text="${usersForm.id}"></a>
                     </div>
-                    <div class="col-6 align-self-center" th:text="${member.email}"></div>
-                    <div class="col-2 align-self-center" th:text="${member.nickname}"></div>
+                    <div class="col-6 align-self-center" th:text="${usersForm.email}"></div>
+                    <div class="col-2 align-self-center" th:text="${usersForm.nickname}"></div>
                     <div class="col-2">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button class="btn btn-primary" type="submit"
