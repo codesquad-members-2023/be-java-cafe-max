@@ -1,17 +1,17 @@
 package kr.codesqaud.cafe.domain;
 
 public class User {
-    private String id;
+    private String userId;
     private String password;
     private String name;
     private String email;
 
     public String getUserId() {
-        return id;
+        return userId;
     }
 
     public void setUserId(String userId) {
-        this.id = userId;
+        this.userId = userId;
     }
 
     public String getPassword() {
