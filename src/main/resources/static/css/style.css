@@ -247,6 +247,11 @@ input:focus {
     justify-content: center;
 }
 
+.message {
+    text-align: center;
+    font-size: small;
+  }
+
 @media (max-width: 700px) {
     .menu-bar {
         display: flex;

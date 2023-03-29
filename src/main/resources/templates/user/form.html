@@ -3,17 +3,16 @@
     <head>
         <title>signUp form</title>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="../css/style.css">
-        <script src="../js/dataValidation.js"></script>
+        <link rel="stylesheet" href="../../static/css/style.css">
     </head>
     <body>
     <nav class="header">
         <div>
-            <a href="../index.html" class="home">HELLO!</a>
+            <a href="../../static/index.html" class="home">HELLO!</a>
         </div>
         <div class="menu">
             <button id="check" >
-                <span class="menu-bar"><img src="../images/menu-bar.png" width="20px"></span>
+                <span class="menu-bar"><img src="../../static/images/menu-bar.png" width="20px"></span>
             </button>
             <div class="bar">
                 <a href="memberList.html" class="head button" role="button">멤버리스트</a>
@@ -24,27 +23,23 @@
     </nav>
     <div class="keyword"><strong>회원가입</strong></div>
     <div class="form-box">
-        <form name="question" method="get" action="/user/create">
-            <div class="box">
-                <label for="userId">아이디</label>
-                <input type="text" id="userId" placeholder="User ID" autofocus onkeyup="verifyEmail()">
-            </div>
-            <div id="userIdMessage" class="message"></div>
+        <form name="question" method="post" action="/user/form">
             <div class="box">
                 <label for="email">이메일</label>
-                <input type="email" id="email" placeholder="Email" autofocus onkeyup="verifyEmail()"></div>
+                <input type="email" id="email" name="email" placeholder="Email" autofocus onkeyup="verifyEmail()"></div>
             <div id="emailMessage" class="message"></div>
             <div class="box">
                 <label for="nickname">닉네임</label>
-                <input type="text" id="nickname" placeholder="Nickname" onkeyup="verifyNickname()"></div>
+                <input type="text" id="nickname" name="nickname" placeholder="Nickname" onkeyup="verifyNickname()"></div>
             <div id="nicknameMessage" class="message"></div>
             <div class="box">
                 <label for="password">비밀번호</label>
-                <input type="password" id="password" placeholder="Password" onkeyup="verifyPassword()"></div>
+                <input type="password" id="password" name="password" placeholder="Password" onkeyup="verifyPassword()"></div>
             <div id="passwordMessage" class="message"></div>
             <button class="body button" onclick="validateData()">회원가입</button>
             <div id="allMessage" class="message"></div>
         </form>
     </div>
+    <script src="../../static/js/dataValidation.js"></script>
     </body>
 </html>
