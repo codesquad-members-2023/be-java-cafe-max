@@ -33,6 +33,22 @@
     * 토비의 스프링 부트
 * 운영체제 스터디 준비
 
+### 03. 29. 학습 계획
+
+* 게시글 생성 기능 구현하기
+    * `/quetion`으로 POST 요청이 들어오면 게시글을 생성
+* 게시글 목록 조회 기능 구현하기
+    * `/articles`로 GET 요청이 들어오면 `ArticleMemoryRepository`에 존재하는 모든 게시글 정보를 반환
+* 게시글 상세내용 조회 기능 구현하기
+    * `/articles/{aritcleId}`로 GET 요청이 들어오면 `ArticleMemoryRepository`에서 `articleId`를 키로 하는 `Article` 정보 반환
+    * `articleId`가 없는 경우 에러 페이지 반환하기
+* 회원 정보 수정 기능 구현하기
+    * `/users/{userId}/form`로 GET 요청이 들어오면 회원 정보 수정 폼 보여주기
+        * 이때 기존 회원 정보 보여주기
+    * `/users/{userId}`로 PUT 요청이 들어오면 회원 정보 수정하기
+* 인프런 강의 듣기 (토비의 스프링 부트)
+* 알고리즘 1개 풀기
+
 ## 학습내용
 
 <details>
