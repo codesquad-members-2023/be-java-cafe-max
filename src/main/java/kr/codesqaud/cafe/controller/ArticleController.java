@@ -24,11 +24,8 @@ public class ArticleController {
     }
     @PostMapping("/article/question")
     public String postQuestion(ArticleFormDto articleFormDto){
-        String writer = articleFormDto.getWriter();
-        String title = articleFormDto.getTitle();
-        String contents = articleFormDto.getContents();
-        ArticleDto articleDto = new ArticleDto(writer,title,contents);
-        articleService.questionWrite(articleDto);
+
+        articleService.questionWrite(articleFormDto);
         return "redirect:/";
     }
 
