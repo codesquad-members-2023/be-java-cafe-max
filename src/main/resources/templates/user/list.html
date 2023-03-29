@@ -63,7 +63,7 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a th:href="@{/}">Posts</a></li>
+                <li><a th:href="@{/}">Posts</a></li>
                 <li><a href="../user/login.html" role="button">로그인</a></li>
                 <li><a href="user/form.html" th:href="@{/users/join}" role="button">회원가입</a></li>
                 <li><a href="#" role="button">로그아웃</a></li>
@@ -86,7 +86,7 @@
                 <tr th:each="user, userStat : ${users}">
                     <th scope="row" th:text="${userStat.count}"></th>
                     <td th:text="${user.userId}"></td>
-                    <td th:text="${user.name}"></td>
+                    <td><a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.name}"></a></td>
                     <td th:text="${user.email}"></td>
                     <td><a href="#" class="btn btn-success" role="button">수정</a></td>
                 </tr>
