@@ -52,4 +52,14 @@ public class UserService {
 		Optional<User> optionalUser = usersRepository.findById(userId);
 		return optionalUser.map(user -> Objects.equals(user.getPassword(), password)).orElse(false);
 	}
+
+	public boolean checkPasswordByUserForm(UserForm userForm) {
+		Optional<User> optionalUser = usersRepository.findByEmail(userForm.getEmail());
+		return optionalUser.map(user -> Objects.equals(user.getPassword(), userForm.getPassword())).orElse(false);
+	}
+
+	public Optional<Long> findIdByEmail(String email) {
+		Optional<User> optionalUser = usersRepository.findByEmail(email);
+		return optionalUser.map(user -> user.getId());
+	}
 }
