@@ -14,13 +14,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/create")
+    @PostMapping("/register")
     public String register(User user) {
         userService.register(user);
-        return "redirect:";
+        return "redirect:list";
     }
 
-    @GetMapping("")
+    @GetMapping("/list")
     public String showUserList() {
         return "users/list";
     }
