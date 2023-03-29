@@ -1,11 +1,13 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.SignUpDTO;
+import kr.codesqaud.cafe.dto.UserDTO;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserRepository {
@@ -15,12 +17,15 @@ public class UserRepository {
         users = new ArrayList<>();
     }
 
-    public void save(User user) {
-        users.add(user);
+    public void save(SignUpDTO dto) {
+        int idx = users.size() + 1;
+        users.add(dto.convertToUser(idx));
     }
 
-    public List<User> findAll() {
-        return Collections.unmodifiableList(users);
+    public List<UserDTO> findAll() {
+        return users.stream()
+                .map(User::convertToDTO)
+                .collect(Collectors.toUnmodifiableList());
     }
 
 }

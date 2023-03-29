@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.SignUpDTO;
+import kr.codesqaud.cafe.dto.UserDTO;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,11 @@ public class UserService {
         this.repository = repository;
     }
 
-    public void addUser(User user) {
-        repository.save(user);
+    public void addUser(SignUpDTO dto) {
+        repository.save(dto);
     }
 
-    public List<User> findAllUsers() {
+    public List<UserDTO> findAllUsers() {
         return repository.findAll();
     }
 }

@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.SignUpDTO;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @PostMapping("")
-    public String userAdd(User user) {
-        service.addUser(user);
+    public String userAdd(SignUpDTO dto) {
+        service.addUser(dto);
         return "redirect:/users";
     }
 
