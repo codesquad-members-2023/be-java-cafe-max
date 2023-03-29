@@ -55,7 +55,7 @@ public class UserController {
 		return "account/join";
 	}
 
-	@PostMapping("/users")
+	@PostMapping("/users/join")
 	public String addUser(JoinForm joinForm) {
 		User user = userService.createNewUser(joinForm);
 		return "redirect:/users/" + user.getId();
