@@ -12,10 +12,12 @@ import org.springframework.stereotype.Repository;
 public class MemoryUserRepository implements UserRepository {
 
     private static final Map<String, User> USER_REPOSITORY = new HashMap<>();
+    private static long index = 0L;
 
     @Override
     public User save(User user) {
-        // TODO: 유효성 검증 로직 추가
+        // TODO: 유효성 검증 로직 추가 및 리턴 타입 변경 고려
+        user.setSequence(++index);
         USER_REPOSITORY.put(user.getUserId(), user);
         return user;
     }
