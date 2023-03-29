@@ -1,19 +1,17 @@
 package kr.codesqaud.cafe.domain;
 
 public class User {
-    private Long id;
+    private String userID;
     private String email;
     private String nickname;
     private String password;
 
-
-
-    public Long getId() {
-        return id;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getEmail() {
