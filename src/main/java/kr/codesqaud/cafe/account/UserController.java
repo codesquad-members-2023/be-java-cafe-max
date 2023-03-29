@@ -15,6 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.codesqaud.cafe.account.form.JoinForm;
 import kr.codesqaud.cafe.account.form.LoginForm;
+import kr.codesqaud.cafe.account.form.ProfileForm;
+import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.form.UsersForm;
 
 @Controller
@@ -30,7 +32,7 @@ public class UserController {
 
 	@GetMapping("/users/login")
 	public String showLoginPage(Model model, @Nullable @RequestParam boolean errors) {
-		model.addAttribute("loginForm",new LoginForm());
+		model.addAttribute("loginForm", new LoginForm());
 		model.addAttribute("errors", errors);
 		return "account/login";
 	}
@@ -52,7 +54,7 @@ public class UserController {
 
 	@GetMapping("/users/join")
 	public String showJoinPage(Model model) {
-		model.addAttribute("joinForm",new JoinForm());
+		model.addAttribute("joinForm", new JoinForm());
 		return "account/join";
 	}
 
@@ -87,9 +89,10 @@ public class UserController {
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
 		}
-		UserForm userForm = userOptional.get().mappingUserForm();
+		ProfileForm profileForm = userOptional.get().mappingProfileForm();
 		model.addAttribute("userId", userId);
-		model.addAttribute(userForm);
+		model.addAttribute(profileForm);
+		model.addAttribute("profileSettingForm",new ProfileSettingForm());
 		model.addAttribute("errors", errors);
 		return "account/profileUpdate";
 	}
