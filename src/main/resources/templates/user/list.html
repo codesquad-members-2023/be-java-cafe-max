@@ -22,9 +22,8 @@
               <tbody>
               {{#memberList}}
                 <tr onclick="location.href='/user/profile/{{index}}'">
-                   <th scope="row">{{index}}</th> <td>{{userId}}</td> <td>{{name}}</td> <td>{{email}}</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                   <th scope="row">{{index}}</th> <td>{{userId}}</td> <td>{{name}}</td> <td>{{email}}</td><td><a href="/user/update/{{index}}" class="btn btn-success" role="button">수정</a></td>
                 </tr>
-
                 {{/memberList}}
 
               </tbody>
