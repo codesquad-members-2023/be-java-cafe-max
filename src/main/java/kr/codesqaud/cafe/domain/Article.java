@@ -6,9 +6,9 @@ package kr.codesqaud.cafe.domain;
 public class Article {
 
     private long index;
-    private String author;
+    private String writer;
     private String title;
-    private String content;
+    private String contents;
 
     public long getIndex() {
         return index;
@@ -18,12 +18,12 @@ public class Article {
         this.index = index;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getWriter() {
+        return writer;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 
     public String getTitle() {
@@ -34,11 +34,11 @@ public class Article {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getContents() {
+        return contents;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 }
