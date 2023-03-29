@@ -13,8 +13,8 @@ public class GlobalExceptionHandler {
 		return "user/form";
 	}
 
-	@ExceptionHandler(UserNotFoundException.class)
-	public String handleUserNotFound(final UserNotFoundException e, final Model model) {
+	@ExceptionHandler(NotFoundException.class)
+	public String handleUserNotFound(final NotFoundException e, final Model model) {
 		model.addAttribute("error", e.getMessage());
 		return "user/notfound";
 	}

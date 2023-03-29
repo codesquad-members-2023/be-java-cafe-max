@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
 import kr.codesqaud.cafe.exception.DuplicatedUserIdException;
-import kr.codesqaud.cafe.exception.UserNotFoundException;
+import kr.codesqaud.cafe.exception.NotFoundException;
 import kr.codesqaud.cafe.repository.impl.UserMemoryRepository;
 
 class UserServiceTest {
@@ -73,7 +73,7 @@ class UserServiceTest {
 
 			// when & then
 			assertThatThrownBy(() -> userService.findByUserId(userId))
-				.isInstanceOf(UserNotFoundException.class);
+				.isInstanceOf(NotFoundException.class);
 		}
 	}
 }

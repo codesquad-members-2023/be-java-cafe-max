@@ -10,7 +10,7 @@ import kr.codesqaud.cafe.controller.dto.UserDto;
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
 import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.exception.DuplicatedUserIdException;
-import kr.codesqaud.cafe.exception.UserNotFoundException;
+import kr.codesqaud.cafe.exception.NotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 
 @Service
@@ -38,6 +38,6 @@ public class UserService {
 	public UserDto findByUserId(final String userId) {
 		return userRepository.findByUserId(userId)
 			.map(UserDto::from)
-			.orElseThrow(() -> new UserNotFoundException(userId.concat("는 존재하지 않는 아이디입니다.")));
+			.orElseThrow(() -> new NotFoundException(userId.concat("는 존재하지 않는 아이디입니다.")));
 	}
 }
