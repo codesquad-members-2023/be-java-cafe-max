@@ -24,7 +24,7 @@ class UserRepositoryTest {
         User savedUser = userRepository.save(user);
 
         // when
-        User findUser = userRepository.findByEmail(user.getEmail());
+        User findUser = userRepository.findByUserId(user.getUserId());
 
         // then
         assertThat(findUser).isEqualTo(savedUser);
