@@ -15,10 +15,19 @@ public class UserRepository {
 
     public void join(User user) {
         userRepository.add(user);
+        user.setUserId(userRepository.size());
     }
 
     public List<User> findAll() {
         return userRepository;
+    }
+
+    public User getUserByUserId(int userId){
+        for (User user: userRepository) {
+            if(user.getUserId() == userId)
+                return user;
+        }
+        return null;
     }
 
 }
