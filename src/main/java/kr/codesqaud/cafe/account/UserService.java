@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.account.form.JoinForm;
+import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.form.UsersForm;
 
 @Service
@@ -35,10 +36,10 @@ public class UserService {
 			.collect(Collectors.toList());
 	}
 
-	public void update(UserForm userForm, Long userId) {
+	public void update(ProfileSettingForm profileSettingForm, Long userId) {
 		User user = usersRepository.findById(userId).get();
-		user.setEmail(userForm.getEmail());
-		user.setNickname(userForm.getNickname());
+		user.setEmail(profileSettingForm.getEmail());
+		user.setNickname(profileSettingForm.getNickname());
 	}
 
 	public boolean checkPasswordByUserId(String password, Long userId) {

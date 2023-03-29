@@ -98,16 +98,16 @@ public class UserController {
 	}
 
 	@PutMapping("/users/{userId}/update")
-	public String setUserProfile(UserForm userForm, @PathVariable Long userId, RedirectAttributes model) {
+	public String setUserProfile(ProfileSettingForm profileSettingForm, @PathVariable Long userId, RedirectAttributes model) {
 		Optional<User> userOptional = usersRepository.findById(userId);
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
 		}
-		if (!userService.checkPasswordByUserId(userForm.getPassword(), userId)) {
+		if (!userService.checkPasswordByUserId(profileSettingForm.getPassword(), userId)) {
 			model.addAttribute("errors", true);
 			return "redirect:/users/" + userId + "/update";
 		}
-		userService.update(userForm, userId);
+		userService.update(profileSettingForm, userId);
 		return "redirect:/users/{userId}";
 	}
 }
