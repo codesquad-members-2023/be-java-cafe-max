@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe;
+package kr.codesqaud.cafe.user;
 
 import java.util.ArrayList;
 import java.util.List;

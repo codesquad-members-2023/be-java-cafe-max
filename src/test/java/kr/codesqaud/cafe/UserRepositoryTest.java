@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe;
 
+import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.user.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
