@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.SoftAssertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,17 +9,22 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
+import kr.codesqaud.cafe.controller.dto.req.ProfileEditRequest;
+import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.exception.DuplicatedUserIdException;
+import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import kr.codesqaud.cafe.repository.impl.UserMemoryRepository;
 
 class UserServiceTest {
 
 	private UserService userService;
+	private UserMemoryRepository userMemoryRepository;
 
 	@BeforeEach
 	void setUserRepository() {
-		this.userService = new UserService(new UserMemoryRepository());
+		userMemoryRepository = new UserMemoryRepository();
+		this.userService = new UserService(userMemoryRepository);
 	}
 
 	@DisplayName("회원가입을 수행할 때 ")
@@ -74,6 +80,65 @@ class UserServiceTest {
 			// when & then
 			assertThatThrownBy(() -> userService.findByUserId(userId))
 				.isInstanceOf(NotFoundException.class);
+		}
+	}
+
+	@DisplayName("회원정보를 수정할 때")
+	@Nested
+	class ProfileEditTest {
+
+		@DisplayName("수정 정보가 주어지면 회원정보 수정에 성공한다.")
+		@Test
+		void givenProfileEditRequest_whenEditProfile_thenReturnsNothing() {
+			// given
+			userService.join(new JoinRequest("bruni", "qwer1234", "브루니", "bruni@codeSquad.com"));
+			ProfileEditRequest request = new ProfileEditRequest("qwer1234",
+				"newPassword",
+				"브으루우니이",
+				"bbruunii@codeSquad.com");
+
+			// when & then
+			assertSoftly(softAssertions -> {
+				softAssertions.assertThatCode(() -> userService.editUserProfile("bruni", request))
+					.doesNotThrowAnyException();
+				User updatedUser = userMemoryRepository.findByUserId("bruni").get();
+				softAssertions.assertThat(updatedUser.getName()).isEqualTo("브으루우니이");
+				softAssertions.assertThat(updatedUser.getEmail()).isEqualTo("bbruunii@codeSquad.com");
+
+				// 비밀번호 변경에 성공했다면 수정된 비밀번호로 회원정보 수정 가능
+				softAssertions.assertThatCode(() -> userService.editUserProfile("bruni",
+						new ProfileEditRequest("newPassword", "new", "브루니", "bruni@codeSquad.com")))
+					.doesNotThrowAnyException();
+			});
+		}
+
+		@DisplayName("존재하지 않는 유저 아이디가 주어지면 예외를 던진다.")
+		@Test
+		void givenNotExistsUserId_whenEditProfile_thenThrowsException() {
+			// given
+			ProfileEditRequest request = new ProfileEditRequest("qwer1234",
+				"newPassword",
+				"브으루우니이",
+				"bbruunii@codeSquad.com");
+
+			// when & then
+			assertThatThrownBy(() -> userService.editUserProfile("notExists", request))
+				.isInstanceOf(NotFoundException.class);
+		}
+
+		@DisplayName("기존 비밀번호와 일치하지 않는 수정 정보가 주어지면 예외를 던진다.")
+		@Test
+		void givenWrongOriPassword_whenEditProfile_thenThrowsException() {
+			// given
+			userService.join(new JoinRequest("bruni", "qwer1234", "브루니", "bruni@codeSquad.com"));
+			ProfileEditRequest request = new ProfileEditRequest("wrong",
+				"newPassword",
+				"브으루우니이",
+				"bbruunii@codeSquad.com");
+
+			// when & then
+			assertThatThrownBy(() -> userService.editUserProfile("bruni", request))
+				.isInstanceOf(InvalidPasswordException.class);
 		}
 	}
 }
