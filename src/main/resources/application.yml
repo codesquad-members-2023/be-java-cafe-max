@@ -1,0 +1,11 @@
+# Thymeleaf 템플릿 엔진 설정
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
+server:
+  port: 8081
+
+
