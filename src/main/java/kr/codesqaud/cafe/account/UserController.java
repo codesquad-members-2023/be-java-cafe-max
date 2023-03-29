@@ -17,9 +17,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserController {
 
 	private final UserService userService;
+	private final UsersRepository usersRepository;
 
-	public UserController(UserService userService) {
+	public UserController(UserService userService, UsersRepository usersRepository) {
 		this.userService = userService;
+		this.usersRepository = usersRepository;
 	}
 
 	@GetMapping("/users/login")
@@ -31,17 +33,17 @@ public class UserController {
 
 	@PostMapping("/users/login")
 	public String login(UserForm userForm, RedirectAttributes model) {
-		Optional<UserForm> userOptional = userService.findByEmail(userForm.getEmail());
+		Optional<User> userOptional = usersRepository.findByEmail(userForm.getEmail());
 		if (userOptional.isEmpty()) {
 			model.addAttribute("errors", true);
 			return "redirect:/users/login";
 		}
-		UserForm user = userOptional.get();
-		if (userService.checkPasswordByUserForm(user)) {
+		User user = userOptional.get();
+		if (user.getPassword().equals(userForm.getPassword())) {
 			model.addAttribute("errors", true);
 			return "redirect:/users/login";
 		}
-		return "redirect:/users/" + userService.findIdByEmail(user.getEmail());
+		return "redirect:/users/" + user.getId();
 	}
 
 	@GetMapping("/users/join")
@@ -58,16 +60,16 @@ public class UserController {
 
 	@GetMapping("/users")
 	public String showUsers(Model model) {
-		List<UserForm> members = userService.getAllMembers();
-		model.addAttribute("members", members);
+		List<UserForm> allUsersForm = userService.getAllUsersForm();
+		model.addAttribute("members", allUsersForm);
 		return "account/members";
 	}
 
 	@GetMapping("/users/{userId}")
 	public String showUser(Model model, @PathVariable Long userId) {
 		Optional<UserForm> optionalUser = userService.findById(userId);
-		UserForm user = optionalUser.get();
-		model.addAttribute("user", user);
+		UserForm userForm = optionalUser.get();
+		model.addAttribute("user", userForm);
 		model.addAttribute("userId", userId);
 		return "account/profile";
 	}
