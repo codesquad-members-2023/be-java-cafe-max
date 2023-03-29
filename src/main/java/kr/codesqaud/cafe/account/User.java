@@ -49,13 +49,6 @@ public class User {
 		this.password = password;
 	}
 
-	public UserForm mappingUserForm() {
-		UserForm userForm = new UserForm();
-		userForm.setNickname(getNickname());
-		userForm.setEmail(getEmail());
-		return userForm;
-	}
-
 	public UsersForm mappingUsersForm() {
 		UsersForm usersForm = new UsersForm();
 		usersForm.setId(getId());
