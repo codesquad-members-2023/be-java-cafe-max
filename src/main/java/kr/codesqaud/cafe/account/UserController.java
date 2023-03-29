@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.codesqaud.cafe.account.form.JoinForm;
 import kr.codesqaud.cafe.account.form.LoginForm;
+import kr.codesqaud.cafe.account.form.UsersForm;
 
 @Controller
 public class UserController {
@@ -63,8 +64,8 @@ public class UserController {
 
 	@GetMapping("/users")
 	public String showUsers(Model model) {
-		List<UserForm> allUsersForm = userService.getAllUsersForm();
-		model.addAttribute("members", allUsersForm);
+		List<UsersForm> allUsersForm = userService.getAllUsersForm();
+		model.addAttribute("users", allUsersForm);
 		return "account/members";
 	}
 

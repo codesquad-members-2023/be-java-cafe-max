@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.account.form.JoinForm;
+import kr.codesqaud.cafe.account.form.UsersForm;
 
 @Service
 public class UserService {
@@ -27,10 +28,10 @@ public class UserService {
 		return user;
 	}
 
-	public List<UserForm> getAllUsersForm() {
+	public List<UsersForm> getAllUsersForm() {
 		List<User> allMembers = usersRepository.getAllMembers();
 		return allMembers.stream()
-			.map(User::mappingUserForm)
+			.map(User::mappingUsersForm)
 			.collect(Collectors.toList());
 	}
 
