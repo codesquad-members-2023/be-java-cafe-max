@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RepositoryConfig {
+
     @Bean
     public UserRepository userRepository() {
         return new MemoryUserRepository();
