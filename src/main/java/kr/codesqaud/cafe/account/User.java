@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.account;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import kr.codesqaud.cafe.account.form.UsersForm;
+
 public class User {
 
 	private static final AtomicLong number = new AtomicLong();
@@ -51,5 +53,13 @@ public class User {
 		userForm.setNickname(getNickname());
 		userForm.setEmail(getEmail());
 		return userForm;
+	}
+
+	public UsersForm mappingUsersForm() {
+		UsersForm usersForm = new UsersForm();
+		usersForm.setId(getId());
+		usersForm.setEmail(getEmail());
+		usersForm.setNickname(getNickname());
+		return usersForm;
 	}
 }
