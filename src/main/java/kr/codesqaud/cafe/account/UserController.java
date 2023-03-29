@@ -67,9 +67,12 @@ public class UserController {
 
 	@GetMapping("/users/{userId}")
 	public String showUser(Model model, @PathVariable Long userId) {
-		Optional<UserForm> optionalUser = userService.findById(userId);
-		UserForm userForm = optionalUser.get();
-		model.addAttribute("user", userForm);
+		Optional<User> userOptional = usersRepository.findById(userId);
+		if (userOptional.isEmpty()) {
+			return "redirect:/";
+		}
+		UserForm userForm = userService.mappingUserform(userOptional.get());
+		model.addAttribute("userForm", userForm);
 		model.addAttribute("userId", userId);
 		return "account/profile";
 	}

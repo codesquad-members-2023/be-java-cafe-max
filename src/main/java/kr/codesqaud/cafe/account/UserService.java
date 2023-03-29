@@ -30,7 +30,7 @@ public class UserService {
 		return userOptional.map(User::mappingUserForm);
 	}
 
-	public List<UserForm> getAllMembers() {
+	public List<UserForm> getAllUsersForm() {
 		List<User> allMembers = usersRepository.getAllMembers();
 		return allMembers.stream()
 			.map(User::mappingUserForm)
@@ -61,5 +61,9 @@ public class UserService {
 	public Optional<Long> findIdByEmail(String email) {
 		Optional<User> optionalUser = usersRepository.findByEmail(email);
 		return optionalUser.map(user -> user.getId());
+	}
+
+	public UserForm mappingUserform(User user) {
+		return user.mappingUserForm();
 	}
 }
