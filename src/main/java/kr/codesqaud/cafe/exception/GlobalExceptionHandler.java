@@ -18,4 +18,10 @@ public class GlobalExceptionHandler {
 		model.addAttribute("error", e.getMessage());
 		return "user/notfound";
 	}
+
+	@ExceptionHandler(InvalidPasswordException.class)
+	public String handleInvalidPassword(final InvalidPasswordException e, final Model model) {
+		model.addAttribute("error", e.getMessage());
+		return "user/edit_form";
+	}
 }
