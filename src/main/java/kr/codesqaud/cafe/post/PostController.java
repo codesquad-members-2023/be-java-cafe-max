@@ -34,6 +34,9 @@ public class PostController {
 	@GetMapping("/post/{postId}")
 	public String showPostPage(Model model, @PathVariable Long postId) {
 		Optional<Post> optionalPost = postsRepository.findById(postId);
+		if (optionalPost.isEmpty()){
+			return "redirect:/";
+		}
 		Post post = optionalPost.get();
 		model.addAttribute(post);
 		return "/post/postDetail";
