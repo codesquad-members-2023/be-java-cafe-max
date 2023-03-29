@@ -89,10 +89,9 @@ public class UserController {
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
 		}
-		ProfileForm profileForm = userOptional.get().mappingProfileForm();
+		ProfileSettingForm profileSettingForm = userOptional.get().mappingProfileSettingFormWithPassword();
 		model.addAttribute("userId", userId);
-		model.addAttribute(profileForm);
-		model.addAttribute("profileSettingForm", new ProfileSettingForm());
+		model.addAttribute("profileSettingForm", profileSettingForm);
 		model.addAttribute("errors", errors);
 		return "account/profileUpdate";
 	}
