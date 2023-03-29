@@ -36,4 +36,10 @@ public class UserController {
 		model.addAttribute("user", userService.findByUserId(userId));
 		return "user/profile";
 	}
+
+	@GetMapping("/users/{userId}/form")
+	public String showProfileEditPage(@PathVariable final String userId, final Model model) {
+		model.addAttribute("userId", userId);
+		return "user/edit_form";
+	}
 }
