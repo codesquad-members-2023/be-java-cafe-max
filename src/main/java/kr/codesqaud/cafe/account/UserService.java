@@ -25,21 +25,11 @@ public class UserService {
 		return user;
 	}
 
-	public Optional<UserForm> findByEmail(String email) {
-		Optional<User> userOptional = usersRepository.findByEmail(email);
-		return userOptional.map(User::mappingUserForm);
-	}
-
 	public List<UserForm> getAllUsersForm() {
 		List<User> allMembers = usersRepository.getAllMembers();
 		return allMembers.stream()
 			.map(User::mappingUserForm)
 			.collect(Collectors.toList());
-	}
-
-	public Optional<UserForm> findById(Long userId) {
-		Optional<User> userOptional = usersRepository.findById(userId);
-		return userOptional.map(User::mappingUserForm);
 	}
 
 	public void update(UserForm userForm, Long userId) {
@@ -51,16 +41,6 @@ public class UserService {
 	public boolean checkPasswordByUserId(String password, Long userId) {
 		Optional<User> optionalUser = usersRepository.findById(userId);
 		return optionalUser.map(user -> Objects.equals(user.getPassword(), password)).orElse(false);
-	}
-
-	public boolean checkPasswordByUserForm(UserForm userForm) {
-		Optional<User> optionalUser = usersRepository.findByEmail(userForm.getEmail());
-		return optionalUser.map(user -> Objects.equals(user.getPassword(), userForm.getPassword())).orElse(false);
-	}
-
-	public Optional<Long> findIdByEmail(String email) {
-		Optional<User> optionalUser = usersRepository.findByEmail(email);
-		return optionalUser.map(user -> user.getId());
 	}
 
 	public UserForm mappingUserform(User user) {
