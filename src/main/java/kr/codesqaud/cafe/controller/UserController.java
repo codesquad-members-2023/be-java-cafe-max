@@ -54,6 +54,13 @@ public class UserController {
         return "/user/profile";
     }
 
+    @GetMapping("/update/{index}")
+    public String getUpdateForm(@PathVariable("index")int index, Model model){
+        List<UserDto> list =  userService.getList();
+        model.addAttribute("user",list.get(index));
+        return "/user/update_form";
+    }
+
 
 }
 
