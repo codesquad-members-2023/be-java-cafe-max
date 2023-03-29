@@ -19,11 +19,6 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@GetMapping("/user/create")
-	public String showJoinForm() {
-		return "user/form";
-	}
-
 	@PostMapping("/user/create")
 	public String join(@ModelAttribute final JoinRequest request) {
 		userService.join(request);
