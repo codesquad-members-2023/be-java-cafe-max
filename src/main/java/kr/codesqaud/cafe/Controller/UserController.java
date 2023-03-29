@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.Controller;
 
+import kr.codesqaud.cafe.Dto.UserFormDto;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String createUser(UserForm userForm) {
+    public String createUser(UserFormDto userForm) {
         userService.join(new User(userForm.getUserId(), userForm.getPassword(), userForm.getName(), userForm.getEmail()));
         return "redirect:/users";
     }

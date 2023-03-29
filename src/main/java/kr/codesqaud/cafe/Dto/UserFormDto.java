@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.Controller;
+package kr.codesqaud.cafe.Dto;
 
-public class UserForm {
+public class UserFormDto {
     private String userId;
     private String password;
     private String name;
