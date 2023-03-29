@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.account;
 
-import java.util.Objects;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.lang.Nullable;
@@ -16,7 +16,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class UserController {
 
-	private final UsersRepository usersRepository = new UsersRepository();
+	private final UserService userService;
+
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
 	@GetMapping("/users/login")
 	public String showLoginPage(Model model, @Nullable @RequestParam boolean errors) {
@@ -27,17 +31,17 @@ public class UserController {
 
 	@PostMapping("/users/login")
 	public String login(UserForm userForm, RedirectAttributes model) {
-		Optional<User> userOptional = usersRepository.findByEmail(userForm.getEmail());
+		Optional<UserForm> userOptional = userService.findByEmail(userForm.getEmail());
 		if (userOptional.isEmpty()) {
 			model.addAttribute("errors", true);
 			return "redirect:/users/login";
 		}
-		User user = userOptional.get();
-		if (!Objects.equals(user.getPassword(), userForm.getPassword())) {
+		UserForm user = userOptional.get();
+		if (userService.checkPasswordByUserForm(user)) {
 			model.addAttribute("errors", true);
 			return "redirect:/users/login";
 		}
-		return "redirect:/users/" + user.getId();
+		return "redirect:/users/" + userService.findIdByEmail(user.getEmail());
 	}
 
 	@GetMapping("/users/join")
@@ -48,36 +52,30 @@ public class UserController {
 
 	@PostMapping("/users")
 	public String addUser(UserForm userForm) {
-		User user = new User(User.createNewId());
-		user.setNickname(userForm.getNickname());
-		user.setEmail(userForm.getEmail());
-		user.setPassword(userForm.getPassword());
-
-		usersRepository.add(user);
+		User user = userService.createNewUser(userForm);
 		return "redirect:/users/" + user.getId();
 	}
 
 	@GetMapping("/users")
 	public String showUsers(Model model) {
-		model.addAttribute("members", usersRepository.getAllMembers());
+		List<UserForm> members = userService.getAllMembers();
+		model.addAttribute("members", members);
 		return "account/members";
 	}
 
 	@GetMapping("/users/{userId}")
 	public String showUser(Model model, @PathVariable Long userId) {
-		Optional<User> optionalUser = usersRepository.findById(userId);
-		User user = optionalUser.get();
+		Optional<UserForm> optionalUser = userService.findById(userId);
+		UserForm user = optionalUser.get();
 		model.addAttribute("user", user);
+		model.addAttribute("userId", userId);
 		return "account/profile";
 	}
 
 	@GetMapping("/users/{userId}/update")
 	public String showUserForm(Model model, @PathVariable Long userId, @Nullable @RequestParam boolean errors) {
-		Optional<User> optionalUser = usersRepository.findById(userId);
-		User user = optionalUser.get();
-		UserForm userForm = new UserForm();
-		userForm.setNickname(user.getNickname());
-		userForm.setEmail(user.getEmail());
+		Optional<UserForm> optionalUser = userService.findById(userId);
+		UserForm userForm = optionalUser.get();
 		model.addAttribute("userId", userId);
 		model.addAttribute(userForm);
 		model.addAttribute("errors", errors);
@@ -86,14 +84,11 @@ public class UserController {
 
 	@PutMapping("/users/{userId}/update")
 	public String setUserForm(UserForm userForm, @PathVariable Long userId, RedirectAttributes model) {
-		Optional<User> optionalUser = usersRepository.findById(userId);
-		User user = optionalUser.get();
-		if (!user.getPassword().equals(userForm.getPassword())) {
+		if (!userService.checkPasswordByUserId(userForm.getPassword(), userId)) {
 			model.addAttribute("errors", true);
 			return "redirect:/users/" + userId + "/update";
 		}
-		user.setEmail(userForm.getEmail());
-		user.setNickname(userForm.getNickname());
+		userService.update(userForm, userId);
 		return "redirect:/users/{userId}";
 	}
 }
