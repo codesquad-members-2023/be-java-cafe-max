@@ -3,13 +3,13 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>signUp</title>
+    <title>login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="/css/reset.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="https://github.com/aFarkas/html5shiv/blob/master/dist/html5shiv.min.js"></script>
     <![endif]-->
-    <link href="/css/user/form.css" rel="stylesheet">
+    <link href="/css/user/login.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -17,17 +17,9 @@
 
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">회원가입</p>
+            <p class="title">로그인</p>
         </header>
-        <form name="question" class="info-container" method="post" action="/user/join">
-            <div class="form-group">
-                <label for="name">이름</label>
-                <input class="form-control" id="name" name="name" placeholder="이름을 입력하세요">
-            </div>
-            <div class="form-group">
-                <label for="userId">닉네임</label>
-                <input class="form-control" id="userId" name="userId" placeholder="닉네입을 입력하세요">
-            </div>
+        <form name="question" class="info-container" method="post" action="/users">
             <div class="form-group">
                 <label for="email">이메일</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
