@@ -33,4 +33,13 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @GetMapping("/users")
+    public String list(Model model) {
+        List<User> users = userService.findUsers();
+        // TODO: @ModelAttribute <- users 저장
+        model.addAttribute("users", users);
+        return "user/list";
+        // gradle -> 타임리프가 이걸 해줌
+        // "templates/" + "user/list" + ".html"
+    }
 }
