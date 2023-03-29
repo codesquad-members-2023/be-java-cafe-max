@@ -15,7 +15,7 @@ public class PostService {
 		this.postsRepository = postsRepository;
 	}
 
-	public void createNewPost(PostForm postForm) {
+	public Post createNewPost(PostForm postForm) {
 		long newId = Post.createNewId();
 		Post post = new Post(newId);
 		post.setNickname(postForm.getNickname());
@@ -23,5 +23,6 @@ public class PostService {
 		post.setTextContent(postForm.getTextContent());
 		post.setCreatedDateTime(LocalDateTime.now());
 		postsRepository.add(post);
+		return post;
 	}
 }
