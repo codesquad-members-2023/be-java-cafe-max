@@ -2,20 +2,20 @@ package kr.codesqaud.cafe.domain;
 
 public class User {
 
-    private Long id;
+    private Long userId;
     private String password;
     private String name;
     private String email;
 
-    public User(Long id, String password, String name, String email) {
-        this.id = id;
+    public User(Long userId, String password, String name, String email) {
+        this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
     public String getPassword() {
