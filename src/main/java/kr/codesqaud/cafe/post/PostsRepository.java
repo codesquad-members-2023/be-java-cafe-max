@@ -6,8 +6,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public class PostsRepository {
 
 	private final List<Post> usersRepository;
