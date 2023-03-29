@@ -23,6 +23,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/join")
+    public String showJoinForm() {
+        return "user/form";
+    }
+
     @PostMapping("")
     public String registerUser(UserRequestDto userRequestDto) {
         userService.join(userRequestDto.toEntity());
