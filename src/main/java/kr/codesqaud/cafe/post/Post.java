@@ -19,7 +19,6 @@ public class Post {
 		this.id = id;
 	}
 
-
 	public static long createNewId() {
 		return postId.getAndIncrement();
 	}

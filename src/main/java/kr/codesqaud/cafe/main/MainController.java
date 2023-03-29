@@ -21,7 +21,7 @@ public class MainController {
 	@GetMapping("/")
 	public String showMainPage(Model model) {
 		List<Post> posts = postsRepository.getAllPosts();
-		model.addAttribute("posts",posts);
+		model.addAttribute("posts", posts);
 		return "index";
 	}
 

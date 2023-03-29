@@ -5,6 +5,7 @@ public class UserForm {
 	private String nickname;
 	private String email;
 	private String password;
+
 	public UserForm() {
 	}
 

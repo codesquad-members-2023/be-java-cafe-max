@@ -14,12 +14,12 @@ public class User {
 		this.id = id;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
 	public static long createNewId() {
 		return number.getAndIncrement();
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public String getNickname() {
