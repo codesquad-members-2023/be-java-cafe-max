@@ -1,8 +1,20 @@
 package kr.codesqaud.cafe.account.form;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class JoinForm {
+	@NotNull
+	@Size(max = 64,min = 2)
 	private String nickname;
+	@NotNull
+	@Email
 	private String email;
+	@NotNull
+	@Size(max = 32, min = 2)
+	@Pattern(regexp = "^(.*[a-z]+.*[1-9]+.*)|(.*[1-9]+.*[a-z]+.*)$")
 	private String password;
 
 	public String getNickname() {

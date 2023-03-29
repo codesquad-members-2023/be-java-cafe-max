@@ -40,6 +40,13 @@
             </div>
         </div>
     </div>
+    <div class="row justify-content-center mb-5">
+        <div class="col-3">
+            <div th:if="${error != null}" class="alert alert-danger" role="alert">
+                잘못 입력했습니다.
+            </div>
+        </div>
+    </div>
     <div class="row justify-content-center mb-3">
         <div class="d-grid col-3">
             <button type="submit" class="btn btn-primary text-center" id="join">회원가입</button>
@@ -48,53 +55,53 @@
 </form>
 
 </body>
-<script>
-    function validationEmail() {
-        const email = document.querySelector("#email");
-        if (!email.checkValidity()) {
-            email.className = 'form-control is-invalid';
-            return false;
-        }
-        email.className = 'form-control is-valid';
-        return true;
-    }
+<!--<script>-->
+<!--    function validationEmail() {-->
+<!--        const email = document.querySelector("#email");-->
+<!--        if (!email.checkValidity()) {-->
+<!--            email.className = 'form-control is-invalid';-->
+<!--            return false;-->
+<!--        }-->
+<!--        email.className = 'form-control is-valid';-->
+<!--        return true;-->
+<!--    }-->
 
-    function validationNickname() {
-        const nickname = document.querySelector("#nickname");
-        if (!nickname.checkValidity() || nickname.value.length < 2 || nickname.value.length > 64) {
-            nickname.className = 'form-control is-invalid';
-            return false;
-        }
-        nickname.className = 'form-control is-valid';
-        return true;
-    }
+<!--    function validationNickname() {-->
+<!--        const nickname = document.querySelector("#nickname");-->
+<!--        if (!nickname.checkValidity() || nickname.value.length < 2 || nickname.value.length > 64) {-->
+<!--            nickname.className = 'form-control is-invalid';-->
+<!--            return false;-->
+<!--        }-->
+<!--        nickname.className = 'form-control is-valid';-->
+<!--        return true;-->
+<!--    }-->
 
-    function validationPassword() {
-        const password = document.querySelector("#password");
-        const regex = new RegExp('(.*[a-z]+.*[1-9]+.*)|(.*[1-9]+.*[a-z]+.*)')
-        if (!password.checkValidity() || password.value.length < 8 || password.value.length > 32 || !password.value.match(regex)) {
-            password.className = 'form-control is-invalid';
-            return false;
-        }
-        password.className = 'form-control is-valid';
-        return true;
-    }
-
-
-    function validationJoinForm(event) {
-
-        let isValidateEmail = validationEmail();
-        let isValidatePassword = validationPassword();
-        let isValidateNickname = validationNickname();
-
-        if (!isValidateEmail || !isValidatePassword || !isValidateNickname) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-    }
+<!--    function validationPassword() {-->
+<!--        const password = document.querySelector("#password");-->
+<!--        const regex = new RegExp('(.*[a-z]+.*[1-9]+.*)|(.*[1-9]+.*[a-z]+.*)')-->
+<!--        if (!password.checkValidity() || password.value.length < 8 || password.value.length > 32 || !password.value.match(regex)) {-->
+<!--            password.className = 'form-control is-invalid';-->
+<!--            return false;-->
+<!--        }-->
+<!--        password.className = 'form-control is-valid';-->
+<!--        return true;-->
+<!--    }-->
 
 
-    const form = document.querySelector("#joinForm");
-    form.addEventListener('submit', validationJoinForm, false);
-</script>
+<!--    function validationJoinForm(event) {-->
+
+<!--        let isValidateEmail = validationEmail();-->
+<!--        let isValidatePassword = validationPassword();-->
+<!--        let isValidateNickname = validationNickname();-->
+
+<!--        if (!isValidateEmail || !isValidatePassword || !isValidateNickname) {-->
+<!--            event.preventDefault();-->
+<!--            event.stopPropagation();-->
+<!--        }-->
+<!--    }-->
+
+
+<!--    const form = document.querySelector("#joinForm");-->
+<!--    form.addEventListener('submit', validationJoinForm, false);-->
+<!--</script>-->
 </html>
