@@ -17,7 +17,7 @@
         </div>
     </div>
 </div>
-<form th:object="${userForm}" th:action="@{/users/login}" th:id="loginForm" method="post" novalidate>
+<form th:object="${loginForm}" th:action="@{/users/login}" th:id="loginForm" method="post" novalidate>
     <div class="row justify-content-center mb-3">
         <div class="col-3">
             <label for="email" class="form-label">이메일</label>
@@ -84,7 +84,6 @@
             event.stopPropagation();
         }
     }
-
 
     const form = document.querySelector("#loginForm");
     form.addEventListener('submit', validationJoinForm, false);

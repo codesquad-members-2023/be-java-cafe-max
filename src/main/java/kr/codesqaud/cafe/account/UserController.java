@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.codesqaud.cafe.account.form.LoginForm;
+
 @Controller
 public class UserController {
 
@@ -26,20 +28,20 @@ public class UserController {
 
 	@GetMapping("/users/login")
 	public String showLoginPage(Model model, @Nullable @RequestParam boolean errors) {
-		model.addAttribute(new UserForm());
+		model.addAttribute("loginForm",new LoginForm());
 		model.addAttribute("errors", errors);
 		return "account/login";
 	}
 
 	@PostMapping("/users/login")
-	public String login(UserForm userForm, RedirectAttributes model) {
-		Optional<User> userOptional = usersRepository.findByEmail(userForm.getEmail());
+	public String login(LoginForm loginForm, RedirectAttributes model) {
+		Optional<User> userOptional = usersRepository.findByEmail(loginForm.getEmail());
 		if (userOptional.isEmpty()) {
 			model.addAttribute("errors", true);
 			return "redirect:/users/login";
 		}
 		User user = userOptional.get();
-		if (user.getPassword().equals(userForm.getPassword())) {
+		if (user.getPassword().equals(loginForm.getPassword())) {
 			model.addAttribute("errors", true);
 			return "redirect:/users/login";
 		}
