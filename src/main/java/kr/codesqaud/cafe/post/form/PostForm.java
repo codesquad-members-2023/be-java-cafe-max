@@ -1,11 +1,18 @@
 package kr.codesqaud.cafe.post.form;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class PostForm {
-
+	@NotNull
+	@NotBlank
 	private String nickname;
-
+	@NotNull
+	@NotBlank
 	private String title;
-
+	@NotNull
+	@Size(max = 1000, min = 3)
 	private String textContent;
 
 	public String getNickname() {
