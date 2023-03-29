@@ -5,21 +5,29 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 
-import java.util.List;
+import java.util.*;
 
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
-    private static List<Article> storage = new ArrayList<>();
+    private static Map<Long, Article> storage = new HashMap<>();
+
+    private static long sequence = 0L;
 
 
     public void save(Article article){
-        storage.add(article);
+        article.setId(++sequence);
+        storage.put(article.getId(), article);
     }
 
     public List<Article> findAll(){
-        return storage;
+        return new ArrayList<>(storage.values());
+    }
+
+
+    public Article findByID(Long index){
+        return storage.get(index);
     }
 
 }

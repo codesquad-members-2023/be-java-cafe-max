@@ -14,6 +14,16 @@ public class Article {
 
     LocalDateTime  time;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    long id;
+
     public Article(String author, String title, String contents) {
         this.author = author;
         this.title = title;
