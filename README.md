@@ -4,6 +4,7 @@
 ## 부족한 점
 - Spring Mvc는 대충 사용은 할수 있는데 왜 이렇게 사용할 수 있는지 아직 잘 몰라서 공식문서를 공부하면서 더 알아봐야 합니다.
 - 커밋 메시지와 네이밍은 아직 힘들어요.
+- 에러를 어떻게 던져야 하는지 아직 잘 모르겠어요.
 
 ## 아쉬운 점
 - 전체 로직 실제 로직 조금 차이가 있어서 조금 아쉽다. 시간이 되면 Spring Security도 한번 적용하고 싶습니다.
@@ -19,6 +20,23 @@
 - Spring MVC
 - Spring Validation
 - Thymeleaf
+
+## URL Convention
+
+| url                    | method | 기능                    |
+|------------------------|--------|-----------------------|
+| /users/login           | get    | 로그인 페이지 요청            |
+| /users/login           | post   | 로그인 요청                |
+| /users/join            | get    | 회원 가입 페이지 요청          |
+| /users/join            | post   | 회원 가입 요청              |
+| /users/{userId}        | get    | 회원 프로필 페이지 요청         |
+| /users/{userId}/update | get    | 회원 프로필 설정 페이지 요청      |
+| /users/{userId}/update | put    | 회월 프로필 설정 요청          |
+| /users                 | get    | 모든 회원 맴버 페이지 요청       |
+| /post                  | get    | 게시글 작성 페이지 요청         |
+| /post                  | post   | 게시글 추가 요청             |
+| /                      | get    | 모든 게스글 표시되는 메인 페이지 요청 |                    
+| /post/{postId}         | get    | 게시글의 페이지 요청           |
 
 ## 구현 결과
 ### 로그인 페이지
@@ -36,11 +54,13 @@
     - validation으로 JoinForm에서 확인
 - 중복 이메일인 확인 기능
     - repository에서 이메일을 찾고 확인 
+  
 ![join](https://user-images.githubusercontent.com/99056666/228843592-91a6ebab-da67-458a-8da7-fc97428e26ec.gif)
 
 ### 회원 프로필 페이지
 - 수정 버튼
     - 회원 수정페이지로 이동 
+  
 ![profile](https://user-images.githubusercontent.com/99056666/228843600-94a0939c-3a06-47ad-b1bc-6ee947a91611.gif)
 
 ### 회원 프로필 수정 페이지
