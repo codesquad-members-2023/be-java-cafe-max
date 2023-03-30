@@ -13,12 +13,12 @@
             <div class="board_list">
                 <ul class="line_list">
                     {{#articles}}
-                        <li>
+                        <li class="list_hover">
                             <div class="write-list">
                                 <div class="article-index">{{index}}</div>
                                 <div class="column">
                                     <strong class="article-title">
-                                        <a href="./qna/show.html">{{title}}</a>
+                                        <a href="/articles/{{index}}">{{title}}</a>
                                     </strong>
                                     <div class="article-writer">
                                         <span class="time">{{writeDate}}</span>

@@ -27,6 +27,13 @@ public class ArticleFormRepository implements ArticleRepository {
     }
 
     @Override
+    public Optional<Article> findByIndex(Long index) {
+        return articleList.stream()
+                .filter(article -> article.getIndex().equals(index))
+                .findAny();
+    }
+
+    @Override
     public Optional<Article> findByTitle(String title) {
         return articleList.stream()
                 .filter(article -> article.getTitle().equals(title))

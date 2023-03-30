@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface ArticleRepository {
     Article saveArticle(ArticleDto articleDto);
+    Optional<Article> findByIndex(Long index);
     Optional<Article> findByTitle(String title);
     Optional<Article> findByContents(String contents);
     List<Article> findAll();

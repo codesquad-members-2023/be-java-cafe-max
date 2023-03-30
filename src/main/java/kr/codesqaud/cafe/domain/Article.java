@@ -16,6 +16,10 @@ public class Article {
         this.writeDate = writeDate;
     }
 
+    public Long getIndex() {
+        return index;
+    }
+
     public String getTitle() {
         return title;
     }

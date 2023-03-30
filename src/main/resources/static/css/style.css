@@ -406,6 +406,14 @@ input:focus, textarea:focus {
     justify-content: center;
 }
 
+.comment-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 800px;
+    margin: 0 auto;
+}
+
 .comment-date {
     height: 35px;
     font-size: 15px;
@@ -438,6 +446,7 @@ input:focus, textarea:focus {
     position: relative;
     left: 695px;
     bottom: 5px;
+    border-color: white;
 }
 
 .post-detail-button {
@@ -452,6 +461,15 @@ input:focus, textarea:focus {
 
 .pre-writing {
     margin-right: 30px;
+    font-size: 15px;
+    padding: 5px;
+    border-color: white;
+}
+
+.next-writing {
+    font-size: 15px;
+    padding: 5px;
+    border-color: white;
 }
 
 .comment-date {
@@ -502,6 +520,10 @@ li a  {
 
 .write a {
     color: white;
+}
+
+.list_hover:hover {
+    background-color: lightgrey;
 }
 
 @media (max-width: 700px) {

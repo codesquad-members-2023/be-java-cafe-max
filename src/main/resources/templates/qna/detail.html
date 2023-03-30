@@ -1,0 +1,40 @@
+{{> fragments/header}}
+<div class="wrap-detail">
+    <div class="post-title">
+        <div>{{article.title}}</div>
+    </div>
+    <div class="post-detail">
+        <div class="post-nickname">작성자: {{article.writer}}</div>
+        <div class="post-date">작성일자: {{article.writeDate}}</div>
+        <div class="post-hits">조회: {{article.hits}}</div>
+    </div>
+    <div>
+        <div class="post-content">{{article.contents}}</div>
+    </div>
+</div>
+<div class="comment-wrap">
+    <div class="countOfComment">
+        <p>댓글 <span id="comment_count">0</span>개</p>
+    </div>
+    <div class="comment-detail">
+    </div>
+    <div class="write-comment">
+        <label for="comment-input" id="comment-label"></label>
+        <textarea id="comment-input" placeholder="댓글을 입력하세요."></textarea>
+        <button class="button submit" onclick="register()">Button</button>
+    </div>
+    <div class="post-detail-button">
+        <div class="button-writing">
+            <div>
+                <a class="button pre-writing" href="/articles/{{index}}">이전 글</a>
+            </div>
+            <div>
+                <a class="button next-writing" href="/articles/{{index}}">다음 글</a>
+            </div>
+        </div>
+        <div>
+            <a href="/">목록으로</a>
+        </div>
+    </div>
+</div>
+{{> fragments/footer}}
