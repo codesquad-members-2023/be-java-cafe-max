@@ -10,13 +10,12 @@ public class MemoryUserRepository implements UserRepository {
     private final Map<String, User> userMap = new HashMap<>();
 
     @Override
-    public Optional<User> save(User user) {
+    public void save(User user) {
         if (userMap.containsKey(user.getUserId())) {
-            return Optional.empty();
+            return;
         }
 
         userMap.put(user.getUserId(), user);
-        return Optional.of(user);
     }
 
     @Override
