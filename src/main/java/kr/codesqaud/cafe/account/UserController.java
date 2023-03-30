@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.codesqaud.cafe.account.form.JoinForm;
 import kr.codesqaud.cafe.account.form.LoginForm;
@@ -98,7 +97,7 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{userId}/update")
-	public String showUserProfile(Model model, @PathVariable Long userId, @Nullable @RequestParam boolean errors) {
+	public String showUserProfile(Model model, @PathVariable Long userId) {
 		Optional<User> userOptional = usersRepository.findById(userId);
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
@@ -106,28 +105,22 @@ public class UserController {
 		ProfileSettingForm profileSettingForm = userOptional.get().mappingProfileSettingFormWithPassword();
 		model.addAttribute("userId", userId);
 		model.addAttribute("profileSettingForm", profileSettingForm);
-		model.addAttribute("errors", errors);
 		return "account/profileUpdate";
 	}
 
 	@PutMapping("/users/{userId}/update")
-	public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, Errors errors, @PathVariable Long userId,
-		RedirectAttributes model) {
-		if (errors.hasFieldErrors("email")) {
-			model.addAttribute("errors", true);
-			return "redirect:/users/" + userId + "/update";
-		}
-		if (errors.hasFieldErrors("nickName")) {
-			model.addAttribute("errors", true);
-			return "redirect:/users/" + userId + "/update";
-		}
+	public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, Errors errors, @PathVariable Long userId
+	) {
 		Optional<User> userOptional = usersRepository.findById(userId);
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
 		}
+		if (errors.hasErrors()) {
+			return "account/profileUpdate";
+		}
 		if (!userService.checkPasswordByUserId(profileSettingForm.getPassword(), userId)) {
-			model.addAttribute("errors", true);
-			return "redirect:/users/" + userId + "/update";
+			errors.rejectValue("password", "noMatch", "비밀번호가 일치하지 않습니다.");
+			return "account/profileUpdate";
 		}
 		userService.update(profileSettingForm, userId);
 		return "redirect:/users/{userId}";
