@@ -13,7 +13,7 @@ public class ProfileSettingForm {
 	@Email
 	private String email;
 	@NotNull
-	@Size(max = 32, min = 2)
+	@Size(max = 32, min = 8)
 	@Pattern(regexp = "^(.*[a-z]+.*[1-9]+.*)|(.*[1-9]+.*[a-z]+.*)$")
 	private String password;
 
