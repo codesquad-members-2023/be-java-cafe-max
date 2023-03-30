@@ -25,7 +25,8 @@
                 </div>
             </div>
             <div class="col text-end mt-3">
-                <a href="#" class="btn btn-primary btn-sm">수정</a>
+                <a th:href="@{/members/{id}/edit(id = ${memberResponse.id})}"
+                   class="btn btn-primary btn-sm">수정</a>
             </div>
         </div>
     </div>

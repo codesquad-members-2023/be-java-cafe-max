@@ -9,6 +9,7 @@ import java.util.UUID;
 import java.util.stream.IntStream;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.MemberResponse;
+import kr.codesqaud.cafe.dto.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.SignUpRequest;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
@@ -63,7 +64,7 @@ class MemberServiceTest {
         // then
         assertThrows(DuplicateMemberEmailException.class,
             () -> memberService.signUp(new SignUpRequest(signUpRequest.getEmail()
-                , "test1111", "test")));
+                , "Test1111", "test")));
     }
 
     @DisplayName("회원 단건 조회 성공")
@@ -102,7 +103,7 @@ class MemberServiceTest {
         IntStream.rangeClosed(1, memberCount)
             .forEach(index -> {
                 String email = String.format("test%d@gmail.com", index);
-                String password = String.format("test123%d", index);
+                String password = String.format("Test123%d", index);
                 String nickName = String.format("mandu%d", index);
                 memberService.signUp(new SignUpRequest(email, password, nickName));
             });
@@ -113,6 +114,61 @@ class MemberServiceTest {
         // then
         assertEquals(memberCount, findAll.size());
     }
+
+    @DisplayName("회원 정보 수정 성공")
+    @Test
+    void update() {
+        // given
+        String savedId = memberService.signUp(createRequestDummy());
+
+        String updateEmail = "mandu@gmail.com";
+        String updatePassword = "Mandu1234";
+        String updateNickName = "mandu";
+        ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(savedId, updateEmail
+            , updatePassword, updateNickName);
+
+        // when
+        memberService.update(memberUpdateRequest);
+
+        // then
+        Member findMember = memberRepository.findById(savedId).orElseThrow();
+        assertEquals(savedId, findMember.getId());
+        assertEquals(updateEmail, findMember.getEmail());
+        assertEquals(updatePassword, findMember.getPassword());
+        assertEquals(updateNickName, findMember.getNickName());
+    }
+
+    @DisplayName("회원 정보 수정시 수정할 멤버가 없는 경우 실패")
+    @Test
+    void updateFalse() {
+        // given
+
+        // when
+
+        // then
+        assertThrows(MemberNotFoundException.class,
+            () -> memberService.update(new ProfileEditRequest(UUID.randomUUID().toString()
+                , "est@naver.com", "Test1234", "test")));
+    }
+
+    @DisplayName("회원 정보 수정시 이미 있는 회원의 이메일인 경우 실패")
+    @Test
+    void updateFalse2() {
+        // given
+        SignUpRequest memberCreateRequest = createRequestDummy();
+        memberService.signUp(memberCreateRequest);
+        String savedId2 = memberService.signUp(createRequestDummy2());
+        ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(savedId2,
+            memberCreateRequest.getEmail(),
+            "Mandu7777", "updateMandu");
+
+        // when
+
+        // then
+        assertThrows(DuplicateMemberEmailException.class,
+            () -> memberService.update(memberUpdateRequest));
+    }
+
 
     private SignUpRequest createRequestDummy() {
         String email = "test@naver.com";

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.MemberResponse;
+import kr.codesqaud.cafe.dto.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.SignUpRequest;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberIdException;
@@ -46,5 +47,21 @@ public class MemberService {
     public MemberResponse findById(String id) {
         return MemberResponse.of(memberRepository.findById(id)
             .orElseThrow(() -> new MemberNotFoundException(id)));
+    }
+
+    public void update(ProfileEditRequest profileUpdateRequest) {
+        Member findMember = memberRepository.findById(profileUpdateRequest.getId())
+            .orElseThrow(() -> new MemberNotFoundException(profileUpdateRequest));
+        validateDuplicateEmail(profileUpdateRequest);
+        memberRepository.update(profileUpdateRequest.toEntity(findMember.getCreateDate()));
+    }
+
+    private void validateDuplicateEmail(ProfileEditRequest profileUpdateRequest) {
+        memberRepository.findByEmail(profileUpdateRequest.getEmail())
+            .ifPresent(m -> {
+                if (!m.equalsId(profileUpdateRequest.getId())) {
+                    throw new DuplicateMemberEmailException(profileUpdateRequest);
+                }
+            });
     }
 }
