@@ -3,6 +3,9 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.dto.ArticleDto;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -18,5 +21,11 @@ public class ArticleController {
     public String postArticle(ArticleDto articleDto) {
         articleService.post(articleDto);
         return "redirect:/";
+    }
+
+    @GetMapping("/articles/{id}")
+    public String showUserProfile(@PathVariable int id, Model model) {
+        model.addAttribute("article", articleService.findArticleById(id));
+        return "/post/show";
     }
 }

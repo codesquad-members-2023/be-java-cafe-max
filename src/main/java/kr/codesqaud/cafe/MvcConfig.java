@@ -18,7 +18,5 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
         //post
         registry.addViewController("/post/form").setViewName("/post/form");
-        registry.addViewController("/post/show").setViewName("/post/show");
-
     }
 }

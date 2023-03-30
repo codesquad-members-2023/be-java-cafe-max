@@ -3,24 +3,35 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.ArticleDto;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ArticleRepository {
-    private List<Article> articleRepository;
+    private Map<Integer,Article> articleRepository;
+    private static int sequence = 1;
 
     public ArticleRepository() {
-        this.articleRepository = new ArrayList<>();
+        this.articleRepository = new HashMap();
     }
 
     public void save(ArticleDto articleDto){
-        articleRepository.add(articleDto.toArticle());
+        articleDto.setId(sequence);
+        articleRepository.put(sequence,articleDto.toArticle());
     }
 
     public List<ArticleDto> findAll(){
-        return articleRepository.stream()
-                .map(article -> new ArticleDto(article.getTitle(),article.getContent()))
+        return articleRepository.values().stream()
+                .map(article -> new ArticleDto(article.getTitle(),article.getContent(), article.getId()))
                 .collect(Collectors.toList());
+    }
+
+    public ArticleDto findArticle(int id){
+        return articleRepository.values().stream()
+                .filter(article -> article.getId() == id)
+                .findFirst()
+                .map(Article::toDto)
+                .orElse(null);
     }
 }

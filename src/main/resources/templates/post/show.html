@@ -12,7 +12,11 @@
             <div class="col-md-12 col-sm-12 col-lg-12">
                 <div class="panel panel-default">
                   <header class="post-header">
-                      <p class="post-title">자바 웹개발 교육 홈페이지 디자인 개발1</p>
+                      <p class="post-title">
+                          {{#article}}
+                          {{article.title}}
+                          {{/article}}
+                      </p>
                   </header>
                   <div class="content-main">
                       <article class="article">
@@ -26,8 +30,9 @@
                               </div>
                           </div>
                           <div class="article-doc">
-                              <p>호눅스가 요청하신 페이지의 디자인 입니다.<br>
-                                  각각의 글의 상세 페이지는 이런 느낌이네요!</p>
+                              <p>{{#article}}
+                                  {{article.content}}
+                                  {{/article}}</p>
                           </div>
                       </article>
 
