@@ -18,7 +18,7 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public void signUp(SignUpRequest signUpRequest) {
+	public void userSignUp(SignUpRequest signUpRequest) {
 		User user = new User(
 			signUpRequest.getUserId(), signUpRequest.getPassword(),
 			signUpRequest.getName(), signUpRequest.getEmail());
@@ -27,11 +27,16 @@ public class UserService {
 
 	public List<UserDto> findAllUsers() {
 		List<User> users = userRepository.findAll();
-		List<UserDto> userDtos = new ArrayList<>();
+		List<UserDto> userDtoList = new ArrayList<>();
 		for (int i = 0; i < users.size(); i++) {
 			User user = users.get(i);
-			userDtos.add(new UserDto(i + 1L, user.getUserId(), user.getName(), user.getEmail()));
+			userDtoList.add(new UserDto(i + 1L, user.getUserId(), user.getName(), user.getEmail()));
 		}
-		return userDtos;
+		return userDtoList;
+	}
+
+	public List<User> userProfile(String id) {
+		List<User> users = userRepository.findUserProfile(id);
+		return users;
 	}
 }
