@@ -17,7 +17,10 @@
                     서버가 이해하지 못하습니다.
                 </span>
                 <span class="inner-detail" th:text="${errorCode}">
-                    서버가 이해하지 못하습니다.
+                    에러 코드
+                </span>
+                <span class="inner-detail" th:text="${errorMessage}">
+                    에러 메세지
                 </span>
                 <a th:href="@{/}" href="#" class="btn btn-info mtl">
                     <i class="fa fa-home"></i>

@@ -20,6 +20,7 @@ public class ExceptionController {
         logger.error("error code : {}, error message : {}, error data = {}", e.getErrorCode(),
             e.getMessage(), e.getErrorData());
         model.addAttribute("errorCode", e.getErrorCode());
+        model.addAttribute("errorMessage", e.getMessage());
         return "error/400";
     }
 }
