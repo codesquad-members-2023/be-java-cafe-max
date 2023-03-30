@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class HomeController {
@@ -20,17 +21,6 @@ public class HomeController {
     @GetMapping("user/form")
     public String joinForm() {
         return "/user/form";
-    }
-
-//    @GetMapping("user/list")
-//    public String listUsers(Model model) {
-////        model.addAttribute("user",)
-//        return "/user/list";
-//    }
-
-    @GetMapping("user/profile")
-    public String profile() {
-        return "/user/profile";
     }
 
     @GetMapping("qna/form")
