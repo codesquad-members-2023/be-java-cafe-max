@@ -4,4 +4,5 @@ import kr.codesqaud.cafe.domain.Member;
 
 public interface MemberRepository {
     Member save(Member member);
+    Member findMemberByUid(Long id);
 }

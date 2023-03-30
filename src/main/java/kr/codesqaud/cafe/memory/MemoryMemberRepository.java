@@ -16,4 +16,8 @@ public class MemoryMemberRepository implements MemberRepository {
         repository.put(member.getUid(), member);
         return member;
     }
+
+    public Member findMemberByUid(Long uid) {
+        return repository.get(uid);
+    }
 }
