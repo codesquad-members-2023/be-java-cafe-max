@@ -42,7 +42,10 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String showUserList(){
+    public String showUserList(Model model){
+        model.addAttribute("users", userMemoryRepository.findAll());
+
         return "user/list";
     }
+
 }
