@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.member;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,6 +11,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
+import kr.codesqaud.cafe.repository.member.MemoryMemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

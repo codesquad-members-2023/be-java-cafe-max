@@ -3,13 +3,13 @@ package kr.codesqaud.cafe.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.MemberResponse;
-import kr.codesqaud.cafe.dto.ProfileEditRequest;
-import kr.codesqaud.cafe.dto.SignUpRequest;
+import kr.codesqaud.cafe.dto.member.MemberResponse;
+import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
+import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberIdException;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
-import kr.codesqaud.cafe.repository.MemberRepository;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.springframework.stereotype.Service;
 
 @Service

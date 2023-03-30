@@ -1,8 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.dto.MemberResponse;
-import kr.codesqaud.cafe.dto.ProfileEditRequest;
-import kr.codesqaud.cafe.dto.SignUpRequest;
+import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
+import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

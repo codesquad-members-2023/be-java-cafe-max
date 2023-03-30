@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.dto.member;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
