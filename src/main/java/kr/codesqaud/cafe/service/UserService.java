@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserDto;
 import kr.codesqaud.cafe.repository.UserRepository;
 
@@ -17,7 +18,7 @@ public class UserService {
         userRepository.save(userDto);
     }
 
-    public List<UserDto> getUserList(){
+    public List<User> getUserList(){
         return userRepository.findAll();
     }
 

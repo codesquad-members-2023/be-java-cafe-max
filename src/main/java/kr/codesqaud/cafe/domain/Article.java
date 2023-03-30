@@ -38,6 +38,6 @@ public class Article {
     }
 
     public ArticleDto toDto(){
-        return new ArticleDto(title,content,id);
+        return new ArticleDto(title,content);
     }
 }

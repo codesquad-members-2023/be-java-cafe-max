@@ -3,27 +3,30 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserDto;
 
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UserRepository {
 
-    private List<User> userRepository;
+    private Map<Integer, User> userRepository;
 
+    private static int sequence = 1;
     public UserRepository() {
-        this.userRepository = new ArrayList<>();
+        this.userRepository = new HashMap();
     }
 
     public void save(UserDto userDto) {
-        userDto.setUserId(userRepository.size());
-        userRepository.add(userDto.ToUser());
+        userRepository.put(sequence,userDto.toUser(sequence++));
     }
 
-    public List<UserDto> findAll() {
-        return userRepository.stream()
-                .map(user -> new UserDto(user.getNickName(), user.getEmail(), user.getPassword(),user.getUserId()))
+    public List<User> findAll() {
+        List<User> users = userRepository.values().stream()
+                .map(user -> new User(user.getNickName(), user.getEmail(), user.getPassword(),user.getId()))
                 .collect(Collectors.toList());
+        return Collections.unmodifiableList(users);
     }
 
     /**
@@ -33,10 +36,10 @@ public class UserRepository {
      */
 
     public UserDto findUser(int userId) {
-        return userRepository.stream()
-                .filter(user -> user.getUserId() == userId)
+        return userRepository.values().stream()
+                .filter(user -> user.getId() == userId)
                 .findFirst()
-                .map(User::ToDTO)
+                .map(User::toDTO)
                 .orElse(null);
     }
 }

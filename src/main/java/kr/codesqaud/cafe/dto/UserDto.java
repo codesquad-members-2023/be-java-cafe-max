@@ -6,21 +6,11 @@ public class UserDto {
     private String nickName;
     private String email;
     private String password;
-    private Integer userId;
 
-    public UserDto(String nickName, String email, String password, Integer userId) {
+    public UserDto(String nickName, String email, String password) {
         this.nickName = nickName;
         this.email = email;
         this.password = password;
-        this.userId = userId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getNickName() {
@@ -47,7 +37,7 @@ public class UserDto {
         this.password = password;
     }
 
-    public User ToUser(){
-        return new User(nickName,email,password,userId);
+    public User toUser(int id){
+        return new User(nickName,email,password,id);
     }
 }

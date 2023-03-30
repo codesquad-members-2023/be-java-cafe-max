@@ -5,20 +5,10 @@ import kr.codesqaud.cafe.domain.Article;
 public class ArticleDto {
     private String title;
     private String content;
-    private Integer id;
 
-    public ArticleDto(String title, String content,Integer id) {
+    public ArticleDto(String title, String content) {
         this.title = title;
         this.content = content;
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -37,7 +27,7 @@ public class ArticleDto {
         this.content = content;
     }
 
-    public Article toArticle(){
+    public Article toArticle(int id){
         return new Article(title,content,id);
     }
 }
