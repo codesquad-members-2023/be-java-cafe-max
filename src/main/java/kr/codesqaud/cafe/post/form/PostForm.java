@@ -1,20 +1,20 @@
 package kr.codesqaud.cafe.post.form;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 public class PostForm {
-	@NotNull
+	@NotEmpty
 	@NotBlank
-	@Size(max = 64, min = 2)
+	@Size(max = 64, min = 2, message = "닉네임이 2글자 이상 64 글자 이하여야 한다")
 	private String nickname;
-	@NotNull
+	@NotEmpty
 	@NotBlank
-	@Size(max = 64, min = 2)
+	@Size(max = 64, min = 2, message = "제목은 2글자 이상 64 글자 이하여야 한다")
 	private String title;
-	@NotNull
-	@Size(max = 1000, min = 3)
+	@NotEmpty
+	@Size(max = 1000, min = 3, message = "본문은 3글자 이상 1000 글자 이하여야 한다")
 	private String textContent;
 
 	public String getNickname() {
