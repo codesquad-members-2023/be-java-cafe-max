@@ -39,4 +39,9 @@ public class ArticleFormRepository implements ArticleRepository {
                 .filter(article -> article.getContents().equals(contents))
                 .findAny();
     }
+
+    @Override
+    public List<Article> findAll() {
+        return articleList;
+    }
 }
