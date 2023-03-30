@@ -280,6 +280,51 @@ tr:hover {
     background-color: lightgrey;
 }
 
+.container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lightgrey;
+    width: 600px;
+    margin: 0 auto;
+}
+
+.profile-header {
+    border-bottom: 1px solid lightgrey;
+    padding-left: 20px;
+}
+
+.profile-body {
+    display: flex;
+}
+
+.picture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.reference {
+    font-size: small;
+    text-align: center;
+    margin-top: 0;
+}
+
+.reference a {
+    color: black;
+}
+
+.email-icon {
+    color: black;
+    display: flex;
+    align-items: center;
+    border: 1px solid lightgrey;
+    padding: 3px;
+}
+
+.blank {
+    height: 30px;
+}
+
 @media (max-width: 700px) {
     .menu-bar {
         display: flex;
