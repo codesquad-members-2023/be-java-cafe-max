@@ -1,24 +1,33 @@
 package kr.codesqaud.cafe.domain;
 
 public class Member {
-    private String userId;
+    private Long uid;
+    private String loginId;
     private String password;
     private String name;
     private String email;
 
-    public Member(String userId, String password, String name, String email) {
-        this.userId = userId;
+    public Member(String loginId, String password, String name, String email) {
+        this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
+    public Long getUid() {
+        return uid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUid(Long uid) {
+        this.uid = uid;
+    }
+
+    public String getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(String loginId) {
+        this.loginId = loginId;
     }
 
     public String getPassword() {
