@@ -4,15 +4,12 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.codesqaud.cafe.post.form.PostForm;
 
@@ -28,17 +25,15 @@ public class PostController {
 	}
 
 	@GetMapping("/post")
-	public String showPostPage(Model model, @RequestParam @Nullable boolean errors) {
+	public String showPostPage(Model model) {
 		model.addAttribute(new PostForm());
-		model.addAttribute("errors", errors);
 		return "/post/form";
 	}
 
 	@PostMapping("/post")
-	public String addPost(@Valid PostForm postForm, Errors errors, RedirectAttributes redirectAttributes, Model model) {
+	public String addPost(@Valid PostForm postForm, Errors errors, Model model) {
 		if (errors.hasErrors()) {
-			redirectAttributes.addAttribute("errors", true);
-			return "redirect:/post";
+			return "/post/form";
 		}
 		Post post = postService.createNewPost(postForm);
 		model.addAttribute(post);
