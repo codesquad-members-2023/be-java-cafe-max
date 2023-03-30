@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.question.ArticleRepository;
-import kr.codesqaud.cafe.dto.ArticleDto;
+import kr.codesqaud.cafe.domain.question.Article;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +18,10 @@ public class ArticleService {
         String writer = articleFormDto.getWriter();
         String title = articleFormDto.getTitle();
         String contents = articleFormDto.getContents();
-        ArticleDto articleDto = new ArticleDto(writer,title,contents);
-        articleRepository.save(articleDto);
+        Article article = new Article(writer,title,contents);
+        articleRepository.save(article);
     }
-    public List<ArticleDto> getArticleList(){
+    public List<Article> getArticleList(){
         return articleRepository.findAll();
     }
 }

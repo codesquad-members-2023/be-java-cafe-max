@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.dto.ArticleDto;
+import kr.codesqaud.cafe.domain.question.Article;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class ArticleController {
 
     @GetMapping("/article/show/{index}")
     public String getShow(@PathVariable("index")int index,Model model){
-        List<ArticleDto> list = articleService.getArticleList();
+        List<Article> list = articleService.getArticleList();
         model.addAttribute("article",list.get(index));
         return "/qna/show";
     }
