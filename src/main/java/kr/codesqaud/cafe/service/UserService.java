@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.Dto.UserListDto;
+import kr.codesqaud.cafe.Dto.UserProfileDto;
 import kr.codesqaud.cafe.repository.MemoryUserRepository;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +34,18 @@ public class UserService {
     }
 
     //회원목록 조회
-    public List<User> checkUsers() {
-        return userRepository.findAll();
+    public List<UserListDto> getUserList() {
+        List<User> users = userRepository.findAll();
+        List<UserListDto> userListDtos = new ArrayList<>();
+        for(User user : users){
+            userListDtos.add(new UserListDto(user.getUserId(), user.getName(), user.getEmail()));
+        }
+        return userListDtos;
     }
 
 
-    public User getUserProfile(String userId) {
-        return userRepository.findByID(userId).get();
+    public UserProfileDto getUserProfile(String userId) {
+        User user = userRepository.findByID(userId).get();
+        return new UserProfileDto(user.getName(), user.getEmail());
     }
 }

@@ -9,8 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -20,20 +22,20 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/user/create")
+    @PostMapping("/create")
     public String createUser(UserFormDto userForm) {
         userService.join(new User(userForm.getUserId(), userForm.getPassword(), userForm.getName(), userForm.getEmail()));
-        return "redirect:/users";
+        return "redirect:/user";
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public String listUsers(Model model) {
-        model.addAttribute("users", userService.checkUsers());
+        model.addAttribute("users", userService.getUserList());
         return "user/list";
     }
 
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public String viewUserProfile(@PathVariable String userId, Model model) {
         model.addAttribute("user", userService.getUserProfile(userId));
         return "user/profile";
