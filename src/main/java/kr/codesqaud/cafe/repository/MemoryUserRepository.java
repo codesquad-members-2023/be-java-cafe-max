@@ -32,6 +32,11 @@ public class MemoryUserRepository implements UserRepository {
         return new ArrayList<>(store.values());
     }
 
+    @Override
+    public boolean isExists(String userId) {
+        return store.containsKey(userId);
+    }
+
     public void clearStore() {
         store.clear();
     }

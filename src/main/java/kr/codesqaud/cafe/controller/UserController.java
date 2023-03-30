@@ -34,6 +34,9 @@ public class UserController {
 
     @PostMapping("/join")
     public String join(@ModelAttribute User user) { // ModelAttribute 이름 미지정 시 클래스 'User'의 첫 글자를 소문자로 바꾼 'user'로 자동 설정된다.
+        if (userRepository.isExists(user.getUserId())) {
+            throw new IllegalArgumentException("이미 사용 중인 아이디입니다");
+        }
         userRepository.save(user);
         return "redirect:/users";
     }

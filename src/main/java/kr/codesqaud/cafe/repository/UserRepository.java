@@ -8,4 +8,5 @@ public interface UserRepository {
     User save(User user);
     User findByUserId(String userId);
     List<User> findAll();
+    boolean isExists(String userId);
 }
