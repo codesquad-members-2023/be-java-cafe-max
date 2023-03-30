@@ -1,10 +1,13 @@
 package kr.codesqaud.cafe.board.domain;
 
+import java.time.LocalDate;
+
 public class BoardPost {
     private Long boardId;
     private String writer;
     private String title;
     private String content;
+    private LocalDate writeDt = LocalDate.now();
 
     public Long getBoardId() {
         return boardId;
@@ -36,5 +39,13 @@ public class BoardPost {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public LocalDate getWriteDt() {
+        return writeDt;
+    }
+
+    public void setWriteDt(LocalDate writeDt) {
+        this.writeDt = writeDt;
     }
 }
