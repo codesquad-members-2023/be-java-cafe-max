@@ -12,7 +12,7 @@ public class MvcConfig implements WebMvcConfigurer {
         // 우선 순위를 가장 높게
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
-        registry.addViewController("/user/add").setViewName("user/form");
-        registry.addViewController("/board/write").setViewName("board/write");
+        registry.addViewController("/user/form").setViewName("user/form");
+        registry.addViewController("/board/form").setViewName("board/write");
     }
 }
