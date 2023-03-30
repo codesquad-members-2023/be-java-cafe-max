@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.UserDto;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,30 +13,30 @@ public class UserFormRepository implements UserRepository {
     private final List<User> userList = new ArrayList<>();
     private long index = 0L;
     @Override
-    public User save(User user) {
-        validateDuplicateMember(user);
-        signUpDate(user);
-        user.setIndex(++index);
+    public User save(UserDto userDto) {
+        validateDuplicateMember(userDto);
+        User user = new User(++index, userDto.getUserID()
+                , userDto.getEmail(), userDto.getNickname(), userDto.getPassword(), signUpDate());
         userList.add(user);
         return user;
     }
 
-    private void signUpDate(User user) {
+    private String signUpDate() {
         LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        user.setSignUpDate(now.format(formatter));
+        return  now.format(formatter);
     }
 
-    private void validateDuplicateMember(User user) {
-        findByUserID(user.getUserID())
+    private void validateDuplicateMember(UserDto userDto) {
+        findByUserID(userDto.getUserID())
                 .ifPresent(u -> {
                     throw new IllegalStateException("이미 존재하는 회원 아이디입니다.");
                 });
-        findByEmail(user.getEmail())
+        findByEmail(userDto.getEmail())
                 .ifPresent(u -> {
             throw new IllegalStateException("이미 존재하는 회원 이메일입니다.");
                 });
-        findByNickname(user.getNickname())
+        findByNickname(userDto.getNickname())
                 .ifPresent(u -> {
             throw new IllegalStateException("이미 존재하는 회원 닉네임입니다.");
         });

@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.UserDto;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,16 +21,6 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/user/form")
-    public String form() {
-        return "/user/form";
-    }
-
-    @GetMapping("/user/login")
-    public String login() {
-        return "/user/login";
-    }
-
     @GetMapping("/user/list")
     public String userList(Model model) {
         List<User> users = userRepository.findAll();
@@ -38,8 +29,8 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String create(User user) {
-        userRepository.save(user);
+    public String create(UserDto userDto) {
+        userRepository.save(userDto);
         return "redirect:/users";
     }
 
