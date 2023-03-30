@@ -1,15 +1,16 @@
 package kr.codesqaud.cafe.account.form;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class LoginForm {
-	@NotNull
+	@NotEmpty
 	@Email
 	private String email;
-	@NotNull
+	@NotEmpty
 	@Size(max = 32, min = 8, message = "비밀번호를 정확히 입력해주세요(8글자 이상 32글자 이하)")
 	@Pattern(regexp = "^(.*[a-z]+.*[1-9]+가.*)|(.*[1-9]+.*[a-z]+.*)$", message = "비밀번호를 정확히 입력해주세요(영어 소문자 및 숫자 반드시 포함)")
 	private String password;
