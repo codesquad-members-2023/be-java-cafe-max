@@ -3,6 +3,8 @@ package kr.codesqaud.cafe.post;
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicLong;
 
+import kr.codesqaud.cafe.post.form.SimplePostForm;
+
 public class Post {
 	private static final AtomicLong postId = new AtomicLong();
 	private final Long id;
@@ -57,5 +59,15 @@ public class Post {
 
 	public void setCreatedDateTime(LocalDateTime createdDateTime) {
 		this.createdDateTime = createdDateTime;
+	}
+
+	public SimplePostForm mappingSimpleForm() {
+		SimplePostForm simpleForm = new SimplePostForm();
+		simpleForm.setId(getId());
+		simpleForm.setNickname(getNickname());
+		simpleForm.setTextContent(getTextContent().substring(0,30));
+		simpleForm.setTitle(getTitle());
+		simpleForm.setCreatedDateTime(getCreatedDateTime());
+		return simpleForm;
 	}
 }
