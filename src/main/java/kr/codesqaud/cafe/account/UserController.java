@@ -73,7 +73,7 @@ public class UserController {
 			return "account/join";
 		}
 		if (usersRepository.containEmail(joinForm.getEmail())) {
-			bindingResult.addError(new FieldError("joinForm", "email", "중복된 이메일입니다."));
+			bindingResult.rejectValue("email", "duplicate","중복된 이메일입니다.");
 			return "account/join";
 		}
 		User user = userService.createNewUser(joinForm);
