@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.user;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -33,6 +34,11 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @GetMapping("/{userId}")
+    public String findByUserId(@PathVariable("userId") String userId, Model model) {
+        User user = userService.findByUserId(userId);
+        model.addAttribute("user", user);
 
-
+        return "user/profile";
+    }
 }
