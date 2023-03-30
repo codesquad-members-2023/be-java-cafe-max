@@ -18,7 +18,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Long join(User user) {
+    public String join(User user) {
         validateDuplicateMember(user);
         userRepository.save(user);
         return user.getUserId();
@@ -35,7 +35,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findOne(Long userId) {
+    public Optional<User> findOne(String userId) {
         return userRepository.findById(userId);
     }
 }

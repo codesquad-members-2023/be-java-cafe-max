@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private static Map<Long, User> store = new ConcurrentHashMap<>();
+    private static Map<String, User> store = new ConcurrentHashMap<>();
 
     @Override
     public User save(User user) {
@@ -21,7 +21,7 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<User> findById(String id) {
         return Optional.ofNullable(store.get(id));
     }
 
