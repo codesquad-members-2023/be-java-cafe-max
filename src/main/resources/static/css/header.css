@@ -1,0 +1,22 @@
+header {
+    display: flex;
+    justify-content: center;
+}
+
+.navbar {
+    width: 1040px;
+}
+
+#logo {
+    padding: 20px 0px 20px;
+    margin: 0px 0px 0px;
+
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 38px;
+    text-align: center;
+}
+
+#navbarNavAltMarkup {
+    justify-content: right;
+}

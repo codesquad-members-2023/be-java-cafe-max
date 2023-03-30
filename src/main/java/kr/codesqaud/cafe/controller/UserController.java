@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/join")
     public String join() {
-        return "user/form";
+        return "user/join";
     }
 
     @PostMapping("/join")
