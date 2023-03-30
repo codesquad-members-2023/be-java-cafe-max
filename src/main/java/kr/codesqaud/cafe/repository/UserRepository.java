@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
@@ -22,11 +23,7 @@ public class UserRepository {
 		return new ArrayList<>(userInfo.values()).stream().collect(Collectors.toUnmodifiableList());
 	}
 
-	public List<User> findUserProfile(String id) {
-		List<User> userProfile = new ArrayList<>();
-		if (userInfo.containsKey(id)) {
-			userProfile.add(userInfo.get(id));
-		}
-		return userProfile.stream().collect(Collectors.toUnmodifiableList());
+	public Optional<User> findUserProfile(String id) {
+		return Optional.ofNullable(userInfo.get(id));
 	}
 }

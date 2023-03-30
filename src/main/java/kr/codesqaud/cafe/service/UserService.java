@@ -35,8 +35,9 @@ public class UserService {
 		return userDtoList;
 	}
 
-	public List<User> userProfile(String id) {
-		List<User> users = userRepository.findUserProfile(id);
-		return users;
+	public User userProfile(String id) {
+		User user = userRepository.findUserProfile(id).orElseThrow(() ->
+			new IllegalArgumentException("회원을 찾을 수 없습니다"));
+		return user;
 	}
 }
