@@ -19,7 +19,11 @@ public class UserController {
 
     @PostMapping("/add")
     public String addUser(@ModelAttribute User user) {
-        userRepository.add(user);
+        String userId = userRepository.add(user);
+        // 중복된 아이디가 존재하는 경우
+        if (userId == null) {
+            return "/user/form_failed";
+        }
         return "redirect:/user/list";
     }
 

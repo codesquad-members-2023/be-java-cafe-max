@@ -13,8 +13,16 @@ public class UserRepository {
 
     private Map<String, User> users = new HashMap<>();
 
-    public void add(User user) {
+    public String add(User user) {
+        if (containsId(user.getUserId())) {
+            return null;
+        }
         users.put(user.getUserId(), user);
+        return user.getUserId();
+    }
+
+    public boolean containsId(String userId) {
+        return users.containsKey(userId);
     }
 
     public User getUser(String userId) {
