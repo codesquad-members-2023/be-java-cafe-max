@@ -6,37 +6,37 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    @GetMapping(value = {"/", "/index","/index.html"})
+    @GetMapping(value = {"/", "/index"})
     public String home() {
         return "index";
     }
 
-    @GetMapping("user/login.html")
+    @GetMapping("user/login")
     public String loginForm() {
         return "user/login";
     }
 
-    @GetMapping("user/form.html")
+    @GetMapping("user/form")
     public String joinForm() {
         return "user/form";
     }
 
-    @GetMapping("user/list.html")
+    @GetMapping("user/list")
     public String listUser() {
         return "user/list";
     }
 
-    @GetMapping("user/profile.html")
+    @GetMapping("user/profile")
     public String profile() {
         return "user/profile";
     }
 
-    @GetMapping("qna/form.html")
+    @GetMapping("qna/form")
     public String makeQna() {
         return "qna/form";
     }
 
-    @GetMapping("qna/show.html")
+    @GetMapping("qna/show")
     public String showQna() {
         return "qna/show";
     }
