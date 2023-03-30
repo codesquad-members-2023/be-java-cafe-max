@@ -21,7 +21,7 @@ public class HomeController {
         return "user/form";
     }
 
-    @GetMapping("user/list.html")
+    @GetMapping({"user/list", "user/list.html"})
     public String userList() {
         return "user/list";
     }
