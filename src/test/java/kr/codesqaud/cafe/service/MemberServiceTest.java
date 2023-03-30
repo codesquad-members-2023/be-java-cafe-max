@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.SignUpRequest;
-import kr.codesqaud.cafe.exception.DuplicateMemberEmailException;
+import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
 import kr.codesqaud.cafe.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -2,8 +2,8 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.SignUpRequest;
-import kr.codesqaud.cafe.exception.DuplicateMemberEmailException;
-import kr.codesqaud.cafe.exception.DuplicateMemberIdException;
+import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
+import kr.codesqaud.cafe.exception.member.DuplicateMemberIdException;
 import kr.codesqaud.cafe.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +24,11 @@ public class MemberService {
 
     private void validateDuplicateMember(Member member) {
         if (memberRepository.findById(member.getId()).isPresent()) {
-            throw new DuplicateMemberIdException();
+            throw new DuplicateMemberIdException(member);
         }
 
         if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
-            throw new DuplicateMemberEmailException();
+            throw new DuplicateMemberEmailException(member);
         }
     }
 }
