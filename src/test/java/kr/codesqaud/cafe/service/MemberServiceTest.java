@@ -5,11 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.IntStream;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.MemberResponse;
 import kr.codesqaud.cafe.dto.SignUpRequest;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
+import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,7 +55,7 @@ class MemberServiceTest {
     @Test
     void createFalse2() {
         // given
-        SignUpRequest signUpRequest = createRequestDummy();
+        SignUpRequest signUpRequest = createRequestDummy2();
         memberService.signUp(signUpRequest);
 
         // when
@@ -62,6 +64,34 @@ class MemberServiceTest {
         assertThrows(DuplicateMemberEmailException.class,
             () -> memberService.signUp(new SignUpRequest(signUpRequest.getEmail()
                 , "test1111", "test")));
+    }
+
+    @DisplayName("회원 단건 조회 성공")
+    @Test
+    void findById() {
+        // given
+        SignUpRequest memberCreateRequest = createRequestDummy2();
+        String savedId = memberService.signUp(memberCreateRequest);
+
+        // when
+        MemberResponse memberResponse = memberService.findById(savedId);
+
+        // then
+        assertEquals(savedId, memberResponse.getId());
+        assertEquals(memberCreateRequest.getEmail(), memberResponse.getEmail());
+        assertEquals(memberCreateRequest.getNickName(), memberResponse.getNickName());
+    }
+
+    @DisplayName("회원 단건 조회 실패")
+    @Test
+    void findByIdFalse() {
+        // given
+
+        // then
+
+        // when
+        assertThrows(MemberNotFoundException.class,
+            () -> memberService.findById(UUID.randomUUID().toString()));
     }
 
     @DisplayName("모든 회원 조회 성공")

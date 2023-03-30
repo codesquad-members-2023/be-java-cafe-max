@@ -7,6 +7,7 @@ import kr.codesqaud.cafe.dto.MemberResponse;
 import kr.codesqaud.cafe.dto.SignUpRequest;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberIdException;
+import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +41,10 @@ public class MemberService {
             .stream()
             .map(MemberResponse::of)
             .collect(Collectors.toUnmodifiableList());
+    }
+
+    public MemberResponse findById(String id) {
+        return MemberResponse.of(memberRepository.findById(id)
+            .orElseThrow(() -> new MemberNotFoundException(id)));
     }
 }

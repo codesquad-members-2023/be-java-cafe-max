@@ -124,11 +124,11 @@ class MemoryMemberRepositoryTest {
 
     public Member dummyData() {
         return new Member(UUID.randomUUID().toString(), "mandu@gmail.com"
-            , "mandu1234", "mandu", LocalDateTime.now());
+            , "Mandu1234", "mandu", LocalDateTime.now());
     }
 
     public Member dummyData2() {
         return new Member(UUID.randomUUID().toString(), "test@gmail.com"
-            , "test1234", "test", LocalDateTime.now());
+            , "Test1234", "test", LocalDateTime.now());
     }
 }
