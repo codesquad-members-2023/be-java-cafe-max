@@ -7,21 +7,21 @@ public class User {
     private String nickName;
     private String email;
     private String password;
-    private int Id;
+    private int id;
 
     public User(String nickName, String email, String password, int userId) {
         this.nickName = nickName;
         this.email = email;
         this.password = password;
-        this.Id = userId;
+        this.id = userId;
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        this.Id = id;
+        this.id = id;
     }
 
     public String getNickName() {
@@ -48,6 +48,6 @@ public class User {
         this.password = password;
     }
     public UserDto toDTO(){
-        return new UserDto(nickName,email,password);
+        return new UserDto(nickName,email,password,id);
     }
 }

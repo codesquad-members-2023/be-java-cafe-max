@@ -19,7 +19,7 @@ public class UserRepository {
     }
 
     public void save(UserDto userDto) {
-        userRepository.put(sequence,userDto.toUser(sequence++));
+        userRepository.put(userDto.getId(),userDto.toUser());
     }
 
     public List<User> findAll() {
@@ -42,4 +42,6 @@ public class UserRepository {
                 .map(User::toDTO)
                 .orElse(null);
     }
+
+
 }
