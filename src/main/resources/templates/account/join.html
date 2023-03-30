@@ -14,7 +14,7 @@
     <div class="row justify-content-center mb-3">
         <div class="col-3">
             <label for="email" class="form-label">이메일</label>
-            <input th:if="${#fields.hasErrors('email')}" type="email" class="form-control is-invalid" id="email"
+            <input th:if="${#fields.hasErrors('email')}" type="email" class="form-control is-invalid" id="emailInvalid"
                    placeholder="이메일을 입력해주세요" th:field="*{email}" required>
             <input th:if="${!#fields.hasErrors('email')}" type="email" class="form-control" id="email"
                    placeholder="이메일을 입력해주세요" th:field="*{email}" required>
@@ -26,7 +26,8 @@
     <div class="row justify-content-center mb-3">
         <div class="col-3">
             <label for="nickname" class="form-label">닉네임</label>
-            <input th:if="${#fields.hasErrors('nickname')}" type="text" class="form-control is-invalid" id="nickname"
+            <input th:if="${#fields.hasErrors('nickname')}" type="text" class="form-control is-invalid"
+                   id="nicknameInvalid"
                    placeholder="닉네임을 입력해주세요"
                    minlength="2" maxlength="64" th:field="*{nickname}" required>
             <input th:if="${!#fields.hasErrors('nickname')}" type="text" class="form-control" id="nickname"
@@ -41,7 +42,7 @@
         <div class="col-3">
             <label for="password" class="form-label">비밀번호</label>
             <input th:if="${#fields.hasErrors('password')}" type="password" class="form-control is-invalid"
-                   id="password" th:field="*{password}" placeholder="비밀번호를 입력해주세요"
+                   id="passwordInvalid" th:field="*{password}" placeholder="비밀번호를 입력해주세요"
                    required>
             <input th:if="!${#fields.hasErrors('password')}" type="password" class="form-control" id="password"
                    th:field="*{password}" placeholder="비밀번호를 입력해주세요"
@@ -57,55 +58,5 @@
         </div>
     </div>
 </form>
-
 </body>
-<script>
-    function validationEmail() {
-        const email = document.querySelector("#email");
-        if (!email.checkValidity()) {
-            email.className = 'form-control is-invalid';
-            return false;
-        }
-        email.className = 'form-control is-valid';
-        return true;
-    }
-
-    function validationNickname() {
-        const nickname = document.querySelector("#nickname");
-        if (!nickname.checkValidity() || nickname.value.length < 2 || nickname.value.length > 64) {
-            nickname.className = 'form-control is-invalid';
-            return false;
-        }
-        nickname.className = 'form-control is-valid';
-        return true;
-    }
-
-    function validationPassword() {
-        const password = document.querySelector("#password");
-        const regex = new RegExp('(.*[a-z]+.*[1-9]+.*)|(.*[1-9]+.*[a-z]+.*)')
-        if (!password.checkValidity() || password.value.length < 8 || password.value.length > 32 || !password.value.match(regex)) {
-            password.className = 'form-control is-invalid';
-            return false;
-        }
-        password.className = 'form-control is-valid';
-        return true;
-    }
-
-
-    function validationJoinForm(event) {
-
-        let isValidateEmail = validationEmail();
-        let isValidatePassword = validationPassword();
-        let isValidateNickname = validationNickname();
-
-        if (!isValidateEmail || !isValidatePassword || !isValidateNickname) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-    }
-
-
-    const form = document.querySelector("#joinForm");
-    form.addEventListener('submit', validationJoinForm, false);
-</script>
 </html>
