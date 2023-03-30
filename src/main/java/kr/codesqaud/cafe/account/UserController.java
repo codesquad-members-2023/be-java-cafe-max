@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,20 +42,19 @@ public class UserController {
 	}
 
 	@PostMapping("/users/login")
-	public String login(@Valid LoginForm loginForm, Errors errors, RedirectAttributes model) {
-		if (errors.hasErrors()) {
-			model.addAttribute("errors", true);
-			return "redirect:/users/login";
+	public String login(@Valid LoginForm loginForm, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return "account/login";
 		}
 		Optional<User> userOptional = usersRepository.findByEmail(loginForm.getEmail());
 		if (userOptional.isEmpty()) {
-			model.addAttribute("errors", true);
-			return "redirect:/users/login";
+			bindingResult.rejectValue("email", "noExist", "이메일이 존재하지 않습니다.");
+			return "account/login";
 		}
 		User user = userOptional.get();
 		if (user.getPassword().equals(loginForm.getPassword())) {
-			model.addAttribute("errors", true);
-			return "redirect:/users/login";
+			bindingResult.rejectValue("password", "noMatch", "비밀번호가 일치하지 않습니다.");
+			return "account/login";
 		}
 		return "redirect:/users/" + user.getId();
 	}
@@ -73,7 +71,7 @@ public class UserController {
 			return "account/join";
 		}
 		if (usersRepository.containEmail(joinForm.getEmail())) {
-			bindingResult.rejectValue("email", "duplicate","중복된 이메일입니다.");
+			bindingResult.rejectValue("email", "duplicate", "중복된 이메일입니다.");
 			return "account/join";
 		}
 		User user = userService.createNewUser(joinForm);
