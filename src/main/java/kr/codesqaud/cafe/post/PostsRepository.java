@@ -33,4 +33,14 @@ public class PostsRepository {
 			.filter(post -> Objects.equals(post.getId(), postId))
 			.findAny();
 	}
+
+	public Optional<Post> findByTitle(String title) {
+		return usersRepository.stream()
+			.filter(post -> Objects.equals(post.getTitle(), title))
+			.findAny();
+	}
+
+	public void clear() {
+		usersRepository.clear();
+	}
 }
