@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -34,12 +35,20 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String list(Model model) {
+    public String findList(Model model) {
         List<User> users = userService.findUsers();
-        // TODO: @ModelAttribute <- users 저장
         model.addAttribute("users", users);
         return "user/list";
-        // gradle -> 타임리프가 이걸 해줌
+        // gradle -> 타임리프 ViewResolver가 이걸 해줌
         // "templates/" + "user/list" + ".html"
+    }
+
+    @GetMapping("/users/{userId}")
+    public String findProfile(@PathVariable("userId") String userId, Model model) {
+        User user = userService.findByUserId(userId).get();
+        model.addAttribute("user", user);
+        return "user/profile";
+        // gradle -> 타임리프 ViewResolver가 이걸 해줌
+        // "templates/" + "user/profile" + ".html"
     }
 }
