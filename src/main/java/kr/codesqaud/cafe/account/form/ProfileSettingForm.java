@@ -10,7 +10,7 @@ public class ProfileSettingForm {
 	@NotEmpty
 	@Size(max = 64, min = 2, message = "닉네임을 정확히 입력해주세요(글자수 2~64)")
 	private String nickname;
-	@NotNull
+	@NotEmpty
 	@Email
 	private String email;
 	@NotEmpty
