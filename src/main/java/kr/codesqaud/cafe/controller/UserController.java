@@ -25,14 +25,13 @@ public class UserController {
 
     @GetMapping
     public String list(Model model) {
-        System.out.println("check");
         model.addAttribute("users", userService.findAll());
 
         return "user/list";
     }
 
     @PostMapping
-    public String create(@Valid @ModelAttribute("user") UserJoinDto userJoinDto, BindingResult bindingResult) {
+    public String join(@Valid @ModelAttribute("user") UserJoinDto userJoinDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user/form";
         }
