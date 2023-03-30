@@ -8,7 +8,9 @@ import javax.validation.Valid;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,13 +68,12 @@ public class UserController {
 	}
 
 	@PostMapping("/users/join")
-	public String addUser(@Valid JoinForm joinForm, Errors errors, Model model) {
-		if (errors.hasErrors()) {
-			model.addAttribute("error", "형식오류");
+	public String addUser(@Valid JoinForm joinForm, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
 			return "account/join";
 		}
 		if (usersRepository.containEmail(joinForm.getEmail())) {
-			model.addAttribute("error", "이메일이 중복입니다.");
+			bindingResult.addError(new FieldError("joinForm", "email", "중복된 이메일입니다."));
 			return "account/join";
 		}
 		User user = userService.createNewUser(joinForm);
