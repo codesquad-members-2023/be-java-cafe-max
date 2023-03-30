@@ -7,9 +7,11 @@ import javax.validation.constraints.Size;
 public class PostForm {
 	@NotNull
 	@NotBlank
+	@Size(max = 64, min = 2)
 	private String nickname;
 	@NotNull
 	@NotBlank
+	@Size(max = 64, min = 2)
 	private String title;
 	@NotNull
 	@Size(max = 1000, min = 3)
