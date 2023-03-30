@@ -27,6 +27,7 @@ class ArticleServiceTest {
     @Test
     @DisplayName("글 저장 테스트")
     void save() {
+
         //Given
         Article article = new Article("author", "title", "contents");
 

@@ -4,7 +4,7 @@ import kr.codesqaud.cafe.domain.User;
 import java.util.*;
 
 public interface UserRepository {
-    public User save(User user);
+    public String save(User user);
 
     public List<User> findAll();
 

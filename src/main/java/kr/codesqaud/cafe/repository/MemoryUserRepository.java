@@ -10,9 +10,9 @@ public class MemoryUserRepository implements UserRepository {
     private static Map<String, User> storage = new HashMap<>();
 
     @Override
-    public User save(User user) {
+    public String save(User user) {
         storage.put(user.getUserId(), user);
-        return user;
+        return user.getUserId();
     }
 
     @Override

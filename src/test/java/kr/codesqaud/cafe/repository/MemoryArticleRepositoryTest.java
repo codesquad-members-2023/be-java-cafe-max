@@ -30,7 +30,6 @@ class MemoryArticleRepositoryTest {
         //Then
         Article findArticle = memoryArticleRepository.findByID(saveId);
         assertEquals(article.getId(), findArticle.getId());
-
     }
 
     @Test
@@ -46,14 +45,13 @@ class MemoryArticleRepositoryTest {
         List<Article> result = memoryArticleRepository.findAll();
 
         //Then
-
         assertEquals(result.size(),2);
-
     }
 
     @Test
     @DisplayName("id로 글 찾기 테스트")
     void findByID() {
+
         //Given
         Article article = new Article("author", "title", "contents");
         long id = memoryArticleRepository.save(article);
@@ -64,5 +62,6 @@ class MemoryArticleRepositoryTest {
 
         //then
         assertEquals(article, findArticle);
+
     }
 }
