@@ -15,7 +15,7 @@
     </div>
     <div id="members" class="row row-cols-1">
         <div id="membersCount" class="col">
-            전체글 1개
+            전체글 [[${memberResponses.size()}]]개
         </div>
         <table>
             <thead>
@@ -24,12 +24,12 @@
                 <th class="signUpDate">회원가입일</th>
             </thead>
             <tbody>
-                <tr>
+                <tr th:each="memberResponse : ${memberResponses}">
                     <td class="nickName" >
-                        <a class="nav-link" >만두</a>
+                        <a class="nav-link" href="#" th:text="${memberResponse.nickName}">만두</a>
                     </td>
-                    <td class="email">test@gmail.com</td>
-                    <td class="signUpDate">2023-03-28</td>
+                    <td class="email" th:text="${memberResponse.email}">test@gmail.com</td>
+                    <td class="signUpDate" th:text="${memberResponse.createDate}">2023-03-28</td>
                 </tr>
             </tbody>
         </table>

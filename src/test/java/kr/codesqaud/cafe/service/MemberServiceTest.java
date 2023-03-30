@@ -4,7 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.List;
+import java.util.stream.IntStream;
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.MemberResponse;
 import kr.codesqaud.cafe.dto.SignUpRequest;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
 import kr.codesqaud.cafe.repository.MemberRepository;
@@ -61,16 +64,36 @@ class MemberServiceTest {
                 , "test1111", "test")));
     }
 
+    @DisplayName("모든 회원 조회 성공")
+    @Test
+    void findAll() {
+        // given
+        int memberCount = 10;
+        IntStream.rangeClosed(1, memberCount)
+            .forEach(index -> {
+                String email = String.format("test%d@gmail.com", index);
+                String password = String.format("test123%d", index);
+                String nickName = String.format("mandu%d", index);
+                memberService.signUp(new SignUpRequest(email, password, nickName));
+            });
+
+        // when
+        List<MemberResponse> findAll = memberService.findAll();
+
+        // then
+        assertEquals(memberCount, findAll.size());
+    }
+
     private SignUpRequest createRequestDummy() {
         String email = "test@naver.com";
-        String password = "test1234";
+        String password = "Test1234";
         String nickName = "test";
         return new SignUpRequest(email, password, nickName);
     }
 
     private SignUpRequest createRequestDummy2() {
         String email = "mandu@gmail.com";
-        String password = "mandu1234";
+        String password = "Mandu1234";
         String nickName = "mandu";
         return new SignUpRequest(email, password, nickName);
     }

@@ -1,6 +1,9 @@
 package kr.codesqaud.cafe.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.MemberResponse;
 import kr.codesqaud.cafe.dto.SignUpRequest;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberIdException;
@@ -30,5 +33,12 @@ public class MemberService {
         if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
             throw new DuplicateMemberEmailException(member);
         }
+    }
+
+    public List<MemberResponse> findAll() {
+        return memberRepository.findAll()
+            .stream()
+            .map(MemberResponse::of)
+            .collect(Collectors.toUnmodifiableList());
     }
 }

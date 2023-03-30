@@ -46,8 +46,8 @@ class MemberControllerTest {
                 .param("password", password)
                 .param("nickName", nickName)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-            .andExpect(status().isOk())
-            .andExpect(view().name("member/members"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/members"))
             .andDo(print());
     }
 
@@ -68,6 +68,7 @@ class MemberControllerTest {
                 .param("nickName", nickName)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/signUp"))
             .andExpect(model().attributeHasFieldErrors("signUpRequest", "email"))
             .andDo(print());
@@ -90,6 +91,7 @@ class MemberControllerTest {
                 .param("nickName", nickName)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/signUp"))
             .andExpect(model().attributeHasFieldErrors("signUpRequest", "password"))
             .andDo(print());
@@ -112,8 +114,26 @@ class MemberControllerTest {
                 .param("nickName", nickName)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/signUp"))
             .andExpect(model().attributeHasFieldErrors("signUpRequest", "nickName"))
+            .andDo(print());
+    }
+
+    @DisplayName("회원 목록 조회")
+    @Test
+    void findAll() throws Exception {
+        // given
+
+
+        // when
+
+
+        // then
+        mockMvc.perform(get("/members"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+            .andExpect(view().name("member/members"))
             .andDo(print());
     }
 }
