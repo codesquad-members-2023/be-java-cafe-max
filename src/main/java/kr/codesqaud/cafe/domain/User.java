@@ -15,7 +15,7 @@ public class User {
         return sequence;
     }
 
-    public void setSequence(long sequence) {
+    public void setSequence(final long sequence) {
         this.sequence = sequence;
     }
 
@@ -23,7 +23,7 @@ public class User {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(final String userId) {
         this.userId = userId;
     }
 
@@ -31,7 +31,7 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -39,7 +39,7 @@ public class User {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -47,7 +47,7 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 }

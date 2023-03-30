@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String create(UserDTO userDTO) {
+    public String create(final UserDTO userDTO) {
         User user = new User(); // TODO: 생성자 생성할 때 파람 안받고 setter로 해주는 이유를 모르겠다.
         user.setUserId(userDTO.getUserId()); // TODO: 파람이 많을 때 가독성 좋게 넣어줄 수 있는 방법 찾아서 리팩터링 필요
         user.setPassword(userDTO.getPassword());
@@ -38,14 +38,14 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String listPage(Model model) {
+    public String listPage(final Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "/user/list";
     }
 
     @GetMapping("/users/{userId}")
-    public String viewUserProfile(@PathVariable String userId, Model model) {
+    public String viewUserProfile(@PathVariable final String userId, final Model model) {
         User findUser = userService.findOne(userId).get();
         model.addAttribute("name", findUser.getName());
         model.addAttribute("email", findUser.getEmail());

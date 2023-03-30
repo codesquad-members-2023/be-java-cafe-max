@@ -26,7 +26,7 @@ public class ArticleController {
     }
 
     @PostMapping("/article/write")
-    public String write(ArticleDTO articleDTO) {
+    public String write(final ArticleDTO articleDTO) {
         Article article = new Article();
         article.setWriter(articleDTO.getWriter());
         article.setTitle(articleDTO.getTitle());
@@ -36,7 +36,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{index}")
-    public String viewArticle(@PathVariable long index, Model model) {
+    public String viewArticle(@PathVariable final long index, final Model model) {
         Article findArticle = articleService.findOne(index).get();
         model.addAttribute("writer", findArticle.getWriter());
         model.addAttribute("title", findArticle.getTitle());

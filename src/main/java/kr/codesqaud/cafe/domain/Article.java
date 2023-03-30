@@ -14,7 +14,7 @@ public class Article {
         return index;
     }
 
-    public void setIndex(long index) {
+    public void setIndex(final long index) {
         this.index = index;
     }
 
@@ -22,7 +22,7 @@ public class Article {
         return writer;
     }
 
-    public void setWriter(String writer) {
+    public void setWriter(final String writer) {
         this.writer = writer;
     }
 
@@ -30,7 +30,7 @@ public class Article {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -38,7 +38,7 @@ public class Article {
         return contents;
     }
 
-    public void setContents(String contents) {
+    public void setContents(final String contents) {
         this.contents = contents;
     }
 }

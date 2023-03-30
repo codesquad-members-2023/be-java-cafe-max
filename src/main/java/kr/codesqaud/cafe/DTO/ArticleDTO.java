@@ -13,7 +13,7 @@ public class ArticleDTO {
         return writer;
     }
 
-    public void setWriter(String writer) {
+    public void setWriter(final String writer) {
         this.writer = writer;
     }
 
@@ -21,7 +21,7 @@ public class ArticleDTO {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
@@ -29,7 +29,7 @@ public class ArticleDTO {
         return contents;
     }
 
-    public void setContents(String contents) {
+    public void setContents(final String contents) {
         this.contents = contents;
     }
 }
