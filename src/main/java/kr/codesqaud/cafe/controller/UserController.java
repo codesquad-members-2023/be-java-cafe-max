@@ -34,6 +34,10 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @GetMapping("/user/profile")
+    public String profileForm() {
+        return "user/profile";
+    }
 
     @GetMapping("/")
     public String homeForm() {
@@ -47,7 +51,7 @@ public class UserController {
 
         userService.join(user);
 
-        return "redirect:/users";
+        return "redirect:/users/" + user.getUserId();
     }
 
     @GetMapping("/users")
