@@ -13,17 +13,17 @@ import kr.codesqaud.cafe.domain.User;
 
 @Repository
 public class UserRepository {
-	private final Map<String, User> userInfo = new HashMap<>();
+	private final Map<String, User> userRepository = new HashMap<>();
 
 	public void save(User user) {
-		userInfo.put(user.getUserId(), user);
+		userRepository.put(user.getUserId(), user);
 	}
 
 	public List<User> findAll() {
-		return new ArrayList<>(userInfo.values()).stream().collect(Collectors.toUnmodifiableList());
+		return new ArrayList<>(userRepository.values()).stream().collect(Collectors.toUnmodifiableList());
 	}
 
 	public Optional<User> findUserProfile(String id) {
-		return Optional.ofNullable(userInfo.get(id));
+		return Optional.ofNullable(userRepository.get(id));
 	}
 }
