@@ -16,9 +16,10 @@ public class MemoryArticleRepository implements ArticleRepository {
     private static long sequence = 0L;
 
 
-    public void save(Article article){
+    public Long save(Article article){
         article.setId(++sequence);
         storage.put(article.getId(), article);
+        return article.getId();
     }
 
     public List<Article> findAll(){

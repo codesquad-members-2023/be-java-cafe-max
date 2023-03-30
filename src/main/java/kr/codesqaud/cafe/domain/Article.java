@@ -14,6 +14,19 @@ public class Article {
 
     LocalDateTime  time;
 
+    long id;
+
+    public Article(String author, String title, String contents) {
+        this.author = author;
+        this.title = title;
+        this.contents = contents;
+        this.time = LocalDateTime.now();
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
     public long getId() {
         return id;
     }
@@ -22,15 +35,9 @@ public class Article {
         this.id = id;
     }
 
-    long id;
 
-    public Article(String author, String title, String contents) {
-        this.author = author;
-        this.title = title;
-        this.contents = contents;
-        this.time = LocalDateTime.now();
 
-    }
+
 
     public String getAuthor() {
         return author;

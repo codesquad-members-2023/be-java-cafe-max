@@ -25,8 +25,8 @@ public class ArticleService {
     }
 
 
-    public void write(Article article) {
-        articleRepository.save(article);
+    public Long save(Article article) {
+        return articleRepository.save(article);
     }
 
 

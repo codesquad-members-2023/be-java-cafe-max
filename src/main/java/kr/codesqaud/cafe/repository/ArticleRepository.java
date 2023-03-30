@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public interface ArticleRepository {
 
-    void save(Article article);
+    Long save(Article article);
 
     List<Article> findAll();
 

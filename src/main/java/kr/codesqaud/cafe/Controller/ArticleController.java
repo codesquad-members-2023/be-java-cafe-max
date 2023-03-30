@@ -26,7 +26,7 @@ public class ArticleController {
 
     @PostMapping("/qna/create")
     public String createUser(ArticleFormDto articleFormDto) {
-        articleService.write(new Article(articleFormDto.getAuthor(), articleFormDto.getTitle(), articleFormDto.getContents()));
+        articleService.save(new Article(articleFormDto.getAuthor(), articleFormDto.getTitle(), articleFormDto.getContents()));
         return "redirect:/";
     }
 
