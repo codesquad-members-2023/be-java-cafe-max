@@ -51,7 +51,7 @@ public class UserController {
 			return "account/login";
 		}
 		User user = userOptional.get();
-		if (user.getPassword().equals(loginForm.getPassword())) {
+		if (!user.getPassword().equals(loginForm.getPassword())) {
 			bindingResult.rejectValue("password", "noMatch", "비밀번호가 일치하지 않습니다.");
 			return "account/login";
 		}
