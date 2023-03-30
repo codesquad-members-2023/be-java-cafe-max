@@ -1,13 +1,14 @@
 package kr.codesqaud.cafe.board.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class BoardPost {
     private Long boardId;
     private String writer;
     private String title;
     private String content;
-    private LocalDate writeDt = LocalDate.now();
+    private LocalDateTime writeDt = LocalDateTime.now();
 
     public Long getBoardId() {
         return boardId;
@@ -41,11 +42,11 @@ public class BoardPost {
         this.content = content;
     }
 
-    public LocalDate getWriteDt() {
-        return writeDt;
+    public String getWriteDt() {
+        return writeDt.format(DateTimeFormatter.ofPattern("yyyy-mm-dd HH:mm:ss"));
     }
 
-    public void setWriteDt(LocalDate writeDt) {
+    public void setWriteDt(LocalDateTime writeDt) {
         this.writeDt = writeDt;
     }
 }
