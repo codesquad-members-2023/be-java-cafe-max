@@ -44,4 +44,8 @@ public class UsersRepository {
 		return usersRepository.stream()
 			.anyMatch(user -> user.getEmail().equals(email));
 	}
+
+	public void clear() {
+		usersRepository.clear();
+	}
 }
