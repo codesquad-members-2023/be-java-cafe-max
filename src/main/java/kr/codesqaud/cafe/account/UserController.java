@@ -71,6 +71,10 @@ public class UserController {
 			model.addAttribute("error", "형식오류");
 			return "account/join";
 		}
+		if (usersRepository.containEmail(joinForm.getEmail())) {
+			model.addAttribute("error", "이메일이 중복입니다.");
+			return "account/join";
+		}
 		User user = userService.createNewUser(joinForm);
 		return "redirect:/users/" + user.getId();
 	}
