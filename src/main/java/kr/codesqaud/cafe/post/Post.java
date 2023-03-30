@@ -65,7 +65,7 @@ public class Post {
 		SimplePostForm simpleForm = new SimplePostForm();
 		simpleForm.setId(getId());
 		simpleForm.setNickname(getNickname());
-		simpleForm.setTextContent(getTextContent().substring(0,30));
+		simpleForm.setTextContent(getTextContent());
 		simpleForm.setTitle(getTitle());
 		simpleForm.setCreatedDateTime(getCreatedDateTime());
 		return simpleForm;
