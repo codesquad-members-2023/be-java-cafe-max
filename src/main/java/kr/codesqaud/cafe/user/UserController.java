@@ -9,9 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService = new UserService();
+
+    @GetMapping
+    public String showList(Model model) {
+        List<User> users = userService.getUserList();
+        model.addAttribute("users", users);
+
+        return "user/list";
+    }
 
     @GetMapping("/signup")
     public String showSignup(UserForm userForm) {
@@ -22,15 +30,9 @@ public class UserController {
     public String signup(UserForm userForm) {
         userService.saveUser(userForm);
 
-        return "redirect:/user/list";
+        return "redirect:/users";
     }
 
-    @GetMapping("/list")
-    public String showList(Model model) {
-        List<User> users = userService.getUserList();
-        model.addAttribute("users", users);
 
-        return "user/list";
-    }
 
 }
