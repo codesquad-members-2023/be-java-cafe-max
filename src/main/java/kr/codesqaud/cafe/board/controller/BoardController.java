@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.board.controller;
 import kr.codesqaud.cafe.board.domain.BoardPost;
 import kr.codesqaud.cafe.board.repository.BoardRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +27,13 @@ public class BoardController {
     @PostMapping("/write")
     public String writePost(@ModelAttribute BoardPost boardPost) {
         boardRepository.add(boardPost);
-        return "redirect:/";
+        return "redirect:/board/list";
+    }
+
+    @GetMapping("/list")
+    public String list(Model model) {
+        model.addAttribute("postList", boardRepository.getPostList());
+        return "index";
     }
 
 }
