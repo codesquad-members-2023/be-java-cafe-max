@@ -54,7 +54,11 @@ public class UserController {
         return "/user/update_form";
     }
 
-
+    @PutMapping("/update/{index}")
+    public String putUpdate(@PathVariable("index")int index, UpdateFormDto updateFormDto){
+        userService.update(index,updateFormDto);
+        return "redirect:/user";
+    }
 
 
 }
