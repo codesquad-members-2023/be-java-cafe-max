@@ -21,11 +21,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/article/question")
-    public String getQuestionPage(){
-        return "/qna/form";
-    }
-    @PostMapping("/article/question")
+    @PostMapping("/article/write")
     public String postQuestion(ArticleFormDto articleFormDto){
         articleService.questionWrite(articleFormDto);
         return "redirect:/";

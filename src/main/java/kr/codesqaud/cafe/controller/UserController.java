@@ -20,10 +20,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/signup")
-    public String getSignUpPage(){
-        return "/user/form";
-    }
 
     @PostMapping("/create")
     public String postSignUp(SignUpFormDto signUpFormDto){
