@@ -1,10 +1,10 @@
 package kr.codesqaud.cafe.repository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
@@ -18,20 +18,21 @@ public class MemoryArticleRepository implements ArticleRepository {
     private static long index = 0L;
 
     @Override
-    public Article save(Article article) {
+    public Article save(final Article article) {
         article.setIndex(++index);
         ARTICLE_REPOSITORY.put(article.getIndex(), article);
         return article;
     }
 
     @Override
-    public Optional<Article> findByIndex(long index) {
+    public Optional<Article> findByIndex(final long index) {
         return Optional.ofNullable(ARTICLE_REPOSITORY.get(index));
     }
 
     @Override
     public List<Article> findAll() {
-        return new ArrayList<>(ARTICLE_REPOSITORY.values());
+        return ARTICLE_REPOSITORY.values().stream()
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public void clear() {

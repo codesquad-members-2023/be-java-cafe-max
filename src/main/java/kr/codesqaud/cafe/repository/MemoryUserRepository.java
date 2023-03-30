@@ -1,10 +1,10 @@
 package kr.codesqaud.cafe.repository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
@@ -36,7 +36,8 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(USER_REPOSITORY.values());
+        return USER_REPOSITORY.values().stream()
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public void clear() {
