@@ -8,23 +8,23 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UserRepositoryTest {
+class MemoryUserRepositoryTest {
 
-    UserRepository userRepository = new UserRepository();
+    MemoryUserRepository memoryUserRepository = new MemoryUserRepository();
 
     @AfterEach
     void afterEach() {
-        userRepository.clearStore();
+        memoryUserRepository.clearStore();
     }
 
     @Test
     void save() {
         // given
         User user = new User("testId", "testPassword", "testName", "testEmail");
-        User savedUser = userRepository.save(user);
+        User savedUser = memoryUserRepository.save(user);
 
         // when
-        User findUser = userRepository.findByUserId(user.getUserId());
+        User findUser = memoryUserRepository.findByUserId(user.getUserId());
 
         // then
         assertThat(findUser).isEqualTo(savedUser);
@@ -36,11 +36,11 @@ class UserRepositoryTest {
         User user1 = new User("testId1", "testPassword1", "testName1", "testEmail1");
         User user2 = new User("testId2", "testPassword2", "testName2", "testEmail2");
 
-        userRepository.save(user1);
-        userRepository.save(user2);
+        memoryUserRepository.save(user1);
+        memoryUserRepository.save(user2);
 
         // when
-        List<User> allUser = userRepository.findAll();
+        List<User> allUser = memoryUserRepository.findAll();
 
         // then
         assertThat(allUser.size()).isEqualTo(2);
