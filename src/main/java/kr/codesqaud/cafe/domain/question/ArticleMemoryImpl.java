@@ -7,7 +7,7 @@ import java.util.List;
 
 @Repository
 public class ArticleMemoryImpl implements ArticleRepository{
-    public static List<Article> articleList = new ArrayList<>();
+    private  List<Article> articleList = new ArrayList<>();
     @Override
     public void save(Article article) {
         articleList.add(article);

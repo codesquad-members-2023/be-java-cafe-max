@@ -7,11 +7,13 @@ public class Article {
     private String title;
     private String contents;
 
-    public Article(String writer, String title, String contents) {
+
+
+    public Article(int index, String writer, String title, String contents) {
+        this.index = index;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.index = ArticleMemoryImpl.articleList.size();
     }
 
     public int getIndex() {

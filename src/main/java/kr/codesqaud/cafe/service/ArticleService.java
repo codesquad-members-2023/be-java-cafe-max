@@ -18,7 +18,8 @@ public class ArticleService {
         String writer = articleFormDto.getWriter();
         String title = articleFormDto.getTitle();
         String contents = articleFormDto.getContents();
-        Article article = new Article(writer,title,contents);
+        int index = articleRepository.findAll().size();
+        Article article = new Article(index,writer,title,contents);
         articleRepository.save(article);
     }
     public List<Article> getArticleList(){
