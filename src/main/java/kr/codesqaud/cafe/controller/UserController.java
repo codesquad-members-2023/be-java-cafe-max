@@ -20,7 +20,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("templates/user/create")
+    @PostMapping("/user/create")
     public String create(UserForm form) {
         User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
 
@@ -33,7 +33,7 @@ public class UserController {
     public String list(Model model) {
         List<User> users = userService.findMembers();
         model.addAttribute("users", users);
-        return "user/list";
+        return "/user/list";
     }
 
 }
