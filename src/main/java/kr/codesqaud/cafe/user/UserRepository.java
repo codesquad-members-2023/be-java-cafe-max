@@ -1,16 +1,22 @@
 package kr.codesqaud.cafe.user;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserRepository {
-    private List<User> repository = new ArrayList<>();
+    private Map<String, User> repository = new HashMap<>();
 
     public void save(User user) {
-        repository.add(user);
+        repository.put(user.getUserId(), user);
     }
 
     public List<User> getRepository() {
-        return repository;
+        return new ArrayList<>(repository.values());
+    }
+
+    public User fineByUserId(String userId) {
+        return repository.get(userId);
     }
 }
