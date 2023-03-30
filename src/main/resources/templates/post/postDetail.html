@@ -20,15 +20,15 @@
     <div class="col-6 row text-secondary">
         <div class="col-3 row">
             <p class="col text-end pe-0">아이디:</p>
-            <p class="col text-start ps-1" id="views" th:text="${post.id}">0</p>
+            <p class="col text-start ps-1 text-break" id="views" th:text="${post.id}">0</p>
         </div>
         <div class="col-3 row">
             <p class="col text-end pe-0 ps-0 ms-1">작성자:</p>
-            <p class="col text-start ps-1" id="writer" th:text="${post.nickname}">user</p>
+            <p class="col text-start ps-1 text-break" id="writer" th:text="${post.nickname}">user</p>
         </div>
         <div class="col-6 row">
             <p class="col-4 text-end pe-0">작성일자:</p>
-            <p class="col text-start ps-1" id="creatDate"
+            <p class="col text-start ps-1 text-break" id="creatDate"
                th:text="${#temporals.format(post.createdDateTime,'yyyy-MM-dd HH:mm')}">2023.03.23 11:17</p>
         </div>
     </div>

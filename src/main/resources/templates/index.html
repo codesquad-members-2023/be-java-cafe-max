@@ -48,10 +48,10 @@
             <ol class="justify-content-center" id="bookList">
                 <li class="row text-center" th:each="post,iterStat : ${simpleForms}">
                     <div class="col-2"><a th:href="@{/post/{id}(id = ${post.id})}" th:text="${iterStat.count}"></a></div>
-                    <div class="col-2" th:text="${post.title}"></div>
-                    <div class="col-4" th:text="${post.textContent}"></div>
-                    <div class="col-2" th:text="${post.nickname}"></div>
-                    <div class="col-2" th:text="${#temporals.format(post.createdDateTime,'yyyy-MM-dd HH:mm')}"></div>
+                    <div class="col-2 text-break" th:text="${post.title}"></div>
+                    <div class="col-4 text-break" th:text="${post.textContent}"></div>
+                    <div class="col-2 text-break" th:text="${post.nickname}"></div>
+                    <div class="col-2 text-break" th:text="${#temporals.format(post.createdDateTime,'yyyy-MM-dd HH:mm')}"></div>
                     <div class="text-success row mt-3">
                         <hr>
                     </div>
