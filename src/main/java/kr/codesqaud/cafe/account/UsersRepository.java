@@ -39,4 +39,9 @@ public class UsersRepository {
 			.filter(user -> Objects.equals(user.getEmail(), email))
 			.findAny();
 	}
+
+	public boolean containEmail(String email) {
+		return usersRepository.stream()
+			.anyMatch(user -> user.getEmail().equals(email));
+	}
 }
