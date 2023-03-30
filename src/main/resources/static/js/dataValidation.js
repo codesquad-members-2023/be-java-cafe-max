@@ -1,4 +1,5 @@
 const check = [false, false, false];
+const writeCheck = [false, false];
 let user = {};
 
 function verifyEmail() {
@@ -55,5 +56,57 @@ function validateData() {
     } else {
         document.getElementById('allMessage').innerText = "모든 사항을 올바르게 기입해주세요.";
         document.querySelector('#allMessage').style.color = "red";
+    }
+}
+
+function verifyTitle() {
+    const title = document.getElementById("title").value;
+
+    if(title.length > 0) {
+        writeCheck[0] = true;
+    } else {
+        writeCheck[0] = false;
+    }
+}
+
+function verifyContent() {
+    const title = document.getElementById("content").value;
+
+    if(title.length >= 3 && title.length <= 1000) {
+        writeCheck[1] = true;
+    } else {
+        writeCheck[1] = false;
+    }
+}
+
+function validateWriting() {
+    if(writeCheck[0] && writeCheck[1]) {
+        let write = new Object;
+        let commentArrayData = new Array;
+        let commentData = new Object;
+
+        let board = JSON.parse(localStorage.getItem("board"));
+        let loginUser = JSON.parse(localStorage.getItem("user"));
+        let comment = JSON.parse(localStorage.getItem("comment"));
+
+        write.title = document.getElementById("title").value;
+        write.content = document.getElementById("content").value;
+        write.hits = 0;
+        write.date = toStringDate();
+        write.nickname = loginUser.nickname;
+
+        commentData.nickname = "";
+        commentData.input = "";
+        commentData.date = "";
+
+        board.push(write);
+        commentArrayData.push(comment);
+        comment.push(commentArrayData);
+        localStorage.setItem("board", JSON.stringify(board));
+        localStorage.setItem("comment", JSON.stringify(comment));
+        window.location.href='main-member.html'
+    } else {
+        document.getElementById('writingMessage').innerText = "제목은 공란일 수 없고 글 내용은 3글자 이상 1000 글자 이하여야 합니다.";
+        document.querySelector('#writingMessage').style.color = "red";
     }
 }
