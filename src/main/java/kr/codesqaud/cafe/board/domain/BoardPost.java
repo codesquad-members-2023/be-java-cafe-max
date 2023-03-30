@@ -4,18 +4,18 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class BoardPost {
-    private Long boardId;
+    private Long postId;
     private String writer;
     private String title;
-    private String content;
+    private String contents;
     private LocalDateTime writeDt = LocalDateTime.now();
 
-    public Long getBoardId() {
-        return boardId;
+    public Long getPostId() {
+        return postId;
     }
 
-    public void setBoardId(Long boardId) {
-        this.boardId = boardId;
+    public void setPostId(Long postId) {
+        this.postId = postId;
     }
 
     public String getWriter() {
@@ -34,12 +34,12 @@ public class BoardPost {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getContents() {
+        return contents;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 
     public String getWriteDt() {

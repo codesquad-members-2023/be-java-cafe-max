@@ -4,10 +4,7 @@ import kr.codesqaud.cafe.board.domain.BoardPost;
 import kr.codesqaud.cafe.board.repository.BoardRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/board")
@@ -34,6 +31,12 @@ public class BoardController {
     public String list(Model model) {
         model.addAttribute("postList", boardRepository.getPostList());
         return "index";
+    }
+
+    @GetMapping("/{postId}")
+    public String getDetailPost(@PathVariable Long postId, Model model) {
+        model.addAttribute("post", boardRepository.getPost(postId));
+        return "/board/detail";
     }
 
 }

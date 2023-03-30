@@ -13,12 +13,12 @@ public class BoardRepository {
     Map<Long, BoardPost> boardData = new HashMap<>();
 
     public void add(BoardPost boardPost) {
-        boardPost.setBoardId((long) (boardData.size() + 1));
-        boardData.put(boardPost.getBoardId(), boardPost);
+        boardPost.setPostId((long) (boardData.size() + 1));
+        boardData.put(boardPost.getPostId(), boardPost);
     }
 
-    public BoardPost getPost(Long boardId) {
-        return boardData.get(boardId);
+    public BoardPost getPost(Long postId) {
+        return boardData.get(postId);
     }
 
     public List<BoardPost> getPostList() {
