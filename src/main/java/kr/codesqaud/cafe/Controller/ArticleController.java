@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ArticleController {
@@ -31,13 +32,13 @@ public class ArticleController {
 
     @GetMapping("/")
     public String listArticles(Model model){
-        model.addAttribute("articles", articleService.checkArticles());
+        model.addAttribute("articles", articleService.getArticleList());
         return "/index";
     }
 
     @GetMapping("/articles/{index}")
     public String showArticleDetail(Model model, @PathVariable Long index){
-        model.addAttribute("articleDetail", articleService.checkArticleDetail(index));
+        model.addAttribute("articleDetail", articleService.getArticleDetail(index));
         return "/qna/show";
     }
 
