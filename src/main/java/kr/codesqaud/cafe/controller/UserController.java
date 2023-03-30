@@ -21,11 +21,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/create")
-    public String signUpPage() {
-        return "/user/form";
-    }
-
     @PostMapping("/user/create")
     public String create(final UserDTO userDTO) {
         User user = new User(userDTO.getUserId(), userDTO.getPassword(), userDTO.getName(), userDTO.getEmail());

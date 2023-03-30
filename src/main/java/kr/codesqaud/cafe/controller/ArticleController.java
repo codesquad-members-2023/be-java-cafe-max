@@ -20,11 +20,6 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/article/write")
-    public String articlePage() {
-        return "/qna/form";
-    }
-
     @PostMapping("/article/write")
     public String write(final ArticleDTO articleDTO) {
         Article article = new Article(articleDTO.getWriter(), articleDTO.getTitle(), articleDTO.getContents());
