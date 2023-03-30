@@ -21,12 +21,8 @@
 
 ### 구현할 기능 목록
 
-- /members/sign-up GET 요청일 경우 회원가입 화면으로 이동한다.
-- /members GET 요청일 경우 회원목록 화면으로 이동한다.
-- /members POST 요청이고, 요청 헤더의 Content-Type이 application/x-www-form-urlencoded일 경우  
-    요청 바디 값을 통해 회원을 저장한다.
-- /members/{id} GET 요청일 경우 회원 프로필 화면으로 이동한다.
-- /members/{id} PUT 요청이고, 요청 헤더의 Content-Type이 application/x-www-form-urlencoded일 경우  
-  요청 바디 값을 통해 회원 정보를 수정한다.
-- /members/{id} DELETE 요청일 경우 회원을 삭제한다.
-
+- 루트 경로일 때 홈 화면을 출력한다. ✅
+- 회원 목록 조회한다.
+- 이메일, 패스워드,닉네임을 입력받아서 회원 가입을 한다.
+    - 회원 가입 후 회원 목록 조회로 이동한다.
+- 회원 프로필 조회한다.

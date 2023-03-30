@@ -1,0 +1,24 @@
+.title {
+  margin-top : 40%;
+  text-align: center;
+}
+
+.form-floating {
+  margin-top: 20px;
+}
+
+.m-auto {
+  max-width: 330px;
+}
+
+form {
+  margin-top: 100px;
+}
+
+#signUp {
+  text-align: center;
+}
+
+.alert {
+  margin: 15px 10% 0 10%;
+}

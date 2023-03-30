@@ -1,0 +1,11 @@
+html, body, main {
+    height: 100%;
+}
+
+main, .navbar {
+    padding: 0 3rem 0 3rem!important;
+}
+
+header {
+    margin-top: 20px;
+}
