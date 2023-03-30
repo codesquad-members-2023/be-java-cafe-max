@@ -24,6 +24,36 @@ public class UserController {
         return "user/form";
     }
 
+    @GetMapping("/join")
+    public String joinFormDirect() {
+        return "user/form";
+    }
+
+    @GetMapping("/user/login")
+    public String loginForm() {
+        return "user/login";
+    }
+
+    @GetMapping("/login")
+    public String loginFormDirect() {
+        return "user/login";
+    }
+
+    @GetMapping("/user/list")
+    public String listForm() {
+        return "user/list";
+    }
+
+    @GetMapping("/list")
+    public String listFormDirect() {
+        return "user/list";
+    }
+
+    @GetMapping("/")
+    public String homeForm() {
+        return "/index";
+    }
+
     @PostMapping("/user/create")
     public String create(UserForm form) {
         User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
