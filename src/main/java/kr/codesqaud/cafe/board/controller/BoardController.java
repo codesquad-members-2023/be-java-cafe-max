@@ -16,11 +16,6 @@ public class BoardController {
         this.boardRepository = boardRepository;
     }
 
-    @GetMapping("/write")
-    public String writePost() {
-        return "/board/write";
-    }
-
     @PostMapping("/write")
     public String writePost(@ModelAttribute BoardPost boardPost) {
         boardRepository.add(boardPost);

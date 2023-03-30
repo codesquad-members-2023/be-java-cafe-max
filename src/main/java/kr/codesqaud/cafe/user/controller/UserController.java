@@ -17,11 +17,6 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/add")
-    public String addUser() {
-        return "user/form";
-    }
-
     @PostMapping("/add")
     public String addUser(@ModelAttribute User user) {
         userRepository.add(user);
