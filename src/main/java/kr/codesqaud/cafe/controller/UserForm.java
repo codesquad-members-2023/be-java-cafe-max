@@ -2,16 +2,16 @@ package kr.codesqaud.cafe.controller;
 
 public class UserForm {
 
-    private Long userId;
+    private String userId;
     private String password;
     private String name;
     private String email;
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
