@@ -20,6 +20,11 @@ public class UserController {
         this.userMemoryRepository = userMemoryRepository;
     }
 
+    @GetMapping("/user/join")
+    public String join() {
+        return "user/form";
+    }
+
     @PostMapping("/user/signup")
     public String signUp(
             @RequestParam("userId") String userId,
