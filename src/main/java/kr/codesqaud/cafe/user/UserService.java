@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.user;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -20,5 +21,9 @@ public class UserService {
 
     public List<User> getUserList() {
         return userRepository.getRepository();
+    }
+
+    public User findByUserId(String userId) {
+        return userRepository.fineByUserId(userId);
     }
 }
