@@ -1,13 +1,16 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.UserJoinDto;
+import kr.codesqaud.cafe.controller.dto.UserReadDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping
-    public String list(Model model) {
+    public String readUsers(Model model) {
         model.addAttribute("users", userService.findAll());
 
         return "user/list";
@@ -39,5 +42,12 @@ public class UserController {
         userService.join(userJoinDto);
 
         return "redirect:/users";
+    }
+
+    @GetMapping("/{id}")
+    public String readUser(@PathVariable Long id, Model model) {
+        model.addAttribute("user", userService.find(id));
+
+        return "user/profile";
     }
 }
