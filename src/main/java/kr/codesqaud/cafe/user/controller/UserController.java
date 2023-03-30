@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.user.controller;
 
-import kr.codesqaud.cafe.user.controller.domain.User;
-import kr.codesqaud.cafe.user.controller.repository.UserRepository;
+import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
