@@ -1,19 +1,17 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.domain.question;
 
-import kr.codesqaud.cafe.domain.question.ArticleLog;
-
-public class ArticleDto {
+public class Article {
 
     private int index;
     private String writer;
     private String title;
     private String contents;
 
-    public ArticleDto(String writer, String title, String contents) {
+    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.index = ArticleLog.articleList.size();
+        this.index = ArticleMemoryImpl.articleList.size();
     }
 
     public int getIndex() {
