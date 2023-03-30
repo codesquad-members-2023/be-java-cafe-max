@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping("/join")
     public String joinFormDirect() {
-        return "user/form";
+        return "redirect:user/join";
     }
 
     @GetMapping("/user/login")
@@ -36,17 +36,17 @@ public class UserController {
 
     @GetMapping("/login")
     public String loginFormDirect() {
-        return "user/login";
+        return "redirect:/user/login";
     }
 
     @GetMapping("/user/list")
     public String listForm() {
-        return "user/list";
+        return "redirect:/users";
     }
 
     @GetMapping("/list")
     public String listFormDirect() {
-        return "user/list";
+        return "redirect:/users";
     }
 
     @GetMapping("/")
