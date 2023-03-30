@@ -14,7 +14,7 @@
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
           <header class="qna-header">
-              <h2 class="qna-title" th:text="${title}"></h2>
+              <h2 class="qna-title" th:text="${article.title}"></h2>
           </header>
           <div class="content-main">
               <article class="article">
@@ -23,7 +23,7 @@
                           <img src="https://graph.facebook.com/v2.3/100000059371774/picture" class="article-author-thumb" alt="">
                       </div>
                       <div class="article-header-text">
-                          <a href="/users/92/kimmunsu" class="article-author-name" th:text="${writer}"></a>
+                          <a href="/users/92/kimmunsu" class="article-author-name" th:text="${article.writer}"></a>
                           <a href="/questions/413" class="article-header-time" title="퍼머링크">
                               2015-12-30 01:47
                               <i class="icon-link"></i>
@@ -31,7 +31,7 @@
                       </div>
                   </div>
                   <div class="article-doc">
-                      <p th:text="${contents}"></p>
+                      <p th:text="${article.contents}"></p>
                   </div>
                   <div class="article-util">
                       <ul class="article-util-list">

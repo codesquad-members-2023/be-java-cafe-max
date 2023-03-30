@@ -27,10 +27,7 @@ public class ArticleController {
 
     @PostMapping("/article/write")
     public String write(final ArticleDTO articleDTO) {
-        Article article = new Article();
-        article.setWriter(articleDTO.getWriter());
-        article.setTitle(articleDTO.getTitle());
-        article.setContents(articleDTO.getContents());
+        Article article = new Article(articleDTO.getWriter(), articleDTO.getTitle(), articleDTO.getContents());
         articleService.save(article);
         return "redirect:/";
     }
@@ -38,9 +35,7 @@ public class ArticleController {
     @GetMapping("/articles/{index}")
     public String viewArticle(@PathVariable final long index, final Model model) {
         Article findArticle = articleService.findOne(index).get();
-        model.addAttribute("writer", findArticle.getWriter());
-        model.addAttribute("title", findArticle.getTitle());
-        model.addAttribute("contents", findArticle.getContents());
+        model.addAttribute("article", findArticle);
         return "/qna/show";
     }
 
