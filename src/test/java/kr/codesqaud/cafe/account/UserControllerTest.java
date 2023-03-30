@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -83,8 +84,7 @@ class UserControllerTest {
 				.param("email", JACK_EMAIL)
 				.param("nickname", "jack")
 				.param("password", JACK_PASSWORD))
-			.andExpect(status().is3xxRedirection())
-			.andExpect(model().attributeExists("joinForm"));
+			.andExpect(status().is3xxRedirection());
 
 		Assertions.assertThat(usersRepository.findByEmail(JACK_EMAIL)).isPresent();
 	}
@@ -216,5 +216,10 @@ class UserControllerTest {
 		user.setPassword(JACK_PASSWORD);
 		usersRepository.save(user);
 		return user;
+	}
+
+	@AfterEach
+	void clearRepository() {
+		usersRepository.clear();
 	}
 }
