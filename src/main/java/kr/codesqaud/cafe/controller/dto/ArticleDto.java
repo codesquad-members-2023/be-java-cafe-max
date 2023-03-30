@@ -21,7 +21,7 @@ public class ArticleDto {
 		this.createdAt = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm").format(createdAt);
 	}
 
-	public static ArticleDto from(Article article) {
+	public static ArticleDto from(final Article article) {
 		return new ArticleDto(article.getId(), article.getWriter(), article.getTitle(), article.getContent(),
 			article.getCreatedAt());
 	}
