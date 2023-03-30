@@ -13,6 +13,7 @@ public class BoardRepository {
     Map<Long, BoardPost> boardData = new HashMap<>();
 
     public void add(BoardPost boardPost) {
+        boardPost.setBoardId((long) (boardData.size() + 1));
         boardData.put(boardPost.getBoardId(), boardPost);
     }
 
