@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.ProfileEditDto;
 import kr.codesqaud.cafe.dto.UserDto;
 import kr.codesqaud.cafe.repository.UserRepository;
 
@@ -25,4 +26,9 @@ public class UserService {
     public UserDto getUserByUserId(int userId){
         return userRepository.findUser(userId);
     }
+
+    public void updateUserByUserId(ProfileEditDto profileEditDto){
+        userRepository.findOne(profileEditDto);
+    }
+
 }
