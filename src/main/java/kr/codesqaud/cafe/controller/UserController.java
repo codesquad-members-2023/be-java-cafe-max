@@ -38,4 +38,5 @@ public class UserController {
         model.addAttribute("user",userRepository.getUserByUserId(userId));
         return "user/profile";
     }
+
 }
