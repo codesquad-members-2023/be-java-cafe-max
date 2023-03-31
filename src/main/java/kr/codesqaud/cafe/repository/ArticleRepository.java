@@ -8,5 +8,6 @@ import java.util.List;
 public interface ArticleRepository {
     public Article save(Article article);
     public List<Article> findAll();
+    public Article findByIndex(long index);
     public void clearArticleList();
 }
