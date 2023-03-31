@@ -15,7 +15,7 @@
     </div>
     <div id="posts" class="row row-cols-1">
         <div id="postsCount" class="col">
-            전체글 3개
+            전체글 [[${postResponses.size()}]]개
         </div>
         <table>
             <thead>
@@ -25,23 +25,12 @@
                 <th class="views">조회수</th>
             </thead>
             <tbody>
-                <tr>
-                    <td class="title">게시판 테스트 1</td>
-                    <td class="writer">만두</td>
-                    <td class="writeDate">2023-03-28</td>
-                    <td class="views">0</td>
-                </tr>
-                <tr>
-                    <td class="title">게시판 테스트 1</td>
-                    <td class="writer">관리자</td>
-                    <td class="writeDate">2023-03-28</td>
-                    <td class="views">0</td>
-                </tr>
-                <tr>
-                    <td class="title">게시판 테스트 1</td>
-                    <td class="writer">코드스쿼드</td>
-                    <td class="writeDate">2023-03-28</td>
-                    <td class="views">0</td>
+                <tr th:each="postResponse : ${postResponses}">
+                    <td class="title" th:text="${postResponse.title}">게시판 테스트 1</td>
+                    <td class="writer" th:if="${postResponse.writer == null}">만두</td>
+                    <td class="writer" th:if="${postResponse.writer != null}" th:text="${postResponse.writer}">만두</td>
+                    <td class="writeDate" th:text="${postResponse.writeDate}">2023-03-28</td>
+                    <td class="views" th:text="${postResponse.views}">0</td>
                 </tr>
             </tbody>
         </table>
@@ -71,7 +60,7 @@
             </ul>
         </nav>
         <div class="col text-end">
-            <a id="writeButton" href="#" class="btn btn-primary btn-sm">글쓰기</a>
+            <a id="writeButton" href="#" th:href="@{/posts}" class="btn btn-primary btn-sm">글쓰기</a>
         </div>
     </div>
 </main>
