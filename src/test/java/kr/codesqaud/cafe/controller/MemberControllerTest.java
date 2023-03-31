@@ -123,6 +123,33 @@ class MemberControllerTest {
             .andDo(print());
     }
 
+    @DisplayName("회원 가입시 이메일이 중복인 경우 실패")
+    @Test
+    void signUpFalse4() throws Exception {
+        // given
+        memberRepository.save(new Member(UUID.randomUUID().toString(), "test@gmail.com",
+            "Test1234", "test", LocalDateTime.now()));
+        String savedId2 = memberRepository.save(
+            new Member(UUID.randomUUID().toString(), "test2@gmail.com",
+                "Test1234", "test", LocalDateTime.now()));
+        String editEmail = "test@gmail.com";
+        String editPassword = "Test4444";
+        String editNickName = "만두";
+
+        // when
+
+        // then
+        mockMvc.perform(post("/members", savedId2)
+                .param("email", editEmail)
+                .param("password", editPassword)
+                .param("nickName", editNickName)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+            .andExpect(view().name("member/signUp"))
+            .andDo(print());
+    }
+
     @DisplayName("회원 목록 조회")
     @Test
     void findAll() throws Exception {
@@ -185,8 +212,7 @@ class MemberControllerTest {
     @Test
     void editProfileFalse() throws Exception {
         // given
-        String savedId1 = memberRepository.save(
-            new Member(UUID.randomUUID().toString(), "test@gmail.com",
+        memberRepository.save(new Member(UUID.randomUUID().toString(), "test@gmail.com",
                 "Test1234", "test", LocalDateTime.now()));
         String savedId2 = memberRepository.save(
             new Member(UUID.randomUUID().toString(), "test2@gmail.com",
@@ -203,10 +229,9 @@ class MemberControllerTest {
                 .param("password", editPassword)
                 .param("nickName", editNickName)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-            .andExpect(status().isBadRequest())
+            .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-            .andExpect(view().name("error/400"))
-            .andExpect(model().attribute("errorCode", "[MEMBER_002]"))
+            .andExpect(view().name("member/profileEdit"))
             .andDo(print());
     }
 }

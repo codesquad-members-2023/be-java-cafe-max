@@ -30,6 +30,7 @@ public class MemberController {
         model.addAttribute("memberResponses", memberService.findAll());
         return "member/members";
     }
+
     @PostMapping
     public String signUp(@ModelAttribute @Validated SignUpRequest signUpRequest,
         BindingResult bindingResult) {

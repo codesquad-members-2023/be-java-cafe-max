@@ -1,20 +1,16 @@
 package kr.codesqaud.cafe.exception.common;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 public class BadRequestException extends RuntimeException {
 
     private final BadRequestExceptionCode badRequestExceptionCode;
     private final String errorCode;
-    private final String errorData;
+    private final Object errorData;
 
-    public BadRequestException(Object errorValue) {
+    public BadRequestException(Object errorData) {
         badRequestExceptionCode = BadRequestExceptionCode
             .getBadException(this.getClass());
         this.errorCode = badRequestExceptionCode.getErrorCode();
-        this.errorData = converterJson(errorValue);
+        this.errorData = errorData;
     }
 
     public String getErrorCode() {
@@ -26,17 +22,7 @@ public class BadRequestException extends RuntimeException {
         return badRequestExceptionCode.getErrorMessage();
     }
 
-    public String getErrorData() {
+    public Object getErrorData() {
         return errorData;
-    }
-
-    private String converterJson(Object errorValue) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
-            return objectMapper.writeValueAsString(errorValue);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
