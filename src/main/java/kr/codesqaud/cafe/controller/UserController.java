@@ -1,12 +1,10 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.UserJoinDto;
-import kr.codesqaud.cafe.controller.dto.UserReadDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;

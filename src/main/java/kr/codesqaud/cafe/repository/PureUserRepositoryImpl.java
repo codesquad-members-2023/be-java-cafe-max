@@ -24,6 +24,20 @@ public class PureUserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByUserId(String userId) {
+        return users.values().stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findAny();
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return users.values().stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findAny();
+    }
+
+    @Override
     public Optional<User> findById(Long id) {
         return Optional.ofNullable(users.get(id));
     }
