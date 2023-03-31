@@ -60,7 +60,7 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/user/{userId}/form")
+    @GetMapping("/user/{userId}/update")
     public String showPasswordEditForm(@PathVariable("userId") String userId, Model model){
         model.addAttribute("user", userRepository.findByUserId(userId));
 
