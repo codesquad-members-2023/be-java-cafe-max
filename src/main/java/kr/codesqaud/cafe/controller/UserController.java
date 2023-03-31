@@ -16,7 +16,7 @@ public class UserController {
         this.userRepository = userMemoryRepository;
     }
 
-    @GetMapping("/user/join")
+    @GetMapping("/user/signup")
     public String join() {
         return "user/form";
     }
