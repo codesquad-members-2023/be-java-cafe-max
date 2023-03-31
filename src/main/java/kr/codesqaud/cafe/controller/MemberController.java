@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.domain.Member;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -37,5 +38,13 @@ public class MemberController {
         System.out.println("Imhere, userlist");
         System.out.println(memberList);
         return "user/list";
+    }
+
+    @GetMapping("/user/profile/{uid}")
+    public String showProfile(@PathVariable Long uid, Model model) {
+        Member member = memberService.findMemberByUid(uid);
+        model.addAttribute("member", member);
+
+        return "user/profile";
     }
 }

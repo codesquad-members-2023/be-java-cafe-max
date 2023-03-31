@@ -89,7 +89,7 @@
                     <td th:text="${member.loginId}"></td>
                     <td th:text="${member.name}"></td>
                     <td th:text="${member.email}"></td>
-                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                    <td><a th:href="@{/user/profile/{uid}(uid=${member.uid})}" class="btn btn-success" role="button">프로필</a></td>
                 </tr>
               </tbody>
           </table>
