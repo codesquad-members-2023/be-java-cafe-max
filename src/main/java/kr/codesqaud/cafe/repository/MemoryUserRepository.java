@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class MemoryUserRepository implements UserRepository {
 
     private final static Map<Long, User> userMap = new ConcurrentHashMap<>();
-    private static AtomicLong userSequence = new AtomicLong();
+    private final static AtomicLong userSequence = new AtomicLong();
 
     @Override
     public void join(User user) {

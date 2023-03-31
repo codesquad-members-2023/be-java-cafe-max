@@ -3,12 +3,10 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
@@ -23,7 +21,10 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> gatherAll() {
-        return new ArrayList<>(articleMap.values());
+        return new ArrayList<>(articleMap.values())
+                .stream()
+                .sorted(Comparator.comparing(Article::getId).reversed())
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override
