@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.dto.PostWriteRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MemoryPostRepository implements PostRepository {
@@ -18,6 +19,11 @@ public class MemoryPostRepository implements PostRepository {
         Post post = postWriteRequest.toEntity(++sequence);
         posts.put(sequence, post);
         return post;
+    }
+
+    @Override
+    public Optional<Post> findById(long id) {
+        return Optional.ofNullable(posts.get(id));
     }
 
     @Override

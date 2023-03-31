@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.dto.PostDetailResponse;
 import kr.codesqaud.cafe.dto.PostListResponse;
 
 import java.time.LocalDateTime;
@@ -22,5 +23,9 @@ public class Post {
 
     public PostListResponse toListResponse() {
         return new PostListResponse(id, writer, title, writingTime);
+    }
+
+    public PostDetailResponse toDetailResponse() {
+        return new PostDetailResponse(writer, title, contents, writingTime);
     }
 }
