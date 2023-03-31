@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArticleService {
@@ -28,5 +29,10 @@ public class ArticleService {
             postDTOList.add(ArticleDTO.toArticleDTO(article));
         }
         return postDTOList;
+    }
+
+    public ArticleDTO clickOne(long id) {
+        Optional<Article> wantedPost = articleRepository.findById(id);
+        return wantedPost.map(ArticleDTO::toArticleDTO).orElse(null);
     }
 }
