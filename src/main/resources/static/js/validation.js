@@ -121,3 +121,16 @@ function checkWriter() {
     message.classList.add('hide');
     return true;
 }
+
+/* 회원 정보 수정 */
+function validateUpdate() {
+    const email = checkEmail();
+    const nickname = checkNickname();
+    const password = checkPassword();
+
+    if (email && nickname && password) {
+        return true;
+    }
+
+    return false;
+}
