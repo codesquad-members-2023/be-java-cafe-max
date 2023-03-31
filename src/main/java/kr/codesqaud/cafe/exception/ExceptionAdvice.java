@@ -1,11 +1,19 @@
 package kr.codesqaud.cafe.exception;
 
 import groovy.util.logging.Slf4j;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
-import org.springframework.http.HttpStatus;
+import kr.codesqaud.cafe.exception.user.UserDuplicatedException;
+import kr.codesqaud.cafe.exception.user.UserNotFoundException;
+import kr.codesqaud.cafe.exception.user.UserValidFormatException;
+import kr.codesqaud.cafe.exception.user.UserValidFormatExceptionType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 @Slf4j
@@ -13,52 +21,46 @@ public class ExceptionAdvice {
 
     private static final Logger logger = Logger.getLogger("ExceptionAdvice");
 
-    // BaseException을 구현한 예외 클래스들을 처리하고 응답합니다.
-    @ExceptionHandler(BaseException.class)
-    public ResponseEntity<Object> handleBaseException(BaseException ex) {
+    // 사용자의 중복된 입력에 대해서 예외 처리합니다.
+    @ExceptionHandler(UserDuplicatedException.class)
+    public ResponseEntity<Object> handleUserDuplicatedException(BaseException ex) {
         ExceptionDto exceptionDto = new ExceptionDto(
             ex.getExceptionType().getErrorCode(),
             ex.getExceptionType().getHttpStatus(),
             ex.getExceptionType().getErrorMessage());
         logger.info(exceptionDto.toString());
-        return new ResponseEntity<>(exceptionDto, exceptionDto.httpStatus);
+        return new ResponseEntity<>(exceptionDto, exceptionDto.getHttpStatus());
     }
 
-    // 서버에서 예외가 발생하더라도 상태코드 200을 반환합니다.
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleException(Exception ex) {
-        ex.printStackTrace();
-        return new ResponseEntity<>(HttpStatus.OK);
+    // 사용자의 유효하지 않은 입력 형식에 대해서 예외 처리합니다.
+    @ExceptionHandler(UserValidFormatException.class)
+    public ResponseEntity<Object> handleUserValidFormatException(BaseException ex,
+        MethodArgumentNotValidException mex) {
+        // key: 필드 입력 제목(ex, name, password), value: 에러 내용을 담은 ExceptionDto 객체
+        Map<String, ExceptionDto> exceptionDtoMap = new HashMap<>();
+        for (FieldError error : mex.getFieldErrors()) {
+            ExceptionDto exceptionDto = new ExceptionDto(
+                ex.getExceptionType().getErrorCode(),
+                ex.getExceptionType().getHttpStatus(),
+                error.getDefaultMessage());
+            exceptionDtoMap.put(error.getField(), exceptionDto);
+        }
+        return new ResponseEntity<>(exceptionDtoMap, ex.getExceptionType().getHttpStatus());
     }
 
-    static class ExceptionDto {
+    // 사용자의 유효하지 않은 입력 형식에 대해서 handleUserValidFormatException 메서드에게 예외처리를 전달합니다.
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleMethodArgumentNotValidException(
+        MethodArgumentNotValidException ex) {
+        BaseException bex =
+            new UserValidFormatException(UserValidFormatExceptionType.INVALID_USER_FORMAT);
+        return handleUserValidFormatException(bex, ex);
+    }
 
-        private final int errorCode;
-        private final HttpStatus httpStatus;
-        private final String errorMessage;
-
-        public ExceptionDto(int errorCode, HttpStatus httpStatus, String errorMessage) {
-            this.errorCode = errorCode;
-            this.httpStatus = httpStatus;
-            this.errorMessage = errorMessage;
-        }
-
-        public int getErrorCode() {
-            return errorCode;
-        }
-
-        public HttpStatus getHttpStatus() {
-            return httpStatus;
-        }
-
-        public String getErrorMessage() {
-            return errorMessage;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("{errorCode: %d, httpStatus: %s, errorMessage: %s}",
-                errorCode, httpStatus, errorMessage);
-        }
+    // 사용자가 브라우저를 통하여 db에 없는 회원의 프로필을 접근하고자 하는 경우 전체 회원 목록 조회 페이지(user/list.html)로 이동하도록 처리합니다.
+    @ExceptionHandler(UserNotFoundException.class)
+    public ModelAndView handleUserNotFoundException(BaseException ex) {
+        ModelAndView mav = new ModelAndView("redirect:/users");
+        return mav;
     }
 }
