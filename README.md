@@ -92,10 +92,22 @@
 
 > 지금까지 진행한 내용을 정리하여 오후 4시까지 PR을 보낸다.
 
-1. 회원 정보 수정 기능 구현 (2H)  
-    수정된 값을 전송할 때 `PUT` 값을 `hidden`으로 전송한다.
+1. 회원 정보 수정 기능 구현 (2H) ✔️
 2. Mission 1단계 + 2단계 PR 작성하기 (1H)
 3. Spring 강의 듣기 (3H)
+
+### URL
+
+1. 회원 가입
+   - `GET` /users/join
+   - `POST` /users/join
+2. 회원 목록 조회
+   - `GET` /users
+3. 회원 프로필 정보 보기
+   - `GET` /users/{userId}
+4. 회원 정보 수정 **추가**
+   - `GET` /users/{userId}/update
+   - `POST` /users/{userId}/update
 
 ## 주말 학습 계획
 
