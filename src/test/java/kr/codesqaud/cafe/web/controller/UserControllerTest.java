@@ -217,7 +217,7 @@ class UserControllerTest {
         String url = "/users/user1";
         //when
         ExceptionDto error = (ExceptionDto) mockMvc.perform(get(url))
-            .andExpect(status().isOk())
+            .andExpect(status().is3xxRedirection())
             .andReturn().getModelAndView().getModelMap().get("error");
         //then
         Assertions.assertThat(error.getErrorCode()).isEqualTo(800);
