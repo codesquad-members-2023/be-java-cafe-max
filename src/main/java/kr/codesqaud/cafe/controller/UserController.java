@@ -31,10 +31,10 @@ public class UserController {
     @PostMapping("/user/join")
     public String signUp(@ModelAttribute UserJoinDTO userJoinDTO) {
         userService.signUp(userJoinDTO);
-        return "redirect:/users";
+        return "redirect:/users/list";
     }
 
-    @GetMapping("/users")
+    @GetMapping("/users/list")
     public String list(Model model) {
         List<UserReadDTO> users = userService.findUsers();
         model.addAttribute("users", users);

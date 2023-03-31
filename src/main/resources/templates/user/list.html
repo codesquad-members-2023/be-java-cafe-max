@@ -30,17 +30,17 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>이름</th>
-                        <th>이메일</th>
                         <th>닉네임</th>
+                        <th>이메일</th>
+                        <th>정보 수정</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="user : ${users}">
-                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.userId}"></td>
                         <td th:text="${user.email}"></td>
                         <td>
-                            <a th:text="${user.userId}" th:href="@{|/users/${user.id}|}"></a>
+                            <a th:href="@{|/users/${user.id}|}">수정하기</a>
                         </td>
                     </tr>
                     </tbody>
