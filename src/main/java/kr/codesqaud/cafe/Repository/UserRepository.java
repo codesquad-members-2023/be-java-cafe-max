@@ -14,8 +14,8 @@ public class UserRepository {
         return user;
     }
 
-    public Optional<User> findByEmail(String email) {
-        return Optional.ofNullable(store.get(email));
+    public Optional<String> findByEmail(String id) {
+        return Optional.ofNullable(store.get(id).getEmail());
     }
 
     public List<User> findAllUser() {

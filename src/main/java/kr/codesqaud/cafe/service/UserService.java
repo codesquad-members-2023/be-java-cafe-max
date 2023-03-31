@@ -17,18 +17,19 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public String join(User user) {
+    public void join(User user) {
         checkDuplicateId(user.getEmail());
         userRepository.save(user);
-        return user.getEmail();
     }
 
     private void checkDuplicateId(String email) {
         userRepository.findByEmail(email)
                 .ifPresent(m -> {
-    throw new IllegalArgumentException("이미 존재하는 회원입니다.");});
+                    throw new IllegalArgumentException("이미 존재하는 회원입니다.");
+                });
     }
-    public List<User> showAllUser(){
+
+    public List<User> showAllUser() {
         return userRepository.findAllUser();
     }
 }
