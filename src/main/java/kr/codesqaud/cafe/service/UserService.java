@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Member;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -26,5 +27,8 @@ public class UserService {
         userRepository.findByEmail(email)
                 .ifPresent(m -> {
     throw new IllegalArgumentException("이미 존재하는 회원입니다.");});
+    }
+    public List<User> showAllUser(){
+        return userRepository.findAllUser();
     }
 }
