@@ -10,24 +10,23 @@ import java.util.Map;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
-    private final Map<String, Article> articleMap = new HashMap<>();
+    private final Map<Long, Article> articleMap = new HashMap<>();
+    private static Long sequence = 0L;
+
 
     @Override
     public void save(Article article) {
-        if (articleMap.containsKey(article.getWriter())) {
-            return;
-        }
-
-        articleMap.put(article.getWriter(), article);
-    }
-
-    @Override
-    public Article findByName(String name) {
-        return articleMap.get(name);
+        article.setArticleIndex(++sequence);
+        articleMap.put(article.getArticleIndex(), article);
     }
 
     @Override
     public List<Article> findAll() {
         return new ArrayList<>(articleMap.values());
+    }
+
+    @Override
+    public Article findByArticleIndex(Long articleIndex) {
+        return articleMap.get(articleIndex);
     }
 }

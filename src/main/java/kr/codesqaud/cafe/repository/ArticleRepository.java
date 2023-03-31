@@ -7,7 +7,7 @@ import java.util.List;
 public interface ArticleRepository {
     void save(Article article);
 
-    Article findByName(String name);
-
     List<Article> findAll();
+
+    Article findByArticleIndex(Long articleIndex);
 }

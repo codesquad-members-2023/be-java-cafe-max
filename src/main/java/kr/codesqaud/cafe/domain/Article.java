@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
 public class Article {
+    private Long articleIndex;
     private String writer;
     private String title;
     private String contents;
@@ -16,6 +17,14 @@ public class Article {
 
     public String getWriter() {
         return writer;
+    }
+
+    public Long getArticleIndex() {
+        return articleIndex;
+    }
+
+    public void setArticleIndex(Long articleIndex) {
+        this.articleIndex = articleIndex;
     }
 
     public void setWriter(String writer) {
