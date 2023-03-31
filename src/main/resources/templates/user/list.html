@@ -21,7 +21,8 @@
                         {{#users}}
                         <tbody>
                         <tr>
-                            <th>{{index}}</th> <td><a href="/users/{{userID}}">{{userID}}</a></td> <td>{{nickname}}</td> <td>{{email}}</td> <td>{{signUpDate}}</td> <td><a href="#" class="button" id="modify" role="button">수정</a></td>
+                            <th>{{index}}</th> <td><a href="/users/{{userID}}">{{userID}}</a></td> <td>{{nickname}}</td>
+                            <td>{{email}}</td> <td>{{signUpDate}}</td> <td><a href="/users/{{userID}}/form" class="button" id="modify" role="button">수정</a></td>
                         </tr>
                         </tbody>
                         {{/users}}

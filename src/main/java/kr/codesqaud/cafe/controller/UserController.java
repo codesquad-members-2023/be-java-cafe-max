@@ -46,4 +46,16 @@ public class UserController {
         model.addAttribute("user", userRepository.findByUserID(userID).get());
         return "/user/profile";
     }
+
+    @GetMapping("/users/{userID}/form")
+    public String updateForm(@PathVariable String userID, Model model) {
+        model.addAttribute("user", userRepository.findByUserID(userID).get());
+        return "/user/updateForm";
+    }
+
+    @PostMapping("/user/{userID}/update")
+    public String updateUserInfo(@PathVariable String userID, UserDto userDto) {
+        userRepository.update(userID, userDto);
+        return "redirect:/users";
+    }
 }

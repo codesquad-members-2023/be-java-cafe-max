@@ -12,6 +12,7 @@ import java.util.Optional;
 public class UserFormRepository implements UserRepository {
     private final List<User> userList = new ArrayList<>();
     private long index = 0L;
+
     @Override
     public User save(UserDto userDto) {
         validateDuplicateMember(userDto);
@@ -19,6 +20,15 @@ public class UserFormRepository implements UserRepository {
                 , userDto.getEmail(), userDto.getNickname(), userDto.getPassword(), signUpDate());
         userList.add(user);
         return user;
+    }
+
+    @Override
+    public User update(String userID, UserDto userDto) {
+        User user = findByUserID(userID).get();
+        int userIndex = Math.toIntExact(user.getIndex()-1);
+        userList.set(userIndex, new User(user.getIndex(), userDto.getUserID()
+                , userDto.getEmail(), userDto.getNickname(), userDto.getPassword(), user.getSignUpDate()));
+        return userList.get(userIndex);
     }
 
     private String signUpDate() {
@@ -32,6 +42,10 @@ public class UserFormRepository implements UserRepository {
                 .ifPresent(u -> {
                     throw new IllegalStateException("이미 존재하는 회원 아이디입니다.");
                 });
+        validateDuplicateUpdate(userDto);
+    }
+
+    private void validateDuplicateUpdate(UserDto userDto) {
         findByEmail(userDto.getEmail())
                 .ifPresent(u -> {
             throw new IllegalStateException("이미 존재하는 회원 이메일입니다.");
@@ -60,13 +74,6 @@ public class UserFormRepository implements UserRepository {
     public Optional<User> findByNickname(String nickname) {
         return userList.stream()
                 .filter(user -> user.getNickname().equals(nickname))
-                .findAny();
-    }
-
-    @Override
-    public Optional<User> findByPassword(String password) {
-        return userList.stream()
-                .filter(user -> user.getPassword().equals(password))
                 .findAny();
     }
 
