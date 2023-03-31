@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.memory;
 
 import kr.codesqaud.cafe.domain.Member;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -35,6 +36,6 @@ public class MemoryMemberRepository implements MemberRepository {
 
     @Override
     public List<Member> findAllMember() {
-        return null;
+        return new ArrayList<>(repository.values());
     }
 }

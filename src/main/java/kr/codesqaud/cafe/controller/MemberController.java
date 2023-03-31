@@ -35,6 +35,7 @@ public class MemberController {
         List<Member> memberList = memberService.findAllMember();
         model.addAttribute("memberlist", memberList);
         System.out.println("Imhere, userlist");
+        System.out.println(memberList);
         return "user/list";
     }
 }
