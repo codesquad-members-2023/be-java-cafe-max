@@ -53,7 +53,7 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/user/{userId}")
     public String showUserProfile(
             @PathVariable("userId") String userId
             ,Model model
