@@ -39,11 +39,6 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/")
-    public String homeForm() {
-        return "/index";
-    }
-
     @PostMapping("/user/create")
     public String create(UserForm form) {
         User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
