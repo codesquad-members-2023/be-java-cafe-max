@@ -19,19 +19,19 @@ public class UserService {
     }
 
     public String join(User user) {
-        validateDuplicateMember(user);
+        validateDuplicateUser(user);
         userRepository.save(user);
         return user.getUserId();
     }
 
-    private void validateDuplicateMember(User user) {
-        userRepository.findByName(user.getName())
+    private void validateDuplicateUser(User user) {
+        userRepository.findById(user.getUserId())
                 .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다");
+                    throw new IllegalStateException("이미 존재하는 아이디입니다");
                 });
     }
 
-    public List<User> findMembers() {
+    public List<User> findUsers() {
         return userRepository.findAll();
     }
 

@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String list(Model model) {
-        List<User> users = userService.findMembers();
+        List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "/user/list";
     }
