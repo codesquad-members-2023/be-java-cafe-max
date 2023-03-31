@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.user.repository;
 
 import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.dto.UserDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -25,12 +26,12 @@ public class UserRepository {
         return users.containsKey(userId);
     }
 
-    public User getUser(String userId) {
-        return users.get(userId);
+    public UserDto getUser(String userId) {
+        return users.get(userId).toUserDto();
     }
 
-    public List<User> getUserList() {
-        return users.values().stream().collect(Collectors.toList());
+    public List<UserDto> getUserList() {
+        return users.values().stream().map(user -> user.toUserDto()).collect(Collectors.toList());
     }
 
 }
