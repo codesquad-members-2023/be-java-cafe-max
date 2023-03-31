@@ -29,13 +29,13 @@ public class UserController {
         return "user/form";
     }
 
-    @PostMapping("")
+    @PostMapping
     public String registerUser(UserRequestDto userRequestDto) {
         userService.join(userRequestDto.toEntity());
         return "redirect:/users";
     }
 
-    @GetMapping("")
+    @GetMapping
     public String showUsers(Model model) {
         List<UserResponseDto> users = userService.showUsers();
         model.addAttribute("users", users);
