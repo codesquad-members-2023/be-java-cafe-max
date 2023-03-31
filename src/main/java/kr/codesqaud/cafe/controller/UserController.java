@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
-    private final UserRepository userMemoryRepository;
+    private final UserRepository userRepository;
     @Autowired
     public UserController(UserMemoryRepository userMemoryRepository) {
-        this.userMemoryRepository = userMemoryRepository;
+        this.userRepository = userMemoryRepository;
     }
 
     @GetMapping("/user/join")
@@ -39,7 +39,7 @@ public class UserController {
         user.setName(name);
         user.setEmail(email);
 
-        userMemoryRepository.save(user);
+        userRepository.save(user);
 
         model.addAttribute("user", user);
 
@@ -48,7 +48,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String showUserList(Model model){
-        model.addAttribute("users", userMemoryRepository.findAll());
+        model.addAttribute("users", userRepository.findAll());
 
         return "user/list";
     }
@@ -58,7 +58,7 @@ public class UserController {
             @PathVariable("userId") String userId
             ,Model model
     ){
-        model.addAttribute("userProfile", userMemoryRepository.findByUserId(userId));
+        model.addAttribute("userProfile", userRepository.findByUserId(userId));
 
         return "user/profile";
     }
