@@ -3,6 +3,10 @@
 마스터즈 2023 스프링 카페
 
 # 기술 키워드
+️▶️ [[Thymeleaf] Fragment Expressions](#thymeleaf-fragment-expressions)   
+️▶️ [[Thymeleaf] onClick 이벤트](#thymeleaf-onclick-이벤트)   
+️▶️ [[Spring] Annotation](#spring-annotation)
+
 
 ## [Thymeleaf] Fragment Expressions
 
@@ -32,7 +36,7 @@
     - `<td onClick="location.href='링크주소'">링크로 이동\</td>`
 
 - 새 창으로 이동
-    - `<td onClick="**window**.open('링크주소','','')">링크로 이동\</td>`
+    - `<td onClick="window.open('링크주소','','')">링크로 이동\</td>`
 
 //
 참고: [table tr td에 onClick 이벤트로 링크 걸기](https://bbirukim.tistory.com/entry/table-tr-td%EC%97%90-onClick-%EC%9D%B4%EB%B2%A4%ED%8A%B8%EB%A1%9C-%EB%A7%81%ED%81%AC-%EA%B1%B8%EA%B8%B0)
@@ -205,7 +209,6 @@ public class UserController {
 ```
 
 // 참고:   
-[스프링(Spring)에서 자주 사용하는 Annotation 개념 및 예제 정리](https://melonicedlatte.com/2021/07/18/182600.html)
-[[Java / Spring ] 어노테이션(@, annotation)의 정의와 종류](https://prinha.tistory.com/entry/%EC%9E%90%EB%B0%94-%EC%8A%A4%ED%94%84%EB%A7%81-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98-annotation%EC%9D%98-%EC%A0%95%EC%9D%98%EC%99%80-%EC%A2%85%EB%A5%98)   
-[스프링 controller에서 파라미터를 받는 다양한 방법 ( @RequestParam, @RequestBody, @PathVariable)](https://velog.io/@shson/%EC%8A%A4%ED%94%84%EB%A7%81-controller%EC%97%90%EC%84%9C-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%EB%A5%BC-%EB%B0%9B%EB%8A%94-%EB%8B%A4%EC%96%91%ED%95%9C-%EB%B0%A9%EB%B2%95-RequestParam-RequestBody-PathVariable)
-
+- [스프링(Spring)에서 자주 사용하는 Annotation 개념 및 예제 정리](https://melonicedlatte.com/2021/07/18/182600.html)
+- [[Java / Spring ] 어노테이션(@, annotation)의 정의와 종류](https://prinha.tistory.com/entry/%EC%9E%90%EB%B0%94-%EC%8A%A4%ED%94%84%EB%A7%81-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98-annotation%EC%9D%98-%EC%A0%95%EC%9D%98%EC%99%80-%EC%A2%85%EB%A5%98)   
+- [스프링 controller에서 파라미터를 받는 다양한 방법 ( @RequestParam, @RequestBody, @PathVariable)](https://velog.io/@shson/%EC%8A%A4%ED%94%84%EB%A7%81-controller%EC%97%90%EC%84%9C-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%EB%A5%BC-%EB%B0%9B%EB%8A%94-%EB%8B%A4%EC%96%91%ED%95%9C-%EB%B0%A9%EB%B2%95-RequestParam-RequestBody-PathVariable)
