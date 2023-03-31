@@ -19,8 +19,7 @@ public class PostService {
 	}
 
 	public Post createNewPost(PostForm postForm) {
-		long newId = Post.createNewId();
-		Post post = new Post(newId);
+		Post post = new Post();
 		post.setNickname(postForm.getNickname());
 		post.setTitle(postForm.getTitle());
 		post.setTextContent(postForm.getTextContent());

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Repository;
 
@@ -11,12 +12,14 @@ import org.springframework.stereotype.Repository;
 public class PostsRepository {
 
 	private final List<Post> usersRepository;
+	private static final AtomicLong atomicKey = new AtomicLong();
 
 	public PostsRepository() {
 		this.usersRepository = new ArrayList<>();
 	}
 
 	public boolean add(Post post) {
+		post.setId(atomicKey.getAndIncrement());
 		return usersRepository.add(post);
 	}
 

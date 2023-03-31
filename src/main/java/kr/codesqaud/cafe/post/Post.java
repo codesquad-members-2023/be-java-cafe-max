@@ -1,13 +1,11 @@
 package kr.codesqaud.cafe.post;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicLong;
 
 import kr.codesqaud.cafe.post.form.SimplePostForm;
 
 public class Post {
-	private static final AtomicLong postId = new AtomicLong();
-	private final Long id;
+	private Long id;
 
 	private String nickname;
 
@@ -17,16 +15,12 @@ public class Post {
 
 	private LocalDateTime createdDateTime;
 
-	public Post(Long id) {
-		this.id = id;
-	}
-
-	public static long createNewId() {
-		return postId.getAndIncrement();
-	}
-
 	public Long getId() {
 		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNickname() {
