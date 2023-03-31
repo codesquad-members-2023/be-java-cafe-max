@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head :: head(~{::link})">
+    <link rel="stylesheet" th:href="@{/css/post/write.css}">
+</head>
+<body>
+<header th:replace="~{layout/header :: header}">
+</header>
+<body>
+<header class="navbar container">
+</header>
+<main>
+    <div class="m-auto">
+        <div>
+            <h2 class="title">글쓰기</h2>
+        </div>
+        <form th:action="@{/posts}" th:method="post" th:object="${postWriteRequest}">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="title" name="title"
+                       aria-describedby="validationTitleFeedback"
+                       th:errorclass="is-invalid" th:field="*{title}">
+                <label for="title">제목</label>
+                <div id="validationTitleFeedback" class="invalid-feedback" th:errors="*{title}">
+                </div>
+            </div>
+            <div class="form-floating">
+                <textarea class="form-control" id="content" name="content"
+                       aria-describedby="validationContentFeedback"
+                          th:errorclass="is-invalid" th:field="*{content}"></textarea>
+                <label for="content">내용</label>
+                <div id="validationContentFeedback" class="invalid-feedback" th:errors="*{content}">
+                </div>
+            </div>
+            <div class="text-end">
+                <button id="submit" class="btn btn-primary btn-sm form-floating" type="submit">작성 완료</button>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>
