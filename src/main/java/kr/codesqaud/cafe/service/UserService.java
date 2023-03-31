@@ -34,4 +34,8 @@ public class UserService {
     public Optional<User> findByUserId(String userId) {
         return userRepository.findByUserId(userId);
     }
+
+    public void updateUser(String userId, User updateUser) {
+        userRepository.update(userId, updateUser);
+    }
 }

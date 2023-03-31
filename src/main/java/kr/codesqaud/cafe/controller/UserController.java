@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 
@@ -48,9 +49,15 @@ public class UserController {
     }
 
     @GetMapping("/users/update/{userId}")
-    public String updateForm(@PathVariable String userId, Model model) {
+    public String getUpdate(@PathVariable String userId, Model model) {
         User user = userService.findByUserId(userId).get();
         model.addAttribute("userUpdated", user);
         return "user/updateForm";
+    }
+
+    @PostMapping("/users/update/{userId}")
+    public String putUpdate(@PathVariable String userId, User user) {
+        userService.updateUser(userId, user);
+        return "redirect:/users";
     }
 }

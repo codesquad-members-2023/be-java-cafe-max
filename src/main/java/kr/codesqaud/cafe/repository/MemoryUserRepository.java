@@ -27,4 +27,12 @@ public class MemoryUserRepository implements UserRepository {
     public List<User> findAll() {
         return new ArrayList<>(userMap.values());
     }
+
+    @Override
+    public void update(String userId, User updateUser) {
+        User findUser = findByUserId(userId).get();
+        findUser.setName(updateUser.getName());
+        findUser.setEmail(updateUser.getEmail());
+        findUser.setPassword(updateUser.getPassword());
+    }
 }
