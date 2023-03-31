@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,6 +37,13 @@ public class PostController {
 
         postService.save(postWriteRequest);
         return "redirect:/posts";
+    }
+
+    @GetMapping("/{id}")
+    public String post(@PathVariable Long id, Model model) {
+        model.addAttribute("lineSeparator", System.getProperty("line.separator"));
+        model.addAttribute("postResponse", postService.findById(id));
+        return "post/post";
     }
 
     @GetMapping("/write")
