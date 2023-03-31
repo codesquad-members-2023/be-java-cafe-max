@@ -26,11 +26,6 @@ public class HomeController {
         return "/qna/form";
     }
 
-//    @GetMapping("qna/show")
-//    public String showQna() {
-//        return "/qna/show";
-//    }
-
     //todo : 로그인 실패 화면 띄우기
 //    @GetMapping("")
 //    public String loginFailed() {

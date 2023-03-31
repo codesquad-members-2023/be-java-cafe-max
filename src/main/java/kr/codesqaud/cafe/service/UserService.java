@@ -19,9 +19,13 @@ public class UserService {
     }
 
     public String join(User user) {
-        validateDuplicateUser(user);
-        userRepository.save(user);
-        return user.getUserId();
+        try {
+            validateDuplicateUser(user);
+            userRepository.save(user);
+            return user.getUserId();
+        } catch (IllegalStateException e) {
+            return " ";
+        }
     }
 
     private void validateDuplicateUser(User user) {
