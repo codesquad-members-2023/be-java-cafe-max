@@ -21,7 +21,8 @@ public class MemberController {
         // 그리고 만든 member 객체를 저장소에 저장하는 것이 필요.
         memberService.signUp(member);
 
-        System.out.println("id = " + member.getLoginId());
+        System.out.println("id = " + memberService.findMemberByUid((long)1).getLoginId());
+
         return "redirect:/user/list";
     }
 }
