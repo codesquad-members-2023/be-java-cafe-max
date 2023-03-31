@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.repository.member;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -39,7 +40,7 @@ public class MemoryMemberRepository implements MemberRepository {
     public List<Member> findAll() {
         return store.values()
             .stream()
-            .sorted((o1, o2) -> o2.getCreateDate().compareTo(o1.getCreateDate()))
+            .sorted(Comparator.comparing(Member::getCreateDate).reversed())
             .collect(Collectors.toUnmodifiableList());
     }
 

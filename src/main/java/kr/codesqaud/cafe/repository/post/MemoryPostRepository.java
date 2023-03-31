@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.repository.post;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public class MemoryPostRepository implements PostRepository {
     public List<Post> findAll() {
         return store.values()
             .stream()
-            .sorted((o1, o2) -> o2.getWriteDate().compareTo(o1.getWriteDate()))
+            .sorted(Comparator.comparing(Post::getWriteDate).reversed())
             .collect(Collectors.toUnmodifiableList());
     }
 }
