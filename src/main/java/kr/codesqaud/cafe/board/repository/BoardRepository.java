@@ -12,8 +12,10 @@ import java.util.stream.Collectors;
 public class BoardRepository {
     Map<Long, BoardPost> boardData = new HashMap<>();
 
+    private long postId = 0;
+
     public void add(BoardPost boardPost) {
-        boardPost.setPostId((long) (boardData.size() + 1));
+        boardPost.setPostId(postId++);
         boardData.put(boardPost.getPostId(), boardPost);
     }
 
