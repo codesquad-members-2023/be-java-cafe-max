@@ -23,7 +23,7 @@ public class UserService {
         validateDuplicateUser(user);
 
         userRepository.save(user);
-        return user.getId();
+        return user.getNumber();
     }
 
     private void validateDuplicateUser(User user) {
@@ -39,7 +39,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findOne(Long userId) {
-        return userRepository.findById(userId);
+    public Optional<User> findOne(Long number) {
+        return userRepository.findByNumber(number);
     }
 }

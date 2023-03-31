@@ -12,15 +12,15 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        user.setId(++sequence);
-        store.put(user.getId(), user);
+        user.setNumber(++sequence); //
+        store.put(user.getNumber(), user);
         return user;
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<User> findByNumber(Long number) {
         // null 일 때 optinal을 감싸 반환하면 클라이언트에서 처리해줄 수 있음.
-        return Optional.ofNullable(store.get(id));
+        return Optional.ofNullable(store.get(number));
     }
 
     @Override

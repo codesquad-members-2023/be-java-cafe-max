@@ -31,10 +31,10 @@ class UserServiceTest {
         user.setName("spring");
 
         // when
-        Long saveId = userService.join(user);
+        Long saveNumber = userService.join(user);
 
         // then
-        User findUser = userService.findOne(saveId).get();
+        User findUser = userService.findOne(saveNumber).get();
         assertThat(user.getName()).isEqualTo(findUser.getName());
     }
 
