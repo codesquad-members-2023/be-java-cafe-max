@@ -78,9 +78,11 @@ class MemberServiceTest {
         MemberResponse memberResponse = memberService.findById(savedId);
 
         // then
-        assertEquals(savedId, memberResponse.getId());
-        assertEquals(memberCreateRequest.getEmail(), memberResponse.getEmail());
-        assertEquals(memberCreateRequest.getNickName(), memberResponse.getNickName());
+        assertAll(
+            () -> assertEquals(savedId, memberResponse.getId()),
+            () -> assertEquals(memberCreateRequest.getEmail(), memberResponse.getEmail()),
+            () -> assertEquals(memberCreateRequest.getNickName(), memberResponse.getNickName()),
+            () -> assertEquals(memberCreateRequest.getCreateDate(), memberResponse.getCreateDate()));
     }
 
     @DisplayName("회원 단건 조회 실패")
@@ -132,10 +134,11 @@ class MemberServiceTest {
 
         // then
         Member findMember = memberRepository.findById(savedId).orElseThrow();
-        assertEquals(savedId, findMember.getId());
-        assertEquals(updateEmail, findMember.getEmail());
-        assertEquals(updatePassword, findMember.getPassword());
-        assertEquals(updateNickName, findMember.getNickName());
+        assertAll(
+            () -> assertEquals(savedId, findMember.getId()),
+            () -> assertEquals(updateEmail, findMember.getEmail()),
+            () -> assertEquals(updatePassword, findMember.getPassword()),
+            () -> assertEquals(updateNickName, findMember.getNickName()));
     }
 
     @DisplayName("회원 정보 수정시 수정할 멤버가 없는 경우 실패")

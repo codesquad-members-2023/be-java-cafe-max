@@ -30,7 +30,11 @@ public class MemberResponse {
         return nickName;
     }
 
-    public String getCreateDate() {
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public String getCrateDateFormat() {
         return createDate.format(DateTimeFormatter.ISO_DATE);
     }
 

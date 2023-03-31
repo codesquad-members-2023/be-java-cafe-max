@@ -21,10 +21,13 @@ public class SignUpRequest {
     @Length(min = 2, max = 10)
     private final String nickName;
 
+    private final LocalDateTime createDate;
+
     public SignUpRequest(String email, String password, String nickName) {
         this.email = email;
         this.password = password;
         this.nickName = nickName;
+        this.createDate = LocalDateTime.now();
     }
 
     public String getEmail() {
@@ -39,8 +42,12 @@ public class SignUpRequest {
         return nickName;
     }
 
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
     public Member toEntity() {
         return new Member(UUID.randomUUID().toString(), email, password, nickName,
-            LocalDateTime.now());
+            createDate);
     }
 }
