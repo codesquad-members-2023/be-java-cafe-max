@@ -17,4 +17,9 @@ public class MemoryArticleRepositoryImpl implements ArticleRepository {
 		article.setId(++autoIncrement);
 		articles.put(article.getId(), article);
 	}
+
+	public Article findById(Integer id) {
+		return articles.get(id);
+	}
+
 }
