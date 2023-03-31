@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserMemoryRepository;
+import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
-    private final UserMemoryRepository userMemoryRepository;
+    private final UserRepository userMemoryRepository;
     @Autowired
     public UserController(UserMemoryRepository userMemoryRepository) {
         this.userMemoryRepository = userMemoryRepository;
