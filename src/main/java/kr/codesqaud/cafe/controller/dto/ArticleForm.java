@@ -1,25 +1,25 @@
 package kr.codesqaud.cafe.controller.dto;
 
 public class ArticleForm {
-    private String name;
+    private String writer;
     private String title;
-    private String content;
+    private String contents;
 
     public ArticleForm() {
     }
 
-    public ArticleForm(String name, String title, String content) {
-        this.name = name;
+    public ArticleForm(String writer, String title, String content) {
+        this.writer = writer;
         this.title = title;
-        this.content = content;
+        this.contents = content;
     }
 
-    public String getName() {
-        return name;
+    public String getWriter() {
+        return writer;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 
     public String getTitle() {
@@ -30,11 +30,11 @@ public class ArticleForm {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getContents() {
+        return contents;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 }
