@@ -19,26 +19,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/join")
-    public String joinForm() {
-        return "user/form";
-    }
-
-    @GetMapping("/user/login")
-    public String loginForm() {
-        return "user/login";
-    }
-
-    @GetMapping("/user/list")
-    public String listForm() {
-        return "redirect:/users";
-    }
-
-    @GetMapping("/user/profile")
-    public String profileForm() {
-        return "user/profile";
-    }
-
     @PostMapping("/user/create")
     public String create(UserForm form) {
         User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
