@@ -36,7 +36,7 @@
                     <tr th:each="post : ${allPosts}">
                         <td th:text="${post.id}"></td>
                         <td>
-                            <a th:href="@{|/post/${post.id}|}" th:text="${post.title}"></a>
+                            <a th:href="@{|/post/show/${post.id}|}" th:text="${post.title}"></a>
                         </td>
                         <td>익명</td>
                     </tr>

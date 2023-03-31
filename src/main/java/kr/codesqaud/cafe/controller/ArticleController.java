@@ -30,7 +30,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/post/{id}")
+    @GetMapping("/post/show/{id}")
     public String showPost(@PathVariable long id, Model model) {
         ArticleDTO wantedPost = articleService.clickOne(id);
         model.addAttribute("wantedPost", wantedPost);
