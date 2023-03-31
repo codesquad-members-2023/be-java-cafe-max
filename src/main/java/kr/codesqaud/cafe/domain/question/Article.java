@@ -6,14 +6,16 @@ public class Article {
     private String writer;
     private String title;
     private String contents;
+    private String date;
 
 
 
-    public Article(int index, String writer, String title, String contents) {
+    public Article(int index, String writer, String title, String contents,String date) {
         this.index = index;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.date = date;
     }
 
     public int getIndex() {

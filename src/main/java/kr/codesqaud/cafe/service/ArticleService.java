@@ -5,6 +5,8 @@ import kr.codesqaud.cafe.domain.question.Article;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -19,7 +21,10 @@ public class ArticleService {
         String title = articleFormDto.getTitle();
         String contents = articleFormDto.getContents();
         int index = articleRepository.findAll().size();
-        Article article = new Article(index,writer,title,contents);
+        Date now = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String date = formatter.format(now);
+        Article article = new Article(index,writer,title,contents,date);
         articleRepository.save(article);
     }
     public List<Article> getArticleList(){
