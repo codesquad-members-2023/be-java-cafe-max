@@ -19,7 +19,7 @@
                         <div class="main">
                             <span th:each="article, articleStat : ${articles}">
                             <strong class="subject">
-                                <a href="/qna/show" th:text="${article.title}">title</a>
+                                <a th:href="@{/articles/{title}(title=${article.title})}" th:text="${article.title}">title</a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
