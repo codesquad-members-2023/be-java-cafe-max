@@ -63,7 +63,53 @@
 [x] 예외 처리  
 [x] 프로필 조회
 [ ] 패스워드 단방향 암호화  
-[x] 예외 처리 리펙토링
+[x] 예외 처리 리펙토링  
+[ ] Controller 테스트 코드 작성
+
+<br>
+
+
+# 2단계
+
+---
+
+<br>
+
+**Article**
+
+- 제목
+  - 2글자 이상 30글자 이하
+- 본문
+  - 0글자 이상 1000글자 이하
+
+**URL**
+
+---
+
+게시글 리스트 조회
+- [GET] "/articles"
+게시글 단건 조회
+- [GET] "/articles/{id}"
+게시글 작성폼
+- [GET] "/articles/write"
+게시글 작성
+- [POST] "/articles"
+
+
+**구현 목록**
+
+[ ] Service
+  - 게시글 저장, 조회, 리스트 조회
+  - 예외 처리
+  - 테스트 코드
+[ ] Repository
+  - 게시글 저장, 조회, 리스트 조회
+  - 테스트 코드
+[ ] Controller
+  - 게시글 조회, 작성 매핑
+  - dto 검증
+  - 테스트 코드
+[ ] Thymeleaf
 
 <br>
 
@@ -88,3 +134,4 @@
   
 [ ] ConcurrentHashMap에 대해 학습 및 정리  
 [ ] DispatcherServlet 학습 및 정리
+[ ] form을 전달할때 model에 빈 Dto를 담아서 전달해주는 거랑 아무것도 담지 않는 것의 차이 
