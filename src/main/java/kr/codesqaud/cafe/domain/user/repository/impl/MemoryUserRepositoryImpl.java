@@ -18,4 +18,9 @@ public class MemoryUserRepositoryImpl implements UserRepository {
 		user.setId(++autoIncrement);
 		users.put(autoIncrement, user);
 	}
+
+	public User findById(Integer id) {
+		return users.get(id);
+	}
+
 }
