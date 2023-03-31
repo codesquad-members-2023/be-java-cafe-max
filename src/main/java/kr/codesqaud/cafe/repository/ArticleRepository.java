@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,22 +16,21 @@ public class ArticleRepository {
         this.articleRepository = new HashMap();
     }
 
-    public void save(ArticleDTO articleDto){
-        articleRepository.put(sequence,articleDto.toArticle(sequence++));
+    public void save(Article article){
+        article.setId(sequence++);
+        articleRepository.put(sequence,article);
     }
 
     public List<Article> findAll() {
         List<Article> articles = articleRepository.values().stream()
-                .map(article -> new Article(article.getTitle(), article.getContent(), article.getId()))
                 .collect(Collectors.toList());
         return Collections.unmodifiableList(articles);
     }
 
-    public ArticleDTO findArticle(int id){
+    public Article findArticle(int id){
         return articleRepository.values().stream()
                 .filter(article -> article.getId() == id)
                 .findFirst()
-                .map(Article::toDto)
                 .orElse(null);
     }
 }

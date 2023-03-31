@@ -1,13 +1,17 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.UserDTO;
-
 public class User {
 
     private String nickName;
     private String email;
     private String password;
-    private int id;
+    private int id = -1;
+
+    public User(String nickName, String email, String password) {
+        this.nickName = nickName;
+        this.email = email;
+        this.password = password;
+    }
 
     public User(String nickName, String email, String password, int userId) {
         this.nickName = nickName;
@@ -46,8 +50,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-    public UserDTO toDTO(){
-        return new UserDTO(nickName,email,password,id);
     }
 }

@@ -1,10 +1,12 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
-import kr.codesqaud.cafe.controller.dto.UserDTO;
+import kr.codesqaud.cafe.domain.User;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UserRepository {
@@ -17,30 +19,28 @@ public class UserRepository {
         this.userRepository = new HashMap();
     }
 
-    public void save(UserDTO userDto) {
-        userDto.setId(userDto.getId() == null ? sequence++ : userDto.getId());
-        userRepository.put(userDto.getId(), userDto.toUser());
+    public void save(User user) {
+        user.setId(user.getId() == -1 ? sequence++ : user.getId());
+        userRepository.put(user.getId(), user);
     }
 
     public List<User> findAll() {
         List<User> users = userRepository.values().stream()
-                .map(user -> new User(user.getNickName(), user.getEmail(), user.getPassword(), user.getId()))
                 .collect(Collectors.toList());
         return Collections.unmodifiableList(users);
     }
 
-    public UserDTO findUser(int userId) {
+    public User findUser(int userId) {
         return userRepository.values().stream()
                 .filter(user -> user.getId() == userId)
                 .findFirst()
-                .map(User::toDTO)
                 .orElse(null);
     }
 
-    public void findOne(ProfileEditDTO profileEditDto) {
-        String tempPassword = userRepository.get(profileEditDto.getId()).getPassword();
+    public void findOne(ProfileEditDTO profileEditDto,int id) {
+        String tempPassword = userRepository.get(id).getPassword();
         if (tempPassword.equals(profileEditDto.getOriPassword())) {
-            save(profileEditDto.toUserDto());
+            save(profileEditDto.toUser(id));
         }
     }
 }

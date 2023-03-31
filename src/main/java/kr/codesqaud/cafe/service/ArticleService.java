@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ public class ArticleService {
         this.articleRepository = new ArticleRepository();
     }
 
-    public void post(ArticleDTO articleDto){
+    public void post(Article articleDto){
         articleRepository.save(articleDto);
     }
 
@@ -23,7 +22,7 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public ArticleDTO findArticleById(int id){
+    public Article findArticleById(int id){
         return articleRepository.findArticle(id);
     }
 }

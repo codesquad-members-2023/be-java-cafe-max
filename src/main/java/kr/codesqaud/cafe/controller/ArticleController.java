@@ -19,7 +19,7 @@ public class ArticleController {
 
     @PostMapping("/post/submit")
     public String postArticle(ArticleDTO articleDto) {
-        articleService.post(articleDto);
+        articleService.post(articleDto.toArticle());
         return "redirect:/";
     }
 

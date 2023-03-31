@@ -1,16 +1,13 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
-
 public class Article {
     private String title;
     private String content;
     private int id;
 
-    public Article(String title, String content, int id) {
+    public Article(String title,String content){
         this.title = title;
         this.content = content;
-        this.id = id;
     }
 
     public int getId() {
@@ -35,9 +32,5 @@ public class Article {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public ArticleDTO toDto(){
-        return new ArticleDTO(title,content);
     }
 }
