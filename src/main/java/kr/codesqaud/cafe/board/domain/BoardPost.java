@@ -43,7 +43,7 @@ public class BoardPost {
     }
 
     public String getWriteDt() {
-        return writeDt.format(DateTimeFormatter.ofPattern("yyyy-mm-dd HH:mm:ss"));
+        return writeDt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     public void setWriteDt(LocalDateTime writeDt) {
