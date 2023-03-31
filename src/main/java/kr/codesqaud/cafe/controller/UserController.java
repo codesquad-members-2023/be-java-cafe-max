@@ -6,10 +6,7 @@ import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController {
@@ -70,13 +67,17 @@ public class UserController {
         return "user/form_update";
     }
 
-    @PostMapping("/user/{userId}/update")
+    @PutMapping("/user/{userId}/update")
     public String updatePassowrd(
             @PathVariable("userId") String userId,
             @RequestParam("newPassword") String password,
             Model model
     ){
-        userRepository.findByUserId(userId).setPassword(password);
+        User user = userRepository.findByUserId(userId);
+
+        userRepository.updateUserPassword(user, password);
+
+        model.addAttribute("user", user);
 
         return "redirect:/users";
     }

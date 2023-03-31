@@ -10,5 +10,6 @@ public interface UserRepository {
     public User save(User user);
     public List<User> findAll();
     public User findByUserId(String userId);
+    public void updateUserPassword(User user, String password);
     public void clearUserList();
 }
