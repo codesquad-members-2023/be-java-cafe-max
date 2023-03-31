@@ -48,4 +48,23 @@ public class UserController {
 
         return "user/profile";
     }
+
+    @GetMapping("/{userId}/update")
+    public String updateUser(@PathVariable("userId") String userId, Model model) {
+        User user = userRepository.findByUserId(userId);
+        model.addAttribute("user", user);
+
+        return "user/update";
+    }
+
+    @PostMapping("/{userId}/update")
+    public String updateUser(@ModelAttribute User user, String match) {
+        User findUser = userRepository.findByUserId(user.getUserId());
+
+        if (!match.equals(findUser.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
+        }
+        userRepository.save(user);
+        return "redirect:/users";
+    }
 }
