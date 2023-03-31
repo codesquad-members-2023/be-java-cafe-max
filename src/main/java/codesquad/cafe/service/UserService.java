@@ -1,9 +1,11 @@
 package codesquad.cafe.service;
 
 import codesquad.cafe.domain.User;
+import codesquad.cafe.dto.UserResponseDto;
 import codesquad.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,12 +28,19 @@ public class UserService {
                 });
     }
 
-    public List<User> showUsers() {
-        return userRepository.findAll();
+    public List<UserResponseDto> showUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserResponseDto> userResponseDtos = new ArrayList<>();
+        for (User user : users) {
+            userResponseDtos.add(new UserResponseDto(user.getId(), user.getName(), user.getEmail()));
+        }
+
+        return userResponseDtos;
     }
 
-    public User findUser(String id) {
+    public UserResponseDto findUser(String id) {
         return userRepository.findById(id)
+                .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
     }
 }

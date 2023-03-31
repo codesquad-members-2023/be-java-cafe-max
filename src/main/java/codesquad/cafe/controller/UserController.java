@@ -2,6 +2,7 @@ package codesquad.cafe.controller;
 
 import codesquad.cafe.domain.User;
 import codesquad.cafe.dto.UserRequestDto;
+import codesquad.cafe.dto.UserResponseDto;
 import codesquad.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,14 +37,14 @@ public class UserController {
 
     @GetMapping("")
     public String showUsers(Model model) {
-        List<User> users = userService.showUsers();
+        List<UserResponseDto> users = userService.showUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String showProfile(@PathVariable("userId") String id, Model model) {
-        User user = userService.findUser(id);
+        UserResponseDto user = userService.findUser(id);
         model.addAttribute("user", user);
         return "user/profile";
     }
