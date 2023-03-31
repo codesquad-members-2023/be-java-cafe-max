@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.Dto;
 
 public class ArticleFormDto {
+    //글 작성했을때 사용하는 DTO
     String author;
 
     String title;

@@ -12,7 +12,7 @@ public class Article {
 
     String contents;
 
-    LocalDateTime  time;
+    LocalDateTime time;
 
     long id;
 
@@ -34,9 +34,6 @@ public class Article {
     public void setId(long id) {
         this.id = id;
     }
-
-
-
 
 
     public String getAuthor() {

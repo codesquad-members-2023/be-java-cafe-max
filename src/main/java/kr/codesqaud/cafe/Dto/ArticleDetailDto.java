@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.Dto;
 import java.time.LocalDateTime;
 
 public class ArticleDetailDto {
+    //세부적인 글 내용 DTO
     String author;
 
     String title;

@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.Dto;
 
 public class UserProfileDto {
+    //회원 프로필 내용 DTO
 
     String name;
 

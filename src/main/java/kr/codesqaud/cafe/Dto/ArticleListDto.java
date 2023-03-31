@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ArticleListDto {
-
+    //글 목록에 표시할 내용 DTO
     String author;
 
     String title;

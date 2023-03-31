@@ -20,12 +20,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    //회원가입
+    //ID 중복 확인 후 회원가입
     public String join(User user) {
         validateDuplicateMember(user); //중복 회원 검증
         userRepository.save(user);
         return user.getUserId();
     }
+
+    //중복 확인(중복이 들어오면 에러 페이지로 감)
     private void validateDuplicateMember(User user) {
         userRepository.findByID(user.getUserId())
                 .ifPresent(m -> {
@@ -33,17 +35,19 @@ public class UserService {
                 });
     }
 
-    //회원목록 조회
+
+    //회원목록 조회(+DTO로 필터)
     public List<UserListDto> getUserList() {
         List<User> users = userRepository.findAll();
         List<UserListDto> userListDtos = new ArrayList<>();
-        for(User user : users){
+        for (User user : users) {
             userListDtos.add(new UserListDto(user.getUserId(), user.getName(), user.getEmail()));
         }
         return userListDtos;
     }
 
 
+    //특정 회원 조회(+DTO 필터)
     public UserProfileDto getUserProfile(String userId) {
         User user = userRepository.findByID(userId).get();
         return new UserProfileDto(user.getName(), user.getEmail());

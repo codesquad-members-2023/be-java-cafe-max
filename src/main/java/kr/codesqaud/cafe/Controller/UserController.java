@@ -22,12 +22,15 @@ public class UserController {
         this.userService = userService;
     }
 
+
+    //회원 가입 시, 회원 객체 생성 후 join
     @PostMapping("/create")
     public String createUser(UserFormDto userForm) {
         userService.join(new User(userForm.getUserId(), userForm.getPassword(), userForm.getName(), userForm.getEmail()));
         return "redirect:/user";
     }
 
+    //회원 목록 표시
     @GetMapping
     public String listUsers(Model model) {
         model.addAttribute("users", userService.getUserList());
@@ -35,6 +38,7 @@ public class UserController {
     }
 
 
+    //회원 프로필 표시
     @GetMapping("/{userId}")
     public String viewUserProfile(@PathVariable String userId, Model model) {
         model.addAttribute("user", userService.getUserProfile(userId));
