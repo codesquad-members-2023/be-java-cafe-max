@@ -39,8 +39,5 @@ public class UserController {
         return "user/list";
     }
 
-    // ID, PW를 보내면
-    // 글쓰기 같은 것?
-
 
 }
