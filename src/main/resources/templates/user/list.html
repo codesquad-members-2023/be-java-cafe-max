@@ -21,7 +21,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="user, userStat : ${users}">
-                    <td th:text="${userStat.count}">username</td> <td th:text="${user.userId}">userId</td> <td th:text="${user.name}">name</td> <td th:text="${user.email}">email</td><td><a th:href="@{/users/{userId}(userId=${user.userId})}" class="btn btn-success" role="button">수정</a></td>
+                    <td th:text="${userStat.count}">username</td> <td th:text="${user.userId}">userId</td> <td ><a th:text="${user.name}" th:href="@{/users/{userId}(userId=${user.userId})}">name</a></td> <td th:text="${user.email}">email</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
                 </tr>
                 </tbody>
             </table>
