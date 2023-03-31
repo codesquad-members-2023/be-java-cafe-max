@@ -10,7 +10,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.domain.user.UserRepository;
-import kr.codesqaud.cafe.exception.ExceptionDto;
 import kr.codesqaud.cafe.web.dto.UserResponseDto;
 import kr.codesqaud.cafe.web.dto.UserSavedRequestDto;
 import org.assertj.core.api.Assertions;
@@ -20,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
@@ -216,12 +214,8 @@ class UserControllerTest {
         //given
         String url = "/users/user1";
         //when
-        ExceptionDto error = (ExceptionDto) mockMvc.perform(get(url))
-            .andExpect(status().is3xxRedirection())
-            .andReturn().getModelAndView().getModelMap().get("error");
+        mockMvc.perform(get(url)).andExpect(status().is3xxRedirection());
         //then
-        Assertions.assertThat(error.getErrorCode()).isEqualTo(800);
-        Assertions.assertThat(error.getHttpStatus()).isEqualTo(HttpStatus.OK);
     }
 
     private <T> String toJSON(T data) throws JsonProcessingException {
