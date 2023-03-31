@@ -23,4 +23,15 @@ public class MemoryUserRepository implements UserRepository {
     public List<User> findAll() {
         return users;
     }
+
+    @Override
+    public User findById(String userId) {
+
+        for (User user : users) {
+            if (user.getUserId().equals(userId)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }

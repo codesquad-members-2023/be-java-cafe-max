@@ -24,11 +24,10 @@ public class UserController {
     }
 
     @PostMapping("/user/form")
-    public String post(
-            @RequestParam("userId") String userId,
-            @RequestParam String password,
-            @RequestParam String name,
-            @RequestParam String email) {
+    public String post(@RequestParam("userId") String userId,
+                       @RequestParam String password,
+                       @RequestParam String name,
+                       @RequestParam String email) {
 
         User user = new User(userId, password, name, email);
         memoryUserRepository.save(user);
@@ -39,10 +38,15 @@ public class UserController {
 
     @GetMapping("/users")
     public String joinSuccess(Model model) {
-        // user 전체 정보 가져오기
-        // 모델에 태워 보내기
-        // 보낸 정보 타임리프로 출력하기
         model.addAttribute("users", memoryUserRepository.findAll());
         return "user/list";
+    }
+
+    @GetMapping("/users/{userId}")
+    public String showProfile(@PathVariable("userId") String userId, Model model) {
+        User user = memoryUserRepository.findById(userId);
+        model.addAttribute("user", user);
+
+        return "user/profile";
     }
 }

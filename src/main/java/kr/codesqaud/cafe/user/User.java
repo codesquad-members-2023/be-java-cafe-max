@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.user;
 
+import org.springframework.stereotype.Repository;
+
 // 회원 엔티티
 public class User {
     private String userId;

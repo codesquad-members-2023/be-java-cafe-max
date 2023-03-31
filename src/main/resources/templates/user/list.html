@@ -52,7 +52,9 @@
                data-toggle="dropdown"><i class="glyphicon glyphicon-home" style="color:#dd1111;"></i> Home <small><i
                     class="glyphicon glyphicon-chevron-down"></i></small></a>
             <ul class="nav dropdown-menu">
-                <li><a href=".html"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a></li>
+                <li><a href="#"><i class="glyphicon glyphicon-user"
+                                   style="color:#1111dd;"></i>
+                    Profile</a></li>
                 <li class="nav-divider"></li>
                 <li><a href="#"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>
             </ul>
@@ -93,7 +95,7 @@
                 <tr th:each="user, num : ${users}">
                     <td th:text="${num.count}"></td>
                     <td th:text="${user.getUserId()}"></td>
-                    <td th:text="${user.getName()}"></td>
+                    <td th:onclick="|location.href='@{/users/{userId}(userId=${user.getUserId()})}'|" th:text="${user.getName()}"></td>
                     <td th:text="${user.getEmail()}">slipp@sample.net</td>
                     <td><a href="#" class="btn btn-success" role="button">수정</a></td>
                 </tr>
