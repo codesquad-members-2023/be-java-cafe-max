@@ -10,9 +10,11 @@ import java.util.List;
 public class ArticleMemoryRepository implements ArticleRepository{
 
     private static final List<Article> articleList = new ArrayList<>();
+    private Long sequence = 0L;
 
     @Override
     public Article save(Article article) {
+        article.setIndex(++sequence);
         articleList.add(article);
         return article;
     }
@@ -26,4 +28,5 @@ public class ArticleMemoryRepository implements ArticleRepository{
     public void clearArticleList() {
         articleList.clear();
     }
+
 }

@@ -1,11 +1,20 @@
 package kr.codesqaud.cafe.domain;
 
 public class Article {
+    private long index;
     private String writer;
     private String title;
     private String contents;
 
     public Article() {
+    }
+
+    public long getIndex() {
+        return index;
+    }
+
+    public void setIndex(long index) {
+        this.index = index;
     }
 
     public String getWriter() {
