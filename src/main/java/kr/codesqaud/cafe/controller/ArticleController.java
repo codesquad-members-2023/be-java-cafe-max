@@ -26,7 +26,7 @@ public class ArticleController {
         return "qna/form";
     }
 
-    @PostMapping("/qna/create")
+    @PostMapping("/qna/write")
     public String create(
             @RequestParam("writer") String writer,
             @RequestParam("title") String title,
