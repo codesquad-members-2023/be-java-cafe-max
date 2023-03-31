@@ -16,8 +16,12 @@ public class UserRegisterRequest {
         this.email = email;
     }
 
-    public User toEntity(long id) {
-        return new User(id, userId, password, name, email);
+    public User toEntity() {
+        return new User(userId, password, name, email);
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     @Override

@@ -7,18 +7,17 @@ import java.util.*;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private final Map<Long, User> users = new HashMap<>();
-    private static long sequence = 0L;
+    private final Map<String, User> users = new HashMap<>();
 
     @Override
     public User save(UserRegisterRequest userRegisterRequest) {
-        User user = userRegisterRequest.toEntity(++sequence);
-        users.put(sequence, user);
+        User user = userRegisterRequest.toEntity();
+        users.put(userRegisterRequest.getUserId(), user);
         return user;
     }
 
     @Override
-    public Optional<User> findById(long id) {
+    public Optional<User> findById(String id) {
         return Optional.ofNullable(users.get(id));
     }
 

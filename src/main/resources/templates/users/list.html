@@ -92,11 +92,11 @@
                 <tbody>
                 {{#users}}
                 <tr>
-                    <th>{{id}}</th>
+                    <th>{{index}}</th>
                     <td>{{userId}}</td>
-                    <td><a href="/users/{{id}}">{{name}}</a></td>
+                    <td><a href="/users/{{userId}}">{{name}}</a></td>
                     <td>{{email}}</td>
-                    <td><a href="edit-profile/{{id}}}" class="btn btn-success" role="button">수정</a></td>
+                    <td><a href="edit-profile/{{userId}}}" class="btn btn-success" role="button">수정</a></td>
                 </tr>
                 {{/users}}
                 </tbody>

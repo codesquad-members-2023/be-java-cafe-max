@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class UserService {
@@ -25,13 +26,14 @@ public class UserService {
     }
 
     public void showUserList(Model model) {
-        List<UserListResponse> users = userRepository.findAll().stream()
-                .map(User::toListResponse)
+        List<User> users = userRepository.findAll();
+        List<UserListResponse> userResponse = IntStream.range(0, users.size())
+                .mapToObj(index -> users.get(index).toListResponse(index + 1))
                 .collect(Collectors.toList());
-        model.addAttribute("users", users);
+        model.addAttribute("users", userResponse);
     }
 
-    public void showProfile(long id, Model model) {
+    public void showProfile(String id, Model model) {
         UserProfileResponse profile = userRepository.findById(id)
                         .orElseThrow().toProfileResponse();
         model.addAttribute("name", profile.getName());

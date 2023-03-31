@@ -10,7 +10,7 @@ public interface UserRepository {
 
     User save(UserRegisterRequest userRegisterRequest);
 
-    Optional<User> findById(long id);
+    Optional<User> findById(String id);
 
     List<User> findAll();
 }
