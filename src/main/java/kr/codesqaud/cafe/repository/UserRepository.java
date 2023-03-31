@@ -2,13 +2,12 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.user.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepository {
-    private final List<User> users = new ArrayList<>();
+public interface UserRepository {
+    User save(User user);
 
-    public void save(User user){
-        users.add(user);
-    }
+    User findById(String id);
+
+    List<User> findAll();
 }

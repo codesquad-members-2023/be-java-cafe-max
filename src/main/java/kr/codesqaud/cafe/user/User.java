@@ -1,10 +1,27 @@
 package kr.codesqaud.cafe.user;
 
 public class User {
+    private Long sequence;
     private String userId;
     private String password;
     private String userName;
     private String userEmail;
+
+
+    public User(String userId, String password, String userName, String userEmail) {
+        this.userId = userId;
+        this.password = password;
+        this.userName = userName;
+        this.userEmail = userEmail;
+    }
+
+    public Long getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(final Long sequence) {
+        this.sequence = sequence;
+    }
 
     public String getUserId() {
         return userId;

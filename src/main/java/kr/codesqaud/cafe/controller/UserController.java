@@ -1,35 +1,58 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.dto.UserDTO;
+import kr.codesqaud.cafe.repository.MemoryUserRepository;
 import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.service.UserService;
 import kr.codesqaud.cafe.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
-    UserRepository userRepository;
+    private final MemoryUserRepository memoryUserRepository;
 
-
-    @GetMapping("/create")
-    public String create() {
-        return "index";
+    @Autowired
+    public UserController(MemoryUserRepository memoryUserRepository) {
+        this.memoryUserRepository = memoryUserRepository;
     }
 
-    @PostMapping("/create")
-    public String register(User user) {
-//        System.out.println("user : " + user);
-        userRepository.save(user);
-        return "redirect:/list";
+    @GetMapping("/user/form")
+    public String join() {
+        return "user/form";
     }
 
-//    @GetMapping("/list")
-//    public String list(Model model) {
-//        model.addAttribute("users", users);
-//        return "list";
+    @GetMapping
+    public String listAllUsers(Model model){
+        List<User> users = memoryUserRepository.findAll();
+        model.addAttribute("users", users);
+        return "user/list";
+    }
+
+    @PostMapping("/user/create")
+    public String create(UserDTO userDTO) {
+        User user = new User(userDTO.getUserId(), userDTO.getPassword(),
+                userDTO.getName(), userDTO.getEmail());
+        memoryUserRepository.save(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/users")
+    public String listPage(final Model model) {
+        List<User> users = memoryUserRepository.findAll();
+        model.addAttribute("users", users);
+        return "/user/list";
+    }
+
+//    @GetMapping("/users/{userId}")
+//    public String viewUserProfile(@PathVariable final String userId, final Model model) {
+//        User findUser = userService.findOne(userId).get();
+//        model.addAttribute("user", findUser);
+//        return "/user/profile";
 //    }
 }
