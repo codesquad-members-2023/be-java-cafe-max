@@ -75,8 +75,9 @@ function checkUserId() {
 function validatePost() {
     const title = checkTitle();
     const content = checkContent();
+    const writer = checkWriter();
 
-    if (title && content) {
+    if (title && content && writer) {
         alert("글이 정상적으로 등록되었습니다");
         document.getElementById("posting").submit();
     }
@@ -100,6 +101,19 @@ function checkContent() {
     const message = document.querySelector('.checkContent');
 
     if (content.length < 3 || content.length > 1000) {
+        message.classList.remove('hide');
+        return false;
+    }
+
+    message.classList.add('hide');
+    return true;
+}
+
+function checkWriter() {
+    const writer = document.getElementById('inputWriter').value;
+    const message = document.querySelector('.checkWriter');
+
+    if (writer.length < 1) {
         message.classList.remove('hide');
         return false;
     }
