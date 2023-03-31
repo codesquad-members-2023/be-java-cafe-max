@@ -1,17 +1,29 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.controller.dto.UserJoinDTO;
+
 public class User {
-    private long id;
+    private Long id;
     private String name;
     private String userId;
     private String password;
     private String email;
 
-    public long getId() {
+    public static User toUser(UserJoinDTO userJoinDTO) {
+        User user = new User();
+        user.setId(userJoinDTO.getId());
+        user.setName(userJoinDTO.getName());
+        user.setUserId(userJoinDTO.getUserId());
+        user.setPassword(userJoinDTO.getPassword());
+        user.setEmail(userJoinDTO.getEmail());
+        return user;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

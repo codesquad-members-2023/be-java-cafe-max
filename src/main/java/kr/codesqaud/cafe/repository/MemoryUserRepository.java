@@ -10,18 +10,17 @@ public class MemoryUserRepository implements UserRepository {
 
     private final static Map<Long, User> userMap = new HashMap<>();
     private static long sequence = 0L;
-    @Override
-    public User join(User user) {
-        user.setId(++sequence);
-        userMap.put(user.getId(), user);
-        return user;
-    }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return userMap.values().stream()
-                .filter(user -> user.getEmail().equals(email))
-                .findAny();
+    public void join(User user) {
+        user.setId(++sequence);
+        userMap.put(user.getId(), user);
+    }
+
+
+    @Override
+    public Optional<User> findById(long id) {
+        return Optional.ofNullable(userMap.get(id));
     }
 
     @Override
@@ -29,3 +28,5 @@ public class MemoryUserRepository implements UserRepository {
         return new ArrayList<>(userMap.values());
     }
 }
+
+
