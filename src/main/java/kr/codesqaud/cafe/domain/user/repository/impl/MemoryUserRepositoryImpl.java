@@ -23,4 +23,8 @@ public class MemoryUserRepositoryImpl implements UserRepository {
 		return users.get(id);
 	}
 
+	public void update(User user) {
+		users.put(user.getId(), user);
+	}
+
 }
