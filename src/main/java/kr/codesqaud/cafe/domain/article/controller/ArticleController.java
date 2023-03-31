@@ -25,11 +25,11 @@ public class ArticleController {
 	}
 
 	@PostMapping("/questions")
-	public String askQuestions(ArticleSaveRequestDto articleSaveRequestDto) {
+	public String saveArticle(ArticleSaveRequestDto articleSaveRequestDto) {
 		articleRepository.save(articleSaveRequestDto.toEntity());
 		return "redirect:/";
 	}
-	
+
 	@GetMapping("/questions/{id}")
 	public String viewArticle(@PathVariable("id") Integer id, Model model) {
 		model.addAttribute("article", articleRepository.findById(id));
