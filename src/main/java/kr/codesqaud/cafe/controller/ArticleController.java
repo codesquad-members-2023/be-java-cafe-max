@@ -40,9 +40,9 @@ public class ArticleController {
         return "/index";
     }
 
-    @GetMapping("articles/{title}")
+    @GetMapping("/articles/{title}")
     public String showArticle(Model model, @PathVariable String title) {
         model.addAttribute("article", articleService.findOne(title));
-        return "/qna/show";
+        return "qna/show";
     }
 }
