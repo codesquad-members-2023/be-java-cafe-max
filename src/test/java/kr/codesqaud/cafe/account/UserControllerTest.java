@@ -197,7 +197,7 @@ class UserControllerTest {
 
 	@DisplayName("유저 프로필 세팅 - 실패(형식 오류)")
 	@ParameterizedTest
-	@CsvSource({"jerry@email.com,j","jerry,jerry"})
+	@CsvSource({"jerry@email.com,j", "jerry,jerry"})
 	void setUserProfileFailedByType(String email, String nickname) throws Exception {
 		User user = saveAndGetUserJack();
 		mockMvc.perform(put("/users/" + user.getId() + "/update")
@@ -210,7 +210,7 @@ class UserControllerTest {
 	}
 
 	private User saveAndGetUserJack() {
-		User user = new User(1);
+		User user = new User();
 		user.setEmail(JACK_EMAIL);
 		user.setNickname("jack");
 		user.setPassword(JACK_PASSWORD);

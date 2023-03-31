@@ -1,26 +1,15 @@
 package kr.codesqaud.cafe.account;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 import kr.codesqaud.cafe.account.form.ProfileForm;
 import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.form.UsersForm;
 
 public class User {
 
-	private static final AtomicLong number = new AtomicLong();
-	private final Long id;
+	private Long id;
 	private String nickname;
 	private String email;
 	private String password;
-
-	public User(long id) {
-		this.id = id;
-	}
-
-	public static long createNewId() {
-		return number.getAndIncrement();
-	}
 
 	public Long getId() {
 		return id;
@@ -48,6 +37,10 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public UsersForm mappingUsersForm() {

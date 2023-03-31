@@ -21,7 +21,7 @@ public class UserService {
 	}
 
 	public User createNewUser(JoinForm joinForm) {
-		User user = new User(User.createNewId());
+		User user = new User();
 		user.setNickname(joinForm.getNickname());
 		user.setEmail(joinForm.getEmail());
 		user.setPassword(joinForm.getPassword());
