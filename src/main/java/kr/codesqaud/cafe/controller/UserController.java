@@ -66,4 +66,11 @@ public class UserController {
         // gradle -> 타임리프 ViewResolver가 이걸 해줌
         // "templates/" + "user/profile" + ".html"
     }
+
+    @GetMapping("/users/update/{userId}")
+    public String updateForm(@PathVariable String userId, Model model) {
+        User user = userService.findByUserId(userId).get();
+        model.addAttribute("userUpdated", user);
+        return "user/updateForm";
+    }
 }
