@@ -9,7 +9,7 @@ public class User {
     private String password;
     private String email;
 
-    public static User toUser(UserJoinDTO userJoinDTO) {
+    public static User toUser(final UserJoinDTO userJoinDTO) {
         User user = new User();
         user.setUserId(userJoinDTO.getUserId());
         user.setName(userJoinDTO.getName());

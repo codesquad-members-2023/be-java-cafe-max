@@ -14,7 +14,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     private final static Map<Long, Article> articleMap = new ConcurrentHashMap<>();
     private final static AtomicLong articleSequence = new AtomicLong();
     @Override
-    public void save(Article article) {
+    public void save(final Article article) {
         article.setId(articleSequence.incrementAndGet());
         articleMap.put(article.getId(), article);
     }
@@ -28,7 +28,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findById(long id) {
+    public Optional<Article> findById(final long id) {
         return Optional.ofNullable(articleMap.get(id));
     }
 }

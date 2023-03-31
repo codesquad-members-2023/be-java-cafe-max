@@ -15,7 +15,7 @@ public class UserReadDTO { //회원 정보 전달용
         this.email = email;
     }
 
-    public static UserReadDTO toUserReadDTO(User user) {
+    public static UserReadDTO toUserReadDTO(final User user) {
         return new UserReadDTO(user.getId(), user.getUserId(), user.getName(), user.getEmail());
     }
 

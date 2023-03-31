@@ -8,7 +8,7 @@ public class Article {
     private String title;
     private String content;
 
-    public static Article toArticle(ArticleDTO articleDTO) {
+    public static Article toArticle(final ArticleDTO articleDTO) {
         Article article = new Article();
         article.setTitle(articleDTO.getTitle());
         article.setContent(articleDTO.getContent());

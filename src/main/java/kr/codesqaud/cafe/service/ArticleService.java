@@ -13,11 +13,11 @@ import java.util.Optional;
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(final ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
-    public void write(ArticleDTO articleDto) {
+    public void write(final ArticleDTO articleDto) {
         Article article = Article.toArticle(articleDto);
         articleRepository.save(article);
     }
@@ -31,7 +31,7 @@ public class ArticleService {
         return postDTOList;
     }
 
-    public ArticleDTO clickOne(long id) {
+    public ArticleDTO clickOne(final long id) {
         Optional<Article> wantedPost = articleRepository.findById(id);
         return wantedPost.map(ArticleDTO::toArticleDTO).orElse(null);
     }

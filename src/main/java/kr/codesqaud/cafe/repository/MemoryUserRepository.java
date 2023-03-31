@@ -14,13 +14,13 @@ public class MemoryUserRepository implements UserRepository {
     private final static AtomicLong userSequence = new AtomicLong();
 
     @Override
-    public void join(User user) {
+    public void join(final User user) {
         user.setId(userSequence.incrementAndGet());
         userMap.put(user.getId(), user);
     }
 
     @Override
-    public Optional<User> findById(long id) {
+    public Optional<User> findById(final long id) {
         return Optional.ofNullable(userMap.get(id));
     }
 

@@ -25,13 +25,13 @@ public class ArticleController {
     }
 
     @PostMapping("/post/write")
-    public String writePost(@ModelAttribute ArticleDTO articleDto) {
+    public String writePost(@ModelAttribute final ArticleDTO articleDto) {
         articleService.write(articleDto);
         return "redirect:/";
     }
 
     @GetMapping("/post/show/{id}")
-    public String showPost(@PathVariable long id, Model model) {
+    public String showPost(@PathVariable final long id, final Model model) {
         ArticleDTO wantedPost = articleService.clickOne(id);
         model.addAttribute("wantedPost", wantedPost);
         return "post/show";

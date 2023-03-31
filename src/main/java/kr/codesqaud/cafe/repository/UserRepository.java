@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
-    void join(User user);
-    Optional<User> findById(long id);
+    void join(final User user);
+    Optional<User> findById(final long id);
     List<User> findAll();
 }

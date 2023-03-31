@@ -29,20 +29,20 @@ public class UserController {
     }
 
     @PostMapping("/user/join")
-    public String signUp(@ModelAttribute UserJoinDTO userJoinDTO) {
+    public String signUp(@ModelAttribute final UserJoinDTO userJoinDTO) {
         userService.signUp(userJoinDTO);
         return "redirect:/users/list";
     }
 
     @GetMapping("/users/list")
-    public String list(Model model) {
+    public String list(final Model model) {
         List<UserReadDTO> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/users/{id}")
-    public String profileFrom(@PathVariable long id, Model model) {
+    public String profileFrom(@PathVariable final long id, final Model model) {
         UserReadDTO wantedUser = userService.findOne(id);
         model.addAttribute("wantedUser", wantedUser);
         return "user/profile";

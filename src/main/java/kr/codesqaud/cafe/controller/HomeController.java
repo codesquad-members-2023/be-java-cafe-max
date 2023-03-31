@@ -13,12 +13,12 @@ public class HomeController {
 
     private final ArticleService articleService;
 
-    public HomeController(ArticleService articleService) {
+    public HomeController(final ArticleService articleService) {
         this.articleService = articleService;
     }
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(final Model model) {
         List<ArticleDTO> allPosts = articleService.gatherPosts();
         model.addAttribute("allPosts", allPosts);
         return "index";

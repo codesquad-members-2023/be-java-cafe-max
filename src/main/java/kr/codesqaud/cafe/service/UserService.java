@@ -19,7 +19,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void signUp(UserJoinDTO userJoinDTO) {
+    public void signUp(final UserJoinDTO userJoinDTO) {
         //1. UserJoinDTO -> User 변환
         User user = User.toUser(userJoinDTO);
 
@@ -27,7 +27,7 @@ public class UserService {
         userRepository.join(user);
     }
 
-    public UserReadDTO findOne(long id) {
+    public UserReadDTO findOne(final long id) {
         Optional<User> wantedUser = userRepository.findById(id);
         return wantedUser.map(UserReadDTO::toUserReadDTO).orElse(null);
     }

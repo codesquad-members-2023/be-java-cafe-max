@@ -5,8 +5,8 @@ import kr.codesqaud.cafe.domain.Article;
 public class ArticleDTO {
 
     private final Long id;
-    private final String title;
-    private final String content;
+    private String title;
+    private String content;
 
     public ArticleDTO(Long id, String title, String content) {
         this.id = id;
@@ -14,7 +14,7 @@ public class ArticleDTO {
         this.content = content;
     }
 
-    public static ArticleDTO toArticleDTO(Article article) {
+    public static ArticleDTO toArticleDTO(final Article article) {
         return new ArticleDTO(article.getId(), article.getTitle(), article.getContent());
     }
 
@@ -24,6 +24,14 @@ public class ArticleDTO {
 
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getContent() {
