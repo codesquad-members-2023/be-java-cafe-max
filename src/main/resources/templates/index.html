@@ -29,13 +29,16 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>번호</th><th>제목</th>
+                        <th>번호</th><th>제목</th><th>작성자</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="post : ${allPosts}">
                         <td th:text="${post.id}"></td>
-                        <td th:text="${post.title}"></td>
+                        <td>
+                            <a th:href="@{|/post/${post.id}|}" th:text="${post.title}"></a>
+                        </td>
+                        <td>익명</td>
                     </tr>
                     </tbody>
                 </table>

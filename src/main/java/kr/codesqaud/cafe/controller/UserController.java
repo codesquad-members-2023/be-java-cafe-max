@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public String profileFrom(@PathVariable Long id, Model model) {
+    public String profileFrom(@PathVariable long id, Model model) {
         UserReadDTO wantedUser = userService.findOne(id);
         model.addAttribute("wantedUser", wantedUser);
         return "user/profile";
