@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.controller.dto;
 
 public class ProfileEditDto {
     private String nickName;

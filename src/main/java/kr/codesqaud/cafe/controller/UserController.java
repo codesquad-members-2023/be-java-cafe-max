@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.dto.ProfileEditDto;
-import kr.codesqaud.cafe.dto.UserDto;
+import kr.codesqaud.cafe.controller.dto.ProfileEditDto;
+import kr.codesqaud.cafe.controller.dto.UserDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,13 +44,13 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/form")
-    public String showUserUpdateScreen(@PathVariable int id,Model model){
+    public String userUpdateForm(@PathVariable int id,Model model){
         model.addAttribute("user",userService.getUserByUserId(id));
         return "/user/updateForm";
     }
 
     @PutMapping("/users/{id}/update")
-    public String fixUserData(ProfileEditDto profileEditDto){
+    public String updateUserData(ProfileEditDto profileEditDto){
         userService.updateUserByUserId(profileEditDto);
         return "redirect:/users";
     }

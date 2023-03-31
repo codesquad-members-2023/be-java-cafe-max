@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.dto.UserDto;
+import kr.codesqaud.cafe.controller.dto.UserDto;
 
 public class User {
 

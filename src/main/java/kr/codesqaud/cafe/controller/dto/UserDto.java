@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.controller.dto;
 
 import kr.codesqaud.cafe.domain.User;
 

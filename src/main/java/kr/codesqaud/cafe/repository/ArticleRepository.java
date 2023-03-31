@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.dto.ArticleDto;
+import kr.codesqaud.cafe.controller.dto.ArticleDto;
 
 import java.util.Collections;
 import java.util.HashMap;

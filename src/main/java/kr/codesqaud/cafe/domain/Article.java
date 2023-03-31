@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.dto.ArticleDto;
+import kr.codesqaud.cafe.controller.dto.ArticleDto;
 
 public class Article {
     private String title;

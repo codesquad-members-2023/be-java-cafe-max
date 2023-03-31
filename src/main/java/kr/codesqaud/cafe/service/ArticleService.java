@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.dto.ArticleDto;
+import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 

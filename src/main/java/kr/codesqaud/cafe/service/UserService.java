@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.ProfileEditDto;
-import kr.codesqaud.cafe.dto.UserDto;
+import kr.codesqaud.cafe.controller.dto.ProfileEditDto;
+import kr.codesqaud.cafe.controller.dto.UserDto;
 import kr.codesqaud.cafe.repository.UserRepository;
 
 import java.util.List;

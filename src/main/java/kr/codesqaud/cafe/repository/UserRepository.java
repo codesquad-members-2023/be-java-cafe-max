@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.ProfileEditDto;
-import kr.codesqaud.cafe.dto.UserDto;
+import kr.codesqaud.cafe.controller.dto.ProfileEditDto;
+import kr.codesqaud.cafe.controller.dto.UserDto;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,9 +18,7 @@ public class UserRepository {
     }
 
     public void save(UserDto userDto) {
-        if (userDto.getId() == null) {
-            userDto.setId(sequence++);
-        }
+        userDto.setId(userDto.getId() == null ? sequence++ : userDto.getId());
         userRepository.put(userDto.getId(), userDto.toUser());
     }
 
