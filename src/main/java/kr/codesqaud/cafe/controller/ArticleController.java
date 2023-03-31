@@ -26,12 +26,12 @@ public class ArticleController {
     public String listAllArticles(Model model) {
         List<Article> articles = articleRepository.findAll();
         model.addAttribute("articles", articles);
-        return "qna/list";
+        return "article/main";
     }
 
     @GetMapping("/articles/write")
     public String write() {
-        return "qna/form";
+        return "article/form";
     }
 
     @PostMapping("/articles/write")
@@ -44,6 +44,6 @@ public class ArticleController {
     public String getArticle(@PathVariable("id") Long id, Model model) {
         Article article = articleRepository.findById(id);
         model.addAttribute("article", article);
-        return "qna/show";
+        return "article/show";
     }
 }
