@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.dto;
 
 public class UserForm {
 
