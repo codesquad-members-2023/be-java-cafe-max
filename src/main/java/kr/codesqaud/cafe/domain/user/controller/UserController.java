@@ -39,4 +39,10 @@ public class UserController {
 		model.addAttribute("user", userRepository.findById(id));
 		return "/user/profile";
 	}
+
+	@GetMapping("/users/{id}/form")
+	public String updateUserProfile(@PathVariable("id") Integer id, Model model) {
+		model.addAttribute("user", userRepository.findById(id));
+		return "/user/updateForm";
+	}
 }
