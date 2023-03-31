@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @GetMapping("/user/form")
-    public String showJoinForm() {
+    public String join() {
         return "user/form";
     }
 
@@ -48,5 +48,10 @@ public class UserController {
         model.addAttribute("user", user);
 
         return "user/profile";
+    }
+
+    @GetMapping("/user/login")
+    public String login() {
+        return "user/login";
     }
 }
