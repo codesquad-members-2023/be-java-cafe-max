@@ -20,7 +20,7 @@ public class UserService {
 
     public String join(User user) {
         try {
-            validateDuplicateUser(user);
+            validateDuplicateUser(user);   // 중복아이디라면, user를 저장하지 않고 " "반환
             userRepository.save(user);
             return user.getUserId();
         } catch (IllegalStateException e) {

@@ -23,7 +23,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @PostMapping("/qna/form")
+    @PostMapping("qna/form")
     public String write(ArticleForm form) {
 
         Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
@@ -32,15 +32,15 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping(value = {"/", "/index"})
+    @GetMapping(value = {"/", "index"})
     public String list(Model model) {
         List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         model.addAttribute("localDateTime", LocalDateTime.now());
-        return "/index";
+        return "index";
     }
 
-    @GetMapping("/articles/{title}")
+    @GetMapping("articles/{title}")
     public String showArticle(Model model, @PathVariable String title) {
         model.addAttribute("article", articleService.findOne(title));
         return "qna/show";
