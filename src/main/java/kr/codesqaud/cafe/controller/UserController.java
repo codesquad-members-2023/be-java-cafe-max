@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequestMapping
 @Controller
 public class UserController {
 
@@ -27,17 +26,16 @@ public class UserController {
     public String loginPage() {
         return "user/form";
     }
-    // 정보를 받아오는 느낌
 
     @PostMapping("user/form")
     public String register(User user) {
         userService.join(user);
-        return "redirect:/user/list";
+        return "redirect:/users";
     }
-    @GetMapping("user/list")
+    @GetMapping("users")
     public String getUserList(Model model) {
-        List<User> userList = userService.showAllUser();
-        model.addAttribute("userList", userList);
+        List<User> users = userService.showAllUser();
+        model.addAttribute("users", users);
         return "user/list";
     }
 
