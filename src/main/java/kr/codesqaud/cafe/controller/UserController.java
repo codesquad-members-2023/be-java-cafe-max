@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
-
     private final UserMemoryRepository userMemoryRepository;
-
     @Autowired
     public UserController(UserMemoryRepository userMemoryRepository) {
         this.userMemoryRepository = userMemoryRepository;
