@@ -27,7 +27,7 @@
                     <td><a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}"></a></td>
                     <td th:text="${user.name}"></td>
                     <td th:text="${user.email}"></td>
-                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                    <td><a href="/user/update" class="btn btn-success" role="button" th:href="@{/users/update/{userId}(userId=${user.userId})}">수정</a></td>
                 </tr>
                 </tbody>
             </table>
