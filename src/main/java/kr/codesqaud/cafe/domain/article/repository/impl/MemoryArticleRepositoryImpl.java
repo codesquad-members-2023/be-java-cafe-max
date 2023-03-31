@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain.article.repository.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,6 +22,10 @@ public class MemoryArticleRepositoryImpl implements ArticleRepository {
 
 	public Article findById(Integer id) {
 		return articles.get(id);
+	}
+
+	public List<Article> findAll() {
+		return new ArrayList<>(articles.values());
 	}
 
 }
