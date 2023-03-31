@@ -19,7 +19,7 @@ public class UserController {
     }
 
     @GetMapping("/user/form")
-    public String form() {
+    public String showJoinForm() {
         return "user/form";
     }
 
