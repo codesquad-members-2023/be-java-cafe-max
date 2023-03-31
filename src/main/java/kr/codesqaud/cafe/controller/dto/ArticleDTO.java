@@ -2,11 +2,11 @@ package kr.codesqaud.cafe.controller.dto;
 
 import kr.codesqaud.cafe.domain.Article;
 
-public class ArticleDto {
+public class ArticleDTO {
     private String title;
     private String content;
 
-    public ArticleDto(String title, String content) {
+    public ArticleDTO(String title, String content) {
         this.title = title;
         this.content = content;
     }

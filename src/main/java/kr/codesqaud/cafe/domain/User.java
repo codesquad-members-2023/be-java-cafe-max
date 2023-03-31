@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.UserDto;
+import kr.codesqaud.cafe.controller.dto.UserDTO;
 
 public class User {
 
@@ -47,7 +47,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public UserDto toDTO(){
-        return new UserDto(nickName,email,password,id);
+    public UserDTO toDTO(){
+        return new UserDTO(nickName,email,password,id);
     }
 }

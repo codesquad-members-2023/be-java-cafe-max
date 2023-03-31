@@ -2,13 +2,13 @@ package kr.codesqaud.cafe.controller.dto;
 
 import kr.codesqaud.cafe.domain.User;
 
-public class UserDto {
+public class UserDTO {
     private String nickName;
     private String email;
     private String password;
     private Integer id;
 
-    public UserDto(String nickName, String email, String password,Integer id) {
+    public UserDTO(String nickName, String email, String password, Integer id) {
         this.nickName = nickName;
         this.email = email;
         this.password = password;

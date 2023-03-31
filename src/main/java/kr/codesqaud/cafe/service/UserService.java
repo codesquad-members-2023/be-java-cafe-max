@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.controller.dto.ProfileEditDto;
-import kr.codesqaud.cafe.controller.dto.UserDto;
+import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
+import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.repository.UserRepository;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class UserService {
         this.userRepository = new UserRepository();
     }
 
-    public void addUser(UserDto userDto){
+    public void addUser(UserDTO userDto){
         userRepository.save(userDto);
     }
 
@@ -23,11 +23,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public UserDto getUserByUserId(int userId){
+    public UserDTO getUserByUserId(int userId){
         return userRepository.findUser(userId);
     }
 
-    public void updateUserByUserId(ProfileEditDto profileEditDto){
+    public void updateUserByUserId(ProfileEditDTO profileEditDto){
         userRepository.findOne(profileEditDto);
     }
 

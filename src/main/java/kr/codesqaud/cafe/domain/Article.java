@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDto;
+import kr.codesqaud.cafe.controller.dto.ArticleDTO;
 
 public class Article {
     private String title;
@@ -37,7 +37,7 @@ public class Article {
         this.content = content;
     }
 
-    public ArticleDto toDto(){
-        return new ArticleDto(title,content);
+    public ArticleDTO toDto(){
+        return new ArticleDTO(title,content);
     }
 }

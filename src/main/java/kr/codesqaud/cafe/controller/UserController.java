@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.ProfileEditDto;
-import kr.codesqaud.cafe.controller.dto.UserDto;
+import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
+import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/user/join")
-    public String join(UserDto userDto) {
+    public String join(UserDTO userDto) {
         userService.addUser(userDto);
         return "redirect:/users";
     }
@@ -50,7 +50,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}/update")
-    public String updateUserData(ProfileEditDto profileEditDto){
+    public String updateUserData(ProfileEditDTO profileEditDto){
         userService.updateUserByUserId(profileEditDto);
         return "redirect:/users";
     }

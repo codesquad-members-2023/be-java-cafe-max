@@ -1,13 +1,13 @@
 package kr.codesqaud.cafe.controller.dto;
 
-public class ProfileEditDto {
+public class ProfileEditDTO {
     private String nickName;
     private String email;
     private String newPassword;
     private String oriPassword;
     private Integer id;
 
-    public ProfileEditDto(String nickName, String email, String newPassword, String oriPassword, Integer id) {
+    public ProfileEditDTO(String nickName, String email, String newPassword, String oriPassword, Integer id) {
         this.nickName = nickName;
         this.email = email;
         this.newPassword = newPassword;
@@ -55,7 +55,7 @@ public class ProfileEditDto {
         this.id = id;
     }
 
-    public UserDto toUserDto(){
-        return new UserDto(nickName,email,newPassword,id);
+    public UserDTO toUserDto(){
+        return new UserDTO(nickName,email,newPassword,id);
     }
 }
