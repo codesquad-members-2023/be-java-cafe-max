@@ -45,5 +45,11 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    @GetMapping("/")
+    public String showIndex(Model model){
+        model.addAttribute("articles", articleRepository.findAll());
+
+        return "index";
+    }
 
 }
