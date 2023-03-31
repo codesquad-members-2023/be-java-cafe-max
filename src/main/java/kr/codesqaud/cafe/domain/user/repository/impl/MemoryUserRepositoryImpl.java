@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain.user.repository.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -27,4 +29,7 @@ public class MemoryUserRepositoryImpl implements UserRepository {
 		users.put(user.getId(), user);
 	}
 
+	public List<User> findAll() {
+		return new ArrayList<>(users.values());
+	}
 }
