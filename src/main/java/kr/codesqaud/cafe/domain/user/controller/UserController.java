@@ -1,6 +1,10 @@
 package kr.codesqaud.cafe.domain.user.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.codesqaud.cafe.domain.user.dto.UserSaveRequestDto;
@@ -19,5 +23,12 @@ public class UserController {
 	public String signIn(UserSaveRequestDto userSaveRequestDto) {
 		userRepository.save(userSaveRequestDto.toEntity());
 		return "redirect:/users";
+	}
+
+	@GetMapping("/users")
+	public String getUsers(Model model) {
+		List<User> users = userRepository.findAll();
+		model.addAttribute("users", users);
+		return "user/list";
 	}
 }
