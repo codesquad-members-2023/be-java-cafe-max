@@ -12,7 +12,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         //user
-        registry.addViewController("/user/form").setViewName("/user/form");
+//        registry.addViewController("/user/join").setViewName("/user/form");
         registry.addViewController("/user/login").setViewName("/user/login");
         registry.addViewController("/user/login_success").setViewName("/user/login_success");
 

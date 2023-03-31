@@ -20,6 +20,11 @@ public class UserController {
         this.userService = new UserService();
     }
 
+    @GetMapping("/user/join")
+    public String showJoinFrom(){
+        return "/user/form";
+    }
+
     @PostMapping("/user/join")
     public String join(UserDto userDto) {
         userService.addUser(userDto);
