@@ -14,6 +14,17 @@ public class ProfileEditDTO {
         this.newPassword = newPassword;
         this.oriPassword = oriPassword;
     }
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 
     public String getOriPassword() {
         return oriPassword;
