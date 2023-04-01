@@ -2,22 +2,21 @@ package kr.codesqaud.cafe.domain.member;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 public class UserMemoryImpl implements UserRepository {
 
-    private final List<User> users = new ArrayList<>();
+    private final Map<Integer, User> users = new HashMap<>();
 
     @Override
-    public void save(User user) {
-        users.add(user);
+    public void save(User user, int index) {
+        users.put(index++, user);
     }
 
     @Override
-    public List<User> findAll() {
-
+    public Map<Integer, User> findAll() {
         return users;
     }
 }

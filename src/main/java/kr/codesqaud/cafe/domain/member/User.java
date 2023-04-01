@@ -2,14 +2,13 @@ package kr.codesqaud.cafe.domain.member;
 
 import java.util.Comparator;
 
-public class User implements Comparable<User>  {
+public class User {
 
     private int index;
     private String userId;
     private String password;
     private String name;
     private String email;
-
 
 
     public User(int index, String userId, String password, String name, String email) {
@@ -39,13 +38,6 @@ public class User implements Comparable<User>  {
     public String getEmail() {
         return email;
     }
-
-    @Override
-    public int compareTo(User o) {
-        return Integer.compare(this.index, o.index);
-    }
-
-
 
 
 }
