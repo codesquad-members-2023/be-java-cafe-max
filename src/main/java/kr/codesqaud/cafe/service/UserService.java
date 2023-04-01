@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.repository.impl.MemoryUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,24 +11,24 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+    private UserRepository memoryUserRepository;
 
     public UserService() {
-        this.userRepository = new UserRepository();
+        this.memoryUserRepository = new MemoryUserRepository();
     }
 
     public void addUser(User user){
-        userRepository.save(user);
+        memoryUserRepository.save(user);
     }
 
     public List<User> getUserList(){
-        return userRepository.findAll();
+        return memoryUserRepository.findAll();
     }
 
     public User getUserByUserId(int userId){
-        return userRepository.findUser(userId);
+        return memoryUserRepository.findUserById(userId);
     }
     public void updateUserByUserId(ProfileEditDTO profileEditDto,int id){
-        userRepository.findOne(profileEditDto,id);
+        memoryUserRepository.updateUser(profileEditDto,id);
     }
 }
