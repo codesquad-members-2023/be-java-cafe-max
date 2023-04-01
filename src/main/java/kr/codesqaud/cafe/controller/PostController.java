@@ -41,7 +41,6 @@ public class PostController {
 
     @GetMapping("/{id}")
     public String post(@PathVariable Long id, Model model) {
-        model.addAttribute("lineSeparator", System.getProperty("line.separator"));
         model.addAttribute("postResponse", postService.findById(id));
         return "post/post";
     }
