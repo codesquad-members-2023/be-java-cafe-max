@@ -56,7 +56,7 @@ public class SignUpDTO {
         return email;
     }
 
-    public User convertToUser(int idx) {
+    public User toUser(int idx) {
         return new User(idx, userId, password, name, email);
     }
 

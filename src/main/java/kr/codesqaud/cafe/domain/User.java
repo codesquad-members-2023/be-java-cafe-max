@@ -37,7 +37,7 @@ public class User {
         return email;
     }
 
-    public UserDTO convertToDTO() {
+    public UserDTO toDto() {
         return new UserDTO(idx, userId, name, email);
     }
 
