@@ -33,4 +33,13 @@ public class MemberController {
         return "/members";
     }
 
+    @PostMapping("/signUp")
+    public String signUp(@ModelAttribute("signUpRequestDto") @Validated SignUpRequestDto signUpRequestDto, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "member/signUp";
+        }
+        memberService.signUp(signUpRequestDto);
+        return "redirect:/member";
+    }
+
 }
