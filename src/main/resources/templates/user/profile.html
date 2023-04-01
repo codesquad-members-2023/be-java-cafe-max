@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragment/layout/head :: common_head}"></head>
+<body>
+    <div class="container" id="main">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4>Profiles</h4></div>
+                <div class="panel-body">
+                    <div class="well well-sm">
+                        <div class="media">
+                            <div class="media-body" th:object="${user}">
+                                <h4 class="media-heading" th:text="${user.userId}">자바지기</h4>
+                                <p class="btn btn-xs btn-default" th:text="${user.name}"><span class="glyphicon glyphicon-envelope"></span>&nbsp;javajigi@slipp.net>
+                                <p class="btn btn-xs btn-default" th:text="${user.email}"><span class="glyphicon glyphicon-envelope"></span>&nbsp;javajigi@slipp.net>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{fragment/layout/footer :: common_footer}"></footer>
+</body>
+</html>
