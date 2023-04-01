@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 public class ArticleRepository {
     private Map<Integer,Article> articleRepository;
     private static int sequence = 1;
-
     public ArticleRepository() {
         this.articleRepository = new HashMap();
     }
