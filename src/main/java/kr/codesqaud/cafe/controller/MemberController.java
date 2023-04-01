@@ -70,4 +70,8 @@ public class MemberController {
         return "/profileEdit";
     }
 
+    @GetMapping("/signUp")
+    public String signUpForm(@ModelAttribute("signUpRequestDto")  SignUpRequestDto signUpRequestDto){
+        return "/signUp";
+    }
 }
