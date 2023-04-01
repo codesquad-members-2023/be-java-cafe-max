@@ -32,7 +32,7 @@ public class ArticleController {
     public String getShow(@PathVariable int index, Model model) {
         List<Article> list = articleService.getArticleList();
         model.addAttribute("article", list.get(index));
-        return "/qna/show";
+        return "qna/show";
     }
 
 

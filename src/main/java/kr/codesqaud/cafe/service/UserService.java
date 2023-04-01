@@ -40,10 +40,7 @@ public class UserService {
     }
 
     public boolean checkPassword(User user, UpdateFormDto updateFormDto) {
-        if (user.getPassword().equals(updateFormDto.getPassword())) {
-            return true;
-        }
-        return false;
+        return user.getPassword().equals(updateFormDto.getPassword());
     }
 
 }

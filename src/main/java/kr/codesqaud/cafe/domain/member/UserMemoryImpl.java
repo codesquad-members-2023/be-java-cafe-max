@@ -12,7 +12,7 @@ public class UserMemoryImpl implements UserRepository {
 
     @Override
     public void save(User user, int index) {
-        users.put(index++, user);
+        users.put(index, user);
     }
 
     @Override
