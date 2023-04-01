@@ -45,5 +45,11 @@ public class MemberService {
     }
 
 
-
+    public void update(ProfileEditRequestDto profileEditRequestDto) {
+        Member findMember = memberRepository.findById(profileEditRequestDto.getId())
+                .orElseThrow(() -> new NoSuchElementException("해당 id를 가진 멤버를 찾을 수 없습니다."));
+        findMember.setNickName(profileEditRequestDto.getNickName());
+        findMember.setEmail(profileEditRequestDto.getEmail());
+        memberRepository.update(findMember);
+    }
 }
