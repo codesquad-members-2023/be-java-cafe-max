@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @Controller
 public class UserController {
 
-    UserService userService;
+    private final UserService userService;
 
     public UserController() {
         this.userService = new UserService();

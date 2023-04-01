@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
-    ArticleService articleService;
+    private final ArticleService articleService;
 
     public MainController(ArticleService articleService) {
         this.articleService = articleService;
