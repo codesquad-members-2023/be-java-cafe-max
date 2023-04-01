@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.exception.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.exception.common.BadRequestException;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
@@ -20,8 +19,7 @@ public class ExceptionController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     @ExceptionHandler(DuplicateMemberEmailException.class)
-    public String email(DuplicateMemberEmailException e, Model model)
-        throws JsonProcessingException {
+    public String duplicateMemberEmail(DuplicateMemberEmailException e, Model model) {
         String objectName = "signUpRequest";
         String viewName = "member/signUp";
 
@@ -41,10 +39,17 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)
     public String badRequest(BadRequestException e, Model model) {
-        logger.error("error code : {}, error message : {}, error data = {}", e.getErrorCode(),
+        logger.error("BadRequestException\n error code : {}\n error message{}\n error data = {}", e.getErrorCode(),
             e.getMessage(), e.getErrorData());
         model.addAttribute("errorCode", e.getErrorCode());
         model.addAttribute("errorMessage", e.getMessage());
         return "error/400";
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(RuntimeException.class)
+    public String runtime(RuntimeException e) {
+        logger.error("RuntimeException", e);
+        return "error/500";
     }
 }
