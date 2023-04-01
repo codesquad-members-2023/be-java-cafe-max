@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.exception.UserNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -36,7 +37,7 @@ public class UserRepository {
         return userRepository.values().stream()
                 .filter(user -> user.getId() == userId)
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new UserNotFoundException("해당 사용자가 없습니다.") );
     }
 
     public void findOne(ProfileEditDTO profileEditDto,int id) {
