@@ -60,14 +60,4 @@ public class SignUpDTO {
         return new User(idx, userId, password, name, email);
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", passwordCheck='" + passwordCheck + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }
