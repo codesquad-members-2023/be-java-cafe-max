@@ -33,19 +33,15 @@ public class UserService  {
         return userRepository.findAll();
     }
 
-    public void update(int index, UpdateFormDto updateFormDto){
-        User current = getList().get(index);
-        if(checkPassword(current,updateFormDto)){
-            getList().remove(index);
-            String id = updateFormDto.getUserId();
-            String password = updateFormDto.getNewPassword();
-            String name = updateFormDto.getName();
-            String email = updateFormDto.getEmail();
-            User updateUser = new User(index,id, password,name,email);
+    public void update(int index, UpdateFormDto dto){
+        List<User>users = getList();
+        User current = users.get(index);
+        if(checkPassword(current,dto)){
+            users.remove(index);
+            User updateUser = new User(index,dto.getUserId(), dto.getNewPassword(),dto.getName(), dto.getEmail());
             userRepository.save(updateUser);
-            Collections.sort(getList());
+            Collections.sort(users);
         }
-        // if 안타면 예외처리 생각중
     }
     public boolean checkPassword(User user, UpdateFormDto updateFormDto){
         if(user.getPassword().equals(updateFormDto.getPassword())){
