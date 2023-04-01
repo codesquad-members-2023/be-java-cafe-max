@@ -24,6 +24,7 @@ public class MemoryArticleRepository implements ArticleRepository {
         article.setId(sequence++);
         articleRepository.put(sequence,article);
     }
+
     @Override
     public List<Article> findAll() {
         List<Article> articles = articleRepository.values().stream()
@@ -37,5 +38,9 @@ public class MemoryArticleRepository implements ArticleRepository {
                 .filter(article -> article.getId() == id)
                 .findFirst()
                 .orElseThrow(() -> new ArticleNotFoundException("해당 글이 존재하지 않습니다."));
+    }
+
+    public static void resetSequenceForTest() {
+        sequence = 1;
     }
 }
