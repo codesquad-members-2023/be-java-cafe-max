@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head :: head(~{::link})">
+    <link rel="stylesheet" th:href="@{/css/member/memberForm.css}">
+</head>
+<body>
+<header th:replace="~{layout/header :: header}">
+</header>
+<main>
+    <div class="m-auto w-100">
+        <div>
+            <h2 class="title">회원 수정</h2>
+        </div>
+        <form th:action="@{/members/{id}(id = __${id}__)}" th:method="put" th:object="${profileEditRequestDto}">
+            <div class="form-floating">
+                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력해주세요"
+                       aria-describedby="validationEmailFeedback" th:errorclass="is-invalid" th:field="*{email}">
+                <label for="email">이메일</label>
+                <div id="validationEmailFeedback" class="invalid-feedback" th:errors="*{email}">
+                </div>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="nickName" name="nickName" placeholder="닉네임을 입력해주세요"
+                       aria-describedby="validationNameFeedback" th:errorclass="is-invalid" th:field="*{nickName}">
+                <label for="nickName">닉네임</label>
+                <div id="validationNameFeedback" class="invalid-feedback" th:errors="*{nickName}">
+                </div>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력해주세요"
+                       aria-describedby="validationPasswordFeedback" th:errorclass="is-invalid" th:field="*{password}">
+                <label for="password">비밀번호</label>
+                <div id="validationPasswordFeedback" class="invalid-feedback" th:errors="*{password}">
+                </div>
+            </div>
+            <input type="hidden" id="id" name="id" th:value="__${id}__">
+            <button id="submit" class="w-100 btn btn-primary mt-4" type="submit">회원가입</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>
