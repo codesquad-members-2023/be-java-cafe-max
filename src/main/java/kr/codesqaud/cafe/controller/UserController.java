@@ -49,10 +49,9 @@ public class UserController {
         return "/user/updateForm";
     }
 
-    @PutMapping("/users/{id}/update")
+    @PutMapping("/users/{id}")
     public String updateUserData(@PathVariable int id, ProfileEditDTO profileEditDto){
         userService.updateUserByUserId(profileEditDto,id);
         return "redirect:/users";
     }
-
 }
