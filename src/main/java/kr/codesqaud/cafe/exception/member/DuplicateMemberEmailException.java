@@ -4,7 +4,7 @@ import kr.codesqaud.cafe.exception.common.BadRequestException;
 
 public class DuplicateMemberEmailException extends BadRequestException {
 
-    public DuplicateMemberEmailException(Object errorValue) {
-        super(errorValue);
+    public DuplicateMemberEmailException(Object errorData) {
+        super(errorData);
     }
 }

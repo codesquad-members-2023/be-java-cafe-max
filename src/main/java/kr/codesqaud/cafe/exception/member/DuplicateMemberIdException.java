@@ -4,7 +4,7 @@ import kr.codesqaud.cafe.exception.common.BadRequestException;
 
 public class DuplicateMemberIdException extends BadRequestException {
 
-    public DuplicateMemberIdException(Object errorValue) {
-        super(errorValue);
+    public DuplicateMemberIdException(Object errorData) {
+        super(errorData);
     }
 }

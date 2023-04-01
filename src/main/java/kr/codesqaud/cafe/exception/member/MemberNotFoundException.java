@@ -4,7 +4,7 @@ import kr.codesqaud.cafe.exception.common.BadRequestException;
 
 public class MemberNotFoundException extends BadRequestException {
 
-    public MemberNotFoundException(Object errorValue) {
-        super(errorValue);
+    public MemberNotFoundException(Object errorData) {
+        super(errorData);
     }
 }
