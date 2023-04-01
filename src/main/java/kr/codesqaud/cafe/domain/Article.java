@@ -1,15 +1,19 @@
 package kr.codesqaud.cafe.domain;
 
+import java.time.LocalDateTime;
+
 public class Article {
 	private String writer;
 	private String title;
 	private String contents;
 	private Long id;
+	private LocalDateTime createAt;
 
 	public Article(String writer, String title, String contents) {
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
+		this.createAt = LocalDateTime.now();
 	}
 
 	public String getWriter() {
@@ -26,6 +30,10 @@ public class Article {
 
 	public Long getId() {
 		return id;
+	}
+
+	public LocalDateTime getCreateAt() {
+		return createAt;
 	}
 
 	public void setId(Long id) {

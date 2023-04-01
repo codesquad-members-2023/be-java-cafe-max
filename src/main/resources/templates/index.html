@@ -14,7 +14,7 @@
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
-                                <span class="time">2016-01-15 18:47</span>
+                                <span class="time">{{createAt}}</span>
                                 <a href="user/profile.html" class="author">{{writer}}</a>
                             </div>
                             <div class="reply" title="댓글">
@@ -40,7 +40,7 @@
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">
-                    <a href="qna/form.html" class="btn btn-primary pull-right" role="button">질문하기</a>
+                    <a href="questions/form" class="btn btn-primary pull-right" role="button">질문하기</a>
                 </div>
             </div>
         </div>
@@ -124,9 +124,6 @@
 </div>
 -->
 
-<!-- script references -->
-<script src="../static/js/jquery-2.2.0.min.js"></script>
-<script src="../static/js/bootstrap.min.js"></script>
-<script src="../static/js/scripts.js"></script>
+{{> layout/footer}}
 </body>
 </html>
