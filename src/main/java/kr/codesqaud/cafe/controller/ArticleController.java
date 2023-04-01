@@ -17,7 +17,11 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @PostMapping("/post/submit")
+    @GetMapping("/article/post")
+    public String showPostArticleForm(){
+        return "/post/form";
+    }
+    @PostMapping("/article/post")
     public String postArticle(ArticleDTO articleDto) {
         articleService.post(articleDto.toArticle());
         return "redirect:/";
