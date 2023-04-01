@@ -53,5 +53,16 @@ public class MemberController {
         }
     }
 
+    @PutMapping("/{id}")
+    public String editProfile(@ModelAttribute @Validated ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+        if(bindingResult.hasErrors()){
+            return "member/profiledEdit";
+        }
+
+        memberService.update(profileEditRequestDto);
+        redirectAttributes.addAttribute("id",profileEditRequestDto.getId());
+        return "redirect:/member/{id}";
+    }
+
 
 }
