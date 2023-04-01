@@ -16,28 +16,29 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+
     @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
     @PostMapping("/article/write")
-    public String postQuestion(ArticleFormDto articleFormDto){
+    public String postQuestion(ArticleFormDto articleFormDto) {
         articleService.questionWrite(articleFormDto);
         return "redirect:/";
     }
 
     @GetMapping("/article/show/{index}")
-    public String getShow(@PathVariable("index")int index,Model model){
+    public String getShow(@PathVariable int index, Model model) {
         List<Article> list = articleService.getArticleList();
-        model.addAttribute("article",list.get(index));
+        model.addAttribute("article", list.get(index));
         return "/qna/show";
     }
 
 
     @GetMapping("/")
-    public String getIndex(Model model){
-        model.addAttribute("articleList",articleService.getArticleList());
+    public String getIndex(Model model) {
+        model.addAttribute("articleList", articleService.getArticleList());
         return "index";
     }
 
