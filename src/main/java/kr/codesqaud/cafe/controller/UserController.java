@@ -38,19 +38,19 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public String showUserProfile(@PathVariable int id, Model model) {
+    public String showUserProfile(@PathVariable String id, Model model) {
         model.addAttribute("user", userService.getUserByUserId(id));
         return "user/profile";
     }
 
     @GetMapping("/users/{id}/form")
-    public String userUpdateForm(@PathVariable int id,Model model){
+    public String userUpdateForm(@PathVariable String id,Model model){
         model.addAttribute("user",userService.getUserByUserId(id));
         return "/user/updateForm";
     }
 
     @PutMapping("/users/{id}")
-    public String updateUserData(@PathVariable int id, ProfileEditDTO profileEditDto){
+    public String updateUserData(@PathVariable String id, ProfileEditDTO profileEditDto){
         userService.updateUserByUserId(profileEditDto,id);
         return "redirect:/users";
     }

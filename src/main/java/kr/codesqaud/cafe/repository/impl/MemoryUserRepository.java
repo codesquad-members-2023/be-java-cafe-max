@@ -15,9 +15,7 @@ import java.util.stream.Collectors;
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private Map<Integer, User> userRepository;
-
-    private static int sequence = 1;
+    private Map<String, User> userRepository;
 
     public MemoryUserRepository() {
         this.userRepository = new HashMap();
@@ -25,7 +23,6 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        user.setId(user.getId() == -1 ? sequence++ : user.getId());
         userRepository.put(user.getId(), user);
     }
 
@@ -37,14 +34,14 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User findUserById(int userId) {
+    public User findUserById(String userId) {
         return userRepository.values().stream()
-                .filter(user -> user.getId() == userId)
+                .filter(user -> user.getId().equals(userId))
                 .findFirst()
                 .orElseThrow(() -> new UserNotFoundException("해당 사용자가 없습니다.") );
     }
 
-    public void updateUser(ProfileEditDTO profileEditDto, int id) {
+    public void updateUser(ProfileEditDTO profileEditDto,String id) {
         String oriPassword = userRepository.get(id).getPassword();
         if (oriPassword.equals(profileEditDto.getOriPassword())) {
             save(profileEditDto.toUser(id));

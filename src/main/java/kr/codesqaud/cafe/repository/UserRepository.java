@@ -10,7 +10,7 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    User findUserById(int id);
+    User findUserById(String id);
 
-    void updateUser(ProfileEditDTO profileEditDTO,int id);
+    void updateUser(ProfileEditDTO profileEditDTO,String id);
 }

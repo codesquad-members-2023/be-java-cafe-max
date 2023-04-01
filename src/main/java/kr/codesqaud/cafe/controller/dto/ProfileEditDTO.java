@@ -19,7 +19,7 @@ public class ProfileEditDTO {
         return oriPassword;
     }
 
-    public User toUser(int id){
+    public User toUser(String id){
         return new User(nickName,email,newPassword,id);
     }
 }

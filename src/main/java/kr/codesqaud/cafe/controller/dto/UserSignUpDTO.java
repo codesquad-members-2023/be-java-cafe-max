@@ -6,14 +6,16 @@ public class UserSignUpDTO {
     private String nickName;
     private String email;
     private String password;
+    private String id;
 
-    public UserSignUpDTO(String nickName, String email, String password) {
+    public UserSignUpDTO(String nickName, String email, String password,String id) {
         this.nickName = nickName;
         this.email = email;
         this.password = password;
+        this.id = id;
     }
 
     public User toUser(){
-        return new User(nickName,email,password);
+        return new User(nickName,email,password,id);
     }
 }

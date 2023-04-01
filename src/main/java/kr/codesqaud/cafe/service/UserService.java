@@ -25,10 +25,10 @@ public class UserService {
         return memoryUserRepository.findAll();
     }
 
-    public User getUserByUserId(int userId){
-        return memoryUserRepository.findUserById(userId);
+    public User getUserByUserId(String Id){
+        return memoryUserRepository.findUserById(Id);
     }
-    public void updateUserByUserId(ProfileEditDTO profileEditDto,int id){
+    public void updateUserByUserId(ProfileEditDTO profileEditDto,String id){
         memoryUserRepository.updateUser(profileEditDto,id);
     }
 }
