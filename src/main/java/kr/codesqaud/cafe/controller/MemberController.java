@@ -42,4 +42,16 @@ public class MemberController {
         return "redirect:/member";
     }
 
+
+    @GetMapping("/{id}")
+    public String profile(@PathVariable String id, Model model){
+        try {
+            model.addAttribute("memberResponsesDto",memberService.findById(id));
+            return "/profile";
+        }catch (NoSuchElementException e){
+            return "error/404";
+        }
+    }
+
+
 }
