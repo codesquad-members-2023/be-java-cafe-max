@@ -2,12 +2,12 @@ package kr.codesqaud.cafe.controller.dto;
 
 import kr.codesqaud.cafe.domain.User;
 
-public class UserJoinDTO {
+public class UserSignUpDTO {
     private String nickName;
     private String email;
     private String password;
 
-    public UserJoinDTO(String nickName, String email, String password) {
+    public UserSignUpDTO(String nickName, String email, String password) {
         this.nickName = nickName;
         this.email = email;
         this.password = password;

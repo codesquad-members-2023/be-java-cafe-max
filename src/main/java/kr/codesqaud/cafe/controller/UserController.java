@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
-import kr.codesqaud.cafe.controller.dto.UserJoinDTO;
+import kr.codesqaud.cafe.controller.dto.UserSignUpDTO;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,14 +20,14 @@ public class UserController {
         this.userService = new UserService();
     }
 
-    @GetMapping("/user/join")
-    public String showJoinFrom(){
+    @GetMapping("/user/signUp")
+    public String showSignUpForm(){
         return "/user/form";
     }
 
-    @PostMapping("/user/join")
-    public String join(UserJoinDTO userJoinDto) {
-        userService.addUser(userJoinDto.toUser());
+    @PostMapping("/user/signUp")
+    public String signUp(UserSignUpDTO userSignUpDto) {
+        userService.addUser(userSignUpDto.toUser());
         return "redirect:/users";
     }
 
