@@ -38,4 +38,9 @@ public class MemoryMemberRepository implements MemberRepository {
                 .collect(Collectors.toUnmodifiableList());
     }
 
+    @Override
+    public void update(Member member) {
+        store.put(member.getId(), member);
+    }
+
 }
