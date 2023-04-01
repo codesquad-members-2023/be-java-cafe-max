@@ -25,7 +25,10 @@ public class MemoryMemberRepository implements MemberRepository {
         return member.getId();
     }
 
-
+    @Override
+    public Optional<Member> findById(String id) {
+        return Optional.ofNullable(store.get(id));
+    }
 
     @Override
     public List<Member> findAll() {

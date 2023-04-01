@@ -8,6 +8,7 @@ import kr.codesqaud.cafe.domain.Member;
 public interface MemberRepository {
     String save(Member member);
 
-    List<Member> findAll();
+    Optional<Member> findById(String id);
 
+    List<Member> findAll();
 }
