@@ -6,18 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class UserMemoryImpl implements UserRepository{
+public class UserMemoryImpl implements UserRepository {
 
-    private  List<User> userLogList = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
 
     @Override
     public void save(User user) {
-        userLogList.add(user);
+        users.add(user);
     }
 
     @Override
-    public List<User> findAll(){
+    public List<User> findAll() {
 
-        return userLogList;
+        return users;
     }
 }

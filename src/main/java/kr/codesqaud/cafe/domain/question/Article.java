@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.domain.question;
 
-public class Article {
 
+public class Article {
     private int index;
     private String writer;
     private String title;
@@ -9,8 +9,7 @@ public class Article {
     private String date;
 
 
-
-    public Article(int index, String writer, String title, String contents,String date) {
+    public Article(int index, String writer, String title, String contents, String date) {
         this.index = index;
         this.writer = writer;
         this.title = title;

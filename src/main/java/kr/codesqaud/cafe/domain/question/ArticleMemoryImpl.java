@@ -6,15 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ArticleMemoryImpl implements ArticleRepository{
-    private  List<Article> articleList = new ArrayList<>();
+public class ArticleMemoryImpl implements ArticleRepository {
+    private final List<Article> articles = new ArrayList<>();
+
     @Override
     public void save(Article article) {
-        articleList.add(article);
+        articles.add(article);
     }
 
     @Override
     public List<Article> findAll() {
-        return articleList;
+        return articles;
     }
 }
