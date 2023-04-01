@@ -7,7 +7,7 @@ import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ public class MemoryUserRepository implements UserRepository {
     private Map<String, User> userRepository;
 
     public MemoryUserRepository() {
-        this.userRepository = new HashMap();
+        this.userRepository = new LinkedHashMap();
     }
 
     @Override
