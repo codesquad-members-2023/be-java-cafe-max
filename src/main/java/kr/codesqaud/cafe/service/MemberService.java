@@ -26,7 +26,6 @@ public class MemberService {
         }
 
         Member member = signUpRequestDto.toEntity();
-
         if (member == null) {
             throw new IllegalArgumentException("Member 객체를 생성할 수 없습니다.");
         }
@@ -40,5 +39,11 @@ public class MemberService {
                 .map(MemberResponseDto::of)
                 .collect(Collectors.toList());
     }
+
+    public MemberResponseDto findById(String id) {
+        return MemberResponseDto.of(memberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당 id를 가진 멤버를 찾을 수 없습니다.")));
+    }
+
+
 
 }
