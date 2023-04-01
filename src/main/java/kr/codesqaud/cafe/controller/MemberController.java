@@ -64,5 +64,10 @@ public class MemberController {
         return "redirect:/member/{id}";
     }
 
+    @GetMapping("/{id}/edit")
+    public String profileEditForm(@PathVariable String id, Model model){
+        model.addAttribute("profileEditRequest", ProfileEditRequestDto.of(memberService.findById(id)));
+        return "/profileEdit";
+    }
 
 }
