@@ -34,8 +34,8 @@ public class MemberController {
     }
 
     @PostMapping("/signUp")
-    public String signUp(@ModelAttribute("signUpRequestDto") @Validated SignUpRequestDto signUpRequestDto, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public String signUp(@ModelAttribute("signUpRequestDto") @Valid SignUpRequestDto signUpRequestDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "member/signUp";
         }
         memberService.signUp(signUpRequestDto);
@@ -54,8 +54,8 @@ public class MemberController {
     }
 
     @PutMapping("/{id}")
-    public String editProfile(@ModelAttribute @Validated ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes){
-        if(bindingResult.hasErrors()){
+    public String editProfile(@ModelAttribute @Valid ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
             return "member/profiledEdit";
         }
 
