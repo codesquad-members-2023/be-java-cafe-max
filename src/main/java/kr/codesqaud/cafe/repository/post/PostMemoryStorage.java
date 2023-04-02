@@ -41,4 +41,8 @@ public class PostMemoryStorage implements PostRepository{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteAll() {
+        postMap.clear();
+    }
 }

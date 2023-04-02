@@ -10,4 +10,6 @@ public interface PostRepository {
     UUID save(Post post);
     Optional<Post> findById(UUID postId);
     List<Post> findAll();
+
+    void deleteAll();
 }
