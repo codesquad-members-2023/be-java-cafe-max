@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.repository.impl;
 
 import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.exception.IDNotFoundException;
+import kr.codesqaud.cafe.exception.PasswordNotFoundException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Repository;
@@ -45,7 +45,7 @@ public class MemoryUserRepository implements UserRepository {
     public void updateUser(ProfileEditDTO profileEditDto,String id) {
         String oriPassword = userRepository.get(id).getPassword();
         if (!oriPassword.equals(profileEditDto.getOriPassword())) {
-            throw new IDNotFoundException("일치하는 아이디가 없습니다.");
+            throw new PasswordNotFoundException("비밀번호가 일치하지 않습니다.");
         }
         save(profileEditDto.toUser(id));
     }
