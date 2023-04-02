@@ -1,10 +1,11 @@
 package kr.codesqaud.cafe.service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.PostingRequest;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
@@ -23,13 +24,10 @@ public class ArticleService {
 		articleRepository.save(article);
 	}
 
-	public List<Article> allListLookup() {
-		List<Article> allPosting = articleRepository.findAllPosting();
-		List<Article> postings = new ArrayList<>();
-		for (int i = 0; i < allPosting.size(); i++) {
-			Article article = allPosting.get(i);
-			postings.add(new Article(article.getWriter(), article.getTitle(), article.getContents()));
-		}
-		return postings;
+	public List<ArticleDto> allListLookup() {
+		return articleRepository.findAllPosting()
+			.stream()
+			.map(ArticleDto::fromEntity)
+			.collect(Collectors.toUnmodifiableList());
 	}
 }
