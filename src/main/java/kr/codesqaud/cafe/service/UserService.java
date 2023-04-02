@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Service;
 
@@ -31,9 +30,9 @@ public class UserService {
 	}
 
 	public List<UserDto> getUsers() {
-		List<User> users = userRepository.findAll();
-		return IntStream.rangeClosed(1, users.size())
-			.mapToObj(index -> UserDto.from(users.get(index - 1), index))
+		return userRepository.findAll()
+			.stream()
+			.map(UserDto::from)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
