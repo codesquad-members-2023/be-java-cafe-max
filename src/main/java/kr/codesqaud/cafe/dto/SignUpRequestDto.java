@@ -26,11 +26,11 @@ public class SignUpRequestDto {
 
     private final LocalDateTime createDate;
 
-    public SignUpRequestDto(String email, String password, String nickName, LocalDateTime createDate) {
+    public SignUpRequestDto(String email, String password, String nickName) {
         this.email = email;
         this.password = password;
         this.nickName = nickName;
-        this.createDate = createDate;
+        this.createTime = LocalDateTime.now();
     }
 
     public String getEmail() {
@@ -45,11 +45,7 @@ public class SignUpRequestDto {
         return nickName;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public Member toEntity(){
-        return new Member(UUID.randomUUID().toString(),email,password,nickName,createDate);
+    public Member toEntity() {
+        return new Member(UUID.randomUUID().toString(), email, password, nickName, createTime);
     }
 }
