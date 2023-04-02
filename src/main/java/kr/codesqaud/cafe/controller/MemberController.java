@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.NoSuchElementException;
-
 import javax.validation.Valid;
 
 import kr.codesqaud.cafe.dto.ProfileEditRequestDto;
@@ -46,12 +44,8 @@ public class MemberController {
 
     @GetMapping("/{id}")
     public String profile(@PathVariable String id, Model model) {
-        try {
-            model.addAttribute("memberResponsesDto", memberService.findById(id));
-            return "/profile";
-        } catch (NoSuchElementException e) {
-            return "error/404";
-        }
+        model.addAttribute("memberResponsesDto", memberService.findById(id));
+        return "/profile";
     }
 
     @PutMapping("/{id}")
