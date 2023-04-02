@@ -46,12 +46,4 @@ class MemoryArticleRepositoryTest {
         assertThat(allArticle.size()).isEqualTo(2);
         assertThat(allArticle).contains(article1, article2);
     }
-
-    @Test
-    void update() {
-    }
-
-    @Test
-    void delete() {
-    }
 }
