@@ -20,8 +20,8 @@
                 <span class="col-sm-2">조회 [[${postResponse.views}]]</span>
             </div>
             <div class="post-content">
-                <p th:utext="${#strings.replace(postResponse.content, @environment.getProperty('line.separator'), '<br/>')}">
-                </p>
+                <pre th:text="${postResponse.content}">
+                </pre>
             </div>
         </div>
         <div class="comments">
