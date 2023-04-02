@@ -1,0 +1,27 @@
+{{> fragments/header}}
+<div></div>
+<div class="wrap">
+    <form name="question" method="post" action="/qna/write">
+        <div class="h3">
+            <h3>글쓰기</h3>
+        </div>
+        <div class="title-form">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" placeholder="글의 제목을 입력하세요." onkeyup="verifyTitle()">
+        </div>
+        <div class="title-form">
+            <label for="writer">글쓴이</label>
+            <input class="form-control" id="writer" name="writer" placeholder="글쓴이"/>
+        </div>
+        <div class="content-form">
+            <label for="content">내용</label>
+            <textarea name="contents" id="content" placeholder="글의 내용을 입력하세요." onkeyup="verifyContent()"></textarea>
+        </div>
+        <div class="write-complete">
+            <div id="writingMessage" class="message"></div>
+            <button class="button complete" type="submit" onclick="validateWriting()">작성완료</button>
+        </div>
+    </form>
+</div>
+<script src="/js/dataValidation.js"></script>
+{{> fragments/footer}}

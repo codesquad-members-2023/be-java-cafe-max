@@ -1,0 +1,52 @@
+{{> fragments/header}}
+        <div></div>
+        <div class="description">
+            <div class="inbox">
+                <div class="small text">코드스쿼드 백엔드 교육용 페이지</div>
+                <div class="big text">HELLO JAVA! 입니다.</div>
+            </div>
+        </div>
+        <div class="board">
+            <div class="countOfPost">
+                <p>전체 글 <span id="post_count">{{articles.size}}</span>개</p>
+            </div>
+            <div class="board_list">
+                <ul class="line_list">
+                    {{#articles}}
+                        <li class="list_hover">
+                            <div class="write-list">
+                                <div class="article-index">{{index}}</div>
+                                <div class="column">
+                                    <strong class="article-title">
+                                        <a href="/articles/{{index}}">{{title}}</a>
+                                    </strong>
+                                    <div class="article-writer">
+                                        <span class="time">{{writeDate}}</span>
+                                        <a href="./user/profile.html" class="writer">{{writer}}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {{/articles}}
+                </ul>
+                <div class="write-menu">
+                    <div class="page">
+                        <ul class="pagination">
+                            <li><a href="#" class="prev">«</a></li>
+                            <li><a href="#" class="num on">1</a></li>
+                            <li><a href="#" class="num">2</a></li>
+                            <li><a href="#" class="num">3</a></li>
+                            <li><a href="#" class="num">4</a></li>
+                            <li><a href="#" class="num">5</a></li>
+                            <li><a href="#" class="next">»</a></li>
+                        </ul>
+                    </div>
+                    <div class="write">
+                        <input type="text" id="searchInput">
+                        <a id="search" class="body button" href="#">검색</a>
+                        <a id="button-write" class="body button" href="/questions/form">글쓰기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+{{> fragments/footer}}

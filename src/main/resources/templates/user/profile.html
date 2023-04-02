@@ -1,0 +1,22 @@
+{{> fragments/header}}
+        <div class="blank"></div>
+        <div class="container">
+            <div class="profile-header"><h2>Profiles</h2></div>
+            <div class="profile-body">
+                <div class="picture">
+                    <a href="#">
+                        <img src="/images/profile_picture.jpg" width="200px">
+                        <p class="reference"><a href="https://www.freepik.com/free-vector/cheerful-cute-girl-greeting-with-namaste-cartoon-art-illustration_16782107.htm">Image by mamewmy</a> on Freepik</p>
+                    </a>
+                </div>
+                <div class="user-profile">
+                    <h2>{{user.userID}}</h2>
+                    <p>
+                        <a href="#" class="email-icon"><img src="/images/mail.png" width="20px">&nbsp;{{user.email}}</a>
+                    </p>
+                    <p>닉네임: {{user.nickname}}</p>
+                    <p>가입일자: {{user.signUpDate}}</p>
+                </div>
+            </div>
+        </div>
+{{> fragments/footer}}
