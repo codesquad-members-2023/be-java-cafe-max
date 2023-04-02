@@ -39,6 +39,7 @@ public class MemberResponseDto {
         return createTime;
     }
 
+
     public static MemberResponseDto of(Member member) {
         return new MemberResponseDto(member.getId(), member.getEmail(), member.getPassword(), member.getNickName(), member.getCreateTime());
     }

@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.MemberResponseDto;
 import kr.codesqaud.cafe.repository.MemberRepository;
@@ -50,16 +51,16 @@ class MemberControllerTest {
     @DisplayName("/post 요청시 db에 회원이 저장이 된다.(회원가입)")
     void signUp() throws Exception {
         //given
-        String email="test@test.com";
+        String email = "test@test.com";
         String password = "testtest";
         String nickName = "chacha";
 
         //when,then
         mockMvc.perform(post("/member/signUp")
-                .param("email",email)
-                .param("password",password)
-                .param("nickName",nickName)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .param("email", email)
+                        .param("password", password)
+                        .param("nickName", nickName)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -78,7 +79,7 @@ class MemberControllerTest {
     @DisplayName("/put 요청시 db에서 회원 프로필을 수정한다.")
     void editProfile() throws Exception {
         //given
-        Member savedMember = new Member(UUID.randomUUID().toString(),"test@test.com","testtest","chacha", LocalDateTime.now());
+        Member savedMember = new Member(UUID.randomUUID().toString(), "test@test.com", "testtest", "chacha", LocalDateTime.now());
         String saveMemberId = memberRepository.save(savedMember);
 
         String newEmail = "newTest@test.com";
@@ -96,14 +97,13 @@ class MemberControllerTest {
     }
 
 
-
     @Test
     void profileEditForm() throws Exception {
         // given
         String savedId = memberRepository.save(
-                new Member(UUID.randomUUID().toString(),"test@test.com","testtest","chacha", LocalDateTime.now()));
+                new Member(UUID.randomUUID().toString(), "test@test.com", "testtest", "chacha", LocalDateTime.now()));
 
-       // when,then
+        // when,then
         mockMvc.perform(get("/member/{id}/edit", savedId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/profileEdit"))
