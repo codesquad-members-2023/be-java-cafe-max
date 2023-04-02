@@ -22,8 +22,6 @@ public class UserRepository {
         return new ArrayList<>(store.values());
     }
 
-    public void clearStore() {
-        store.clear();
-    }
+
 
 }
