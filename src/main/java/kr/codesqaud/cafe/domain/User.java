@@ -5,19 +5,19 @@ public class User {
         // 회원가입 할 때 전달한 값을 저장할 수 있는 필드를 생성한 후 setter와 getter 메소드를 생성한다.
     // 사용자 목록을 관리하기 위해 JCF (Java Collections Framework) 를 사용한다.
 
-    private Long number; // 회원번호
+    private Long customerId; // 회원번호
     private String userId;
 
     private String password;
     private String name;
     private String email;
 
-    public Long getNumber() {
-        return number;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setNumber(Long number) {
-        this.number = number;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
     public String getUserId() {
         return userId;

@@ -23,7 +23,7 @@ public class UserService {
         validateDuplicateUser(user);
 
         userRepository.save(user);
-        return user.getNumber();
+        return user.getCustomerId();
     }
 
     private void validateDuplicateUser(User user) {
