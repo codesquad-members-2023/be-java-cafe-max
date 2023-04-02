@@ -32,10 +32,8 @@ class MemberServiceTest {
     private MemberService memberService;
 
     @BeforeEach
-    void beforeEach() {
-        if (memberRepository != null) {
-            memberRepository.deleteAll();
-        }
+    void clean() {
+        memberRepository.deleteAll();
     }
 
 

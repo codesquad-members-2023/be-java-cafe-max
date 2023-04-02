@@ -34,7 +34,7 @@ class MemberControllerTest {
     private MemberService memberService;
 
     @BeforeEach
-    void beforeEach(){
+    void clean() {
         mockMvc = MockMvcBuilders.standaloneSetup(new MemberController(memberService)).build();
         memberRepository.deleteAll();
     }
