@@ -117,4 +117,22 @@ class MemberControllerTest {
                 .andExpect(view().name("/signUp"))
                 .andExpect(model().attributeExists("signUpRequestDto"));
     }
+
+    @Test
+    void deleteId() throws Exception {
+        SignUpRequestDto signUpRequestDto = basicMemberData();
+        Member member = signUpRequestDto.toEntity();
+
+        mockMvc.perform(delete("/member/{id}",member.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    private SignUpRequestDto basicMemberData() {
+        String email = "test@test.com";
+        String password = "testtest";
+        String nickName = "chacha";
+        return new SignUpRequestDto(email, password, nickName);
+    }
 }

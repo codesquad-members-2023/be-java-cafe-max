@@ -110,6 +110,20 @@ class MemberServiceTest {
                 () -> assertEquals(dummyMemberData().getNickName(), targetMember.getNickName()));
     }
 
+    @Test
+    void deleteById() {
+        //given
+        SignUpRequestDto signUpRequestDto = basicMemberData();
+        String userId = memberService.signUp(signUpRequestDto);
+
+        //when
+        memberService.deleteById(userId);
+
+        //then
+        List<MemberResponseDto> members = memberService.findAll();
+        assertEquals(members.size(), 0);
+    }
+
     private SignUpRequestDto basicMemberData() {
         String email = "test@test.com";
         String password = "testtest";
