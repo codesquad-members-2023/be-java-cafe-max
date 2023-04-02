@@ -43,4 +43,12 @@ public class PostService {
         Member member = optionalMember.orElseThrow(() -> new NoSuchElementException("해당 id를 가진 회원이 없습니다."));
         return MemberResponseDto.of(member);
     }
+
+    public List<PostResponseDto> findAllWriters() {
+        return postRepository.findAll()
+                .stream()
+                .map(post -> PostResponseDto.of(post, writerInfo(post.getWriteId())))
+                .collect(Collectors.toList());
+    }
+
 }
