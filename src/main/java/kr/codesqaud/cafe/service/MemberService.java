@@ -35,7 +35,7 @@ public class MemberService {
 
     public List<MemberResponseDto> findAll() {
         List<Member> members = new ArrayList<>(memberRepository.findAll());
-        members.sort(Comparator.comparing(Member::getCreateTime).reversed());
+        members.sort(Comparator.comparing(Member::getCreateTime).reversed().thenComparing(Member::getId));
         return members.stream()
                 .map(MemberResponseDto::of)
                 .collect(Collectors.toList());
