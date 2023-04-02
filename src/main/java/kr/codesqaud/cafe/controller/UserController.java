@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public String getUserProfile(@PathVariable("userId") String userId, Model model) {
+    public String getUserProfile(@PathVariable String userId, Model model) {
         User user = userRepository.findByUserId(userId);
         model.addAttribute("user", user);
 
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/update")
-    public String updateUser(@PathVariable("userId") String userId, Model model) {
+    public String updateUser(@PathVariable String userId, Model model) {
         User user = userRepository.findByUserId(userId);
         model.addAttribute("user", user);
 
