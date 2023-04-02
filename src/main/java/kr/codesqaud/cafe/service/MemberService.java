@@ -53,4 +53,8 @@ public class MemberService {
         findMember.setEmail(profileEditRequestDto.getEmail());
         memberRepository.update(findMember);
     }
+
+    public void deleteById(String id) {
+        memberRepository.deleteById(id);
+    }
 }
