@@ -4,10 +4,11 @@ import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class MemoryUserRepository implements UserRepository {
     // 원래는 아래의 store, sequence는 동시성 문제때문에 concurrentHashMap 등을 쓴다.
-    private static Map<Long, User> store = new HashMap<>();
+    private static final Map<Long, User> store = new ConcurrentHashMap<>();
     private static long sequence = 0L;
 
     @Override
