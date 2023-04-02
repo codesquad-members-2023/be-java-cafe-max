@@ -28,4 +28,9 @@ public class PostMemoryStorage implements PostRepository{
         return postId;
     }
 
+    @Override
+    public Optional<Post> findById(UUID postId) {
+        return Optional.ofNullable(postMap.get(postId));
+    }
+
 }

@@ -8,5 +8,5 @@ import kr.codesqaud.cafe.domain.Post;
 
 public interface PostRepository {
     UUID save(Post post);
-
+    Optional<Post> findById(UUID postId);
 }
