@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 public class UserController {
@@ -23,7 +24,6 @@ public class UserController {
     @PostMapping("/user/create")
     public String create(UserForm form) {
         User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
-        user.setName(form.getName());
 
         userService.join(user);
 
@@ -41,7 +41,13 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String findProfile(@PathVariable("userId") String userId, Model model) {
-        User user = userService.findByUserId(userId).get();
+        User user;
+        if (userService.findByUserId(userId).isPresent()) {
+            user = userService.findByUserId(userId).get();
+        } else {
+            throw new NoSuchElementException();
+        }
+
         model.addAttribute("user", user);
         return "user/profile";
         // gradle -> 타임리프 ViewResolver가 이걸 해줌
@@ -55,7 +61,7 @@ public class UserController {
         return "user/updateForm";
     }
 
-    @PostMapping("/users/update/{userId}")
+    @PutMapping("/users/update/{userId}")
     public String putUpdate(@PathVariable String userId, User user) {
         userService.updateUser(userId, user);
         return "redirect:/users";
