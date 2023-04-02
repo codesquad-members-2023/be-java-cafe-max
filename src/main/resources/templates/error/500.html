@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/errorHead :: head}">
+</head>
+<body>
+<div class="errorPage">
+    <div class="outer">
+        <div class="middle">
+            <div class="inner text-center">
+                <div class="inner-circle"><i class="fa fa-cogs"></i><span>500</span></div>
+                <span class="inner-status">헉! 서버에 에러가 발생하였습니다.</span>
+                <span class="inner-detail">서버관리자가 금방 고치겠습니다.</span>
+                <span class="inner-detail">잠시후에 다시 시도해주세요.</span>
+                <a th:href="@{/}" href="#" class="btn btn-info mtl"><i class="fa fa-home"></i>
+                    홈으로
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head :: head(~{::link})">
+    <link rel="stylesheet" th:href="@{/css/post/post.css}">
+</head>
+<body>
+<header th:replace="~{layout/header :: header}">
+</header>
+<main>
+    <div class="m-auto">
+        <div>
+            <div>
+                <h2 class="post-title" th:text="${postResponse.title}">자바 웹개발 교육 홈페이지 디자인 개발</h2>
+            </div>
+            <div class="row row-cols-3 post-detail">
+                <span class="col-sm-2" th:if="${postResponse.writer == null}">비회원</span>
+                <span class="col-sm-2" th:if="${postResponse.writer != null}"
+                    th:text="${postResponse.writer.nickName}">비회원</span>
+                <span class="col-sm-4">작성일자:[[${postResponse.getWriteDateFormat()}]]</span>
+                <span class="col-sm-2">조회 [[${postResponse.views}]]</span>
+            </div>
+            <div class="post-content">
+                <pre th:text="${postResponse.content}">
+                </pre>
+            </div>
+        </div>
+        <div class="comments">
+            <div>
+                <span>댓글 2개</span>
+            </div>
+            <div class="comment">
+                <strong class="comment-writer">자바지기</strong>
+                <p class="comment-content">이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
+                <span class="comment-date">2015-12-30 01:47</span>
+            </div>
+            <div class="comment">
+                <strong class="comment-writer">자바지기</strong>
+                <p class="comment-content">이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
+                <span class="comment-date">2015-12-30 01:47</span>
+            </div>
+        </div>
+        <form>
+            <div class="form-group">
+                <div class="comment-from-writer">만두</div>
+                <textarea class="form-control" id="comment" name="comment" placeholder="내용을 입력하세요"></textarea>
+                <div class="col text-end">
+                    <button class="btn btn-primary btn-sm comment-button" type="submit">등록</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

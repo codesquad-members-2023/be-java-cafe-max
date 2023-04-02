@@ -1,0 +1,12 @@
+spring:
+    devtools:
+        livereload:
+            enabled: true
+        thymeleaf:
+            cache: false
+    messages:
+        basename: errorMessages
+    mvc:
+        hidden-method:
+            filter:
+                enabled: true
