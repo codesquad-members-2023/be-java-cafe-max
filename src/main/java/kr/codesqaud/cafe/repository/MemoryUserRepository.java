@@ -11,33 +11,32 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private static final Map<String, User> store = new ConcurrentHashMap<>(); // 동시성 문제
-
-    private static long sequence = 0L;
+    private final Map<String, User> STORE = new ConcurrentHashMap<>(); // 동시성 문제
+    private static Long sequence = 0L;
 
     @Override
     public User save(User user) {
         user.setId(++sequence);
-        store.put(user.getUserId(), user);
+        STORE.put(user.getUserId(), user);
         return user;
     }
 
     @Override
     public User findByUserId(String userId) {
-        return store.get(userId);
+        return STORE.get(userId);
     }
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(store.values());
+        return new ArrayList<>(STORE.values());
     }
 
     @Override
     public boolean isExists(String userId) {
-        return store.containsKey(userId);
+        return STORE.containsKey(userId);
     }
 
     public void clearStore() {
-        store.clear();
+        STORE.clear();
     }
 }

@@ -14,7 +14,7 @@ class MemoryArticleRepositoryTest {
 
     @AfterEach
     void afterEach() {
-        memoryArticleRepository.clearStore();
+        memoryArticleRepository = new MemoryArticleRepository();
     }
 
     @Test

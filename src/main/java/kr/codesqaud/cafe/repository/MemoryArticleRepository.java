@@ -11,37 +11,37 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
-    private static final Map<Long, Article> store = new ConcurrentHashMap<>();
-    private static long sequence = 0L;
+    private final Map<Long, Article> STORE = new ConcurrentHashMap<>();
+    private static Long sequence = 0L;
 
     @Override
     public Article save(Article article) {
         article.setId(++sequence);
-        store.put(article.getId(), article);
+        STORE.put(article.getId(), article);
         return article;
     }
 
     @Override
     public Article findById(Long id) {
-        return store.get(id);
+        return STORE.get(id);
     }
 
     @Override
     public List<Article> findAll() {
-        return new ArrayList<>(store.values());
+        return new ArrayList<>(STORE.values());
     }
 
     @Override
     public void update(Long id, Article article) {
-        store.replace(id, article);
+        STORE.replace(id, article);
     }
 
     @Override
     public void delete(Long id) {
-        store.remove(id);
+        STORE.remove(id);
     }
 
     public void clearStore() {
-        store.clear();
+        STORE.clear();
     }
 }
