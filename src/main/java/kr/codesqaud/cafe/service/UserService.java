@@ -27,7 +27,7 @@ public class UserService {
 	public void join(final JoinRequest request) {
 		User user = User.from(request);
 		userRepository.save(user)
-			.orElseThrow(() -> new DuplicatedUserIdException("해당 아이디는 이미 존재합니다."));
+			.orElseThrow(DuplicatedUserIdException::new);
 	}
 
 	public List<UserDto> getUsers() {
@@ -53,7 +53,7 @@ public class UserService {
 
 	private void validatePassword(final User user, final String password) {
 		if (!user.isSamePassword(password)) {
-			throw new InvalidPasswordException("기존 비밀번호와 일치하지 않습니다.");
+			throw new InvalidPasswordException();
 		}
 	}
 }
