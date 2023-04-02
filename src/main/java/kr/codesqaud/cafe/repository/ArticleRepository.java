@@ -24,4 +24,8 @@ public class ArticleRepository {
 	public List<Article> findAllPosting() {
 		return new ArrayList<>(articleRepository.values()).stream().collect(Collectors.toUnmodifiableList());
 	}
+
+	public Article findPosting(Long id) {
+		return articleRepository.get(id);
+	}
 }

@@ -30,4 +30,8 @@ public class ArticleService {
 			.map(ArticleDto::fromEntity)
 			.collect(Collectors.toUnmodifiableList());
 	}
+
+	public ArticleDto findById(Long id) {
+		return ArticleDto.fromEntity(articleRepository.findPosting(id));
+	}
 }
