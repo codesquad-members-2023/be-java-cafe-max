@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.member;
 
 import org.springframework.stereotype.Repository;
 
@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Member;
 
 @Repository
-public class MemoryMemberRepository implements MemberRepository {
+public class MemberMemoryStorage implements MemberRepository {
     private final Map<String, Member> store;
 
-    public MemoryMemberRepository() {
+    public MemberMemoryStorage() {
         this.store = new ConcurrentHashMap<>();
     }
 
