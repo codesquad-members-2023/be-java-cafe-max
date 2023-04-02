@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: header"></head>
+<body>
+<nav th:replace="fragments/navbar.html :: anonymous">
+</nav>
+<div class="row justify-content-center">
+    <div class="col-6 row row-cols-auto mt-5 mb-5">
+        <p type="text" class="fs-3" id="title" th:text="${post.title}">
+            자바 웹개발 교육 홈페이지 디자인 개발1
+        </p>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-6 row text-success">
+        <hr>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-6 row text-secondary">
+        <div class="col-3 row">
+            <p class="col text-end pe-0">아이디:</p>
+            <p class="col text-start ps-1 text-break" id="views" th:text="${post.id}">0</p>
+        </div>
+        <div class="col-3 row">
+            <p class="col text-end pe-0 ps-0 ms-1">작성자:</p>
+            <p class="col text-start ps-1 text-break" id="writer" th:text="${post.nickname}">user</p>
+        </div>
+        <div class="col-6 row">
+            <p class="col-4 text-end pe-0">작성일자:</p>
+            <p class="col text-start ps-1 text-break" id="creatDate"
+               th:text="${#temporals.format(post.createdDateTime,'yyyy-MM-dd HH:mm')}">2023.03.23 11:17</p>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-6 row text-success">
+        <hr>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-6 row mt-4 mb-4">
+        <p class="lh-1" th:text="${post.textContent}">
+        </p>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-6 row text-success">
+        <hr>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="col-6 row text-secondary">
+        <div class="col-3 row mb-5">
+            <p class="col-3 text-end pe-0 ps-0 ms-1">댓글</p>
+            <p class="col-3 text-end ps-1" id="quantity">0</p>
+            <p class="col-1 text-start ps-1">개</p>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center mb-5">
+    <div class="col-6 row text-secondary">
+        <ul class="list-group list-group-flush" id="comments">
+            <li class="list-group-item" id="1">
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row justify-content-center mb-5">
+    <div class="col-6 row text-secondary">
+        <form id="commentForm">
+            <div class="form-control">
+                <label for="comment" class="fs-5" id="userName">user</label>
+                <textarea class="form-control-plaintext" placeholder="Leave a comment here" id="comment"
+                          style="height: 100px;resize: none;"></textarea>
+                <div class="row justify-content-end row-cols-auto">
+                    <div class="col" onmousemove="commentMouseoverEvent()" onmouseout="commentMouseOutEvent()">
+                        <button class="btn btn-primary disabled" type="submit" role="button" id="commentPost">
+                            제출
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row justify-content-center mb-5">
+    <div class="col-6 row row-cols-auto justify-content-between">
+        <div class="container  row row-cols-auto">
+            <div class="nav ms-3" id="beforePost">
+                <button class="btn btn-primary" type="submit" role="button" th:if="${post.id} != 0"
+                        th:onclick="|location.href='@{/post/{id}(id = ${post.id}-1)}'|">이전 글:{글제목}
+                </button>
+                <button class="btn btn-primary" type="submit" role="button" th:if="${post.id} == 0"
+                        th:onclick="|location.href='@{/post/{id}(id = ${post.id}-1)}'|" disabled>이전 글:{글제목}
+                </button>
+            </div>
+            <div class="nav" id="afterPost">
+                <button class="btn btn-primary" type="submit" role="button"
+                        th:onclick="|location.href='@{/post/{id}(id = ${post.id}+1)}'|">다음 글:{글제목}
+                </button>
+            </div>
+        </div>
+        <div class="container  row row-cols-auto">
+            <div class="nav" id="list">
+                <button class="btn btn-primary" type="submit" role="button" th:onclick="|location.href='@{/}'|">목록으로
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="container-fluid mt-auto bg-light py-3">
+
+</footer>
+</body>
+<script>
+    const commentPostElement = document.getElementById("commentPost");
+
+    function removeComment(event) {
+        event.preventDefault();
+        let eventId = event.target.id;
+        let targetId = eventId.substring(0, eventId.length - 1);
+        let target = document.getElementById(targetId);
+        let comments = document.getElementById(`comments`);
+        comments.removeChild(target);
+        removeQuantity();
+        event.stopPropagation();
+    }
+
+
+    function commentMouseoverEvent() {
+        let element = document.getElementById("commentPost");
+        element.className = "btn btn-primary";
+    }
+
+    function commentMouseOutEvent() {
+        let element = document.getElementById("commentPost");
+        element.className = "btn btn-primary disabled";
+    }
+
+    function validComment(event) {
+        const newComment = document.getElementById(`comment`);
+        event.preventDefault();
+        if (!newComment.checkValidity() || newComment.value < 1) {
+            newComment.className = "form-control is-invalid"
+            event.stopPropagation();
+            return false;
+        }
+        addComment()
+        addQuantity()
+        event.stopPropagation();
+        return true;
+    }
+
+    commentPostElement.addEventListener('click', validComment);
+
+    function addQuantity() {
+        let element = document.getElementById("quantity");
+        element.innerText = (Number(element.innerText) + 1).toString();
+    }
+
+    function removeQuantity() {
+        let element = document.getElementById("quantity");
+        element.innerText = (Number(element.innerText) - 1).toString();
+    }
+
+    function addComment() {
+        let elementById = document.getElementById(`comments`);
+        const newComment = document.getElementById(`comment`);
+
+        newComment.className = "form-control-plaintext";
+
+        let id = Date.now().toString() + Math.random() * 1000;
+
+        const liElement = document.createElement("li");
+        liElement.id = id;
+
+        liElement.setAttribute('class', "list-group-item")
+        let userDiv = document.createElement("div");
+        userDiv.className = "text-primary justify-content-between row";
+        const user = document.createElement("div");
+        const userName = document.getElementById("userName");
+        user.className = "col";
+        user.innerText = userName.textContent
+        const closeButton = document.createElement("button");
+        closeButton.type = "button";
+        closeButton.className = "btn-close";
+        closeButton.setAttribute("aria-label", "Close");
+        closeButton.id = id + "c";
+        closeButton.onclick = event => removeComment(event);
+        userDiv.appendChild(user);
+        userDiv.appendChild(closeButton);
+
+        const commentBody = document.createElement("p");
+        commentBody.innerText = newComment.value;
+        const date = document.createElement("p");
+        date.className = "text-secondary";
+        let today = new Date();
+
+        let fullYear = today.getFullYear();
+        let month = today.getMonth();
+        let day = today.getDay();
+        let hours = today.getHours();
+        let minutes = today.getMinutes();
+
+
+        date.innerText = fullYear + '-' + month + '-' + day + ' ' + hours + ':' + minutes;
+
+        liElement.appendChild(userDiv);
+        liElement.appendChild(commentBody);
+        liElement.appendChild(date);
+        elementById.appendChild(liElement);
+        newComment.value = "";
+    }
+</script>
+</html>

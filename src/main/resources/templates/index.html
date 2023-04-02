@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: header"></head>
+<body>
+<nav th:replace="fragments/navbar.html :: anonymous">
+</nav>
+<div class="container-fluid row-gap-3 mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="bg-primary col-10 card">
+            <div class=" text-white mt-5 ms-4">
+                코드스쿼드 백엔드 교육용 페이지
+            </div>
+            <div class="fs-4 text-white mb-5 ms-4">
+                HELLO JAVA! 입니다.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row justify-content-center text-light-emphasis">
+        <div class="col-10 row ">
+            전체 글 60개
+        </div>
+        <div class="text-success col-10 row mt-1">
+            <hr>
+        </div>
+        <div class="row col-10 text-center">
+            <div class=" col-2">
+                N0.
+            </div>
+            <div class=" col-2">
+                제목
+            </div>
+            <div class=" col-4">
+                내용
+            </div>
+            <div class=" col-2">
+                작성자
+            </div>
+            <div class=" col-2">
+                작성일자
+            </div>
+        </div>
+        <div class="text-success col-10 row mt-3">
+            <hr>
+        </div>
+        <div class="row col-10">
+            <ol class="justify-content-center" id="bookList">
+                <li class="row text-center" th:each="post,iterStat : ${simpleForms}">
+                    <div class="col-2"><a th:href="@{/post/{id}(id = ${post.id})}" th:text="${iterStat.count}"></a></div>
+                    <div class="col-2 text-break" th:text="${post.title}"></div>
+                    <div class="col-4 text-break" th:text="${post.textContent}"></div>
+                    <div class="col-2 text-break" th:text="${post.nickname}"></div>
+                    <div class="col-2 text-break" th:text="${#temporals.format(post.createdDateTime,'yyyy-MM-dd HH:mm')}"></div>
+                    <div class="text-success row mt-3">
+                        <hr>
+                    </div>
+                </li>
+            </ol>
+        </div>
+        <div class="col-10 row justify-content-between">
+            <div class="col">
+                <ul class="pagination col-5">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col row justify-content-end">
+                <div class="col-5">
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="검색어를 입력하세요" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="col-2">
+                    <a class="btn btn-primary" th:href="@{/post}" type="submit">글쓰기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="container-fluid mt-auto bg-light py-3">
+
+</footer>
+</body>
+
+</html>
