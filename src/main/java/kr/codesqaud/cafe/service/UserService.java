@@ -47,7 +47,7 @@ public class UserService {
 		User savedUser = userRepository.findByUserId(userId)
 			.orElseThrow(() -> new NotFoundException(userId.concat("를 가진 회원을 찾을 수 없습니다.")));
 
-		validatePassword(savedUser, request.getOriPassword());
+		validatePassword(savedUser, request.getOriginalPassword());
 		savedUser.editProfile(request.getNewPassword(), request.getName(), request.getEmail());
 	}
 
