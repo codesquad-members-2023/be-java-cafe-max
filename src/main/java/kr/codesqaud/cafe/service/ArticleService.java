@@ -19,8 +19,7 @@ public class ArticleService {
 	}
 
 	public void articleSave(PostingRequest postingRequest) {
-		Article article = new Article(
-			postingRequest.getWriter(), postingRequest.getTitle(), postingRequest.getContents());
+		Article article = postingRequest.getArticleEntity();
 		articleRepository.save(article);
 	}
 
