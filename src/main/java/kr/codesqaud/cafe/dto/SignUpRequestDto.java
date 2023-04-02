@@ -24,7 +24,7 @@ public class SignUpRequestDto {
     @Length(min = 2, max = 10)
     private final String nickName;
 
-    private final LocalDateTime createDate;
+    private final LocalDateTime createTime;
 
     public SignUpRequestDto(String email, String password, String nickName) {
         this.email = email;
