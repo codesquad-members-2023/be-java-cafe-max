@@ -27,7 +27,7 @@ public class MemberService {
 
     private void validateDuplicateEmail(SignUpRequest signUpRequest) {
         if (memberRepository.findByEmail(signUpRequest.getEmail()).isPresent()) {
-            throw new DuplicateMemberEmailException(signUpRequest);
+            throw new DuplicateMemberEmailException("member/signUp", signUpRequest);
         }
     }
 
@@ -40,12 +40,12 @@ public class MemberService {
 
     public MemberResponse findById(long id) {
         return MemberResponse.from(memberRepository.findById(id)
-            .orElseThrow(() -> new MemberNotFoundException(id)));
+            .orElseThrow(MemberNotFoundException::new));
     }
 
     public void update(ProfileEditRequest profileUpdateRequest) {
         Member findMember = memberRepository.findById(profileUpdateRequest.getId())
-            .orElseThrow(() -> new MemberNotFoundException(profileUpdateRequest));
+            .orElseThrow(MemberNotFoundException::new);
         validateDuplicateEmail(profileUpdateRequest);
         memberRepository.update(Member.of(profileUpdateRequest, findMember.getCreateDate()));
     }
@@ -54,7 +54,7 @@ public class MemberService {
         memberRepository.findByEmail(profileUpdateRequest.getEmail())
             .ifPresent(m -> {
                 if (!m.equalsId(profileUpdateRequest.getId())) {
-                    throw new DuplicateMemberEmailException(profileUpdateRequest);
+                    throw new DuplicateMemberEmailException("member/profileEdit", profileUpdateRequest);
                 }
             });
     }

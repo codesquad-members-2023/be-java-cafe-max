@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.dto.member;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import kr.codesqaud.cafe.domain.Member;
 import org.hibernate.validator.constraints.Length;
 
 public class SignUpRequest {

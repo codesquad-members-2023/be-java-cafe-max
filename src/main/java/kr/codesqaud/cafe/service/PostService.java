@@ -28,7 +28,7 @@ public class PostService {
     }
 
     public PostResponse findById(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
+        Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
         return PostResponse.of(post, getMemberResponse(post));
     }
 
@@ -44,7 +44,7 @@ public class PostService {
 
         if (post.getWriterId() != null) {
             memberResponse = MemberResponse.from(memberRepository.findById(post.getWriterId())
-                .orElseThrow(() -> new MemberNotFoundException(post.getWriterId())));
+                .orElseThrow(MemberNotFoundException::new));
         }
 
         return memberResponse;
