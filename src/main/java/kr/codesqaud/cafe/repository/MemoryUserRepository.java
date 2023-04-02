@@ -5,11 +5,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
+
 @Repository
 public class MemoryUserRepository implements UserRepository {
     // 원래는 아래의 store, sequence는 동시성 문제때문에 concurrentHashMap 등을 쓴다.
     private static final Map<Long, User> store = new ConcurrentHashMap<>();
-    private static long sequence = 0L;
+    private static final AtomicLong customerId = new AtomicLong(0);
 
     @Override
     public User save(User user) {
