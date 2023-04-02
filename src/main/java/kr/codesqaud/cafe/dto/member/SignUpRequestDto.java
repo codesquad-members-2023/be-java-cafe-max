@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.dto.member;
 
 import org.hibernate.validator.constraints.Length;
 

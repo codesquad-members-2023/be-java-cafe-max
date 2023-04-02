@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.service.member;
 
 import org.springframework.stereotype.Service;
 
@@ -7,10 +7,10 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.MemberResponseDto;
-import kr.codesqaud.cafe.dto.ProfileEditRequestDto;
-import kr.codesqaud.cafe.dto.SignUpRequestDto;
-import kr.codesqaud.cafe.repository.MemberRepository;
+import kr.codesqaud.cafe.dto.member.MemberResponseDto;
+import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
+import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
 
 @Service
 public class MemberService {
