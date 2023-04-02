@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.dto.member;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import kr.codesqaud.cafe.domain.Member;
@@ -44,10 +43,5 @@ public class SignUpRequest {
 
     public LocalDateTime getCreateDate() {
         return createDate;
-    }
-
-    public Member toEntity() {
-        return new Member(UUID.randomUUID().toString(), email, password, nickName,
-            createDate);
     }
 }

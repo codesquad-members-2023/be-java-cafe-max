@@ -23,12 +23,12 @@ public class MemoryPostRepository implements PostRepository {
 
     @Override
     public Long save(Post post) {
-        store.put(id.get(), post.of(id.get()));
+        store.put(id.get(), post.createWithId(id.get()));
         return id.getAndIncrement();
     }
 
     @Override
-    public Optional<Post> findById(long id) {
+    public Optional<Post> findById(Long id) {
         return Optional.ofNullable(store.get(id));
     }
 
@@ -38,5 +38,10 @@ public class MemoryPostRepository implements PostRepository {
             .stream()
             .sorted(Comparator.comparing(Post::getWriteDate).reversed())
             .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public void deleteAll() {
+        store.clear();
     }
 }

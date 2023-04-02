@@ -1,14 +1,12 @@
 package kr.codesqaud.cafe.dto.member;
 
-import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import kr.codesqaud.cafe.domain.Member;
 import org.hibernate.validator.constraints.Length;
 
 public class ProfileEditRequest {
 
-    private final String id;
+    private final Long id;
 
     @NotBlank
     @Pattern(regexp = "[a-z0-9]+@[a-z0-9]+\\.[a-z]{2,3}$")
@@ -22,14 +20,14 @@ public class ProfileEditRequest {
     @Length(min = 2, max = 10)
     private final String nickName;
 
-    public ProfileEditRequest(String id, String email, String password, String nickName) {
+    public ProfileEditRequest(Long id, String email, String password, String nickName) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.nickName = nickName;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -45,11 +43,7 @@ public class ProfileEditRequest {
         return nickName;
     }
 
-    public Member toEntity(LocalDateTime createDate) {
-        return new Member(id, email, password, nickName, createDate);
-    }
-
-    public static ProfileEditRequest of(MemberResponse memberResponse) {
+    public static ProfileEditRequest from(MemberResponse memberResponse) {
         return new ProfileEditRequest(memberResponse.getId(), memberResponse.getEmail(),
             null, memberResponse.getNickName());
     }

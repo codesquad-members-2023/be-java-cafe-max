@@ -1,23 +1,29 @@
 package kr.codesqaud.cafe.repository.post;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 import java.util.stream.IntStream;
 import kr.codesqaud.cafe.domain.Post;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 class MemoryPostRepositoryTest {
 
+    @Autowired
     private PostRepository postRepository;
 
     @BeforeEach
     void beforeEach() {
-        postRepository = new MemoryPostRepository();
+        postRepository.deleteAll();
     }
 
     @DisplayName("게시글 저장 성공")
@@ -26,13 +32,13 @@ class MemoryPostRepositoryTest {
         // given
 
         // when
-        Long savedId1 = postRepository.save(postDummy());
-        Long savedId2 = postRepository.save(postDummy2());
+        Long savedId = postRepository.save(postDummy());
 
         // then
+        Optional<Post> findPost = postRepository.findById(savedId);
         assertAll(
-            () -> assertEquals(1, savedId1),
-            () -> assertEquals(2, savedId2));
+            () -> assertTrue(findPost.isPresent()),
+            () -> assertEquals(savedId, findPost.get().getId()));
     }
 
     @DisplayName("게시글 단건 조회 성공")
@@ -47,7 +53,6 @@ class MemoryPostRepositoryTest {
 
         // then
         assertAll(
-            () -> assertEquals(1, savedId),
             () -> assertEquals(savedId, findPost.getId()),
             () -> assertEquals(post.getTitle(), findPost.getTitle()),
             () -> assertEquals(post.getContent(), findPost.getContent()),
@@ -65,7 +70,7 @@ class MemoryPostRepositoryTest {
             .forEach(index -> {
                     String title = String.format("제목%d", index);
                     String content = String.format("내용%d", index);
-                    postRepository.save(new Post(null, title, content, UUID.randomUUID().toString(),
+                    postRepository.save(new Post(null, title, content, 1L,
                         LocalDateTime.now(), (long) index));
             });
 
@@ -77,12 +82,12 @@ class MemoryPostRepositoryTest {
     }
 
     private Post postDummy() {
-        return new Post(null, "제목", "내용", UUID.randomUUID().toString(),
+        return new Post(null, "제목", "내용", 1L,
             LocalDateTime.now(), 0L);
     }
 
     private Post postDummy2() {
-        return new Post(null, "제목테스트", "내용테스트", UUID.randomUUID().toString(),
+        return new Post(null, "제목테스트", "내용테스트", 2L,
             LocalDateTime.now(), 5L);
     }
 }

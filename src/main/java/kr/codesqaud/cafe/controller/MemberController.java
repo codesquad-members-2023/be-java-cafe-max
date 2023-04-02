@@ -43,7 +43,7 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public String profile(@PathVariable String id, Model model) {
+    public String profile(@PathVariable Long id, Model model) {
         model.addAttribute("memberResponse", memberService.findById(id));
         return "member/profile";
     }
@@ -61,8 +61,8 @@ public class MemberController {
     }
 
     @GetMapping("/{id}/edit")
-    public String profileEditForm(@PathVariable String id, Model model) {
-        model.addAttribute("profileEditRequest", ProfileEditRequest.of(memberService.findById(id)));
+    public String profileEditForm(@PathVariable Long id, Model model) {
+        model.addAttribute("profileEditRequest", ProfileEditRequest.from(memberService.findById(id)));
         return "member/profileEdit";
     }
 

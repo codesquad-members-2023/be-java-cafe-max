@@ -23,6 +23,10 @@ public class PostService {
         this.memberRepository = memberRepository;
     }
 
+    public Long save(PostWriteRequest postWriteRequest) {
+        return postRepository.save(Post.from(postWriteRequest));
+    }
+
     public PostResponse findById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
         return PostResponse.of(post, getMemberResponse(post));
@@ -39,13 +43,10 @@ public class PostService {
         MemberResponse memberResponse = null;
 
         if (post.getWriterId() != null) {
-            memberResponse = MemberResponse.of(memberRepository.findById(post.getWriterId())
+            memberResponse = MemberResponse.from(memberRepository.findById(post.getWriterId())
                 .orElseThrow(() -> new MemberNotFoundException(post.getWriterId())));
         }
-        return memberResponse;
-    }
 
-    public Long save(PostWriteRequest postWriteRequest) {
-        return postRepository.save(postWriteRequest.toEntity());
+        return memberResponse;
     }
 }

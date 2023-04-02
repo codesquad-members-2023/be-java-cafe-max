@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.IntStream;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
@@ -30,7 +29,7 @@ class MemberServiceTest {
     private MemberRepository memberRepository;
 
     @BeforeEach
-    void beforeEach() {
+    void beforeEah() {
         memberRepository.deleteAll();
     }
 
@@ -41,7 +40,7 @@ class MemberServiceTest {
         SignUpRequest signUpRequest = createRequestDummy();
 
         // when
-        String savedId = memberService.signUp(signUpRequest);
+        Long savedId = memberService.signUp(signUpRequest);
 
         // then
         Member findMember = memberRepository.findById(savedId).orElseThrow();
@@ -72,7 +71,7 @@ class MemberServiceTest {
     void findById() {
         // given
         SignUpRequest memberCreateRequest = createRequestDummy2();
-        String savedId = memberService.signUp(memberCreateRequest);
+        Long savedId = memberService.signUp(memberCreateRequest);
 
         // when
         MemberResponse memberResponse = memberService.findById(savedId);
@@ -94,7 +93,7 @@ class MemberServiceTest {
 
         // when
         assertThrows(MemberNotFoundException.class,
-            () -> memberService.findById(UUID.randomUUID().toString()));
+            () -> memberService.findById(1));
     }
 
     @DisplayName("모든 회원 조회 성공")
@@ -121,7 +120,7 @@ class MemberServiceTest {
     @Test
     void update() {
         // given
-        String savedId = memberService.signUp(createRequestDummy());
+        Long savedId = memberService.signUp(createRequestDummy());
 
         String updateEmail = "mandu@gmail.com";
         String updatePassword = "Mandu1234";
@@ -150,8 +149,8 @@ class MemberServiceTest {
 
         // then
         assertThrows(MemberNotFoundException.class,
-            () -> memberService.update(new ProfileEditRequest(UUID.randomUUID().toString()
-                , "est@naver.com", "Test1234", "test")));
+            () -> memberService.update(new ProfileEditRequest(1L,
+                "est@naver.com", "Test1234", "test")));
     }
 
     @DisplayName("회원 정보 수정시 이미 있는 회원의 이메일인 경우 실패")
@@ -160,7 +159,7 @@ class MemberServiceTest {
         // given
         SignUpRequest memberCreateRequest = createRequestDummy();
         memberService.signUp(memberCreateRequest);
-        String savedId2 = memberService.signUp(createRequestDummy2());
+        Long savedId2 = memberService.signUp(createRequestDummy2());
         ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(savedId2,
             memberCreateRequest.getEmail(),
             "Mandu7777", "updateMandu");

@@ -2,39 +2,42 @@ package kr.codesqaud.cafe.repository.member;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.UUID;
 import kr.codesqaud.cafe.domain.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 class MemoryMemberRepositoryTest {
 
+    @Autowired
     private MemberRepository memberRepository;
 
     @BeforeEach
     void beforeEach() {
-        memberRepository = new MemoryMemberRepository();
+        memberRepository.deleteAll();
     }
 
     @DisplayName("회원 저장 성공")
     @Test
     void save() {
         // given
-        Member member = dummyData();
 
         // when
-        String savedId = memberRepository.save(member);
+        Long savedId = memberRepository.save(dummyData());
 
         // then
-        assertEquals(member.getId(), savedId);
+        Optional<Member> findMember = memberRepository.findById(savedId);
+        assertAll(
+            () -> assertTrue(findMember.isPresent()),
+            () -> assertEquals(savedId, findMember.get().getId()));
     }
 
     @DisplayName("아이디로 회원을 조회")
@@ -42,15 +45,17 @@ class MemoryMemberRepositoryTest {
     void findByID() {
         // given
         Member member = dummyData();
-        String savedId = memberRepository.save(member);
+        Long savedId = memberRepository.save(member);
 
         // when
-        Optional<Member> findMember = memberRepository.findById(savedId);
+        Member findMember = memberRepository.findById(savedId).orElseThrow();
 
         // then
         assertAll(
-            () -> assertTrue(findMember.isPresent()),
-            () -> assertEquals(member, findMember.orElseThrow()));
+            () -> assertEquals(member.getEmail(), findMember.getEmail()),
+            () -> assertEquals(member.getPassword(), findMember.getPassword()),
+            () -> assertEquals(member.getNickName(), findMember.getNickName()),
+            () -> assertEquals(member.getCreateDate(), findMember.getCreateDate()));
     }
 
     @DisplayName("이메일로 멤버 조회")
@@ -61,12 +66,14 @@ class MemoryMemberRepositoryTest {
         memberRepository.save(member);
 
         // when
-        Optional<Member> findMember = memberRepository.findByEmail(member.getEmail());
+        Member findMember = memberRepository.findByEmail(member.getEmail()).orElseThrow();
 
         // then
         assertAll(
-            () -> assertTrue(findMember.isPresent()),
-            () -> assertEquals(member, findMember.orElseThrow()));
+            () -> assertEquals(member.getEmail(), findMember.getEmail()),
+            () -> assertEquals(member.getPassword(), findMember.getPassword()),
+            () -> assertEquals(member.getNickName(), findMember.getNickName()),
+            () -> assertEquals(member.getCreateDate(), findMember.getCreateDate()));
     }
 
     @DisplayName("모든 회원 조회")
@@ -84,8 +91,8 @@ class MemoryMemberRepositoryTest {
         // then
         assertAll(
             () -> assertEquals(2, findAll.size()),
-            () -> assertEquals(member2, findAll.get(0)),
-            () -> assertEquals(member1, findAll.get(1)));
+            () -> assertEquals(member2.getEmail(), findAll.get(0).getEmail()),
+            () -> assertEquals(member1.getEmail(), findAll.get(1).getEmail()));
     }
 
     @DisplayName("회원 정보 수정")
@@ -93,42 +100,29 @@ class MemoryMemberRepositoryTest {
     void update() {
         // given
         Member member = dummyData();
-        memberRepository.save(member);
-        Member updateMember = new Member(member.getId(), "mandu@gmail.com"
+        Long savedId = memberRepository.save(member);
+        Member updateMember = new Member(savedId, "mandu@gmail.com"
             , "mandu12345", "manduUpdate", LocalDateTime.now());
 
         // when
         memberRepository.update(updateMember);
 
         // then
-        Optional<Member> findMember = memberRepository.findById(member.getId());
+        Member findMember = memberRepository.findById(savedId).orElseThrow();
         assertAll(
-            () -> assertTrue(findMember.isPresent()),
-            () -> assertEquals(updateMember.getPassword(), findMember.get().getPassword()),
-            () -> assertEquals(updateMember.getNickName(), findMember.get().getNickName()));
+            () -> assertEquals(updateMember.getId(), findMember.getId()),
+            () -> assertEquals(updateMember.getPassword(), findMember.getPassword()),
+            () -> assertEquals(updateMember.getPassword(), findMember.getPassword()),
+            () -> assertEquals(updateMember.getNickName(), findMember.getNickName()));
     }
 
-    @DisplayName("회원 삭제")
-    @Test
-    void delete() {
-        // given
-        Member member = dummyData();
-        String savedId = memberRepository.save(member);
-
-        // when
-        memberRepository.delete(savedId);
-
-        // then
-        assertThrows(NoSuchElementException.class, () -> memberRepository.findById(savedId).orElseThrow());
-    }
-
-    public Member dummyData() {
-        return new Member(UUID.randomUUID().toString(), "mandu@gmail.com"
+    private Member dummyData() {
+        return new Member(null, "mandu@gmail.com"
             , "Mandu1234", "mandu", LocalDateTime.now());
     }
 
-    public Member dummyData2() {
-        return new Member(UUID.randomUUID().toString(), "test@gmail.com"
+    private Member dummyData2() {
+        return new Member(null, "test@gmail.com"
             , "Test1234", "test", LocalDateTime.now());
     }
 }

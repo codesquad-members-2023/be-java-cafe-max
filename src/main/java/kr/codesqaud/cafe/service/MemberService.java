@@ -7,7 +7,6 @@ import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
-import kr.codesqaud.cafe.exception.member.DuplicateMemberIdException;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -21,31 +20,26 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public String signUp(SignUpRequest signUpRequest) {
-        Member member = signUpRequest.toEntity();
-        validateDuplicateMember(member);
-        return memberRepository.save(member);
+    public Long signUp(SignUpRequest signUpRequest) {
+        validateDuplicateEmail(signUpRequest);
+        return memberRepository.save(Member.from(signUpRequest));
     }
 
-    private void validateDuplicateMember(Member member) {
-        if (memberRepository.findById(member.getId()).isPresent()) {
-            throw new DuplicateMemberIdException(member);
-        }
-
-        if (memberRepository.findByEmail(member.getEmail()).isPresent()) {
-            throw new DuplicateMemberEmailException(member);
+    private void validateDuplicateEmail(SignUpRequest signUpRequest) {
+        if (memberRepository.findByEmail(signUpRequest.getEmail()).isPresent()) {
+            throw new DuplicateMemberEmailException(signUpRequest);
         }
     }
 
     public List<MemberResponse> findAll() {
         return memberRepository.findAll()
             .stream()
-            .map(MemberResponse::of)
+            .map(MemberResponse::from)
             .collect(Collectors.toUnmodifiableList());
     }
 
-    public MemberResponse findById(String id) {
-        return MemberResponse.of(memberRepository.findById(id)
+    public MemberResponse findById(long id) {
+        return MemberResponse.from(memberRepository.findById(id)
             .orElseThrow(() -> new MemberNotFoundException(id)));
     }
 
@@ -53,7 +47,7 @@ public class MemberService {
         Member findMember = memberRepository.findById(profileUpdateRequest.getId())
             .orElseThrow(() -> new MemberNotFoundException(profileUpdateRequest));
         validateDuplicateEmail(profileUpdateRequest);
-        memberRepository.update(profileUpdateRequest.toEntity(findMember.getCreateDate()));
+        memberRepository.update(Member.of(profileUpdateRequest, findMember.getCreateDate()));
     }
 
     private void validateDuplicateEmail(ProfileEditRequest profileUpdateRequest) {

@@ -1,11 +1,15 @@
 package kr.codesqaud.cafe.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +33,7 @@ class MemberControllerTest {
     private MemberRepository memberRepository;
 
     @BeforeEach
-    void beforeEach() {
+    void beforeEah() {
         memberRepository.deleteAll();
     }
 
@@ -127,10 +131,10 @@ class MemberControllerTest {
     @Test
     void signUpFalse4() throws Exception {
         // given
-        memberRepository.save(new Member(UUID.randomUUID().toString(), "test@gmail.com",
+        memberRepository.save(new Member(null, "test@gmail.com",
             "Test1234", "test", LocalDateTime.now()));
-        String savedId2 = memberRepository.save(
-            new Member(UUID.randomUUID().toString(), "test2@gmail.com",
+        Long savedId2 = memberRepository.save(
+            new Member(null, "test2@gmail.com",
                 "Test1234", "test", LocalDateTime.now()));
         String editEmail = "test@gmail.com";
         String editPassword = "Test4444";
@@ -169,8 +173,8 @@ class MemberControllerTest {
     @Test
     void profileEditForm() throws Exception {
         // given
-        String savedId = memberRepository.save(
-            new Member(UUID.randomUUID().toString(), "test@gmail.com",
+        Long savedId = memberRepository.save(
+            new Member( null, "test@gmail.com",
                 "Test1234", "test", LocalDateTime.now()));
 
         // when
@@ -187,8 +191,8 @@ class MemberControllerTest {
     @Test
     void editProfile() throws Exception {
         // given
-        String savedId = memberRepository.save(
-            new Member(UUID.randomUUID().toString(), "test@gmail.com",
+        Long savedId = memberRepository.save(
+            new Member( null, "test@gmail.com",
                 "Test1234", "test", LocalDateTime.now()));
         String editEmail = "test2@gmail.com";
         String editPassword = "Test4444";
@@ -204,7 +208,7 @@ class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/members/{id}"))
-            .andExpect(model().attribute("id", savedId))
+            .andExpect(model().attribute("id", String.valueOf(savedId)))
             .andDo(print());
     }
 
@@ -212,10 +216,10 @@ class MemberControllerTest {
     @Test
     void editProfileFalse() throws Exception {
         // given
-        memberRepository.save(new Member(UUID.randomUUID().toString(), "test@gmail.com",
+        memberRepository.save(new Member(null, "test@gmail.com",
                 "Test1234", "test", LocalDateTime.now()));
-        String savedId2 = memberRepository.save(
-            new Member(UUID.randomUUID().toString(), "test2@gmail.com",
+        Long savedId2 = memberRepository.save(
+            new Member( null, "test2@gmail.com",
                 "Test1234", "test", LocalDateTime.now()));
         String editEmail = "test@gmail.com";
         String editPassword = "Test4444";

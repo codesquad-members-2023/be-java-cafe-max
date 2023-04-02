@@ -11,7 +11,7 @@
         <div>
             <h2 class="title">회원 수정</h2>
         </div>
-        <form th:action="@{/members/{id}(id = __${id}__)}" th:method="put" th:object="${profileEditRequest}">
+        <form th:action="@{/members/{id}(id = ${profileEditRequest.getId()})}" th:method="put" th:object="${profileEditRequest}">
             <div class="form-floating">
                 <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력해주세요"
                        aria-describedby="validationEmailFeedback" th:errorclass="is-invalid" th:field="*{email}">
@@ -33,7 +33,7 @@
                 <div id="validationPasswordFeedback" class="invalid-feedback" th:errors="*{password}">
                 </div>
             </div>
-            <input type="hidden" id="id" name="id" th:value="__${id}__">
+            <input type="hidden" id="id" name="id" th:value="*{id}">
             <button id="submit" class="w-100 btn btn-primary mt-4" type="submit">회원가입</button>
         </form>
     </div>

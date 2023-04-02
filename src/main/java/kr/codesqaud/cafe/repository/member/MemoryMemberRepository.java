@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Member;
 import org.springframework.stereotype.Repository;
@@ -12,20 +13,22 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MemoryMemberRepository implements MemberRepository {
 
-    private final Map<String, Member> store;
+    private final Map<Long, Member> store;
+    private final AtomicLong id;
 
     public MemoryMemberRepository() {
         this.store = new ConcurrentHashMap<>();
+        this.id = new AtomicLong(1);
     }
 
     @Override
-    public String save(Member member) {
-        store.put(member.getId(), member);
-        return member.getId();
+    public Long save(Member member) {
+        store.put(id.get(), member.createWithId(id.get()));
+        return id.getAndIncrement();
     }
 
     @Override
-    public Optional<Member> findById(String id) {
+    public Optional<Member> findById(Long id) {
         return Optional.ofNullable(store.get(id));
     }
 
@@ -47,11 +50,6 @@ public class MemoryMemberRepository implements MemberRepository {
     @Override
     public void update(Member member) {
         store.put(member.getId(), member);
-    }
-
-    @Override
-    public void delete(String id) {
-        store.remove(id);
     }
 
     @Override

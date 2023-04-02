@@ -1,16 +1,19 @@
 package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
+import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
+import kr.codesqaud.cafe.dto.member.SignUpRequest;
 
 public class Member {
 
-    private final String id;
+    private final Long id;
     private final String email;
     private final String password;
     private final String nickName;
     private final LocalDateTime createDate;
 
-    public Member(String id, String email, String password, String nickName,
+    public Member(Long id, String email, String password, String nickName,
         LocalDateTime createDate) {
         this.id = id;
         this.email = email;
@@ -19,7 +22,7 @@ public class Member {
         this.createDate = createDate;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
@@ -39,11 +42,25 @@ public class Member {
         return createDate;
     }
 
-    public boolean equalsId(String id) {
-        return this.id.equals(id);
+    public boolean equalsId(Long id) {
+        return Objects.equals(this.id, id);
     }
 
     public boolean equalsEmail(String email) {
         return this.email.equals(email);
+    }
+
+    public Member createWithId(Long id) {
+        return new Member(id, email, password, nickName, createDate);
+    }
+
+    public static Member from(SignUpRequest signUpRequest) {
+        return new Member(null, signUpRequest.getEmail(), signUpRequest.getPassword(),
+            signUpRequest.getNickName(), signUpRequest.getCreateDate());
+    }
+
+    public static Member of(ProfileEditRequest profileEditRequest, LocalDateTime crateDate) {
+        return new Member(profileEditRequest.getId(), profileEditRequest.getEmail(),
+            profileEditRequest.getPassword(), profileEditRequest.getNickName(), crateDate);
     }
 }
