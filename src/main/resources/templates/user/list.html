@@ -22,20 +22,16 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>javajigi</td>
-            <td>자바지기</td>
-            <td>javajigi@sample.net</td>
-            <td><a class="btn btn-success" href="#" role="button">수정</a></td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>slipp</td>
-            <td>슬립</td>
-            <td>slipp@sample.net</td>
-            <td><a class="btn btn-success" href="#" role="button">수정</a></td>
-          </tr>
+          <th:block th:each="user : ${users}">
+            <tr>
+              <th scope="row" th:text="${userStat.count}"></th>
+              <td th:text="${user.userId}"></td>
+              <td><a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.name}"></a>
+              </td>
+              <td th:text="${user.email}"></td>
+              <td><a class="btn btn-success" href="#" role="button">수정</a></td>
+            </tr>
+          </th:block>
           </tbody>
         </table>
       </div>
