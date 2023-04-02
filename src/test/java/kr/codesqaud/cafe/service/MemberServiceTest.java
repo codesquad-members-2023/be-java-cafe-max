@@ -59,8 +59,7 @@ class MemberServiceTest {
                     String email = String.format("test%d@test.com", count);
                     String password = String.format("test%d", count);
                     String nickName = String.format("chacha%d", count);
-                    LocalDateTime localDateTime = LocalDateTime.now();
-                    memberService.signUp(new SignUpRequestDto(email, password, nickName, localDateTime));
+                    memberService.signUp(new SignUpRequestDto(email, password, nickName));
                 });
 
         //when
@@ -83,8 +82,7 @@ class MemberServiceTest {
         assertAll(
                 () -> assertEquals(member1Id, memberResponseDto.getId()),
                 () -> assertEquals(requestDtoMember1.getEmail(), memberResponseDto.getEmail()),
-                () -> assertEquals(requestDtoMember1.getNickName(), memberResponseDto.getNickName()),
-                () -> assertEquals(requestDtoMember1.getCreateDate(), memberResponseDto.getCreateTime()));
+                () -> assertEquals(requestDtoMember1.getNickName(), memberResponseDto.getNickName()));
 
     }
 
@@ -123,15 +121,13 @@ class MemberServiceTest {
         String email = "test@test.com";
         String password = "testtest";
         String nickName = "chacha";
-        LocalDateTime localDateTime = LocalDateTime.now();
-        return new SignUpRequestDto(email, password, nickName, localDateTime);
+        return new SignUpRequestDto(email, password, nickName);
     }
 
     private SignUpRequestDto dummyMemberData() {
         String email = "dummy@dummy.com";
         String password = "dummydummy";
         String nickName = "피오니";
-        LocalDateTime localDateTime = LocalDateTime.now();
-        return new SignUpRequestDto(email, password, nickName, localDateTime);
+        return new SignUpRequestDto(email, password, nickName);
     }
 }
