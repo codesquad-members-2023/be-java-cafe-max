@@ -7,9 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDateTime;
 import java.util.UUID;
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.MemberResponseDto;
-import kr.codesqaud.cafe.repository.MemberRepository;
-import kr.codesqaud.cafe.service.MemberService;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
+import kr.codesqaud.cafe.service.member.MemberService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

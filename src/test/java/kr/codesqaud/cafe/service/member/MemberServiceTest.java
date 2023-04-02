@@ -1,23 +1,20 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.service.member;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import kr.codesqaud.cafe.controller.MemberController;
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.MemberResponseDto;
-import kr.codesqaud.cafe.dto.ProfileEditRequestDto;
-import kr.codesqaud.cafe.dto.SignUpRequestDto;
-import kr.codesqaud.cafe.repository.MemberRepository;
+import kr.codesqaud.cafe.dto.member.MemberResponseDto;
+import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
+import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
