@@ -45,6 +45,11 @@ public class MemoryMemberRepository implements MemberRepository {
 
 
     @Override
+    public void deleteById(String id) {
+        store.remove(id);
+    }
+
+    @Override
     public void deleteAll() {
         store.clear();
     }
