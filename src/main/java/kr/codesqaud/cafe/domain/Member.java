@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Member {
     private final String id;
     private String email;
-    private String password;
+    private final String password;
     private String nickName;
     private final LocalDateTime createTime;
 
