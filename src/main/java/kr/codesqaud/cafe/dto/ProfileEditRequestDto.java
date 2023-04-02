@@ -15,7 +15,7 @@ public class ProfileEditRequestDto {
     private final String email;
 
     @NotBlank
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9]{8,32}$")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])[a-zA-Z\\d]{8,32}$")
     private final String password;
 
     @NotBlank
@@ -45,7 +45,7 @@ public class ProfileEditRequestDto {
         return nickName;
     }
 
-    public static ProfileEditRequestDto of(MemberResponseDto memberResponseDto){
-        return new ProfileEditRequestDto(memberResponseDto.getId(), memberResponseDto.getEmail(),null, memberResponseDto.getNickName());
+    public static ProfileEditRequestDto of(MemberResponseDto memberResponseDto) {
+        return new ProfileEditRequestDto(memberResponseDto.getId(), memberResponseDto.getEmail(), null, memberResponseDto.getNickName());
     }
 }
