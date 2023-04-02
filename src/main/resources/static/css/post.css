@@ -1,0 +1,125 @@
+/* 글쓰기 */
+.post {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+
+    width: 100%;
+    height: max-content;
+}
+
+.post > form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 30px 0px 0px;
+    gap: 40px;
+
+    width: 640px;
+    height: 860px;
+}
+
+form > div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 16px;
+    gap: 8px;
+    width: 100%;
+    height: 64px;
+
+    background: #FFFFFF;
+    border: 1px solid #D2DAE0;
+    border-radius: 8px;
+}
+
+form > div > input {
+    padding: 0px;
+
+    width: 100%;
+    height: 100%;
+
+    background: #FFFFFF;
+    border: none;
+
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 160%;
+}
+
+form > div > input:focus {
+    background: #FFFFFF;
+    outline: none;
+}
+
+form > div > label {
+    width: 300px;
+    height: 14px;
+
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+
+    color: #4B5966;
+
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+form > div > span {
+    padding: 10px 0px 0px;
+
+    font-weight: 400;
+    font-size: 12px;
+
+    color: #4362D0;
+}
+
+.content {
+    height: 500px;
+}
+
+textarea {
+    width: 100%;
+    height: 100%; 
+
+    margin: 0px 0px 0px;
+    border: none;
+    resize: none;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+.hide {
+    display: none;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-self: flex-end;
+    padding: 8px 16px;
+    gap: 10px;
+
+    width: 84px;
+    height: 32px;
+
+    background: #4362D0;
+    border: none;
+    border-radius: 8px;
+
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    
+    text-align: center;
+
+    color: #FFFFFF;
+}

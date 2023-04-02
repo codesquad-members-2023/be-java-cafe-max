@@ -201,3 +201,16 @@ h3,h4,h5 {
     padding-right: 2.5em;
 }
 
+.articleTableHead > th {
+    text-align: center;
+}
+
+.articleTableBody > th, td {
+    text-align: center;
+}
+
+.articleTitle {
+    text-align: left;
+}
+
+
