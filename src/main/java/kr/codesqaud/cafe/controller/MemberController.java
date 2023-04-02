@@ -14,6 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.NoSuchElementException;
 
+import javax.validation.Valid;
+
 import kr.codesqaud.cafe.dto.ProfileEditRequestDto;
 import kr.codesqaud.cafe.dto.SignUpRequestDto;
 import kr.codesqaud.cafe.service.MemberService;
@@ -28,8 +30,8 @@ public class MemberController {
     }
 
     @GetMapping
-    public String findAll(Model model){
-        model.addAttribute("memberResponsesDto",memberService.findAll());
+    public String findAll(Model model) {
+        model.addAttribute("memberResponsesDto", memberService.findAll());
         return "/members";
     }
 
@@ -42,13 +44,12 @@ public class MemberController {
         return "redirect:/member";
     }
 
-
     @GetMapping("/{id}")
-    public String profile(@PathVariable String id, Model model){
+    public String profile(@PathVariable String id, Model model) {
         try {
-            model.addAttribute("memberResponsesDto",memberService.findById(id));
+            model.addAttribute("memberResponsesDto", memberService.findById(id));
             return "/profile";
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return "error/404";
         }
     }
@@ -60,18 +61,18 @@ public class MemberController {
         }
 
         memberService.update(profileEditRequestDto);
-        redirectAttributes.addAttribute("id",profileEditRequestDto.getId());
+        redirectAttributes.addAttribute("id", profileEditRequestDto.getId());
         return "redirect:/member/{id}";
     }
 
     @GetMapping("/{id}/edit")
-    public String profileEditForm(@PathVariable String id, Model model){
+    public String profileEditForm(@PathVariable String id, Model model) {
         model.addAttribute("profileEditRequest", ProfileEditRequestDto.of(memberService.findById(id)));
         return "/profileEdit";
     }
 
     @GetMapping("/signUp")
-    public String signUpForm(@ModelAttribute("signUpRequestDto")  SignUpRequestDto signUpRequestDto){
+    public String signUpForm(@ModelAttribute("signUpRequestDto") SignUpRequestDto signUpRequestDto) {
         return "/signUp";
     }
 
