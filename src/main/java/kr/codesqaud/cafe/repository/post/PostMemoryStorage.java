@@ -33,4 +33,12 @@ public class PostMemoryStorage implements PostRepository{
         return Optional.ofNullable(postMap.get(postId));
     }
 
+    @Override
+    public List<Post> findAll() {
+        return postMap.values()
+                .stream()
+                .sorted(Comparator.comparing(Post::getWriteDate).reversed())
+                .collect(Collectors.toList());
+    }
+
 }
