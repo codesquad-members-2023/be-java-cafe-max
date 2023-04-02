@@ -35,6 +35,12 @@ public class PostController {
         return "redirect:/post/posts";
     }
 
+    @GetMapping("/posts/writers")
+    public String postsByWriters(Model model){
+        model.addAttribute("postResponseDto",postService.findAllWriters());
+        return "/posts/writers";
+    }
+
 
 
 }
