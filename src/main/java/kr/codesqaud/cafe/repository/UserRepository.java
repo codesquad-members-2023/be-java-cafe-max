@@ -12,19 +12,19 @@ import java.util.stream.Collectors;
 @Repository
 public class UserRepository {
     private List<User> users;
+    private int userIdx = 1;
 
     public UserRepository() {
         users = new ArrayList<>();
     }
 
-    public void save(SignUpDTO dto) {
-        int idx = users.size() + 1;
-        users.add(dto.convertToUser(idx));
+    public synchronized void save(SignUpDTO dto) {
+        users.add(dto.toUser(userIdx++));
     }
 
     public List<UserDTO> findAll() {
         return users.stream()
-                .map(User::convertToDTO)
+                .map(User::toDto)
                 .collect(Collectors.toUnmodifiableList());
     }
 
