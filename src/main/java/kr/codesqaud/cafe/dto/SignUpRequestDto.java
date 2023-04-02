@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -12,7 +13,7 @@ import kr.codesqaud.cafe.domain.Member;
 
 public class SignUpRequestDto {
     @NotBlank
-    @Pattern(regexp = "[a-z\\d]+@[a-z\\d]+\\.[a-z]{2,3}$")
+    @Email
     private final String email;
 
     @NotBlank
