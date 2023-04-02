@@ -22,7 +22,6 @@ public class ArticleController {
     @PostMapping("/questions/post")
     public String postArticle(ArticleForm form) {
         Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
-        article.setWriter(article.getWriter());
 
         articleService.add(article);
 
