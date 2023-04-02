@@ -7,17 +7,17 @@ public class Article {
     private String title;
     private String writer;
     private String contents;
-    private final LocalDateTime regTime;
+    private final LocalDateTime createdAt;
 
     public Article() {
-        this.regTime = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     public Article(String title, String writer, String contents) {
         this.title = title;
         this.writer = writer;
         this.contents = contents;
-        this.regTime = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
