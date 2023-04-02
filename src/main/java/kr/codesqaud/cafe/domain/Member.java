@@ -41,15 +41,8 @@ public class Member {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
 
-    public boolean equalsEmail(String email){
-        return this.email.equals(email);
-    }
 }
