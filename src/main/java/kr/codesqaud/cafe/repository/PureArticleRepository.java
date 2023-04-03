@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -18,5 +19,10 @@ public class PureArticleRepository implements ArticleRepository{
         articles.put(article.getId(), article);
 
         return article.getId();
+    }
+
+    @Override
+    public Optional<Article> findById(Long id) {
+        return Optional.ofNullable(articles.get(id));
     }
 }

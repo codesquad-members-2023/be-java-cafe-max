@@ -23,6 +23,26 @@ public class Article {
         return id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
