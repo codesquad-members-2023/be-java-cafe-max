@@ -63,7 +63,7 @@ public class User {
 	}
 
 	public static class Builder {
-		private Long id;
+		private final Long id;
 		private String nickname;
 		private String email;
 		private String password;
