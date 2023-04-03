@@ -33,7 +33,7 @@ public class UserService {
 	public List<UserForm> getAllUsersForm() {
 		List<User> allMembers = usersRepository.getAllMembers();
 		return allMembers.stream()
-			.map(User::mappingUsersForm)
+			.map(UserForm::from)
 			.collect(Collectors.toList());
 	}
 

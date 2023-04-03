@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.account.form;
 
+import kr.codesqaud.cafe.account.User;
+
 public class UserForm {
 	private Long id;
 	private String nickname;
@@ -12,6 +14,14 @@ public class UserForm {
 		this.id = builder.id;
 		this.nickname = builder.nickname;
 		this.email = builder.email;
+	}
+
+	public static UserForm from(User user) {
+		return new Builder()
+			.nickname(user.getNickname())
+			.email(user.getEmail())
+			.id(user.getId())
+			.build();
 	}
 
 	public Long getId() {

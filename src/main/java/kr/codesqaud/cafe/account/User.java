@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.account;
 
 import kr.codesqaud.cafe.account.form.ProfileSettingForm;
-import kr.codesqaud.cafe.account.form.UserForm;
 
 public class User {
 
@@ -24,14 +23,6 @@ public class User {
 
 	public String getPassword() {
 		return password;
-	}
-
-	public UserForm mappingUsersForm() {
-		return new UserForm.Builder()
-			.id(id)
-			.email(email)
-			.nickname(nickname)
-			.build();
 	}
 
 	public ProfileSettingForm mappingProfileSettingFormWithPassword() {
