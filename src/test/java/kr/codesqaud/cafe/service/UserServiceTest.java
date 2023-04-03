@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.exception.PasswordNotFoundException;
+import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -98,7 +98,7 @@ class UserServiceTest {
         ProfileEditDTO profileEditDTO = new ProfileEditDTO("newName","newEmail@naver.com","newPassword","password123");
 
         //when
-        Assertions.assertThrows(PasswordNotFoundException.class,() -> userService.updateUserByUserId(profileEditDTO, "testId"));
+        Assertions.assertThrows(InvalidPasswordException.class,() -> userService.updateUserByUserId(profileEditDTO, "testId"));
 
         //then
         User changedUser = userService.getUserByUserId("testId");

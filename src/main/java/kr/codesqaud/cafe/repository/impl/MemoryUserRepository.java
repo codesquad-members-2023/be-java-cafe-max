@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.repository.impl;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.exception.PasswordNotFoundException;
+import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Repository;
@@ -45,7 +45,7 @@ public class MemoryUserRepository implements UserRepository {
     public void updateUser(User user,String oriPassword) {
         String userRepositoryOriPassword = userRepository.get(user.getId()).getPassword();
         if (!userRepositoryOriPassword.equals(oriPassword)) {
-            throw new PasswordNotFoundException("비밀번호가 일치하지 않습니다.");
+            throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
         }
         save(user);
     }
