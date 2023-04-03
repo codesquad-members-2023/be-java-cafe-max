@@ -31,4 +31,9 @@ public class QuestionController {
 		return "redirect:questions/write-form";
 	}
 
+	@GetMapping("")
+	public String questionList() {
+		return "index";
+	}
+
 }
