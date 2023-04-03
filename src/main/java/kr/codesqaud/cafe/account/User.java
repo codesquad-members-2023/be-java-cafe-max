@@ -52,10 +52,10 @@ public class User {
 	}
 
 	public ProfileForm mappingProfileForm() {
-		ProfileForm profileForm = new ProfileForm();
-		profileForm.setEmail(getEmail());
-		profileForm.setNickname(getNickname());
-		return profileForm;
+		return new ProfileForm.Builder()
+			.email(email)
+			.nickname(nickname)
+			.build();
 	}
 
 	public ProfileSettingForm mappingProfileSettingFormWithPassword() {
