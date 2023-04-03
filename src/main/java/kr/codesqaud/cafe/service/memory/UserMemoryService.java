@@ -1,23 +1,20 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.service.memory;
 
-import kr.codesqaud.cafe.domain.member.UserMemoryImpl;
-import kr.codesqaud.cafe.domain.member.UserRepository;
+import kr.codesqaud.cafe.domain.member.repository.UserRepository;
 import kr.codesqaud.cafe.dto.SignUpFormDto;
 import kr.codesqaud.cafe.dto.UpdateFormDto;
 import kr.codesqaud.cafe.domain.member.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserMemoryService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserMemoryService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

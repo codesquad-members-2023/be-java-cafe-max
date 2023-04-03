@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.dto.SignUpFormDto;
 import kr.codesqaud.cafe.dto.UpdateFormDto;
 import kr.codesqaud.cafe.domain.member.User;
-import kr.codesqaud.cafe.service.UserService;
+import kr.codesqaud.cafe.service.memory.UserMemoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,30 +14,30 @@ import java.util.List;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    UserService userService;
+    UserMemoryService userMemoryService;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserMemoryService userMemoryService) {
+        this.userMemoryService = userMemoryService;
     }
 
 
     @PostMapping("/create")
     public String postSignUp(SignUpFormDto signUpFormDto) {
-        userService.signUp(signUpFormDto);
+        userMemoryService.signUp(signUpFormDto);
         return "redirect:/user";
     }
 
     @GetMapping("")
     public String getUserList(Model model) {
-        List<User> list = userService.getList();
+        List<User> list = userMemoryService.getList();
         model.addAttribute("memberList", list);
         return "/user/list";
     }
 
     @GetMapping("/profile/{id}")
     public String getProfile(@PathVariable int id, Model model) {
-        List<User> list = userService.getList();
+        List<User> list = userMemoryService.getList();
         model.addAttribute("name", list.get(id).getName());
         model.addAttribute("email", list.get(id).getEmail());
         return "/user/profile";
@@ -45,7 +45,7 @@ public class UserController {
 
     @GetMapping("/update/{index}")
     public String getUpdateForm(@PathVariable int index, Model model) {
-        List<User> list = userService.getList();
+        List<User> list = userMemoryService.getList();
         model.addAttribute("user", list.get(index));
         model.addAttribute("index", index);
         return "/user/update_form";
@@ -53,7 +53,7 @@ public class UserController {
 
     @PutMapping("/update/{index}")
     public String putUpdate(@PathVariable int index, UpdateFormDto updateFormDto) {
-        userService.update(index, updateFormDto);
+        userMemoryService.update(index, updateFormDto);
         return "redirect:/user";
     }
 

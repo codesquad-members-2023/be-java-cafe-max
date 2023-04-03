@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.question.Article;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
-import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.service.memory.ArticleMemoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,22 +15,22 @@ import java.util.List;
 @Controller
 public class ArticleController {
 
-    private final ArticleService articleService;
+    private final ArticleMemoryService articleMemoryService;
 
     @Autowired
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
+    public ArticleController(ArticleMemoryService articleMemoryService) {
+        this.articleMemoryService = articleMemoryService;
     }
 
     @PostMapping("/article/write")
     public String postQuestion(ArticleFormDto articleFormDto) {
-        articleService.questionWrite(articleFormDto);
+        articleMemoryService.questionWrite(articleFormDto);
         return "redirect:/";
     }
 
     @GetMapping("/article/show/{index}")
     public String getShow(@PathVariable int index, Model model) {
-        List<Article> list = articleService.getArticleList();
+        List<Article> list = articleMemoryService.getArticleList();
         model.addAttribute("article", list.get(index));
         return "qna/show";
     }
@@ -38,7 +38,7 @@ public class ArticleController {
 
     @GetMapping("/")
     public String getIndex(Model model) {
-        model.addAttribute("articleList", articleService.getArticleList());
+        model.addAttribute("articleList", articleMemoryService.getArticleList());
         return "index";
     }
 

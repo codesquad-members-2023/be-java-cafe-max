@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.service.memory;
 
 import kr.codesqaud.cafe.domain.question.ArticleRepository;
 import kr.codesqaud.cafe.domain.question.Article;
@@ -11,11 +11,11 @@ import java.util.List;
 
 
 @Service
-public class ArticleService {
+public class ArticleMemoryService {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private final ArticleRepository articleRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleMemoryService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
