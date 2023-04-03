@@ -41,9 +41,11 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/users/profile") // ("/users/{{userId}}")
-    public String profile(){
-        return "/user/profile";
+    @GetMapping("/users/{userId}")
+    public String profile(@PathVariable("userId") String userId, Model model){
+        User user = userService.findOne(userId).get();
+        model.addAttribute("user", user);
+        return "user/profile";
     }
 
 }
