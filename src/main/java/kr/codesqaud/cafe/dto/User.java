@@ -9,7 +9,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "userUser{" +
+        return "User{" +
                 "password='" + password + '\'' +
                 '}';
     }
