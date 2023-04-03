@@ -5,9 +5,8 @@ import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.domain.user.UserRepository;
 import kr.codesqaud.cafe.exception.user.UserDuplicatedException;
-import kr.codesqaud.cafe.exception.user.UserDuplicatedExceptionType;
+import kr.codesqaud.cafe.exception.user.UserExceptionType;
 import kr.codesqaud.cafe.exception.user.UserNotFoundException;
-import kr.codesqaud.cafe.exception.user.UserNotFoundExceptionType;
 import kr.codesqaud.cafe.web.dto.UserResponseDto;
 import kr.codesqaud.cafe.web.dto.UserSavedRequestDto;
 import org.springframework.stereotype.Service;
@@ -36,20 +35,24 @@ public class UserService {
 
     private void validateDuplicatedUserId(UserSavedRequestDto requestDto) {
         if (userRepository.findByUserId(requestDto.getUserId()).isPresent()) {
-            throw new UserDuplicatedException(UserDuplicatedExceptionType.ALREADY_EXIST_USERID);
+            throw new UserDuplicatedException(UserExceptionType.ALREADY_EXIST_USERID);
         }
     }
 
     private void validateDuplicateUserEmail(UserSavedRequestDto requestDto) {
         if (userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
-            throw new UserDuplicatedException(UserDuplicatedExceptionType.ALREADY_EXIST_EMAIL);
+            throw new UserDuplicatedException(UserExceptionType.ALREADY_EXIST_EMAIL);
         }
     }
 
     public UserResponseDto findById(String userId) {
-        User user = userRepository.findByUserId(userId).orElseThrow(() -> {
-            throw new UserNotFoundException(UserNotFoundExceptionType.NOT_FOUND_USER);
-        });
+        User user = validateExistUser(userId);
         return new UserResponseDto(user);
+    }
+
+    private User validateExistUser(String userId) {
+        return userRepository.findByUserId(userId).orElseThrow(() -> {
+            throw new UserNotFoundException(UserExceptionType.NOT_FOUND_USER);
+        });
     }
 }
