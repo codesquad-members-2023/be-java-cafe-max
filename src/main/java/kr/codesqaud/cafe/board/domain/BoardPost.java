@@ -8,7 +8,7 @@ public class BoardPost {
     private String writer;
     private String title;
     private String contents;
-    private LocalDateTime writeDt = LocalDateTime.now();
+    private LocalDateTime writeDateTime = LocalDateTime.now();
 
     public Long getPostId() {
         return postId;
@@ -42,11 +42,11 @@ public class BoardPost {
         this.contents = contents;
     }
 
-    public String getWriteDt() {
-        return writeDt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public String getWriteDateTime() {
+        return writeDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-    public void setWriteDt(LocalDateTime writeDt) {
-        this.writeDt = writeDt;
+    public void setWriteDateTime(LocalDateTime writeDateTime) {
+        this.writeDateTime = writeDateTime;
     }
 }
