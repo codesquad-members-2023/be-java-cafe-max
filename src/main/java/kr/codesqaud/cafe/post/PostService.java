@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.post;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -33,5 +34,9 @@ public class PostService {
 		return posts.stream()
 			.map(Post::mappingSimpleForm)
 			.collect(Collectors.toList());
+	}
+
+	public Optional<Post> findById(Long postId) {
+		return postsRepository.findById(postId);
 	}
 }

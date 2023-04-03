@@ -18,11 +18,9 @@ import kr.codesqaud.cafe.post.form.SimplePostForm;
 @Controller
 public class PostController {
 
-	private final PostsRepository postsRepository;
 	private final PostService postService;
 
 	public PostController(PostsRepository postsRepository, PostService postService) {
-		this.postsRepository = postsRepository;
 		this.postService = postService;
 	}
 
@@ -44,7 +42,7 @@ public class PostController {
 
 	@GetMapping("/post/{postId}")
 	public String showPostPage(Model model, @PathVariable Long postId) {
-		Optional<Post> optionalPost = postsRepository.findById(postId);
+		Optional<Post> optionalPost = postService.findById(postId);
 		if (optionalPost.isEmpty()) {
 			return "redirect:/";
 		}
