@@ -91,8 +91,8 @@ class MemoryMemberRepositoryTest {
         // then
         assertAll(
             () -> assertEquals(2, findAll.size()),
-            () -> assertEquals(member2.getEmail(), findAll.get(0).getEmail()),
-            () -> assertEquals(member1.getEmail(), findAll.get(1).getEmail()));
+            () -> assertEquals(member1.getEmail(), findAll.get(0).getEmail()),
+            () -> assertEquals(member2.getEmail(), findAll.get(1).getEmail()));
     }
 
     @DisplayName("회원 정보 수정")
