@@ -18,7 +18,7 @@ public class UserUpdateDto {
 		return name;
 	}
 
-	public User toEntity(Integer id) {
+	public User toEntity(Long id) {
 		User convertedUser = new User(name, password, email);
 		convertedUser.setId(id);
 		return convertedUser;
