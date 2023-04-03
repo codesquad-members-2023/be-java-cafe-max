@@ -64,4 +64,40 @@ public class Post {
 		simpleForm.setCreatedDateTime(getCreatedDateTime());
 		return simpleForm;
 	}
+
+	public static class Builder {
+		private Long id;
+
+		private String nickname;
+
+		private String title;
+
+		private String textContent;
+
+		private LocalDateTime createdDateTime;
+
+		public Builder(Long id) {
+			this.id = id;
+		}
+
+		public Builder nickname(String nickname) {
+			this.nickname = nickname;
+			return this;
+		}
+
+		public Builder title(String title) {
+			this.title = title;
+			return this;
+		}
+
+		public Builder textContent(String textContent) {
+			this.textContent = textContent;
+			return this;
+		}
+
+		public Builder createdDateTime(LocalDateTime createdDateTime) {
+			this.createdDateTime = createdDateTime;
+			return this;
+		}
+	}
 }
