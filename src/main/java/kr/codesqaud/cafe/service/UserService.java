@@ -1,12 +1,12 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.UserResponse;
-import kr.codesqaud.cafe.dto.UserSaveRequest;
-import kr.codesqaud.cafe.dto.UserUpdateRequest;
-import kr.codesqaud.cafe.exception.DuplicateUserIdException;
-import kr.codesqaud.cafe.exception.MismatchedPasswordException;
-import kr.codesqaud.cafe.exception.UserNotFoundException;
+import kr.codesqaud.cafe.dto.user.UserResponse;
+import kr.codesqaud.cafe.dto.user.UserSaveRequest;
+import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
+import kr.codesqaud.cafe.exception.user.DuplicateUserIdException;
+import kr.codesqaud.cafe.exception.user.MismatchedPasswordException;
+import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 

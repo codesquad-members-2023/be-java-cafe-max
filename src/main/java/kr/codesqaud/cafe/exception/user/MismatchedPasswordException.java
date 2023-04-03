@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.exception;
+package kr.codesqaud.cafe.exception.user;
 
 public class MismatchedPasswordException extends RuntimeException {
     public MismatchedPasswordException() {
