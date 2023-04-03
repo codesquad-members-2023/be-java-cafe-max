@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<head th:replace="layout/head :: head(~{::link})">
+    <link rel="stylesheet" th:href="@{/css/member/memberForm.css}">
+    <title></title>
+</head>
+<body>
+<header th:replace="~{layout/header :: header}">
+</header>
+<main>
+    <div class="m-auto w-100">
+        <div>
+            <h2 class="title">프로필 조회</h2>
+        </div>
+        <div class="container" style="margin-top: 100px;">
+            <div class="row align-items-center">
+                <div class="col-sm-3 fs-1">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                <div class="col-sm-9">
+                    <div class="row row-cols-1">
+                        <span class="col">이메일 : [[${memberResponse.email}]]</span>
+                        <span class="col">닉네임 : [[${memberResponse.nickName}]]</span>
+                        <span class="col">생성날짜 : [[${memberResponse.getCrateDateFormat()}]]</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col text-end mt-3">
+                <a th:href="@{/members/{id}/edit(id = ${memberResponse.id})}"
+                   class="btn btn-primary btn-sm">수정</a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
