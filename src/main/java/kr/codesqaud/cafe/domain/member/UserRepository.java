@@ -4,8 +4,10 @@ import java.util.Map;
 
 
 public interface UserRepository {
-    void save(User user, int index);
+    default void save(User user, int index){};
 
-    Map<Integer, User> findAll();
+    default Map<Integer, User> findAll(){
+        return null;
+    };
 
 }
