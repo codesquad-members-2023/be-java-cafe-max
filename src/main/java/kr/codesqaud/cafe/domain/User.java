@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.dto.UserSaveRequest;
+import kr.codesqaud.cafe.dto.UserUpdateRequest;
+
 public class User {
-    private Long id;
     private String userId;
     private String password;
     private String name;
@@ -14,31 +16,22 @@ public class User {
         this.email = email;
     }
 
-    public Long getId() {
-        return id;
+    public static User from(UserSaveRequest userSaveRequest) { // DTO → Entity
+        return new User(userSaveRequest.getUserId(), userSaveRequest.getPassword(), userSaveRequest.getName(), userSaveRequest.getEmail());
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public static User from(UserUpdateRequest userUpdateRequest) { // DTO → Entity
+        return new User(userUpdateRequest.getUserId(), userUpdateRequest.getNewPassword(), userUpdateRequest.getName(), userUpdateRequest.getEmail());
     }
 
     public String getUserId() {
         return userId;
     }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getPassword() {
         return password;
     }
-
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getEmail() { return email; }
 }
