@@ -37,9 +37,9 @@ public class ArticleController {
             return "article/form";
         }
 
-        final Long id = articleService.create(articleCreateDto);
+        articleService.create(articleCreateDto);
 
-        return "redirect:/articles/" + id;
+        return "redirect:/articles";
     }
 
     @GetMapping("/{id}")
