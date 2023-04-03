@@ -21,6 +21,16 @@ import org.springframework.test.web.servlet.MockMvc;
 class UserControllerTest {
 	public static final String JACK_EMAIL = "jack@email.com";
 	public static final String JACK_PASSWORD = "123456789a";
+	public static final String JACK = "jack";
+	public static final String JERRY_EMAIL_COM = "jerry@email.com";
+	public static final String JERRY = "jerry";
+	public static final String EMAIL = "email";
+	public static final String PASSWORD = "password";
+	public static final String NICKNAME = "nickname";
+	public static final String USER_ID = "userId";
+	public static final String PROFILE_SETTING_FORM = "profileSettingForm";
+	public static final String PROFILE_FORM = "profileForm";
+	public static final String JOIN_FORM = "joinForm";
 	@Autowired
 	MockMvc mockMvc;
 
@@ -39,8 +49,8 @@ class UserControllerTest {
 	void loginSuccess() throws Exception {
 		saveAndGetUserJack();
 		mockMvc.perform(post("/users/login")
-				.param("email", JACK_EMAIL)
-				.param("password", JACK_PASSWORD))
+				.param(EMAIL, JACK_EMAIL)
+				.param(PASSWORD, JACK_PASSWORD))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrlPattern("/users/*"));
 	}
@@ -50,8 +60,8 @@ class UserControllerTest {
 	void loginFailedByPassword() throws Exception {
 		saveAndGetUserJack();
 		mockMvc.perform(post("/users/login")
-				.param("email", JACK_EMAIL)
-				.param("password", "12345678"))
+				.param(EMAIL, JACK_EMAIL)
+				.param(PASSWORD, "12345678"))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
 			.andExpect(view().name("account/login"));
@@ -62,8 +72,8 @@ class UserControllerTest {
 	void loginFailedByEmail() throws Exception {
 		saveAndGetUserJack();
 		mockMvc.perform(post("/users/login")
-				.param("email", "jack1@email.com")
-				.param("password", "12345ddd"))
+				.param(EMAIL, "jack1@email.com")
+				.param(PASSWORD, "12345ddd"))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
 			.andExpect(view().name("account/login"));
@@ -73,7 +83,7 @@ class UserControllerTest {
 	@Test
 	void showJoinPage() throws Exception {
 		mockMvc.perform(get("/users/join"))
-			.andExpect(model().attributeExists("joinForm"))
+			.andExpect(model().attributeExists(JOIN_FORM))
 			.andExpect(status().isOk());
 	}
 
@@ -81,9 +91,9 @@ class UserControllerTest {
 	@Test
 	void addUserSuccess() throws Exception {
 		mockMvc.perform(post("/users/join")
-				.param("email", JACK_EMAIL)
-				.param("nickname", "jack")
-				.param("password", JACK_PASSWORD))
+				.param(EMAIL, JACK_EMAIL)
+				.param(NICKNAME, JACK)
+				.param(PASSWORD, JACK_PASSWORD))
 			.andExpect(status().is3xxRedirection());
 
 		assertThat(userRepository.findByEmail(JACK_EMAIL)).isPresent();
@@ -91,12 +101,12 @@ class UserControllerTest {
 
 	@DisplayName("유저 추가 - 실패")
 	@ParameterizedTest
-	@CsvSource({"sss,jack,a123456789", "jack@email.com,j,a1223456789", "jack@email.com,jack,123456789"})
+	@CsvSource({"sss,"+JACK+",a123456789", JACK_EMAIL+",j,a1223456789", JACK_EMAIL+","+JACK+",123456789"})
 	void addUserFailed(String email, String nickname, String password) throws Exception {
 		mockMvc.perform(post("/users/join")
-				.param("email", email)
-				.param("nickname", nickname)
-				.param("password", password))
+				.param(EMAIL, email)
+				.param(NICKNAME, nickname)
+				.param(PASSWORD, password))
 			.andExpect(status().isOk())
 			.andExpect(view().name("account/join"));
 	}
@@ -116,8 +126,8 @@ class UserControllerTest {
 		User user = saveAndGetUserJack();
 		mockMvc.perform(get("/users/" + user.getId()))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("userId"))
-			.andExpect(model().attributeExists("profileForm"))
+			.andExpect(model().attributeExists(USER_ID))
+			.andExpect(model().attributeExists(PROFILE_FORM))
 			.andExpect(view().name("account/profile"));
 	}
 
@@ -134,8 +144,8 @@ class UserControllerTest {
 		User user = saveAndGetUserJack();
 		mockMvc.perform(get("/users/" + user.getId() + "/update"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("userId"))
-			.andExpect(model().attributeExists("profileSettingForm"))
+			.andExpect(model().attributeExists(USER_ID))
+			.andExpect(model().attributeExists(PROFILE_SETTING_FORM))
 			.andExpect(view().name("account/profileUpdate"));
 	}
 
@@ -151,12 +161,12 @@ class UserControllerTest {
 	@Test
 	void setUserProfileSuccess() throws Exception {
 		User user = saveAndGetUserJack();
-		String mail = "jerry@email.com";
-		String jerry = "jerry";
+		String mail = JERRY_EMAIL_COM;
+		String jerry = JERRY;
 		mockMvc.perform(put("/users/" + user.getId() + "/update")
-				.param("password", user.getPassword())
-				.param("email", mail)
-				.param("nickname", jerry))
+				.param(PASSWORD, user.getPassword())
+				.param(EMAIL, mail)
+				.param(NICKNAME, jerry))
 			.andExpect(status().is3xxRedirection());
 
 		Optional<User> userOptional = userRepository.findById(user.getId());
@@ -170,12 +180,12 @@ class UserControllerTest {
 	@Test
 	void setUserProfileFailedByPassword() throws Exception {
 		User user = saveAndGetUserJack();
-		String mail = "jerry@email.com";
-		String jerry = "jerry";
+		String mail = JERRY_EMAIL_COM;
+		String jerry = JERRY;
 		mockMvc.perform(put("/users/" + user.getId() + "/update")
-				.param("password", "987654123a")
-				.param("email", mail)
-				.param("nickname", jerry))
+				.param(PASSWORD, "987654123a")
+				.param(EMAIL, mail)
+				.param(NICKNAME, jerry))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
 			.andExpect(view().name("account/profileUpdate"));
@@ -185,25 +195,25 @@ class UserControllerTest {
 	@Test
 	void setUserProfileFailedByUserId() throws Exception {
 		User user = saveAndGetUserJack();
-		String mail = "jerry@email.com";
-		String jerry = "jerry";
+		String mail = JERRY_EMAIL_COM;
+		String jerry = JERRY;
 		mockMvc.perform(put("/users/20/update")
-				.param("password", user.getPassword())
-				.param("email", mail)
-				.param("nickname", jerry))
+				.param(PASSWORD, user.getPassword())
+				.param(EMAIL, mail)
+				.param(NICKNAME, jerry))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/"));
 	}
 
 	@DisplayName("유저 프로필 세팅 - 실패(형식 오류)")
 	@ParameterizedTest
-	@CsvSource({"jerry@email.com,j", "jerry,jerry"})
+	@CsvSource({JERRY_EMAIL_COM+",j",JERRY+",jerry"})
 	void setUserProfileFailedByType(String email, String nickname) throws Exception {
 		User user = saveAndGetUserJack();
 		mockMvc.perform(put("/users/" + user.getId() + "/update")
-				.param("password", user.getPassword())
-				.param("email", email)
-				.param("nickname", nickname))
+				.param(PASSWORD, user.getPassword())
+				.param(EMAIL, email)
+				.param(NICKNAME, nickname))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
 			.andExpect(view().name("account/profileUpdate"));
@@ -212,7 +222,7 @@ class UserControllerTest {
 	private User saveAndGetUserJack() {
 		User user = new User.Builder(UserRepository.atomicKey.incrementAndGet())
 			.email(JACK_EMAIL)
-			.nickname("jack")
+			.nickname(JACK)
 			.password(JACK_PASSWORD)
 			.build();
 		userRepository.save(user);

@@ -20,6 +20,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 class PostControllerTest {
 
+	public static final String NICKNAME = "nickname";
+	public static final String TITLE = "title";
+	public static final String TEXT_CONTENT = "textContent";
 	@Autowired
 	MockMvc mockMvc;
 
@@ -39,9 +42,9 @@ class PostControllerTest {
 	void addPostSuccess() throws Exception {
 		String testTitle = "testTitle";
 		mockMvc.perform(post("/post")
-				.param("nickname", "jack")
-				.param("title", testTitle)
-				.param("textContent", "testContent"))
+				.param(NICKNAME, "jack")
+				.param(TITLE, testTitle)
+				.param(TEXT_CONTENT, "testContent"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("post"))
 			.andExpect(view().name("/post/postDetail"));
@@ -55,9 +58,9 @@ class PostControllerTest {
 	void addPostFailureFailed(String nickname, String title, String textContent) throws Exception {
 		String testTitle = "testTitle";
 		mockMvc.perform(post("/post")
-				.param("nickname", nickname)
-				.param("title", title)
-				.param("textContent", textContent))
+				.param(NICKNAME, nickname)
+				.param(TITLE, title)
+				.param(TEXT_CONTENT, textContent))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
 			.andExpect(view().name("/post/form"));
@@ -70,9 +73,9 @@ class PostControllerTest {
 	void testShowPostPageSuccess() throws Exception {
 		String testTitle = "testTitle";
 		mockMvc.perform(post("/post")
-			.param("nickname", "jack")
-			.param("title", testTitle)
-			.param("textContent", "testContent"));
+			.param(NICKNAME, "jack")
+			.param(TITLE, testTitle)
+			.param(TEXT_CONTENT, "testContent"));
 
 		Optional<Post> postOptional = postRepository.findByTitle(testTitle);
 		Long testId = postOptional.get().getId();
