@@ -5,6 +5,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import kr.codesqaud.cafe.account.User;
+import kr.codesqaud.cafe.account.UserRepository;
+
 public class JoinForm {
 	@NotEmpty
 	@Size(max = 64, min = 2, message = "{error.nickname.size}")
@@ -39,5 +42,13 @@ public class JoinForm {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public User toUser() {
+		return new User.Builder(UserRepository.atomicKey.incrementAndGet())
+			.nickname(nickname)
+			.email(email)
+			.password(password)
+			.build();
 	}
 }
