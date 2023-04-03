@@ -4,19 +4,35 @@ public class ProfileForm {
 	private String nickname;
 	private String email;
 
-	public String getNickname() {
-		return nickname;
+	private ProfileForm(Builder builder) {
+		this.nickname = builder.nickname;
+		this.email = builder.email;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public String getNickname() {
+		return nickname;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public static class Builder {
+		private String nickname;
+		private String email;
+
+		public Builder nickname(String nickname) {
+			this.nickname = nickname;
+			return this;
+		}
+
+		public Builder email(String email) {
+			this.email = email;
+			return this;
+		}
+
+		public ProfileForm build() {
+			return new ProfileForm(this);
+		}
 	}
 }
