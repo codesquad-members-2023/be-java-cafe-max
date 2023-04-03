@@ -15,44 +15,32 @@ public class Post {
 
 	private LocalDateTime createdDateTime;
 
-	public Long getId() {
-		return id;
+	private Post(Builder builder) {
+		this.id = builder.id;
+		this.nickname = builder.nickname;
+		this.createdDateTime = builder.createdDateTime;
+		this.title = builder.title;
+		this.textContent = builder.textContent;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public Long getId() {
+		return id;
 	}
 
 	public String getNickname() {
 		return nickname;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
 	public String getTitle() {
 		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getTextContent() {
 		return textContent;
 	}
 
-	public void setTextContent(String textContent) {
-		this.textContent = textContent;
-	}
-
 	public LocalDateTime getCreatedDateTime() {
 		return createdDateTime;
-	}
-
-	public void setCreatedDateTime(LocalDateTime createdDateTime) {
-		this.createdDateTime = createdDateTime;
 	}
 
 	public SimplePostForm mappingSimpleForm() {
@@ -98,6 +86,10 @@ public class Post {
 		public Builder createdDateTime(LocalDateTime createdDateTime) {
 			this.createdDateTime = createdDateTime;
 			return this;
+		}
+
+		public Post build() {
+			return new Post(this);
 		}
 	}
 }
