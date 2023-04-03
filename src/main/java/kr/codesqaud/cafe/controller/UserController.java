@@ -20,7 +20,7 @@ public class UserController {
 
     @GetMapping("/user/create")
     public String createForm(){
-        return "/user/form"; // template 폴더에 만들었다면
+        return "user/form"; // template 폴더에 만들었다면
     }
 
     @PostMapping("/user/create")
@@ -39,7 +39,7 @@ public class UserController {
     public String list(Model model){
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
-        return "/user/list";
+        return "user/list";
     }
 
     @GetMapping("/users/profile") // ("/users/{{userId}}")
