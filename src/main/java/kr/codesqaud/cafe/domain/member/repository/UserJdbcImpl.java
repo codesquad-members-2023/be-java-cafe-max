@@ -38,6 +38,12 @@ public class UserJdbcImpl implements UserRepository {
                         rs.getString("EMAIL"));
     }
 
+    @Override
+    public void update(User user) {
+        jdbcTemplate.update("update USERS set PASSWORD = ? ,NAME = ? ,EMAIL = ? WHERE ID = ?",
+                user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
+    }
+
 
     @Override
     public List<User> findAllList() {
