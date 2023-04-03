@@ -18,11 +18,6 @@ public class UserController {
         this.memoryUserRepository = memoryUserRepository;
     }
 
-    @GetMapping("/user/form")
-    public String join() {
-        return "user/form";
-    }
-
     @PostMapping("/user/form")
     public String post(@RequestParam("userId") String userId,
                        @RequestParam String password,
@@ -48,10 +43,5 @@ public class UserController {
         model.addAttribute("user", user);
 
         return "user/profile";
-    }
-
-    @GetMapping("/user/login")
-    public String login() {
-        return "user/login";
     }
 }
