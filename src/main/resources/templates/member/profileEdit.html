@@ -13,7 +13,7 @@
         </div>
         <form th:action="@{/members/{id}(id = ${profileEditRequest.getId()})}" th:method="put" th:object="${profileEditRequest}">
             <div class="form-floating">
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력해주세요"
+                <input type="text" class="form-control" id="email" name="email" placeholder="이메일을 입력해주세요"
                        aria-describedby="validationEmailFeedback" th:errorclass="is-invalid" th:field="*{email}">
                 <label for="email">이메일</label>
                 <div id="validationEmailFeedback" class="invalid-feedback" th:errors="*{email}">
