@@ -18,16 +18,16 @@ public enum UserNotFoundExceptionType implements BaseExceptionType {
 
     @Override
     public int getErrorCode() {
-        return 0;
+        return this.errorCode;
     }
 
     @Override
     public HttpStatus getHttpStatus() {
-        return null;
+        return this.httpStatus;
     }
 
     @Override
     public String getErrorMessage() {
-        return null;
+        return this.errorMessage;
     }
 }
