@@ -3,8 +3,8 @@ package kr.codesqaud.cafe.domain.article.dto;
 import kr.codesqaud.cafe.domain.article.entity.Article;
 
 public class ArticleSaveRequestDto {
-	String title;
-	String content;
+	private String title;
+	private String content;
 
 	public String getTitle() {
 		return title;
