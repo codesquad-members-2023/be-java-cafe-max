@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.MemoryUserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,15 +40,15 @@ class UserServiceTest {
     }
 
     @Test
-    public void 중복_회원_예외() {
+    public void 중복_회원_이름_예외() {
         // given
         User user1 = new User();
-        user1.setName("springName");
-        user1.setUserId("springId");
+        user1.setName("springName1");
+        user1.setUserId("springId1");
 
         User user2 = new User();
-        user2.setName("springName");
-        user2.setUserId("springId");
+        user2.setName("springName1");
+        user2.setUserId("springId2");
 
 
         // when
@@ -57,6 +56,26 @@ class UserServiceTest {
         IllegalStateException e = assertThrows(IllegalStateException.class, () -> userService.join(user2));
 
         // then
-        assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
+        assertThat(e.getMessage()).isEqualTo("이미 존재하는 이름입니다.");
+    }
+
+    @Test
+    public void 중복_회원_아이디_예외() {
+        // given
+        User user1 = new User();
+        user1.setName("springName1");
+        user1.setUserId("springId1");
+
+        User user2 = new User();
+        user2.setName("springName2");
+        user2.setUserId("springId1");
+
+
+        // when
+        userService.join(user1);
+        IllegalStateException e = assertThrows(IllegalStateException.class, () -> userService.join(user2));
+
+        // then
+        assertThat(e.getMessage()).isEqualTo("이미 존재하는 아이디입니다.");
     }
 }
