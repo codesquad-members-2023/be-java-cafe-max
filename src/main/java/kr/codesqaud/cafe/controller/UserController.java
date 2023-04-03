@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -32,6 +33,7 @@ public class UserController {
         userService.join(user);
         return "redirect:/users";
     }
+
     @GetMapping("users")
     public String getUserList(Model model) {
         List<User> users = userService.showAllUser();
@@ -39,5 +41,10 @@ public class UserController {
         return "user/list";
     }
 
+    @GetMapping("user/{id}")
+    public String readUserProfile(@PathVariable String id, Model model) {
+        model.addAttribute("user", userService.findUserById(id));
+        return "user/profile";
+    }
 
 }
