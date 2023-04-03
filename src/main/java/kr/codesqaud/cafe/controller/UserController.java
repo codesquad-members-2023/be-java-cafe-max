@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.Controller;
+package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.Dto.UserFormDto;
+import kr.codesqaud.cafe.dto.UserFormDto;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

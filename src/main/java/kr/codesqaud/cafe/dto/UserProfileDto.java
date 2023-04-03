@@ -1,11 +1,11 @@
-package kr.codesqaud.cafe.Dto;
+package kr.codesqaud.cafe.dto;
 
 public class UserProfileDto {
     //회원 프로필 내용 DTO
 
-    String name;
+    private String name;
 
-    String email;
+    private String email;
 
     public String getName() {
         return name;

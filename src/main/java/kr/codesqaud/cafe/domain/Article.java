@@ -1,20 +1,19 @@
 package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
+
 
 public class Article {
 
-    String author;
+    private String author;
 
-    String title;
+    private String title;
 
-    String contents;
+    private String contents;
 
-    LocalDateTime time;
+    private LocalDateTime time;
 
-    long id;
+    private long id;
 
     public Article(String author, String title, String contents) {
         this.author = author;

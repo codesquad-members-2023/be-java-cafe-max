@@ -1,18 +1,14 @@
-package kr.codesqaud.cafe.Controller;
+package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.Dto.ArticleFormDto;
-import kr.codesqaud.cafe.Dto.UserFormDto;
+import kr.codesqaud.cafe.dto.ArticleFormDto;
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ArticleService;
-import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ArticleController {
@@ -34,7 +30,7 @@ public class ArticleController {
     //인덱스(홈)으로 매핑하여 글 목록을 보여줌
     @GetMapping("/")
     public String listArticles(Model model) {
-        model.addAttribute("articles", articleService.getArticleList());
+        model.addAttribute("articles", articleService.getArticleListDtos());
         return "/index";
     }
 

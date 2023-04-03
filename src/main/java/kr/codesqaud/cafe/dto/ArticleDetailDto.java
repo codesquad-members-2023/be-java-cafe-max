@@ -1,14 +1,13 @@
-package kr.codesqaud.cafe.Dto;
+package kr.codesqaud.cafe.dto;
 
-import java.time.LocalDateTime;
 
 public class ArticleDetailDto {
     //세부적인 글 내용 DTO
-    String author;
+    private final String author;
 
-    String title;
+    private final String title;
 
-    String contents;
+    private final String contents;
 
     public ArticleDetailDto(String author, String title, String contents) {
         this.author = author;

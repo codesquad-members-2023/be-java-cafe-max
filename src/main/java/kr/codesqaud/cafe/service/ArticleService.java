@@ -1,13 +1,10 @@
 package kr.codesqaud.cafe.service;
 
 
-import kr.codesqaud.cafe.Dto.ArticleDetailDto;
-import kr.codesqaud.cafe.Dto.ArticleListDto;
-import kr.codesqaud.cafe.Dto.UserListDto;
+import kr.codesqaud.cafe.dto.ArticleDetailDto;
+import kr.codesqaud.cafe.dto.ArticleListDto;
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.MemoryArticleRepository;
-import kr.codesqaud.cafe.repository.MemoryUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +27,7 @@ public class ArticleService {
     }
 
     //전체 글 목록을 DTO로 필터링 하고 반환
-    public List<ArticleListDto> getArticleList() {
+    public List<ArticleListDto> getArticleListDtos() {
         List<Article> articles = articleRepository.findAll();
         List<ArticleListDto> articleListDtos = new ArrayList<>();
         for (Article article : articles) {

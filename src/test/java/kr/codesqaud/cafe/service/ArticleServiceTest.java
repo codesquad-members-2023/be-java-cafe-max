@@ -1,15 +1,10 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.Dto.ArticleListDto;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.MemoryArticleRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

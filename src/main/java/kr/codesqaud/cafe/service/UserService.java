@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.Dto.UserListDto;
-import kr.codesqaud.cafe.Dto.UserProfileDto;
+import kr.codesqaud.cafe.dto.UserListDto;
+import kr.codesqaud.cafe.dto.UserProfileDto;
 import kr.codesqaud.cafe.repository.MemoryUserRepository;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;

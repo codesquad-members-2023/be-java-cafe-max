@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -8,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MemoryUserRepositoryTest {
 
