@@ -15,6 +15,18 @@ public class UserDTO {
         this.id = id;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     public User toUser(){
         return new User(nickName,email,password,id);
     }

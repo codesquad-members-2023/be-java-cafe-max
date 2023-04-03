@@ -17,14 +17,6 @@ public class User {
         this.id = id;
     }
 
-    public String getNickName() {
-        return nickName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
     public String getId() {
         return id;
     }

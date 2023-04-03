@@ -1,109 +1,116 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
+import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
-import org.junit.jupiter.api.Assertions;
+import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.repository.impl.MemoryUserRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 class UserServiceTest {
     private UserService userService;
 
     @BeforeEach
     void initUserService(){
-        userService = new UserService();
+        UserRepository userRepository = new MemoryUserRepository();
+        userService = new UserService(userRepository);
     }
 
     @Test
-    @DisplayName("user add 성공 테스트")
+    @DisplayName("user 추가 성공 테스트")
     void addUser() {
         // given
         User user = new User("charlie","aaa@naver.com","password","testId");
 
         // when & then
-        Assertions.assertDoesNotThrow(() -> userService.addUser(user));
+        assertThatCode(() ->userService.addUser(user.toUserDTO())).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("user 조회 성공 테스트")
     void getUserList_success_test() {
         //given
-        userService.addUser(new User("charlie","aaa@naver.com","password","testId1"));
-        userService.addUser(new User("charlie","aaa@naver.com","password","testId2"));
-        userService.addUser(new User("charlie","aaa@naver.com","password","testId3"));
+        userService.addUser(new UserDTO("charlie","aaa@naver.com","password","testId1"));
+        userService.addUser(new UserDTO("charlie","aaa@naver.com","password","testId2"));
+        userService.addUser(new UserDTO("charlie","aaa@naver.com","password","testId3"));
 
         //when & then
-        Assertions.assertTrue(userService.getUserList().size() == 3);
+        Assertions.assertThat(userService.getUserList().size() == 3).isTrue();
     }
 
     @Test
     @DisplayName("user 조회 실패 테스트")
     void getUserList_fail_test() {
         //given
-        userService.addUser(new User("charlie1","aaa@naver.com","password","testId"));
-        userService.addUser(new User("charlie2","aaa@naver.com","password","testId"));
-        userService.addUser(new User("charlie3","aaa@naver.com","password","testId"));
+        userService.addUser(new UserDTO("charlie1","aaa@naver.com","password","testId"));
+        userService.addUser(new UserDTO("charlie2","aaa@naver.com","password","testId"));
+        userService.addUser(new UserDTO("charlie3","aaa@naver.com","password","testId"));
 
         //when & then
-        Assertions.assertFalse(userService.getUserList().size() == 4);
+        Assertions.assertThat(userService.getUserList().size() == 4).isFalse();
     }
 
     @Test
-    @DisplayName("저장된 user id를 검색했을때 예외가 발생하지 않는다.")
+    @DisplayName("유저 검색을 성공한 경우 예외가 발생하지 않는다.")
     void getUserByUserId_success_test() {
+
         //given
-        userService.addUser(new User("charlie","aaa@naver.com","password","testId"));
+        userService.addUser(new UserDTO("charlie","aaa@naver.com","password","testId"));
 
         //when & then
-        Assertions.assertDoesNotThrow(() ->userService.getUserByUserId("testId"));
+        Assertions.assertThatCode(() ->userService.getUserByUserId("testId")).doesNotThrowAnyException();
     }
 
     @Test
-    @DisplayName("저장되지 않는 user id를 검색했을때 예외가 발생한다.")
+    @DisplayName("유저 검색을 실패한 경우 예외가 발생한다.")
     void getUserByUserId_fail_test() {
         //given
-        userService.addUser(new User("charlie","aaa@naver.com","password","testId"));
+        userService.addUser(new UserDTO("charlie","aaa@naver.com","password","testId"));
 
         //when & then
-        Assertions.assertThrows(UserNotFoundException.class,()-> userService.getUserByUserId("hello"));
+        Assertions.assertThatThrownBy(()-> userService.getUserByUserId("hello")).isInstanceOf(UserNotFoundException.class);
     }
 
 
 
     @Test
-    @DisplayName("password가 일치할때 user의 정보를 바꿀수있다.")
+    @DisplayName("입력한 비밀번호가 일치할때 user의 정보를 바꿀수있다.")
     void updateUserByUserId_success_test() {
         //given
-        userService.addUser(new User("charlie", "aaa@naver.com", "password", "testId"));
-        ProfileEditDTO profileEditDTO = new ProfileEditDTO("newName", "newEmail@naver.com", "newPassword", "password");
+        userService.addUser(new UserDTO("charlie", "aaa@naver.com", "password", "testId"));
+        ProfileEditDTO profileEditDTO = new ProfileEditDTO("newName", "newEmail@naver.com", "newPassword", "password","testId");
 
         //when
-        Assertions.assertDoesNotThrow(() -> userService.updateUserByUserId(profileEditDTO, "testId"));
+        Assertions.assertThatCode(() -> userService.updateUserByUserId(profileEditDTO)).doesNotThrowAnyException();
 
         //then
-        User changedUser = userService.getUserByUserId("testId");
-        Assertions.assertTrue(changedUser.getNickName().equals(profileEditDTO.getNickName()));
-        Assertions.assertTrue(changedUser.getEmail().equals(profileEditDTO.getEmail()));
-        Assertions.assertTrue(changedUser.getPassword().equals(profileEditDTO.getNewPassword()));
+        UserDTO changedUser = userService.getUserByUserId("testId");
+        Assertions.assertThat(changedUser.getNickName().equals(profileEditDTO.getNickName())).isTrue();
+        Assertions.assertThat(changedUser.getEmail().equals(profileEditDTO.getEmail())).isTrue();
+        Assertions.assertThat(changedUser.getPassword().equals(profileEditDTO.getNewPassword())).isTrue();
     }
 
     @Test
-    @DisplayName("password가 일치하지 않으면 user의 정보를 바꿀수없다.")
+    @DisplayName("입력한 비밀번호가 일치하지 않으면 user의 정보를 바꿀수없다.")
     void updateUserByUserId_fail_test() {
         //given
-        userService.addUser(new User("charlie","aaa@naver.com","password","testId"));
-        ProfileEditDTO profileEditDTO = new ProfileEditDTO("newName","newEmail@naver.com","newPassword","password123");
+        userService.addUser(new UserDTO("charlie","aaa@naver.com","password","testId"));
+        ProfileEditDTO profileEditDTO = new ProfileEditDTO("newName","newEmail@naver.com","newPassword","password123","testId");
 
         //when
-        Assertions.assertThrows(InvalidPasswordException.class,() -> userService.updateUserByUserId(profileEditDTO, "testId"));
+        Assertions.assertThatThrownBy(() -> userService.updateUserByUserId(profileEditDTO)).isInstanceOf(InvalidPasswordException.class);
 
         //then
-        User changedUser = userService.getUserByUserId("testId");
-        Assertions.assertFalse(changedUser.getNickName().equals(profileEditDTO.getNickName()));
-        Assertions.assertFalse(changedUser.getEmail().equals(profileEditDTO.getEmail()));
-        Assertions.assertFalse(changedUser.getPassword().equals(profileEditDTO.getNewPassword()));
+        UserDTO changedUser = userService.getUserByUserId("testId");
+        Assertions.assertThat(changedUser.getNickName().equals(profileEditDTO.getNickName())).isFalse();
+        Assertions.assertThat(changedUser.getEmail().equals(profileEditDTO.getEmail())).isFalse();
+        Assertions.assertThat(changedUser.getPassword().equals(profileEditDTO.getNewPassword())).isFalse();
     }
 }
