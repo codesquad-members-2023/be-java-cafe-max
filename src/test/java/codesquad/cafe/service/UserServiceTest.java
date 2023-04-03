@@ -29,6 +29,21 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("사용자 id 중복 시 예외")
+    void checkDuplicatedUser() {
+        // given
+        UserRequestDto userRequestDto1 = new UserRequestDto("sio", "1234", "sio", "sio@gmail.com");
+        UserRequestDto userRequestDto2 = new UserRequestDto("sio", "1111", "sioooo", "sioooo@gmail.com");
+
+        // when
+        userService.join(userRequestDto1);
+
+        // then
+        Assertions.assertThrows(IllegalStateException.class,
+                () -> userService.join(userRequestDto2));
+    }
+
+    @Test
     void showUsers() {
         // given
 
