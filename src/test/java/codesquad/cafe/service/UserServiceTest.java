@@ -82,4 +82,19 @@ class UserServiceTest {
         // then
         assertThat(new UserResponseDto(user.getId(), user.getName(), user.getEmail())).usingRecursiveComparison().isEqualTo(userResponseDto);
     }
+
+    @Test
+    @DisplayName("사용자 id로 사용자를 찾을 수 없으면 예외")
+    void checkUser() {
+        // given
+        UserRequestDto userRequestDto = new UserRequestDto("sio", "1234", "sio", "sio@gmail.com");
+        userService.join(userRequestDto);
+
+        // when
+        String id = "시오";
+
+        // then
+        Assertions.assertThrows(IllegalStateException.class,
+                () -> userService.findUser(id));
+    }
 }
