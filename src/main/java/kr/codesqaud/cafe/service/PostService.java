@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Post;
@@ -35,6 +36,9 @@ public class PostService {
     public List<PostResponse> findAll() {
         return postRepository.findAll()
             .stream()
+            .sorted(Comparator.comparing(Post::getWriteDate)
+                .thenComparing(Post::getId)
+                .reversed())
             .map(post -> PostResponse.of(post, getMemberResponse(post)))
             .collect(Collectors.toUnmodifiableList());
     }
