@@ -1,11 +1,14 @@
 package kr.codesqaud.cafe.repository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.Question;
+import kr.codesqaud.cafe.dto.QuestionDetailsDTO;
 import kr.codesqaud.cafe.dto.QuestionWriteDTO;
 
 @Repository
@@ -19,6 +22,13 @@ public class QuestionRepository {
 
 	public synchronized void save(QuestionWriteDTO dto) {
 		questions.add(dto.toEntity(questionIdx++));
+	}
+
+	public List<QuestionDetailsDTO> findAll() {
+		return questions.stream()
+			.sorted(Comparator.comparing(Question::getRegistrationDate).reversed())
+			.map(Question::toDto)
+			.collect(Collectors.toUnmodifiableList());
 	}
 
 }

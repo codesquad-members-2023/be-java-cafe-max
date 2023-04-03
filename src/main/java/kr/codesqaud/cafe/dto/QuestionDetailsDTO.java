@@ -1,17 +1,15 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.dto;
 
 import java.time.LocalDateTime;
 
-import kr.codesqaud.cafe.dto.QuestionDetailsDTO;
-
-public class Question {
+public class QuestionDetailsDTO {
 	private int idx;
 	private String writer;
 	private String title;
 	private String contents;
 	private LocalDateTime registrationDate;
 
-	public Question(int idx, String writer, String title, String contents, LocalDateTime registrationDate) {
+	public QuestionDetailsDTO(int idx, String writer, String title, String contents, LocalDateTime registrationDate) {
 		this.idx = idx;
 		this.writer = writer;
 		this.title = title;
@@ -37,9 +35,5 @@ public class Question {
 
 	public LocalDateTime getRegistrationDate() {
 		return registrationDate;
-	}
-
-	public QuestionDetailsDTO toDto() {
-		return new QuestionDetailsDTO(idx, writer, title, contents, registrationDate);
 	}
 }
