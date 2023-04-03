@@ -37,19 +37,19 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{id}")
-	public String findUserProfile(@PathVariable("id") Integer id, Model model) {
+	public String findUserProfile(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("user", userRepository.findById(id));
 		return "/user/profile";
 	}
 
 	@GetMapping("/users/{id}/form")
-	public String updateUserProfile(@PathVariable("id") Integer id, Model model) {
+	public String updateUserProfile(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("user", userRepository.findById(id));
 		return "/user/updateForm";
 	}
 
 	@PutMapping("/users/{id}/update")
-	public String modifyUserProfile(UserUpdateDto userUpdateDto, @PathVariable("id") Integer id) {
+	public String modifyUserProfile(UserUpdateDto userUpdateDto, @PathVariable("id") Long id) {
 		userRepository.update(userUpdateDto.toEntity(id));
 		return "redirect:/users";
 	}
