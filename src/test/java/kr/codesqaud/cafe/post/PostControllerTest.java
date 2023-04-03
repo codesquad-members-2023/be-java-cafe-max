@@ -32,7 +32,7 @@ class PostControllerTest {
 	@DisplayName("게시글 작성 페이지 열람")
 	@Test
 	void showPostPage() throws Exception {
-		mockMvc.perform(get("/posts/new"))
+		mockMvc.perform(get("/posts/form"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("postForm"));
 	}

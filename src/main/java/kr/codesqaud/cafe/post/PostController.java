@@ -22,7 +22,7 @@ public class PostController {
 		this.postService = postService;
 	}
 
-	@GetMapping("/posts/new")
+	@GetMapping("/posts/form")
 	public String showPostWritePage(Model model) {
 		model.addAttribute(new PostForm());
 		return "/post/form";
