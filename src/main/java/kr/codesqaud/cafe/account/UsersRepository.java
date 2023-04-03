@@ -13,14 +13,13 @@ public class UsersRepository {
 
 	private final List<User> usersRepository;
 
-	private static final AtomicLong atomicKey = new AtomicLong();
+	public static final AtomicLong atomicKey = new AtomicLong();
 
 	public UsersRepository() {
 		this.usersRepository = new ArrayList<>();
 	}
 
 	public boolean save(User user) {
-		user.setId(atomicKey.getAndIncrement());
 		return usersRepository.add(user);
 	}
 

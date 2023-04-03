@@ -21,10 +21,11 @@ public class UserService {
 	}
 
 	public User createNewUser(JoinForm joinForm) {
-		User user = new User();
-		user.setNickname(joinForm.getNickname());
-		user.setEmail(joinForm.getEmail());
-		user.setPassword(joinForm.getPassword());
+		User user = new User.Builder(UsersRepository.atomicKey.incrementAndGet())
+			.nickname(joinForm.getNickname())
+			.email(joinForm.getEmail())
+			.password(joinForm.getPassword())
+			.build();
 		usersRepository.save(user);
 		return user;
 	}

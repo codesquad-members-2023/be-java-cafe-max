@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
+import org.hamcrest.text.MatchesPattern;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ class UserControllerTest {
 				.param("email", JACK_EMAIL)
 				.param("password", JACK_PASSWORD))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/users/1"));
+			.andExpect(redirectedUrlPattern("/users/*"));
 	}
 
 	@DisplayName("로그인 - 비밀번호 실패")
@@ -210,10 +211,11 @@ class UserControllerTest {
 	}
 
 	private User saveAndGetUserJack() {
-		User user = new User();
-		user.setEmail(JACK_EMAIL);
-		user.setNickname("jack");
-		user.setPassword(JACK_PASSWORD);
+		User user = new User.Builder(UsersRepository.atomicKey.incrementAndGet())
+			.email(JACK_EMAIL)
+			.nickname("jack")
+			.password(JACK_PASSWORD)
+			.build();
 		usersRepository.save(user);
 		return user;
 	}
