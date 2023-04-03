@@ -22,6 +22,6 @@ class UserRepositoryTest {
 
         userRepository.save(user);
 
-        Assertions.assertThat(userRepository.getRepository()).contains(user);
+        Assertions.assertThat(userRepository.getAllUsers()).contains(user);
     }
 }

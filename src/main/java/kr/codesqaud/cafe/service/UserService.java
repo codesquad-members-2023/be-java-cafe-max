@@ -22,7 +22,7 @@ public class UserService {
     }
 
     public List<User> getUserList() {
-        return userRepository.getRepository();
+        return userRepository.getAllUsers();
     }
 
     public User findByUserId(String userId) {

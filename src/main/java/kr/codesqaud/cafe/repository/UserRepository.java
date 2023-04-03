@@ -14,7 +14,7 @@ public class UserRepository {
         repository.put(user.getUserId(), user);
     }
 
-    public List<User> getRepository() {
+    public List<User> getAllUsers() {
         return new ArrayList<>(repository.values());
     }
 
