@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.account;
 
-import kr.codesqaud.cafe.account.form.ProfileForm;
 import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.form.UserForm;
 
@@ -30,13 +29,6 @@ public class User {
 	public UserForm mappingUsersForm() {
 		return new UserForm.Builder()
 			.id(id)
-			.email(email)
-			.nickname(nickname)
-			.build();
-	}
-
-	public ProfileForm mappingProfileForm() {
-		return new ProfileForm.Builder()
 			.email(email)
 			.nickname(nickname)
 			.build();

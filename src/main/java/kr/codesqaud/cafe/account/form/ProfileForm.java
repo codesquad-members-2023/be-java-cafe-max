@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.account.form;
 
+import kr.codesqaud.cafe.account.User;
+
 public class ProfileForm {
 	private String nickname;
 	private String email;
@@ -7,6 +9,13 @@ public class ProfileForm {
 	private ProfileForm(Builder builder) {
 		this.nickname = builder.nickname;
 		this.email = builder.email;
+	}
+
+	public static ProfileForm from(User user) {
+		return new Builder()
+			.email(user.getEmail())
+			.nickname(user.getNickname())
+			.build();
 	}
 
 	public String getNickname() {
