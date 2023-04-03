@@ -1,6 +1,7 @@
 package codesquad.cafe.service;
 
 import codesquad.cafe.domain.User;
+import codesquad.cafe.dto.UserRequestDto;
 import codesquad.cafe.dto.UserResponseDto;
 import codesquad.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User join(User user) {
+    public User join(UserRequestDto userRequestDto) {
+        User user = userRequestDto.toEntity();
         validateDuplicateUser(user);
         return userRepository.save(user);
     }

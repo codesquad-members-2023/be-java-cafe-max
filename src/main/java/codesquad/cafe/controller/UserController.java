@@ -27,7 +27,7 @@ public class UserController {
 
     @PostMapping
     public String registerUser(@ModelAttribute final UserRequestDto userRequestDto) {
-        userService.join(userRequestDto.toEntity());
+        userService.join(userRequestDto);
         return "redirect:/users";
     }
 
