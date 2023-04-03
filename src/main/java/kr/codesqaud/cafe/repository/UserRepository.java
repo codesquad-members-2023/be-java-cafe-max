@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.domain.User;
 
 import java.util.List;
@@ -12,5 +11,5 @@ public interface UserRepository {
 
     User findUserById(String id);
 
-    void updateUser(ProfileEditDTO profileEditDTO,String id);
+    void updateUser(User User,String oriPassword);
 }

@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
-import kr.codesqaud.cafe.controller.dto.UserSignUpDTO;
+import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,8 +26,8 @@ public class UserController {
     }
 
     @PostMapping("/user/signUp")
-    public String signUp(UserSignUpDTO userSignUpDto) {
-        userService.addUser(userSignUpDto.toUser());
+    public String signUp(UserDTO userDto) {
+        userService.addUser(userDto);
         return "redirect:/users";
     }
 
@@ -50,8 +50,8 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public String updateUserData(@PathVariable String id, ProfileEditDTO profileEditDto){
-        userService.updateUserByUserId(profileEditDto,id);
+    public String updateUserData(ProfileEditDTO profileEditDto){
+        userService.updateUserByUserId(profileEditDto);
         return "redirect:/users";
     }
 }
