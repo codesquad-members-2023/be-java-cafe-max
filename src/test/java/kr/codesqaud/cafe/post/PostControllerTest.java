@@ -78,6 +78,7 @@ class PostControllerTest {
 			.param(TEXT_CONTENT, "testContent"));
 
 		Optional<Post> postOptional = postRepository.findByTitle(testTitle);
+		assertThat(postOptional).isPresent();
 		Long testId = postOptional.get().getId();
 
 		mockMvc.perform(get("/posts/" + testId))
