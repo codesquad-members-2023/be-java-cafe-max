@@ -4,36 +4,74 @@
 
 # TODO
 ## 230403 mon.
-### 글쓰기 기능 구현
-- [ ] 사용자가 작성한 글을 저장하는 Article 클래스 생성
-- [ ] Article 인스턴스를 저장, 관리하는 컬렉션 클래스 생성
-- [ ] 게시글 기능 구현을 담당하는 ArticleController 추가 후 애노테이션 매핑   
-- [ ] 게시글 작성 요청(POST) 메서드 추가 후 매핑
-- [ ] 게시글 추가를 완료하면 메인 페이지로 리다이렉트 // MvcConfig
+### 글쓰기 기능
+- [x] 사용자가 작성한 글을 저장하는 Article 클래스 생성
+- [x] Article 인스턴스를 저장, 관리하는 컬렉션 클래스 생성
+- [x] 게시글 기능 구현을 담당하는 ArticleController 추가 후 애노테이션 매핑
+  - [x] 메인 페이지에서 '질문하기' 버튼을 누르면 'qna/form.html'로 이동하도록 매핑
+  - [x] 이동한 form에서 게시글 작성 후 '질문하기' 버튼을 누르면 게시글 작성 요청(POST)
+  - [x] 입력된 내용으로 article 객체 생성
+  - [x] 생성된 article 객체를 articles에 저장
+  - [x] 게시글 저장을 완료하면 메인 페이지로 리다이렉트 // MvcConfig
+
+### 글 목록 조회 기능
+- [ ] 리다이렉트 된 메인 페이지에서 저장한 article 내용 띄워주기
 
 ### 고민한 내용
 - user, articel 인스턴스를 어떤 디렉토리(패키지)에 둬야 할까?
   - 일단 클래스 명에 해당하는 디렉토리를 만들어 두었다.
 - config에서 POST 요청, 리다이렉트를 처리할 수 있을까?
-  - WebMVCConfigurer는 HTTP 리퀘스트 중 GET만 처리 가능하다.
-  - 리다이렉트도 처리할 수 있다.
+  - WebMVCConfigurer는 HTTP 리퀘스트 중 GET만 처리 가능하다. // controller의 메서드를 config에서 호출해 처리하는 방법은 없을까? 
+  - 리다이렉트는 처리할 수 있다.
 - article 인스턴스를 저장하는 컬렉션으로 어떤 것을 사용할까?
-  - user는 ArrayList를 사용했는데 불변을 보장하는 리스트 자료구조에 대해 더 알아봐야겠다.
+  - user는 ArrayList를 사용했는데 불변을 보장하는 리스트 자료구조에 대해 더 알아봐야겠다. 📌
     - 유저나 아티클이 불변이어야만 하는 이유가 있을까?
     - 이 자료구조를 사용한다고 무조건 불변인건 아니다. 내부 객체의 필드 또한 final 키워드가 붙어 있어야 한다.
-  - Optional에 대해 알아봐야겠다.
+  - `Optional`에 대해 알아봐야겠다. 📌
   - 구현이 늦어졌으니 이전에 사용했던 ArrayList를 사용하도록 하자. // 차후 더 고민해보기
 - 오전에 config에 대해 잠깐 학습한 후 controller 역할에 혼란이 왔는데, 호눅스의 미션 설명을 듣고 나서 개념이 좀 더 명확해졌다.
 - Article 클래스의 contents(본문)은 어떤 타입으로 선언해야 할까?
   - String의 범위는 어느정도였지? 더 긴 문자열을 저장할 수 있는 타입이 있었나? // 스트링빌더, 스트링버퍼를 사용할 수도 있다.
-  - 본문도 불변성을 띄도록 만들어야 할까?
-
+  - 꼭 아티클이 불변성을 띄도록 만들어야 할까?
+- 게시글 작성 form 제출 시 405 에러 발생
+  - form action 태그에 매핑을 안해줬다..
+  - addViewControllers()에서 '/qna/form'을 최우선순위로 매핑해준 걸 모르고 action 태그과 컨트롤러 메서드에서 매핑한 것만 생각했다.. // 다른 방법 있을지 생각해보기 
 
 # 기술 키워드
+️▶️ [[Spring] WebMVCConfigurer](#spring-webmvcconfigurer)   
 ️▶️ [[Thymeleaf] Fragment Expressions](#thymeleaf-fragment-expressions)   
 ️▶️ [[Thymeleaf] onClick 이벤트](#thymeleaf-onclick-이벤트)   
 ️▶️ [[Spring] Annotation](#spring-annotation)
 
+## [Spring] WebMVCConfigurer
+WebMVCConfigurer는 Spring MVC 프레임워크에서 사용하는 인터페이스 중 하나다.   
+다양한 메서드들을 오버라이드해 사용할 수 있는데, 그 중 미션에서 언급된 `addViewControllers(`) 메서드를 중점으로 학습했다.   
+
+### addViewControllers()
+- URL 경로와 View 이름을 매칭해 컨트롤러 없이 간단한 view를 반환한다.   
+- HTTP 메서드 중 GET만 다룬다.(리다이렉트도 가능하다.)   
+  - 이 메서드와 같이 view 매핑과 관련된 메서드들은 GET 요청에 대한 처리를 담당한다.
+
+```java
+@Configuration
+public class MvcConfig extends WebMvcConfigurer {
+	@Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);  // 이 메서드를 매핑 설정 중 가장 높은 우선순위로 설정
+		
+      // addViewController("") <- 인자로 들어온 URL에 대해서
+      // setViewName("") <- 파라미터로 작성된 view를 반환하도록 매핑한다.
+        registry.addViewController("/users/form").setViewName("user/form");
+        registry.addViewController("/users/login").setViewName("user/login");
+        registry.addViewController("/questions/form").setViewName("qna/form");
+    }
+}
+```
+
+### WebMvcConfigurerAdapter가 deprecated 된 이유
+WebMvcConfigurerAdapter는 Spring 5, SpringBoot 2 부터 deprecated 되었다고 한다.   
+WebMvcConfigurerAdapter는 상속인 반면, WebMvcConfigurer는 인터페이스이다.   
+WebMvcConfigurerAdapter가 deprecated 된 이유는 상속과 인터페이스 차이점 때문인 것 같은데.. 이 부분을 더 공부해봐야겠다. 📌
 
 ## [Thymeleaf] Fragment Expressions
 
