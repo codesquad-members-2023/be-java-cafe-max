@@ -19,28 +19,12 @@ public class User {
 		return nickname;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getPassword() {
 		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public UserForm mappingUsersForm() {
@@ -71,6 +55,11 @@ public class User {
 		this.email = builder.email;
 		this.password = builder.password;
 		this.nickname = builder.nickname;
+	}
+
+	public void setting(ProfileSettingForm profileSettingForm) {
+		this.nickname = profileSettingForm.getNickname();
+		this.email = profileSettingForm.getEmail();
 	}
 
 	public static class Builder {
