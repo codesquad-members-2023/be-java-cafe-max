@@ -18,12 +18,12 @@ public class UserService {
     }
 
     public void join(User user) {
-        checkDuplicateId(user.getId());
+        checkDuplicateId(user.getEmail());
         userRepository.save(user);
     }
 
-    private void checkDuplicateId(String id) {
-        userRepository.findByEmail(id)
+    private void checkDuplicateId(String email) {
+        userRepository.findByEmail(email)
                 .ifPresent(m -> {
                     throw new IllegalArgumentException("이미 존재하는 회원입니다.");
                 });
