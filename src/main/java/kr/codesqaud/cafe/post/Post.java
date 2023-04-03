@@ -44,13 +44,13 @@ public class Post {
 	}
 
 	public SimplePostForm mappingSimpleForm() {
-		SimplePostForm simpleForm = new SimplePostForm();
-		simpleForm.setId(getId());
-		simpleForm.setNickname(getNickname());
-		simpleForm.setTextContent(getTextContent());
-		simpleForm.setTitle(getTitle());
-		simpleForm.setCreatedDateTime(getCreatedDateTime());
-		return simpleForm;
+		return new SimplePostForm.Builder()
+			.id(id)
+			.nickname(nickname)
+			.textContent(textContent)
+			.title(title)
+			.createdDateTime(createdDateTime)
+			.build();
 	}
 
 	public static class Builder {

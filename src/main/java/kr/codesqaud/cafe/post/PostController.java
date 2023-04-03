@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.post;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.codesqaud.cafe.post.form.PostForm;
+import kr.codesqaud.cafe.post.form.SimplePostForm;
 
 @Controller
 public class PostController {
