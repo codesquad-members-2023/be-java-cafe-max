@@ -32,7 +32,7 @@ class PostControllerTest {
 	@DisplayName("게시글 작성 페이지 열람")
 	@Test
 	void showPostPage() throws Exception {
-		mockMvc.perform(get("/postwrite"))
+		mockMvc.perform(get("/posts/new"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("postForm"));
 	}
@@ -41,7 +41,7 @@ class PostControllerTest {
 	@Test
 	void addPostSuccess() throws Exception {
 		String testTitle = "testTitle";
-		mockMvc.perform(post("/postwrite")
+		mockMvc.perform(post("/posts/new")
 				.param(NICKNAME, "jack")
 				.param(TITLE, testTitle)
 				.param(TEXT_CONTENT, "testContent"))
@@ -57,7 +57,7 @@ class PostControllerTest {
 	@CsvSource({"j,testTitle,testContent", "jack,t,textContent", "jack,title,te"})
 	void addPostFailureFailed(String nickname, String title, String textContent) throws Exception {
 		String testTitle = "testTitle";
-		mockMvc.perform(post("/postwrite")
+		mockMvc.perform(post("/posts/new")
 				.param(NICKNAME, nickname)
 				.param(TITLE, title)
 				.param(TEXT_CONTENT, textContent))
@@ -72,7 +72,7 @@ class PostControllerTest {
 	@Test
 	void testShowPostPageSuccess() throws Exception {
 		String testTitle = "testTitle";
-		mockMvc.perform(post("/postwrite")
+		mockMvc.perform(post("/posts/new")
 			.param(NICKNAME, "jack")
 			.param(TITLE, testTitle)
 			.param(TEXT_CONTENT, "testContent"));
@@ -80,7 +80,7 @@ class PostControllerTest {
 		Optional<Post> postOptional = postRepository.findByTitle(testTitle);
 		Long testId = postOptional.get().getId();
 
-		mockMvc.perform(get("/post/" + testId))
+		mockMvc.perform(get("/posts/" + testId))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists("post"));
 	}
@@ -88,7 +88,7 @@ class PostControllerTest {
 	@DisplayName("지정 게시글 열람 - 실패")
 	@Test
 	void testShowPostPageFailed() throws Exception {
-		mockMvc.perform(get("/post/20"))
+		mockMvc.perform(get("/posts/20"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/"));
 	}

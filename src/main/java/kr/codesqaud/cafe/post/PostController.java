@@ -22,13 +22,13 @@ public class PostController {
 		this.postService = postService;
 	}
 
-	@GetMapping("/postwrite")
+	@GetMapping("/posts/new")
 	public String showPostWritePage(Model model) {
 		model.addAttribute(new PostForm());
 		return "/post/form";
 	}
 
-	@PostMapping("/postwrite")
+	@PostMapping("/posts/new")
 	public String addPost(@Valid PostForm postForm, Errors errors, Model model) {
 		if (errors.hasErrors()) {
 			return "/post/form";
@@ -38,7 +38,7 @@ public class PostController {
 		return "/post/postDetail";
 	}
 
-	@GetMapping("/post/{postId}")
+	@GetMapping("/posts/{postId}")
 	public String showPostPage(Model model, @PathVariable Long postId) {
 		Optional<Post> optionalPost = postService.findById(postId);
 		if (optionalPost.isEmpty()) {

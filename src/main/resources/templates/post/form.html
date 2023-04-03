@@ -4,7 +4,7 @@
 <body>
 <nav th:replace="fragments/navbar.html :: user">
 </nav>
-<form class="container" id="postingForm" th:action="@{/post}" th:object="${postForm}" method="post" novalidate>
+<form class="container" id="postingForm" th:action="@{/posts/new}" th:object="${postForm}" method="post" novalidate>
     <div class="row justify-content-center">
         <div class="col-6 row row-cols-auto mt-5 mb-5">
             <h3>글쓰기</h3>
