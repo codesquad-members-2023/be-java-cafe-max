@@ -32,7 +32,7 @@ public class PostService {
 
 	public List<SimplePostForm> mappingSimpleForm(List<Post> posts) {
 		return posts.stream()
-			.map(Post::mappingSimpleForm)
+			.map(SimplePostForm::from)
 			.collect(Collectors.toList());
 	}
 

@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.post.form;
 
 import java.time.LocalDateTime;
 
+import kr.codesqaud.cafe.post.Post;
+
 public class SimplePostForm {
 	private Long id;
 
@@ -22,6 +24,16 @@ public class SimplePostForm {
 		title = builder.title;
 		textContent = builder.textContent;
 		createdDateTime = builder.createdDateTime;
+	}
+
+	public static SimplePostForm from(Post post) {
+		return new SimplePostForm.Builder()
+			.id(post.getId())
+			.nickname(post.getNickname())
+			.textContent(post.getTextContent())
+			.title(post.getTitle())
+			.createdDateTime(post.getCreatedDateTime())
+			.build();
 	}
 
 	public Long getId() {

@@ -43,15 +43,6 @@ public class Post {
 		return createdDateTime;
 	}
 
-	public SimplePostForm mappingSimpleForm() {
-		return new SimplePostForm.Builder()
-			.id(id)
-			.nickname(nickname)
-			.textContent(textContent)
-			.title(title)
-			.createdDateTime(createdDateTime)
-			.build();
-	}
 
 	public static class Builder {
 		private Long id;
