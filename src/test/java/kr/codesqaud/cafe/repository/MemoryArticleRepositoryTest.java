@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,7 +12,7 @@ class MemoryArticleRepositoryTest {
 
     MemoryArticleRepository memoryArticleRepository = new MemoryArticleRepository();
 
-    @AfterEach
+    @BeforeEach
     void afterEach() {
         memoryArticleRepository = new MemoryArticleRepository();
     }
