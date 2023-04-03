@@ -46,4 +46,15 @@ public class UserService {
 		return optionalUser.map(user -> Objects.equals(user.getPassword(), password)).orElse(false);
 	}
 
+	public Optional<User> findByEmail(String email) {
+		return usersRepository.findByEmail(email);
+	}
+
+	public boolean containEmail(String email) {
+		return usersRepository.containEmail(email);
+	}
+
+	public Optional<User> findById(Long userId) {
+		return usersRepository.findById(userId);
+	}
 }

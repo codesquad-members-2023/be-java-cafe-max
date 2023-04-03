@@ -26,11 +26,9 @@ import kr.codesqaud.cafe.account.form.UserForm;
 public class UserController {
 
 	private final UserService userService;
-	private final UsersRepository usersRepository;
 
-	public UserController(UserService userService, UsersRepository usersRepository) {
+	public UserController(UserService userService) {
 		this.userService = userService;
-		this.usersRepository = usersRepository;
 	}
 
 	@GetMapping("/users/login")
@@ -45,7 +43,7 @@ public class UserController {
 		if (bindingResult.hasErrors()) {
 			return "account/login";
 		}
-		Optional<User> userOptional = usersRepository.findByEmail(loginForm.getEmail());
+		Optional<User> userOptional = userService.findByEmail(loginForm.getEmail());
 		if (userOptional.isEmpty()) {
 			bindingResult.rejectValue("email", "noExist", "이메일이 존재하지 않습니다.");
 			return "account/login";
@@ -69,7 +67,7 @@ public class UserController {
 		if (bindingResult.hasErrors()) {
 			return "account/join";
 		}
-		if (usersRepository.containEmail(joinForm.getEmail())) {
+		if (userService.containEmail(joinForm.getEmail())) {
 			bindingResult.rejectValue("email", "duplicate", "중복된 이메일입니다.");
 			return "account/join";
 		}
@@ -86,7 +84,7 @@ public class UserController {
 
 	@GetMapping("/users/{userId}")
 	public String showUser(Model model, @PathVariable Long userId) {
-		Optional<User> userOptional = usersRepository.findById(userId);
+		Optional<User> userOptional = userService.findById(userId);
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
 		}
@@ -99,7 +97,7 @@ public class UserController {
 
 	@GetMapping("/users/{userId}/update")
 	public String showUserProfile(Model model, @PathVariable Long userId) {
-		Optional<User> userOptional = usersRepository.findById(userId);
+		Optional<User> userOptional = userService.findById(userId);
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
 		}
@@ -112,7 +110,7 @@ public class UserController {
 	@PutMapping("/users/{userId}/update")
 	public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, Errors errors, @PathVariable Long userId
 	) {
-		Optional<User> userOptional = usersRepository.findById(userId);
+		Optional<User> userOptional = userService.findById(userId);
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
 		}
