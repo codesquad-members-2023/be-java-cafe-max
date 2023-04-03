@@ -45,12 +45,12 @@ public class UserController {
 		}
 		Optional<User> userOptional = userService.findByEmail(loginForm.getEmail());
 		if (userOptional.isEmpty()) {
-			bindingResult.rejectValue("email", "noExist", "이메일이 존재하지 않습니다.");
+			bindingResult.rejectValue("email", "error.email.notExist");
 			return "account/login";
 		}
 		User user = userOptional.get();
 		if (!user.getPassword().equals(loginForm.getPassword())) {
-			bindingResult.rejectValue("password", "noMatch", "비밀번호가 일치하지 않습니다.");
+			bindingResult.rejectValue("password", "error.password.notMatch");
 			return "account/login";
 		}
 		return "redirect:/users/" + user.getId();
@@ -68,7 +68,7 @@ public class UserController {
 			return "account/join";
 		}
 		if (userService.containEmail(joinForm.getEmail())) {
-			bindingResult.rejectValue("email", "duplicate", "중복된 이메일입니다.");
+			bindingResult.rejectValue("email", "error.email.duplicate");
 			return "account/join";
 		}
 		User user = userService.createNewUser(joinForm);
@@ -118,7 +118,7 @@ public class UserController {
 			return "account/profileUpdate";
 		}
 		if (!userService.checkPasswordByUserId(profileSettingForm.getPassword(), userId)) {
-			errors.rejectValue("password", "noMatch", "비밀번호가 일치하지 않습니다.");
+			errors.rejectValue("password", "error.password.notMatch");
 			return "account/profileUpdate";
 		}
 		userService.update(profileSettingForm, userId);
