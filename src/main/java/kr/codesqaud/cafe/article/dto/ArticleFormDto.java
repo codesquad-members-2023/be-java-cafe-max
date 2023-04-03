@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.article.dto;
 
 public class ArticleFormDto {
     //글 작성했을때 사용하는 DTO

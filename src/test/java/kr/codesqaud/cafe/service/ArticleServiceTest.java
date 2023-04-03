@@ -1,7 +1,8 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.MemoryArticleRepository;
+import kr.codesqaud.cafe.article.domain.Article;
+import kr.codesqaud.cafe.article.repository.MemoryArticleRepository;
+import kr.codesqaud.cafe.article.service.ArticleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

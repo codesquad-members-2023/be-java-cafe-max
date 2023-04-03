@@ -1,15 +1,15 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.article.repository;
 
-import kr.codesqaud.cafe.domain.Article;
-import org.springframework.stereotype.Repository;
+import kr.codesqaud.cafe.article.domain.Article;
 
 import java.util.ArrayList;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 
-@Repository
+
 public class MemoryArticleRepository implements ArticleRepository {
 
     private static Map<Long, Article> storage = new HashMap<>();

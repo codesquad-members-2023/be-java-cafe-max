@@ -1,23 +1,21 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.article.service;
 
 
-import kr.codesqaud.cafe.dto.ArticleDetailDto;
-import kr.codesqaud.cafe.dto.ArticleListDto;
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.MemoryArticleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import kr.codesqaud.cafe.article.domain.Article;
+import kr.codesqaud.cafe.article.dto.ArticleDetailDto;
+import kr.codesqaud.cafe.article.dto.ArticleListDto;
+import kr.codesqaud.cafe.article.repository.ArticleRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+
 public class ArticleService {
 
-    private final MemoryArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
 
-    @Autowired
-    public ArticleService(MemoryArticleRepository articleRepository) {
+
+    public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 

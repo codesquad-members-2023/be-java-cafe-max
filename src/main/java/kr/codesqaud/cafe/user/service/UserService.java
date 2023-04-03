@@ -1,22 +1,19 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.user.service;
 
-import kr.codesqaud.cafe.dto.UserListDto;
-import kr.codesqaud.cafe.dto.UserProfileDto;
-import kr.codesqaud.cafe.repository.MemoryUserRepository;
-import kr.codesqaud.cafe.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.dto.UserListDto;
+import kr.codesqaud.cafe.user.dto.UserProfileDto;
+import kr.codesqaud.cafe.user.repository.UserRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Service
 public class UserService {
 
 
-    private final MemoryUserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    public UserService(MemoryUserRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

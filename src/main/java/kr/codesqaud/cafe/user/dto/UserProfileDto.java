@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.user.dto;
 
 public class UserProfileDto {
     //회원 프로필 내용 DTO

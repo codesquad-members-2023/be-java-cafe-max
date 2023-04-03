@@ -1,5 +1,6 @@
-package kr.codesqaud.cafe.repository;
-import kr.codesqaud.cafe.domain.User;
+package kr.codesqaud.cafe.user.repository;
+
+import kr.codesqaud.cafe.user.domain.User;
 
 import java.util.*;
 

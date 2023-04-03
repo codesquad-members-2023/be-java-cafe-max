@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.article.domain;
 
 import java.time.LocalDateTime;
 
