@@ -19,7 +19,7 @@ public class MemoryUserRepositoryImpl implements UserRepository {
 
 	public void save(User user) {
 		user.setId(id.getAndIncrement());
-		users.put(id.get(), user);
+		users.put(user.getId(), user);
 	}
 
 	public User findById(Long id) {
