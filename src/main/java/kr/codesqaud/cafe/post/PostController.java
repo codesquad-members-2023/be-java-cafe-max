@@ -22,16 +22,10 @@ public class PostController {
 		this.postService = postService;
 	}
 
-	@GetMapping("/posts/form")
-	public String showPostWritePage(Model model) {
-		model.addAttribute(new PostForm());
-		return "/post/form";
-	}
-
 	@PostMapping("/posts")
 	public String addPost(@Valid PostForm postForm, Errors errors, Model model) {
 		if (errors.hasErrors()) {
-			return "/post/form";
+			return "/post/formInvalid";
 		}
 		Post post = postService.createNewPost(postForm);
 		model.addAttribute(post);
