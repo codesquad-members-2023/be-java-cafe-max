@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.service.jdbc;
 import kr.codesqaud.cafe.domain.member.User;
 import kr.codesqaud.cafe.domain.member.repository.UserRepository;
 import kr.codesqaud.cafe.dto.SignUpFormDto;
+import kr.codesqaud.cafe.dto.UpdateFormDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,13 @@ public class UserJdbcService {
         userRepository.save(user);
     }
 
-    public List<User> users () {
+    public User findById(String id) {
+
+        return userRepository.findById(id);
+    }
+
+
+    public List<User> users() {
         return userRepository.findAllList();
     }
 }
