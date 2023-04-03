@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.controller.dto.ArticleDTO;
+
 public class Article {
     private String title;
     private String content;
@@ -16,5 +18,8 @@ public class Article {
 
     public void setId(int id) {
         this.id = id;
+    }
+    public ArticleDTO toDTO(){
+        return new ArticleDTO(title,content,id);
     }
 }

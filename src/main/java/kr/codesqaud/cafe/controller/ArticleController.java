@@ -21,9 +21,10 @@ public class ArticleController {
     public String showPostArticleForm(){
         return "/post/form";
     }
+
     @PostMapping("/article/post")
     public String postArticle(ArticleDTO articleDto) {
-        articleService.post(articleDto.toArticle());
+        articleService.post(articleDto);
         return "redirect:/";
     }
 
