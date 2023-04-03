@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.domain.user.entity;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class User {
 
@@ -9,13 +8,13 @@ public class User {
 	private String name;
 	private String email;
 	private Long id;
-	String dateTime;
+	LocalDateTime dateTime;
 
 	public User(String name, String password, String email) {
 		this.password = password;
 		this.name = name;
 		this.email = email;
-		this.dateTime = setDateTime();
+		this.dateTime = LocalDateTime.now();
 	}
 
 	public String getName() {
@@ -34,8 +33,12 @@ public class User {
 		this.id = id;
 	}
 
-	public String setDateTime() {
-		LocalDateTime now = LocalDateTime.now();
-		return now.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일(E) HH:mm:ss"));
+	public String getEmail() {
+		return this.email;
 	}
+
+	public LocalDateTime getDateTime() {
+		return this.dateTime;
+	}
+
 }
