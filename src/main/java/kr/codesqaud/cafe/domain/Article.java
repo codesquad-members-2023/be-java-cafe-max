@@ -1,5 +1,8 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.dto.article.ArticleSaveRequest;
+import kr.codesqaud.cafe.dto.article.ArticleUpdateRequest;
+
 import java.time.LocalDateTime;
 
 public class Article {
@@ -9,10 +12,6 @@ public class Article {
     private String contents;
     private final LocalDateTime createdAt;
 
-    public Article() {
-        this.createdAt = LocalDateTime.now();
-    }
-
     public Article(String title, String writer, String contents) {
         this.title = title;
         this.writer = writer;
@@ -20,19 +19,35 @@ public class Article {
         this.createdAt = LocalDateTime.now();
     }
 
+    private Article(Long id, String title, String writer, String contents, LocalDateTime createdAt) {
+        this.id = id;
+        this.title = title;
+        this.writer = writer;
+        this.contents = contents;
+        this.createdAt = createdAt;
+    }
+
+    public static Article from(ArticleSaveRequest articleSaveRequest) { // DTO → Entity
+        return new Article(articleSaveRequest.getTitle(), articleSaveRequest.getWriter(), articleSaveRequest.getContents());
+    }
+
+    public static Article from(ArticleUpdateRequest articleUpdateRequest, LocalDateTime createdAt) { // DTO → Entity
+        return new Article(articleUpdateRequest.getId(),
+                articleUpdateRequest.getTitle(),
+                articleUpdateRequest.getWriter(),
+                articleUpdateRequest.getContents(),
+                createdAt);
+    }
+
     public Long getId() {
         return id;
     }
+    public String getTitle() { return title; }
+    public String getWriter() { return writer; }
+    public String getContents() { return contents; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setIdUsingSequence(Long sequence) {
+        this.id = sequence;
     }
 }

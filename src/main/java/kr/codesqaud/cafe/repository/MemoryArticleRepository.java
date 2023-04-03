@@ -16,7 +16,7 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        article.setId(++sequence);
+        article.setIdUsingSequence(++sequence);
         STORE.put(article.getId(), article);
         return article;
     }
@@ -32,16 +32,5 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void update(Long id, Article article) {
-        STORE.replace(id, article);
-    }
-
-    @Override
-    public void delete(Long id) {
-        STORE.remove(id);
-    }
-
-    public void clearStore() {
-        STORE.clear();
-    }
+    public boolean isExists(Long id) { return STORE.containsKey(id); }
 }
