@@ -1,11 +1,11 @@
 package kr.codesqaud.cafe.account;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Optional;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -86,7 +86,7 @@ class UserControllerTest {
 				.param("password", JACK_PASSWORD))
 			.andExpect(status().is3xxRedirection());
 
-		Assertions.assertThat(userRepository.findByEmail(JACK_EMAIL)).isPresent();
+		assertThat(userRepository.findByEmail(JACK_EMAIL)).isPresent();
 	}
 
 	@DisplayName("유저 추가 - 실패")
@@ -160,10 +160,10 @@ class UserControllerTest {
 			.andExpect(status().is3xxRedirection());
 
 		Optional<User> userOptional = userRepository.findById(user.getId());
-		Assertions.assertThat(userOptional).isPresent();
+		assertThat(userOptional).isPresent();
 		User changedUser = userOptional.get();
-		Assertions.assertThat(changedUser.getEmail()).isEqualTo(mail);
-		Assertions.assertThat(changedUser.getNickname()).isEqualTo(jerry);
+		assertThat(changedUser.getEmail()).isEqualTo(mail);
+		assertThat(changedUser.getNickname()).isEqualTo(jerry);
 	}
 
 	@DisplayName("유저 프로필 세팅 - 실패(비밀번호 불 일치)")
