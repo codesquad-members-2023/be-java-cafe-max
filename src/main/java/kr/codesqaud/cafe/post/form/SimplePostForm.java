@@ -13,6 +13,17 @@ public class SimplePostForm {
 
 	private LocalDateTime createdDateTime;
 
+	public SimplePostForm() {
+	}
+
+	private SimplePostForm(Builder builder) {
+		id = builder.id;
+		nickname = builder.nickname;
+		title = builder.title;
+		textContent = builder.textContent;
+		createdDateTime = builder.createdDateTime;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -52,4 +63,46 @@ public class SimplePostForm {
 	public void setCreatedDateTime(LocalDateTime createdDateTime) {
 		this.createdDateTime = createdDateTime;
 	}
+
+	public static class Builder {
+		private Long id;
+
+		private String nickname;
+
+		private String title;
+
+		private String textContent;
+
+		private LocalDateTime createdDateTime;
+
+		public Builder id(Long id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder nickname(String nickname) {
+			this.nickname = nickname;
+			return this;
+		}
+
+		public Builder title(String title) {
+			this.title = title;
+			return this;
+		}
+
+		public Builder textContent(String textContent) {
+			this.textContent = textContent;
+			return this;
+		}
+
+		public Builder createdDateTime(LocalDateTime createdDateTime) {
+			this.createdDateTime = createdDateTime;
+			return this;
+		}
+
+		public SimplePostForm build() {
+			return new SimplePostForm(this);
+		}
+	}
+
 }
