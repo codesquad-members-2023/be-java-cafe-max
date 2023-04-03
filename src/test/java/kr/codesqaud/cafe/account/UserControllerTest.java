@@ -22,7 +22,7 @@ class UserControllerTest {
 	public static final String JACK_EMAIL = "jack@email.com";
 	public static final String JACK_PASSWORD = "123456789a";
 	public static final String JACK = "jack";
-	public static final String JERRY_EMAIL_COM = "jerry@email.com";
+	public static final String JERRY_EMAIL = "jerry@email.com";
 	public static final String JERRY = "jerry";
 	public static final String EMAIL = "email";
 	public static final String PASSWORD = "password";
@@ -159,7 +159,7 @@ class UserControllerTest {
 	@Test
 	void setUserProfileSuccess() throws Exception {
 		User user = saveAndGetUserJack();
-		String mail = JERRY_EMAIL_COM;
+		String mail = JERRY_EMAIL;
 		String jerry = JERRY;
 		mockMvc.perform(put("/users/" + user.getId() + "/update")
 				.param(PASSWORD, user.getPassword())
@@ -178,12 +178,10 @@ class UserControllerTest {
 	@Test
 	void setUserProfileFailedByPassword() throws Exception {
 		User user = saveAndGetUserJack();
-		String mail = JERRY_EMAIL_COM;
-		String jerry = JERRY;
 		mockMvc.perform(put("/users/" + user.getId() + "/update")
 				.param(PASSWORD, "987654123a")
-				.param(EMAIL, mail)
-				.param(NICKNAME, jerry))
+				.param(EMAIL, JERRY_EMAIL)
+				.param(NICKNAME, JERRY))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
 			.andExpect(view().name("account/profileUpdate"));
@@ -193,19 +191,17 @@ class UserControllerTest {
 	@Test
 	void setUserProfileFailedByUserId() throws Exception {
 		User user = saveAndGetUserJack();
-		String mail = JERRY_EMAIL_COM;
-		String jerry = JERRY;
 		mockMvc.perform(put("/users/20/update")
 				.param(PASSWORD, user.getPassword())
-				.param(EMAIL, mail)
-				.param(NICKNAME, jerry))
+				.param(EMAIL, JERRY_EMAIL)
+				.param(NICKNAME, JERRY))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/"));
 	}
 
 	@DisplayName("유저 프로필 세팅 - 실패(형식 오류)")
 	@ParameterizedTest
-	@CsvSource({JERRY_EMAIL_COM + ",j", JERRY + ",jerry"})
+	@CsvSource({JERRY_EMAIL + ",j", JERRY + ",jerry"})
 	void setUserProfileFailedByType(String email, String nickname) throws Exception {
 		User user = saveAndGetUserJack();
 		mockMvc.perform(put("/users/" + user.getId() + "/update")
