@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.dto.SignUpFormDto;
 import kr.codesqaud.cafe.dto.UpdateFormDto;
 import kr.codesqaud.cafe.domain.member.User;
+import kr.codesqaud.cafe.service.jdbc.UserJdbcService;
 import kr.codesqaud.cafe.service.memory.UserMemoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,21 +17,26 @@ import java.util.List;
 public class UserController {
     UserMemoryService userMemoryService;
 
-    @Autowired
     public UserController(UserMemoryService userMemoryService) {
         this.userMemoryService = userMemoryService;
+    }
+
+    UserJdbcService userJdbcService;
+    @Autowired
+    public UserController(UserJdbcService userJdbcService) {
+        this.userJdbcService = userJdbcService;
     }
 
 
     @PostMapping("/create")
     public String postSignUp(SignUpFormDto signUpFormDto) {
-        userMemoryService.signUp(signUpFormDto);
+        userJdbcService.signUp(signUpFormDto);
         return "redirect:/user";
     }
 
     @GetMapping("")
     public String getUserList(Model model) {
-        List<User> list = userMemoryService.getList();
+        List<User> list = userJdbcService.users();
         model.addAttribute("memberList", list);
         return "/user/list";
     }

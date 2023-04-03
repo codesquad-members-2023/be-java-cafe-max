@@ -19,6 +19,14 @@ public class User {
         this.email = email;
     }
 
+    public User(String userId, String password, String name, String email) {
+        this.index = index;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
+
     public int getIndex() {
         return index;
     }
