@@ -14,7 +14,6 @@ import java.util.List;
 @Controller
 public class UserController {
     private final UserService userService;
-    @Autowired
     public UserController(UserService userService){
         this.userService = userService;
     }
