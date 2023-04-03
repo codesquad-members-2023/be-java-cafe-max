@@ -8,14 +8,12 @@ public class User {
     private String password;
     private String name;
     private String email;
-    private LocalDate date;
 
     public User(String id, String password, String name, String email, LocalDate date) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
-        this.date = date;
     }
 
     public String getId() {
@@ -30,11 +28,4 @@ public class User {
         return name;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
 }
