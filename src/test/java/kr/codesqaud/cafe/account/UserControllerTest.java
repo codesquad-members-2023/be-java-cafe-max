@@ -101,7 +101,7 @@ class UserControllerTest {
 
 	@DisplayName("유저 추가 - 실패")
 	@ParameterizedTest
-	@CsvSource({"sss,"+JACK+",a123456789", JACK_EMAIL+",j,a1223456789", JACK_EMAIL+","+JACK+",123456789"})
+	@CsvSource({"sss," + JACK + ",a123456789", JACK_EMAIL + ",j,a1223456789", JACK_EMAIL + "," + JACK + ",123456789"})
 	void addUserFailed(String email, String nickname, String password) throws Exception {
 		mockMvc.perform(post("/users/join")
 				.param(EMAIL, email)
@@ -126,8 +126,7 @@ class UserControllerTest {
 		User user = saveAndGetUserJack();
 		mockMvc.perform(get("/users/" + user.getId()))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists(USER_ID))
-			.andExpect(model().attributeExists(PROFILE_FORM))
+			.andExpect(model().attributeExists(USER_ID, PROFILE_FORM))
 			.andExpect(view().name("account/profile"));
 	}
 
@@ -144,8 +143,7 @@ class UserControllerTest {
 		User user = saveAndGetUserJack();
 		mockMvc.perform(get("/users/" + user.getId() + "/update"))
 			.andExpect(status().isOk())
-			.andExpect(model().attributeExists(USER_ID))
-			.andExpect(model().attributeExists(PROFILE_SETTING_FORM))
+			.andExpect(model().attributeExists(USER_ID, PROFILE_SETTING_FORM))
 			.andExpect(view().name("account/profileUpdate"));
 	}
 
@@ -207,7 +205,7 @@ class UserControllerTest {
 
 	@DisplayName("유저 프로필 세팅 - 실패(형식 오류)")
 	@ParameterizedTest
-	@CsvSource({JERRY_EMAIL_COM+",j",JERRY+",jerry"})
+	@CsvSource({JERRY_EMAIL_COM + ",j", JERRY + ",jerry"})
 	void setUserProfileFailedByType(String email, String nickname) throws Exception {
 		User user = saveAndGetUserJack();
 		mockMvc.perform(put("/users/" + user.getId() + "/update")
