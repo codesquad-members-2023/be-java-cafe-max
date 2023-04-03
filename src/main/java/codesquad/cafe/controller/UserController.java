@@ -1,15 +1,11 @@
 package codesquad.cafe.controller;
 
-import codesquad.cafe.domain.User;
 import codesquad.cafe.dto.UserRequestDto;
 import codesquad.cafe.dto.UserResponseDto;
 import codesquad.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -30,20 +26,20 @@ public class UserController {
     }
 
     @PostMapping
-    public String registerUser(UserRequestDto userRequestDto) {
+    public String registerUser(@ModelAttribute final UserRequestDto userRequestDto) {
         userService.join(userRequestDto.toEntity());
         return "redirect:/users";
     }
 
     @GetMapping
-    public String showUsers(Model model) {
+    public String showUsers(final Model model) {
         List<UserResponseDto> users = userService.showUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
-    public String showProfile(@PathVariable("userId") String id, Model model) {
+    public String showProfile(@PathVariable("userId") final String id, final Model model) {
         UserResponseDto user = userService.findUser(id);
         model.addAttribute("user", user);
         return "user/profile";

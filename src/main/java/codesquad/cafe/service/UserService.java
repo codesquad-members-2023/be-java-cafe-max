@@ -21,7 +21,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private void validateDuplicateUser(User user) {
+    private void validateDuplicateUser(final User user) {
         userRepository.findById(user.getId())
                 .ifPresent(u -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
@@ -38,7 +38,7 @@ public class UserService {
         return userResponseDtos;
     }
 
-    public UserResponseDto findUser(String id) {
+    public UserResponseDto findUser(final String id) {
         return userRepository.findById(id)
                 .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
