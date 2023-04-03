@@ -6,15 +6,15 @@ public class Article {
     private Long id;
     private String title;
     private String userId;
-    private String content;
+    private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    private Article(Long id, String title, String userId, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Article(Long id, String title, String userId, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
         this.userId = userId;
-        this.content = content;
+        this.contents = contents;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -27,7 +27,7 @@ public class Article {
         this.id = id;
     }
 
-    public Article(String title, String userId, String content) {
-        this(null, title, userId, content, LocalDateTime.now(), LocalDateTime.now());
+    public Article(String title, String userId, String contents) {
+        this(null, title, userId, contents, LocalDateTime.now(), LocalDateTime.now());
     }
 }

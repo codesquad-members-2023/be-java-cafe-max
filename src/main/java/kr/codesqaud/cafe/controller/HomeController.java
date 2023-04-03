@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.controller.dto.ArticleCreateDto;
 import kr.codesqaud.cafe.controller.dto.UserJoinDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,5 +18,11 @@ public class HomeController {
         model.addAttribute("user", new UserJoinDto());
 
         return "user/form";
+    }
+
+    @GetMapping("/articles/create")
+    public String createArticle(Model model) {
+        model.addAttribute("article", new ArticleCreateDto());
+        return "article/form";
     }
 }

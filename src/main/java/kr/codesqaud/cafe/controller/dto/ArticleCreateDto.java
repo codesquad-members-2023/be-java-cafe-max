@@ -3,15 +3,17 @@ package kr.codesqaud.cafe.controller.dto;
 import kr.codesqaud.cafe.domain.Article;
 
 public class ArticleCreateDto {
-    private final String title;
-    private final String userId;
-    private final String content;
+    private String title;
+    private String userId;
+    private String contents;
 
-
-    public ArticleCreateDto(String title, String userId, String content) {
+    public ArticleCreateDto(String title, String userId, String contents) {
         this.title = title;
         this.userId = userId;
-        this.content = content;
+        this.contents = contents;
+    }
+
+    public ArticleCreateDto() {
     }
 
     public String getTitle() {
@@ -22,11 +24,23 @@ public class ArticleCreateDto {
         return userId;
     }
 
-    public String getContent() {
-        return content;
+    public String getContents() {
+        return contents;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 
     public Article toArticle() {
-        return new Article(title, userId, content);
+        return new Article(title, userId, contents);
     }
 }
