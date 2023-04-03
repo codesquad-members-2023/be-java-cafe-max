@@ -20,7 +20,7 @@ import kr.codesqaud.cafe.account.form.JoinForm;
 import kr.codesqaud.cafe.account.form.LoginForm;
 import kr.codesqaud.cafe.account.form.ProfileForm;
 import kr.codesqaud.cafe.account.form.ProfileSettingForm;
-import kr.codesqaud.cafe.account.form.UsersForm;
+import kr.codesqaud.cafe.account.form.UserForm;
 
 @Controller
 public class UserController {
@@ -79,8 +79,8 @@ public class UserController {
 
 	@GetMapping("/users")
 	public String showUsers(Model model) {
-		List<UsersForm> allUsersForm = userService.getAllUsersForm();
-		model.addAttribute("users", allUsersForm);
+		List<UserForm> allUserForm = userService.getAllUsersForm();
+		model.addAttribute("users", allUserForm);
 		return "account/members";
 	}
 

@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.account;
 
 import kr.codesqaud.cafe.account.form.ProfileForm;
 import kr.codesqaud.cafe.account.form.ProfileSettingForm;
-import kr.codesqaud.cafe.account.form.UsersForm;
+import kr.codesqaud.cafe.account.form.UserForm;
 
 public class User {
 
@@ -43,12 +43,12 @@ public class User {
 		this.id = id;
 	}
 
-	public UsersForm mappingUsersForm() {
-		UsersForm usersForm = new UsersForm();
-		usersForm.setId(getId());
-		usersForm.setEmail(getEmail());
-		usersForm.setNickname(getNickname());
-		return usersForm;
+	public UserForm mappingUsersForm() {
+		UserForm userForm = new UserForm();
+		userForm.setId(getId());
+		userForm.setEmail(getEmail());
+		userForm.setNickname(getNickname());
+		return userForm;
 	}
 
 	public ProfileForm mappingProfileForm() {

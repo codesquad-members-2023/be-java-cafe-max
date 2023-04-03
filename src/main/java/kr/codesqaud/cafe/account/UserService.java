@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.account.form.JoinForm;
 import kr.codesqaud.cafe.account.form.ProfileSettingForm;
-import kr.codesqaud.cafe.account.form.UsersForm;
+import kr.codesqaud.cafe.account.form.UserForm;
 
 @Service
 public class UserService {
@@ -29,7 +29,7 @@ public class UserService {
 		return user;
 	}
 
-	public List<UsersForm> getAllUsersForm() {
+	public List<UserForm> getAllUsersForm() {
 		List<User> allMembers = usersRepository.getAllMembers();
 		return allMembers.stream()
 			.map(User::mappingUsersForm)
