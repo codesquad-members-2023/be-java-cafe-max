@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDTO;
 import kr.codesqaud.cafe.repository.ArticleRepository;
-import kr.codesqaud.cafe.repository.impl.MemoryArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,10 +9,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
-    private ArticleRepository ArticleRepository;
+    private final ArticleRepository ArticleRepository;
 
-    public ArticleService() {
-        this.ArticleRepository = new MemoryArticleRepository();
+    public ArticleService(ArticleRepository articleRepository) {
+        this.ArticleRepository = articleRepository;
     }
 
     public void post(ArticleDTO articleDTO){

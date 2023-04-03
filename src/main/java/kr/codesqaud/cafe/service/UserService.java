@@ -4,7 +4,6 @@ import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.controller.dto.UserListDTO;
 import kr.codesqaud.cafe.repository.UserRepository;
-import kr.codesqaud.cafe.repository.impl.MemoryUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +12,10 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    private UserRepository memoryUserRepository;
+    private final UserRepository memoryUserRepository;
 
-    public UserService() {
-        this.memoryUserRepository = new MemoryUserRepository();
+    public UserService(UserRepository userRepository) {
+        this.memoryUserRepository = userRepository;
     }
 
     public void addUser(UserDTO userDTO){

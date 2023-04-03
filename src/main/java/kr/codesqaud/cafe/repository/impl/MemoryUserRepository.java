@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private Map<String, User> userRepository;
+    private final Map<String, User> userRepository;
 
     public MemoryUserRepository() {
         this.userRepository = new LinkedHashMap();

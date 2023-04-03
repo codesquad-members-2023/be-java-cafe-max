@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
-    private Map<Integer,Article> articleRepository;
+    private final Map<Integer,Article> articleRepository;
     private static int sequence = 1;
     public MemoryArticleRepository() {
         this.articleRepository = new LinkedHashMap();
