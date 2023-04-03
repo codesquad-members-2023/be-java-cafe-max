@@ -19,11 +19,12 @@ public class PostService {
 	}
 
 	public Post createNewPost(PostForm postForm) {
-		Post post = new Post();
-		post.setNickname(postForm.getNickname());
-		post.setTitle(postForm.getTitle());
-		post.setTextContent(postForm.getTextContent());
-		post.setCreatedDateTime(LocalDateTime.now());
+		Post post = new Post.Builder(PostsRepository.atomicKey.incrementAndGet())
+			.nickname(postForm.getNickname())
+			.title(postForm.getTitle())
+			.textContent(postForm.getTextContent())
+			.createdDateTime(LocalDateTime.now())
+			.build();
 		postsRepository.add(post);
 		return post;
 	}

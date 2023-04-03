@@ -12,14 +12,13 @@ import org.springframework.stereotype.Repository;
 public class PostsRepository {
 
 	private final List<Post> usersRepository;
-	private static final AtomicLong atomicKey = new AtomicLong();
+	public static final AtomicLong atomicKey = new AtomicLong();
 
 	public PostsRepository() {
 		this.usersRepository = new ArrayList<>();
 	}
 
 	public boolean add(Post post) {
-		post.setId(atomicKey.getAndIncrement());
 		return usersRepository.add(post);
 	}
 
