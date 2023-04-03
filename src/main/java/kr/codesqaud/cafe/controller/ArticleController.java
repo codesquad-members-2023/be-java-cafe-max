@@ -21,7 +21,7 @@ public class ArticleController {
     }
 
     @PostMapping
-    public String create(@Valid @ModelAttribute ArticleCreateDto articleCreateDto, BindingResult bindingResult) {
+    public String create(@Valid @ModelAttribute("article") ArticleCreateDto articleCreateDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "article/form";
         }
