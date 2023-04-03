@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.exception.user;
+package kr.codesqaud.cafe.web.exception.user;
 
-import kr.codesqaud.cafe.exception.BaseExceptionType;
+import kr.codesqaud.cafe.web.exception.BaseExceptionType;
 import org.springframework.http.HttpStatus;
 
 public enum UserExceptionType implements BaseExceptionType {

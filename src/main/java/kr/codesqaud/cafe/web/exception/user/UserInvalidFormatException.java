@@ -1,7 +1,7 @@
-package kr.codesqaud.cafe.exception.user;
+package kr.codesqaud.cafe.web.exception.user;
 
-import kr.codesqaud.cafe.exception.BaseException;
-import kr.codesqaud.cafe.exception.BaseExceptionType;
+import kr.codesqaud.cafe.web.exception.BaseException;
+import kr.codesqaud.cafe.web.exception.BaseExceptionType;
 
 public class UserInvalidFormatException extends BaseException {
 

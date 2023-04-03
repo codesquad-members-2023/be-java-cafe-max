@@ -1,13 +1,14 @@
-package kr.codesqaud.cafe.exception;
+package kr.codesqaud.cafe.web.exception.advice;
 
 import groovy.util.logging.Slf4j;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import kr.codesqaud.cafe.exception.user.UserDuplicatedException;
-import kr.codesqaud.cafe.exception.user.UserExceptionType;
-import kr.codesqaud.cafe.exception.user.UserInvalidFormatException;
-import kr.codesqaud.cafe.exception.user.UserNotFoundException;
+import kr.codesqaud.cafe.web.exception.BaseException;
+import kr.codesqaud.cafe.web.exception.user.UserDuplicatedException;
+import kr.codesqaud.cafe.web.exception.user.UserExceptionType;
+import kr.codesqaud.cafe.web.exception.user.UserInvalidFormatException;
+import kr.codesqaud.cafe.web.exception.user.UserNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;

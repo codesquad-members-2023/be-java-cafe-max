@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.exception;
+package kr.codesqaud.cafe.web.exception.advice;
 
 import org.springframework.http.HttpStatus;
 
