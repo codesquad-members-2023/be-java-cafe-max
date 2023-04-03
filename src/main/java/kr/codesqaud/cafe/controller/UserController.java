@@ -20,12 +20,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/signUp")
+    @GetMapping("/users/signUp")
     public String showSignUpForm(){
         return "/user/form";
     }
 
-    @PostMapping("/user/signUp")
+    @PostMapping("/users/signUp")
     public String signUp(UserDTO userDto) {
         userService.addUser(userDto);
         return "redirect:/users";

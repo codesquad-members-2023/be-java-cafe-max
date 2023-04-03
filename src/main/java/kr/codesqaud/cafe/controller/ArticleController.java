@@ -28,7 +28,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{id}")
+    @GetMapping("/article/{id}")
     public String showDetailArticle(@PathVariable int id, Model model) {
         model.addAttribute("article", articleService.findArticleById(id));
         return "/post/show";
