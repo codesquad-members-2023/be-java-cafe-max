@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.domain.article.repository.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Repository;
@@ -20,8 +21,11 @@ public class MemoryArticleRepositoryImpl implements ArticleRepository {
 		articles.put(article.getId(), article);
 	}
 
-	public Article findById(Integer id) {
-		return articles.get(id);
+	public Optional<Article> findById(Integer id) {
+		if (articles.get(id) == null) {
+			return Optional.empty();
+		}
+		return Optional.of(articles.get(id));
 	}
 
 	public List<Article> findAll() {
