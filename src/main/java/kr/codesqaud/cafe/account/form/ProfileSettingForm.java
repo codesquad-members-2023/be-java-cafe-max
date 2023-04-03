@@ -9,14 +9,14 @@ import kr.codesqaud.cafe.account.User;
 
 public class ProfileSettingForm {
 	@NotEmpty
-	@Size(max = 64, min = 2, message = "닉네임을 정확히 입력해주세요(글자수 2~64)")
+	@Size(max = 64, min = 2, message = "{error.nickname.size}")
 	private String nickname;
 	@NotEmpty
 	@Email
 	private String email;
 	@NotEmpty
-	@Size(max = 32, min = 8, message = "비밀번호를 정확히 입력해주세요(8글자 이상 32글자 이하)")
-	@Pattern(regexp = "^(.*[a-z]+.*[1-9]+가.*)|(.*[1-9]+.*[a-z]+.*)$", message = "비밀번호를 정확히 입력해주세요(영어 소문자 및 숫자 반드시 포함)")
+	@Size(max = 32, min = 8, message = "{error.password.size}")
+	@Pattern(regexp = "^(.*[a-z]+.*[1-9]+가.*)|(.*[1-9]+.*[a-z]+.*)$", message = "{error.password.pattern}")
 	private String password;
 
 	public ProfileSettingForm() {

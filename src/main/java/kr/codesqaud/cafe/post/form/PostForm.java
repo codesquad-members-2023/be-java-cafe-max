@@ -7,14 +7,14 @@ import javax.validation.constraints.Size;
 public class PostForm {
 	@NotEmpty
 	@NotBlank
-	@Size(max = 64, min = 2, message = "닉네임이 2글자 이상 64 글자 이하여야 한다")
+	@Size(max = 64, min = 2, message = "{error.nickname.size}")
 	private String nickname;
 	@NotEmpty
 	@NotBlank
-	@Size(max = 64, min = 2, message = "제목은 2글자 이상 64 글자 이하여야 한다")
+	@Size(max = 64, min = 2, message = "{error.title.size}")
 	private String title;
 	@NotEmpty
-	@Size(max = 1000, min = 3, message = "본문은 3글자 이상 1000 글자 이하여야 한다")
+	@Size(max = 1000, min = 3, message = "{error.textContent.size}")
 	private String textContent;
 
 	public String getNickname() {
