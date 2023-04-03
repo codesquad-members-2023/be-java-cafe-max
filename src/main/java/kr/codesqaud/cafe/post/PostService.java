@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.post;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,12 +19,7 @@ public class PostService {
 	}
 
 	public Post createNewPost(PostForm postForm) {
-		Post post = new Post.Builder(PostRepository.atomicKey.incrementAndGet())
-			.nickname(postForm.getNickname())
-			.title(postForm.getTitle())
-			.textContent(postForm.getTextContent())
-			.createdDateTime(LocalDateTime.now())
-			.build();
+		Post post = postForm.toPost();
 		postRepository.add(post);
 		return post;
 	}
