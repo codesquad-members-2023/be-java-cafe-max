@@ -22,6 +22,7 @@ public class UserController {
     }
 
     UserJdbcService userJdbcService;
+
     @Autowired
     public UserController(UserJdbcService userJdbcService) {
         this.userJdbcService = userJdbcService;
@@ -42,24 +43,23 @@ public class UserController {
     }
 
     @GetMapping("/profile/{id}")
-    public String getProfile(@PathVariable int id, Model model) {
-        List<User> list = userMemoryService.getList();
-        model.addAttribute("name", list.get(id).getName());
-        model.addAttribute("email", list.get(id).getEmail());
+    public String getProfile(@PathVariable String id, Model model) {
+        User user = userJdbcService.findById(id);
+        model.addAttribute("name", user.getName());
+        model.addAttribute("email", user.getEmail());
         return "/user/profile";
     }
 
-    @GetMapping("/update/{index}")
-    public String getUpdateForm(@PathVariable int index, Model model) {
-        List<User> list = userMemoryService.getList();
-        model.addAttribute("user", list.get(index));
-        model.addAttribute("index", index);
+    @GetMapping("/update/{id}")
+    public String getUpdateForm(@PathVariable String id, Model model) {
+        User user = userJdbcService.findById(id);
+        model.addAttribute("user", user);
         return "/user/update_form";
     }
 
-    @PutMapping("/update/{index}")
-    public String putUpdate(@PathVariable int index, UpdateFormDto updateFormDto) {
-        userMemoryService.update(index, updateFormDto);
+    @PutMapping("/update/{id}")
+    public String putUpdate(@PathVariable String id, UpdateFormDto updateFormDto) {
+        userJdbcService.update(userJdbcService.findById(id), updateFormDto);
         return "redirect:/user";
     }
 
