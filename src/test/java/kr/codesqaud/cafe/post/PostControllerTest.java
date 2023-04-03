@@ -41,7 +41,7 @@ class PostControllerTest {
 	@Test
 	void addPostSuccess() throws Exception {
 		String testTitle = "testTitle";
-		mockMvc.perform(post("/posts/new")
+		mockMvc.perform(post("/posts")
 				.param(NICKNAME, "jack")
 				.param(TITLE, testTitle)
 				.param(TEXT_CONTENT, "testContent"))
@@ -57,7 +57,7 @@ class PostControllerTest {
 	@CsvSource({"j,testTitle,testContent", "jack,t,textContent", "jack,title,te"})
 	void addPostFailureFailed(String nickname, String title, String textContent) throws Exception {
 		String testTitle = "testTitle";
-		mockMvc.perform(post("/posts/new")
+		mockMvc.perform(post("/posts")
 				.param(NICKNAME, nickname)
 				.param(TITLE, title)
 				.param(TEXT_CONTENT, textContent))
@@ -72,7 +72,7 @@ class PostControllerTest {
 	@Test
 	void testShowPostPageSuccess() throws Exception {
 		String testTitle = "testTitle";
-		mockMvc.perform(post("/posts/new")
+		mockMvc.perform(post("/posts")
 			.param(NICKNAME, "jack")
 			.param(TITLE, testTitle)
 			.param(TEXT_CONTENT, "testContent"));

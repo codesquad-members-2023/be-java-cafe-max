@@ -28,7 +28,7 @@ public class PostController {
 		return "/post/form";
 	}
 
-	@PostMapping("/posts/new")
+	@PostMapping("/posts")
 	public String addPost(@Valid PostForm postForm, Errors errors, Model model) {
 		if (errors.hasErrors()) {
 			return "/post/form";
