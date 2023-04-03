@@ -68,11 +68,18 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("사용자 id로 사용자 찾기 테스트")
     void findUser() {
         // given
+        String id = "sio";
+        UserRequestDto userRequestDto = new UserRequestDto("sio", "1234", "sio", "sio@gmail.com");
+        userService.join(userRequestDto);
+        User user = userRequestDto.toEntity();
 
         // when
+        UserResponseDto userResponseDto = userService.findUser(id);
 
         // then
+        assertThat(new UserResponseDto(user.getId(), user.getName(), user.getEmail())).usingRecursiveComparison().isEqualTo(userResponseDto);
     }
 }
