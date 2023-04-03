@@ -9,13 +9,13 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UsersRepository {
+public class UserRepository {
 
 	private final List<User> usersRepository;
 
 	public static final AtomicLong atomicKey = new AtomicLong();
 
-	public UsersRepository() {
+	public UserRepository() {
 		this.usersRepository = new ArrayList<>();
 	}
 

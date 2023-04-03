@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
-import org.hamcrest.text.MatchesPattern;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +25,7 @@ class UserControllerTest {
 	MockMvc mockMvc;
 
 	@Autowired
-	UsersRepository usersRepository;
+	UserRepository userRepository;
 
 	@DisplayName("로그인 페이지 열람")
 	@Test
@@ -87,7 +86,7 @@ class UserControllerTest {
 				.param("password", JACK_PASSWORD))
 			.andExpect(status().is3xxRedirection());
 
-		Assertions.assertThat(usersRepository.findByEmail(JACK_EMAIL)).isPresent();
+		Assertions.assertThat(userRepository.findByEmail(JACK_EMAIL)).isPresent();
 	}
 
 	@DisplayName("유저 추가 - 실패")
@@ -160,7 +159,7 @@ class UserControllerTest {
 				.param("nickname", jerry))
 			.andExpect(status().is3xxRedirection());
 
-		Optional<User> userOptional = usersRepository.findById(user.getId());
+		Optional<User> userOptional = userRepository.findById(user.getId());
 		Assertions.assertThat(userOptional).isPresent();
 		User changedUser = userOptional.get();
 		Assertions.assertThat(changedUser.getEmail()).isEqualTo(mail);
@@ -211,17 +210,17 @@ class UserControllerTest {
 	}
 
 	private User saveAndGetUserJack() {
-		User user = new User.Builder(UsersRepository.atomicKey.incrementAndGet())
+		User user = new User.Builder(UserRepository.atomicKey.incrementAndGet())
 			.email(JACK_EMAIL)
 			.nickname("jack")
 			.password(JACK_PASSWORD)
 			.build();
-		usersRepository.save(user);
+		userRepository.save(user);
 		return user;
 	}
 
 	@AfterEach
 	void clearRepository() {
-		usersRepository.clear();
+		userRepository.clear();
 	}
 }

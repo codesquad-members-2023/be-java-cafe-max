@@ -14,47 +14,47 @@ import kr.codesqaud.cafe.account.form.UserForm;
 @Service
 public class UserService {
 
-	private final UsersRepository usersRepository;
+	private final UserRepository userRepository;
 
-	public UserService(UsersRepository usersRepository) {
-		this.usersRepository = usersRepository;
+	public UserService(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 
 	public User createNewUser(JoinForm joinForm) {
-		User user = new User.Builder(UsersRepository.atomicKey.incrementAndGet())
+		User user = new User.Builder(UserRepository.atomicKey.incrementAndGet())
 			.nickname(joinForm.getNickname())
 			.email(joinForm.getEmail())
 			.password(joinForm.getPassword())
 			.build();
-		usersRepository.save(user);
+		userRepository.save(user);
 		return user;
 	}
 
 	public List<UserForm> getAllUsersForm() {
-		List<User> allMembers = usersRepository.getAllMembers();
+		List<User> allMembers = userRepository.getAllMembers();
 		return allMembers.stream()
 			.map(UserForm::from)
 			.collect(Collectors.toList());
 	}
 
 	public void update(ProfileSettingForm profileSettingForm, Long userId) {
-		usersRepository.findById(userId).ifPresent(user -> user.setting(profileSettingForm));
+		userRepository.findById(userId).ifPresent(user -> user.setting(profileSettingForm));
 	}
 
 	public boolean checkPasswordByUserId(String password, Long userId) {
-		Optional<User> optionalUser = usersRepository.findById(userId);
+		Optional<User> optionalUser = userRepository.findById(userId);
 		return optionalUser.map(user -> Objects.equals(user.getPassword(), password)).orElse(false);
 	}
 
 	public Optional<User> findByEmail(String email) {
-		return usersRepository.findByEmail(email);
+		return userRepository.findByEmail(email);
 	}
 
 	public boolean containEmail(String email) {
-		return usersRepository.containEmail(email);
+		return userRepository.containEmail(email);
 	}
 
 	public Optional<User> findById(Long userId) {
-		return usersRepository.findById(userId);
+		return userRepository.findById(userId);
 	}
 }
