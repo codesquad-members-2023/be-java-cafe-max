@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 import kr.codesqaud.cafe.controller.dto.SignUpRequest;
 import kr.codesqaud.cafe.controller.dto.UserDto;
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.repository.MemoryUserRepository;
 
 @Service
 public class UserService {
-	private final UserRepository userRepository;
+	private final MemoryUserRepository userRepository;
 
-	public UserService(UserRepository userRepository) {
+	public UserService(MemoryUserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 

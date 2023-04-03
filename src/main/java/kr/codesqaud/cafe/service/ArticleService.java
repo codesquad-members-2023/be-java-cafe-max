@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.PostingRequest;
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.repository.MemoryArticleRepository;
 
 @Service
 public class ArticleService {
 
-	private final ArticleRepository articleRepository;
+	private final MemoryArticleRepository articleRepository;
 
-	public ArticleService(ArticleRepository articleRepository) {
+	public ArticleService(MemoryArticleRepository articleRepository) {
 		this.articleRepository = articleRepository;
 	}
 
