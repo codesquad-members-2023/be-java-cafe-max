@@ -28,11 +28,11 @@ public class User {
 	}
 
 	public UserForm mappingUsersForm() {
-		UserForm userForm = new UserForm();
-		userForm.setId(getId());
-		userForm.setEmail(getEmail());
-		userForm.setNickname(getNickname());
-		return userForm;
+		return new UserForm.Builder()
+			.id(id)
+			.email(email)
+			.nickname(nickname)
+			.build();
 	}
 
 	public ProfileForm mappingProfileForm() {
