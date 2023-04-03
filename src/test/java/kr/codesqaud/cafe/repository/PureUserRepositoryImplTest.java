@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -16,11 +17,11 @@ class PureUserRepositoryImplTest {
     UserRepository userRepository = new PureUserRepositoryImpl();
 
     @DisplayName("동시에 많은 요청이 와도 정상적으로 저장이 된다.")
-    @Test
+    @RepeatedTest(10)
     void saveUserConcurrentTest() throws ExecutionException, InterruptedException {
-        final int threadCount = 10;
-        final int saveUserCountPerThread = 100;
-        final ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+        final int threadCount = 100;
+        final int saveUserCountPerThread = 1000;
+        final ExecutorService executorService = Executors.newFixedThreadPool(100);
         final CountDownLatch countDownLatch = new CountDownLatch(threadCount);
 
         for (int i = 0; i < threadCount; i++) {
@@ -35,7 +36,7 @@ class PureUserRepositoryImplTest {
         countDownLatch.await();
         executorService.shutdown();
 
-        assertThat(userRepository.findAll().size()).isEqualTo(1000);
+        assertThat(userRepository.findAll().size()).isEqualTo(100000);
     }
 
 
