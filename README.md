@@ -28,7 +28,7 @@
 | /users/{userId}/update | get    | 회원 프로필 설정 페이지 요청      |
 | /users/{userId}/update | put    | 회월 프로필 설정 요청          |
 | /users                 | get    | 모든 회원 맴버 페이지 요청       |
-| /post                  | get    | 게시글 작성 페이지 요청         |
+| /postwrite             | get    | 게시글 작성 페이지 요청         |
 | /post                  | post   | 게시글 추가 요청             |
 | /                      | get    | 모든 게스글 표시되는 메인 페이지 요청 |                    
 | /post/{postId}         | get    | 게시글의 페이지 요청           |
