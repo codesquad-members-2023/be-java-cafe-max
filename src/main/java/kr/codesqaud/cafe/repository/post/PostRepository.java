@@ -12,5 +12,7 @@ public interface PostRepository {
 
     List<Post> findAll();
 
+    void update(Post post);
+
     void deleteAll();
 }

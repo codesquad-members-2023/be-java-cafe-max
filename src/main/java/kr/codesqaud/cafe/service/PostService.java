@@ -30,6 +30,8 @@ public class PostService {
 
     public PostResponse findById(Long id) {
         Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+        post.increaseViews();
+        postRepository.update(post);
         return PostResponse.of(post, getMemberResponse(post));
     }
 
