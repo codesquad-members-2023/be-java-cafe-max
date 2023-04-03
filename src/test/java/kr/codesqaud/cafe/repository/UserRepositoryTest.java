@@ -8,8 +8,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-public class MemoryUserRepositoryTest {
-    MemoryUserRepository repository = new MemoryUserRepository();
+public class UserRepositoryTest {
+    UserRepository repository = new MemoryUserRepository();
 
     // 테스트 순서는 보장될 수 없기 때문에 테스트 코드 함수의 실행 순서에 의존하면 안된다.
     @AfterEach // 함수가 끝날 때마다 afterEach가 호출된다.
@@ -20,8 +20,9 @@ public class MemoryUserRepositoryTest {
     @Test
     public void save(){
         User user = new User();
-        user.setName("spring");
-        
+        user.setName("springName");
+        user.setUserId("springId");
+
         repository.save(user);
 
         // optinal은 get()으로 꺼낼 수 있지만, 원래는 바로 꺼내면 안된다.
@@ -33,25 +34,45 @@ public class MemoryUserRepositoryTest {
     @Test
     public void findByName(){
         User user1 = new User();
-        user1.setName("spring1");
+        user1.setName("springName1");
+        user1.setUserId("springId1");
         repository.save(user1);
 
         User user2 = new User();
-        user2.setName("spring1");
+        user2.setName("springName2");
+        user2.setUserId("springId2");
         repository.save(user2);
 
-        User result = repository.findByName("spring1").get();
+        User result = repository.findByName("springName1").get();
+        assertThat(result).isEqualTo(user1);
+    }
+
+    @Test
+    public void findByUserId(){
+        User user1 = new User();
+        user1.setName("springName1");
+        user1.setUserId("springId1");
+        repository.save(user1);
+
+        User user2 = new User();
+        user2.setName("springName2");
+        user2.setUserId("springId2");
+        repository.save(user2);
+
+        User result = repository.findByUserId("springId1").get();
         assertThat(result).isEqualTo(user1);
     }
 
     @Test
     public void findAll(){
         User user1 = new User();
-        user1.setName("spring1");
+        user1.setName("springName1");
+        user1.setUserId("springId1");
         repository.save(user1);
 
         User user2 = new User();
-        user2.setName("spring1");
+        user2.setName("springName1");
+        user2.setUserId("springId2");
         repository.save(user2);
 
         List<User> result = repository.findAll();
