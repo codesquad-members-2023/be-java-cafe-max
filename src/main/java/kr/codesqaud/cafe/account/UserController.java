@@ -103,7 +103,7 @@ public class UserController {
 		if (userOptional.isEmpty()) {
 			return "redirect:/";
 		}
-		ProfileSettingForm profileSettingForm = userOptional.get().mappingProfileSettingFormWithPassword();
+		ProfileSettingForm profileSettingForm = ProfileSettingForm.from(userOptional.get());
 		model.addAttribute("userId", userId);
 		model.addAttribute("profileSettingForm", profileSettingForm);
 		return "account/profileUpdate";

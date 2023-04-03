@@ -25,14 +25,6 @@ public class User {
 		return password;
 	}
 
-	public ProfileSettingForm mappingProfileSettingFormWithPassword() {
-		return new ProfileSettingForm.Builder()
-			.email(email)
-			.nickname(nickname)
-			.password(password)
-			.build();
-	}
-
 	private User(Builder builder) {
 		this.id = builder.id;
 		this.email = builder.email;

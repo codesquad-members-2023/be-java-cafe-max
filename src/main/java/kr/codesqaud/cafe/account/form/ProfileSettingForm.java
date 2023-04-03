@@ -5,6 +5,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import kr.codesqaud.cafe.account.User;
+
 public class ProfileSettingForm {
 	@NotEmpty
 	@Size(max = 64, min = 2, message = "닉네임을 정확히 입력해주세요(글자수 2~64)")
@@ -24,6 +26,14 @@ public class ProfileSettingForm {
 		this.email = builder.email;
 		this.nickname = builder.nickname;
 		this.password = builder.password;
+	}
+
+	public static ProfileSettingForm from(User user) {
+		return new Builder()
+			.password(user.getPassword())
+			.email(user.getEmail())
+			.nickname(user.getNickname())
+			.build();
 	}
 
 	public String getNickname() {
