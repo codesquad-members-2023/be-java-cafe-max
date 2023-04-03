@@ -9,7 +9,7 @@
     integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
   <link rel="stylesheet" href="/css/font.css">
   <link rel="stylesheet" href="/css/header.css">
-  <link rel="stylesheet" href="/css/join.css">
+  <link rel="stylesheet" href="/css/sign-up.css">
 </head>
 
 <body>
@@ -19,7 +19,7 @@
         <a class="navbar-brand" th:href="@{/}" id="logo">CodeSquad</a>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link active" th:href="@{/users/join}">회원가입</a>
+            <a class="nav-link active" th:href="@{/users/sign-up}">회원가입</a>
             <a class="nav-link" href="#">로그인</a>
           </div>
         </div>
@@ -32,7 +32,7 @@
   </div>
 
   <section class="container">
-    <form id="signUp" th:action="@{/users/join}" method="post">
+    <form id="signUp" th:action="@{/users}" method="post">
       <div>
         <label for="inputUserId">아이디</label>
         <input type="text" id="inputUserId" name="userId" placeholder="아이디를 입력해주세요">
