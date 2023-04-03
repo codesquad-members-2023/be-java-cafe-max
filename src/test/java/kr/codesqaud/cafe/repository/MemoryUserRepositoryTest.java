@@ -12,7 +12,6 @@ public class MemoryUserRepositoryTest {
     MemoryUserRepository repository = new MemoryUserRepository();
 
     // 테스트 순서는 보장될 수 없기 때문에 테스트 코드 함수의 실행 순서에 의존하면 안된다.
-    // 테스트 끝날 때 마다 repository가 지워지는 함수를 만들어야한다.
     @AfterEach // 함수가 끝날 때마다 afterEach가 호출된다.
     public void afterEach() {
         repository.clearStore();
