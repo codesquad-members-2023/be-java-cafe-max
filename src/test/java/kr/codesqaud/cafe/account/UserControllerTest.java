@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +32,7 @@ class UserControllerTest {
 	public static final String PROFILE_SETTING_FORM = "profileSettingForm";
 	public static final String PROFILE_FORM = "profileForm";
 	public static final String JOIN_FORM = "joinForm";
+
 	@Autowired
 	MockMvc mockMvc;
 
@@ -52,7 +54,7 @@ class UserControllerTest {
 				.param(EMAIL, JACK_EMAIL)
 				.param(PASSWORD, JACK_PASSWORD))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrlPattern("/users/*"));
+			.andExpect(redirectedUrl("/users/1"));
 	}
 
 	@DisplayName("로그인 - 비밀번호 실패")
@@ -226,5 +228,6 @@ class UserControllerTest {
 	@AfterEach
 	void clearRepository() {
 		userRepository.clear();
+		UserRepository.atomicKey.set(0);
 	}
 }
