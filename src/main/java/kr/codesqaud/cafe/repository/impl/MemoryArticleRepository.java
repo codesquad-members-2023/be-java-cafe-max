@@ -39,8 +39,4 @@ public class MemoryArticleRepository implements ArticleRepository {
                 .findFirst()
                 .orElseThrow(() -> new ArticleNotFoundException("해당 글이 존재하지 않습니다."));
     }
-
-    public static void resetSequenceForTest() {
-        sequence = 1;
-    }
 }
