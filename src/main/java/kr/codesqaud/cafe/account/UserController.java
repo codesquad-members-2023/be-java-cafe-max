@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.codesqaud.cafe.account.form.JoinForm;
 import kr.codesqaud.cafe.account.form.LoginForm;
@@ -32,9 +30,8 @@ public class UserController {
 	}
 
 	@GetMapping("/users/login")
-	public String showLoginPage(Model model, @Nullable @RequestParam boolean errors) {
+	public String showLoginPage(Model model) {
 		model.addAttribute("loginForm", new LoginForm());
-		model.addAttribute("errors", errors);
 		return "account/login";
 	}
 
