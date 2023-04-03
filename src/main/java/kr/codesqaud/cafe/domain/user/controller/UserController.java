@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.domain.user.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -9,8 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-import kr.codesqaud.cafe.domain.user.dto.UserSaveRequestDto;
-import kr.codesqaud.cafe.domain.user.dto.UserUpdateDto;
+import kr.codesqaud.cafe.domain.user.dto.request.UserSaveRequestDto;
+import kr.codesqaud.cafe.domain.user.dto.request.UserUpdateRequestDto;
+import kr.codesqaud.cafe.domain.user.dto.response.UserDetailResponseDto;
 import kr.codesqaud.cafe.domain.user.entity.User;
 import kr.codesqaud.cafe.domain.user.repository.UserRepository;
 
@@ -32,24 +34,26 @@ public class UserController {
 	@GetMapping("/users")
 	public String getUsers(Model model) {
 		List<User> users = userRepository.findAll();
-		model.addAttribute("users", users);
+		List<UserDetailResponseDto> userDetailResponseDtos = new ArrayList<>();
+		users.forEach(user -> userDetailResponseDtos.add(new UserDetailResponseDto(user)));
+		model.addAttribute("users", userDetailResponseDtos);
 		return "user/list";
 	}
 
 	@GetMapping("/users/{id}")
 	public String findUserProfile(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("user", userRepository.findById(id));
+		model.addAttribute("user", new UserDetailResponseDto(userRepository.findById(id)));
 		return "/user/profile";
 	}
 
 	@GetMapping("/users/{id}/form")
 	public String updateUserProfile(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("user", userRepository.findById(id));
+		model.addAttribute("user", new UserDetailResponseDto(userRepository.findById(id)));
 		return "/user/updateForm";
 	}
 
 	@PutMapping("/users/{id}/update")
-	public String modifyUserProfile(UserUpdateDto userUpdateDto, @PathVariable("id") Long id) {
+	public String modifyUserProfile(UserUpdateRequestDto userUpdateDto, @PathVariable("id") Long id) {
 		userRepository.update(userUpdateDto.toEntity(id));
 		return "redirect:/users";
 	}
