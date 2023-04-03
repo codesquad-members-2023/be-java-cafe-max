@@ -9,6 +9,7 @@ import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
+import kr.codesqaud.cafe.exception.member.NotMatchMemberPassword;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,7 @@ public class MemberService {
         Member findMember = memberRepository.findById(profileUpdateRequest.getId())
             .orElseThrow(MemberNotFoundException::new);
         validateDuplicateEmail(profileUpdateRequest);
+        validateNotMatchPassword(profileUpdateRequest, findMember);
         memberRepository.update(Member.of(profileUpdateRequest, findMember.getCreateDate()));
     }
 
@@ -61,5 +63,11 @@ public class MemberService {
                     throw new DuplicateMemberEmailException("member/profileEdit", profileUpdateRequest);
                 }
             });
+    }
+
+    private void validateNotMatchPassword(ProfileEditRequest profileUpdateRequest, Member member) {
+        if (!member.equalsPassword(profileUpdateRequest.getPassword())) {
+            throw new NotMatchMemberPassword("member/profileEdit", profileUpdateRequest);
+        }
     }
 }

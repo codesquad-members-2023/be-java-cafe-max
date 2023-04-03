@@ -50,6 +50,10 @@ public class Member {
         return this.email.equals(email);
     }
 
+    public boolean equalsPassword(String password) {
+        return this.password.equals(password);
+    }
+
     public Member createWithId(Long id) {
         return new Member(id, email, password, nickName, createDate);
     }
@@ -61,6 +65,6 @@ public class Member {
 
     public static Member of(ProfileEditRequest profileEditRequest, LocalDateTime crateDate) {
         return new Member(profileEditRequest.getId(), profileEditRequest.getEmail(),
-            profileEditRequest.getPassword(), profileEditRequest.getNickName(), crateDate);
+            profileEditRequest.getNewPassword(), profileEditRequest.getNickName(), crateDate);
     }
 }

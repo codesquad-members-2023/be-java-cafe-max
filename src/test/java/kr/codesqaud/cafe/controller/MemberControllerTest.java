@@ -62,7 +62,7 @@ class MemberControllerTest {
     @Test
     void signUpFalse() throws Exception {
         // given
-        String email = "test@gmail.comdf";
+        String email = "test@@gmail.comdf";
         String password = "Test1234";
         String nickName = "mandu";
 
@@ -77,7 +77,7 @@ class MemberControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/signUp"))
-            .andExpect(model().attributeHasFieldErrors("signUpRequest", "email"))
+            .andExpect(model().attributeHasFieldErrorCode("signUpRequest", "email", "Email"))
             .andDo(print());
     }
 
@@ -100,7 +100,7 @@ class MemberControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/signUp"))
-            .andExpect(model().attributeHasFieldErrors("signUpRequest", "password"))
+            .andExpect(model().attributeHasFieldErrorCode("signUpRequest", "password", "Pattern"))
             .andDo(print());
     }
 
@@ -123,7 +123,7 @@ class MemberControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/signUp"))
-            .andExpect(model().attributeHasFieldErrors("signUpRequest", "nickName"))
+            .andExpect(model().attributeHasFieldErrorCode("signUpRequest", "nickName", "Length"))
             .andDo(print());
     }
 
@@ -151,6 +151,7 @@ class MemberControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/signUp"))
+            .andExpect(model().attributeHasFieldErrorCode("signUpRequest", "email", "Duplicate"))
             .andDo(print());
     }
 
@@ -195,7 +196,8 @@ class MemberControllerTest {
             new Member( null, "test@gmail.com",
                 "Test1234", "test", LocalDateTime.now()));
         String editEmail = "test2@gmail.com";
-        String editPassword = "Test4444";
+        String editPassword = "Test1234";
+        String editNewPassword = "Test4444";
         String editNickName = "만두";
 
         // when
@@ -204,11 +206,11 @@ class MemberControllerTest {
         mockMvc.perform(put("/members/{id}", savedId)
                 .param("email", editEmail)
                 .param("password", editPassword)
+                .param("newPassword", editNewPassword)
                 .param("nickName", editNickName)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().is3xxRedirection())
             .andExpect(view().name("redirect:/members/{id}"))
-            .andExpect(model().attribute("id", String.valueOf(savedId)))
             .andDo(print());
     }
 
@@ -222,7 +224,8 @@ class MemberControllerTest {
             new Member( null, "test2@gmail.com",
                 "Test1234", "test", LocalDateTime.now()));
         String editEmail = "test@gmail.com";
-        String editPassword = "Test4444";
+        String editPassword = "Test1234";
+        String editNewPassword = "Test4444";
         String editNickName = "만두";
 
         // when
@@ -231,11 +234,43 @@ class MemberControllerTest {
         mockMvc.perform(put("/members/{id}", savedId2)
                 .param("email", editEmail)
                 .param("password", editPassword)
+                .param("newPassword", editNewPassword)
                 .param("nickName", editNickName)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/profileEdit"))
+            .andExpect(model().attributeHasFieldErrorCode("profileEditRequest", "email", "Duplicate"))
+            .andDo(print());
+    }
+
+    @DisplayName("회원 프로필 수정시 기존 비밀번호가 다를 경우 실패")
+    @Test
+    void editProfileFalse2() throws Exception {
+        // given
+        memberRepository.save(new Member(null, "test@gmail.com",
+            "Test1234", "test", LocalDateTime.now()));
+        Long savedId2 = memberRepository.save(
+            new Member( null, "test2@gmail.com",
+                "Test1234", "test", LocalDateTime.now()));
+        String editEmail = "test2@gmail.com";
+        String editPassword = "Test4444";
+        String editNewPassword = "Test4444";
+        String editNickName = "만두";
+
+        // when
+
+        // then
+        mockMvc.perform(put("/members/{id}", savedId2)
+                .param("email", editEmail)
+                .param("password", editPassword)
+                .param("newPassword", editNewPassword)
+                .param("nickName", editNickName)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+            .andExpect(view().name("member/profileEdit"))
+            .andExpect(model().attributeHasFieldErrorCode("profileEditRequest", "password", "NotMatch"))
             .andDo(print());
     }
 }

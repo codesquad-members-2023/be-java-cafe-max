@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ExceptionController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+    private final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)
     public String badRequest(BadRequestException e, Model model) {
         BindingResult bindingResult = new BeanPropertyBindingResult(e.getErrorData(), getClassName(e));

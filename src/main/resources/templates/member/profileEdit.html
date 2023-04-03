@@ -29,8 +29,15 @@
             <div class="form-floating">
                 <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력해주세요"
                        aria-describedby="validationPasswordFeedback" th:errorclass="is-invalid" th:field="*{password}">
-                <label for="password">비밀번호</label>
+                <label for="password">기존 비밀번호</label>
                 <div id="validationPasswordFeedback" class="invalid-feedback" th:errors="*{password}">
+                </div>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="비밀번호를 입력해주세요"
+                       aria-describedby="validationNewPasswordFeedback" th:errorclass="is-invalid" th:field="*{newPassword}">
+                <label for="password">변경할 비밀번호</label>
+                <div id="validationNewPasswordFeedback" class="invalid-feedback" th:errors="*{newPassword}">
                 </div>
             </div>
             <input type="hidden" id="id" name="id" th:value="*{id}">

@@ -123,10 +123,11 @@ class MemberServiceTest {
         Long savedId = memberService.signUp(createRequestDummy());
 
         String updateEmail = "mandu@gmail.com";
-        String updatePassword = "Mandu1234";
+        String updatePassword = "Test1234";
+        String updateNewPassword = "Mandu1234";
         String updateNickName = "mandu";
         ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(savedId, updateEmail
-            , updatePassword, updateNickName);
+            , updatePassword, updateNewPassword, updateNickName);
 
         // when
         memberService.update(memberUpdateRequest);
@@ -136,7 +137,7 @@ class MemberServiceTest {
         assertAll(
             () -> assertEquals(savedId, findMember.getId()),
             () -> assertEquals(updateEmail, findMember.getEmail()),
-            () -> assertEquals(updatePassword, findMember.getPassword()),
+            () -> assertEquals(updateNewPassword, findMember.getPassword()),
             () -> assertEquals(updateNickName, findMember.getNickName()));
     }
 
@@ -150,7 +151,7 @@ class MemberServiceTest {
         // then
         assertThrows(MemberNotFoundException.class,
             () -> memberService.update(new ProfileEditRequest(1L,
-                "est@naver.com", "Test1234", "test")));
+                "est@naver.com", "Test1234", "Test1234", "test")));
     }
 
     @DisplayName("회원 정보 수정시 이미 있는 회원의 이메일인 경우 실패")
@@ -162,7 +163,7 @@ class MemberServiceTest {
         Long savedId2 = memberService.signUp(createRequestDummy2());
         ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(savedId2,
             memberCreateRequest.getEmail(),
-            "Mandu7777", "updateMandu");
+            "Mandu1234", "Mandu7777", "updateMandu");
 
         // when
 

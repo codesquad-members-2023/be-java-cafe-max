@@ -18,13 +18,19 @@ public class ProfileEditRequest {
     private final String password;
 
     @NotBlank
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9]{8,32}$")
+    private final String newPassword;
+
+    @NotBlank
     @Length(min = 2, max = 10)
     private final String nickName;
 
-    public ProfileEditRequest(Long id, String email, String password, String nickName) {
+    public ProfileEditRequest(Long id, String email, String password, String newPassword,
+        String nickName) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.newPassword = newPassword;
         this.nickName = nickName;
     }
 
@@ -40,12 +46,16 @@ public class ProfileEditRequest {
         return password;
     }
 
+    public String getNewPassword() {
+        return newPassword;
+    }
+
     public String getNickName() {
         return nickName;
     }
 
     public static ProfileEditRequest from(MemberResponse memberResponse) {
         return new ProfileEditRequest(memberResponse.getId(), memberResponse.getEmail(),
-            null, memberResponse.getNickName());
+            null, null, memberResponse.getNickName());
     }
 }
