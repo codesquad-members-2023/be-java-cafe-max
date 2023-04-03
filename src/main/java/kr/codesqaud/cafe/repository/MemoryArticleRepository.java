@@ -13,11 +13,10 @@ public class MemoryArticleRepository implements ArticleRepository {
     private final Map<Long, Article> articleMap = new HashMap<>();
     private static Long sequence = 0L;
 
-
     @Override
     public void save(Article article) {
-        article.setArticleIndex(++sequence);
-        articleMap.put(article.getArticleIndex(), article);
+        article.setId(++sequence);
+        articleMap.put(article.getId(), article);
     }
 
     @Override
