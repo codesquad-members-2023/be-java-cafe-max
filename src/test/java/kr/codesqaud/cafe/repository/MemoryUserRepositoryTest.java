@@ -25,7 +25,7 @@ public class MemoryUserRepositoryTest {
         repository.save(user);
 
         // optinal은 get()으로 꺼낼 수 있지만, 원래는 바로 꺼내면 안된다.
-        User result = repository.findByNumber(user.getCustomerId()).get();
+        User result = repository.findByUserId(user.getUserId()).get();
 
         assertThat(user).isEqualTo(result);
     }

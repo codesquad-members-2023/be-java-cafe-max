@@ -9,21 +9,20 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    // 원래는 아래의 store, sequence는 동시성 문제때문에 concurrentHashMap 등을 쓴다.
-    private static final Map<Long, User> store = new ConcurrentHashMap<>();
+    private static final Map<String, User> store = new ConcurrentHashMap<>();
     private static final AtomicLong customerId = new AtomicLong(0);
 
     @Override
     public User save(User user) {
-        user.setCustomerId(customerId.incrementAndGet()); //
-        store.put(user.getCustomerId(), user);
+        user.setCustomerId(customerId.incrementAndGet());
+        store.put(user.getUserId(), user);
         return user;
     }
 
     @Override
-    public Optional<User> findByNumber(Long number) {
+    public Optional<User> findByUserId(String userId) {
         // null 일 때 optinal을 감싸 반환하면 클라이언트에서 처리해줄 수 있음.
-        return Optional.ofNullable(store.get(number));
+        return Optional.ofNullable(store.get(userId));
     }
 
     @Override
