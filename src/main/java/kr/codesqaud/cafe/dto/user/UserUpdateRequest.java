@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.dto.user;
 
 public class UserUpdateRequest {
     private String userId;

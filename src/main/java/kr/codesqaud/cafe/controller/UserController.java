@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.dto.UserResponse;
-import kr.codesqaud.cafe.dto.UserSaveRequest;
-import kr.codesqaud.cafe.dto.UserUpdateRequest;
+import kr.codesqaud.cafe.dto.user.UserResponse;
+import kr.codesqaud.cafe.dto.user.UserSaveRequest;
+import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.dto.UserSaveRequest;
-import kr.codesqaud.cafe.dto.UserUpdateRequest;
+import kr.codesqaud.cafe.dto.user.UserSaveRequest;
+import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
 
 public class User {
     private String userId;
