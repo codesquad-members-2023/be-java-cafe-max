@@ -1,10 +1,11 @@
 package kr.codesqaud.cafe.user.repository;
 
 import kr.codesqaud.cafe.user.domain.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-
+@Repository
 public class MemoryUserRepository implements UserRepository {
 
     private static Map<String, User> storage = new HashMap<>();

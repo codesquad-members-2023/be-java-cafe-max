@@ -4,10 +4,12 @@ import kr.codesqaud.cafe.user.domain.User;
 import kr.codesqaud.cafe.user.dto.UserListDto;
 import kr.codesqaud.cafe.user.dto.UserProfileDto;
 import kr.codesqaud.cafe.user.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class UserService {
 
 

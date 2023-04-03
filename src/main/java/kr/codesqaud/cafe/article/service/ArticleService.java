@@ -5,11 +5,12 @@ import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticleDetailDto;
 import kr.codesqaud.cafe.article.dto.ArticleListDto;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Service
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
