@@ -59,10 +59,11 @@ public class User {
 	}
 
 	public ProfileSettingForm mappingProfileSettingFormWithPassword() {
-		ProfileSettingForm profileSettingForm = new ProfileSettingForm();
-		profileSettingForm.setEmail(getEmail());
-		profileSettingForm.setNickname(getNickname());
-		return profileSettingForm;
+		return new ProfileSettingForm.Builder()
+			.email(email)
+			.nickname(nickname)
+			.password(password)
+			.build();
 	}
 
 	private User(Builder builder) {
