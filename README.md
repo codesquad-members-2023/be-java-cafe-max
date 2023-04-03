@@ -1,20 +1,15 @@
 # be-java-cafe
 마스터즈 2023 스프링 카페 
 
-## 부족한 점
-- Spring Mvc는 대충 사용은 할수 있는데 왜 이렇게 사용할 수 있는지 아직 잘 몰라서 공식문서를 공부하면서 더 알아봐야 합니다.
-- 커밋 메시지와 네이밍은 아직 힘들어요.
-- 에러를 어떻게 던져야 하는지 아직 잘 모르겠어요.
-
-## 아쉬운 점
-- 전체 로직 실제 로직 조금 차이가 있어서 조금 아쉽다. 시간이 되면 Spring Security도 한번 적용하고 싶습니다.
-
-## 궁금한 점
-- 기능은 잘 돌아가는데 아직 무엇이 좋은 코드인지는 아직 잘 모르겠습니다.
-
-## 계획
-- 다음주 DB를 사용하면 Post와 User를 연결하고 tag등 기타 데이터를 추가하면 재밌 있을 것 같습니다.
-- 5주동안 추가적인 요구사항을 추가하여 실제 카페처럼 한번 만들려고 합니다.
+## [Commit Log Guidelines](https://github.com/naver/egjs/wiki/Commit-Log-Guidelines)
+- feat: A new feature
+- fix: A bug fix
+- docs: Documentation only changes
+- style: Changes that do not affect the meaning of the code. Such as white-space, formatting, missing semi-colons, etc... It also possible to change JSHint, JSCS rules of the code.
+- refactor: A code change that neither fixes a bug nor adds a feature
+- test: Adding missing tests. Changing tests.
+- demo: Adding missing demos. Changing demos.
+- chore: Changes to the build process or tools and libraries such as documentation generation
 
 ## 사용 기술
 - Spring MVC
