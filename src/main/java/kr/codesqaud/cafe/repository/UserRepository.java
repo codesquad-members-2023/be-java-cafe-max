@@ -18,7 +18,7 @@ public class UserRepository {
         return new ArrayList<>(repository.values());
     }
 
-    public User fineByUserId(String userId) {
+    public User getSpecificUser(String userId) {
         return repository.get(userId);
     }
 }

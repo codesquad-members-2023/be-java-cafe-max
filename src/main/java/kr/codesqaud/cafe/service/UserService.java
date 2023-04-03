@@ -26,6 +26,6 @@ public class UserService {
     }
 
     public User findByUserId(String userId) {
-        return userRepository.fineByUserId(userId);
+        return userRepository.getSpecificUser(userId);
     }
 }
