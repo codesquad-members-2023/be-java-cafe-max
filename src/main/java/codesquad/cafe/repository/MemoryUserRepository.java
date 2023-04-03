@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class UserRepositoryImpl implements UserRepository {
+public class MemoryUserRepository implements UserRepository {
     private static Map<String, User> store = new ConcurrentHashMap<>();
     @Override
     public User save(final User user) {
