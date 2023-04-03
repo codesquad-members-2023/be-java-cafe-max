@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain.user.dto;
+package kr.codesqaud.cafe.domain.user.dto.request;
 
 import kr.codesqaud.cafe.domain.user.entity.User;
 
