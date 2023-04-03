@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Repository;
 
@@ -13,15 +14,15 @@ import kr.codesqaud.cafe.domain.user.repository.UserRepository;
 @Repository
 public class MemoryUserRepositoryImpl implements UserRepository {
 
-	private Map<Integer, User> users = new ConcurrentHashMap<>();
-	private static Integer autoIncrement = 0;
+	private Map<Long, User> users = new ConcurrentHashMap<>();
+	private static AtomicLong id = new AtomicLong();
 
 	public void save(User user) {
-		user.setId(++autoIncrement);
-		users.put(autoIncrement, user);
+		user.setId(id.getAndIncrement());
+		users.put(id.get(), user);
 	}
 
-	public User findById(Integer id) {
+	public User findById(Long id) {
 		return users.get(id);
 	}
 
