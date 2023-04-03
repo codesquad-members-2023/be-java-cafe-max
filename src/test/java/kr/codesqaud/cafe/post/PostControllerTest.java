@@ -24,7 +24,7 @@ class PostControllerTest {
 	MockMvc mockMvc;
 
 	@Autowired
-	PostsRepository postsRepository;
+	PostRepository postRepository;
 
 	@DisplayName("게시글 작성 페이지 열람")
 	@Test
@@ -46,7 +46,7 @@ class PostControllerTest {
 			.andExpect(model().attributeExists("post"))
 			.andExpect(view().name("/post/postDetail"));
 
-		assertThat(postsRepository.findByTitle(testTitle)).isPresent();
+		assertThat(postRepository.findByTitle(testTitle)).isPresent();
 	}
 
 	@DisplayName("게시글 추가 - 실패")
@@ -62,7 +62,7 @@ class PostControllerTest {
 			.andExpect(model().hasErrors())
 			.andExpect(view().name("/post/form"));
 
-		assertThat(postsRepository.findByTitle(testTitle)).isEmpty();
+		assertThat(postRepository.findByTitle(testTitle)).isEmpty();
 	}
 
 	@DisplayName("지정 게시글 열람 - 성공")
@@ -74,7 +74,7 @@ class PostControllerTest {
 			.param("title", testTitle)
 			.param("textContent", "testContent"));
 
-		Optional<Post> postOptional = postsRepository.findByTitle(testTitle);
+		Optional<Post> postOptional = postRepository.findByTitle(testTitle);
 		Long testId = postOptional.get().getId();
 
 		mockMvc.perform(get("/post/" + testId))
@@ -92,6 +92,6 @@ class PostControllerTest {
 
 	@AfterEach
 	void clearRepository() {
-		postsRepository.clear();
+		postRepository.clear();
 	}
 }

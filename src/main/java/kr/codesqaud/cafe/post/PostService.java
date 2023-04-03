@@ -13,20 +13,20 @@ import kr.codesqaud.cafe.post.form.SimplePostForm;
 @Service
 public class PostService {
 
-	private final PostsRepository postsRepository;
+	private final PostRepository postRepository;
 
-	public PostService(PostsRepository postsRepository) {
-		this.postsRepository = postsRepository;
+	public PostService(PostRepository postRepository) {
+		this.postRepository = postRepository;
 	}
 
 	public Post createNewPost(PostForm postForm) {
-		Post post = new Post.Builder(PostsRepository.atomicKey.incrementAndGet())
+		Post post = new Post.Builder(PostRepository.atomicKey.incrementAndGet())
 			.nickname(postForm.getNickname())
 			.title(postForm.getTitle())
 			.textContent(postForm.getTextContent())
 			.createdDateTime(LocalDateTime.now())
 			.build();
-		postsRepository.add(post);
+		postRepository.add(post);
 		return post;
 	}
 
@@ -37,6 +37,6 @@ public class PostService {
 	}
 
 	public Optional<Post> findById(Long postId) {
-		return postsRepository.findById(postId);
+		return postRepository.findById(postId);
 	}
 }

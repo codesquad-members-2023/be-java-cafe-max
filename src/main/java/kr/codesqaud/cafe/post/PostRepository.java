@@ -9,12 +9,12 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class PostsRepository {
+public class PostRepository {
 
 	private final List<Post> usersRepository;
 	public static final AtomicLong atomicKey = new AtomicLong();
 
-	public PostsRepository() {
+	public PostRepository() {
 		this.usersRepository = new ArrayList<>();
 	}
 
