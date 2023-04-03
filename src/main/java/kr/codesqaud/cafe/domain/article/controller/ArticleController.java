@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain.article.controller;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +34,7 @@ public class ArticleController {
 
 	@GetMapping("/questions/{id}")
 	public String viewArticle(@PathVariable("id") Integer id, Model model) {
-		model.addAttribute("article", articleRepository.findById(id));
+		model.addAttribute("article", articleRepository.findById(id).orElseThrow(NoSuchElementException::new));
 		return "/post/show";
 	}
 }
