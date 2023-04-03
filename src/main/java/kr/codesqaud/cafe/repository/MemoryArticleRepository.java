@@ -12,7 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
-    private Map<String, Article> articleStore = new ConcurrentHashMap<>(); // 제목:Article 저장
+    private Map<String, Article> articleStore = new ConcurrentHashMap<>(); // { 제목 : Article } 저장
+
     @Override
     public Article save(Article article) {
         articleStore.put(article.getTitle(), article);
@@ -28,7 +29,7 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findByTitle(String title) {
-        return  Optional.ofNullable(articleStore.get(title));
+        return Optional.ofNullable(articleStore.get(title));
     }
 
     @Override

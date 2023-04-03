@@ -18,7 +18,6 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
@@ -27,9 +26,11 @@ public class ArticleController {
     public String write(ArticleForm form) {
 
         Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
-        articleService.write(article);
-
-        return "redirect:/";
+        boolean result = articleService.write(article);
+        if (result) {
+            return "redirect:/";
+        }
+        return "redirect:/qna/form";
     }
 
     @GetMapping(value = {"/", "index"})

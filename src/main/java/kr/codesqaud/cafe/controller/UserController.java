@@ -17,7 +17,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -26,13 +25,13 @@ public class UserController {
     public String create(UserForm form) {
         User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
 
-        String id = userService.join(user);
+        boolean result = userService.join(user);
 
-        if (" ".equals(id)) {            // 중복아이디면, 회원가입 창으로
-            return "redirect:/user/form";
-        } else {
-            return "redirect:/users";    // 정상가입되었다면, 회원목록 창으로
+        if (result) {            // 회원가입 성공시
+            return "redirect:/users";
         }
+        return "redirect:/user/form";    // 회원가입 실패시
+
     }
 
     @GetMapping("users")
