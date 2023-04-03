@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.controller.dto.ArticleCreateDto;
 import kr.codesqaud.cafe.controller.dto.ArticleReadDto;
 import kr.codesqaud.cafe.service.ArticleService;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,15 +24,22 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    @GetMapping
+    public String readArticles(Model model) {
+        model.addAttribute("articles", articleService.findALl());
+
+        return "home";
+    }
+
     @PostMapping
     public String create(@Valid @ModelAttribute("article") ArticleCreateDto articleCreateDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "article/form";
         }
 
-        articleService.create(articleCreateDto);
+        final Long id = articleService.create(articleCreateDto);
 
-        return "article/show";
+        return "redirect:/articles/" + id;
     }
 
     @GetMapping("/{id}")

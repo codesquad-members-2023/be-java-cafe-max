@@ -6,6 +6,9 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
@@ -24,5 +27,11 @@ public class ArticleService {
         );
 
         return new ArticleReadDto(article);
+    }
+
+    public List<ArticleReadDto> findALl() {
+        return articleRepository.findAll().stream()
+                .map(ArticleReadDto::new)
+                .collect(Collectors.toList());
     }
 }

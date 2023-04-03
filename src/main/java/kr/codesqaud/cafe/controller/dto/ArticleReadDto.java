@@ -5,13 +5,15 @@ import kr.codesqaud.cafe.domain.Article;
 import java.time.LocalDateTime;
 
 public class ArticleReadDto {
+    private final Long id;
     private final String title;
     private final String userId;
     private final String contents;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public ArticleReadDto(String title, String userId, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private ArticleReadDto(Long id, String title, String userId, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.title = title;
         this.userId = userId;
         this.contents = contents;
@@ -20,7 +22,11 @@ public class ArticleReadDto {
     }
 
     public ArticleReadDto(Article article) {
-        this(article.getTitle(), article.getUserId(), article.getContents(), article.getCreatedAt(), article.getUpdatedAt());
+        this(article.getId(), article.getTitle(), article.getUserId(), article.getContents(), article.getCreatedAt(), article.getUpdatedAt());
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {
