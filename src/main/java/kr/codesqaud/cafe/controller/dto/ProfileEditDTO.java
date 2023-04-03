@@ -33,10 +33,6 @@ public class ProfileEditDTO {
         return oriPassword;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public User toUser(){
         return new User(nickName,email,newPassword,id);
     }
