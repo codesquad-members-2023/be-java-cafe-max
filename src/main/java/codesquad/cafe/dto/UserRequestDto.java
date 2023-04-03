@@ -9,17 +9,15 @@ public class UserRequestDto {
     private String password;
     private String name;
     private String email;
-    private LocalDate date;
 
     public UserRequestDto(String id, String password, String name, String email) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
-        this.date = LocalDate.now();
     }
 
     public User toEntity() {
-        return new User(id, password, name, email, date);
+        return new User(id, password, name, email);
     }
 }
