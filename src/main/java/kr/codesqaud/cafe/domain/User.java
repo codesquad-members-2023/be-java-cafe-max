@@ -1,5 +1,8 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.controller.dto.UserDTO;
+import kr.codesqaud.cafe.controller.dto.UserListDTO;
+
 public class User {
 
     private String nickName;
@@ -27,6 +30,14 @@ public class User {
     }
     public String getPassword() {
         return password;
+    }
+
+    public UserDTO toUserDTO(){
+        return new UserDTO(nickName,email,password,id);
+    }
+
+    public UserListDTO toUserListDTO() {
+        return new UserListDTO(nickName,email,id);
     }
 
 }
