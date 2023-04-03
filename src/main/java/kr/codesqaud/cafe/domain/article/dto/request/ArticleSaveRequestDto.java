@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain.article.dto;
+package kr.codesqaud.cafe.domain.article.dto.request;
 
 import kr.codesqaud.cafe.domain.article.entity.Article;
 
