@@ -33,7 +33,7 @@ public class ArticleController {
 	}
 
 	@GetMapping("/questions/{id}")
-	public String viewArticle(@PathVariable("id") Integer id, Model model) {
+	public String viewArticle(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("article", articleRepository.findById(id).orElseThrow(NoSuchElementException::new));
 		return "/post/show";
 	}
