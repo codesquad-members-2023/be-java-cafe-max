@@ -1,9 +1,11 @@
-package kr.codesqaud.cafe.user;
+package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.UserForm;
+import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class UserService {

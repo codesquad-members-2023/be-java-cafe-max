@@ -1,4 +1,6 @@
-package kr.codesqaud.cafe.user;
+package kr.codesqaud.cafe.repository;
+
+import kr.codesqaud.cafe.domain.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;

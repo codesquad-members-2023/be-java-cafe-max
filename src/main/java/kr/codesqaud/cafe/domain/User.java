@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.user;
+package kr.codesqaud.cafe.domain;
 
-public class UserForm {
+public class User {
     private String userId;
     private String password;
     private String userName;
