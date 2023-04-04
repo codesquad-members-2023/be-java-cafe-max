@@ -9,16 +9,16 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import kr.codesqaud.cafe.account.User;
-import kr.codesqaud.cafe.account.UserRepository;
+import kr.codesqaud.cafe.account.UserService;
 import kr.codesqaud.cafe.account.form.LoginForm;
 
 @Component
 public class LoginFormValidator implements Validator {
 
-	private final UserRepository userRepository;
+	private final UserService userService;
 
-	public LoginFormValidator(UserRepository userRepository) {
-		this.userRepository = userRepository;
+	public LoginFormValidator(UserService userService) {
+		this.userService = userService;
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class LoginFormValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		LoginForm loginForm = (LoginForm)target;
-		Optional<User> userOptional = userRepository.findByEmail(loginForm.getEmail());
+		Optional<User> userOptional = userService.findByEmail(loginForm.getEmail());
 		if (userOptional.isEmpty()) {
 			errors.rejectValue(EMAIL, "error.email.notExist");
 			return;
