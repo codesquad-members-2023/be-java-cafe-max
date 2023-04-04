@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.account;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -21,6 +20,7 @@ public class UserRepository {
 	private static final String QUERY_SAVE = "INSERT INTO USERS (NICKNAME, EMAIL, PASSWORD) values ( ?,?,? )";
 	private static final String QUERY_UPDATE = "UPDATE USERS SET NICKNAME = ?, EMAIL = ? WHERE USER_ID = ?";
 	private static final String QUERY_FIND_BY_ID = "SELECT EMAIL,NICKNAME,PASSWORD FROM USERS WHERE USER_ID = ?";
+	private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD FROM USERS WHERE EMAIL = ?";
 	private final List<User> usersRepository;
 	private final JdbcTemplate jdbcTemplate;
 
@@ -46,13 +46,16 @@ public class UserRepository {
 			.nickname(resultSet.getString("nickname"))
 			.password(resultSet.getString("password"))
 			.build();
-		return Optional.of(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
+		return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
 	}
 
 	public Optional<User> findByEmail(String email) {
-		return usersRepository.stream()
-			.filter(user -> Objects.equals(user.getEmail(), email))
-			.findAny();
+		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder(resultSet.getLong("user_id"))
+			.nickname(resultSet.getString("nickname"))
+			.password(resultSet.getString("password"))
+			.build();
+
+		return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, userRowMapper, email));
 	}
 
 	public boolean containEmail(String email) {
