@@ -38,7 +38,14 @@ class UserControllerTest {
     @Test
     @DisplayName("[POST] /users 로 이동하면 회원 가입 데이터 받고 GET /users로 redirect하기 테스트")
     void registerUser() throws Exception {
-
+       mockMvc.perform(MockMvcRequestBuilders.post("/users")
+               .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+               .param("id", "sio")
+               .param("password","1234")
+               .param("name","sio")
+               .param("email", "sio@gmail.com"))
+               .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+               .andExpect(MockMvcResultMatchers.header().string("Location", "/users"));
     }
 
     @Test
