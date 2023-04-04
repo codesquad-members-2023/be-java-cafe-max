@@ -10,6 +10,9 @@ public class BoardPost {
     private String contents;
     private LocalDateTime writeDateTime = LocalDateTime.now();
 
+    public BoardPost(String writer, String title, String contents, LocalDateTime writeDateTime) {
+    }
+
     public Long getPostId() {
         return postId;
     }
@@ -22,31 +25,15 @@ public class BoardPost {
         return writer;
     }
 
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContents() {
         return contents;
     }
 
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
     public String getWriteDateTime() {
         return writeDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    }
-
-    public void setWriteDateTime(LocalDateTime writeDateTime) {
-        this.writeDateTime = writeDateTime;
     }
 }

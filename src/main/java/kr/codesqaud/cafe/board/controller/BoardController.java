@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.board.controller;
 
-import kr.codesqaud.cafe.board.domain.BoardPost;
+import kr.codesqaud.cafe.board.dto.PostWriteForm;
 import kr.codesqaud.cafe.board.repository.BoardRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +17,8 @@ public class BoardController {
     }
 
     @PostMapping("/write")
-    public String writePost(@ModelAttribute BoardPost boardPost) {
-        boardRepository.add(boardPost);
+    public String writePost(@ModelAttribute PostWriteForm postWriteForm) {
+        boardRepository.add(postWriteForm);
         return "redirect:/board/list";
     }
 

@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.board.repository;
 
 import kr.codesqaud.cafe.board.domain.BoardPost;
+import kr.codesqaud.cafe.board.dto.PostWriteForm;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -14,7 +15,8 @@ public class BoardRepository {
 
     private long postId = 0;
 
-    public void add(BoardPost boardPost) {
+    public void add(PostWriteForm postWriteForm) {
+        BoardPost boardPost = postWriteForm.toBoardPost();
         boardPost.setPostId(postId++);
         boardData.put(boardPost.getPostId(), boardPost);
     }
