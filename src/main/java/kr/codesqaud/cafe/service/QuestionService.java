@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.codesqaud.cafe.dto.QuestionDetailsDTO;
+import kr.codesqaud.cafe.domain.PageHandler;
+import kr.codesqaud.cafe.dto.QuestionBoardDTO;
+import kr.codesqaud.cafe.dto.QuestionTitleDTO;
 import kr.codesqaud.cafe.dto.QuestionWriteDTO;
 import kr.codesqaud.cafe.repository.QuestionRepository;
 
@@ -23,8 +25,11 @@ public class QuestionService {
 		repository.save(dto);
 	}
 
-	public List<QuestionDetailsDTO> findAllQuestions() {
-		return repository.findAll();
+	public QuestionBoardDTO makeQuestionBoard(int page) {
+		PageHandler handler = new PageHandler(repository.countAll(), page);
+		List<QuestionTitleDTO> dto = repository.selectQuestionTitlesByOffset(handler.getPostOffset(),
+			handler.getPageSize());
+		return new QuestionBoardDTO(handler, dto);
 	}
 
 }

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.Question;
-import kr.codesqaud.cafe.dto.QuestionDetailsDTO;
+import kr.codesqaud.cafe.dto.QuestionTitleDTO;
 import kr.codesqaud.cafe.dto.QuestionWriteDTO;
 
 @Repository
@@ -24,10 +24,15 @@ public class QuestionRepository {
 		questions.add(dto.toEntity(questionIdx++));
 	}
 
-	public List<QuestionDetailsDTO> findAll() {
+	public int countAll() {
+		return questions.size();
+	}
+
+	public List<QuestionTitleDTO> selectQuestionTitlesByOffset(int postOffset, int pageSize) {
 		return questions.stream()
-			.sorted(Comparator.comparing(Question::getRegistrationDate).reversed())
-			.map(Question::toDto)
+			.sorted(Comparator.comparing(Question::getIdx).reversed())
+			.skip(postOffset).limit(pageSize)
+			.map(Question::toTitleDto)
 			.collect(Collectors.toUnmodifiableList());
 	}
 

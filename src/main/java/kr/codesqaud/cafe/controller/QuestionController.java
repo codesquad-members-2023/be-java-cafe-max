@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.codesqaud.cafe.dto.QuestionWriteDTO;
 import kr.codesqaud.cafe.service.QuestionService;
@@ -32,9 +33,12 @@ public class QuestionController {
 		return "redirect:questions/write-form";
 	}
 
-	@GetMapping("")
-	public String questionList(Model model) {
-		model.addAttribute("questions", service.findAllQuestions());
+	@GetMapping
+	public String questionList(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+		Model model) {
+
+		model.addAttribute("questionBoardDto", service.makeQuestionBoard(page));
+
 		return "index";
 	}
 

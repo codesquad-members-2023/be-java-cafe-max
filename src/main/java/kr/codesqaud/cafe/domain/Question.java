@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.domain;
 import java.time.LocalDateTime;
 
 import kr.codesqaud.cafe.dto.QuestionDetailsDTO;
+import kr.codesqaud.cafe.dto.QuestionTitleDTO;
 
 public class Question {
 	private int idx;
@@ -39,7 +40,11 @@ public class Question {
 		return registrationDate;
 	}
 
-	public QuestionDetailsDTO toDto() {
+	public QuestionDetailsDTO toDetailsDto() {
 		return new QuestionDetailsDTO(idx, writer, title, contents, registrationDate);
+	}
+
+	public QuestionTitleDTO toTitleDto() {
+		return new QuestionTitleDTO(idx, writer, title, registrationDate);
 	}
 }
