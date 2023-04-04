@@ -8,3 +8,14 @@ CREATE TABLE users
     email    VARCHAR(255) NOT NULL,
     primary key (id)
 );
+
+drop table if exists articles CASCADE;
+CREATE TABLE articles
+(
+    id       bigint auto_increment,
+    writer   TEXT,
+    title    TEXT,
+    contents TEXT,
+    primary key (id)
+
+);
