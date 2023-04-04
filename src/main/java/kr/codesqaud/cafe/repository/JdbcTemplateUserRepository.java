@@ -5,12 +5,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.sql.PreparedStatement;
+import java.util.*;
 
 @Repository
 public class JdbcTemplateUserRepository implements UserRepository {
@@ -22,17 +22,20 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("users").usingGeneratedKeyColumns("id");
+        String sql = "insert into users (userId, password, name, email) values (?, ?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            // 자동 증가 키
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, user.getUserId());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getName());
+            ps.setString(4, user.getEmail());
+            return ps;
+        }, keyHolder);
 
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("userId", user.getUserId());
-        parameters.put("password", user.getPassword());
-        parameters.put("name", user.getName());
-        parameters.put("email", user.getEmail());
-
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-        user.setId(key.longValue());
+        Long key = Objects.requireNonNull(keyHolder.getKey()).longValue();
+        user.setId(key);
     }
 
     @Override
