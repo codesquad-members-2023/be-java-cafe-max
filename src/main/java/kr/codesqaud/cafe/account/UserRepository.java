@@ -10,8 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.account.form.ProfileSettingForm;
-
 @Repository
 public class UserRepository {
 
@@ -74,8 +72,8 @@ public class UserRepository {
 		jdbcTemplate.execute("DELETE FROM USERS");
 	}
 
-	public void update(ProfileSettingForm profileSettingForm, User user) {
-		jdbcTemplate.update(QUERY_UPDATE, profileSettingForm.getNickname(), profileSettingForm.getEmail(),
+	public void update(User user) {
+		jdbcTemplate.update(QUERY_UPDATE, user.getNickname(), user.getEmail(),
 			user.getId());
 	}
 }
