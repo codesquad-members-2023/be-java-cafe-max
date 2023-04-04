@@ -17,7 +17,10 @@ import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 public class UserRepository {
 
 	public static final AtomicLong atomicKey = new AtomicLong();
-	public static final String SAVE_USER_QUERY = "INSERT INTO USERS (NICKNAME, EMAIL, PASSWORD) values ( ?,?,? )";
+	//language=H2
+	private static final String SAVE_QUERY = "INSERT INTO USERS (NICKNAME, EMAIL, PASSWORD) values ( ?,?,? )";
+	//language=H2
+	private static final String UPDATE_QUERY = "update USERS set NICKNAME = ?, EMAIL = ? where USER_ID = ?";
 	private final List<User> usersRepository;
 	private final JdbcTemplate jdbcTemplate;
 
@@ -28,7 +31,7 @@ public class UserRepository {
 
 	public boolean save(User user) {
 		int update = jdbcTemplate.update(
-			SAVE_USER_QUERY, user.getNickname(), user.getEmail(), user.getPassword()
+			SAVE_QUERY, user.getNickname(), user.getEmail(), user.getPassword()
 		);
 		return usersRepository.add(user);
 	}
@@ -59,6 +62,9 @@ public class UserRepository {
 	}
 
 	public void update(ProfileSettingForm profileSettingForm, User user) {
+		int update = jdbcTemplate.update(UPDATE_QUERY
+			, user.getNickname(), user.getEmail(), user.getId());
+		System.out.println(update);
 		usersRepository.remove(user);
 		save(profileSettingForm.toUser(user));
 	}
