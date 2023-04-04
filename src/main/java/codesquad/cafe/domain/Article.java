@@ -15,4 +15,20 @@ public class Article {
         this.contents = contents;
         this.date = date;
     }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
 }

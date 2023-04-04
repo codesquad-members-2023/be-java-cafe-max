@@ -3,7 +3,6 @@ package codesquad.cafe.repository;
 import codesquad.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -19,4 +18,10 @@ public class MemoryArticleRepository implements ArticleRepository {
         store.put(id, article);
         id.getAndIncrement();
     }
+
+    @Override
+    public Map<AtomicLong, Article> findAll() {
+        return store;
+    }
+
 }
