@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,9 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import kr.codesqaud.cafe.account.form.JoinForm;
 
 @AutoConfigureMockMvc
 @SpringBootTest
+@Transactional
 class UserControllerTest {
 	public static final String JACK_EMAIL = "jack@email.com";
 	public static final String JACK_PASSWORD = "123456789a";
@@ -36,6 +40,9 @@ class UserControllerTest {
 	MockMvc mockMvc;
 
 	@Autowired
+	UserService userService;
+
+	@Autowired
 	UserRepository userRepository;
 
 	@DisplayName("로그인 페이지 열람")
@@ -48,12 +55,12 @@ class UserControllerTest {
 	@DisplayName("로그인 - 성공")
 	@Test
 	void loginSuccess() throws Exception {
-		saveAndGetUserJack();
+		User user = saveAndGetUserJack();
 		mockMvc.perform(post("/users/login")
 				.param(EMAIL, JACK_EMAIL)
 				.param(PASSWORD, JACK_PASSWORD))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/users/1"));
+			.andExpect(redirectedUrl("/users/" + user.getId()));
 	}
 
 	@DisplayName("로그인 - 비밀번호 실패")
@@ -97,7 +104,9 @@ class UserControllerTest {
 				.param(PASSWORD, JACK_PASSWORD))
 			.andExpect(status().is3xxRedirection());
 
-		assertThat(userRepository.findByEmail(JACK_EMAIL)).isPresent();
+		List<User> allMembers = userRepository.getAllMembers();
+		System.out.println(allMembers);
+		assertThat(userService.findByEmail(JACK_EMAIL)).isPresent();
 	}
 
 	@DisplayName("유저 추가 - 실패")
@@ -168,7 +177,7 @@ class UserControllerTest {
 				.param(NICKNAME, jerry))
 			.andExpect(status().is3xxRedirection());
 
-		Optional<User> userOptional = userRepository.findById(user.getId());
+		Optional<User> userOptional = userService.findById(user.getId());
 		assertThat(userOptional).isPresent();
 		User changedUser = userOptional.get();
 		assertThat(changedUser.getEmail()).isEqualTo(mail);
@@ -215,18 +224,11 @@ class UserControllerTest {
 	}
 
 	private User saveAndGetUserJack() {
-		User user = new User.Builder(UserRepository.atomicKey.incrementAndGet())
-			.email(JACK_EMAIL)
-			.nickname(JACK)
-			.password(JACK_PASSWORD)
-			.build();
-		userRepository.save(user);
-		return user;
+		JoinForm joinForm = new JoinForm();
+		joinForm.setEmail(JACK_EMAIL);
+		joinForm.setNickname(JACK);
+		joinForm.setPassword(JACK_PASSWORD);
+		return userService.createNewUser(joinForm);
 	}
 
-	@AfterEach
-	void clearRepository() {
-		userRepository.clear();
-		UserRepository.atomicKey.set(0);
-	}
 }
