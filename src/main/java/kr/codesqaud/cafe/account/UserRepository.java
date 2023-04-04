@@ -48,7 +48,7 @@ public class UserRepository {
 	public Optional<User> findById(Long userId) {
 		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder()
 			.id(userId)
-			.email(resultSet.getString(COLUMN_EMAIL))
+			.email(resultSet.getString(COLUMN_EMAIL).trim())
 			.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
 			.password(resultSet.getString(COLUMN_PASSWORD).trim())
 			.build();
@@ -67,10 +67,6 @@ public class UserRepository {
 
 	public boolean containEmail(String email) {
 		return jdbcTemplate.queryForObject(QUERY_CONTAINS_EMAIL, Integer.class, email) != 0;
-	}
-
-	public void clear() {
-		jdbcTemplate.execute("DELETE FROM USERS");
 	}
 
 	public void update(User user) {
