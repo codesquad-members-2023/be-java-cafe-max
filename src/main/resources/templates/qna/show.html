@@ -25,7 +25,7 @@
                         </div>
                         <div class="article-header-text">
                             <a th:href="@{/users/{userId}(userId=${article.get().writer})}" class="article-author-name" th:text="${article.get().writer}">writer</a>
-                            <a href="/questions/413" class="article-header-time" title="퍼머링크" th:text="${article.get().localDateTime}">
+                            <a href="/questions/413" class="article-header-time" title="퍼머링크" th:text="${article.get().createdTime}">
                                 localDateTime
                                 <i class="icon-link"></i>
                             </a>
