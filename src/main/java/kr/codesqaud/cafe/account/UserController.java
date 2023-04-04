@@ -117,8 +117,7 @@ public class UserController {
 		}
 		Optional<User> userOptional = userService.findById(userId);
 		User user = userOptional.get();
-		if (!Objects.equals(user.getEmail(), profileSettingForm.getEmail())
-			&& userService.containEmail(profileSettingForm.getEmail())) {
+		if (userService.isDuplicateEmail(user.getEmail(),profileSettingForm.getEmail())) {
 			errors.rejectValue(EMAIL, "error.email.duplicate");
 			return "account/profileUpdate";
 		}

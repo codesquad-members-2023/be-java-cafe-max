@@ -56,4 +56,9 @@ public class UserService {
 	public Optional<User> findById(Long userId) {
 		return userRepository.findById(userId);
 	}
+
+	public boolean isDuplicateEmail(String defaultEmail, String targetEmail) {
+		return Objects.equals(defaultEmail, targetEmail)
+			&& containEmail(targetEmail);
+	}
 }
