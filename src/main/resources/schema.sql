@@ -1,0 +1,6 @@
+CREATE TABLE Article
+(
+    id      INTEGER PRIMARY KEY AUTO_INCREMENT,
+    content VARCHAR(255) NOT NULL,
+    title   VARCHAR(255) NOT NULL
+);
