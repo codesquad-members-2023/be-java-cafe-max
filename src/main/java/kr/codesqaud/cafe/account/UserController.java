@@ -25,6 +25,7 @@ import kr.codesqaud.cafe.account.form.LoginForm;
 import kr.codesqaud.cafe.account.form.ProfileForm;
 import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.form.UserForm;
+import kr.codesqaud.cafe.account.validator.JoinFormValidator;
 import kr.codesqaud.cafe.account.validator.LoginFormValidator;
 
 @Controller
@@ -33,15 +34,23 @@ public class UserController {
 
 	private final UserService userService;
 	private final LoginFormValidator loginFormValidator;
+	private final JoinFormValidator joinFormValidator;
 
-	public UserController(UserService userService, LoginFormValidator loginFormValidator) {
+	public UserController(UserService userService, LoginFormValidator loginFormValidator,
+		JoinFormValidator joinFormValidator) {
 		this.userService = userService;
 		this.loginFormValidator = loginFormValidator;
+		this.joinFormValidator = joinFormValidator;
 	}
 
 	@InitBinder("loginForm")
 	public void loginFormInitBinder(WebDataBinder webDataBinder) {
 		webDataBinder.addValidators(loginFormValidator);
+	}
+
+	@InitBinder("joinForm")
+	public void joinFormInitBinder(WebDataBinder webDataBinder) {
+		webDataBinder.addValidators(joinFormValidator);
 	}
 
 	@GetMapping("/login")
@@ -68,10 +77,6 @@ public class UserController {
 	@PostMapping("/join")
 	public String addUser(@Valid JoinForm joinForm, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			return "account/join";
-		}
-		if (userService.containEmail(joinForm.getEmail())) {
-			bindingResult.rejectValue(EMAIL, "error.email.duplicate");
 			return "account/join";
 		}
 		User user = userService.createNewUser(joinForm);
