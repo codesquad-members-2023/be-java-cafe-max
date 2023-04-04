@@ -1,0 +1,13 @@
+spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  mustache:
+    suffix: .html
+    cache: false
+
+server:
+  servlet:
+    encoding:
+      force: true
