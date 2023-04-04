@@ -2,6 +2,9 @@ package kr.codesqaud.cafe.dto;
 
 import java.time.LocalDateTime;
 
+/**
+ * Q&A 게시판 글 하나의 디테일한 정보를 저장할 DTO
+ */
 public class QuestionDetailsDTO {
 	private int idx;
 	private String writer;

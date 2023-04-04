@@ -1,12 +1,14 @@
 package kr.codesqaud.cafe.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.domain.PageHandler;
 import kr.codesqaud.cafe.dto.QuestionBoardDTO;
+import kr.codesqaud.cafe.dto.QuestionDetailsDTO;
 import kr.codesqaud.cafe.dto.QuestionTitleDTO;
 import kr.codesqaud.cafe.dto.QuestionWriteDTO;
 import kr.codesqaud.cafe.repository.QuestionRepository;
@@ -32,4 +34,7 @@ public class QuestionService {
 		return new QuestionBoardDTO(handler, dto);
 	}
 
+	public QuestionDetailsDTO findQuestion(int idx) throws NoSuchElementException {
+		return repository.selectByIdx(idx);
+	}
 }
