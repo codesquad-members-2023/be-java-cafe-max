@@ -60,4 +60,11 @@ user는 h2 데이터베이스 예약어이기 때문에 식별자(identifier)로
 5. 프로그램이 꺼져도 데이터베이스 유지하기!
 
  * schema.sql 내용 변경
+ ```
+ DROP TABLE IF EXISTS users
+ CREATE TABLE users
+ 
+ // 다음과 같이 변경
+ CREATE TABLE IF NOT EXISTS users
+ ```
  * data.sql 삭제, application.properties의 경로 삭제 

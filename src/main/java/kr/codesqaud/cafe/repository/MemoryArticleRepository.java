@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
     private Map<Long, Article> articleStore = new ConcurrentHashMap<>(); // { id : Article } 저장

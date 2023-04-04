@@ -7,9 +7,9 @@ CREATE TABLE IF NOT EXISTS users
     primary key (userId)
 );
 
-CREATE TABLE IF NOT EXISTS users
+CREATE TABLE IF NOT EXISTS article
 (
-    id           int not null AUTO_INCREMENT,
+    id           bigint not null,
     writer       varchar(50) not null,
     title        varchar(255) not null,
     contents     varchar(255) not null,
