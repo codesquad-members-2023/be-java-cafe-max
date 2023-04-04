@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class JDBCArticleRepository implements ArticleRepository {
@@ -28,7 +29,8 @@ public class JDBCArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findArticleById(int id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE id = ?",new Object[]{id},(rs,rn) -> new Article(rs));
+    public Optional<Article> findArticleById(int id) {
+        Article article = jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE id = ?",new Object[]{id},(rs,rn) -> new Article(rs));
+        return Optional.ofNullable(article);
     }
 }

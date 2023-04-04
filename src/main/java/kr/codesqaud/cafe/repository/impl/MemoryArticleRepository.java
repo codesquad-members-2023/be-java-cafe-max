@@ -1,12 +1,12 @@
 package kr.codesqaud.cafe.repository.impl;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MemoryArticleRepository implements ArticleRepository {
@@ -29,10 +29,9 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findArticleById(int id){
+    public Optional<Article> findArticleById(int id){
         return articleRepository.values().stream()
                 .filter(article -> article.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new ArticleNotFoundException("해당 글이 존재하지 않습니다."));
+                .findFirst();
     }
 }

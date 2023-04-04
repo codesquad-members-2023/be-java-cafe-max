@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDTO;
+import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,8 @@ public class ArticleService {
     }
 
     public ArticleDTO findArticleById(int id){
-        return ArticleRepository.findArticleById(id).toDTO();
+        return ArticleRepository.findArticleById(id)
+                .map(Article::toDTO)
+                .orElseThrow(() -> new ArticleNotFoundException("해당 글이 존재하지 않습니다."));
     }
 }
