@@ -21,18 +21,19 @@ public class UserMemoryService {
     public void signUp(SignUpFormDto dto) {
         int index = userRepository.findAll().size();
         User user = new User(index, dto.getUserId(), dto.getPassword(), dto.getName(), dto.getEmail());
-        userRepository.save(user, index);
+        userRepository.save(user);
     }
 
     public List<User> getList() {
-        return new ArrayList<>(userRepository.findAll().values());
+        return userRepository.findAll();
     }
 
-    public void update(int index, UpdateFormDto dto) {
-        User current = userRepository.findAll().get(index);
+    public void update(String id, UpdateFormDto dto) {
+        User current = userRepository.findById(id);
+        int index = current.getIndex();
         if (checkPassword(current, dto)) {
             User updateUser = new User(index, dto.getUserId(), dto.getNewPassword(), dto.getName(), dto.getEmail());
-            userRepository.save(updateUser, index);
+            userRepository.save(updateUser);
         }
     }
 
@@ -40,4 +41,7 @@ public class UserMemoryService {
         return user.getPassword().equals(updateFormDto.getPassword());
     }
 
+    public User findById(String id) {
+        return userRepository.findById(id);
+    }
 }
