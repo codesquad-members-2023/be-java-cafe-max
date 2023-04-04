@@ -35,4 +35,11 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    @GetMapping("/")
+    public String list(Model model){
+        List<Article> articles = articleService.findArticles();
+        model.addAttribute("articles", articles);
+        return "/index";
+    }
+    
 }
