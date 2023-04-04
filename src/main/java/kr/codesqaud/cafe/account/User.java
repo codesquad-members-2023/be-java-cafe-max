@@ -31,7 +31,7 @@ public class User {
 	}
 
 	public static class Builder {
-		private Long id = 0L ;
+		private Long id = 0L;
 		private String nickname = "";
 		private String email = "";
 		private String password = "";

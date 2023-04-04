@@ -12,26 +12,24 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.account.exception.AccountControllerExceptionHandler;
 import kr.codesqaud.cafe.account.exception.AccountException;
 import kr.codesqaud.cafe.account.exception.ErrorCode;
 
 @Repository
 public class UserRepository {
 
+	public static final String COLUMN_USER_ID = "user_id";
+	public static final String COLUMN_PASSWORD = "password";
+	public static final String COLUMN_NICKNAME = "nickname";
+	public static final String COLUMN_EMAIL = "email";
 	private static final String QUERY_SAVE = "INSERT INTO USERS (NICKNAME, EMAIL, PASSWORD) values ( ?,?,? )";
 	private static final String QUERY_UPDATE = "UPDATE USERS SET NICKNAME = ?, EMAIL = ? WHERE USER_ID = ?";
 	private static final String QUERY_FIND_BY_ID = "SELECT EMAIL,NICKNAME,PASSWORD FROM USERS WHERE USER_ID = ?";
 	private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD FROM USERS WHERE EMAIL = ?";
 	private static final String QUERY_CONTAINS_EMAIL = "SELECT COUNT(*) FROM USERS WHERE EMAIL = ?";
 	private static final String QUERY_FIND_ALL_USERS = "SELECT * FROM USERS";
-	public static final String COLUMN_USER_ID = "user_id";
-	public static final String COLUMN_PASSWORD = "password";
-	public static final String COLUMN_NICKNAME = "nickname";
-	public static final String COLUMN_EMAIL = "email";
-	private final JdbcTemplate jdbcTemplate;
-
 	private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
+	private final JdbcTemplate jdbcTemplate;
 
 	public UserRepository(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);

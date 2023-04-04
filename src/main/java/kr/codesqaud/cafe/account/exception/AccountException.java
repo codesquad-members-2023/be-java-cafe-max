@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.account.exception;
 
 public class AccountException extends RuntimeException {
 
-	private ErrorCode errorCode;
+	private final ErrorCode errorCode;
 
 	public AccountException(String message, ErrorCode errorCode) {
 		super(message);

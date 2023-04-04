@@ -33,4 +33,4 @@ public enum ErrorCode {
 	public String getViewName() {
 		return viewName;
 	}
-	}
+}
