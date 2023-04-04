@@ -6,7 +6,6 @@ import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,7 @@ public class MemoryUserRepository implements UserRepository {
     private final Map<String, User> userRepository;
 
     public MemoryUserRepository() {
-        this.userRepository = new LinkedHashMap();
+        this.userRepository = new LinkedHashMap<>();
     }
 
     @Override
@@ -28,9 +27,8 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        List<User> users = userRepository.values().stream()
-                .collect(Collectors.toList());
-        return Collections.unmodifiableList(users);
+        return userRepository.values().stream()
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override

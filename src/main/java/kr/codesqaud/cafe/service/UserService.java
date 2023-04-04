@@ -12,26 +12,26 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    private final UserRepository memoryUserRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
-        this.memoryUserRepository = userRepository;
+        this.userRepository = userRepository;
     }
 
     public void addUser(UserDTO userDTO){
-        memoryUserRepository.save(userDTO.toUser());
+        userRepository.save(userDTO.toUser());
     }
 
     public List<UserListDTO> getUserList(){
-        return memoryUserRepository.findAll().stream()
+        return userRepository.findAll().stream()
                 .map(user -> user.toUserListDTO())
                 .collect(Collectors.toUnmodifiableList());
     }
 
     public UserDTO getUserByUserId(String id){
-        return memoryUserRepository.findUserById(id).toUserDTO();
+        return userRepository.findUserById(id).toUserDTO();
     }
     public void updateUserByUserId(ProfileEditDTO profileEditDto){
-        memoryUserRepository.updateUser(profileEditDto.toUser(),profileEditDto.getOriPassword());
+        userRepository.updateUser(profileEditDto.toUser(),profileEditDto.getOriPassword());
     }
 }
