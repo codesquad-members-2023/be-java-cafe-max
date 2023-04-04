@@ -1,10 +1,19 @@
 package kr.codesqaud.cafe.controller.dto;
 
 public class UserForm {
+    private Long id;
     private String userId;
     private String name;
     private String password;
     private String email;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUserId() {
         return userId;
