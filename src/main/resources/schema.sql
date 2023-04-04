@@ -4,7 +4,7 @@ CREATE TABLE users
 (
     user_id  INT       NOT NULl AUTO_INCREMENT,
     nickname CHAR(256) NOT NULL,
-    email    CHAR(256) NOT NULL,
+    email    CHAR(256) NOT NULL unique ,
     password CHAR(256) NOT NULL,
     PRIMARY KEY (user_id)
 );
