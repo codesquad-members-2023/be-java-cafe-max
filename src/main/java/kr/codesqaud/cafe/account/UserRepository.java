@@ -18,11 +18,8 @@ import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 public class UserRepository {
 
 	public static final AtomicLong atomicKey = new AtomicLong();
-	//language=H2
 	private static final String QUERY_SAVE = "INSERT INTO USERS (NICKNAME, EMAIL, PASSWORD) values ( ?,?,? )";
-	//language=H2
 	private static final String QUERY_UPDATE = "UPDATE USERS SET NICKNAME = ?, EMAIL = ? WHERE USER_ID = ?";
-	//language=H2
 	private static final String QUERY_FIND_BY_ID = "SELECT EMAIL,NICKNAME,PASSWORD FROM USERS WHERE USER_ID = ?";
 	private final List<User> usersRepository;
 	private final JdbcTemplate jdbcTemplate;
@@ -49,7 +46,7 @@ public class UserRepository {
 			.nickname(resultSet.getString("nickname"))
 			.password(resultSet.getString("password"))
 			.build();
-		return Optional.of(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper));
+		return Optional.of(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
 	}
 
 	public Optional<User> findByEmail(String email) {
