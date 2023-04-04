@@ -4,9 +4,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Post;
-import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
+import kr.codesqaud.cafe.dto.post.WhiterResponse;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
@@ -32,7 +32,7 @@ public class PostService {
         Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
         post.increaseViews();
         postRepository.update(post);
-        return PostResponse.of(post, getMemberResponse(post));
+        return PostResponse.of(post, getWhiterResponse(post));
     }
 
     public List<PostResponse> findAll() {
@@ -41,18 +41,18 @@ public class PostService {
             .sorted(Comparator.comparing(Post::getWriteDate)
                 .thenComparing(Post::getId)
                 .reversed())
-            .map(post -> PostResponse.of(post, getMemberResponse(post)))
+            .map(post -> PostResponse.of(post, getWhiterResponse(post)))
             .collect(Collectors.toUnmodifiableList());
     }
 
-    private MemberResponse getMemberResponse(Post post) {
-        MemberResponse memberResponse = null;
+    private WhiterResponse getWhiterResponse(Post post) {
+        WhiterResponse whiterResponse = null;
 
         if (post.getWriterId() != null) {
-            memberResponse = MemberResponse.from(memberRepository.findById(post.getWriterId())
+            whiterResponse = WhiterResponse.from(memberRepository.findById(post.getWriterId())
                 .orElseThrow(MemberNotFoundException::new));
         }
 
-        return memberResponse;
+        return whiterResponse;
     }
 }
