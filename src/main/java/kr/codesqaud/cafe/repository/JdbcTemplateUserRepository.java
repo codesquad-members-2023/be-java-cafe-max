@@ -3,14 +3,14 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 public class JdbcTemplateUserRepository implements UserRepository {
@@ -57,7 +57,12 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public void update(Long id, User updateUser) {
-        // TODO: 회원 정보 수정 기능 추가
+        String sql = "update users set password=?, name=?, email=? where id=?";
+        jdbcTemplate.update(sql,
+                updateUser.getPassword(),
+                updateUser.getName(),
+                updateUser.getEmail(),
+                id);
     }
 
     private RowMapper<User> userRowMapper() {
