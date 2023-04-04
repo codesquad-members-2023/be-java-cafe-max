@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.codesqaud.cafe.account.form.JoinForm;
 import kr.codesqaud.cafe.account.form.LoginForm;
@@ -21,6 +22,7 @@ import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.form.UserForm;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
 
 	private final UserService userService;
@@ -29,13 +31,13 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@GetMapping("/users/login")
+	@GetMapping("/login")
 	public String showLoginPage(Model model) {
 		model.addAttribute("loginForm", new LoginForm());
 		return "account/login";
 	}
 
-	@PostMapping("/users/login")
+	@PostMapping("/login")
 	public String login(@Valid LoginForm loginForm, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "account/login";
@@ -53,13 +55,13 @@ public class UserController {
 		return "redirect:/users/" + user.getId();
 	}
 
-	@GetMapping("/users/join")
+	@GetMapping("/join")
 	public String showJoinPage(Model model) {
 		model.addAttribute("joinForm", new JoinForm());
 		return "account/join";
 	}
 
-	@PostMapping("/users/join")
+	@PostMapping("/join")
 	public String addUser(@Valid JoinForm joinForm, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "account/join";
@@ -72,14 +74,14 @@ public class UserController {
 		return "redirect:/users/" + user.getId();
 	}
 
-	@GetMapping("/users")
+	@GetMapping
 	public String showUsers(Model model) {
 		List<UserForm> allUserForm = userService.getAllUsersForm();
 		model.addAttribute("users", allUserForm);
 		return "account/members";
 	}
 
-	@GetMapping("/users/{userId}")
+	@GetMapping("/{userId}")
 	public String showUser(Model model, @PathVariable Long userId) {
 		Optional<User> userOptional = userService.findById(userId);
 		if (userOptional.isEmpty()) {
@@ -92,7 +94,7 @@ public class UserController {
 		return "account/profile";
 	}
 
-	@GetMapping("/users/{userId}/update")
+	@GetMapping("/{userId}/update")
 	public String showUserProfile(Model model, @PathVariable Long userId) {
 		Optional<User> userOptional = userService.findById(userId);
 		if (userOptional.isEmpty()) {
@@ -104,7 +106,7 @@ public class UserController {
 		return "account/profileUpdate";
 	}
 
-	@PutMapping("/users/{userId}/update")
+	@PutMapping("/{userId}/update")
 	public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, Errors errors, @PathVariable Long userId
 	) {
 		Optional<User> userOptional = userService.findById(userId);
