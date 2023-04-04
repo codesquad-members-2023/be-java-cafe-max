@@ -20,7 +20,7 @@ public class UserRepository {
 	//language=H2
 	private static final String QUERY_SAVE = "INSERT INTO USERS (NICKNAME, EMAIL, PASSWORD) values ( ?,?,? )";
 	//language=H2
-	private static final String QUERY_UPDATE = "update USERS set NICKNAME = ?, EMAIL = ? where USER_ID = ?";
+	private static final String QUERY_UPDATE = "UPDATE USERS SET NICKNAME = ?, EMAIL = ? WHERE USER_ID = ?";
 	private final List<User> usersRepository;
 	private final JdbcTemplate jdbcTemplate;
 
