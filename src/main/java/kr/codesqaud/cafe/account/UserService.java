@@ -23,7 +23,7 @@ public class UserService {
 	public User createNewUser(JoinForm joinForm) {
 		User user = joinForm.toUser();
 		userRepository.save(user);
-		return user;
+		return userRepository.findByEmail(joinForm.getEmail()).get();
 	}
 
 	public List<UserForm> getAllUsersForm() {
