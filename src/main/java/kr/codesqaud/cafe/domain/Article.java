@@ -2,6 +2,10 @@ package kr.codesqaud.cafe.domain;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDTO;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+
 public class Article {
     private String title;
     private String content;
@@ -10,6 +14,21 @@ public class Article {
     public Article(String title,String content){
         this.title = title;
         this.content = content;
+    }
+
+    public Article(ResultSet rs) throws SQLException{
+        this.title = rs.getString("title");
+        this.content = rs.getString("content");
+        this.id = rs.getInt("id");
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public int getId() {

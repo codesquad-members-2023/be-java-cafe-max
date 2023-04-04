@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.repository.impl;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository {
     private final Map<Integer,Article> articleRepository;
     private static int sequence = 1;
