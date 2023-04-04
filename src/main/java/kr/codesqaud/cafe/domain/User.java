@@ -1,7 +1,7 @@
-package kr.codesqaud.cafe.user;
+package kr.codesqaud.cafe.domain;
 
 public class User {
-    private Long sequence;
+    private Long id;
     private String userId;
     private String password;
     private String userName;
@@ -15,12 +15,8 @@ public class User {
         this.userEmail = userEmail;
     }
 
-    public Long getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(final Long sequence) {
-        this.sequence = sequence;
+    public Long getId() {
+        return id;
     }
 
     public String getUserId() {
@@ -37,6 +33,10 @@ public class User {
 
     public String getUserEmail() {
         return userEmail;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setUserId(String userId) {
