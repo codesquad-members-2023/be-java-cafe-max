@@ -13,10 +13,10 @@ repositories {
 }
 
 dependencies {
-    // JdbcTemplate 추가
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-    // H2 데이터베이스 추가
-    runtimeOnly 'com.h2database:h2'
+//    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+    implementation 'com.h2database:h2'
+//    implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
