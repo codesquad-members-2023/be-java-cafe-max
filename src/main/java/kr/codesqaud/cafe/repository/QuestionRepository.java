@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import kr.codesqaud.cafe.domain.Question;
 import kr.codesqaud.cafe.dto.QuestionTitleDTO;
 import kr.codesqaud.cafe.dto.QuestionWriteDTO;
+import kr.codesqaud.cafe.dummy.CollectionFrameworkRepositoryDummyData;
 
 @Repository
 public class QuestionRepository {
@@ -18,6 +19,8 @@ public class QuestionRepository {
 
 	public QuestionRepository() {
 		this.questions = new ArrayList<>();
+		CollectionFrameworkRepositoryDummyData dummyData = new CollectionFrameworkRepositoryDummyData();
+		dummyData.insertQuestionsDummyData(this.questions);
 	}
 
 	public synchronized void save(QuestionWriteDTO dto) {
