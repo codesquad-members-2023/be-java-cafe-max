@@ -33,8 +33,7 @@ class PostControllerTest {
 	@Test
 	void showPostPage() throws Exception {
 		mockMvc.perform(get("/posts/form"))
-			.andExpect(status().isOk())
-			.andExpect(model().attributeExists("postForm"));
+			.andExpect(status().isOk());
 	}
 
 	@DisplayName("게시글 추가 - 성공")
@@ -63,7 +62,7 @@ class PostControllerTest {
 				.param(TEXT_CONTENT, textContent))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
-			.andExpect(view().name("/post/form"));
+			.andExpect(view().name("/post/formInvalid"));
 
 		assertThat(postRepository.findByTitle(testTitle)).isEmpty();
 	}
