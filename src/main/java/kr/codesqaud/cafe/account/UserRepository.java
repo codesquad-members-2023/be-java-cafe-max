@@ -18,9 +18,9 @@ public class UserRepository {
 
 	public static final AtomicLong atomicKey = new AtomicLong();
 	//language=H2
-	private static final String SAVE_QUERY = "INSERT INTO USERS (NICKNAME, EMAIL, PASSWORD) values ( ?,?,? )";
+	private static final String QUERY_SAVE = "INSERT INTO USERS (NICKNAME, EMAIL, PASSWORD) values ( ?,?,? )";
 	//language=H2
-	private static final String UPDATE_QUERY = "update USERS set NICKNAME = ?, EMAIL = ? where USER_ID = ?";
+	private static final String QUERY_UPDATE = "update USERS set NICKNAME = ?, EMAIL = ? where USER_ID = ?";
 	private final List<User> usersRepository;
 	private final JdbcTemplate jdbcTemplate;
 
@@ -31,7 +31,7 @@ public class UserRepository {
 
 	public boolean save(User user) {
 		int update = jdbcTemplate.update(
-			SAVE_QUERY, user.getNickname(), user.getEmail(), user.getPassword()
+			QUERY_SAVE, user.getNickname(), user.getEmail(), user.getPassword()
 		);
 		return usersRepository.add(user);
 	}
@@ -41,6 +41,7 @@ public class UserRepository {
 	}
 
 	public Optional<User> findById(Long userId) {
+
 		return usersRepository.stream()
 			.filter(user -> Objects.equals(user.getId(), userId))
 			.findAny();
@@ -62,7 +63,7 @@ public class UserRepository {
 	}
 
 	public void update(ProfileSettingForm profileSettingForm, User user) {
-		int update = jdbcTemplate.update(UPDATE_QUERY
+		int update = jdbcTemplate.update(QUERY_UPDATE
 			, user.getNickname(), user.getEmail(), user.getId());
 		System.out.println(update);
 		usersRepository.remove(user);
