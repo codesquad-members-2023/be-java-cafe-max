@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.account;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
@@ -22,6 +21,7 @@ public class UserRepository {
 	private static final String QUERY_FIND_BY_ID = "SELECT EMAIL,NICKNAME,PASSWORD FROM USERS WHERE USER_ID = ?";
 	private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD FROM USERS WHERE EMAIL = ?";
 	private static final String QUERY_CONTAINS_EMAIL = "SELECT COUNT(*) FROM USERS WHERE EMAIL = ?";
+	private static final String QUERY_FIND_ALL_USERS = "SELECT * FROM USERS";
 	private final List<User> usersRepository;
 	private final JdbcTemplate jdbcTemplate;
 
@@ -37,7 +37,13 @@ public class UserRepository {
 	}
 
 	public List<User> getAllMembers() {
-		return new ArrayList<>(usersRepository);
+		return jdbcTemplate.query(QUERY_FIND_ALL_USERS, (resultSet, rowNum)
+			-> new User.Builder(resultSet.getLong("user_id"))
+			.password("password")
+			.nickname("nickname")
+			.email("email")
+			.build()
+		);
 	}
 
 	public Optional<User> findById(Long userId) {
