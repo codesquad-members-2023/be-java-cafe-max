@@ -18,17 +18,17 @@ public class JDBCArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        jdbcTemplate.update("INSERT INTO Article (title, content) VALUES (?, ?)",
+        jdbcTemplate.update("INSERT INTO ARTICLE (title, content) VALUES (?, ?)",
                 article.getTitle(),article.getContent());
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("SELECT * FROM Article", (rs,rn) -> new Article(rs));
+        return jdbcTemplate.query("SELECT * FROM ARTICLE", (rs,rn) -> new Article(rs));
     }
 
     @Override
     public Article findArticleById(int id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM Article WHERE id = ?",new Object[]{id},(rs,rn) -> new Article(rs));
+        return jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE id = ?",new Object[]{id},(rs,rn) -> new Article(rs));
     }
 }
