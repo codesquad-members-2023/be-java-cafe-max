@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain.article.repository;
 
 import kr.codesqaud.cafe.domain.article.Article;
+import kr.codesqaud.cafe.domain.user.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -30,5 +31,13 @@ public class ArticleJdbcImpl implements ArticleRepository {
     public List<Article> findAll() {
         return jdbcTemplate.query(
                 "SELECT * FROM ARTICLES",rowMapper());
+    }
+
+    @Override
+    public Article findByIDX(int idx) {
+        List<Article> list = jdbcTemplate.query(
+                "SELECT * FROM ARTICLES WHERE IDX = ?", rowMapper(), idx
+        );
+        return list.get(0);
     }
 }

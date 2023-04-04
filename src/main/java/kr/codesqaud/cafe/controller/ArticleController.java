@@ -35,8 +35,8 @@ public class ArticleController {
 
     @GetMapping("/article/show/{index}")
     public String getShow(@PathVariable int index, Model model) {
-        List<Article> list = articleMemoryService.getArticleList();
-        model.addAttribute("article", list.get(index));
+        Article article = articleJdbcService.findByIDX(index);
+        model.addAttribute("article", article);
         return "qna/show";
     }
 

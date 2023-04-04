@@ -19,4 +19,9 @@ public class ArticleMemoryImpl implements ArticleRepository {
     public List<Article> findAll() {
         return articles;
     }
+
+    @Override
+    public Article findByIDX(int idx) {
+        return null;
+    }
 }

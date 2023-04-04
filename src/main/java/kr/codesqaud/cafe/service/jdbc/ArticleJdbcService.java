@@ -25,4 +25,8 @@ public class ArticleJdbcService {
         return articleRepository.findAll();
     }
 
+    public Article findByIDX(int idx){
+        return articleRepository.findByIDX(idx);
+    }
+
 }
