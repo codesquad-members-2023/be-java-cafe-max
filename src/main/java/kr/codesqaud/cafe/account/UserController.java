@@ -86,9 +86,6 @@ public class UserController {
 	@GetMapping("/{userId}")
 	public String showUser(Model model, @PathVariable Long userId) {
 		Optional<User> userOptional = userService.findById(userId);
-		if (userOptional.isEmpty()) {
-			return "redirect:/";
-		}
 		ProfileForm profileForm = ProfileForm.from(userOptional.get());
 
 		model.addAttribute(PROFILE_FORM, profileForm);
@@ -99,9 +96,6 @@ public class UserController {
 	@GetMapping("/{userId}/update")
 	public String showUserProfile(Model model, @PathVariable Long userId) {
 		Optional<User> userOptional = userService.findById(userId);
-		if (userOptional.isEmpty()) {
-			return "redirect:/";
-		}
 		ProfileSettingForm profileSettingForm = ProfileSettingForm.from(userOptional.get());
 		model.addAttribute(USER_ID, userId);
 		model.addAttribute(PROFILE_SETTING_FORM, profileSettingForm);
@@ -111,10 +105,6 @@ public class UserController {
 	@PutMapping("/{userId}/update")
 	public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, Errors errors, @PathVariable Long userId
 	) {
-		Optional<User> userOptional = userService.findById(userId);
-		if (userOptional.isEmpty()) {
-			return "redirect:/";
-		}
 		if (errors.hasErrors()) {
 			return "account/profileUpdate";
 		}
