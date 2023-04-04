@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
+
 import java.util.List;
 import java.util.Optional;
 

@@ -19,7 +19,7 @@ public class UserController {
 
     @GetMapping("/user/create")
     public String createForm(){
-        return "user/form"; // template 폴더에 만들었다면
+        return "user/form";
     }
 
     @PostMapping("/user/create")
