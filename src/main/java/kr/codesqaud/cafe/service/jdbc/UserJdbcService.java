@@ -41,6 +41,6 @@ public class UserJdbcService {
 
 
     public List<User> users() {
-        return userRepository.findAllList();
+        return userRepository.findAll();
     }
 }

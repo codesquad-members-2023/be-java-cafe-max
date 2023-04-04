@@ -46,7 +46,7 @@ public class UserJdbcImpl implements UserRepository {
 
 
     @Override
-    public List<User> findAllList() {
+    public List<User> findAll() {
         return jdbcTemplate.query(
                 "SELECT * FROM USERS", rowMapper()
         );
