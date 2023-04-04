@@ -4,14 +4,12 @@ import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Repository
 public class MemoryUserRepository implements UserRepository {
 
     private final Map<String, User> userRepository;
