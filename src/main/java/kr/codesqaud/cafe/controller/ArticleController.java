@@ -41,5 +41,11 @@ public class ArticleController {
         model.addAttribute("articles", articles);
         return "/index";
     }
-    
+
+    @GetMapping("/articles/{id}")
+    public String findArticle(@PathVariable Long id, Model model){
+        Article article = articleService.findOne(id).get();
+        model.addAttribute("article", article);
+        return "qna/show";
+    }
 }
