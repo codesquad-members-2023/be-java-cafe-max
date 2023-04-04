@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 
-@Repository
+
 public class MemoryArticleRepository implements ArticleRepository {
 
     private static Map<Long, Article> storage = new HashMap<>();
