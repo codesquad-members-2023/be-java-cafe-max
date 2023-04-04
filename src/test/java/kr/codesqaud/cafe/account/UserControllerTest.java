@@ -144,7 +144,7 @@ class UserControllerTest {
 	@Test
 	void showUserFailed() throws Exception {
 		mockMvc.perform(get("/users/20"))
-			.andExpect(status().is3xxRedirection());
+			.andExpect(status().is4xxClientError());
 	}
 
 	@DisplayName("유저 프로필 수정 페이지 열람  - 성공")
@@ -161,8 +161,8 @@ class UserControllerTest {
 	@Test
 	void showUserProfileFailed() throws Exception {
 		mockMvc.perform(get("/users/20/update"))
-			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/"));
+			.andExpect(status().is4xxClientError())
+			.andExpect(view().name("error/default"));
 	}
 
 	@DisplayName("유저 프로필 세팅 - 성공")
@@ -205,8 +205,8 @@ class UserControllerTest {
 				.param(PASSWORD, user.getPassword())
 				.param(EMAIL, JERRY_EMAIL)
 				.param(NICKNAME, JERRY))
-			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/"));
+			.andExpect(status().is4xxClientError())
+			.andExpect(view().name("error/default"));
 	}
 
 	@DisplayName("유저 프로필 세팅 - 실패(형식 오류)")
