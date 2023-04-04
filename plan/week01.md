@@ -57,7 +57,7 @@
     - 방어적 복사, List.of(), unmodifiableList
 
 ## 2023.03.31(금)
-- [ ] Dan의 리뷰에 대해 생각하기
+- [x] Dan의 리뷰에 대해 생각하기
     - 팩토리 패턴, layer 구분
     - final, 불변성
     - 방어적 복사, List.of(), unmodifiableList
