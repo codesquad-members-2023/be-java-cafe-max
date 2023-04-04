@@ -4,8 +4,7 @@ public class AccountException extends RuntimeException {
 
 	private final ErrorCode errorCode;
 
-	public AccountException(String message, ErrorCode errorCode) {
-		super(message);
+	public AccountException(ErrorCode errorCode) {
 		this.errorCode = errorCode;
 	}
 

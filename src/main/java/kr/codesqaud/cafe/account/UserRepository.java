@@ -62,7 +62,7 @@ public class UserRepository {
 				.build();
 			return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
 		} catch (DataAccessException e) {
-			throw new AccountException("해당 아이디가 없습니다.", ErrorCode.INVALID_ID_CODE);
+			throw new AccountException(ErrorCode.INVALID_ID_CODE);
 		}
 	}
 
@@ -73,7 +73,6 @@ public class UserRepository {
 				.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
 				.password(resultSet.getString(COLUMN_PASSWORD).trim())
 				.build();
-
 			return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, userRowMapper, email));
 		} catch (DataAccessException e) {
 			logger.error("존재하지 않는 Email입니다.");
