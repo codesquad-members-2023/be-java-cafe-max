@@ -5,9 +5,14 @@ import java.util.Optional;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import kr.codesqaud.cafe.post.PostRepository;
 
 @Repository
 public class UserRepository {
@@ -23,6 +28,8 @@ public class UserRepository {
 	public static final String COLUMN_NICKNAME = "nickname";
 	public static final String COLUMN_EMAIL = "email";
 	private final JdbcTemplate jdbcTemplate;
+
+	private static final Logger logger = LoggerFactory.getLogger(PostRepository.class);
 
 	public UserRepository(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -46,23 +53,33 @@ public class UserRepository {
 	}
 
 	public Optional<User> findById(Long userId) {
-		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder()
-			.id(userId)
-			.email(resultSet.getString(COLUMN_EMAIL).trim())
-			.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
-			.password(resultSet.getString(COLUMN_PASSWORD).trim())
-			.build();
-		return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
+		try {
+			RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder()
+				.id(userId)
+				.email(resultSet.getString(COLUMN_EMAIL).trim())
+				.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
+				.password(resultSet.getString(COLUMN_PASSWORD).trim())
+				.build();
+			return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
+		} catch (DataAccessException e) {
+			logger.error("해당 아이디가 없습니다.");
+			return Optional.empty();
+		}
 	}
 
 	public Optional<User> findByEmail(String email) {
-		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder()
-			.id(resultSet.getLong(COLUMN_USER_ID))
-			.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
-			.password(resultSet.getString(COLUMN_PASSWORD).trim())
-			.build();
+		try {
+			RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder()
+				.id(resultSet.getLong(COLUMN_USER_ID))
+				.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
+				.password(resultSet.getString(COLUMN_PASSWORD).trim())
+				.build();
 
-		return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, userRowMapper, email));
+			return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, userRowMapper, email));
+		} catch (DataAccessException e) {
+			logger.error("해당 email이 없습니다.");
+			return Optional.empty();
+		}
 	}
 
 	public boolean containEmail(String email) {
