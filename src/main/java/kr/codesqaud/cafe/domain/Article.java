@@ -10,13 +10,13 @@ public class Article {
 
     private Long id;
 
-    private LocalDateTime localDateTime;
+    private LocalDateTime createdTime;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.localDateTime = LocalDateTime.now();
+        this.createdTime = LocalDateTime.now();
     }
 
     public String getWriter() {
@@ -31,8 +31,8 @@ public class Article {
         return contents;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public LocalDateTime getCreatedTime() {
+        return createdTime;
     }
 
     public Long getId() {
