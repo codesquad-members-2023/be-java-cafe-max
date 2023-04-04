@@ -16,8 +16,8 @@ public class ArticleMemoryRepository implements ArticleRepository{
 
     @Override
     public Article save(Article article) {
-        article.setIndex(++sequence);
-        articleList.put(article.getIndex(), article);
+        article.setId(++sequence);
+        articleList.put(article.getId(), article);
         return article;
     }
 
