@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class AccountControllerExceptionHandler {
 
 	public static final String ERROR_DETAILS_FORMAT = "[ ErrorStatus : %s ][ ErrorMessage : %s ][ RequestURL : %s ]";
-	private static Logger logger = LoggerFactory.getLogger(AccountControllerExceptionHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(AccountControllerExceptionHandler.class);
 
 	@ExceptionHandler(AccountException.class)
 	public ModelAndView defaultErrorHandler(HttpServletRequest request, AccountException e) {
