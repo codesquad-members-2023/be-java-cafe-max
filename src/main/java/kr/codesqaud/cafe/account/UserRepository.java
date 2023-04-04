@@ -5,11 +5,14 @@ import java.util.Optional;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import kr.codesqaud.cafe.account.exception.AccountControllerExceptionHandler;
 import kr.codesqaud.cafe.account.exception.AccountException;
 import kr.codesqaud.cafe.account.exception.ErrorCode;
 
@@ -27,6 +30,8 @@ public class UserRepository {
 	public static final String COLUMN_NICKNAME = "nickname";
 	public static final String COLUMN_EMAIL = "email";
 	private final JdbcTemplate jdbcTemplate;
+
+	private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
 
 	public UserRepository(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -73,6 +78,7 @@ public class UserRepository {
 
 			return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, userRowMapper, email));
 		} catch (DataAccessException e) {
+			logger.error("존재하지 않는 Email입니다.");
 			return Optional.empty();
 		}
 	}
