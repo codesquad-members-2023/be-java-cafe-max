@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.account;
 import static kr.codesqaud.cafe.utils.FiledName.*;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -117,7 +116,7 @@ public class UserController {
 		}
 		Optional<User> userOptional = userService.findById(userId);
 		User user = userOptional.get();
-		if (userService.isDuplicateEmail(user.getEmail(),profileSettingForm.getEmail())) {
+		if (userService.isDuplicateEmail(user.getEmail(), profileSettingForm.getEmail())) {
 			errors.rejectValue(EMAIL, "error.email.duplicate");
 			return "account/profileUpdate";
 		}

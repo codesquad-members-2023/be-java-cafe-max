@@ -9,6 +9,7 @@ public class FiledName {
 	public static final String EMAIL = "email";
 	public static final String JOIN_FORM = "joinForm";
 	public static final String LOGIN_FORM = "loginForm";
+
 	private FiledName() {
 	}
 }
