@@ -23,7 +23,7 @@ public class UserService {
 
     public void saveUser(UserSaveRequest userSaveRequest) throws DuplicateUserIdException { // 새로운 회원 저장하기
         if (userRepository.isExists(userSaveRequest.getUserId())) { // userId 중복 여부 검사
-            throw new DuplicateUserIdException();
+            throw new DuplicateUserIdException(userSaveRequest);
         }
         userRepository.save(User.from(userSaveRequest));
     }

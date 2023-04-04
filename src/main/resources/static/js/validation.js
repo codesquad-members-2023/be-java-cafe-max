@@ -6,7 +6,6 @@ function validateAll() {
     const userId = checkUserId();
 
     if (email && nickname && password && userId) {
-        alert("회원가입이 완료되었습니다");
         return true;
     }
     
