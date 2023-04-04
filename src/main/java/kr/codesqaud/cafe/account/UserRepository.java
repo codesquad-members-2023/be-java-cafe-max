@@ -22,11 +22,9 @@ public class UserRepository {
 	private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD FROM USERS WHERE EMAIL = ?";
 	private static final String QUERY_CONTAINS_EMAIL = "SELECT COUNT(*) FROM USERS WHERE EMAIL = ?";
 	private static final String QUERY_FIND_ALL_USERS = "SELECT * FROM USERS";
-	private final List<User> usersRepository;
 	private final JdbcTemplate jdbcTemplate;
 
-	public UserRepository(List<User> usersRepository, DataSource dataSource) {
-		this.usersRepository = usersRepository;
+	public UserRepository(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
@@ -39,9 +37,9 @@ public class UserRepository {
 	public List<User> getAllMembers() {
 		return jdbcTemplate.query(QUERY_FIND_ALL_USERS, (resultSet, rowNum)
 			-> new User.Builder(resultSet.getLong("user_id"))
-			.password("password")
-			.nickname("nickname")
-			.email("email")
+			.password(resultSet.getString("password").trim())
+			.nickname(resultSet.getString("nickname").trim())
+			.email(resultSet.getString("email").trim())
 			.build()
 		);
 	}
@@ -49,16 +47,16 @@ public class UserRepository {
 	public Optional<User> findById(Long userId) {
 		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder(userId)
 			.email(resultSet.getString("email"))
-			.nickname(resultSet.getString("nickname"))
-			.password(resultSet.getString("password"))
+			.nickname(resultSet.getString("nickname").trim())
+			.password(resultSet.getString("password").trim())
 			.build();
 		return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
 	}
 
 	public Optional<User> findByEmail(String email) {
 		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder(resultSet.getLong("user_id"))
-			.nickname(resultSet.getString("nickname"))
-			.password(resultSet.getString("password"))
+			.nickname(resultSet.getString("nickname").trim())
+			.password(resultSet.getString("password").trim())
 			.build();
 
 		return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, userRowMapper, email));
@@ -69,14 +67,11 @@ public class UserRepository {
 	}
 
 	public void clear() {
-		usersRepository.clear();
+		jdbcTemplate.execute("DELETE FROM USERS");
 	}
 
 	public void update(ProfileSettingForm profileSettingForm, User user) {
-		int update = jdbcTemplate.update(QUERY_UPDATE
-			, user.getNickname(), user.getEmail(), user.getId());
-		System.out.println(update);
-		usersRepository.remove(user);
-		save(profileSettingForm.toUser(user));
+		jdbcTemplate.update(QUERY_UPDATE, profileSettingForm.getNickname(), profileSettingForm.getEmail(),
+			user.getId());
 	}
 }
