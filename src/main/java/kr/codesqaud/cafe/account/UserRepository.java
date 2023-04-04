@@ -82,7 +82,8 @@ public class UserRepository {
 	}
 
 	public boolean containEmail(String email) {
-		return jdbcTemplate.queryForObject(QUERY_CONTAINS_EMAIL, Integer.class, email) != 0;
+		Integer count = jdbcTemplate.queryForObject(QUERY_CONTAINS_EMAIL, Integer.class, email);
+		return count != null && count != 0;
 	}
 
 	public void update(User user) {
