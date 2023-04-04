@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain.member;
+package kr.codesqaud.cafe.domain.user;
 
 
 public class User {

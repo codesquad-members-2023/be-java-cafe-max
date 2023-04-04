@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.dto.SignUpFormDto;
 import kr.codesqaud.cafe.dto.UpdateFormDto;
-import kr.codesqaud.cafe.domain.member.User;
+import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.service.jdbc.UserJdbcService;
 import kr.codesqaud.cafe.service.memory.UserMemoryService;
 import org.springframework.beans.factory.annotation.Autowired;

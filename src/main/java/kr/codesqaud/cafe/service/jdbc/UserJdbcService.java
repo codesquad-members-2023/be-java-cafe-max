@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.service.jdbc;
 
-import kr.codesqaud.cafe.domain.member.User;
-import kr.codesqaud.cafe.domain.member.repository.UserRepository;
+import kr.codesqaud.cafe.domain.user.User;
+import kr.codesqaud.cafe.domain.user.repository.UserRepository;
 import kr.codesqaud.cafe.dto.SignUpFormDto;
 import kr.codesqaud.cafe.dto.UpdateFormDto;
 import org.springframework.stereotype.Service;

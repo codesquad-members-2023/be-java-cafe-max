@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.domain.member.repository;
+package kr.codesqaud.cafe.domain.user.repository;
 
-import kr.codesqaud.cafe.domain.member.User;
+import kr.codesqaud.cafe.domain.user.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;

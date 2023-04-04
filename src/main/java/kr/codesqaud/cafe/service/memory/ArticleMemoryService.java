@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.service.memory;
 
-import kr.codesqaud.cafe.domain.question.ArticleRepository;
-import kr.codesqaud.cafe.domain.question.Article;
+import kr.codesqaud.cafe.domain.article.repository.ArticleRepository;
+import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
 import org.springframework.stereotype.Service;
 

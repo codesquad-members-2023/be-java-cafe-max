@@ -1,10 +1,8 @@
-package kr.codesqaud.cafe.domain.member.repository;
+package kr.codesqaud.cafe.domain.user.repository;
 
-import kr.codesqaud.cafe.domain.member.User;
+import kr.codesqaud.cafe.domain.user.User;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 
 public interface UserRepository {

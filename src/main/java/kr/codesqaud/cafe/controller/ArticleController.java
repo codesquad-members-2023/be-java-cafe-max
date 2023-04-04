@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.question.Article;
+import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
 import kr.codesqaud.cafe.service.memory.ArticleMemoryService;
 import org.springframework.beans.factory.annotation.Autowired;

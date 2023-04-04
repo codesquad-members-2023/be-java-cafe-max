@@ -1,7 +1,6 @@
-package kr.codesqaud.cafe.domain.member.repository;
+package kr.codesqaud.cafe.domain.user.repository;
 
-import kr.codesqaud.cafe.domain.member.User;
-import org.springframework.stereotype.Repository;
+import kr.codesqaud.cafe.domain.user.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
