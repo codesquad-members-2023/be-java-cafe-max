@@ -1,8 +1,9 @@
-spring:
+server:
   # encoding setting
   servlet:
     encoding:
-      force: true
+      force-response: true
+spring:
   # console log color
   output:
     ansi:
