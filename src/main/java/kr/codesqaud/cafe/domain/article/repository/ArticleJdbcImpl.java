@@ -30,7 +30,7 @@ public class ArticleJdbcImpl implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query(
-                "SELECT * FROM ARTICLES",rowMapper());
+                "SELECT * FROM ARTICLES ORDER BY IDX DESC ",rowMapper());
     }
 
     @Override
