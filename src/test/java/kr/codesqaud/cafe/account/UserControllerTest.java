@@ -162,7 +162,7 @@ class UserControllerTest {
 	void showUserProfileFailed() throws Exception {
 		mockMvc.perform(get("/users/20/update"))
 			.andExpect(status().is4xxClientError())
-			.andExpect(view().name("error/default"));
+			.andExpect(view().name("error/custom"));
 	}
 
 	@DisplayName("유저 프로필 세팅 - 성공")
@@ -206,7 +206,7 @@ class UserControllerTest {
 				.param(EMAIL, JERRY_EMAIL)
 				.param(NICKNAME, JERRY))
 			.andExpect(status().is4xxClientError())
-			.andExpect(view().name("error/default"));
+			.andExpect(view().name("error/custom"));
 	}
 
 	@DisplayName("유저 프로필 세팅 - 실패(형식 오류)")
