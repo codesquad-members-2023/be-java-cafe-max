@@ -17,6 +17,12 @@ public class Article {
         this.date = date;
     }
 
+    public Article(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+    }
+
     public int getIndex() {
         return index;
     }
