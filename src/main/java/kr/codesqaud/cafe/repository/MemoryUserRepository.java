@@ -5,16 +5,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-//@Repository
+@Repository
 public class MemoryUserRepository implements UserRepository {
     private final Map<Long, User> userMap = new HashMap<>();
+    private static Long sequence = 0L;
 
     @Override
     public void save(User user) {
-        if (userMap.containsKey(user.getId())) {
-            return;
-        }
-
+        user.setId(++sequence);
         userMap.put(user.getId(), user);
     }
 
