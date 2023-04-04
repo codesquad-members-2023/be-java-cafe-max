@@ -6,19 +6,28 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepository {
 
 	public static final AtomicLong atomicKey = new AtomicLong();
+	public static final String SAVE_USER_QUERY = "INSERT INTO USERS (NICKNAME, EMAIL, PASSWORD) values ( ?,?,? )";
 	private final List<User> usersRepository;
+	private final JdbcTemplate jdbcTemplate;
 
-	public UserRepository() {
-		this.usersRepository = new ArrayList<>();
+	public UserRepository(List<User> usersRepository, DataSource dataSource) {
+		this.usersRepository = usersRepository;
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
 	public boolean save(User user) {
+		int update = jdbcTemplate.update(
+			SAVE_USER_QUERY, user.getNickname(), user.getEmail(), user.getPassword()
+		);
 		return usersRepository.add(user);
 	}
 
