@@ -31,14 +31,14 @@ public class UserService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public UserDTO getUserByUserId(String id){
+    public UserDTO getUserById(String id){
         return userRepository.findUserById(id)
                 .map(User::toUserDTO)
                 .orElseThrow(() -> new UserNotFoundException("해당 사용자가 없습니다."));
     }
 
     public void updateUserByUserId(ProfileEditDTO profileEditDto){
-        UserDTO userDto = getUserByUserId(profileEditDto.getId());
+        UserDTO userDto = getUserById(profileEditDto.getId());
 
         if(userDto.getPassword().equals(profileEditDto.getOriPassword())){
             userRepository.updateUser(profileEditDto.toUser());

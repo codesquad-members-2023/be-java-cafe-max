@@ -65,7 +65,7 @@ class UserServiceTest {
         userService.addUser(new UserDTO("charlie","aaa@naver.com","password","testId"));
 
         //when & then
-        Assertions.assertThatCode(() ->userService.getUserByUserId("testId")).doesNotThrowAnyException();
+        Assertions.assertThatCode(() ->userService.getUserById("testId")).doesNotThrowAnyException();
     }
 
     @Test
@@ -75,7 +75,7 @@ class UserServiceTest {
         userService.addUser(new UserDTO("charlie","aaa@naver.com","password","testId"));
 
         //when & then
-        Assertions.assertThatThrownBy(()-> userService.getUserByUserId("hello")).isInstanceOf(UserNotFoundException.class);
+        Assertions.assertThatThrownBy(()-> userService.getUserById("hello")).isInstanceOf(UserNotFoundException.class);
     }
 
 
@@ -91,7 +91,7 @@ class UserServiceTest {
         Assertions.assertThatCode(() -> userService.updateUserByUserId(profileEditDTO)).doesNotThrowAnyException();
 
         //then
-        UserDTO changedUser = userService.getUserByUserId("testId");
+        UserDTO changedUser = userService.getUserById("testId");
         Assertions.assertThat(changedUser.getNickName().equals(profileEditDTO.getNickName())).isTrue();
         Assertions.assertThat(changedUser.getEmail().equals(profileEditDTO.getEmail())).isTrue();
         Assertions.assertThat(changedUser.getPassword().equals(profileEditDTO.getNewPassword())).isTrue();
@@ -108,7 +108,7 @@ class UserServiceTest {
         Assertions.assertThatThrownBy(() -> userService.updateUserByUserId(profileEditDTO)).isInstanceOf(InvalidPasswordException.class);
 
         //then
-        UserDTO changedUser = userService.getUserByUserId("testId");
+        UserDTO changedUser = userService.getUserById("testId");
         Assertions.assertThat(changedUser.getNickName().equals(profileEditDTO.getNickName())).isFalse();
         Assertions.assertThat(changedUser.getEmail().equals(profileEditDTO.getEmail())).isFalse();
         Assertions.assertThat(changedUser.getPassword().equals(profileEditDTO.getNewPassword())).isFalse();

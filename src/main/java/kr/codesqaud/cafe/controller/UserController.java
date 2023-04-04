@@ -39,13 +39,13 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String showUserProfile(@PathVariable String id, Model model) {
-        model.addAttribute("user", userService.getUserByUserId(id));
+        model.addAttribute("user", userService.getUserById(id));
         return "user/profile";
     }
 
     @GetMapping("/users/{id}/form")
     public String userUpdateForm(@PathVariable String id,Model model){
-        model.addAttribute("user",userService.getUserByUserId(id));
+        model.addAttribute("user",userService.getUserById(id));
         return "/user/updateForm";
     }
 
