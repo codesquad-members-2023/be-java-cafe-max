@@ -41,9 +41,8 @@ public class UserService {
 		}
 	}
 
-	public boolean checkPasswordByUserId(String password, Long userId) {
-		Optional<User> optionalUser = userRepository.findById(userId);
-		return optionalUser.map(user -> Objects.equals(user.getPassword(), password)).orElse(false);
+	public boolean checkPassword(String password, String targetPassword) {
+		return Objects.equals(targetPassword, password);
 	}
 
 	public Optional<User> findByEmail(String email) {

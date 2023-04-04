@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.account;
 import static kr.codesqaud.cafe.utils.FiledName.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -108,7 +109,14 @@ public class UserController {
 		if (errors.hasErrors()) {
 			return "account/profileUpdate";
 		}
-		if (!userService.checkPasswordByUserId(profileSettingForm.getPassword(), userId)) {
+		Optional<User> userOptional = userService.findById(userId);
+		User user = userOptional.get();
+		if (!Objects.equals(user.getEmail(), profileSettingForm.getEmail())
+			&& userService.containEmail(profileSettingForm.getEmail())) {
+			errors.rejectValue(EMAIL, "error.email.duplicate");
+			return "account/profileUpdate";
+		}
+		if (!userService.checkPassword(profileSettingForm.getPassword(), user.getPassword())) {
 			errors.rejectValue(PASSWORD, "error.password.notMatch");
 			return "account/profileUpdate";
 		}
