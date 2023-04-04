@@ -56,13 +56,19 @@ public class UserController {
 
     @GetMapping("/users/update/{id}")
     public String getUpdate(@PathVariable Long id, Model model) {
-        User user = userService.findById(id).get();
+        User user;
+        if (userService.findById(id).isPresent()) {
+            user = userService.findById(id).get();
+        } else {
+            throw new NoSuchElementException();
+        }
+
         model.addAttribute("userUpdated", user);
         return "user/updateForm";
     }
 
-    @PutMapping("/users/update/{id}")
-    public String putUpdate(@PathVariable Long id, User user) {
+    @PostMapping("/users/update/{id}")
+    public String postUpdate(@PathVariable Long id, User user) {
         userService.updateUser(id, user);
         return "redirect:/users";
     }
