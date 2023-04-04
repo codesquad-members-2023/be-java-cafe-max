@@ -12,11 +12,16 @@ public class Article {
 	private String content;
 	private LocalDateTime createdAt;
 
-	private Article(String writer, String title, String content, LocalDateTime createdAt) {
+	public Article(Long id, String writer, String title, String content, LocalDateTime createdAt) {
+		this.id = id;
 		this.writer = writer;
 		this.title = title;
 		this.content = content;
 		this.createdAt = createdAt;
+	}
+
+	private Article(String writer, String title, String content, LocalDateTime createdAt) {
+		this(null, writer, title, content, createdAt);
 	}
 
 	public static Article from(final PostingRequest postingRequest) {
