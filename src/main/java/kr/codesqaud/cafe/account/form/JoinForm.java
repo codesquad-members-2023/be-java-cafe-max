@@ -6,7 +6,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import kr.codesqaud.cafe.account.User;
-import kr.codesqaud.cafe.account.UserRepository;
 
 public class JoinForm {
 	@NotEmpty
