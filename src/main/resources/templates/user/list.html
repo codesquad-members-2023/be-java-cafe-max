@@ -3,35 +3,61 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/fragments/layout}">
 <head>
-    <title>회원 목록 조회</title>
+    <th:block th:include="/fragments/config::config"/>
+    <link rel="stylesheet" href="/css/main.css">
+    <title>CodeSquad - Users</title>
 </head>
 <body>
 
-<div layout:fragment="content" class="container" id="main">
-    <div class="col-md-10 col-md-offset-1">
-        <div class="panel panel-default">
-            <table class="table table-hover">
+<div layout:fragment="content">
+    <section id="main">
+        <div>
+            <span id="mainText1">코드스쿼드 백엔드 멤버</span>
+            <span id="mainText2">참여자를 확인할 수 있습니다</span>
+        </div>
+        <span th:text="|총 회원 수 ${#lists.size(users)}명|">총 회원 수 60명</span>
+        <div id="mainForum">
+            <table>
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>사용자 아이디</th>
-                    <th>이름</th>
-                    <th>이메일</th>
-                    <th></th>
+                    <th scope="col" width="10%">no</th>
+                    <th class="userId" scope="col" width="20%">아이디</th>
+                    <th scope="col" width="20%">닉네임</th>
+                    <th scope="col" width="30%">이메일</th>
+                    <th scope="col" width="10%"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="user, userStat : ${users}">
-                    <th scope="row" th:text="${userStat.count}"></th>
-                    <td th:text="${user.userId}"></td>
-                    <td><a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.name}"></a></td>
+                    <td scope="row" th:text="${userStat.count}"></td>
+                    <td class="userId"><a th:href="@{/users/{userId}(userId=${user.userId})}"
+                                                th:text="${user.userId}"></a></td>
+                    <td th:text="${user.name}"></td>
                     <td th:text="${user.email}"></td>
-                    <td><a th:href="@{/users/{userId}/update(userId=${user.userId})}" class="btn btn-success" role="button">수정</a></td>
+                    <td><a class="toEdit" th:href="@{/users/{userId}/update(userId=${user.userId})}"
+                           role="button">수정</a></td>
                 </tr>
                 </tbody>
             </table>
         </div>
-    </div>
+        <nav aria-label="Page navigation" id="pagination">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </section>
 </div>
 
 </body>

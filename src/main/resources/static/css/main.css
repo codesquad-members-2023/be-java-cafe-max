@@ -173,7 +173,7 @@ th, td {
     box-shadow: none;
 }
 
-.write {
+.write, .toEdit {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -194,5 +194,34 @@ th, td {
 
     text-align: center;
 
+    transition: all 0.4s;
+
     color: #FFFFFF;
 }
+
+.write:hover, .toEdit:hover {
+    background: #203faf;
+}
+
+/* 회원 목록 */
+.userId > a {
+    text-decoration: none;
+    transition: all 0.4s;
+}
+
+.userId > a:link {
+    color: #4362D0;
+}
+
+.userId > a:visited {
+    color: #879298;
+}
+
+.userId > a:hover {
+    color: #203faf;
+}
+
+.toEdit {
+    width: 58px;
+}
+

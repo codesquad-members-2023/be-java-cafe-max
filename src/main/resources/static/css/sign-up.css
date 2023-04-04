@@ -101,7 +101,13 @@ form > button {
     
     text-align: center;
 
+    transition: all 0.4s;
+
     color: #FFFFFF;
+}
+
+form > button:hover {
+    background: #203faf;
 }
 
 form > div > span {
