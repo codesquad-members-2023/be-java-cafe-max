@@ -25,10 +25,9 @@ public class UserJdbcImpl implements UserRepository {
 
     @Override
     public User findById(String id) {
-        List<User> list = jdbcTemplate.query(
+        return jdbcTemplate.queryForObject(
                 "SELECT * FROM USERS WHERE ID = ?", rowMapper(), id
         );
-        return list.get(0);
     }
 
     private RowMapper<User> rowMapper() {

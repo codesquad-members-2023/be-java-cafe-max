@@ -35,9 +35,8 @@ public class ArticleJdbcImpl implements ArticleRepository {
 
     @Override
     public Article findByIDX(int idx) {
-        List<Article> list = jdbcTemplate.query(
+        return jdbcTemplate.queryForObject(
                 "SELECT * FROM ARTICLES WHERE IDX = ?", rowMapper(), idx
         );
-        return list.get(0);
     }
 }
