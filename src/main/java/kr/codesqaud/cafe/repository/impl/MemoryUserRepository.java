@@ -1,13 +1,12 @@
 package kr.codesqaud.cafe.repository.impl;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.exception.InvalidPasswordException;
-import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MemoryUserRepository implements UserRepository {
@@ -30,19 +29,14 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User findUserById(String userId) {
+    public Optional<User> findUserById(String userId) {
         return userRepository.values().stream()
-                .filter(user -> user.getId().equals(userId))
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("해당 사용자가 없습니다.") );
+                .filter(u -> u.getId().equals(userId))
+                .findFirst();
     }
 
     @Override
-    public void updateUser(User user,String oriPassword) {
-        String userRepositoryOriPassword = userRepository.get(user.getId()).getPassword();
-        if (!userRepositoryOriPassword.equals(oriPassword)) {
-            throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
-        }
+    public void updateUser(User user) {
         save(user);
     }
 }

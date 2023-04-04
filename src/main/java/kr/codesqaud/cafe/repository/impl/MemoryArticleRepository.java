@@ -4,7 +4,6 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +24,8 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        List<Article> articles = articleRepository.values().stream()
-                .collect(Collectors.toList());
-        return Collections.unmodifiableList(articles);
+        return articleRepository.values().stream()
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override

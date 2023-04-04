@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class JDBCUserRepository implements UserRepository {
@@ -28,14 +29,14 @@ public class JDBCUserRepository implements UserRepository {
     }
 
     @Override
-    public User findUserById(String id) {
-        return jdbcTemplate.queryForObject("SELECT * FROM \"USER\" WHERE id = ?",new Object[]{id},(rs,rn) -> new User(rs));
+    public Optional<User> findUserById(String id) {
+        User user = jdbcTemplate.queryForObject("SELECT * FROM \"USER\" WHERE id = ?",new Object[]{id},(rs,rn) -> new User (rs));
+        return Optional.ofNullable(user);
     }
 
     @Override
-    public void updateUser(User user, String oriPassword) {
-        User dbUser = findUserById(user.getId());
-        String sql = "UPDATE \"USER\" SET nickName = ?, email = ?, password = ? WHERE id = ? AND ? = ?";
-        jdbcTemplate.update(sql,user.getNickName(),user.getEmail(),user.getPassword(),user.getId(),dbUser.getPassword(),oriPassword);
+    public void updateUser(User user) {
+        String sql = "UPDATE \"USER\" SET nickName = ?, email = ?, password = ? WHERE id = ?";
+        jdbcTemplate.update(sql,user.getNickName(),user.getEmail(),user.getPassword(),user.getId());
     }
 }

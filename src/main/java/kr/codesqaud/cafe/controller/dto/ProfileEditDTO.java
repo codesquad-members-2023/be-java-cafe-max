@@ -17,6 +17,11 @@ public class ProfileEditDTO {
         this.oriPassword = oriPassword;
         this.id = id;
     }
+
+    public String getId() {
+        return id;
+    }
+
     public String getNewPassword() {
         return newPassword;
     }

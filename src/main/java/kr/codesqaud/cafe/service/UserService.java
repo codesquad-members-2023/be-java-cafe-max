@@ -3,6 +3,9 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.controller.dto.UserListDTO;
+import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.exception.InvalidPasswordException;
+import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +32,18 @@ public class UserService {
     }
 
     public UserDTO getUserByUserId(String id){
-        return userRepository.findUserById(id).toUserDTO();
+        return userRepository.findUserById(id)
+                .map(User::toUserDTO)
+                .orElseThrow(() -> new UserNotFoundException("해당 사용자가 없습니다."));
     }
+
     public void updateUserByUserId(ProfileEditDTO profileEditDto){
-        userRepository.updateUser(profileEditDto.toUser(),profileEditDto.getOriPassword());
+        UserDTO userDto = getUserByUserId(profileEditDto.getId());
+
+        if(userDto.getPassword().equals(profileEditDto.getOriPassword())){
+            userRepository.updateUser(profileEditDto.toUser());
+        } else {
+            throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
+        }
     }
 }
