@@ -15,12 +15,9 @@ public class ArticleService {
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
-    public boolean write(Article article) {
-        if (findOne(article.getTitle()).isPresent()) {
-            return false;
-        }
+    public Long write(Article article) {
         articleRepository.save(article);
-        return true;
+        return article.getId();
     }
 
 
@@ -28,7 +25,7 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public Optional<Article> findOne(String title) {
-        return articleRepository.findByTitle(title);
+    public Optional<Article> findOne(Long id) {
+        return articleRepository.findById(id);
     }
 }

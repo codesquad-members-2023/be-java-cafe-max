@@ -26,11 +26,10 @@ public class ArticleController {
     public String write(ArticleForm form) {
 
         Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
-        boolean result = articleService.write(article);
-        if (result) {
-            return "redirect:/";
-        }
-        return "redirect:/qna/form";
+        articleService.write(article);
+
+        return "redirect:/";
+
     }
 
     @GetMapping(value = {"/", "index"})
@@ -41,9 +40,9 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("articles/{title}")
-    public String showArticle(Model model, @PathVariable String title) {
-        model.addAttribute("article", articleService.findOne(title));
+    @GetMapping("articles/{id}")
+    public String showArticle(Model model, @PathVariable Long id) {
+        model.addAttribute("article", articleService.findOne(id));
         return "qna/show";
     }
 }

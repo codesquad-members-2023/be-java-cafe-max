@@ -8,6 +8,8 @@ public class Article {
     private String title;
     private String contents;
 
+    private Long id;
+
     private LocalDateTime localDateTime;
 
     public Article(String writer, String title, String contents) {
@@ -31,5 +33,13 @@ public class Article {
 
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
