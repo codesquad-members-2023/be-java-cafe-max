@@ -12,8 +12,10 @@ import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.exception.member.NotMatchMemberPassword;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -33,11 +35,13 @@ public class MemberService {
         }
     }
 
+    @Transactional(readOnly = true)
     public MemberResponse findById(long id) {
         return MemberResponse.from(memberRepository.findById(id)
             .orElseThrow(MemberNotFoundException::new));
     }
 
+    @Transactional(readOnly = true)
     public List<MemberResponse> findAll() {
         return memberRepository.findAll()
             .stream()

@@ -12,12 +12,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
-@JdbcTest
-@Sql("classPath:schema.sql")
-class MemoryMemberRepositoryTest {
+@SpringBootTest
+@Sql(scripts = "classpath:schema.sql")
+class MemberRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
@@ -104,7 +104,7 @@ class MemoryMemberRepositoryTest {
         Member member = dummyData();
         Long savedId = memberRepository.save(member);
         Member updateMember = new Member(savedId, "mandu@gmail.com"
-            , "mandu12345", "manduUpdate", LocalDateTime.now());
+            , "mandu12345", "manduUpdat", LocalDateTime.now());
 
         // when
         memberRepository.update(updateMember);
