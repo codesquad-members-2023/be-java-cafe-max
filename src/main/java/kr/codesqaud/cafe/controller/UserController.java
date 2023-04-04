@@ -23,11 +23,11 @@ public class UserController {
 
     @PostMapping("/user/create")
     public String create(UserForm form) {
-        User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
+        User user = new User(form.getId(), form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
 
         userService.join(user);
 
-        return "redirect:/users/" + user.getUserId();
+        return "redirect:/users/" + user.getId();
     }
 
     @GetMapping("/users")
@@ -39,11 +39,11 @@ public class UserController {
         // "templates/" + "user/list" + ".html"
     }
 
-    @GetMapping("/users/{userId}")
-    public String findProfile(@PathVariable("userId") String userId, Model model) {
+    @GetMapping("/users/{id}")
+    public String findProfile(@PathVariable("id") Long id, Model model) {
         User user;
-        if (userService.findByUserId(userId).isPresent()) {
-            user = userService.findByUserId(userId).get();
+        if (userService.findById(id).isPresent()) {
+            user = userService.findById(id).get();
         } else {
             throw new NoSuchElementException();
         }
@@ -54,16 +54,16 @@ public class UserController {
         // "templates/" + "user/profile" + ".html"
     }
 
-    @GetMapping("/users/update/{userId}")
-    public String getUpdate(@PathVariable String userId, Model model) {
-        User user = userService.findByUserId(userId).get();
+    @GetMapping("/users/update/{id}")
+    public String getUpdate(@PathVariable Long id, Model model) {
+        User user = userService.findById(id).get();
         model.addAttribute("userUpdated", user);
         return "user/updateForm";
     }
 
-    @PutMapping("/users/update/{userId}")
-    public String putUpdate(@PathVariable String userId, User user) {
-        userService.updateUser(userId, user);
+    @PutMapping("/users/update/{id}")
+    public String putUpdate(@PathVariable Long id, User user) {
+        userService.updateUser(id, user);
         return "redirect:/users";
     }
 }

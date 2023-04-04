@@ -31,11 +31,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findByUserId(String userId) {
-        return userRepository.findByUserId(userId);
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
     }
 
-    public void updateUser(String userId, User updateUser) {
-        userRepository.update(userId, updateUser);
+    public void updateUser(Long id, User updateUser) {
+        userRepository.update(id, updateUser);
     }
 }
