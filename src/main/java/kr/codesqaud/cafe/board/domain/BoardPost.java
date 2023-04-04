@@ -8,9 +8,13 @@ public class BoardPost {
     private String writer;
     private String title;
     private String contents;
-    private LocalDateTime writeDateTime = LocalDateTime.now();
+    private LocalDateTime writeDateTime;
 
     public BoardPost(String writer, String title, String contents, LocalDateTime writeDateTime) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.writeDateTime = writeDateTime;
     }
 
     public Long getPostId() {
