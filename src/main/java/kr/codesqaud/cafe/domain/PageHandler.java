@@ -16,7 +16,8 @@ public class PageHandler {
 	private int postOffset; // 현재 페이지의 첫 번째 게시글의 변위
 	private boolean previousBlock; // 페이징 바에서 이전 블록이 존재하는가?
 	private boolean nextBlock; // 페이징 바에서 다음 블록이 존재하는가?
-
+	private int previousPage; // 이전 블록으로 넘어갈 때 페이지 번호
+	private int nextPage; // 다음 블록으로 넘어갈 때 페이지 번호
 	private List<Integer> pagingBar; // 페이징 바
 
 	public PageHandler(int totalPostsCount, int currentPage) {
@@ -30,6 +31,8 @@ public class PageHandler {
 			this.endPageInPagingBar = getLastPage();
 		this.previousBlock = getCurrentPage() > getPagingBarSize();
 		this.nextBlock = getCurrentPage() <= getLastPage() - getPagingBarSize() + 1;
+		this.previousPage = (getCurrentPage() - getPagingBarSize());
+		this.nextPage = Math.min(getCurrentPage() + getPagingBarSize(), getLastPage());
 		this.pagingBar = IntStream.rangeClosed(beginPageInPagingBar, endPageInPagingBar)
 			.boxed()
 			.collect(Collectors.toUnmodifiableList());
@@ -77,6 +80,14 @@ public class PageHandler {
 
 	public boolean isNextBlock() {
 		return nextBlock;
+	}
+
+	public int getPreviousPage() {
+		return previousPage;
+	}
+
+	public int getNextPage() {
+		return nextPage;
 	}
 
 	public List<Integer> getPagingBar() {
