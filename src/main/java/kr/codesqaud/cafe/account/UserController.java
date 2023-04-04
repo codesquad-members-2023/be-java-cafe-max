@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.account;
 
+import static kr.codesqaud.cafe.utils.FiledName.*;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +35,7 @@ public class UserController {
 
 	@GetMapping("/login")
 	public String showLoginPage(Model model) {
-		model.addAttribute("loginForm", new LoginForm());
+		model.addAttribute(LOGIN_FORM, new LoginForm());
 		return "account/login";
 	}
 
@@ -44,12 +46,12 @@ public class UserController {
 		}
 		Optional<User> userOptional = userService.findByEmail(loginForm.getEmail());
 		if (userOptional.isEmpty()) {
-			bindingResult.rejectValue("email", "error.email.notExist");
+			bindingResult.rejectValue(EMAIL, "error.email.notExist");
 			return "account/login";
 		}
 		User user = userOptional.get();
 		if (!user.getPassword().equals(loginForm.getPassword())) {
-			bindingResult.rejectValue("password", "error.password.notMatch");
+			bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
 			return "account/login";
 		}
 		return "redirect:/users/" + user.getId();
@@ -57,7 +59,7 @@ public class UserController {
 
 	@GetMapping("/join")
 	public String showJoinPage(Model model) {
-		model.addAttribute("joinForm", new JoinForm());
+		model.addAttribute(JOIN_FORM, new JoinForm());
 		return "account/join";
 	}
 
@@ -67,7 +69,7 @@ public class UserController {
 			return "account/join";
 		}
 		if (userService.containEmail(joinForm.getEmail())) {
-			bindingResult.rejectValue("email", "error.email.duplicate");
+			bindingResult.rejectValue(EMAIL, "error.email.duplicate");
 			return "account/join";
 		}
 		User user = userService.createNewUser(joinForm);
@@ -77,7 +79,7 @@ public class UserController {
 	@GetMapping
 	public String showUsers(Model model) {
 		List<UserForm> allUserForm = userService.getAllUsersForm();
-		model.addAttribute("users", allUserForm);
+		model.addAttribute(USERS, allUserForm);
 		return "account/members";
 	}
 
@@ -89,8 +91,8 @@ public class UserController {
 		}
 		ProfileForm profileForm = ProfileForm.from(userOptional.get());
 
-		model.addAttribute("profileForm", profileForm);
-		model.addAttribute("userId", userId);
+		model.addAttribute(PROFILE_FORM, profileForm);
+		model.addAttribute(USER_ID, userId);
 		return "account/profile";
 	}
 
@@ -101,8 +103,8 @@ public class UserController {
 			return "redirect:/";
 		}
 		ProfileSettingForm profileSettingForm = ProfileSettingForm.from(userOptional.get());
-		model.addAttribute("userId", userId);
-		model.addAttribute("profileSettingForm", profileSettingForm);
+		model.addAttribute(USER_ID, userId);
+		model.addAttribute(PROFILE_SETTING_FORM, profileSettingForm);
 		return "account/profileUpdate";
 	}
 
@@ -117,7 +119,7 @@ public class UserController {
 			return "account/profileUpdate";
 		}
 		if (!userService.checkPasswordByUserId(profileSettingForm.getPassword(), userId)) {
-			errors.rejectValue("password", "error.password.notMatch");
+			errors.rejectValue(PASSWORD, "error.password.notMatch");
 			return "account/profileUpdate";
 		}
 		userService.update(profileSettingForm, userId);
