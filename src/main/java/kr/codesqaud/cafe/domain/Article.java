@@ -5,7 +5,7 @@ package kr.codesqaud.cafe.domain;
  */
 public class Article {
 
-    private long index;
+    private long sequence;
     private String writer;
     private String title;
     private String contents;
@@ -16,12 +16,12 @@ public class Article {
         this.contents = contents;
     }
 
-    public long getIndex() {
-        return index;
+    public long getSequence() {
+        return sequence;
     }
 
-    public void setIndex(final long index) {
-        this.index = index;
+    public void setSequence(final long sequence) {
+        this.sequence = sequence;
     }
 
     public String getWriter() {
