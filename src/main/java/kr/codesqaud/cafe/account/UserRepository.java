@@ -22,6 +22,10 @@ public class UserRepository {
 	private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD FROM USERS WHERE EMAIL = ?";
 	private static final String QUERY_CONTAINS_EMAIL = "SELECT COUNT(*) FROM USERS WHERE EMAIL = ?";
 	private static final String QUERY_FIND_ALL_USERS = "SELECT * FROM USERS";
+	public static final String COLUMN_USER_ID = "user_id";
+	public static final String COLUMN_PASSWORD = "password";
+	public static final String COLUMN_NICKNAME = "nickname";
+	public static final String COLUMN_EMAIL = "email";
 	private final JdbcTemplate jdbcTemplate;
 
 	public UserRepository(DataSource dataSource) {
@@ -36,27 +40,27 @@ public class UserRepository {
 
 	public List<User> getAllMembers() {
 		return jdbcTemplate.query(QUERY_FIND_ALL_USERS, (resultSet, rowNum)
-			-> new User.Builder(resultSet.getLong("user_id"))
-			.password(resultSet.getString("password").trim())
-			.nickname(resultSet.getString("nickname").trim())
-			.email(resultSet.getString("email").trim())
+			-> new User.Builder(resultSet.getLong(COLUMN_USER_ID))
+			.password(resultSet.getString(COLUMN_PASSWORD).trim())
+			.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
+			.email(resultSet.getString(COLUMN_EMAIL).trim())
 			.build()
 		);
 	}
 
 	public Optional<User> findById(Long userId) {
 		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder(userId)
-			.email(resultSet.getString("email"))
-			.nickname(resultSet.getString("nickname").trim())
-			.password(resultSet.getString("password").trim())
+			.email(resultSet.getString(COLUMN_EMAIL))
+			.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
+			.password(resultSet.getString(COLUMN_PASSWORD).trim())
 			.build();
 		return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
 	}
 
 	public Optional<User> findByEmail(String email) {
-		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder(resultSet.getLong("user_id"))
-			.nickname(resultSet.getString("nickname").trim())
-			.password(resultSet.getString("password").trim())
+		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder(resultSet.getLong(COLUMN_USER_ID))
+			.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
+			.password(resultSet.getString(COLUMN_PASSWORD).trim())
 			.build();
 
 		return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, userRowMapper, email));
