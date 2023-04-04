@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
+import kr.codesqaud.cafe.service.jdbc.ArticleJdbcService;
 import kr.codesqaud.cafe.service.memory.ArticleMemoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,16 +16,20 @@ import java.util.List;
 @Controller
 public class ArticleController {
 
-    private final ArticleMemoryService articleMemoryService;
+    private  ArticleMemoryService articleMemoryService;
 
-    @Autowired
     public ArticleController(ArticleMemoryService articleMemoryService) {
         this.articleMemoryService = articleMemoryService;
+    }
+    private ArticleJdbcService articleJdbcService;
+    @Autowired
+    public ArticleController(ArticleJdbcService articleJdbcService) {
+        this.articleJdbcService = articleJdbcService;
     }
 
     @PostMapping("/article/write")
     public String postQuestion(ArticleFormDto articleFormDto) {
-        articleMemoryService.questionWrite(articleFormDto);
+        articleJdbcService.writeArticle(articleFormDto);
         return "redirect:/";
     }
 
@@ -38,7 +43,7 @@ public class ArticleController {
 
     @GetMapping("/")
     public String getIndex(Model model) {
-        model.addAttribute("articleList", articleMemoryService.getArticleList());
+        model.addAttribute("articleList", articleJdbcService.getAricleList());
         return "index";
     }
 
