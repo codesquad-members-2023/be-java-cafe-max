@@ -11,9 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserRepository {
 
-	private final List<User> usersRepository;
-
 	public static final AtomicLong atomicKey = new AtomicLong();
+	private final List<User> usersRepository;
 
 	public UserRepository() {
 		this.usersRepository = new ArrayList<>();

@@ -1,13 +1,18 @@
 package kr.codesqaud.cafe.account;
 
-import kr.codesqaud.cafe.account.form.ProfileSettingForm;
-
 public class User {
 
-	private Long id;
-	private String nickname;
-	private String email;
-	private String password;
+	private final Long id;
+	private final String nickname;
+	private final String email;
+	private final String password;
+
+	private User(Builder builder) {
+		this.id = builder.id;
+		this.email = builder.email;
+		this.password = builder.password;
+		this.nickname = builder.nickname;
+	}
 
 	public Long getId() {
 		return id;
@@ -23,13 +28,6 @@ public class User {
 
 	public String getPassword() {
 		return password;
-	}
-
-	private User(Builder builder) {
-		this.id = builder.id;
-		this.email = builder.email;
-		this.password = builder.password;
-		this.nickname = builder.nickname;
 	}
 
 	public static class Builder {

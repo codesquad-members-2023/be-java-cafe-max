@@ -3,15 +3,15 @@ package kr.codesqaud.cafe.post;
 import java.time.LocalDateTime;
 
 public class Post {
-	private Long id;
+	private final Long id;
 
-	private String nickname;
+	private final String nickname;
 
-	private String title;
+	private final String title;
 
-	private String textContent;
+	private final String textContent;
 
-	private LocalDateTime createdDateTime;
+	private final LocalDateTime createdDateTime;
 
 	private Post(Builder builder) {
 		this.id = builder.id;
@@ -42,7 +42,7 @@ public class Post {
 	}
 
 	public static class Builder {
-		private Long id;
+		private final Long id;
 
 		private String nickname;
 

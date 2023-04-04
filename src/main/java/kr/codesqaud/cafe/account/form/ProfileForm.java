@@ -3,8 +3,8 @@ package kr.codesqaud.cafe.account.form;
 import kr.codesqaud.cafe.account.User;
 
 public class ProfileForm {
-	private String nickname;
-	private String email;
+	private final String nickname;
+	private final String email;
 
 	private ProfileForm(Builder builder) {
 		this.nickname = builder.nickname;
