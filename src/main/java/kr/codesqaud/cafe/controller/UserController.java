@@ -50,8 +50,8 @@ public class UserController {
 
     @GetMapping("/{userId}/update")
     public String updateUser(@PathVariable String userId, Model model) {
-        UserResponse userResponse = userService.findByUserId(userId);
-        model.addAttribute("user", userResponse);
+        UserUpdateRequest userUpdateRequest = userService.makeUserUpdateRequestByUserId(userId); // UserUpdateRequest를 받아야지만 정상적으로 작동하는데 정확한 이유를 찾지 못했다.
+        model.addAttribute("user", userUpdateRequest);
 
         return "user/update";
     }

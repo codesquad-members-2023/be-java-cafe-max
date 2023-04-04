@@ -36,7 +36,7 @@ public class UserService {
         String currentPassword = userRepository.findByUserId(userUpdateRequest.getUserId()).getPassword();
 
         if (!currentPassword.equals(userUpdateRequest.getCurrentPassword())) { // 현재 비밀번호 일치 여부 검사
-            throw new MismatchedPasswordException();
+            throw new MismatchedPasswordException(userUpdateRequest);
         }
         userRepository.save(User.from(userUpdateRequest));
     }
@@ -47,5 +47,17 @@ public class UserService {
         }
 
         return UserResponse.from(userRepository.findByUserId(userId));
+    }
+
+    public UserUpdateRequest makeUserUpdateRequestByUserId(String userId) {
+        UserResponse userResponse = findByUserId(userId);
+
+        UserUpdateRequest userUpdateRequest = new UserUpdateRequest();
+        userUpdateRequest.setUserId(userResponse.getUserId());
+        userUpdateRequest.setEmail(userResponse.getEmail());
+        userUpdateRequest.setName(userResponse.getName());
+        userUpdateRequest.setCurrentPassword(userResponse.getPassword());
+
+        return userUpdateRequest;
     }
 }

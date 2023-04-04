@@ -7,12 +7,7 @@ public class UserUpdateRequest {
     private String name;
     private String email;
 
-    public UserUpdateRequest(String userId, String currentPassword, String newPassword, String name, String email) {
-        this.userId = userId;
-        this.currentPassword = currentPassword;
-        this.newPassword = newPassword;
-        this.name = name;
-        this.email = email;
+    public UserUpdateRequest() {
     }
 
     public String getUserId() { return userId; }
@@ -28,4 +23,10 @@ public class UserUpdateRequest {
     public String getEmail() {
         return email;
     }
+
+    public void setUserId(String userId) { this.userId = userId; }
+    public void setCurrentPassword(String currentPassword) { this.currentPassword = currentPassword; }
+    public void setNewPassword(String newPassword) { this.newPassword = newPassword; }
+    public void setName(String name) { this.name = name; }
+    public void setEmail(String email) { this.email = email; }
 }

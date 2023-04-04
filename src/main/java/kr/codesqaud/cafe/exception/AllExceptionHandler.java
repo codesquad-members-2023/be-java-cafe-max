@@ -22,6 +22,7 @@ public class AllExceptionHandler {
 
     @ExceptionHandler(MismatchedPasswordException.class)
     public String handleMismatchedPasswordException(MismatchedPasswordException exception, Model model) {
+        model.addAttribute("user", exception.getUserUpdateRequest());
         model.addAttribute("mismatchedPasswordMessage", exception.getMessage());
         return "user/update";
     }
