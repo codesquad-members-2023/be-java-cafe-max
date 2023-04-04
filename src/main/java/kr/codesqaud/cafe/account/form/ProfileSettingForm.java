@@ -60,8 +60,10 @@ public class ProfileSettingForm {
 		this.password = password;
 	}
 
-	public User toUser(User user) {
+
+	public User setUser(User user) {
 		return new User.Builder()
+			.id(user.getId())
 			.email(email)
 			.nickname(nickname)
 			.password(user.getPassword())
