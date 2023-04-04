@@ -37,8 +37,8 @@ public class UserService {
 		Optional<User> userOptional = userRepository.findById(userId);
 		if (userOptional.isPresent()) {
 			User user = userOptional.get();
-			userRepository.remove(user);
-			userRepository.save(profileSettingForm.toUser(user));
+
+			userRepository.update(profileSettingForm, user);
 		}
 	}
 

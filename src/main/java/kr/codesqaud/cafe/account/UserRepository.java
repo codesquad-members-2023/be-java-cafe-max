@@ -11,6 +11,8 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import kr.codesqaud.cafe.account.form.ProfileSettingForm;
+
 @Repository
 public class UserRepository {
 
@@ -29,10 +31,6 @@ public class UserRepository {
 			SAVE_USER_QUERY, user.getNickname(), user.getEmail(), user.getPassword()
 		);
 		return usersRepository.add(user);
-	}
-
-	public boolean remove(User user) {
-		return usersRepository.remove(user);
 	}
 
 	public List<User> getAllMembers() {
@@ -58,5 +56,10 @@ public class UserRepository {
 
 	public void clear() {
 		usersRepository.clear();
+	}
+
+	public void update(ProfileSettingForm profileSettingForm, User user) {
+		usersRepository.remove(user);
+		save(profileSettingForm.toUser(user));
 	}
 }
