@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.board.repository;
 
 import kr.codesqaud.cafe.board.domain.BoardPost;
+import kr.codesqaud.cafe.board.dto.PostResponseForm;
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
 import org.springframework.stereotype.Repository;
 
@@ -21,11 +22,11 @@ public class BoardRepository {
         boardData.put(boardPost.getPostId(), boardPost);
     }
 
-    public BoardPost getPost(Long postId) {
-        return boardData.get(postId);
+    public PostResponseForm getPost(Long postId) {
+        return boardData.get(postId).toPostResponseForm();
     }
 
-    public List<BoardPost> getPostList() {
-        return boardData.values().stream().collect(Collectors.toList());
+    public List<PostResponseForm> getPostList() {
+        return boardData.values().stream().map(BoardPost::toPostResponseForm).collect(Collectors.toList());
     }
 }
