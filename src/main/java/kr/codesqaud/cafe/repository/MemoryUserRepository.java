@@ -1,30 +1,45 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private final Map<String, User> userRepository = new ConcurrentHashMap<>();
-    private static Long sequence = 0L;
+    private final Map<Long, User> userRepository = new ConcurrentHashMap<>();
+    private static long sequence = 0L;
+
     @Override
     public User save(User user) {
-        user.setSequence(++sequence);
-        userRepository.put(user.getUserId(), user);
+        user.setId(++sequence);
+        userRepository.put(user.getId(), user);
         return user;
     }
 
     @Override
-    public User findById(String id) {
-        return userRepository.get(id);
+    public Optional<User> findById(Long id) {
+        return Optional.ofNullable(userRepository.get(id));
+    }
+
+    @Override
+    public Optional<User> findByName(String name) {
+        return userRepository.values().stream()
+                .filter(user -> user.getUserName().equals(name))
+                .findAny();
     }
 
     @Override
     public List<User> findAll() {
-        return null;
+        return new ArrayList<>(userRepository.values());
+    }
+
+    public void clearRepository() {
+        userRepository.clear();
     }
 
 }
