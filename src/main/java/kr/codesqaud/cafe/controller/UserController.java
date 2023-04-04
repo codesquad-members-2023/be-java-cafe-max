@@ -23,7 +23,12 @@ public class UserController {
 
     @PostMapping("/user/create")
     public String create(final UserDTO userDTO) {
-        User user = new User(userDTO.getUserId(), userDTO.getPassword(), userDTO.getName(), userDTO.getEmail());
+        User user = new User.Builder()
+                .userId(userDTO.getUserId())
+                .password(userDTO.getPassword())
+                .name(userDTO.getName())
+                .email(userDTO.getEmail())
+                .build();
         userService.join(user);
         return "redirect:/users"; // TODO: 어떤 상황에 템플릿 or 리다이렉팅 해주는지 이해 못했다.
     }

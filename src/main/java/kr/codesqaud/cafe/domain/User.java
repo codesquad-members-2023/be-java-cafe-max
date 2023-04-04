@@ -18,6 +18,14 @@ public class User {
         this.email = email;
     }
 
+    private User(Builder builder) {
+        sequence = builder.sequence;
+        userId = builder.userId;
+        password = builder.password;
+        name = builder.name;
+        email = builder.email;
+    }
+
     public long getSequence() {
         return sequence;
     }
@@ -57,4 +65,45 @@ public class User {
     public void setEmail(final String email) {
         this.email = email;
     }
+
+
+    public static class Builder {
+
+        private long sequence;
+        private String userId;
+        private String password;
+        private String name;
+        private String email;
+
+        public Builder sequence(long sequence) {
+            this.sequence = sequence;
+            return this;
+        }
+
+        public Builder userId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
+
+    }
+
 }
