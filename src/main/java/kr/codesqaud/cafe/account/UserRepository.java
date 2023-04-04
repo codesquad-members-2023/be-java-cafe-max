@@ -30,11 +30,10 @@ public class UserRepository {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public boolean save(User user) {
-		int update = jdbcTemplate.update(
+	public void save(User user) {
+		jdbcTemplate.update(
 			QUERY_SAVE, user.getNickname(), user.getEmail(), user.getPassword()
 		);
-		return usersRepository.add(user);
 	}
 
 	public List<User> getAllMembers() {
