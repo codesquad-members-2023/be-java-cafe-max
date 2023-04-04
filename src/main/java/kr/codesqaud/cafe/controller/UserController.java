@@ -15,13 +15,13 @@ import java.util.List;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    UserMemoryService userMemoryService;
+    private UserMemoryService userMemoryService;
 
     public UserController(UserMemoryService userMemoryService) {
         this.userMemoryService = userMemoryService;
     }
 
-    UserJdbcService userJdbcService;
+    private UserJdbcService userJdbcService;
 
     @Autowired
     public UserController(UserJdbcService userJdbcService) {
