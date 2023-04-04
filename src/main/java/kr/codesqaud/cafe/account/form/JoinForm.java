@@ -45,7 +45,7 @@ public class JoinForm {
 	}
 
 	public User toUser() {
-		return new User.Builder(UserRepository.atomicKey.incrementAndGet())
+		return new User.Builder()
 			.nickname(nickname)
 			.email(email)
 			.password(password)

@@ -36,7 +36,8 @@ public class UserRepository {
 
 	public List<User> getAllMembers() {
 		return jdbcTemplate.query(QUERY_FIND_ALL_USERS, (resultSet, rowNum)
-			-> new User.Builder(resultSet.getLong(COLUMN_USER_ID))
+			-> new User.Builder()
+			.id(resultSet.getLong(COLUMN_USER_ID))
 			.password(resultSet.getString(COLUMN_PASSWORD).trim())
 			.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
 			.email(resultSet.getString(COLUMN_EMAIL).trim())
@@ -45,7 +46,8 @@ public class UserRepository {
 	}
 
 	public Optional<User> findById(Long userId) {
-		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder(userId)
+		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder()
+			.id(userId)
 			.email(resultSet.getString(COLUMN_EMAIL))
 			.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
 			.password(resultSet.getString(COLUMN_PASSWORD).trim())
@@ -54,7 +56,8 @@ public class UserRepository {
 	}
 
 	public Optional<User> findByEmail(String email) {
-		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder(resultSet.getLong(COLUMN_USER_ID))
+		RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder()
+			.id(resultSet.getLong(COLUMN_USER_ID))
 			.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
 			.password(resultSet.getString(COLUMN_PASSWORD).trim())
 			.build();

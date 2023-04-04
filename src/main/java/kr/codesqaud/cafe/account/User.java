@@ -31,13 +31,14 @@ public class User {
 	}
 
 	public static class Builder {
-		private final Long id;
-		private String nickname;
-		private String email;
-		private String password;
+		private Long id = 0L ;
+		private String nickname = "";
+		private String email = "";
+		private String password = "";
 
-		public Builder(Long id) {
+		public Builder id(Long id) {
 			this.id = id;
+			return this;
 		}
 
 		public Builder nickname(String nickname) {

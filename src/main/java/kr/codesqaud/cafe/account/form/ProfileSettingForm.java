@@ -61,7 +61,7 @@ public class ProfileSettingForm {
 	}
 
 	public User toUser(User user) {
-		return new User.Builder(user.getId())
+		return new User.Builder()
 			.email(email)
 			.nickname(nickname)
 			.password(user.getPassword())
