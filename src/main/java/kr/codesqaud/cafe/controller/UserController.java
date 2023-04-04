@@ -29,7 +29,8 @@ public class UserController {
     }
 
     @GetMapping("/sign-up")
-    public String signUp() {
+    public String signUp(Model model) {
+        model.addAttribute("userSaveRequest", new UserSaveRequest());
         return "user/sign-up";
     }
 

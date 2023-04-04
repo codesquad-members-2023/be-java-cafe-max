@@ -32,21 +32,21 @@
   </div>
 
   <section class="container">
-    <form id="signUp" th:action="@{/users}" method="post">
+    <form id="signUp" th:action="@{/users}" method="post" th:object="${userSaveRequest}">
       <div>
         <label for="inputUserId">아이디</label>
-        <input type="text" id="inputUserId" name="userId" placeholder="아이디를 입력해주세요">
-        <span class="checkDuplicated hide">이미 존재하는 아이디입니다</span>
+        <input type="text" id="inputUserId" name="userId" placeholder="아이디를 입력해주세요" th:field="*{userId}">
+        <span th:if="${duplicateUserIdMessage}" th:value="${duplicateUserIdMessage}">이미 존재하는 아이디입니다</span>
         <span class="checkUserId hide">아이디는 2자 이상 12자 이하로 입력해주세요</span>
       </div>
       <div>
         <label for="inputEmail">이메일</label>
-        <input type="email" id="inputEmail" name="email" placeholder="이메일을 입력해주세요">
+        <input type="email" id="inputEmail" name="email" placeholder="이메일을 입력해주세요" th:field="*{email}">
         <span class="checkEmail hide">이메일 형식이 올바르지 않습니다</span>
       </div>
       <div>
         <label for="inputNickname">닉네임</label>
-        <input type="text" id="inputNickname" name="name" placeholder="닉네임을 입력해주세요">
+        <input type="text" id="inputNickname" name="name" placeholder="닉네임을 입력해주세요" th:field="*{name}">
         <span class="checkNickname hide">닉네임은 2자 이상 12자 이하로 입력해주세요</span>
       </div>
       <div>

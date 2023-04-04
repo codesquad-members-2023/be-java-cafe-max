@@ -50,7 +50,7 @@
     <div>
       <label for="currentPassword">기존의 비밀번호</label>
       <input type="password" id="currentPassword" name="currentPassword"placeholder="비밀번호를 입력해주세요">
-      <span class="checkMatch hide">비밀번호가 일치하지 않습니다</span>
+      <span th:if="${mismatchedPasswordMessage}" th:value="${mismatchedPasswordMessage}">비밀번호가 일치하지 않습니다</span>
     </div>
     <div>
       <label for="newPassword">새로운 비밀번호</label>
