@@ -21,6 +21,7 @@ public class UserRepository {
 	private static final String QUERY_UPDATE = "UPDATE USERS SET NICKNAME = ?, EMAIL = ? WHERE USER_ID = ?";
 	private static final String QUERY_FIND_BY_ID = "SELECT EMAIL,NICKNAME,PASSWORD FROM USERS WHERE USER_ID = ?";
 	private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD FROM USERS WHERE EMAIL = ?";
+	private static final String QUERY_CONTAINS_EMAIL = "SELECT COUNT(*) FROM USERS WHERE EMAIL = ?";
 	private final List<User> usersRepository;
 	private final JdbcTemplate jdbcTemplate;
 
@@ -59,8 +60,7 @@ public class UserRepository {
 	}
 
 	public boolean containEmail(String email) {
-		return usersRepository.stream()
-			.anyMatch(user -> user.getEmail().equals(email));
+		return jdbcTemplate.queryForObject(QUERY_CONTAINS_EMAIL, Integer.class, email) != 0;
 	}
 
 	public void clear() {
