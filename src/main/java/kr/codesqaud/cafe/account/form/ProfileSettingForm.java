@@ -60,6 +60,14 @@ public class ProfileSettingForm {
 		this.password = password;
 	}
 
+	public User toUser(User user) {
+		return new User.Builder(user.getId())
+			.email(email)
+			.nickname(nickname)
+			.password(user.getPassword())
+			.build();
+	}
+
 	public static class Builder {
 		private String nickname;
 		private String email;

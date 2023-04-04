@@ -32,11 +32,6 @@ public class User {
 		this.nickname = builder.nickname;
 	}
 
-	public void setting(ProfileSettingForm profileSettingForm) {
-		this.nickname = profileSettingForm.getNickname();
-		this.email = profileSettingForm.getEmail();
-	}
-
 	public static class Builder {
 		private final Long id;
 		private String nickname;

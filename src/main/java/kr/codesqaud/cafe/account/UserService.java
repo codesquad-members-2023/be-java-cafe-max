@@ -34,7 +34,12 @@ public class UserService {
 	}
 
 	public void update(ProfileSettingForm profileSettingForm, Long userId) {
-		userRepository.findById(userId).ifPresent(user -> user.setting(profileSettingForm));
+		Optional<User> userOptional = userRepository.findById(userId);
+		if (userOptional.isPresent()) {
+			User user = userOptional.get();
+			userRepository.remove(user);
+			userRepository.save(profileSettingForm.toUser(user));
+		}
 	}
 
 	public boolean checkPasswordByUserId(String password, Long userId) {
