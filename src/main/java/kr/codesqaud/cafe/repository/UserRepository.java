@@ -1,13 +1,16 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository {
     User save(User user);
 
-    User findById(String id);
+    Optional<User> findById(Long id);
+
+    Optional<User> findByName(String name);
 
     List<User> findAll();
 }
