@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@RequestMapping("/users")
 @Controller
 public class UserController {
 
@@ -23,25 +23,25 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("user/form")
+    @GetMapping("/form")
     public String loginPage() {
         return "user/form";
     }
 
-    @PostMapping("user/form")
+    @PostMapping("/form")
     public String register(User user) {
         userService.join(user);
         return "redirect:/users";
     }
 
-    @GetMapping("users")
+    @GetMapping("")
     public String getUserList(Model model) {
         List<User> users = userService.showAllUser();
         model.addAttribute("users", users);
         return "user/list";
     }
 
-    @GetMapping("user/{id}")
+    @GetMapping("/{id}")
     public String readUserProfile(@PathVariable String id, Model model) {
         model.addAttribute("user", userService.findUserById(id));
         return "user/profile";
