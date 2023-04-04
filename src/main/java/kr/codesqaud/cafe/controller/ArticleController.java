@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller
 public class ArticleController {
@@ -35,9 +37,14 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("/questions/{articleIndex}")
-    public String articleQna(@PathVariable("articleIndex") Long articleIndex, Model model) {
-        Article article = articleService.findByArticleIndex(articleIndex);
+    @GetMapping("/questions/{id}")
+    public String articleQna(@PathVariable("id") Long id, Model model) {
+        Article article;
+        if (articleService.findById(id).isPresent()) {
+            article = articleService.findById(id).get();
+        } else {
+            throw new NoSuchElementException();
+        }
         model.addAttribute("article", article);
         return "qna/show";
     }

@@ -23,6 +23,18 @@ public class Article {
         return id;
     }
 
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

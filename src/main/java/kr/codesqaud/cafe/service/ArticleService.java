@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArticleService {
@@ -22,7 +23,7 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public Article findByArticleIndex(Long articleIndex) {
-        return articleRepository.findByArticleIndex(articleIndex);
+    public Optional<Article> findById(Long id) {
+        return articleRepository.findById(id);
     }
 }

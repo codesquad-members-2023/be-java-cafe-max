@@ -3,10 +3,7 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
@@ -25,7 +22,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findByArticleIndex(Long articleIndex) {
-        return articleMap.get(articleIndex);
+    public Optional<Article> findById(Long id) {
+        return Optional.ofNullable(articleMap.get(id));
     }
 }
