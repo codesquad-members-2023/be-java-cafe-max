@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account.service;
+package kr.codesqaud.cafe.account;
 
 public class User {
 

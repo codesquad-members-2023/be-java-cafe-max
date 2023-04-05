@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.account.controller.form;
+package kr.codesqaud.cafe.account.form;
 
-import kr.codesqaud.cafe.account.service.User;
+import kr.codesqaud.cafe.account.User;
 
 public class UserForm {
 	private Long id;

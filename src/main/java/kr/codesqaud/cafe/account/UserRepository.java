@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account.repository;
+package kr.codesqaud.cafe.account;
 
 import static kr.codesqaud.cafe.account.exception.ErrorCode.*;
 import static kr.codesqaud.cafe.utils.FiledName.*;
@@ -21,7 +21,6 @@ import org.springframework.stereotype.Repository;
 import kr.codesqaud.cafe.account.exception.repository.GetAllUsersFailedException;
 import kr.codesqaud.cafe.account.exception.repository.SaveUserFailedException;
 import kr.codesqaud.cafe.account.exception.repository.UpdateUserFailedException;
-import kr.codesqaud.cafe.account.service.User;
 
 @Repository
 public class UserRepository {
