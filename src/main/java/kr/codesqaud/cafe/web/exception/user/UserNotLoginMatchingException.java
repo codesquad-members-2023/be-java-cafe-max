@@ -3,9 +3,10 @@ package kr.codesqaud.cafe.web.exception.user;
 import kr.codesqaud.cafe.web.exception.BaseException;
 import kr.codesqaud.cafe.web.exception.BaseExceptionType;
 
-public class UserInvalidFormatException extends BaseException {
+public class UserNotLoginMatchingException extends BaseException {
 
-    public UserInvalidFormatException(BaseExceptionType exceptionType) {
+    public UserNotLoginMatchingException(
+        BaseExceptionType exceptionType) {
         super(exceptionType);
     }
 }
