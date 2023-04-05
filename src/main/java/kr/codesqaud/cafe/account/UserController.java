@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -75,8 +76,7 @@ public class UserController {
 	}
 
 	@GetMapping("/join")
-	public String showJoinPage(Model model) {
-		model.addAttribute(JOIN_FORM, new JoinForm());
+	public String showJoinPage(@ModelAttribute JoinForm joinForm) {
 		return "account/join";
 	}
 

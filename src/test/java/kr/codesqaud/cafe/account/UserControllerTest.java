@@ -221,10 +221,7 @@ class UserControllerTest {
 	}
 
 	private int saveAndGetUserJack() {
-		JoinForm joinForm = new JoinForm();
-		joinForm.setEmail(JACK_EMAIL);
-		joinForm.setNickname(JACK);
-		joinForm.setPassword(JACK_PASSWORD);
+		JoinForm joinForm = new JoinForm(JACK, JACK_EMAIL, JACK_PASSWORD);
 		return userService.createNewUser(joinForm);
 	}
 

@@ -19,28 +19,22 @@ public class JoinForm {
 	@Pattern(regexp = "^(.*[a-z]+.*[1-9]+.*)|(.*[1-9]+.*[a-z]+.*)$", message = "{error.password.pattern}")
 	private String password;
 
-	public String getNickname() {
-		return nickname;
+	public JoinForm(String nickname, String email, String password) {
+		this.nickname = nickname;
+		this.email = email;
+		this.password = password;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public String getNickname() {
+		return nickname;
 	}
 
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getPassword() {
 		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public User toUser() {
