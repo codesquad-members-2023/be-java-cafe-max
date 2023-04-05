@@ -22,7 +22,7 @@ public class QuestionRepository {
 	public QuestionRepository() {
 		this.questions = new ArrayList<>();
 		CollectionFrameworkRepositoryDummyData dummyData = new CollectionFrameworkRepositoryDummyData();
-		dummyData.insertQuestionsDummyData(this.questions);
+		questionIdx = dummyData.insertQuestionsDummyData(this.questions, this.questionIdx);
 	}
 
 	public synchronized void insert(QuestionWriteDTO dto) {

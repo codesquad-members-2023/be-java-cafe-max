@@ -20,7 +20,7 @@ public class UserRepository {
 	public UserRepository() {
 		users = new ArrayList<>();
 		CollectionFrameworkRepositoryDummyData dummyData = new CollectionFrameworkRepositoryDummyData();
-		dummyData.insertUserDummyData(users);
+		userIdx = dummyData.insertUserDummyData(users, userIdx);
 	}
 
 	public synchronized void insert(SignUpDTO dto) throws IllegalArgumentException {
