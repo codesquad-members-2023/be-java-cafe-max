@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.account;
 
 import static kr.codesqaud.cafe.exception.ErrorCode.*;
-import static kr.codesqaud.cafe.utils.FiledName.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,10 +24,11 @@ import kr.codesqaud.cafe.account.exception.UpdateUserFailedException;
 @Repository
 public class UserRepository {
 
-	public static final String COLUMN_USER_ID = "user_id";
-	public static final String COLUMN_PASSWORD = "password";
-	public static final String COLUMN_NICKNAME = "nickname";
-	public static final String COLUMN_EMAIL = "email";
+	private static final String TABLE_NAME = "USERS";
+	private static final String COLUMN_USER_ID = "USER_ID";
+	private static final String COLUMN_PASSWORD = "PASSWORD";
+	private static final String COLUMN_NICKNAME = "NICKNAME";
+	private static final String COLUMN_EMAIL = "EMAIL";
 	private static final String QUERY_UPDATE = "UPDATE USERS SET NICKNAME = ?, EMAIL = ? WHERE USER_ID = ?";
 	private static final String QUERY_FIND_BY_ID = "SELECT EMAIL,NICKNAME,PASSWORD FROM USERS WHERE USER_ID = ?";
 	private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD FROM USERS WHERE EMAIL = ?";
@@ -45,7 +45,7 @@ public class UserRepository {
 
 	public int save(User user) {
 		try {
-			SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(USERS)
+			SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME)
 				.usingGeneratedKeyColumns(COLUMN_USER_ID);
 			Map<String, Object> parameters = new HashMap<>();
 			parameters.put(COLUMN_EMAIL, user.getEmail());

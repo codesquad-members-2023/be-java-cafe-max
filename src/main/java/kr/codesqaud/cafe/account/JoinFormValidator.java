@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.account;
 
-import static kr.codesqaud.cafe.utils.FiledName.*;
-
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -11,6 +9,7 @@ import kr.codesqaud.cafe.account.form.JoinForm;
 @Component
 public class JoinFormValidator implements Validator {
 
+	private static final String EMAIL = "email";
 	private final UserService userService;
 
 	public JoinFormValidator(UserService userService) {

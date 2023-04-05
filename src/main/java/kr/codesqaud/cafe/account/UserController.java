@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.account;
 
-import static kr.codesqaud.cafe.utils.FiledName.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +28,13 @@ import kr.codesqaud.cafe.account.form.UserForm;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
+	private static final String PASSWORD = "password";
+	private static final String USER_ID = "userId";
+	private static final String PROFILE_FORM = "profileForm";
+	private static final String PROFILE_SETTING_FORM = "profileSettingForm";
+	private static final String USERS = "users";
+	private static final String EMAIL = "email";
 
 	private final UserService userService;
 	private final JoinFormValidator joinFormValidator;

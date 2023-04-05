@@ -11,6 +11,7 @@ import kr.codesqaud.cafe.post.form.SimplePostForm;
 @Controller
 public class MainController {
 
+	private static final String SIMPLE_FORMS = "simpleForms";
 	private final PostRepository postRepository;
 	private final PostService postService;
 
@@ -23,7 +24,7 @@ public class MainController {
 	public String showMainPage(Model model) {
 		List<Post> posts = postRepository.getAllPosts();
 		List<SimplePostForm> simpleForms = postService.mappingSimpleForm(posts);
-		model.addAttribute("simpleForms", simpleForms);
+		model.addAttribute(SIMPLE_FORMS, simpleForms);
 		return "index";
 	}
 
