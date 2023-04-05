@@ -17,7 +17,7 @@ public class UserJdbcRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public String add(User user) {
+    public String save(User user) {
         jdbcTemplate.update("INSERT INTO users (userid, password, username, email) VALUES (?, ?, ?, ?)",
                 user.getUserId(), user.getPassword(), user.getUserName(), user.getEmail());
         return user.getUserId();
