@@ -6,11 +6,11 @@ import java.time.LocalDateTime;
  * Q&A 게시판 글 하나의 디테일한 정보를 저장할 DTO
  */
 public class QuestionDetailsDTO {
-	private int idx;
-	private String writer;
-	private String title;
-	private String contents;
-	private LocalDateTime registrationDate;
+	private final int idx;
+	private final String writer;
+	private final String title;
+	private final String contents;
+	private final LocalDateTime registrationDate;
 
 	public QuestionDetailsDTO(int idx, String writer, String title, String contents, LocalDateTime registrationDate) {
 		this.idx = idx;

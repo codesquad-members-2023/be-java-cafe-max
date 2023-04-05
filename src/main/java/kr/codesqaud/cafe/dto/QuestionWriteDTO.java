@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 import kr.codesqaud.cafe.domain.Question;
 
 public class QuestionWriteDTO {
-	private String writer;
-	private String title;
-	private String contents;
+	private final String writer;
+	private final String title;
+	private final String contents;
 
 	public QuestionWriteDTO(String writer, String title, String contents) {
 		this.writer = writer;
