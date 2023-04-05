@@ -42,8 +42,8 @@ public class UserController {
     @GetMapping("/users/{id}")
     public String findProfile(@PathVariable("id") Long id, Model model) {
         User user;
-        if (userService.findById(id).isPresent()) {
-            user = userService.findById(id).get();
+        if (userService.findUserId(id).isPresent()) {
+            user = userService.findUserId(id).get();
         } else {
             throw new NoSuchElementException();
         }
@@ -57,8 +57,8 @@ public class UserController {
     @GetMapping("/users/update/{id}")
     public String getUpdate(@PathVariable Long id, Model model) {
         User user;
-        if (userService.findById(id).isPresent()) {
-            user = userService.findById(id).get();
+        if (userService.findUserId(id).isPresent()) {
+            user = userService.findUserId(id).get();
         } else {
             throw new NoSuchElementException();
         }

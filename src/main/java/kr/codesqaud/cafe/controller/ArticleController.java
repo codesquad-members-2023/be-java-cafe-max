@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Controller
 public class ArticleController {
@@ -40,8 +39,8 @@ public class ArticleController {
     @GetMapping("/questions/{id}")
     public String articleQna(@PathVariable("id") Long id, Model model) {
         Article article;
-        if (articleService.findById(id).isPresent()) {
-            article = articleService.findById(id).get();
+        if (articleService.findArticleId(id).isPresent()) {
+            article = articleService.findArticleId(id).get();
         } else {
             throw new NoSuchElementException();
         }
