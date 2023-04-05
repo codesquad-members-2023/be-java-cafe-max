@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.board.service;
 
 import kr.codesqaud.cafe.board.domain.BoardPost;
 import kr.codesqaud.cafe.board.dto.PostResponseForm;

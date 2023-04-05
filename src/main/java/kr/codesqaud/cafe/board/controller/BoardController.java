@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.board.controller;
 
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
-import kr.codesqaud.cafe.service.BoardService;
+import kr.codesqaud.cafe.board.service.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
