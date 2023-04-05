@@ -7,21 +7,26 @@ import java.util.*;
 
 @Repository
 public class ArticleRepository {
-    private final Map<Integer, Article> articleRepository = new HashMap<>();
-    private  Integer sequence = 1;
+    private final List<Article> articleRepository = new ArrayList<>();
+    //    private final Map<Integer, Article> articleRepository = new HashMap<>();
+    private Integer sequence = 1;
 
     public Article saveArticle(Article article) {
         article.setId(sequence);
-        articleRepository.put(sequence++, article);
+        articleRepository.add(article);
+        sequence++;
         return article;
+//        article.setId(sequence);
+//        articleRepository.put(sequence++, article);
+//        return article;
     }
 
     public List<Article> showAllArticle() {
-        return  new ArrayList<>(articleRepository.values());
+        return new ArrayList<>(articleRepository);
     }
 
-    public Optional<Article> findArticleBySequence(Integer sequence) {
-        return Optional.ofNullable(articleRepository.get(sequence));
+    public Optional<Article> findArticleById(int articleId) {
+        return Optional.ofNullable(articleRepository.get(articleId - 1));
     }
 
 

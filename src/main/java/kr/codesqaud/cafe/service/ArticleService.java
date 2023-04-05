@@ -23,8 +23,8 @@ public class ArticleService {
         return articleRepository.showAllArticle();
     }
 
-    public Article findArticleBySequence(Integer sequence) {
-        Article article = articleRepository.findArticleBySequence(sequence).orElseThrow(
+    public Article findArticleBySequence(int articleId) {
+        Article article = articleRepository.findArticleById(articleId).orElseThrow(
                 () -> new IllegalArgumentException("해당하는 게시글이 없습니다."));
         return article;
     }

@@ -27,14 +27,14 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String homePage(final Model model) {
+    public String showArticleList(final Model model) {
         List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         return "index";
     }
 
     @GetMapping("articles/{index}")
-    public String showDetailArticle(@PathVariable Integer index, Model model) {
+    public String findArticleById(@PathVariable Integer index, Model model) {
         Article article = articleService.findArticleBySequence(index);
         model.addAttribute("article", article);
         return "qna/show";
