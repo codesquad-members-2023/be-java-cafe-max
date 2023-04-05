@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +23,10 @@ public class ArticleController {
     }
 
     @PostMapping("/questions/post")
-    public String postArticle(ArticleForm form) {
-        Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
-
+    // ArticleForm: 이러면 검증을 위한 dto인가??
+    public String postArticle(@Validated ArticleForm form) {
+        Article article = new Article(form);
         articleService.add(article);
-
         return "redirect:/";
     }
 
