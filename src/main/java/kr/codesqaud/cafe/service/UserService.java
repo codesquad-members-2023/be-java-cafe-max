@@ -31,4 +31,9 @@ public class UserService {
 	public UserDTO findUser(String userId) throws UserNotFoundException {
 		return repository.findByUserId(userId);
 	}
+
+	public void modifyUser(SignUpDTO dto) throws UserNotFoundException {
+		repository.update(dto);
+	}
+
 }

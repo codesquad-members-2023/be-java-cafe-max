@@ -42,4 +42,15 @@ public class UserRepository {
 		throw new UserNotFoundException("존재하지 않는 유저 입니다.");
 	}
 
+	public void update(SignUpDTO dto) throws UserNotFoundException {
+		String userId = dto.getUserId();
+		for (User user : users) {
+			if (user.getUserId().equals(userId)) {
+				user.updateFrom(dto);
+				return;
+			}
+		}
+		throw new UserNotFoundException("존재하지 않는 유저 입니다.");
+	}
+
 }
