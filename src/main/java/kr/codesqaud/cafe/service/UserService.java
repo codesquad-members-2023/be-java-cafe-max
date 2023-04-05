@@ -13,10 +13,7 @@ public class UserService {
 
     public void saveUser(UserForm userForm) {
         User user = new User();
-        user.setUserId(userForm.getUserId());
-        user.setPassword(userForm.getPassword());
-        user.setUserName(userForm.getUserName());
-        user.setEmail(userForm.getEmail());
+        user.setWithUserForm(userForm);
 
         userRepository.save(user);
     }
