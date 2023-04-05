@@ -22,28 +22,22 @@ public class PostForm {
 	@Size(max = 1000, min = 3, message = "{error.textContent.size}")
 	private String textContent;
 
-	public String getNickname() {
-		return nickname;
+	public PostForm(String nickname, String title, String textContent) {
+		this.nickname = nickname;
+		this.title = title;
+		this.textContent = textContent;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public String getNickname() {
+		return nickname;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getTextContent() {
 		return textContent;
-	}
-
-	public void setTextContent(String textContent) {
-		this.textContent = textContent;
 	}
 
 	public Post toPost() {

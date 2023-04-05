@@ -22,6 +22,7 @@ public class PostController {
 		this.postService = postService;
 	}
 
+
 	@PostMapping("/posts")
 	public String addPost(@Valid PostForm postForm, Errors errors, Model model) {
 		if (errors.hasErrors()) {
