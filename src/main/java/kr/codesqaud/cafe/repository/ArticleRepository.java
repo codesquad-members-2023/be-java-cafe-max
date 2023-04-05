@@ -15,4 +15,8 @@ public class ArticleRepository {
     public List<Article> getAllArticle() {
         return repository;
     }
+
+    public Article getArticleIndexOf(int index) {
+        return repository.get(index);
+    }
 }
