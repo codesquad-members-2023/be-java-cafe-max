@@ -1,12 +1,14 @@
 package kr.codesqaud.cafe.controller;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +29,6 @@ import kr.codesqaud.cafe.service.UserService;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-
 	private final UserService service;
 
 	@Autowired
@@ -38,7 +39,7 @@ public class UserController {
 	@GetMapping("/signup")
 	public String signup(@RequestParam @Nullable List<String> errorMessages, Model model) {
 		if (errorMessages != null && !errorMessages.isEmpty()) {
-			model.addAttribute("errorMessages", errorMessages);
+			addAttributeErrorMessages(model, errorMessages);
 		}
 		return "/user/form";
 	}
@@ -53,19 +54,15 @@ public class UserController {
 	public String userAdd(@Valid SignUpDTO dto, BindingResult result, RedirectAttributes redirect,
 		HttpServletRequest request) {
 		if (result.hasErrors()) {
-			List<String> errorMessages = result.getFieldErrors().stream()
-				.map(e -> e.getDefaultMessage())
-				.collect(Collectors.toUnmodifiableList());
-
-			redirect.addFlashAttribute("errorMessages", errorMessages);
+			addAttributeErrorMessages(redirect, collectErrorMessages(result));
 			return "redirect:/users/signup";
 		}
 
 		try {
 			service.addUser(dto);
 		} catch (IllegalArgumentException e) {
-			redirect.addFlashAttribute("errorMessage", e.getMessage());
-			return "redirect:" + request.getHeader("Referer");
+			addAttributeErrorMessage(redirect, e.getMessage());
+			return redirectBack(request);
 		}
 		return "redirect:/users";
 	}
@@ -76,7 +73,7 @@ public class UserController {
 		try {
 			userDto = service.findUser(userId);
 		} catch (UserNotFoundException e) {
-			model.addAttribute("errorMessage", e.getMessage());
+			addAttributeErrorMessage(model, e.getMessage());
 		}
 		model.addAttribute("userDto", userDto);
 		return "user/profile";
@@ -88,7 +85,7 @@ public class UserController {
 		try {
 			userDto = service.findUser(userId);
 		} catch (UserNotFoundException e) {
-			model.addAttribute("errorMessage", e.getMessage());
+			addAttributeErrorMessage(model, e.getMessage());
 		}
 		model.addAttribute("userDto", userDto);
 		return "user/modify-form";
@@ -100,24 +97,47 @@ public class UserController {
 		HttpServletRequest request) {
 
 		if (!userId.equals(dto.getUserId())) {
-			redirect.addFlashAttribute("errorMessage", "잘못된 입력입니다.");
-			return "redirect:" + request.getHeader("Referer");
+			addAttributeErrorMessage(redirect, "잘못된 입력입니다.");
+			return redirectBack(request);
 		}
 
 		if (result.hasErrors()) {
-			List<String> errorMessages = result.getFieldErrors().stream()
-				.map(e -> e.getDefaultMessage())
-				.collect(Collectors.toUnmodifiableList());
-
-			redirect.addFlashAttribute("errorMessages", errorMessages);
-			return "redirect:" + request.getHeader("Referer");
+			addAttributeErrorMessages(redirect, collectErrorMessages(result));
+			return redirectBack(request);
 		}
 
 		try {
 			service.modifyUser(dto);
 		} catch (UserNotFoundException e) {
-			redirect.addAttribute("errorMessage", e.getMessage());
+			addAttributeErrorMessage(redirect, e.getMessage());
 		}
 		return "redirect:/users/" + dto.getUserId();
+	}
+
+	private String redirectBack(HttpServletRequest request) {
+		return "redirect:" + request.getHeader("Referer");
+	}
+
+	private void addAttributeErrorMessage(Model model, String errorMessage) {
+		if (model instanceof RedirectAttributes) {
+			((RedirectAttributes)model).addFlashAttribute("errorMessage", errorMessage);
+			return;
+		}
+		model.addAttribute("errorMessage", errorMessage);
+	}
+
+	private void addAttributeErrorMessages(Model model, List<String> errorMessages) {
+		if (model instanceof RedirectAttributes) {
+			((RedirectAttributes)model).addFlashAttribute("errorMessages", errorMessages);
+			return;
+		}
+		model.addAttribute("errorMessages", errorMessages);
+	}
+
+	private List<String> collectErrorMessages(BindingResult result) {
+		return result.getFieldErrors().stream()
+			.map(DefaultMessageSourceResolvable::getDefaultMessage)
+			.filter(Objects::nonNull)
+			.collect(Collectors.toUnmodifiableList());
 	}
 }
