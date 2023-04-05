@@ -41,6 +41,18 @@
 
 ##### 📌 4 / 4 학습계획
 
-- [ ] SQL 작성법
-- [ ] jdbcTemplate 알아보기
+- [x] SQL 작성법
+- [x] jdbcTemplate 알아보기
+- [x] schema.sql 생성
+- [x] Article table 생성
 - [ ] @Transactional 알아보기
+
+##### 📌 4 / 5 학습계획
+
+- [ ] @Transactional 알아보기
+- [ ] 인프런 강의듣기
+- [ ] 게시글 데이터 저장하기
+- [ ] 게시글 목록 구현하기
+- [ ] 게시글 상세보기 구현하기
+- [ ] 사용자 정보 DB에 저장하기
+- [ ] NamedParameterJdbcTemplate 알아보기
