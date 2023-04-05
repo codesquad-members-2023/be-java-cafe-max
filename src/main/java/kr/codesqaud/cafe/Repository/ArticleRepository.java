@@ -12,13 +12,10 @@ public class ArticleRepository {
     private Integer sequence = 1;
 
     public Article saveArticle(Article article) {
-        article.setId(sequence);
         articleRepository.add(article);
+        article.setId(sequence++);
         sequence++;
         return article;
-//        article.setId(sequence);
-//        articleRepository.put(sequence++, article);
-//        return article;
     }
 
     public List<Article> showAllArticle() {
