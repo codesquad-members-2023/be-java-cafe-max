@@ -1,8 +1,10 @@
 package kr.codesqaud.cafe.dto.member;
 
+import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import kr.codesqaud.cafe.domain.Member;
 import org.hibernate.validator.constraints.Length;
 
 public class ProfileEditRequest {
@@ -52,6 +54,10 @@ public class ProfileEditRequest {
 
     public String getNickName() {
         return nickName;
+    }
+
+    public Member toEntity(LocalDateTime createDate) {
+        return new Member(id, email, newPassword, nickName, createDate);
     }
 
     public static ProfileEditRequest from(MemberResponse memberResponse) {

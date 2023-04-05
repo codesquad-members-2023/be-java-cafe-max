@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import kr.codesqaud.cafe.domain.Member;
 import org.hibernate.validator.constraints.Length;
 
 public class SignUpRequest {
@@ -43,5 +44,9 @@ public class SignUpRequest {
 
     public LocalDateTime getCreateDate() {
         return createDate;
+    }
+
+    public Member toEntity() {
+        return new Member(null, email, password, nickName, createDate);
     }
 }

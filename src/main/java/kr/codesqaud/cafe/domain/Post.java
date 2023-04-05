@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDateTime;
-import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 
 public class Post {
 
@@ -52,10 +51,5 @@ public class Post {
 
     public Post createWithId(Long id) {
         return new Post(id, title, content, writerId, writeDate, views);
-    }
-
-    public static Post from(PostWriteRequest postWriteRequest) {
-        return new Post(null, postWriteRequest.getTitle(), postWriteRequest.getContent(),
-            postWriteRequest.getWriterId(), postWriteRequest.getWriteDate(), 0L);
     }
 }

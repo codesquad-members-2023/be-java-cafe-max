@@ -3,18 +3,17 @@ package kr.codesqaud.cafe.dto.post;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.Post;
-import kr.codesqaud.cafe.dto.member.MemberResponse;
 
 public class PostResponse {
 
     private final Long id;
     private final String title;
     private final String content;
-    private final MemberResponse writer;
+    private final WhiterResponse writer;
     private final LocalDateTime writeDate;
     private final Long views;
 
-    public PostResponse(Long id, String title, String content, MemberResponse writer,
+    public PostResponse(Long id, String title, String content, WhiterResponse writer,
         LocalDateTime writeDate, Long views) {
         this.id = id;
         this.title = title;
@@ -36,7 +35,7 @@ public class PostResponse {
         return content;
     }
 
-    public MemberResponse getWriter() {
+    public WhiterResponse getWriter() {
         return writer;
     }
 
@@ -52,7 +51,7 @@ public class PostResponse {
         return views;
     }
 
-    public static PostResponse of(Post post, MemberResponse writer) {
+    public static PostResponse of(Post post, WhiterResponse writer) {
         return new PostResponse(post.getId(), post.getTitle(), post.getContent(),
             writer, post.getWriteDate(), post.getViews());
     }

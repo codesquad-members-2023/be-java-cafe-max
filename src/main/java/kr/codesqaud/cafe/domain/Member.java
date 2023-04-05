@@ -2,8 +2,6 @@ package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
-import kr.codesqaud.cafe.dto.member.SignUpRequest;
 
 public class Member {
 
@@ -56,15 +54,5 @@ public class Member {
 
     public Member createWithId(Long id) {
         return new Member(id, email, password, nickName, createDate);
-    }
-
-    public static Member from(SignUpRequest signUpRequest) {
-        return new Member(null, signUpRequest.getEmail(), signUpRequest.getPassword(),
-            signUpRequest.getNickName(), signUpRequest.getCreateDate());
-    }
-
-    public static Member of(ProfileEditRequest profileEditRequest, LocalDateTime crateDate) {
-        return new Member(profileEditRequest.getId(), profileEditRequest.getEmail(),
-            profileEditRequest.getNewPassword(), profileEditRequest.getNickName(), crateDate);
     }
 }

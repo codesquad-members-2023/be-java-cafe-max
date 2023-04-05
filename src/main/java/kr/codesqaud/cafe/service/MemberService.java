@@ -26,7 +26,7 @@ public class MemberService {
 
     public Long signUp(SignUpRequest signUpRequest) {
         validateDuplicateEmail(signUpRequest);
-        return memberRepository.save(Member.from(signUpRequest));
+        return memberRepository.save(signUpRequest.toEntity());
     }
 
     private void validateDuplicateEmail(SignUpRequest signUpRequest) {
@@ -57,7 +57,7 @@ public class MemberService {
             .orElseThrow(MemberNotFoundException::new);
         validateDuplicateEmail(profileUpdateRequest);
         validateNotMatchPassword(profileUpdateRequest, findMember);
-        memberRepository.update(Member.of(profileUpdateRequest, findMember.getCreateDate()));
+        memberRepository.update(profileUpdateRequest.toEntity(findMember.getCreateDate()));
     }
 
     private void validateDuplicateEmail(ProfileEditRequest profileUpdateRequest) {

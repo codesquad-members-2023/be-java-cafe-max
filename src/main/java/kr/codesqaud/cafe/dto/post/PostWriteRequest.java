@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.dto.post;
 
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
+import kr.codesqaud.cafe.domain.Post;
 import org.hibernate.validator.constraints.Length;
 
 public class PostWriteRequest {
@@ -39,5 +40,9 @@ public class PostWriteRequest {
 
     public LocalDateTime getWriteDate() {
         return writeDate;
+    }
+
+    public Post toEntity() {
+        return new Post(null, title, content, writerId, writeDate, 0L);
     }
 }

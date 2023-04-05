@@ -8,22 +8,33 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest
-class MemoryPostRepositoryTest {
+@Sql(scripts = "classpath:schema.sql")
+class PostRepositoryTest {
 
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     @BeforeEach
     void beforeEach() {
         postRepository.deleteAll();
+        memberRepository.save(new Member(null, "rjswmtk@naver.com", "Aksen1234",
+            "만두", LocalDateTime.now()));
+        memberRepository.save(new Member(null, "rjswmtk2@naver.com", "Aksen1234",
+            "만두2", LocalDateTime.now()));
     }
 
     @DisplayName("게시글 저장 성공")

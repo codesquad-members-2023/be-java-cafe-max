@@ -21,4 +21,9 @@ public class AppConfig {
     public MemberRepository memberRepository() {
         return new JdbcMemberRepository(jdbcTemplate);
     }
+
+    @Bean
+    public PostRepository postRepository() {
+        return new JdbcPostRepository(jdbcTemplate);
+    }
 }

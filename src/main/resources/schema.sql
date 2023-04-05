@@ -15,7 +15,7 @@ CREATE TABLE post (
     id bigint NOT NULL AUTO_INCREMENT,
     title	varchar(50) NOT NULL,
     content	varchar(3000) NOT NULL,
-    writer_id bigint NOT NULL,
+    writer_id bigint NULL,
     write_date	datetime NOT NULL,
     views bigint NOT NULL,
     PRIMARY KEY (id),
