@@ -5,7 +5,7 @@ import kr.codesqaud.cafe.exception.ErrorCode;
 
 public class InvalidUserIdException extends CustomException {
 
-	public InvalidUserIdException(ErrorCode errorCode) {
-		super(errorCode);
-	}
+    public InvalidUserIdException(ErrorCode errorCode) {
+        super(errorCode);
+    }
 }

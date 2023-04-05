@@ -3,64 +3,64 @@ package kr.codesqaud.cafe.account.form;
 import kr.codesqaud.cafe.account.User;
 
 public class UserForm {
-	private Long id;
-	private String nickname;
-	private String email;
+    private final Long id;
+    private final String nickname;
+    private final String email;
 
-	public UserForm(Long id, String nickname, String email) {
-		this.id = id;
-		this.nickname = nickname;
-		this.email = email;
-	}
+    public UserForm(Long id, String nickname, String email) {
+        this.id = id;
+        this.nickname = nickname;
+        this.email = email;
+    }
 
-	private UserForm(Builder builder) {
-		this.id = builder.id;
-		this.nickname = builder.nickname;
-		this.email = builder.email;
-	}
+    private UserForm(Builder builder) {
+        this.id = builder.id;
+        this.nickname = builder.nickname;
+        this.email = builder.email;
+    }
 
-	public static UserForm from(User user) {
-		return new Builder()
-			.nickname(user.getNickname())
-			.email(user.getEmail())
-			.id(user.getId())
-			.build();
-	}
+    public static UserForm from(User user) {
+        return new Builder()
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .id(user.getId())
+                .build();
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getNickname() {
-		return nickname;
-	}
+    public String getNickname() {
+        return nickname;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public static class Builder {
-		private String nickname;
-		private String email;
-		private Long id;
+    public static class Builder {
+        private String nickname;
+        private String email;
+        private Long id;
 
-		public Builder nickname(String nickname) {
-			this.nickname = nickname;
-			return this;
-		}
+        public Builder nickname(String nickname) {
+            this.nickname = nickname;
+            return this;
+        }
 
-		public Builder email(String email) {
-			this.email = email;
-			return this;
-		}
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
 
-		public Builder id(Long id) {
-			this.id = id;
-			return this;
-		}
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
 
-		public UserForm build() {
-			return new UserForm(this);
-		}
-	}
+        public UserForm build() {
+            return new UserForm(this);
+        }
+    }
 }

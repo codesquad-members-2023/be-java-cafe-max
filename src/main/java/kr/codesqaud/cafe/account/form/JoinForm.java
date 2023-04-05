@@ -1,47 +1,47 @@
 package kr.codesqaud.cafe.account.form;
 
+import kr.codesqaud.cafe.account.User;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import kr.codesqaud.cafe.account.User;
-
 public class JoinForm {
-	@NotEmpty
-	@Size(max = 64, min = 2, message = "{error.nickname.size}")
-	private String nickname;
-	@NotEmpty
-	@Email
-	private String email;
-	@NotEmpty
-	@Size(max = 32, min = 8, message = "{error.password.size}")
-	@Pattern(regexp = "^(.*[a-z]+.*[1-9]+.*)|(.*[1-9]+.*[a-z]+.*)$", message = "{error.password.pattern}")
-	private String password;
+    @NotEmpty
+    @Size(max = 64, min = 2, message = "{error.nickname.size}")
+    private final String nickname;
+    @NotEmpty
+    @Email
+    private final String email;
+    @NotEmpty
+    @Size(max = 32, min = 8, message = "{error.password.size}")
+    @Pattern(regexp = "^(.*[a-z]+.*[1-9]+.*)|(.*[1-9]+.*[a-z]+.*)$", message = "{error.password.pattern}")
+    private final String password;
 
-	public JoinForm(String nickname, String email, String password) {
-		this.nickname = nickname;
-		this.email = email;
-		this.password = password;
-	}
+    public JoinForm(String nickname, String email, String password) {
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+    }
 
-	public String getNickname() {
-		return nickname;
-	}
+    public String getNickname() {
+        return nickname;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public User toUser() {
-		return new User.Builder()
-			.nickname(nickname)
-			.email(email)
-			.password(password)
-			.build();
-	}
+    public User toUser() {
+        return new User.Builder()
+                .nickname(nickname)
+                .email(email)
+                .password(password)
+                .build();
+    }
 }

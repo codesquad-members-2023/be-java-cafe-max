@@ -4,8 +4,8 @@ import kr.codesqaud.cafe.exception.CustomException;
 import kr.codesqaud.cafe.exception.ErrorCode;
 
 public class SaveUserFailedException extends CustomException {
-	public SaveUserFailedException(ErrorCode errorCode) {
-		super(errorCode);
-	}
+    public SaveUserFailedException(ErrorCode errorCode) {
+        super(errorCode);
+    }
 
 }
