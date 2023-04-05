@@ -11,6 +11,7 @@ public enum ErrorCode {
 	GET_ALL_USERS_FAILED_CODE(HttpStatus.BAD_REQUEST, "D004", "유저 전체 조회 실패 했습니다.", "error/custom"),
 	UPDATE_USER_FAILED_CODE(HttpStatus.BAD_REQUEST, "D005", "유저 업데이트 실패 했습니다.", "error/custom"),
 	SAVE_POST_FAILED_CODE(HttpStatus.BAD_REQUEST, "D006", "Post 정보를 저장에 실패 했습니다.", "error/custom"),
+	INVALID_POST_ID_CODE(HttpStatus.NOT_FOUND, "D007", "존재하지 않는 Post입니다.", "error/custom"),
 	;
 
 	private final HttpStatus status;
