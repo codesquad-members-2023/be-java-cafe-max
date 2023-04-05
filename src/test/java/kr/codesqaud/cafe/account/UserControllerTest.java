@@ -200,7 +200,7 @@ class UserControllerTest {
 	@DisplayName("유저 프로필 세팅 - 실패(유저 아이디)")
 	@Test
 	void setUserProfileFailedByUserId() throws Exception {
-		int userId = saveAndGetUserJack();
+		saveAndGetUserJack();
 		mockMvc.perform(put("/users/20/update")
 				.param(PASSWORD, JACK_PASSWORD)
 				.param(EMAIL, JERRY_EMAIL)
