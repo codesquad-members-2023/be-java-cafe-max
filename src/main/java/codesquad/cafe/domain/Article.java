@@ -1,9 +1,13 @@
 package codesquad.cafe.domain;
 
+import codesquad.cafe.dto.ArticleResponseDto;
+
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Article {
 
+    private Long id;
     private String writer;
     private String title;
     private String contents;
@@ -30,5 +34,14 @@ public class Article {
 
     public LocalDateTime getDate() {
         return date;
+    }
+
+    public Article createdWith(final long id) {
+        this.id = id;
+        return this;
+    }
+
+    public ArticleResponseDto toDto() {
+        return new ArticleResponseDto(id, writer, title, contents, date.format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm")));
     }
 }

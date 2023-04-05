@@ -26,12 +26,16 @@ public class ArticleService {
     }
 
     public List<ArticleResponseDto> findPosts() {
-        Map<AtomicLong, Article> articles = articleRepository.findAll();
+        List<Article> articles = articleRepository.findAll();
         List<ArticleResponseDto> articleResponseDtos = new ArrayList<>();
-        for (AtomicLong id : articles.keySet()) {
-            articleResponseDtos.add(new ArticleResponseDto(id, articles.get(id).getWriter(), articles.get(id).getTitle(),
-                    articles.get(id).getDate().format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm"))));
+        for (Article article : articles) {
+            articleResponseDtos.add(article.toDto());
         }
         return articleResponseDtos;
+    }
+
+    public ArticleResponseDto findPost(final Long id) {
+        Article article = articleRepository.findById(id);
+        return article.toDto();
     }
 }

@@ -5,19 +5,21 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class ArticleResponseDto {
 
-    private AtomicLong id;
+    private Long id;
     private String writer;
     private String title;
+    private String contents;
     private String date;
 
-    public ArticleResponseDto(final AtomicLong id, final String writer, final String title, final String localDateTime) {
+    public ArticleResponseDto(final Long id, final String writer, final String title, final String contents, final String localDateTime) {
         this.id = id;
         this.writer = writer;
         this.title = title;
+        this.contents = contents;
         this.date = localDateTime;
     }
 
-    public AtomicLong getId() {
+    public Long getId() {
         return id;
     }
 
@@ -31,5 +33,9 @@ public class ArticleResponseDto {
 
     public String getDate() {
         return date;
+    }
+
+    public String getContents() {
+        return contents;
     }
 }

@@ -5,12 +5,10 @@ import codesquad.cafe.dto.ArticleResponseDto;
 import codesquad.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
 public class ArticleController {
@@ -39,4 +37,10 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    @GetMapping("/articles/{postId}")
+    public String showDetailPost(@PathVariable("postId") Long id, Model model) {
+        ArticleResponseDto post = articleService.findPost(id);
+        model.addAttribute("post", post);
+        return "qna/show";
+    }
 }
