@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.post;
 
+import static kr.codesqaud.cafe.exception.ErrorCode.*;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -9,13 +11,14 @@ import java.util.Optional;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.exception.ErrorCode;
 import kr.codesqaud.cafe.post.exception.SavePostFailedException;
 
 @Repository
@@ -32,6 +35,7 @@ public class PostRepository {
 	public static final String QUERY_FIND_BY_TITLE = "SELECT POST_ID , NICKNAME, TITLE, TEXT_CONTENT, CREATE_DATETIME FROM POST WHERE TITLE = ?";
 	private final JdbcTemplate jdbcTemplate;
 	private final DataSource dataSource;
+	private static final Logger logger = LoggerFactory.getLogger(PostRepository.class);
 
 	public PostRepository(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
@@ -48,21 +52,28 @@ public class PostRepository {
 			parameters.put(COLUMN_TEXT_CONTENT, post.getTextContent());
 			parameters.put(COLUMN_CREATE_DATETIME, Timestamp.valueOf(LocalDateTime.now()));
 			return (int)simpleJdbcInsert.executeAndReturnKey(parameters);
-		} catch (DataAccessException d) {
-			throw new SavePostFailedException(ErrorCode.SAVE_POST_FAILED_CODE);
+		} catch (DataAccessException e) {
+			logger.error(e.getMessage());
+			logger.error(SAVE_POST_FAILED_CODE.getCode());
+			throw new SavePostFailedException(SAVE_POST_FAILED_CODE);
 		}
 	}
 
 	public List<Post> getAllPosts() {
-		return jdbcTemplate.query(QUERY_SELECT_ALL, (resultSet, rowNum) ->
-			new Post.Builder()
-				.id(resultSet.getLong(COLUMN_ID))
-				.nickname(resultSet.getString(COLUMN_NICKNAME))
-				.title(resultSet.getString(COLUMN_TITLE))
-				.textContent(resultSet.getString(COLUMN_TEXT_CONTENT))
-				.createdDateTime(resultSet.getTimestamp(COLUMN_CREATE_DATETIME).toLocalDateTime())
-				.build()
-		);
+		try {
+			return jdbcTemplate.query(QUERY_SELECT_ALL, (resultSet, rowNum) ->
+				new Post.Builder()
+					.id(resultSet.getLong(COLUMN_ID))
+					.nickname(resultSet.getString(COLUMN_NICKNAME))
+					.title(resultSet.getString(COLUMN_TITLE))
+					.textContent(resultSet.getString(COLUMN_TEXT_CONTENT))
+					.createdDateTime(resultSet.getTimestamp(COLUMN_CREATE_DATETIME).toLocalDateTime())
+					.build()
+			);
+		} catch (DataAccessException e) {
+			logger.error(SAVE_POST_FAILED_CODE.getCode());
+			throw new SavePostFailedException(SAVE_POST_FAILED_CODE);
+		}
 	}
 
 	public Optional<Post> findById(Long postId) {
@@ -80,6 +91,7 @@ public class PostRepository {
 				postRowMapper,
 				postId));
 		} catch (DataAccessException e) {
+			logger.error(NO_SUCH_POST_ID_CODE.getMessage());
 			return Optional.empty();
 		}
 
@@ -100,6 +112,7 @@ public class PostRepository {
 				postRowMapper,
 				title));
 		} catch (DataAccessException e) {
+			logger.error(NO_SUCH_POST_TITLE_CODE.getMessage());
 			return Optional.empty();
 		}
 	}
