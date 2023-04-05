@@ -2,6 +2,7 @@ package codesquad.cafe.domain.user.controller;
 
 import codesquad.cafe.domain.user.dto.UserRequestDto;
 import codesquad.cafe.domain.user.dto.UserResponseDto;
+import codesquad.cafe.domain.user.dto.UserUpdateRequestDto;
 import codesquad.cafe.domain.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,8 +49,8 @@ public class UserController {
 
     @PutMapping("/{userId}/update")
     public String updateUser(@PathVariable("userId") final String id,
-                             @ModelAttribute UserRequestDto userRequestDto) {
-        userService.updateUser(id, userRequestDto);
+                             @ModelAttribute UserUpdateRequestDto userUpdateRequestDto) {
+        userService.updateUser(id, userUpdateRequestDto);
         return "redirect:/users";
     }
 

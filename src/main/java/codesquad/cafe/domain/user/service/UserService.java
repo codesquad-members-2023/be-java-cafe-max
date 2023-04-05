@@ -3,6 +3,7 @@ package codesquad.cafe.domain.user.service;
 import codesquad.cafe.domain.user.domain.User;
 import codesquad.cafe.domain.user.dto.UserRequestDto;
 import codesquad.cafe.domain.user.dto.UserResponseDto;
+import codesquad.cafe.domain.user.dto.UserUpdateRequestDto;
 import codesquad.cafe.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -46,10 +47,16 @@ public class UserService {
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
     }
 
-    public void updateUser(final String id, final UserRequestDto userRequestDto) {
-        userRepository.findById(id)
-                .map(user -> user.update(userRequestDto))
-                .map(userRepository::update)
+    public void updateUser(final String id, final UserUpdateRequestDto userUpdateRequestDto) {
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+        validatePassword(user, userUpdateRequestDto);
+        userRepository.update(user.update(userUpdateRequestDto));
+    }
+
+    private void validatePassword(final User user, final UserUpdateRequestDto userUpdateRequestDto) {
+        if(!user.getPassword().equals(userUpdateRequestDto.getPassword())) {
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+        }
     }
 }
