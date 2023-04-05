@@ -7,7 +7,7 @@ import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
 import kr.codesqaud.cafe.exception.user.DuplicateUserIdException;
 import kr.codesqaud.cafe.exception.user.MismatchedPasswordException;
 import kr.codesqaud.cafe.exception.user.UserNotFoundException;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public class UserService {
         if (!currentPassword.equals(userUpdateRequest.getCurrentPassword())) { // 현재 비밀번호 일치 여부 검사
             throw new MismatchedPasswordException(userUpdateRequest);
         }
-        userRepository.save(User.from(userUpdateRequest));
+        userRepository.update(User.from(userUpdateRequest));
     }
 
     public UserResponse findByUserId(String userId) {

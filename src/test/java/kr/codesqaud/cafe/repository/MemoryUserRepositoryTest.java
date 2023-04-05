@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.repository.user.MemoryUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,20 +15,20 @@ class MemoryUserRepositoryTest {
 
     @BeforeEach
     void afterEach() {
-        memoryUserRepository.clearStore();
+        memoryUserRepository = new MemoryUserRepository();
     }
 
     @Test
     void save() {
         // given
         User user = new User("testId", "testPassword", "testName", "testEmail");
-        User savedUser = memoryUserRepository.save(user);
+        memoryUserRepository.save(user);
 
         // when
         User findUser = memoryUserRepository.findByUserId(user.getUserId());
 
         // then
-        assertThat(findUser).isEqualTo(savedUser);
+        assertThat(findUser).isEqualTo(user);
     }
 
     @Test

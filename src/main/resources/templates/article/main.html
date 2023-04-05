@@ -29,7 +29,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="article, articleStat : ${articles}">
-                    <th scope="row" th:text="${articleStat.count}"></th>
+                    <td scope="row" th:text="${articleStat.count}"></td>
                     <td class="articleTitle"><a th:href="@{/articles/{articleId}(articleId=${article.id})}"
                                                 th:text="${article.title}"></a></td>
                     <td th:text="${article.writer}"></td>
