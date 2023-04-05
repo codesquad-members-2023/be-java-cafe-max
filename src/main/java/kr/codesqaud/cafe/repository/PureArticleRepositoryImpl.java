@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Repository
-public class PureArticleRepository implements ArticleRepository{
+public class PureArticleRepositoryImpl implements ArticleRepository{
     private final Map<Long, Article> articles = new ConcurrentHashMap<>();
     private final AtomicLong atomicId = new AtomicLong();
 
