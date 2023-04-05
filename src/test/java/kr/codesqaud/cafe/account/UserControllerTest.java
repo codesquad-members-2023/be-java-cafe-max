@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -177,9 +176,7 @@ class UserControllerTest {
 				.param(NICKNAME, jerry))
 			.andExpect(status().is3xxRedirection());
 
-		Optional<User> userOptional = userService.findById(user.getId());
-		assertThat(userOptional).isPresent();
-		User changedUser = userOptional.get();
+		User changedUser = userService.findById(user.getId());
 		assertThat(changedUser.getEmail()).isEqualTo(mail);
 		assertThat(changedUser.getNickname()).isEqualTo(jerry);
 	}

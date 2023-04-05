@@ -91,8 +91,8 @@ public class UserController {
 
 	@GetMapping("/{userId}")
 	public String showUser(Model model, @PathVariable Long userId) {
-		Optional<User> userOptional = userService.findById(userId);
-		ProfileForm profileForm = ProfileForm.from(userOptional.get());
+		User user = userService.findById(userId);
+		ProfileForm profileForm = ProfileForm.from(user);
 
 		model.addAttribute(PROFILE_FORM, profileForm);
 		model.addAttribute(USER_ID, userId);
@@ -101,8 +101,8 @@ public class UserController {
 
 	@GetMapping("/{userId}/update")
 	public String showUserProfile(Model model, @PathVariable Long userId) {
-		Optional<User> userOptional = userService.findById(userId);
-		ProfileSettingForm profileSettingForm = ProfileSettingForm.from(userOptional.get());
+		User user = userService.findById(userId);
+		ProfileSettingForm profileSettingForm = ProfileSettingForm.from(user);
 		model.addAttribute(USER_ID, userId);
 		model.addAttribute(PROFILE_SETTING_FORM, profileSettingForm);
 		return "account/profileUpdate";
@@ -114,8 +114,7 @@ public class UserController {
 		if (errors.hasErrors()) {
 			return "account/profileUpdate";
 		}
-		Optional<User> userOptional = userService.findById(userId);
-		User user = userOptional.get();
+		User user = userService.findById(userId);
 		if (userService.isDuplicateEmail(user.getEmail(), profileSettingForm.getEmail())) {
 			errors.rejectValue(EMAIL, "error.email.duplicate");
 			return "account/profileUpdate";

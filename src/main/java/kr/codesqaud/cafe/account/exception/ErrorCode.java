@@ -4,7 +4,8 @@ import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
 
-	INVALID_ID_CODE(HttpStatus.BAD_REQUEST, "U001", "해당 아이디가 없습니다.", "error/custom");
+	INVALID_ID_CODE(HttpStatus.BAD_REQUEST, "U001", "해당 아이디가 없습니다.", "error/custom"),
+	NO_EXIST_ID_CODE(HttpStatus.BAD_REQUEST, "U002", "해당 아이디가 존재하지 않습니다.", "error/custom");
 
 	private final HttpStatus status;
 	private final String code;

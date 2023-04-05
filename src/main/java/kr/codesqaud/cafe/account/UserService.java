@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import kr.codesqaud.cafe.account.exception.AccountException;
+import kr.codesqaud.cafe.account.exception.ErrorCode;
 import kr.codesqaud.cafe.account.form.JoinForm;
 import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.form.UserForm;
@@ -34,11 +36,8 @@ public class UserService {
 	}
 
 	public void update(ProfileSettingForm profileSettingForm, Long userId) {
-		Optional<User> userOptional = userRepository.findById(userId);
-		if (userOptional.isPresent()) {
-			User user = userOptional.get();
-			userRepository.update(profileSettingForm.setUser(user));
-		}
+		User user = userRepository.findById(userId);
+		userRepository.update(profileSettingForm.setUser(user));
 	}
 
 	public boolean checkPassword(String password, String targetPassword) {
@@ -53,8 +52,12 @@ public class UserService {
 		return userRepository.containEmail(email);
 	}
 
-	public Optional<User> findById(Long userId) {
-		return userRepository.findById(userId);
+	public User findById(Long userId) {
+		try {
+			return userRepository.findById(userId);
+		} catch (AccountException e) {
+			throw new AccountException(e, ErrorCode.INVALID_ID_CODE);
+		}
 	}
 
 	public boolean isDuplicateEmail(String defaultEmail, String targetEmail) {

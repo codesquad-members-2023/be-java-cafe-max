@@ -12,8 +12,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.account.exception.AccountException;
 import kr.codesqaud.cafe.account.exception.ErrorCode;
+import kr.codesqaud.cafe.account.exception.NoSuchIdException;
 
 @Repository
 public class UserRepository {
@@ -52,7 +52,7 @@ public class UserRepository {
 		);
 	}
 
-	public Optional<User> findById(Long userId) {
+	public User findById(Long userId) {
 		try {
 			RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder()
 				.id(userId)
@@ -60,9 +60,9 @@ public class UserRepository {
 				.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
 				.password(resultSet.getString(COLUMN_PASSWORD).trim())
 				.build();
-			return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
+			return this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId);
 		} catch (DataAccessException e) {
-			throw new AccountException(ErrorCode.INVALID_ID_CODE);
+			throw new NoSuchIdException(ErrorCode.NO_EXIST_ID_CODE);
 		}
 	}
 
