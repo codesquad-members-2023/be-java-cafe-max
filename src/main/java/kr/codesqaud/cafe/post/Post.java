@@ -42,7 +42,7 @@ public class Post {
 	}
 
 	public static class Builder {
-		private final Long id;
+		private Long id;
 
 		private String nickname;
 
@@ -52,8 +52,13 @@ public class Post {
 
 		private LocalDateTime createdDateTime;
 
-		public Builder(Long id) {
+		public Builder() {
+
+		}
+
+		public Builder id(Long id) {
 			this.id = id;
+			return this;
 		}
 
 		public Builder nickname(String nickname) {
