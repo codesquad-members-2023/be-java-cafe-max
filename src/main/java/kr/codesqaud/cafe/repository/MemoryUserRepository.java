@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Array;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -36,6 +35,7 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() { // List.of()를 쓸 경우 어떤 차이가 있는지 궁금하다.
+//        return List.copyOf(store.values());
         return store.values().stream().collect(Collectors.toUnmodifiableList());
     }
 
