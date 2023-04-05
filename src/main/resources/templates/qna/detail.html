@@ -12,7 +12,7 @@
     <div class="col-md-12 col-sm-12 col-lg-12">
       <div class="panel panel-default">
         <header class="qna-header">
-          <h2 class="qna-title">InitializingBean implements afterPropertiesSet() 호출되지 않는 문제.</h2>
+          <h2 class="qna-title" th:text="${article.title}"></h2>
         </header>
         <div class="content-main">
           <article class="article">
@@ -23,18 +23,17 @@
                      src="https://graph.facebook.com/v2.3/100000059371774/picture">
               </div>
               <div class="article-header-text">
-                <a class="article-author-name" href="/users/92/kimmunsu">kimmunsu</a>
-                <a class="article-header-time" href="/questions/413" title="퍼머링크">
-                  2015-12-30 01:47
+                <a class="article-author-name" th:href="@{/users/{id}(id=${article.user_id})}"
+                   th:text="${article.writer}"></a>
+                <a class="article-header-time" href="/questions/413"
+                   th:text="${#temporals.format(article.writeDate, 'YYYY-MM-dd HH:mm')}"
+                   title="퍼머링크">
                   <i class="icon-link"></i>
                 </a>
               </div>
             </div>
             <div class="article-doc">
-              <p>A 에 의존성을 가지는 B라는 클래스가 있습니다.</p>
-              <p>B라는 클래스는 InitializingBean 을 상속하고 afterPropertiesSet을 구현하고 있습니다.
-                서버가 가동되면서 bean들이 초기화되는 시점에 B라는 클래스의 afterPropertiesSet 메소드는</p>
-              <p>A라는 클래스의 특정 메소드인 afunc()를 호출하고 있습니다.</p>
+              <p th:text="${article.content}"></p>
             </div>
             <div class="article-util">
               <ul class="article-util-list">
@@ -48,7 +47,7 @@
                   </form>
                 </li>
                 <li>
-                  <a class="link-modify-article" href="/templates/index.htmlindex.html">목록</a>
+                  <a class="link-modify-article" href="/">목록</a>
                 </li>
               </ul>
             </div>
