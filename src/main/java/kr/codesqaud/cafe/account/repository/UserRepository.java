@@ -1,8 +1,11 @@
 package kr.codesqaud.cafe.account.repository;
 
 import static kr.codesqaud.cafe.account.exception.ErrorCode.*;
+import static kr.codesqaud.cafe.utils.FiledName.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.sql.DataSource;
@@ -12,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.account.exception.repository.GetAllUsersFailedException;
@@ -28,7 +32,6 @@ public class UserRepository {
 	public static final String COLUMN_PASSWORD = "password";
 	public static final String COLUMN_NICKNAME = "nickname";
 	public static final String COLUMN_EMAIL = "email";
-	private static final String QUERY_SAVE = "INSERT INTO USERS (NICKNAME, EMAIL, PASSWORD) values ( ?,?,? )";
 	private static final String QUERY_UPDATE = "UPDATE USERS SET NICKNAME = ?, EMAIL = ? WHERE USER_ID = ?";
 	private static final String QUERY_FIND_BY_ID = "SELECT EMAIL,NICKNAME,PASSWORD FROM USERS WHERE USER_ID = ?";
 	private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD FROM USERS WHERE EMAIL = ?";
@@ -36,16 +39,22 @@ public class UserRepository {
 	private static final String QUERY_FIND_ALL_USERS = "SELECT * FROM USERS";
 	private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
 	private final JdbcTemplate jdbcTemplate;
+	private final DataSource dataSource;
 
 	public UserRepository(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
+		this.dataSource = dataSource;
 	}
 
-	public void save(User user) {
+	public int save(User user) {
 		try {
-			jdbcTemplate.update(
-				QUERY_SAVE, user.getNickname(), user.getEmail(), user.getPassword()
-			);
+			SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(USERS)
+				.usingGeneratedKeyColumns(COLUMN_USER_ID);
+			Map<String, Object> parameters = new HashMap<>();
+			parameters.put(COLUMN_EMAIL, user.getEmail());
+			parameters.put(COLUMN_NICKNAME, user.getNickname());
+			parameters.put(COLUMN_PASSWORD, user.getPassword());
+			return (int)simpleJdbcInsert.executeAndReturnKey(parameters);
 		} catch (DataAccessException e) {
 			logger.error("[ Message = {} ][ Nickname = {} ][ Email = {} ][ Password = {} ]",
 				SAVE_USER_FAILED_CODE.getMessage(),

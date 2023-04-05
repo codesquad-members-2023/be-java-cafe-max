@@ -7,13 +7,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import kr.codesqaud.cafe.account.repository.UserRepository;
-import kr.codesqaud.cafe.account.exception.AccountException;
-import kr.codesqaud.cafe.account.exception.ErrorCode;
-import kr.codesqaud.cafe.account.exception.InvalidIdException;
 import kr.codesqaud.cafe.account.controller.form.JoinForm;
 import kr.codesqaud.cafe.account.controller.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.controller.form.UserForm;
+import kr.codesqaud.cafe.account.exception.AccountException;
+import kr.codesqaud.cafe.account.exception.ErrorCode;
+import kr.codesqaud.cafe.account.exception.InvalidIdException;
+import kr.codesqaud.cafe.account.repository.UserRepository;
 
 @Service
 public class UserService {
@@ -24,10 +24,9 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public User createNewUser(JoinForm joinForm) {
+	public int createNewUser(JoinForm joinForm) {
 		User user = joinForm.toUser();
-		userRepository.save(user);
-		return userRepository.findByEmail(joinForm.getEmail()).get();
+		return userRepository.save(user);
 	}
 
 	public List<UserForm> getAllUsersForm() {

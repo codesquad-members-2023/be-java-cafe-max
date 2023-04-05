@@ -57,12 +57,12 @@ class UserControllerTest {
 	@DisplayName("로그인 - 성공")
 	@Test
 	void loginSuccess() throws Exception {
-		User user = saveAndGetUserJack();
+		int userId = saveAndGetUserJack();
 		mockMvc.perform(post("/users/login")
 				.param(EMAIL, JACK_EMAIL)
 				.param(PASSWORD, JACK_PASSWORD))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/users/" + user.getId()));
+			.andExpect(redirectedUrl("/users/" + userId));
 	}
 
 	@DisplayName("로그인 - 비밀번호 실패")
@@ -135,8 +135,8 @@ class UserControllerTest {
 	@DisplayName("유저 프로필 페이지 열람 - 성공")
 	@Test
 	void showUserSuccess() throws Exception {
-		User user = saveAndGetUserJack();
-		mockMvc.perform(get("/users/" + user.getId()))
+		int userId = saveAndGetUserJack();
+		mockMvc.perform(get("/users/" + userId))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists(USER_ID, PROFILE_FORM))
 			.andExpect(view().name("account/profile"));
@@ -152,8 +152,8 @@ class UserControllerTest {
 	@DisplayName("유저 프로필 수정 페이지 열람  - 성공")
 	@Test
 	void showUserProfileSuccess() throws Exception {
-		User user = saveAndGetUserJack();
-		mockMvc.perform(get("/users/" + user.getId() + "/update"))
+		int userId = saveAndGetUserJack();
+		mockMvc.perform(get("/users/" + userId + "/update"))
 			.andExpect(status().isOk())
 			.andExpect(model().attributeExists(USER_ID, PROFILE_SETTING_FORM))
 			.andExpect(view().name("account/profileUpdate"));
@@ -170,16 +170,16 @@ class UserControllerTest {
 	@DisplayName("유저 프로필 세팅 - 성공")
 	@Test
 	void setUserProfileSuccess() throws Exception {
-		User user = saveAndGetUserJack();
+		int userId = saveAndGetUserJack();
 		String mail = JERRY_EMAIL;
 		String jerry = JERRY;
-		mockMvc.perform(put("/users/" + user.getId() + "/update")
-				.param(PASSWORD, user.getPassword())
+		mockMvc.perform(put("/users/" + userId + "/update")
+				.param(PASSWORD, JACK_PASSWORD)
 				.param(EMAIL, mail)
 				.param(NICKNAME, jerry))
 			.andExpect(status().is3xxRedirection());
 
-		User changedUser = userService.findById(user.getId());
+		User changedUser = userService.findById((long)userId);
 		assertThat(changedUser.getEmail()).isEqualTo(mail);
 		assertThat(changedUser.getNickname()).isEqualTo(jerry);
 	}
@@ -187,8 +187,8 @@ class UserControllerTest {
 	@DisplayName("유저 프로필 세팅 - 실패(비밀번호 불 일치)")
 	@Test
 	void setUserProfileFailedByPassword() throws Exception {
-		User user = saveAndGetUserJack();
-		mockMvc.perform(put("/users/" + user.getId() + "/update")
+		int userId = saveAndGetUserJack();
+		mockMvc.perform(put("/users/" + userId + "/update")
 				.param(PASSWORD, "987654123a")
 				.param(EMAIL, JERRY_EMAIL)
 				.param(NICKNAME, JERRY))
@@ -200,9 +200,9 @@ class UserControllerTest {
 	@DisplayName("유저 프로필 세팅 - 실패(유저 아이디)")
 	@Test
 	void setUserProfileFailedByUserId() throws Exception {
-		User user = saveAndGetUserJack();
+		int userId = saveAndGetUserJack();
 		mockMvc.perform(put("/users/20/update")
-				.param(PASSWORD, user.getPassword())
+				.param(PASSWORD, JACK_PASSWORD)
 				.param(EMAIL, JERRY_EMAIL)
 				.param(NICKNAME, JERRY))
 			.andExpect(status().is4xxClientError())
@@ -213,9 +213,9 @@ class UserControllerTest {
 	@ParameterizedTest
 	@CsvSource({JERRY_EMAIL + ",j", JERRY + ",jerry"})
 	void setUserProfileFailedByType(String email, String nickname) throws Exception {
-		User user = saveAndGetUserJack();
-		mockMvc.perform(put("/users/" + user.getId() + "/update")
-				.param(PASSWORD, user.getPassword())
+		int userId = saveAndGetUserJack();
+		mockMvc.perform(put("/users/" + userId + "/update")
+				.param(PASSWORD, JACK_PASSWORD)
 				.param(EMAIL, email)
 				.param(NICKNAME, nickname))
 			.andExpect(status().isOk())
@@ -223,7 +223,7 @@ class UserControllerTest {
 			.andExpect(view().name("account/profileUpdate"));
 	}
 
-	private User saveAndGetUserJack() {
+	private int saveAndGetUserJack() {
 		JoinForm joinForm = new JoinForm();
 		joinForm.setEmail(JACK_EMAIL);
 		joinForm.setNickname(JACK);

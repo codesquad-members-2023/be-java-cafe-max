@@ -80,8 +80,8 @@ public class UserController {
 		if (bindingResult.hasErrors()) {
 			return "account/join";
 		}
-		User user = userService.createNewUser(joinForm);
-		return "redirect:/users/" + user.getId();
+		int userId = userService.createNewUser(joinForm);
+		return "redirect:/users/" + userId;
 	}
 
 	@GetMapping
