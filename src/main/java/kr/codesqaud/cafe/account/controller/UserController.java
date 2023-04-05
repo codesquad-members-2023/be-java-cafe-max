@@ -7,10 +7,11 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -35,6 +36,8 @@ public class UserController {
 	private final UserService userService;
 	private final JoinFormValidator joinFormValidator;
 
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
 	public UserController(UserService userService,
 		JoinFormValidator joinFormValidator) {
 		this.userService = userService;
@@ -55,15 +58,18 @@ public class UserController {
 	@PostMapping("/login")
 	public String login(@Valid LoginForm loginForm, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
+			loggingError(bindingResult);
 			return "account/login";
 		}
 		Optional<User> userOptional = userService.findByEmail(loginForm.getEmail());
 		if (userOptional.isEmpty()) {
+			loggingError(bindingResult);
 			bindingResult.rejectValue(EMAIL, "error.email.notExist");
 			return "account/login";
 		}
 		User user = userOptional.get();
 		if (!user.getPassword().equals(loginForm.getPassword())) {
+			loggingError(bindingResult);
 			bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
 			return "account/login";
 		}
@@ -79,6 +85,7 @@ public class UserController {
 	@PostMapping
 	public String addUser(@Valid JoinForm joinForm, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
+			loggingError(bindingResult);
 			return "account/join";
 		}
 		int userId = userService.createNewUser(joinForm);
@@ -113,21 +120,31 @@ public class UserController {
 	}
 
 	@PutMapping("/{userId}/update")
-	public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, Errors errors, @PathVariable Long userId
+	public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, BindingResult bindingResult,
+		@PathVariable Long userId
 	) {
-		if (errors.hasErrors()) {
+		if (bindingResult.hasErrors()) {
+			loggingError(bindingResult);
 			return "account/profileUpdate";
 		}
 		User user = userService.findById(userId);
 		if (userService.isDuplicateEmail(user.getEmail(), profileSettingForm.getEmail())) {
-			errors.rejectValue(EMAIL, "error.email.duplicate");
+			loggingError(bindingResult);
+			bindingResult.rejectValue(EMAIL, "error.email.duplicate");
 			return "account/profileUpdate";
 		}
 		if (!userService.checkPassword(profileSettingForm.getPassword(), user.getPassword())) {
-			errors.rejectValue(PASSWORD, "error.password.notMatch");
+			loggingError(bindingResult);
+			bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
 			return "account/profileUpdate";
 		}
 		userService.update(profileSettingForm, userId);
 		return "redirect:/users/{userId}";
+	}
+
+	private static void loggingError(BindingResult bindingResult) {
+		bindingResult.getAllErrors()
+			.forEach(error -> logger.error("[ Name = {} ][ Message = {} ]", error.getObjectName(),
+				error.getDefaultMessage()));
 	}
 }
