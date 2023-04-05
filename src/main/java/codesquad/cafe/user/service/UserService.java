@@ -1,9 +1,9 @@
-package codesquad.cafe.service;
+package codesquad.cafe.user.service;
 
-import codesquad.cafe.domain.User;
-import codesquad.cafe.dto.UserRequestDto;
-import codesquad.cafe.dto.UserResponseDto;
-import codesquad.cafe.repository.UserRepository;
+import codesquad.cafe.user.domain.User;
+import codesquad.cafe.user.dto.UserRequestDto;
+import codesquad.cafe.user.dto.UserResponseDto;
+import codesquad.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

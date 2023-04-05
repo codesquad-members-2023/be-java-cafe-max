@@ -1,15 +1,13 @@
 package codesquad.cafe.repository;
 
-import codesquad.cafe.domain.User;
-import org.junit.jupiter.api.Assertions;
+import codesquad.cafe.user.domain.User;
+import codesquad.cafe.user.repository.MemoryUserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemoryUserRepositoryTest {
 

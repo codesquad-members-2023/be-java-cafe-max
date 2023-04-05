@@ -1,9 +1,9 @@
-package codesquad.cafe.repository;
+package codesquad.cafe.article.repository;
 
-import codesquad.cafe.domain.Article;
+import codesquad.cafe.article.domain.Article;
+import codesquad.cafe.article.repository.ArticleRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

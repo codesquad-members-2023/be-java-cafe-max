@@ -1,14 +1,13 @@
-package codesquad.cafe.controller;
+package codesquad.cafe.article.controller;
 
-import codesquad.cafe.dto.ArticleRequestDto;
-import codesquad.cafe.dto.ArticleResponseDto;
-import codesquad.cafe.service.ArticleService;
+import codesquad.cafe.article.dtio.ArticleRequestDto;
+import codesquad.cafe.article.dtio.ArticleResponseDto;
+import codesquad.cafe.article.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
 public class ArticleController {

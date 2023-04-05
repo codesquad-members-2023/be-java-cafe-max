@@ -1,16 +1,13 @@
-package codesquad.cafe.service;
+package codesquad.cafe.article.service;
 
-import codesquad.cafe.domain.Article;
-import codesquad.cafe.dto.ArticleRequestDto;
-import codesquad.cafe.dto.ArticleResponseDto;
-import codesquad.cafe.repository.ArticleRepository;
+import codesquad.cafe.article.domain.Article;
+import codesquad.cafe.article.dtio.ArticleRequestDto;
+import codesquad.cafe.article.dtio.ArticleResponseDto;
+import codesquad.cafe.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ArticleService {

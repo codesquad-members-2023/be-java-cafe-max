@@ -1,4 +1,4 @@
-package codesquad.cafe.dto;
+package codesquad.cafe.article.dtio;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicLong;

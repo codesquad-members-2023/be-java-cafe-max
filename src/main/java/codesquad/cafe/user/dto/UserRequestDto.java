@@ -1,8 +1,6 @@
-package codesquad.cafe.dto;
+package codesquad.cafe.user.dto;
 
-import codesquad.cafe.domain.User;
-
-import java.time.LocalDate;
+import codesquad.cafe.user.domain.User;
 
 public class UserRequestDto {
     private String id;

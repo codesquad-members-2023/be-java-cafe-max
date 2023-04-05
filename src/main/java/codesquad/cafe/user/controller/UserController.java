@@ -1,8 +1,8 @@
-package codesquad.cafe.controller;
+package codesquad.cafe.user.controller;
 
-import codesquad.cafe.dto.UserRequestDto;
-import codesquad.cafe.dto.UserResponseDto;
-import codesquad.cafe.service.UserService;
+import codesquad.cafe.user.dto.UserRequestDto;
+import codesquad.cafe.user.dto.UserResponseDto;
+import codesquad.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

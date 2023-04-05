@@ -1,4 +1,4 @@
-package codesquad.cafe.dto;
+package codesquad.cafe.user.dto;
 
 public class UserResponseDto {
     private String id;

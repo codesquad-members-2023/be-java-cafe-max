@@ -1,9 +1,10 @@
 package codesquad.cafe.service;
 
-import codesquad.cafe.domain.User;
-import codesquad.cafe.dto.UserRequestDto;
-import codesquad.cafe.dto.UserResponseDto;
-import codesquad.cafe.repository.MemoryUserRepository;
+import codesquad.cafe.user.domain.User;
+import codesquad.cafe.user.dto.UserRequestDto;
+import codesquad.cafe.user.dto.UserResponseDto;
+import codesquad.cafe.user.repository.MemoryUserRepository;
+import codesquad.cafe.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
 

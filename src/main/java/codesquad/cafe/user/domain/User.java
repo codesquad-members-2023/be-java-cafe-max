@@ -1,4 +1,4 @@
-package codesquad.cafe.domain;
+package codesquad.cafe.user.domain;
 
 import java.time.LocalDate;
 
