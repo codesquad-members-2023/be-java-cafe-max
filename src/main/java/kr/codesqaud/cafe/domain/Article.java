@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.controller.dto.ArticleForm;
+
 public class Article {
     private Long id;
     private String writer;
@@ -9,10 +11,10 @@ public class Article {
     public Article() {
     }
 
-    public Article(String writer, String title, String contents) {
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+    public Article(ArticleForm form) {
+        this.writer = form.getWriter();
+        this.title = form.getTitle();
+        this.contents = form.getContents();
     }
 
     public String getWriter() {
