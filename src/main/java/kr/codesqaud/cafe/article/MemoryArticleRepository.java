@@ -20,4 +20,9 @@ public class MemoryArticleRepository implements ArticleRepository {
     public void save(Article article) {
         articles.add(article);
     }
+
+    @Override
+    public List<Article> findAll() {
+        return articles;
+    }
 }

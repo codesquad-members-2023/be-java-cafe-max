@@ -14,6 +14,18 @@ public class Article {
         this.content = content;
     }
 
+    public String getWriter() {
+        return writer;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
     @Override
     public String toString() {
         return "Article{" +

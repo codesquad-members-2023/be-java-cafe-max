@@ -5,8 +5,9 @@ import kr.codesqaud.cafe.article.MemoryArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ArticleController {
@@ -18,16 +19,16 @@ public class ArticleController {
         this.memoryArticleRepository = memoryArticleRepository;
     }
 
-    // 405 에러 발생
     @PostMapping("/qna/form")
-    public String saveArticle(@RequestParam("writer") String writer,
-                              @RequestParam String title,
-                              @RequestParam String contents) {
-
-        Article article = new Article(writer, title, contents);
+    public String saveArticle(Article article, Model model) {
         memoryArticleRepository.save(article);
         logger.info(article.toString());
+        return "redirect:/index";
+    }
 
-        return "redirect:/";
+    @GetMapping("/index")
+    public String showNewArticles(Model model) {
+        model.addAttribute("articles", memoryArticleRepository.findAll());
+        return "index";
     }
 }
