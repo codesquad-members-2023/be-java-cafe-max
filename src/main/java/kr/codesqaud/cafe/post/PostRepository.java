@@ -53,8 +53,7 @@ public class PostRepository {
 			parameters.put(COLUMN_CREATE_DATETIME, Timestamp.valueOf(LocalDateTime.now()));
 			return (int)simpleJdbcInsert.executeAndReturnKey(parameters);
 		} catch (DataAccessException e) {
-			logger.error(e.getMessage());
-			logger.error(SAVE_POST_FAILED_CODE.getCode());
+			logger.debug(SAVE_POST_FAILED_CODE.getCode());
 			throw new SavePostFailedException(SAVE_POST_FAILED_CODE);
 		}
 	}
@@ -71,7 +70,7 @@ public class PostRepository {
 					.build()
 			);
 		} catch (DataAccessException e) {
-			logger.error(SAVE_POST_FAILED_CODE.getCode());
+			logger.debug(SAVE_POST_FAILED_CODE.getCode());
 			throw new SavePostFailedException(SAVE_POST_FAILED_CODE);
 		}
 	}
@@ -91,7 +90,7 @@ public class PostRepository {
 				postRowMapper,
 				postId));
 		} catch (DataAccessException e) {
-			logger.error(NO_SUCH_POST_ID_CODE.getMessage());
+			logger.info(NO_SUCH_POST_ID_CODE.getMessage());
 			return Optional.empty();
 		}
 
@@ -112,7 +111,7 @@ public class PostRepository {
 				postRowMapper,
 				title));
 		} catch (DataAccessException e) {
-			logger.error(NO_SUCH_POST_TITLE_CODE.getMessage());
+			logger.info(NO_SUCH_POST_TITLE_CODE.getMessage());
 			return Optional.empty();
 		}
 	}

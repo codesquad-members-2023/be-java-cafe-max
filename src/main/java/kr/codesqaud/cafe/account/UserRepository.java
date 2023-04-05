@@ -53,7 +53,7 @@ public class UserRepository {
 			parameters.put(COLUMN_PASSWORD, user.getPassword());
 			return (int)simpleJdbcInsert.executeAndReturnKey(parameters);
 		} catch (DataAccessException e) {
-			logger.error("[ Message = {} ][ Nickname = {} ][ Email = {} ][ Password = {} ]",
+			logger.debug("[ Message = {} ][ Nickname = {} ][ Email = {} ][ Password = {} ]",
 				SAVE_USER_FAILED_CODE.getMessage(),
 				user.getNickname(),
 				user.getEmail(),
@@ -73,7 +73,7 @@ public class UserRepository {
 				.build()
 			);
 		} catch (DataAccessException e) {
-			logger.error("Message = {}", GET_ALL_USERS_FAILED_CODE.getMessage());
+			logger.debug("Message = {}", GET_ALL_USERS_FAILED_CODE.getMessage());
 			throw new GetAllUsersFailedException(GET_ALL_USERS_FAILED_CODE);
 		}
 	}
@@ -88,7 +88,7 @@ public class UserRepository {
 				.build();
 			return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
 		} catch (DataAccessException e) {
-			logger.error("[ Message = {} ][ UserId = {} ]", NO_SUCH_USER_ID_CODE.getMessage(), userId);
+			logger.info("[ Message = {} ][ UserId = {} ]", NO_SUCH_USER_ID_CODE.getMessage(), userId);
 			return Optional.empty();
 		}
 	}
@@ -102,7 +102,7 @@ public class UserRepository {
 				.build();
 			return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, userRowMapper, email));
 		} catch (DataAccessException e) {
-			logger.error("[ Message = {} ][ Email = {} ]", NO_SUCH_EMAIL_CODE.getMessage(), email);
+			logger.info("[ Message = {} ][ Email = {} ]", NO_SUCH_EMAIL_CODE.getMessage(), email);
 			return Optional.empty();
 		}
 	}
@@ -117,7 +117,7 @@ public class UserRepository {
 			jdbcTemplate.update(QUERY_UPDATE, user.getNickname(), user.getEmail(),
 				user.getId());
 		} catch (DataAccessException e) {
-			logger.error("[ Message = {} ][ Id = {} ][ Nickname = {} ][ Email = {} ]",
+			logger.debug("[ Message = {} ][ Id = {} ][ Nickname = {} ][ Email = {} ]",
 				UPDATE_USER_FAILED_CODE.getMessage(), user.getId(), user.getNickname(), user.getEmail());
 			throw new UpdateUserFailedException(UPDATE_USER_FAILED_CODE);
 		}
