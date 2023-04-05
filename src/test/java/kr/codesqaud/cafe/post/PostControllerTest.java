@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,9 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 @AutoConfigureMockMvc
 @SpringBootTest
+@Transactional
 class PostControllerTest {
 
 	public static final String NICKNAME = "nickname";
@@ -62,7 +63,7 @@ class PostControllerTest {
 				.param(TEXT_CONTENT, textContent))
 			.andExpect(status().isOk())
 			.andExpect(model().hasErrors())
-			.andExpect(view().name("/post/formInvalid"));
+			.andExpect(view().name("/post/form"));
 
 		assertThat(postRepository.findByTitle(testTitle)).isEmpty();
 	}
@@ -89,12 +90,8 @@ class PostControllerTest {
 	@Test
 	void testShowPostPageFailed() throws Exception {
 		mockMvc.perform(get("/posts/20"))
-			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/"));
+			.andExpect(status().is4xxClientError())
+			.andExpect(view().name("error/custom"));
 	}
 
-	@AfterEach
-	void clearRepository() {
-		postRepository.clear();
-	}
 }
