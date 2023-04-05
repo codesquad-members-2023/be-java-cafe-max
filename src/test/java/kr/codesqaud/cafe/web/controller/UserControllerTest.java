@@ -58,7 +58,7 @@ class UserControllerTest {
         String password = "user1user1@";
         String name = "홍길동";
         String email = "user1@gmail.com";
-        String url = "/user/create";
+        String url = "/users";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
         //when
         mockMvc.perform(post(url)
@@ -81,7 +81,7 @@ class UserControllerTest {
         String password = "user1user1@";
         String name = "홍길동";
         String email = "user1@gmail.com";
-        String url = "/user/create";
+        String url = "/users";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
         mockMvc.perform(post(url)
             .contentType(MediaType.APPLICATION_JSON)
@@ -111,7 +111,7 @@ class UserControllerTest {
         String password = "user1user1@";
         String name = "홍길동";
         String email = "user1@gmail.com";
-        String url = "/user/create";
+        String url = "/users";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
         mockMvc.perform(post(url)
             .contentType(MediaType.APPLICATION_JSON)
@@ -142,7 +142,7 @@ class UserControllerTest {
         String name = "김용환!@#$";
         String email = "user1";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
-        String url = "/user/create";
+        String url = "/users";
         //when
         MockHttpServletResponse response = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -183,7 +183,7 @@ class UserControllerTest {
         String name = "김용환";
         String email = "user1@naver.com";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
-        String url = "/user/create";
+        String url = "/users";
         mockMvc.perform(post(url)
             .contentType(MediaType.APPLICATION_JSON)
             .content(toJSON(dto)));
@@ -217,7 +217,7 @@ class UserControllerTest {
         createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
         String userId = "user1";
         String password = "user1user1@";
-        String url = "/user/login";
+        String url = "/users/login";
         UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
 
         //when
@@ -240,7 +240,7 @@ class UserControllerTest {
         createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
         String userId = "user1";
         String password = "useaweiofjaw";
-        String url = "/user/login";
+        String url = "/users/login";
         UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
         //when
         MockHttpServletResponse response = mockMvc.perform(post(url)
@@ -264,7 +264,7 @@ class UserControllerTest {
         createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
         String userId = "";
         String password = "";
-        String url = "/user/login";
+        String url = "/users/login";
         UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
         //when
         MockHttpServletResponse response = mockMvc.perform(post(url)
@@ -296,7 +296,7 @@ class UserControllerTest {
         createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
         String userId = "user2";
         String password = "user2user2";
-        String url = "/user/login";
+        String url = "/users/login";
         UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
         //when
         MockHttpServletResponse response = mockMvc.perform(post(url)
@@ -367,7 +367,7 @@ class UserControllerTest {
 
     private void createSampleUser(String userId, String password, String name, String email)
         throws Exception {
-        String url = "/user/create";
+        String url = "/users";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
         mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -380,7 +380,7 @@ class UserControllerTest {
     public void password_success() throws Exception {
         //given
         createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
-        String url = "/user/1/password";
+        String url = "/users/password/1";
         String password = "user1user1@";
         UserSavedRequestDto dto = new UserSavedRequestDto(null, password, null, null);
         //when
@@ -397,7 +397,7 @@ class UserControllerTest {
     public void password_fail() throws Exception {
         //given
         createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
-        String url = "/user/1/password";
+        String url = "/users/password/1";
         String password = "user1aowei";
         UserSavedRequestDto dto = new UserSavedRequestDto(null, password, null, null);
         //when

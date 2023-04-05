@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class UserController {
@@ -29,74 +30,84 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/form")
-    public String form() {
-        return "user/form";
-    }
-
-    @PostMapping("/user/create")
-    @ResponseBody
-    public UserResponseDto newUser(@Valid @RequestBody UserSavedRequestDto requestDto) {
-        logger.info(requestDto.toString());
-        return userService.signUp(requestDto);
-    }
-
+    // 전체 회원 조회
     @GetMapping("/users")
     public String list(Model model) {
         model.addAttribute("users", userService.getAllUsers());
         return "user/list";
     }
 
+    // 특정 회원 조회
     @GetMapping("/users/{id}")
     public String profile(@PathVariable(value = "id") Long id, Model model) {
         model.addAttribute("user", new UserResponseDto(userService.findUser(id)));
         return "user/profile";
     }
 
-    @GetMapping("/users/{id}/form")
-    public String updateForm(@PathVariable(value = "id") Long id, Model model) {
-        model.addAttribute("user", userService.findUpdateUser(id));
-        return "user/updateForm";
+    // 특정 회원 추가
+    @PostMapping("/users")
+    @ResponseBody
+    public UserResponseDto create(@Valid @RequestBody UserSavedRequestDto requestDto) {
+        logger.info("create : " + requestDto.toString());
+        return userService.signUp(requestDto);
     }
 
     @PostMapping("/users/{id}/update")
-    public String update(@PathVariable(value = "id") Long id,
+    public ModelAndView modify(@PathVariable(value = "id") Long id,
         @Valid @RequestBody UserSavedRequestDto requestDto) {
         logger.info(requestDto.toString());
-        userService.updateUser(id, requestDto);
-        return "redirect:/users";
+        userService.modifyUser(id, requestDto);
+        return new ModelAndView(new RedirectView("/users"));
     }
 
-    @GetMapping("/user/login")
-    public String loginForm() {
-        return "user/login";
-    }
-
-    @PostMapping("/user/login")
+    // 로그인
+    @PostMapping("/users/login")
     public String login(@Valid @RequestBody UserLoginRequestDto requestDto,
         HttpSession session) {
-        logger.info(requestDto.toString());
+        logger.info("login" + requestDto.toString());
         userService.login(requestDto, session);
         return "redirect:/";
     }
 
-    @GetMapping("/user/logout")
+    // 로그아웃
+    @PostMapping("/users/logout")
     public ModelAndView logout(HttpSession session) {
         ModelAndView mav = new ModelAndView("user/login");
         session.removeAttribute("user");
         return mav;
     }
 
-    @GetMapping("/user/{id}/password")
-    public String passwordForm(@PathVariable(value = "id") Long id, Model model) {
-        model.addAttribute("user", userService.findUser(id));
-        return "user/passwordForm";
-    }
-
-    @PostMapping("/user/{id}/password")
+    // 비밀번호 확인
+    @PostMapping("/users/password/{id}")
     public String passwordConfirm(@PathVariable(value = "id") Long id,
         @Valid @RequestBody UserSavedRequestDto requestDto) {
         userService.confirmPassword(id, requestDto);
-        return String.format("redirect:/users/%d/form", id);
+        return String.format("redirect:/user/form/%d", id);
+    }
+
+    // 회원가입 페이지
+    @GetMapping("/user/form")
+    public String createForm() {
+        return "user/form";
+    }
+
+    // 회원수정 페이지
+    @GetMapping("/user/form/{id}")
+    public String modifyForm(@PathVariable(value = "id") Long id, Model model) {
+        model.addAttribute("user", userService.findUpdateUser(id));
+        return "user/updateForm";
+    }
+
+    // 로그인 페이지
+    @GetMapping("/user/login")
+    public String loginForm() {
+        return "user/login";
+    }
+
+    // 비밀번호 확인 페이지
+    @GetMapping("/user/password/{id}")
+    public String passwordConfirmForm(@PathVariable(value = "id") Long id, Model model) {
+        model.addAttribute("user", userService.findUser(id));
+        return "user/passwordForm";
     }
 }

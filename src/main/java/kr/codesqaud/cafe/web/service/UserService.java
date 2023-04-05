@@ -42,7 +42,6 @@ public class UserService {
     }
 
     // 특정 회원 조회
-    // ISSUE : 반환시 비밀번호가 없음
     public User findUser(Long id) {
         return validator.validateExistUser(id);
     }
@@ -63,7 +62,7 @@ public class UserService {
         session.setAttribute("user", new UserResponseDto(user));
     }
 
-    public void updateUser(Long id, UserSavedRequestDto requestDto) {
+    public void modifyUser(Long id, UserSavedRequestDto requestDto) {
         User requestUser = requestDto.toEntity(id);
         User currentUser = findUser(id);
         validator.validateModifiedUserEmail(requestUser, currentUser);
