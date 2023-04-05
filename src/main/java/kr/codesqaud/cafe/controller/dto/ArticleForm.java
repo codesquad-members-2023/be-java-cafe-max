@@ -1,17 +1,16 @@
 package kr.codesqaud.cafe.controller.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class ArticleForm {
+    @NotBlank(message = "이름을 입력해 주세요")
     private String writer;
+    @NotBlank(message = "제목을 입력해 주세요")
     private String title;
+    @NotBlank(message = "글을 입력해 주세요")
     private String contents;
 
     public ArticleForm() {
-    }
-
-    public ArticleForm(String writer, String title, String content) {
-        this.writer = writer;
-        this.title = title;
-        this.contents = content;
     }
 
     public String getWriter() {
