@@ -1,13 +1,13 @@
 package kr.codesqaud.cafe.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.dto.SignUpDTO;
 import kr.codesqaud.cafe.dto.UserDTO;
-import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 
 @Service
@@ -28,11 +28,11 @@ public class UserService {
 		return repository.selectAll();
 	}
 
-	public UserDTO findUser(String userId) throws UserNotFoundException {
+	public UserDTO findUser(String userId) throws NoSuchElementException {
 		return repository.selectByUserId(userId);
 	}
 
-	public void modifyUser(SignUpDTO dto) throws UserNotFoundException {
+	public void modifyUser(SignUpDTO dto) throws NoSuchElementException {
 		repository.update(dto);
 	}
 

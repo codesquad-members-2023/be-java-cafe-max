@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.controller;
 
 import java.util.NoSuchElementException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +19,6 @@ public class QuestionController {
 
 	private final QuestionService service;
 
-	@Autowired
 	public QuestionController(QuestionService service) {
 		this.service = service;
 	}
@@ -30,7 +28,7 @@ public class QuestionController {
 		return "qna/form";
 	}
 
-	@PostMapping("")
+	@PostMapping
 	public String questionAdd(QuestionWriteDTO dto) {
 		service.addQuestion(dto);
 		return "redirect:questions/write-form";

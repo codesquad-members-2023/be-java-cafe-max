@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,6 @@ import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.SignUpDTO;
 import kr.codesqaud.cafe.dto.UserDTO;
 import kr.codesqaud.cafe.dummy.CollectionFrameworkRepositoryDummyData;
-import kr.codesqaud.cafe.exception.UserNotFoundException;
 
 @Repository
 public class UserRepository {
@@ -39,16 +39,16 @@ public class UserRepository {
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public UserDTO selectByUserId(String userId) throws UserNotFoundException {
+	public UserDTO selectByUserId(String userId) throws NoSuchElementException {
 		for (User user : users) {
 			if (user.getUserId().equals(userId)) {
 				return user.toDto();
 			}
 		}
-		throw new UserNotFoundException("존재하지 않는 유저 입니다.");
+		throw new NoSuchElementException("존재하지 않는 유저 입니다.");
 	}
 
-	public void update(SignUpDTO dto) throws UserNotFoundException {
+	public void update(SignUpDTO dto) throws NoSuchElementException {
 		String userId = dto.getUserId();
 		for (User user : users) {
 			if (user.getUserId().equals(userId)) {
@@ -56,7 +56,7 @@ public class UserRepository {
 				return;
 			}
 		}
-		throw new UserNotFoundException("존재하지 않는 유저 입니다.");
+		throw new NoSuchElementException("존재하지 않는 유저 입니다.");
 	}
 
 }

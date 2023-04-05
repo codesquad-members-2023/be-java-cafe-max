@@ -1,13 +1,13 @@
 package kr.codesqaud.cafe.controller;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
@@ -23,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.codesqaud.cafe.dto.SignUpDTO;
 import kr.codesqaud.cafe.dto.UserDTO;
-import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.service.UserService;
 
 @Controller
@@ -31,7 +30,6 @@ import kr.codesqaud.cafe.service.UserService;
 public class UserController {
 	private final UserService service;
 
-	@Autowired
 	public UserController(UserService service) {
 		this.service = service;
 	}
@@ -41,16 +39,16 @@ public class UserController {
 		if (errorMessages != null && !errorMessages.isEmpty()) {
 			addAttributeErrorMessages(model, errorMessages);
 		}
-		return "/user/form";
+		return "user/form";
 	}
 
-	@GetMapping("")
+	@GetMapping
 	public String userList(Model model) {
 		model.addAttribute("users", service.findAllUsers());
-		return "/user/list";
+		return "user/list";
 	}
 
-	@PostMapping("")
+	@PostMapping
 	public String userAdd(@Valid SignUpDTO dto, BindingResult result, RedirectAttributes redirect,
 		HttpServletRequest request) {
 		if (result.hasErrors()) {
@@ -72,7 +70,7 @@ public class UserController {
 		UserDTO userDto = null;
 		try {
 			userDto = service.findUser(userId);
-		} catch (UserNotFoundException e) {
+		} catch (NoSuchElementException e) {
 			addAttributeErrorMessage(model, e.getMessage());
 		}
 		model.addAttribute("userDto", userDto);
@@ -84,7 +82,7 @@ public class UserController {
 		UserDTO userDto = null;
 		try {
 			userDto = service.findUser(userId);
-		} catch (UserNotFoundException e) {
+		} catch (NoSuchElementException e) {
 			addAttributeErrorMessage(model, e.getMessage());
 		}
 		model.addAttribute("userDto", userDto);
@@ -108,7 +106,7 @@ public class UserController {
 
 		try {
 			service.modifyUser(dto);
-		} catch (UserNotFoundException e) {
+		} catch (NoSuchElementException e) {
 			addAttributeErrorMessage(redirect, e.getMessage());
 		}
 		return "redirect:/users/" + dto.getUserId();
