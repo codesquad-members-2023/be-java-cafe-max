@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class AccountControllerExceptionHandler {
 
-	public static final String ERROR_DETAILS_FORMAT = "[ ErrorStatus : %s ][ ErrorMessage : %s ][ RequestURL : %s ]";
+	public static final String ERROR_DETAILS_FORMAT = "[ ErrorStatus : %s ][ErrorCode : %s][ ErrorMessage : %s ][ RequestURL : %s ]";
 	private static final Logger logger = LoggerFactory.getLogger(AccountControllerExceptionHandler.class);
 
 	@ExceptionHandler(AccountException.class)
@@ -20,6 +20,7 @@ public class AccountControllerExceptionHandler {
 		logger.error(
 			String.format(ERROR_DETAILS_FORMAT,
 				errorCode.getStatus().toString(),
+				errorCode.getCode(),
 				errorCode.getMessage(),
 				request.getRequestURI()));
 		ModelAndView modelAndView = new ModelAndView();
