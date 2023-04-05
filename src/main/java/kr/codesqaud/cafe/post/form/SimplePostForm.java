@@ -5,18 +5,15 @@ import java.time.LocalDateTime;
 import kr.codesqaud.cafe.post.Post;
 
 public class SimplePostForm {
-	private Long id;
+	private final Long id;
 
-	private String nickname;
+	private final String nickname;
 
-	private String title;
+	private final String title;
 
-	private String textContent;
+	private final String textContent;
 
-	private LocalDateTime createdDateTime;
-
-	public SimplePostForm() {
-	}
+	private final LocalDateTime createdDateTime;
 
 	private SimplePostForm(Builder builder) {
 		id = builder.id;
@@ -40,40 +37,20 @@ public class SimplePostForm {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getNickname() {
 		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getTextContent() {
 		return textContent;
 	}
 
-	public void setTextContent(String textContent) {
-		this.textContent = textContent;
-	}
-
 	public LocalDateTime getCreatedDateTime() {
 		return createdDateTime;
-	}
-
-	public void setCreatedDateTime(LocalDateTime createdDateTime) {
-		this.createdDateTime = createdDateTime;
 	}
 
 	public static class Builder {

@@ -13,14 +13,14 @@ public class PostForm {
 	@NotEmpty
 	@NotBlank
 	@Size(max = 64, min = 2, message = "{error.nickname.size}")
-	private String nickname;
+	private final String nickname;
 	@NotEmpty
 	@NotBlank
 	@Size(max = 64, min = 2, message = "{error.title.size}")
-	private String title;
+	private final String title;
 	@NotEmpty
 	@Size(max = 1000, min = 3, message = "{error.textContent.size}")
-	private String textContent;
+	private final String textContent;
 
 	public PostForm(String nickname, String title, String textContent) {
 		this.nickname = nickname;
