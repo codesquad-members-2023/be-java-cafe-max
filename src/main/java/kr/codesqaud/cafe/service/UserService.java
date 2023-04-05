@@ -20,7 +20,7 @@ public class UserService {
 		this.repository = repository;
 	}
 
-	public void addUser(SignUpDTO dto) {
+	public void addUser(SignUpDTO dto) throws IllegalArgumentException {
 		repository.save(dto);
 	}
 

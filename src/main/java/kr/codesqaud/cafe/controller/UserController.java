@@ -50,7 +50,8 @@ public class UserController {
 	}
 
 	@PostMapping("")
-	public String userAdd(@Valid SignUpDTO dto, BindingResult result, RedirectAttributes redirect) {
+	public String userAdd(@Valid SignUpDTO dto, BindingResult result, RedirectAttributes redirect,
+		HttpServletRequest request) {
 		if (result.hasErrors()) {
 			List<String> errorMessages = result.getFieldErrors().stream()
 				.map(e -> e.getDefaultMessage())
@@ -60,7 +61,12 @@ public class UserController {
 			return "redirect:/users/signup";
 		}
 
-		service.addUser(dto);
+		try {
+			service.addUser(dto);
+		} catch (IllegalArgumentException e) {
+			redirect.addFlashAttribute("errorMessage", e.getMessage());
+			return "redirect:" + request.getHeader("Referer");
+		}
 		return "redirect:/users";
 	}
 

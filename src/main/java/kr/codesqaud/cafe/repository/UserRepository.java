@@ -23,7 +23,13 @@ public class UserRepository {
 		dummyData.insertUserDummyData(users);
 	}
 
-	public synchronized void save(SignUpDTO dto) {
+	public synchronized void save(SignUpDTO dto) throws IllegalArgumentException {
+		String userId = dto.getUserId();
+		for (User user : users) {
+			if (user.getUserId().equals(userId)) {
+				throw new IllegalArgumentException("이미 등록된 아이디 입니다.");
+			}
+		}
 		users.add(dto.toUser(userIdx++));
 	}
 
