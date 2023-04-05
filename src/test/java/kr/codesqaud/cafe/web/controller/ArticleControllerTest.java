@@ -76,7 +76,7 @@ class ArticleControllerTest {
         String userId = "user1";
         ArticleSavedRequestDto dto = new ArticleSavedRequestDto(writer, title, content, writeDate,
             userId);
-        String url = "/qna/create";
+        String url = "/qna";
         //when
         mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -102,7 +102,7 @@ class ArticleControllerTest {
         String userId = "user1";
         ArticleSavedRequestDto dto = new ArticleSavedRequestDto(writer, title, content, writeDate,
             userId);
-        String url = "/qna/create";
+        String url = "/qna";
         //when
         MockHttpServletResponse response = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -134,7 +134,7 @@ class ArticleControllerTest {
         String userId = "user1";
         ArticleSavedRequestDto dto = new ArticleSavedRequestDto(writer, title, content, writeDate,
             userId);
-        String url = "/qna/create";
+        String url = "/qna";
         // 게시글 글쓰기
         mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(toJSON(dto)));
 

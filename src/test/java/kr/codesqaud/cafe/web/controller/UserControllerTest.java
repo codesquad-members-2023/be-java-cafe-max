@@ -388,7 +388,7 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/users/1/form"));
+            .andExpect(redirectedUrl("/user/form/1"));
         //then
     }
 

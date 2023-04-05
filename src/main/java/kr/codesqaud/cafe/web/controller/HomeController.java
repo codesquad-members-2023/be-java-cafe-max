@@ -16,7 +16,8 @@ public class HomeController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/")
+    // 전체 게시글 조회
+    @GetMapping({"/", "/qna"})
     public String home(Model model) {
         model.addAttribute("articles", articleService.getAllArticles());
         return "index";

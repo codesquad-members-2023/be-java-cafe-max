@@ -29,6 +29,22 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    // 특정 게시글 조회
+    @GetMapping("/qna/{id}")
+    public String detail(@PathVariable(value = "id") Long id, Model model) {
+        model.addAttribute("article", articleService.findArticle(id));
+        return "qna/detail";
+    }
+
+    // 특정 게시글 추가
+    @PostMapping("/qna")
+    @ResponseBody
+    public ArticleResponseDto create(@Valid @RequestBody ArticleSavedRequestDto requestDto) {
+        logger.info("create : " + requestDto.toString());
+        return articleService.write(requestDto);
+    }
+
+    // 게시글 글쓰기 페이지
     @GetMapping("/qna/form")
     public ModelAndView form(HttpSession session) {
         ModelAndView mav = new ModelAndView("qna/form");
@@ -36,18 +52,5 @@ public class ArticleController {
             mav.setView(new RedirectView("/user/login"));
         }
         return mav;
-    }
-
-    @PostMapping("/qna/create")
-    @ResponseBody
-    public ArticleResponseDto newArticle(@Valid @RequestBody ArticleSavedRequestDto requestDto) {
-        logger.info(requestDto.toString());
-        return articleService.write(requestDto);
-    }
-
-    @GetMapping("/qna/{id}")
-    public String detail(@PathVariable(value = "id") Long id, Model model) {
-        model.addAttribute("article", articleService.findArticle(id));
-        return "qna/detail";
     }
 }
