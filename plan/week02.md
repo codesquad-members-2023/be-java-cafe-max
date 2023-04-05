@@ -27,10 +27,19 @@
 - [x] final 위키에 정리
 - [ ] step2 구현하기
 - [ ] step1 Controller test 하기
-- [ ] 알바
+- [x] 알바
 - [ ] 백준 1697
 
 ### 팀원 피드백
 1. Controller Test는 mockMVC 사용하면 가능하다.
 2. unmodifiableList와 List.copyOf 중 User가 setter가 없어 사실상 불변 객체이기 때문에 아무거나 써도 될 것 같다.
 3. Test code에서 User 객체 생성을 메서드로 만들어 여러 메서드에서 활용할 수 있게 하면 중복을 줄일 수 있다.
+
+## 2023.04.04(수)
+- [x] step2 구현하기
+  - 글쓰기
+  - 글 목록 조회하기
+  - 게시글 상세보기
+  - 회원정보 수정
+- [x] 알바
+- [x] 리드미 및 학습한 내용 작성
