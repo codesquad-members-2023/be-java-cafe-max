@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
 public class User {
-    private Long index;
+    private long index;
     private String userID;
     private String email;
     private String nickname;

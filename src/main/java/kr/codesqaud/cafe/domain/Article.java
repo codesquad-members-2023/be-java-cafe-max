@@ -6,7 +6,7 @@ public class Article {
     private String writer;
     private String contents;
     private String writeDate;
-    private Long hits = 0L;
+    private long hits = 0L;
 
     public Article(Long index, String title, String writer, String contents, String writeDate) {
         this.index = index;
@@ -36,11 +36,11 @@ public class Article {
         return writeDate;
     }
 
-    public Long getHits() {
+    public long getHits() {
         return hits;
     }
 
-    public void setHits(Long hits) {
+    public void setHits(long hits) {
         this.hits = hits;
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ArticleFormRepository implements ArticleRepository {
-    private final List<Article> articleList = new ArrayList<>();
+    private List<Article> articleList = new ArrayList<>();
     private long index = 0L;
 
     @Override

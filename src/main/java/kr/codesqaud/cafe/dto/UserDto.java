@@ -10,31 +10,35 @@ public class UserDto {
         return userID;
     }
 
-    public void setUserID(String userID) {
+    public boolean setUserID(String userID) {
         this.userID = userID;
+        return true;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public boolean setEmail(String email) {
         this.email = email;
+        return true;
     }
 
     public String getNickname() {
         return nickname;
     }
 
-    public void setNickname(String nickname) {
+    public boolean setNickname(String nickname) {
         this.nickname = nickname;
+        return true;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public boolean setPassword(String password) {
         this.password = password;
+        return true;
     }
 }

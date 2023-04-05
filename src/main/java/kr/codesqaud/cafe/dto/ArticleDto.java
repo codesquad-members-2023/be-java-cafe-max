@@ -9,23 +9,26 @@ public class ArticleDto {
         return title;
     }
 
-    public void setTitle(String title) {
+    public boolean setTitle(String title) {
         this.title = title;
+        return true;
     }
 
     public String getWriter() {
         return writer;
     }
 
-    public void setWriter(String writer) {
+    public boolean setWriter(String writer) {
         this.writer = writer;
+        return true;
     }
 
     public String getContents() {
         return contents;
     }
 
-    public void setContents(String contents) {
+    public boolean setContents(String contents) {
         this.contents = contents;
+        return true;
     }
 }
