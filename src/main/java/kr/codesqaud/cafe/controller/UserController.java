@@ -94,9 +94,15 @@ public class UserController {
 		return "user/modify-form";
 	}
 
-	@PutMapping
-	public String userModify(@Valid SignUpDTO dto, BindingResult result, RedirectAttributes redirect,
+	@PutMapping("/{userId}")
+	public String userModify(@PathVariable String userId, @Valid SignUpDTO dto, BindingResult result,
+		RedirectAttributes redirect,
 		HttpServletRequest request) {
+
+		if (!userId.equals(dto.getUserId())) {
+			redirect.addFlashAttribute("errorMessage", "잘못된 입력입니다.");
+			return "redirect:" + request.getHeader("Referer");
+		}
 
 		if (result.hasErrors()) {
 			List<String> errorMessages = result.getFieldErrors().stream()
