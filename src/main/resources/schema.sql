@@ -6,3 +6,11 @@ CREATE TABLE IF NOT EXISTS post(
     writedatetime TIMESTAMP NOT NULL,
     PRIMARY KEY (postid)
 );
+
+CREATE TABLE IF NOT EXISTS users(
+    userid VARCHAR NOT NULL,
+    password VARCHAR NOT NULL,
+    username VARCHAR NOT NULL,
+    email VARCHAR NOT NULL,
+    PRIMARY KEY (userid)
+);

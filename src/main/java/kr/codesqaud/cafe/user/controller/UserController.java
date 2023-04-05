@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.user.controller;
 
 import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.repository.UserRepository;
+import kr.codesqaud.cafe.user.repository.UserJdbcRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserJdbcRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
+    public UserController(UserJdbcRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -29,13 +29,13 @@ public class UserController {
 
     @GetMapping("/list")
     public String list(Model model) {
-        model.addAttribute("users", userRepository.getUserList());
+        model.addAttribute("users", userRepository.findAll());
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String getProfile(@PathVariable String userId, Model model) {
-        model.addAttribute("user", userRepository.getUser(userId));
+        model.addAttribute("user", userRepository.findByUserId(userId));
         return "user/profile";
     }
 

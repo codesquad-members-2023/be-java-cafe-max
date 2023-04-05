@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
-public class BoardRepository {
+public class BoardMemoryRepository {
     Map<Long, BoardPost> boardData = new HashMap<>();
 
     private long postId = 0;

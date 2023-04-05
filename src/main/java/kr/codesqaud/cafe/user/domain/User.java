@@ -8,6 +8,13 @@ public class User {
     private String userName;
     private String email;
 
+    public User(String userId, String password, String userName, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.userName = userName;
+        this.email = email;
+    }
+
     public UserDto toUserDto() {
         return new UserDto(this.userId, this.userName, this.email);
     }
