@@ -103,6 +103,7 @@ public class UserController {
 	public String showUserProfile(Model model, @PathVariable Long userId) {
 		User user = userService.findById(userId);
 		ProfileSettingForm profileSettingForm = ProfileSettingForm.from(user);
+
 		model.addAttribute(USER_ID, userId);
 		model.addAttribute(PROFILE_SETTING_FORM, profileSettingForm);
 		return "account/profileUpdate";
