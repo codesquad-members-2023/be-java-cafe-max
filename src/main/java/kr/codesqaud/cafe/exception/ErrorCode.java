@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account.exception;
+package kr.codesqaud.cafe.exception;
 
 import org.springframework.http.HttpStatus;
 
@@ -10,6 +10,7 @@ public enum ErrorCode {
 	SAVE_USER_FAILED_CODE(HttpStatus.BAD_REQUEST, "D003", "해당 정보를 저장에 실패 했습니다.", "error/custom"),
 	GET_ALL_USERS_FAILED_CODE(HttpStatus.BAD_REQUEST, "D004", "유저 전체 조회 실패 했습니다.", "error/custom"),
 	UPDATE_USER_FAILED_CODE(HttpStatus.BAD_REQUEST, "D005", "유저 업데이트 실패 했습니다.", "error/custom"),
+	SAVE_POST_FAILED_CODE(HttpStatus.BAD_REQUEST, "D006", "Post 정보를 저장에 실패 했습니다.", "error/custom"),
 	;
 
 	private final HttpStatus status;

@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.account;
 
-import static kr.codesqaud.cafe.account.exception.ErrorCode.*;
+import static kr.codesqaud.cafe.exception.ErrorCode.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import kr.codesqaud.cafe.account.form.JoinForm;
 import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.form.UserForm;
-import kr.codesqaud.cafe.account.exception.service.InvalidIdException;
+import kr.codesqaud.cafe.account.exception.service.InvalidUserIdException;
 
 @Service
 public class UserService {
@@ -56,7 +56,7 @@ public class UserService {
 		if (userOptional.isPresent()) {
 			return userOptional.get();
 		} else {
-			throw new InvalidIdException(INVALID_ID_CODE);
+			throw new InvalidUserIdException(INVALID_ID_CODE);
 		}
 	}
 

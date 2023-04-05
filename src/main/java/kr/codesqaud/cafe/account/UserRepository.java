@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.account;
 
-import static kr.codesqaud.cafe.account.exception.ErrorCode.*;
+import static kr.codesqaud.cafe.exception.ErrorCode.*;
 import static kr.codesqaud.cafe.utils.FiledName.*;
 
 import java.util.HashMap;

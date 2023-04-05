@@ -1,10 +1,10 @@
-package kr.codesqaud.cafe.account.exception;
+package kr.codesqaud.cafe.exception;
 
-public abstract class AccountException extends RuntimeException {
+public abstract class CustomException extends RuntimeException {
 
 	private final ErrorCode errorCode;
 
-	public AccountException(ErrorCode errorCode) {
+	public CustomException(ErrorCode errorCode) {
 		super(errorCode.getMessage());
 		this.errorCode = errorCode;
 	}

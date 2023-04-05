@@ -8,14 +8,17 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.codesqaud.cafe.exception.CustomException;
+import kr.codesqaud.cafe.exception.ErrorCode;
+
 @ControllerAdvice
 public class AccountControllerExceptionHandler {
 
 	public static final String ERROR_DETAILS_FORMAT = "[ ErrorStatus : %s ][ErrorCode : %s][ ErrorMessage : %s ][ RequestURL : %s ]";
 	private static final Logger logger = LoggerFactory.getLogger(AccountControllerExceptionHandler.class);
 
-	@ExceptionHandler(AccountException.class)
-	public ModelAndView defaultErrorHandler(HttpServletRequest request, AccountException e) {
+	@ExceptionHandler(CustomException.class)
+	public ModelAndView defaultErrorHandler(HttpServletRequest request, CustomException e) {
 		ErrorCode errorCode = e.getErrorCode();
 		logger.error(
 			String.format(ERROR_DETAILS_FORMAT,
