@@ -25,11 +25,6 @@ public class ArticleController {
         return "index";
     }
 
-//    @GetMapping("/questions/form")
-//    public String showQnaForm() {
-//        return "qna/form";
-//    }
-
     @PostMapping("/questions")
     public String writePost(@ModelAttribute ArticleRequestDto articleRequestDto) {
         articleService.createPost(articleRequestDto);

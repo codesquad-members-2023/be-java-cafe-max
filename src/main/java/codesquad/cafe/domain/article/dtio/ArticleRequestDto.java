@@ -19,6 +19,6 @@ public class ArticleRequestDto {
     }
 
     public Article toEntity() {
-        return new Article(writer, title, contents, date);
+        return new Article( writer, title, contents, date);
     }
 }

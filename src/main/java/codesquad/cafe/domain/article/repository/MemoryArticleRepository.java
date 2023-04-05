@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-@Repository
+
 public class MemoryArticleRepository implements ArticleRepository {
 
     private static Map<Long, Article> store = new ConcurrentHashMap<>();

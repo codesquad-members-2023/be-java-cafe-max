@@ -13,6 +13,15 @@ public class Article {
     private String contents;
     private LocalDateTime date;
 
+
+    public Article(final Long id, final String writer, final String title, final String contents, final LocalDateTime date) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.date = date;
+    }
+
     public Article(final String writer, final String title, final String contents, final LocalDateTime date) {
         this.writer = writer;
         this.title = title;
