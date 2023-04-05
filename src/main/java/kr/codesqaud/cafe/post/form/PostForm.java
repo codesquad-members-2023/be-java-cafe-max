@@ -41,7 +41,7 @@ public class PostForm {
 	}
 
 	public Post toPost() {
-		return new Post.Builder(PostRepository.atomicKey.incrementAndGet())
+		return new Post.Builder()
 			.nickname(nickname)
 			.title(title)
 			.textContent(textContent)
