@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.board.controller;
 
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
-import kr.codesqaud.cafe.board.repository.BoardJdbcRepository;
+import kr.codesqaud.cafe.service.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,27 +10,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/board")
 public class BoardController {
 
-    private final BoardJdbcRepository boardRepository;
+    private final BoardService boardService;
 
-    public BoardController(BoardJdbcRepository boardJdbcRepository) {
-        this.boardRepository = boardJdbcRepository;
+    public BoardController(BoardService boardService) {
+        this.boardService = boardService;
     }
 
     @PostMapping("/write")
     public String writePost(@ModelAttribute PostWriteForm postWriteForm) {
-        boardRepository.write(postWriteForm);
+        boardService.write(postWriteForm);
         return "redirect:/board/list";
     }
 
     @GetMapping("/list")
     public String list(Model model) {
-        model.addAttribute("postList", boardRepository.getPostList());
+        model.addAttribute("postList", boardService.getPostList());
         return "index";
     }
 
     @GetMapping("/{postId}")
     public String getDetailPost(@PathVariable Long postId, Model model) {
-        model.addAttribute("post", boardRepository.getPost(postId));
+        model.addAttribute("post", boardService.getPost(postId));
         return "/board/detail";
     }
 

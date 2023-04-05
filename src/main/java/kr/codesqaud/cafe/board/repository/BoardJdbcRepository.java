@@ -1,8 +1,6 @@
 package kr.codesqaud.cafe.board.repository;
 
 import kr.codesqaud.cafe.board.domain.BoardPost;
-import kr.codesqaud.cafe.board.dto.PostResponseForm;
-import kr.codesqaud.cafe.board.dto.PostWriteForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -22,29 +20,28 @@ public class BoardJdbcRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public void write(PostWriteForm postWriteForm) {
+    public void save(BoardPost boardPost) {
         jdbcTemplate.update(
                 "INSERT INTO post (writer, title, contents, writedatetime) VALUES (?, ?, ?, NOW())",
-                postWriteForm.getWriter(), postWriteForm.getTitle(), postWriteForm.getContents());
+                boardPost.getWriter(), boardPost.getTitle(), boardPost.getContents());
     }
 
-    public PostResponseForm getPost(Long postId) {
+    public BoardPost findByPostId(Long postId) {
         return jdbcTemplate.queryForObject(
                 "SELECT postid, writer, title, contents, writedatetime FROM post WHERE postid = ?",
                 postRowMapper,
                 postId);
     }
 
-    public List<PostResponseForm> getPostList() {
-        return jdbcTemplate.query("SELECT * FROM post", postRowMapper);
+    public List<BoardPost> findAll() {
+        return jdbcTemplate.query("SELECT * FROM post ORDER BY writedatetime DESC", postRowMapper);
     }
 
-    private final RowMapper<PostResponseForm> postRowMapper = (resultSet, rowNum) -> {
+    private final RowMapper<BoardPost> postRowMapper = (resultSet, rowNum) -> {
         return new BoardPost(resultSet.getLong("postid"),
                 resultSet.getString("writer"),
                 resultSet.getString("title"),
                 resultSet.getString("contents"),
-                ((Timestamp) resultSet.getObject("writedatetime")).toLocalDateTime()
-        ).toPostResponseForm();
+                ((Timestamp) resultSet.getObject("writedatetime")).toLocalDateTime());
     };
 }
