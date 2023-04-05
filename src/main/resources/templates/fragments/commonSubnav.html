@@ -30,12 +30,11 @@
           <li class="active"><a href="/">Posts</a></li>
           <li><a href="/user/login" role="button">로그인</a></li>
           <li><a href="/user/form" role="button">회원가입</a></li>
-          <li><a href="/user/logout" role="button" th:if="${session.user}">로그아웃</a></li>
-          <li><a role="button" th:href="@{/users/{id}/form(id=${session.user.id})}"
+          <li><a id="logout" role="button" th:if="${session.user}">로그아웃</a></li>
+          <li><a role="button" th:href="@{/user/password/{id}(id=${session.user.id})}"
                  th:if="${session.user}">개인정보수정</a></li>
         </ul>
       </div>
     </div>
   </div>
-
 </th:block>

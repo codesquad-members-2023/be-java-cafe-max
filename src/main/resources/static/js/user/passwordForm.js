@@ -7,7 +7,7 @@ $(document).ready(function () {
       "password": $("#password").val()
     }
     const id = $("#id").val()
-    const urlPath = "/user/" + id + "/password"
+    const urlPath = `/users/password/${id}`
 
     $.ajax({
       type: "POST",
@@ -21,9 +21,7 @@ $(document).ready(function () {
         }
         if (hasFormatError(resp)) {
           writeError(resp)
-          return;
         }
-        location.href = "/users/" + id + "/form"
       }
     })
   })

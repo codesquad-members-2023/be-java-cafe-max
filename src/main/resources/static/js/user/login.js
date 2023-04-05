@@ -9,7 +9,7 @@ $(document).ready(function () {
     }
     $.ajax({
       type: "POST",
-      url: "/user/login",
+      url: "/users/login",
       data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8',
       success: function (resp) {
