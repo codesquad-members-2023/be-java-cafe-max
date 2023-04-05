@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.post;
 
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -40,11 +38,7 @@ public class PostController {
 
 	@GetMapping("/posts/{postId}")
 	public String showPostPage(Model model, @PathVariable Long postId) {
-		Optional<Post> optionalPost = postService.findById(postId);
-		if (optionalPost.isEmpty()) {
-			return "redirect:/";
-		}
-		Post post = optionalPost.get();
+		Post post = postService.findById(postId);
 		model.addAttribute(post);
 		return "/post/postDetail";
 	}

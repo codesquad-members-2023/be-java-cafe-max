@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import kr.codesqaud.cafe.exception.ErrorCode;
+import kr.codesqaud.cafe.post.exception.InvalidPostIdFailedException;
 import kr.codesqaud.cafe.post.form.PostForm;
 import kr.codesqaud.cafe.post.form.SimplePostForm;
 
@@ -20,8 +22,8 @@ public class PostService {
 
 	public Post createNewPost(PostForm postForm) {
 		Post post = postForm.toPost();
-		postRepository.add(post);
-		return post;
+		int saveId = postRepository.save(post);
+		return postRepository.findById(Long.valueOf(saveId)).get();
 	}
 
 	public List<SimplePostForm> mappingSimpleForm(List<Post> posts) {
@@ -30,7 +32,12 @@ public class PostService {
 			.collect(Collectors.toList());
 	}
 
-	public Optional<Post> findById(Long postId) {
-		return postRepository.findById(postId);
+	public Post findById(Long postId) {
+
+		Optional<Post> optionalPost = postRepository.findById(postId);
+		if (optionalPost.isEmpty()) {
+			throw new InvalidPostIdFailedException(ErrorCode.INVALID_POST_ID_CODE);
+		}
+		return optionalPost.get();
 	}
 }
