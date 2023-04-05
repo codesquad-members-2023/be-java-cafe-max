@@ -16,9 +16,8 @@ public class MemoryArticleRepository implements ArticleRepository{
     private static final AtomicLong articleId = new AtomicLong(0);
     @Override
     public Article save(Article article) {
-        Long id = articleId.incrementAndGet();
-        article.setId(id);
-        store.put(id, article);
+        article.setId(articleId.incrementAndGet());
+        store.put(article.getId(), article);
         return article;
     }
 
