@@ -1,0 +1,12 @@
+{{> fragments/header}}
+<body>
+{{> fragments/navigationbar}}
+<div class="container" id="main">
+    <div class="d-flex justify-content-center text-center">
+        <h2>404 NOT FOUND</h2>
+        {{#error}}
+        <span>{{error}}</span>
+        {{/error}}
+    </div>
+</div>
+{{> fragments/footer}}
