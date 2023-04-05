@@ -10,10 +10,15 @@ public class Article {
 	private LocalDateTime createAt;
 
 	public Article(String writer, String title, String contents) {
+		this(writer, title, contents, null, LocalDateTime.now());
+	}
+
+	public Article(String writer, String title, String contents, Long id, LocalDateTime createAt) {
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
-		this.createAt = LocalDateTime.now();
+		this.id = id;
+		this.createAt = createAt;
 	}
 
 	public String getWriter() {

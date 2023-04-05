@@ -6,11 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Repository;
-
 import kr.codesqaud.cafe.domain.Article;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
 	private final Map<Long, Article> articleRepository = new HashMap<>();
