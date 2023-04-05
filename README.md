@@ -13,8 +13,14 @@
   - 홈 화면에서 게시글 목록을 조회한다.
   - 모든 사용자는 게시글을 작성할 수 있다.
 - [x] 홈 화면에 게시글 목록을 출력한다.
-- [x] 게시글 목록의 제목을 클릭했을 때 게시글 상세 페이지로 이동한다.
+- [x] 게시글 목록의 제목을 클릭했을 때 게시글 상세 화면으로 이동한다.
   - url에 article index를 넣어서 접근한다.
+- [x] 회원 목록에서 수정 버튼을 누르면 회원 정보 수정 화면으로 이동한다.
+  - 사용자의 id 값을 url에 넣어서 이동한다.
+- [x] 비밀번호, 이름, 이메일을 수정할 수 있다.
+  - 사용자 아이디는 수정할 수 없다.
+  - 비밀번호가 일치하는 경우에만 수정 가능하다.
+  - 수정 완료하면 사용자 목록 조회 화면(/users)로 redirect 한다.
 
 ## URL
 |__HTTP Method__|__URL__| __기능__            |
@@ -27,6 +33,8 @@
 |POST|/questions| 질문하기 게시글 작성       |
 |GET|/questions/form| 글쓰기 화면 조회|
 |GET|/articles/{postId}| 게시글 상세 조회|
+|GET|/users/{userId}/form| 회원 정보 수정 화면 출력|
+|PUT|/users/{userId}/update| 회원 정보 수정|
 
 
 
@@ -80,6 +88,24 @@
 <div>
 
 ![detail](https://user-images.githubusercontent.com/57451700/230138947-09aa8971-a73e-46f7-82a7-cd04f158d86e.png)
+
+</div>
+</details>
+
+<details>
+<summary>회원 정보 수정 화면</summary>
+<div>
+
+![form](https://user-images.githubusercontent.com/57451700/230179012-c77d8570-97f8-425e-9866-04c998422589.png)
+
+</div>
+</details>
+
+<details>
+<summary>회원 정보 수정 완료 화면</summary>
+<div>
+
+![update](https://user-images.githubusercontent.com/57451700/230179038-0ce9898b-ade4-4f0b-a8cb-5eaab10fc48a.png)
 
 </div>
 </details>
