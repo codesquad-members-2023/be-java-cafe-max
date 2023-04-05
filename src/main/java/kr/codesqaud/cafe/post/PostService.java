@@ -1,9 +1,9 @@
 package kr.codesqaud.cafe.post;
 
 import kr.codesqaud.cafe.exception.ErrorCode;
-import kr.codesqaud.cafe.post.exception.InvalidPostIdFailedException;
 import kr.codesqaud.cafe.post.dto.PostForm;
 import kr.codesqaud.cafe.post.dto.SimplePostForm;
+import kr.codesqaud.cafe.post.exception.InvalidPostIdFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -24,8 +24,8 @@ public class PostService {
 
     public Post createNewPost(PostForm postForm) {
         Post post = postForm.toPost();
-        int saveId = postRepository.save(post);
-        return postRepository.findById((long) saveId).get();
+        Long saveId = postRepository.save(post);
+        return findById(saveId);
     }
 
     public List<SimplePostForm> mappingSimpleForm(List<Post> posts) {

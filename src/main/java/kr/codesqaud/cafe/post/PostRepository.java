@@ -40,7 +40,7 @@ public class PostRepository {
         this.dataSource = dataSource;
     }
 
-    public int save(Post post) {
+    public Long save(Post post) {
         try {
             SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME)
                     .usingGeneratedKeyColumns(COLUMN_ID);
@@ -49,7 +49,7 @@ public class PostRepository {
             parameters.put(COLUMN_NICKNAME, post.getNickname());
             parameters.put(COLUMN_TEXT_CONTENT, post.getTextContent());
             parameters.put(COLUMN_CREATE_DATETIME, Timestamp.valueOf(LocalDateTime.now()));
-            return (int) simpleJdbcInsert.executeAndReturnKey(parameters);
+            return (Long) simpleJdbcInsert.executeAndReturnKey(parameters);
         } catch (DataAccessException e) {
             logger.debug(SAVE_POST_FAILED_CODE.getCode());
             throw new SavePostFailedException(SAVE_POST_FAILED_CODE);
