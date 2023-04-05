@@ -12,7 +12,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: "POST",
-      url: "/qna/create",
+      url: "/qna",
       data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8',
       success: function (resp) {
