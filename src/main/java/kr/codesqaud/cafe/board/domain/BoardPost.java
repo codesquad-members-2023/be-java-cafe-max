@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.board.domain;
 
-import kr.codesqaud.cafe.board.dto.PostResponseForm;
+import kr.codesqaud.cafe.board.dto.PostResponse;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,8 +27,8 @@ public class BoardPost {
         this.writeDateTime = writeDateTime;
     }
 
-    public PostResponseForm toPostResponseForm() {
-        return new PostResponseForm(postId, writer, title, contents, writeDateTime);
+    public PostResponse toPostResponse() {
+        return new PostResponse(postId, writer, title, contents, writeDateTime);
     }
 
     public Long getPostId() {

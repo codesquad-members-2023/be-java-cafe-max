@@ -3,14 +3,14 @@ package kr.codesqaud.cafe.board.dto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class PostResponseForm {
+public class PostResponse {
     private Long postId;
     private String writer;
     private String title;
     private String contents;
     private LocalDateTime writeDateTime;
 
-    public PostResponseForm(Long postId, String writer, String title, String contents, LocalDateTime writeDateTime) {
+    public PostResponse(Long postId, String writer, String title, String contents, LocalDateTime writeDateTime) {
         this.postId = postId;
         this.writer = writer;
         this.title = title;

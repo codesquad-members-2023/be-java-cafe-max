@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.board.service;
 
 import kr.codesqaud.cafe.board.domain.BoardPost;
-import kr.codesqaud.cafe.board.dto.PostResponseForm;
+import kr.codesqaud.cafe.board.dto.PostResponse;
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
 import kr.codesqaud.cafe.board.repository.BoardJdbcRepository;
 import org.springframework.stereotype.Service;
@@ -21,11 +21,11 @@ public class BoardService {
         boardJdbcRepository.save(postWriteForm.toBoardPost());
     }
 
-    public PostResponseForm getPost(Long postId) {
-        return boardJdbcRepository.findByPostId(postId).toPostResponseForm();
+    public PostResponse getPost(Long postId) {
+        return boardJdbcRepository.findByPostId(postId).toPostResponse();
     }
 
-    public List<PostResponseForm> getPostList() {
-        return boardJdbcRepository.findAll().stream().map(BoardPost::toPostResponseForm).collect(Collectors.toList());
+    public List<PostResponse> getPostList() {
+        return boardJdbcRepository.findAll().stream().map(BoardPost::toPostResponse).collect(Collectors.toList());
     }
 }

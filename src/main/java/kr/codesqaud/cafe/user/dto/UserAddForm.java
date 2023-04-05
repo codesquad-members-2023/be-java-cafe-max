@@ -1,14 +1,22 @@
 package kr.codesqaud.cafe.user.dto;
 
-public class UserDto {
+import kr.codesqaud.cafe.user.domain.User;
+
+public class UserAddForm {
     private String userId;
+    private String password;
     private String userName;
     private String email;
 
-    public UserDto(String userId, String userName, String email) {
+    public UserAddForm(String userId, String password, String userName, String email) {
         this.userId = userId;
+        this.password = password;
         this.userName = userName;
         this.email = email;
+    }
+
+    public User toUser() {
+        return new User(userId, password, userName, email);
     }
 
     public String getUserId() {
@@ -17,6 +25,14 @@ public class UserDto {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getUserName() {

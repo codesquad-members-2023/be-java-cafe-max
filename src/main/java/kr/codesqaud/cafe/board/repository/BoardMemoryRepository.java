@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.board.repository;
 
 import kr.codesqaud.cafe.board.domain.BoardPost;
-import kr.codesqaud.cafe.board.dto.PostResponseForm;
+import kr.codesqaud.cafe.board.dto.PostResponse;
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
 import org.springframework.stereotype.Repository;
 
@@ -22,11 +22,11 @@ public class BoardMemoryRepository {
         boardData.put(boardPost.getPostId(), boardPost);
     }
 
-    public PostResponseForm getPost(Long postId) {
-        return boardData.get(postId).toPostResponseForm();
+    public PostResponse getPost(Long postId) {
+        return boardData.get(postId).toPostResponse();
     }
 
-    public List<PostResponseForm> getPostList() {
-        return boardData.values().stream().map(BoardPost::toPostResponseForm).collect(Collectors.toList());
+    public List<PostResponse> getPostList() {
+        return boardData.values().stream().map(BoardPost::toPostResponse).collect(Collectors.toList());
     }
 }

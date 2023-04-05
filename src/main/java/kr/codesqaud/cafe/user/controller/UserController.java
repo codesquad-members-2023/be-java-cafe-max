@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.user.controller;
 
-import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.dto.UserAddForm;
 import kr.codesqaud.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +18,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String addUser(@ModelAttribute User user) {
-        String userId = userService.add(user);
+    public String addUser(@ModelAttribute UserAddForm userAddForm) {
+        String userId = userService.add(userAddForm);
         // 중복된 아이디가 존재하는 경우 "form_failed"
         return userId == null ? "/user/form_failed" : "redirect:/user/list";
     }
