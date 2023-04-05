@@ -12,6 +12,14 @@ public class BoardPost {
     private String contents;
     private LocalDateTime writeDateTime;
 
+    public BoardPost(Long postId, String writer, String title, String contents, LocalDateTime writeDateTime) {
+        this.postId = postId;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.writeDateTime = writeDateTime;
+    }
+
     public BoardPost(String writer, String title, String contents, LocalDateTime writeDateTime) {
         this.writer = writer;
         this.title = title;
