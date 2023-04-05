@@ -7,7 +7,10 @@ public class User {
     private String password;
     private String email;
 
-    private User(Long id, String userId, String name, String password, String email) {
+    public User() {
+    }
+
+    public User(Long id, String userId, String name, String password, String email) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -41,5 +44,21 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

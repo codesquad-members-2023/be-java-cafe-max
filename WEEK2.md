@@ -64,6 +64,15 @@
 
 <br>
 
+# JDBC
+
+implementation 'com.h2database:h2'
+implementation는 컴파일 시간에 종속된 모듈을 노출시키지 않기 때문에 데이터 베이스를 초기화할. sql 파일을 자동으로 읽을 수 없어 실행할. sql 파일을 application.properties에 직접 추가해줘야 한다.
+
+runtimeOnly 'com.h2database:h2'
+runtimeonly는 런타임 중에 종속성을 추가한다. 따라서 application.properties에 초기화 파일 경로를 입력하지 않아도 된다.
+
+
 ## 학습 리스트 및 생각
 
 ---
