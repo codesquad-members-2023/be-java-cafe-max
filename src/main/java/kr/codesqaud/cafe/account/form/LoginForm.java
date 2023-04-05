@@ -14,19 +14,17 @@ public class LoginForm {
 	@Pattern(regexp = "^(.*[a-z]+.*[1-9]+가.*)|(.*[1-9]+.*[a-z]+.*)$", message = "{error.password.pattern}")
 	private String password;
 
-	public String getEmail() {
-		return email;
+	public LoginForm(String email, String password) {
+		this.email = email;
+		this.password = password;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public String getEmail() {
+		return email;
 	}
 
 	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
 }

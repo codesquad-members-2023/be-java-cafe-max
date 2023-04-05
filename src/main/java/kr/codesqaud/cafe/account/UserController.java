@@ -49,8 +49,7 @@ public class UserController {
 	}
 
 	@GetMapping("/login")
-	public String showLoginPage(Model model) {
-		model.addAttribute(LOGIN_FORM, new LoginForm());
+	public String showLoginPage(@ModelAttribute LoginForm loginForm) {
 		return "account/login";
 	}
 
