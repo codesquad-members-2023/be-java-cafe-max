@@ -24,13 +24,7 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String create(ArticleForm form){
-        Article article = new Article();
-        article.setWriter(form.getWriter());
-        article.setTitle(form.getTitle());
-        article.setContents(form.getContents());
-        article.setCreatedAt(LocalDateTime.now());
-        article.setPoints(1L);
-
+        Article article = new Article(form);
         articleService.post(article);
         return "redirect:/";
     }

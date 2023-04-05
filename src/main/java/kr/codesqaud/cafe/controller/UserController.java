@@ -24,12 +24,7 @@ public class UserController {
 
     @PostMapping("/user/create")
     public String create(UserForm form){
-        User user = new User();
-        user.setUserId(form.getUserId());
-        user.setPassword(form.getPassword());
-        user.setName(form.getName());
-        user.setEmail(form.getEmail());
-
+        User user = new User(form);
         userService.join(user);
         return "redirect:/users";
     }

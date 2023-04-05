@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.controller.UserForm;
+
 public class User {
 
     private Long customerId; // 회원번호
@@ -8,6 +10,14 @@ public class User {
     private String password;
     private String name;
     private String email;
+
+    public User(){}
+    public User(UserForm form){
+        this.userId = form.getUserId();
+        this.password = form.getPassword();
+        this.name = form.getName();
+        this.email = form.getEmail();
+    }
 
     public Long getCustomerId() {
         return customerId;

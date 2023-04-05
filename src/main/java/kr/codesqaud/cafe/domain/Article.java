@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.controller.ArticleForm;
+
 import java.time.LocalDateTime;
 
 public class Article {
@@ -8,8 +10,16 @@ public class Article {
     private String title;
     private String contents;
     private LocalDateTime createdAt;
-
     private Long points;
+
+    public Article(){}
+    public Article(ArticleForm form){
+        this.writer = form.getWriter();
+        this.title = form.getTitle();
+        this.contents = form.getContents();
+        this.createdAt = LocalDateTime.now();
+        this.points = 1L;
+    }
 
 
     public Long getId() {
