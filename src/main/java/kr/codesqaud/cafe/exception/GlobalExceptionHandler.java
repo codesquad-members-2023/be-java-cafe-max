@@ -24,4 +24,9 @@ public class GlobalExceptionHandler {
 		model.addAttribute("error", e.getMessage());
 		return "user/edit_form";
 	}
+
+	@ExceptionHandler(Exception.class)
+	public String handleAllException(final Exception e) {
+		return "에러!";
+	}
 }

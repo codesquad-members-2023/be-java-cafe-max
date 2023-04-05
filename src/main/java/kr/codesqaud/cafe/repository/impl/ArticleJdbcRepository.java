@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.repository.impl;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,8 +11,6 @@ import kr.codesqaud.cafe.repository.ArticleRepository;
 
 @Repository
 public class ArticleJdbcRepository implements ArticleRepository {
-
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
 
 	private final JdbcTemplate jdbcTemplate;
 
@@ -42,7 +38,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
 				rs.getString("writer"),
 				rs.getString("title"),
 				rs.getString("content"),
-				LocalDateTime.parse(rs.getString("created_at"), FORMATTER))
+				rs.getTimestamp("created_at").toLocalDateTime())
 		);
 	}
 
@@ -54,7 +50,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
 				rs.getString("writer"),
 				rs.getString("title"),
 				rs.getString("content"),
-				LocalDateTime.parse(rs.getString("created_at"), FORMATTER)),
+				rs.getTimestamp("created_at").toLocalDateTime()),
 			id
 		);
 		return Optional.ofNullable(article);
