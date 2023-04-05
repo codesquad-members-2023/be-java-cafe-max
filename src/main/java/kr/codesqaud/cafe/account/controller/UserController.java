@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account;
+package kr.codesqaud.cafe.account.controller;
 
 import static kr.codesqaud.cafe.utils.FiledName.*;
 
@@ -19,13 +19,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import kr.codesqaud.cafe.account.form.JoinForm;
-import kr.codesqaud.cafe.account.form.LoginForm;
-import kr.codesqaud.cafe.account.form.ProfileForm;
-import kr.codesqaud.cafe.account.form.ProfileSettingForm;
-import kr.codesqaud.cafe.account.form.UserForm;
-import kr.codesqaud.cafe.account.validator.JoinFormValidator;
-import kr.codesqaud.cafe.account.validator.LoginFormValidator;
+import kr.codesqaud.cafe.account.controller.form.JoinForm;
+import kr.codesqaud.cafe.account.controller.form.LoginForm;
+import kr.codesqaud.cafe.account.controller.form.ProfileForm;
+import kr.codesqaud.cafe.account.controller.form.ProfileSettingForm;
+import kr.codesqaud.cafe.account.controller.form.UserForm;
+import kr.codesqaud.cafe.account.service.User;
+import kr.codesqaud.cafe.account.service.UserService;
+import kr.codesqaud.cafe.account.service.validator.JoinFormValidator;
+import kr.codesqaud.cafe.account.service.validator.LoginFormValidator;
 
 @Controller
 @RequestMapping("/users")

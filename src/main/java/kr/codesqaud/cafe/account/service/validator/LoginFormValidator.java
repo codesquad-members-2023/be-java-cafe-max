@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account.validator;
+package kr.codesqaud.cafe.account.service.validator;
 
 import static kr.codesqaud.cafe.utils.FiledName.*;
 
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import kr.codesqaud.cafe.account.User;
-import kr.codesqaud.cafe.account.UserService;
-import kr.codesqaud.cafe.account.form.LoginForm;
+import kr.codesqaud.cafe.account.service.User;
+import kr.codesqaud.cafe.account.service.UserService;
+import kr.codesqaud.cafe.account.controller.form.LoginForm;
 
 @Component
 public class LoginFormValidator implements Validator {

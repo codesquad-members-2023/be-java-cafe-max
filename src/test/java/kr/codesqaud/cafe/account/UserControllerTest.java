@@ -16,7 +16,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.codesqaud.cafe.account.form.JoinForm;
+import kr.codesqaud.cafe.account.controller.form.JoinForm;
+import kr.codesqaud.cafe.account.repository.UserRepository;
+import kr.codesqaud.cafe.account.service.User;
+import kr.codesqaud.cafe.account.service.UserService;
 
 @AutoConfigureMockMvc
 @SpringBootTest

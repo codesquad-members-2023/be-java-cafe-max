@@ -1,11 +1,11 @@
-package kr.codesqaud.cafe.account.form;
+package kr.codesqaud.cafe.account.controller.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import kr.codesqaud.cafe.account.User;
+import kr.codesqaud.cafe.account.service.User;
 
 public class ProfileSettingForm {
 	@NotEmpty

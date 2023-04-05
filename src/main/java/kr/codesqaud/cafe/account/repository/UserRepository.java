@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account;
+package kr.codesqaud.cafe.account.repository;
 
 import static kr.codesqaud.cafe.account.exception.ErrorCode.*;
 
@@ -19,6 +19,7 @@ import kr.codesqaud.cafe.account.exception.repository.NoSuchEmailException;
 import kr.codesqaud.cafe.account.exception.repository.NoSuchIdException;
 import kr.codesqaud.cafe.account.exception.repository.SaveUserFailedException;
 import kr.codesqaud.cafe.account.exception.repository.UpdateUserFailedException;
+import kr.codesqaud.cafe.account.service.User;
 
 @Repository
 public class UserRepository {

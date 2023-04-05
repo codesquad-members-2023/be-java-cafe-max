@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account;
+package kr.codesqaud.cafe.account.service;
 
 import java.util.List;
 import java.util.Objects;
@@ -7,12 +7,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import kr.codesqaud.cafe.account.repository.UserRepository;
 import kr.codesqaud.cafe.account.exception.AccountException;
 import kr.codesqaud.cafe.account.exception.ErrorCode;
 import kr.codesqaud.cafe.account.exception.InvalidIdException;
-import kr.codesqaud.cafe.account.form.JoinForm;
-import kr.codesqaud.cafe.account.form.ProfileSettingForm;
-import kr.codesqaud.cafe.account.form.UserForm;
+import kr.codesqaud.cafe.account.controller.form.JoinForm;
+import kr.codesqaud.cafe.account.controller.form.ProfileSettingForm;
+import kr.codesqaud.cafe.account.controller.form.UserForm;
 
 @Service
 public class UserService {
