@@ -22,6 +22,7 @@
                     <td th:text="${user.id}"></td>
                     <td><a href="profile.html" th:href="@{/users/{userId}(userId=${user.id})}" th:text="${user.name}"></a></td>
                     <td th:text="${user.email}"></td>
+                    <td><a th:href="@{/users/{userId}/form(userId=${user.id})}" class="btn btn-success" role="button">수정</a></td>
                 </tr>
               </tbody>
           </table>
