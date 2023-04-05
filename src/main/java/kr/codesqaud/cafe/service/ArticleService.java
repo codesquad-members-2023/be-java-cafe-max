@@ -12,7 +12,10 @@ public class ArticleService {
     private ArticleRepository articleRepository = new ArticleRepository();
 
     public void saveArticle(ArticleForm articleForm) {
-        articleRepository.save(articleForm);
+        Article article = new Article();
+
+        article.setWithArticleForm(articleForm);
+        articleRepository.save(article);
     }
 
     public List<Article> findAll() {

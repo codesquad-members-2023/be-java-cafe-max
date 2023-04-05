@@ -5,6 +5,12 @@ public class Article {
     private String title;
     private String contents;
 
+    public void setWithArticleForm(ArticleForm articleForm) {
+        this.writer = articleForm.getWriter();
+        this.title = articleForm.getTitle();
+        this.contents = articleForm.getContents();
+    }
+
     public String getWriter() {
         return writer;
     }
