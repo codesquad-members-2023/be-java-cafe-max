@@ -9,18 +9,15 @@ $(document).ready(function () {
       "name": $("#name").val(),
       "email": $("#email").val()
     }
+    const id = $("#id").val()
+    const urlPath = "/users/" + id + "/update"
 
     $.ajax({
       type: "POST",
-      url: "/user/create",
+      url: urlPath,
       data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8',
       success: function (resp) {
-        // TODO : 회원가입시 입력 정보가 늘어날수록 파일을 수정해야하는 문제가 있음
-        if (resp.errorCode === 600) {
-          $("#userIdError").text(resp.errorMessage)
-          return;
-        }
         if (resp.errorCode === 601) {
           $("#emailError").text(resp.errorMessage)
           return;
@@ -29,7 +26,7 @@ $(document).ready(function () {
           writeError(resp)
           return;
         }
-        alert("회원가입이 성공하였습니다.")
+        alert("회원 정보 수정이 완료되었니다.")
         location.href = "/users"
       }
     })

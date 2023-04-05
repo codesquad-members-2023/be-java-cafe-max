@@ -26,10 +26,16 @@
             <tr>
               <th scope="row" th:text="${userStat.count}"></th>
               <td th:text="${user.userId}"></td>
-              <td><a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.name}"></a>
+              <td><a th:href="@{/users/{id}(id=${user.id})}" th:text="${user.name}"></a>
               </td>
               <td th:text="${user.email}"></td>
-              <td><a class="btn btn-success" href="#" role="button">수정</a></td>
+              <td>
+                <th:block th:if="${session.user} and ${session.user.id eq user.id}">
+                  <a class="btn btn-success" role="button"
+                     th:href="@{/user/{id}/password(id=${user.id})}">수정</a>
+                </th:block>
+
+              </td>
             </tr>
           </th:block>
           </tbody>
