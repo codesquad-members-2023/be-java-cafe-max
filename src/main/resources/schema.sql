@@ -10,5 +10,6 @@ CREATE TABLE IF NOT EXISTS Articles (
   title     VARCHAR(50) NOT NULL,
   writer    VARCHAR(50) NOT NULL,
   contents  TEXT NOT NULL,
-  createdAt DATETIME NOT NULL
+  createdAt TIMESTAMP NOT NULL
 );
+

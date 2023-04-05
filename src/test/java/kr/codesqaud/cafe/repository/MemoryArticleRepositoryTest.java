@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.repository.article.MemoryArticleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,13 +22,13 @@ class MemoryArticleRepositoryTest {
     void save() {
         // given
         Article article = new Article("title", "userId", "content");
-        Article savedArticle = memoryArticleRepository.save(article);
+        memoryArticleRepository.save(article);
 
         // when
         Article findArticle = memoryArticleRepository.findById(article.getId());
 
         // then
-        assertThat(findArticle).isEqualTo(savedArticle);
+        assertThat(findArticle).isEqualTo(article);
     }
 
     @Test

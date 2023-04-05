@@ -3,12 +3,10 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.article.ArticleResponse;
 import kr.codesqaud.cafe.dto.article.ArticleSaveRequest;
-import kr.codesqaud.cafe.dto.article.ArticleUpdateRequest;
 import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
-import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,11 +32,5 @@ public class ArticleService {
         }
 
         return ArticleResponse.from(articleRepository.findById(id));
-    }
-
-    public void updateArticle(ArticleUpdateRequest articleUpdateRequest) { // 기존 게시글을 수정하기
-        LocalDateTime createdAt = this.findById(articleUpdateRequest.getId()).getCreatedAt(); // 게시글 첫 생성 시간 가져오기
-
-        articleRepository.save(Article.from(articleUpdateRequest, createdAt));
     }
 }
