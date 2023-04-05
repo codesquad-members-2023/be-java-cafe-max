@@ -51,7 +51,7 @@ user는 h2 데이터베이스 예약어이기 때문에 식별자(identifier)로
 
 ➡️ data.sql에 코드 추가
 
-4. CREATE TABLE "user"
+4. CREATE TABLE "user" 에러 발생
 
 'schema.sql' 파일을 실행하여 'user' 테이블이 이미 생성되었다. 'user' 테이블을 다시 생성하려고 시도하면 이미 존재하기 때문에 에러가 발생했다.
 
@@ -68,3 +68,31 @@ user는 h2 데이터베이스 예약어이기 때문에 식별자(identifier)로
  CREATE TABLE IF NOT EXISTS users
  ```
  * data.sql 삭제, application.properties의 경로 삭제 
+
+6. 홈 화면에서 게시글 클릭 시 url 에러 발생
+
+```
+http://localhost:8080/articles/{id} 
+
+http://localhost:8080/articles/    // id값에 null이 들어감
+```
+➡️ Article에 생성자 추가
+```
+public Article(String writer, String title, String contents, Long id) {
+        this(writer, title, contents);
+        this.id = id;
+    }
+```
+➡️ articleRowMapper()에서 setId로 id 설정
+```
+private RowMapper<Article> articleRowMapper() {
+        return (rs, rowNum) -> {
+            Article article = new Article(
+                    rs.getString("writer"),
+                    rs.getString("title"),
+                    rs.getString("contents"));
+            article.setId(rs.getLong("id"));  // id 설정 추가
+            return article;
+        };
+    }
+```

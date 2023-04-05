@@ -27,46 +27,47 @@ class JdbcUserRepositoryTest {
     @Test
     @DisplayName("repository에 user가 저장되는지 테스트")
     void saveTest() {
-        User user = new User("testId", "1234","test_name", "test@1234");
+        User user = new User("testId", "1234","test_name", "test@123");
         User savedUser = userRepository.save(user);
 
         assertThat(savedUser.getUserId()).isEqualTo("testId");
         assertThat(savedUser.getPassword()).isEqualTo("1234");
         assertThat(savedUser.getName()).isEqualTo("test_name");
-        assertThat(savedUser.getEmail()).isEqualTo("test@1234");
+        assertThat(savedUser.getEmail()).isEqualTo("test@123");
     }
 
     @Test
     @DisplayName("id로 회원 조회 테스트")
     void findByIdTest() {
-        User user = userRepository.findById("Joy").get();
+        User savedUser = userRepository.save(new User("testId", "1234","test_name", "test@123"));
 
-        assertThat(user.getUserId()).isEqualTo("Joy");
+        User user = userRepository.findById("testId").get();
+
+        assertThat(user.getUserId()).isEqualTo("testId");
         assertThat(user.getPassword()).isEqualTo("1234");
-        assertThat(user.getName()).isEqualTo("Joy");
-        assertThat(user.getEmail()).isEqualTo("123@456.com");
+        assertThat(user.getName()).isEqualTo("test_name");
+        assertThat(user.getEmail()).isEqualTo("test@123");
     }
 
     @Test
     @DisplayName("name으로 회원 조회 테스트")
     void findByNameTest() {
-        User user1 = new User("testId", "1234","test_name", "test@1234");
-        userRepository.save(user1);
+        userRepository.save(new User("testId", "1234","test_name", "test@123"));
 
-        User user2 = userRepository.findByName("test_name").get();
-        assertThat(user2.getUserId()).isEqualTo("testId");
-        assertThat(user2.getPassword()).isEqualTo("1234");
-        assertThat(user2.getName()).isEqualTo("test_name");
-        assertThat(user2.getEmail()).isEqualTo("test@1234");
+        User user = userRepository.findByName("test_name").get();
+
+        assertThat(user.getUserId()).isEqualTo("testId");
+        assertThat(user.getPassword()).isEqualTo("1234");
+        assertThat(user.getName()).isEqualTo("test_name");
+        assertThat(user.getEmail()).isEqualTo("test@123");
     }
 
     @Test
     @DisplayName("모든 회원 조회 테스트")
     void findAllTest() {
-        User user = new User("testId", "1234","test_name", "test@1234");
-        userRepository.save(user);
+        userRepository.save(new User("testId", "1234","test_name", "test@123"));
 
         List<User> users = userRepository.findAll();
-        assertThat(users.size()).isEqualTo(2);
+        assertThat(users.size()).isEqualTo(1);
     }
 }

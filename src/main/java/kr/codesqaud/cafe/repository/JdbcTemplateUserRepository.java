@@ -20,7 +20,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        String sql = "insert into users (userId, password, \"name\", email) values (?, ?, ?, ?)";
+        String sql = "insert into users (userId, password, name, email) values (?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 user.getUserId(),
                 user.getPassword(),
@@ -38,7 +38,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByName(String name) {
-        String sql = "select * from users where \"name\" = ?";
+        String sql = "select * from users where name = ?";
         List<User> userList = jdbcTemplate.query(sql, userRowMapper(), name);
         return userList.stream().findAny();
     }

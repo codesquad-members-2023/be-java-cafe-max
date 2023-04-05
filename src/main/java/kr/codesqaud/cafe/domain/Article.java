@@ -19,6 +19,11 @@ public class Article {
         this.createdTime = LocalDateTime.now();
     }
 
+    public Article(String writer, String title, String contents, Long id) {
+        this(writer, title, contents);
+        this.id = id;
+    }
+
     public String getWriter() {
         return writer;
     }
