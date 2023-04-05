@@ -1,7 +1,7 @@
 package codesquad.cafe.repository;
 
-import codesquad.cafe.user.domain.User;
-import codesquad.cafe.user.repository.MemoryUserRepository;
+import codesquad.cafe.domain.user.domain.User;
+import codesquad.cafe.domain.user.repository.MemoryUserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

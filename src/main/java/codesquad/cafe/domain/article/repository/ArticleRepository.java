@@ -1,6 +1,6 @@
-package codesquad.cafe.article.repository;
+package codesquad.cafe.domain.article.repository;
 
-import codesquad.cafe.article.domain.Article;
+import codesquad.cafe.domain.article.domain.Article;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
-package codesquad.cafe.user.controller;
+package codesquad.cafe.domain.user.controller;
 
-import codesquad.cafe.user.dto.UserRequestDto;
-import codesquad.cafe.user.dto.UserResponseDto;
-import codesquad.cafe.user.service.UserService;
+import codesquad.cafe.domain.user.dto.UserRequestDto;
+import codesquad.cafe.domain.user.dto.UserResponseDto;
+import codesquad.cafe.domain.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +20,10 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/join")
-    public String showJoinForm() {
-        return "user/form";
-    }
+//    @GetMapping("/join")
+//    public String showJoinForm() {
+//        return "user/form";
+//    }
 
     @PostMapping
     public String registerUser(@ModelAttribute final UserRequestDto userRequestDto) {

@@ -1,6 +1,6 @@
-package codesquad.cafe.user.repository;
+package codesquad.cafe.domain.user.repository;
 
-import codesquad.cafe.user.domain.User;
+import codesquad.cafe.domain.user.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

@@ -1,6 +1,6 @@
-package codesquad.cafe.user.dto;
+package codesquad.cafe.domain.user.dto;
 
-import codesquad.cafe.user.domain.User;
+import codesquad.cafe.domain.user.domain.User;
 
 public class UserRequestDto {
     private String id;

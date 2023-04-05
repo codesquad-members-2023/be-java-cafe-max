@@ -1,10 +1,10 @@
 package codesquad.cafe.service;
 
-import codesquad.cafe.user.domain.User;
-import codesquad.cafe.user.dto.UserRequestDto;
-import codesquad.cafe.user.dto.UserResponseDto;
-import codesquad.cafe.user.repository.MemoryUserRepository;
-import codesquad.cafe.user.service.UserService;
+import codesquad.cafe.domain.user.domain.User;
+import codesquad.cafe.domain.user.dto.UserRequestDto;
+import codesquad.cafe.domain.user.dto.UserResponseDto;
+import codesquad.cafe.domain.user.repository.MemoryUserRepository;
+import codesquad.cafe.domain.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

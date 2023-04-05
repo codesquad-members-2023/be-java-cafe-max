@@ -1,6 +1,6 @@
-package codesquad.cafe.article.dtio;
+package codesquad.cafe.domain.article.dtio;
 
-import codesquad.cafe.article.domain.Article;
+import codesquad.cafe.domain.article.domain.Article;
 
 import java.time.LocalDateTime;
 
