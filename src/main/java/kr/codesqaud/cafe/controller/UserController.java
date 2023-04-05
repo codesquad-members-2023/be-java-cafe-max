@@ -39,7 +39,7 @@ public class UserController {
     public String getUserList(Model model) {
         List<User> list = userJdbcService.users();
         model.addAttribute("memberList", list);
-        return "/user/list";
+        return "user/list";
     }
 
     @GetMapping("/profile/{id}")
@@ -47,14 +47,14 @@ public class UserController {
         User user = userJdbcService.findById(id);
         model.addAttribute("name", user.getName());
         model.addAttribute("email", user.getEmail());
-        return "/user/profile";
+        return "user/profile";
     }
 
     @GetMapping("/update/{id}")
     public String getUpdateForm(@PathVariable String id, Model model) {
         User user = userJdbcService.findById(id);
         model.addAttribute("user", user);
-        return "/user/update_form";
+        return "user/update_form";
     }
 
     @PutMapping("/update/{id}")
