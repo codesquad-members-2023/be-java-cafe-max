@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.account.exception.AccountException;
 import kr.codesqaud.cafe.account.exception.ErrorCode;
+import kr.codesqaud.cafe.account.exception.InvalidIdException;
 import kr.codesqaud.cafe.account.form.JoinForm;
 import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.form.UserForm;
@@ -56,7 +57,7 @@ public class UserService {
 		try {
 			return userRepository.findById(userId);
 		} catch (AccountException e) {
-			throw new AccountException(e, ErrorCode.INVALID_ID_CODE);
+			throw new InvalidIdException(e, ErrorCode.INVALID_ID_CODE);
 		}
 	}
 

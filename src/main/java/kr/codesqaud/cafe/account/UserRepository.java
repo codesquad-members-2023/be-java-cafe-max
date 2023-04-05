@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.account;
 
+import static kr.codesqaud.cafe.account.exception.ErrorCode.*;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -12,8 +14,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.account.exception.ErrorCode;
-import kr.codesqaud.cafe.account.exception.NoSuchIdException;
+import kr.codesqaud.cafe.account.exception.repository.GetAllUsersFailedException;
+import kr.codesqaud.cafe.account.exception.repository.NoSuchEmailException;
+import kr.codesqaud.cafe.account.exception.repository.NoSuchIdException;
+import kr.codesqaud.cafe.account.exception.repository.SaveUserFailedException;
+import kr.codesqaud.cafe.account.exception.repository.UpdateUserFailedException;
 
 @Repository
 public class UserRepository {
@@ -36,20 +41,34 @@ public class UserRepository {
 	}
 
 	public void save(User user) {
-		jdbcTemplate.update(
-			QUERY_SAVE, user.getNickname(), user.getEmail(), user.getPassword()
-		);
+		try {
+			jdbcTemplate.update(
+				QUERY_SAVE, user.getNickname(), user.getEmail(), user.getPassword()
+			);
+		} catch (DataAccessException e) {
+			logger.error("[ Message = {} ][ Nickname = {} ][ Email = {} ][ Password = {} ]",
+				SAVE_USER_FAILED_CODE.getMessage(),
+				user.getNickname(),
+				user.getEmail(),
+				user.getPassword());
+			throw new SaveUserFailedException(SAVE_USER_FAILED_CODE);
+		}
 	}
 
 	public List<User> getAllMembers() {
-		return jdbcTemplate.query(QUERY_FIND_ALL_USERS, (resultSet, rowNum)
-			-> new User.Builder()
-			.id(resultSet.getLong(COLUMN_USER_ID))
-			.password(resultSet.getString(COLUMN_PASSWORD).trim())
-			.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
-			.email(resultSet.getString(COLUMN_EMAIL).trim())
-			.build()
-		);
+		try {
+			return jdbcTemplate.query(QUERY_FIND_ALL_USERS, (resultSet, rowNum)
+				-> new User.Builder()
+				.id(resultSet.getLong(COLUMN_USER_ID))
+				.password(resultSet.getString(COLUMN_PASSWORD).trim())
+				.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
+				.email(resultSet.getString(COLUMN_EMAIL).trim())
+				.build()
+			);
+		} catch (DataAccessException e) {
+			logger.error("Message = {}", GET_ALL_USERS_FAILED_CODE.getMessage());
+			throw new GetAllUsersFailedException(GET_ALL_USERS_FAILED_CODE);
+		}
 	}
 
 	public User findById(Long userId) {
@@ -62,7 +81,8 @@ public class UserRepository {
 				.build();
 			return this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId);
 		} catch (DataAccessException e) {
-			throw new NoSuchIdException(ErrorCode.NO_EXIST_ID_CODE);
+			logger.error("[ Message = {} ][ UserId = {} ]", NO_SUCH_ID_CODE.getMessage(), userId);
+			throw new NoSuchIdException(NO_SUCH_ID_CODE);
 		}
 	}
 
@@ -75,8 +95,8 @@ public class UserRepository {
 				.build();
 			return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, userRowMapper, email));
 		} catch (DataAccessException e) {
-			logger.error("존재하지 않는 Email입니다.");
-			return Optional.empty();
+			logger.error("[ Message = {} ][ Email = {} ]", NO_SUCH_EMAIL_CODE.getMessage(), email);
+			throw new NoSuchEmailException(NO_SUCH_EMAIL_CODE);
 		}
 	}
 
@@ -86,7 +106,13 @@ public class UserRepository {
 	}
 
 	public void update(User user) {
-		jdbcTemplate.update(QUERY_UPDATE, user.getNickname(), user.getEmail(),
-			user.getId());
+		try {
+			jdbcTemplate.update(QUERY_UPDATE, user.getNickname(), user.getEmail(),
+				user.getId());
+		} catch (DataAccessException e) {
+			logger.error("[ Message = {} ][ Id = {} ][ Nickname = {} ][ Email = {} ]",
+				UPDATE_USER_FAILED_CODE.getMessage(), user.getId(), user.getNickname(), user.getEmail());
+			throw new UpdateUserFailedException(UPDATE_USER_FAILED_CODE);
+		}
 	}
 }

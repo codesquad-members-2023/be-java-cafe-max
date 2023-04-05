@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.account.exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AccountException extends RuntimeException {
+public abstract class AccountException extends RuntimeException {
 
 	private static final Logger logger = LoggerFactory.getLogger(AccountException.class);
 
@@ -20,6 +20,7 @@ public class AccountException extends RuntimeException {
 		logger.error(cause.getClass().getName());
 		this.errorCode = errorCode;
 	}
+
 	public ErrorCode getErrorCode() {
 		return this.errorCode;
 	}
