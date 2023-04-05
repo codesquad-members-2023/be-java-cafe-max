@@ -17,7 +17,7 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public String addUser(@ModelAttribute User user) {
         String userId = userRepository.add(user);
         // 중복된 아이디가 존재하는 경우
