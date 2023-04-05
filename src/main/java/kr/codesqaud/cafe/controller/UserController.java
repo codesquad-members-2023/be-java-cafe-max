@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.UserForm;
+import kr.codesqaud.cafe.controller.dto.UserUpdateForm;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -67,8 +68,8 @@ public class UserController {
     }
 
     @PostMapping("/users/update/{id}")
-    // UserForm: 이러면 검증을 위한 dto인가??
-    public String postUpdate(@PathVariable Long id, @Validated UserForm form) {
+    // USerUpdateForm: 검증을 위한 dto라 생각하고 userId 필드를 뺀 상태로 만들었습니다.
+    public String postUpdate(@PathVariable Long id, @Validated UserUpdateForm form) {
         User user = new User(form);
         userService.updateUser(id, user);
         return "redirect:/users";
