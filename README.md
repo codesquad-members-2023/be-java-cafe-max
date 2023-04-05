@@ -9,17 +9,25 @@
 - [x] 회원 목록 조회 화면에서 이름을 클릭하면 해당 유저의 프로필 화면을 출력한다.
 - [x] 홈 화면에서 질문하기 버튼을 누르면 질문하기 폼으로 이동한다.
 - [x] 글쓴이, 제목, 내용을 입력받아 질문글을 생성한다.
-  - 질문글을 생성하면 홈 화면으로 이동한다.
+  - 질문글을 생성하면 홈 화면(질문 목록 조회)으로 이동한다.
   - 홈 화면에서 게시글 목록을 조회한다.
+  - 모든 사용자는 게시글을 작성할 수 있다.
+- [x] 홈 화면에 게시글 목록을 출력한다.
+- [x] 게시글 목록의 제목을 클릭했을 때 게시글 상세 페이지로 이동한다.
+  - url에 article index를 넣어서 접근한다.
 
 ## URL
-|__HTTP Method__|__URL__|__기능__|
-|---------------|-------|-------|
-|GET|/|홈 화면 출력|
-|GET|/users/join|회원 가입 화면 출력|
-|POST|/users|회원 가입|
-|GET|/users|회원 목록 조회 화면 출력|
-|GET|/users/{userId}|유저 프로필 화면 조회|
+|__HTTP Method__|__URL__| __기능__            |
+|---------------|-------|-------------------|
+|GET|/| 홈 화면 출력(질문 목록 조회) |
+|GET|/users/join| 회원 가입 화면 출력       |
+|POST|/users| 회원 가입             |
+|GET|/users| 회원 목록 조회 화면 출력    |
+|GET|/users/{userId}| 유저 프로필 화면 조회      |
+|POST|/questions| 질문하기 게시글 작성       |
+|GET|/questions/form| 글쓰기 화면 조회|
+|GET|/articles/{postId}| 게시글 상세 조회|
+
 
 
 ## 동작 화면
@@ -48,3 +56,31 @@
 ![profile](https://user-images.githubusercontent.com/57451700/228422257-efad632c-1b2e-4466-ad0c-86f25ca3e782.png)
 </div>
 </details>
+
+<details>
+<summary>글 쓰기 화면</summary>
+<div>
+
+![qnahome](https://user-images.githubusercontent.com/57451700/230138787-e5bc6df5-c552-46b6-a10b-d2f4d87b97c9.png)
+
+</div>
+</details>
+
+<details>
+<summary>글 목록 조회 화면</summary>
+<div>
+
+![home](https://user-images.githubusercontent.com/57451700/230138874-eaf86b43-34a4-40c7-be5d-4568c614798b.png)
+
+</div>
+</details>
+
+<details>
+<summary>게시글 상세보기 화면</summary>
+<div>
+
+![detail](https://user-images.githubusercontent.com/57451700/230138947-09aa8971-a73e-46f7-82a7-cd04f158d86e.png)
+
+</div>
+</details>
+
