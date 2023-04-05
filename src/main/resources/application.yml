@@ -1,27 +1,41 @@
 spring:
+    profiles:
+        group:
+            prod: prodConfig, common
+            dev: devConfig, common
+        active: prod
+---
+spring:
+    config:
+        activate:
+            on-profile: devConfig
+    datasource:
+        driver-class-name: org.h2.Driver
+        url: jdbc:h2:mem:dev;DB_CLOSE_ON_EXIT=FALSE
+        username: sa
+        password:
+    logging:
+        level:
+            sql: debug
+    h2:
+        console:
+            enabled: true
+            path: /h2-console
     devtools:
         livereload:
             enabled: true
         thymeleaf:
             cache: false
-    messages:
-        basename: errorMessages
+
+---
+spring:
+    config:
+        activate:
+            on-profile: common
     mvc:
         hidden-method:
             filter:
                 enabled: true
-    h2:
-        console:
-            enabled: true
-            path: /h2-console
-    datasource:
-        driver-class-name: org.h2.Driver
-        url: jdbc:h2:~/post/dev;DB_CLOSE_ON_EXIT=FALSE
-        username: sa
-        password:
-    sql:
-        init:
-            mode: always
-logging:
-    level:
-        sql: debug
+    messages:
+        basename: errorMessages
+
