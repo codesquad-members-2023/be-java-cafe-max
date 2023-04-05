@@ -8,7 +8,4 @@ public class SaveUserFailedException extends AccountException {
 		super(errorCode);
 	}
 
-	public SaveUserFailedException(Throwable cause, ErrorCode errorCode) {
-		super(cause, errorCode);
-	}
 }

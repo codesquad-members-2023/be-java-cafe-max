@@ -9,7 +9,4 @@ public class NoSuchIdException extends AccountException {
 		super(errorCode);
 	}
 
-	public NoSuchIdException(Throwable cause, ErrorCode errorCode) {
-		super(cause, errorCode);
-	}
 }

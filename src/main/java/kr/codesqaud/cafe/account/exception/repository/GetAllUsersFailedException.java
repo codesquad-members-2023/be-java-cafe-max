@@ -8,7 +8,4 @@ public class GetAllUsersFailedException extends AccountException {
 		super(errorCode);
 	}
 
-	public GetAllUsersFailedException(Throwable cause, ErrorCode errorCode) {
-		super(cause, errorCode);
-	}
 }

@@ -8,7 +8,4 @@ public class UpdateUserFailedException extends AccountException {
 		super(errorCode);
 	}
 
-	public UpdateUserFailedException(Throwable cause, ErrorCode errorCode) {
-		super(cause, errorCode);
-	}
 }
