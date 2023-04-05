@@ -52,7 +52,7 @@ class ArticleControllerTest {
         String password = "user1user1@";
         String name = "김용환";
         String email = "user1@gmail.com";
-        String url = "/user/create";
+        String url = "/users";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
         mockMvc.perform(post(url)
             .contentType(MediaType.APPLICATION_JSON)
