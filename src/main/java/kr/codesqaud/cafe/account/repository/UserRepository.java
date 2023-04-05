@@ -106,7 +106,7 @@ public class UserRepository {
 			return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, userRowMapper, email));
 		} catch (DataAccessException e) {
 			logger.error("[ Message = {} ][ Email = {} ]", NO_SUCH_EMAIL_CODE.getMessage(), email);
-			throw new NoSuchEmailException(NO_SUCH_EMAIL_CODE);
+			return Optional.empty();
 		}
 	}
 

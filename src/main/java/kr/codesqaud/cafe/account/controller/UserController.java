@@ -27,26 +27,18 @@ import kr.codesqaud.cafe.account.controller.form.UserForm;
 import kr.codesqaud.cafe.account.service.User;
 import kr.codesqaud.cafe.account.service.UserService;
 import kr.codesqaud.cafe.account.service.validator.JoinFormValidator;
-import kr.codesqaud.cafe.account.service.validator.LoginFormValidator;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
 	private final UserService userService;
-	private final LoginFormValidator loginFormValidator;
 	private final JoinFormValidator joinFormValidator;
 
-	public UserController(UserService userService, LoginFormValidator loginFormValidator,
+	public UserController(UserService userService,
 		JoinFormValidator joinFormValidator) {
 		this.userService = userService;
-		this.loginFormValidator = loginFormValidator;
 		this.joinFormValidator = joinFormValidator;
-	}
-
-	@InitBinder("loginForm")
-	public void loginFormInitBinder(WebDataBinder webDataBinder) {
-		webDataBinder.addValidators(loginFormValidator);
 	}
 
 	@InitBinder("joinForm")
@@ -66,7 +58,16 @@ public class UserController {
 			return "account/login";
 		}
 		Optional<User> userOptional = userService.findByEmail(loginForm.getEmail());
-		return "redirect:/users/" + userOptional.get().getId();
+		if (userOptional.isEmpty()) {
+			bindingResult.rejectValue(EMAIL, "error.email.notExist");
+			return "account/login";
+		}
+		User user = userOptional.get();
+		if (!user.getPassword().equals(loginForm.getPassword())) {
+			bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
+			return "account/login";
+		}
+		return "redirect:/users/" + user.getId();
 	}
 
 	@GetMapping("/join")
