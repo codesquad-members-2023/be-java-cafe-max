@@ -9,7 +9,7 @@ public class ArticleRepository {
     List<Article> repository = new ArrayList<>();
 
     public void save(Article article) {
-        repository.add(article);
+        repository.add(0, article);
     }
 
     public List<Article> getAllArticle() {
