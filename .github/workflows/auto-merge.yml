@@ -15,9 +15,19 @@ jobs:
           script: |
             const labels = context.payload.pull_request.labels
             const hasStudyPlanLabel = labels.some(label => label.name === 'study-plan')
+            const numLabel = labels.length
             const branchName = context.payload.pull_request.head.ref
 
-            if (hasStudyPlanLabel && branchName !== 'main' ) {
+            //if branchName is 'main' add warning comment
+            if (branchName === 'main') {
+              github.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: 'main 브랜치에 PR을 보내셨습니다. 다시 한번 확인해주세요! 🙏'
+              })
+            } //if branchName is not 'main' and has only 'study-plan' label, 
+            else if (hasStudyPlanLabel && numLabel === 1) {
               github.pulls.merge({
                 pull_number: context.issue.number,
                 owner: context.repo.owner,
