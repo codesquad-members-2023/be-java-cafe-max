@@ -56,7 +56,7 @@ public class UserService {
 		if (userOptional.isPresent()) {
 			return userOptional.get();
 		} else {
-			throw new InvalidUserIdException(INVALID_ID_CODE);
+			throw new InvalidUserIdException(INVALID_USER_ID_CODE);
 		}
 	}
 

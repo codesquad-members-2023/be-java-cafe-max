@@ -88,7 +88,7 @@ public class UserRepository {
 				.build();
 			return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
 		} catch (DataAccessException e) {
-			logger.error("[ Message = {} ][ UserId = {} ]", NO_SUCH_ID_CODE.getMessage(), userId);
+			logger.error("[ Message = {} ][ UserId = {} ]", NO_SUCH_USER_ID_CODE.getMessage(), userId);
 			return Optional.empty();
 		}
 	}
