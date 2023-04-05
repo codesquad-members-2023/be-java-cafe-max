@@ -10,20 +10,21 @@ import java.util.stream.Collectors;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private static final Map<String, User> store = new ConcurrentHashMap<>();
+    private static final Map<Long, User> store = new ConcurrentHashMap<>(); // (회원번호, User)
     private static final AtomicLong customerId = new AtomicLong(0);
 
     @Override
     public User save(User user) {
         user.setCustomerId(customerId.incrementAndGet());
-        store.put(user.getUserId(), user);
+        store.put(user.getCustomerId(), user);
         return user;
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
         // null 일 때 optinal을 감싸 반환하면 클라이언트에서 처리해줄 수 있음.
-        return Optional.ofNullable(store.get(userId));
+//        return Optional.ofNullable(store.get(customerId));
+        return store.values().stream().filter(user -> user.getUserId().equals(userId)).findAny();
     }
 
     @Override
