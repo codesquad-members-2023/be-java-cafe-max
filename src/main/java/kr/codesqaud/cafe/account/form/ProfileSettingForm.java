@@ -19,7 +19,10 @@ public class ProfileSettingForm {
 	@Pattern(regexp = "^(.*[a-z]+.*[1-9]+가.*)|(.*[1-9]+.*[a-z]+.*)$", message = "{error.password.pattern}")
 	private String password;
 
-	public ProfileSettingForm() {
+	public ProfileSettingForm(String nickname, String email, String password) {
+		this.nickname = nickname;
+		this.email = email;
+		this.password = password;
 	}
 
 	private ProfileSettingForm(Builder builder) {
@@ -40,24 +43,12 @@ public class ProfileSettingForm {
 		return nickname;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getPassword() {
 		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public User setUser(User user) {
