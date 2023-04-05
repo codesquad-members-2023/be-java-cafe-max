@@ -73,4 +73,16 @@ public class UserController {
 		model.addAttribute("userDto", userDto);
 		return "user/profile";
 	}
+
+	@GetMapping("/{userId}/modify-form")
+	public String modifyForm(@PathVariable String userId, Model model) {
+		UserDTO userDto = null;
+		try {
+			userDto = service.findUser(userId);
+		} catch (UserNotFoundException e) {
+			model.addAttribute("errorMessage", e.getMessage());
+		}
+		model.addAttribute("userDto", userDto);
+		return "user/modify-form";
+	}
 }
