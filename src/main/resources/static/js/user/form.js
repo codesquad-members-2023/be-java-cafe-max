@@ -9,7 +9,6 @@ $(document).ready(function () {
       "name": $("#name").val(),
       "email": $("#email").val()
     }
-
     $.ajax({
       type: "POST",
       url: "/user/create",
@@ -55,4 +54,5 @@ $(document).ready(function () {
       $(`#${key}Error`).text(value.errorMessage)
     }
   }
+
 })

@@ -1,52 +1,40 @@
 package kr.codesqaud.cafe.domain.user;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepository {
 
-    // key: 사용자 등록번호(Long), value: User 객체
-    private final Map<Long, User> store = new ConcurrentHashMap<>();
-    private static long sequence = 0;
+    // key: 사용자 아이디(userId), value: User 객체
+    private final Map<String, User> userMap = new HashMap<>();
 
     public List<User> findAll() {
-        return new ArrayList<>(store.values());
-    }
-
-    public Optional<User> findById(Long id) {
-        return Optional.ofNullable(store.get(id));
+        return new ArrayList<>(userMap.values());
     }
 
     public Optional<User> findByUserId(String userId) {
-        return store.values().stream()
-            .filter(user -> user.getUserId().equals(userId))
-            .findFirst();
+        return Optional.ofNullable(userMap.get(userId));
     }
 
     public Optional<User> findByEmail(String email) {
-        return store.values().stream()
+        return userMap.values().stream()
             .filter(user -> user.getEmail().equals(email))
             .findFirst();
     }
 
     public User save(User user) {
-        store.put(user.getId(), user);
+        userMap.put(user.getUserId(), user);
         return user;
     }
 
-    public synchronized int deleteAll() {
-        int deleteUserCount = store.keySet().size();
-        store.clear();
-        sequence = 0;
-        return deleteUserCount;
-    }
-
-    public synchronized Long nextId() {
-        return ++sequence;
+    public int deleteAll() {
+        int deleteUser = userMap.keySet().size();
+        userMap.clear();
+        return deleteUser;
     }
 }
