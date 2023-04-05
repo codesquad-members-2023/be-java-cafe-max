@@ -22,6 +22,12 @@ spring:
       path: /h2-console
     datasource:
       driver-class-name: org.h2.Driver
-      url: jdbc:h2:~/test
+      url: jdbc:h2:~
       username: sa
       password:
+
+  sql:
+    init:
+      mode: always
+#      schema-locations: classpath:schema.sql
+#      data-locations: classpath:data.sql
