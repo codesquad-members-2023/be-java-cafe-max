@@ -22,10 +22,6 @@ public class PostRepository {
 		return usersRepository.add(post);
 	}
 
-	public boolean remove(Post post) {
-		return usersRepository.remove(post);
-	}
-
 	public List<Post> getAllPosts() {
 		return new ArrayList<>(usersRepository);
 	}
