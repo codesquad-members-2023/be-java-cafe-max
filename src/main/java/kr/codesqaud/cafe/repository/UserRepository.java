@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.SignUpDTO;
 import kr.codesqaud.cafe.dto.UserDTO;
+import kr.codesqaud.cafe.dummy.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 
 @Repository
@@ -18,6 +19,8 @@ public class UserRepository {
 
 	public UserRepository() {
 		users = new ArrayList<>();
+		CollectionFrameworkRepositoryDummyData dummyData = new CollectionFrameworkRepositoryDummyData();
+		dummyData.insertUserDummyData(users);
 	}
 
 	public synchronized void save(SignUpDTO dto) {
