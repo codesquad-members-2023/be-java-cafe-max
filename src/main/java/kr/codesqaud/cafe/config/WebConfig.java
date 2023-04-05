@@ -13,6 +13,5 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		registry.addViewController("/posts/new").setViewName("/post/form");
 		registry.addViewController("/posts/form").setViewName("/post/form");
-
 	}
 }
