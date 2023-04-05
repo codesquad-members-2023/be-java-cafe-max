@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.account.service;
 
+import static kr.codesqaud.cafe.account.exception.ErrorCode.*;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -10,9 +12,7 @@ import org.springframework.stereotype.Service;
 import kr.codesqaud.cafe.account.controller.form.JoinForm;
 import kr.codesqaud.cafe.account.controller.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.controller.form.UserForm;
-import kr.codesqaud.cafe.account.exception.AccountException;
-import kr.codesqaud.cafe.account.exception.ErrorCode;
-import kr.codesqaud.cafe.account.exception.InvalidIdException;
+import kr.codesqaud.cafe.account.exception.service.InvalidIdException;
 import kr.codesqaud.cafe.account.repository.UserRepository;
 
 @Service
@@ -37,8 +37,7 @@ public class UserService {
 	}
 
 	public void update(ProfileSettingForm profileSettingForm, Long userId) {
-		User user = userRepository.findById(userId);
-		userRepository.update(profileSettingForm.setUser(user));
+		userRepository.update(profileSettingForm.setUser(findById(userId)));
 	}
 
 	public boolean checkPassword(String password, String targetPassword) {
@@ -54,10 +53,11 @@ public class UserService {
 	}
 
 	public User findById(Long userId) {
-		try {
-			return userRepository.findById(userId);
-		} catch (AccountException e) {
-			throw new InvalidIdException(e, ErrorCode.INVALID_ID_CODE);
+		Optional<User> userOptional = userRepository.findById(userId);
+		if (userOptional.isPresent()) {
+			return userOptional.get();
+		} else {
+			throw new InvalidIdException(INVALID_ID_CODE);
 		}
 	}
 

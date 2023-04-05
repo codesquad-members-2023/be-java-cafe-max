@@ -81,7 +81,7 @@ public class UserRepository {
 		}
 	}
 
-	public User findById(Long userId) {
+	public Optional<User> findById(Long userId) {
 		try {
 			RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder()
 				.id(userId)
@@ -89,10 +89,10 @@ public class UserRepository {
 				.nickname(resultSet.getString(COLUMN_NICKNAME).trim())
 				.password(resultSet.getString(COLUMN_PASSWORD).trim())
 				.build();
-			return this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId);
+			return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
 		} catch (DataAccessException e) {
 			logger.error("[ Message = {} ][ UserId = {} ]", NO_SUCH_ID_CODE.getMessage(), userId);
-			throw new NoSuchIdException(NO_SUCH_ID_CODE);
+			return Optional.empty();
 		}
 	}
 
