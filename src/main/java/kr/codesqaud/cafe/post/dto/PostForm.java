@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.post.form;
+package kr.codesqaud.cafe.post.dto;
 
 import kr.codesqaud.cafe.post.Post;
 

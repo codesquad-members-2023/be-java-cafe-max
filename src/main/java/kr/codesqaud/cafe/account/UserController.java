@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.account;
 
-import kr.codesqaud.cafe.account.form.*;
+import kr.codesqaud.cafe.account.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

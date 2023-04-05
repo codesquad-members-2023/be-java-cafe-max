@@ -1,26 +1,34 @@
-package kr.codesqaud.cafe.account.form;
+package kr.codesqaud.cafe.account.dto;
 
 import kr.codesqaud.cafe.account.User;
 
-public class ProfileForm {
+public class UserForm {
+    private final Long id;
     private final String nickname;
     private final String email;
 
-    public ProfileForm(String nickname, String email) {
+    public UserForm(Long id, String nickname, String email) {
+        this.id = id;
         this.nickname = nickname;
         this.email = email;
     }
 
-    private ProfileForm(Builder builder) {
+    private UserForm(Builder builder) {
+        this.id = builder.id;
         this.nickname = builder.nickname;
         this.email = builder.email;
     }
 
-    public static ProfileForm from(User user) {
+    public static UserForm from(User user) {
         return new Builder()
-                .email(user.getEmail())
                 .nickname(user.getNickname())
+                .email(user.getEmail())
+                .id(user.getId())
                 .build();
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getNickname() {
@@ -34,6 +42,7 @@ public class ProfileForm {
     public static class Builder {
         private String nickname;
         private String email;
+        private Long id;
 
         public Builder nickname(String nickname) {
             this.nickname = nickname;
@@ -45,8 +54,13 @@ public class ProfileForm {
             return this;
         }
 
-        public ProfileForm build() {
-            return new ProfileForm(this);
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public UserForm build() {
+            return new UserForm(this);
         }
     }
 }

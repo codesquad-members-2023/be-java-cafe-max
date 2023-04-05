@@ -1,9 +1,9 @@
 package kr.codesqaud.cafe.account;
 
 import kr.codesqaud.cafe.account.exception.InvalidUserIdException;
-import kr.codesqaud.cafe.account.form.JoinForm;
-import kr.codesqaud.cafe.account.form.ProfileSettingForm;
-import kr.codesqaud.cafe.account.form.UserForm;
+import kr.codesqaud.cafe.account.dto.JoinForm;
+import kr.codesqaud.cafe.account.dto.ProfileSettingForm;
+import kr.codesqaud.cafe.account.dto.UserForm;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -2,8 +2,8 @@ package kr.codesqaud.cafe.post;
 
 import kr.codesqaud.cafe.exception.ErrorCode;
 import kr.codesqaud.cafe.post.exception.InvalidPostIdFailedException;
-import kr.codesqaud.cafe.post.form.PostForm;
-import kr.codesqaud.cafe.post.form.SimplePostForm;
+import kr.codesqaud.cafe.post.dto.PostForm;
+import kr.codesqaud.cafe.post.dto.SimplePostForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

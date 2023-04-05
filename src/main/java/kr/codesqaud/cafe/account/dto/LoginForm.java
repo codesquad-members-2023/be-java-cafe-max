@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account.form;
+package kr.codesqaud.cafe.account.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account.form;
+package kr.codesqaud.cafe.account.dto;
 
 import kr.codesqaud.cafe.account.User;
 

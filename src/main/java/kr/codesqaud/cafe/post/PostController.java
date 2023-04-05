@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.post;
 
-import kr.codesqaud.cafe.post.form.PostForm;
+import kr.codesqaud.cafe.post.dto.PostForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
