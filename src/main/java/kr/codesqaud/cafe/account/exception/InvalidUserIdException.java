@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account.exception.service;
+package kr.codesqaud.cafe.account.exception;
 
 import kr.codesqaud.cafe.exception.CustomException;
 import kr.codesqaud.cafe.exception.ErrorCode;

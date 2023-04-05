@@ -26,7 +26,6 @@ import kr.codesqaud.cafe.account.form.LoginForm;
 import kr.codesqaud.cafe.account.form.ProfileForm;
 import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.form.UserForm;
-import kr.codesqaud.cafe.account.validator.JoinFormValidator;
 
 @Controller
 @RequestMapping("/users")

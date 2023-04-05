@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import kr.codesqaud.cafe.account.form.JoinForm;
 import kr.codesqaud.cafe.account.form.ProfileSettingForm;
 import kr.codesqaud.cafe.account.form.UserForm;
-import kr.codesqaud.cafe.account.exception.service.InvalidUserIdException;
+import kr.codesqaud.cafe.account.exception.InvalidUserIdException;
 
 @Service
 public class UserService {

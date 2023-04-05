@@ -18,9 +18,9 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.account.exception.repository.GetAllUsersFailedException;
-import kr.codesqaud.cafe.account.exception.repository.SaveUserFailedException;
-import kr.codesqaud.cafe.account.exception.repository.UpdateUserFailedException;
+import kr.codesqaud.cafe.account.exception.GetAllUsersFailedException;
+import kr.codesqaud.cafe.account.exception.SaveUserFailedException;
+import kr.codesqaud.cafe.account.exception.UpdateUserFailedException;
 
 @Repository
 public class UserRepository {

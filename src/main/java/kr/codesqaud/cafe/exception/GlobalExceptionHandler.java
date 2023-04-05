@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account.exception;
+package kr.codesqaud.cafe.exception;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,14 +8,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-import kr.codesqaud.cafe.exception.CustomException;
-import kr.codesqaud.cafe.exception.ErrorCode;
-
 @ControllerAdvice
-public class AccountControllerExceptionHandler {
+public class GlobalExceptionHandler {
 
 	public static final String ERROR_DETAILS_FORMAT = "[ ErrorStatus : %s ][ErrorCode : %s][ ErrorMessage : %s ][ RequestURL : %s ]";
-	private static final Logger logger = LoggerFactory.getLogger(AccountControllerExceptionHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 	@ExceptionHandler(CustomException.class)
 	public ModelAndView defaultErrorHandler(HttpServletRequest request, CustomException e) {
