@@ -19,7 +19,7 @@ public class MainController {
 		this.postService = postService;
 	}
 
-	@GetMapping("/")
+	@GetMapping
 	public String showMainPage(Model model) {
 		List<Post> posts = postRepository.getAllPosts();
 		List<SimplePostForm> simpleForms = postService.mappingSimpleForm(posts);
