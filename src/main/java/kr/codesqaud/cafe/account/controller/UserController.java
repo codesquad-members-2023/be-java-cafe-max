@@ -76,7 +76,7 @@ public class UserController {
 		return "account/join";
 	}
 
-	@PostMapping("/join")
+	@PostMapping
 	public String addUser(@Valid JoinForm joinForm, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return "account/join";

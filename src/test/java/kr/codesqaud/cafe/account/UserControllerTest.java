@@ -100,7 +100,7 @@ class UserControllerTest {
 	@DisplayName("유저 추가 - 성공")
 	@Test
 	void addUserSuccess() throws Exception {
-		mockMvc.perform(post("/users/join")
+		mockMvc.perform(post("/users")
 				.param(EMAIL, JACK_EMAIL)
 				.param(NICKNAME, JACK)
 				.param(PASSWORD, JACK_PASSWORD))
@@ -115,7 +115,7 @@ class UserControllerTest {
 	@ParameterizedTest
 	@CsvSource({"sss," + JACK + ",a123456789", JACK_EMAIL + ",j,a1223456789", JACK_EMAIL + "," + JACK + ",123456789"})
 	void addUserFailed(String email, String nickname, String password) throws Exception {
-		mockMvc.perform(post("/users/join")
+		mockMvc.perform(post("/users")
 				.param(EMAIL, email)
 				.param(NICKNAME, nickname)
 				.param(PASSWORD, password))
