@@ -6,17 +6,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(IllegalArgumentException.class)
-    public ModelAndView notFoundExceptionHandler(Exception ex) {
-        final ModelAndView modelAndView = new ModelAndView();
+    public String notFoundExceptionHandler(Exception ex, Model model) {
+        model.addAttribute("error", new ErrorDto(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
 
-        modelAndView.setViewName("error/error_page");
-        modelAndView.addObject("error", new ErrorDto(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
-        return modelAndView;
+        return "error/error_page";
     }
 
     @ExceptionHandler(UserJoinFailedException.class)
