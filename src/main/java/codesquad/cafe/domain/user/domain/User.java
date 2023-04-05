@@ -1,5 +1,7 @@
 package codesquad.cafe.domain.user.domain;
 
+import codesquad.cafe.domain.user.dto.UserRequestDto;
+
 import java.time.LocalDate;
 
 public class User {
@@ -28,4 +30,10 @@ public class User {
         return name;
     }
 
+    public User update(final UserRequestDto userRequestDto) {
+        this.password = userRequestDto.getPassword();
+        this.name = userRequestDto.getName();
+        this.email = userRequestDto.getEmail();
+        return this;
+    }
 }

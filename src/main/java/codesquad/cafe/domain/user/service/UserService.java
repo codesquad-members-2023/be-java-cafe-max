@@ -45,4 +45,11 @@ public class UserService {
                 .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
     }
+
+    public void updateUser(final String id, final UserRequestDto userRequestDto) {
+        userRepository.findById(id)
+                .map(user -> user.update(userRequestDto))
+                .map(userRepository::update)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+    }
 }

@@ -20,11 +20,6 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @GetMapping("/join")
-//    public String showJoinForm() {
-//        return "user/form";
-//    }
-
     @PostMapping
     public String registerUser(@ModelAttribute final UserRequestDto userRequestDto) {
         userService.join(userRequestDto);
@@ -44,4 +39,18 @@ public class UserController {
         model.addAttribute("user", user);
         return "user/profile";
     }
+
+    @GetMapping("/{userId}/form")
+    public String showUpdateForm(@PathVariable("userId") final String id, final Model model) {
+        model.addAttribute("userId", id);
+        return "user/updateForm";
+    }
+
+    @PutMapping("/{userId}/update")
+    public String updateUser(@PathVariable("userId") final String id,
+                             @ModelAttribute UserRequestDto userRequestDto) {
+        userService.updateUser(id, userRequestDto);
+        return "redirect:/users";
+    }
+
 }

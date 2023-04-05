@@ -22,6 +22,11 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(store.values());
+        return Collections.unmodifiableList(new ArrayList<>(store.values()));
+    }
+
+    @Override
+    public User update(final User user) {
+        return save(user);
     }
 }
