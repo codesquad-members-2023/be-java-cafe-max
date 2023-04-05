@@ -25,13 +25,13 @@ public class PostController {
 
 	@GetMapping(value = {"/posts/new", "/posts/form"})
 	public String showNewPage(@ModelAttribute PostForm postForm) {
-		return "/post/formInvalid";
+		return "/post/form";
 	}
 
 	@PostMapping("/posts")
 	public String addPost(@Valid PostForm postForm, Errors errors, Model model) {
 		if (errors.hasErrors()) {
-			return "/post/formInvalid";
+			return "/post/form";
 		}
 		Post post = postService.createNewPost(postForm);
 		model.addAttribute(post);
