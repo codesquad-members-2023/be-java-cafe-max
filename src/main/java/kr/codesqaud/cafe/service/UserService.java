@@ -21,15 +21,15 @@ public class UserService {
 	}
 
 	public void addUser(SignUpDTO dto) throws IllegalArgumentException {
-		repository.save(dto);
+		repository.insert(dto);
 	}
 
 	public List<UserDTO> findAllUsers() {
-		return repository.findAll();
+		return repository.selectAll();
 	}
 
 	public UserDTO findUser(String userId) throws UserNotFoundException {
-		return repository.findByUserId(userId);
+		return repository.selectByUserId(userId);
 	}
 
 	public void modifyUser(SignUpDTO dto) throws UserNotFoundException {

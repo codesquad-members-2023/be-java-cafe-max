@@ -23,7 +23,7 @@ public class UserRepository {
 		dummyData.insertUserDummyData(users);
 	}
 
-	public synchronized void save(SignUpDTO dto) throws IllegalArgumentException {
+	public synchronized void insert(SignUpDTO dto) throws IllegalArgumentException {
 		String userId = dto.getUserId();
 		for (User user : users) {
 			if (user.getUserId().equals(userId)) {
@@ -33,13 +33,13 @@ public class UserRepository {
 		users.add(dto.toUser(userIdx++));
 	}
 
-	public List<UserDTO> findAll() {
+	public List<UserDTO> selectAll() {
 		return users.stream()
 			.map(User::toDto)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public UserDTO findByUserId(String userId) throws UserNotFoundException {
+	public UserDTO selectByUserId(String userId) throws UserNotFoundException {
 		for (User user : users) {
 			if (user.getUserId().equals(userId)) {
 				return user.toDto();

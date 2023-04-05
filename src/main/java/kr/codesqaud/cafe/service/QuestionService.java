@@ -24,7 +24,7 @@ public class QuestionService {
 	}
 
 	public void addQuestion(QuestionWriteDTO dto) {
-		repository.save(dto);
+		repository.insert(dto);
 	}
 
 	public QuestionBoardDTO makeQuestionBoard(int page) {

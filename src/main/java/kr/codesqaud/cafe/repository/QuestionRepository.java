@@ -25,7 +25,7 @@ public class QuestionRepository {
 		dummyData.insertQuestionsDummyData(this.questions);
 	}
 
-	public synchronized void save(QuestionWriteDTO dto) {
+	public synchronized void insert(QuestionWriteDTO dto) {
 		questions.add(dto.toEntity(questionIdx++));
 	}
 
