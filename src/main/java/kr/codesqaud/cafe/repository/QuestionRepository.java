@@ -16,7 +16,7 @@ import kr.codesqaud.cafe.dummy.CollectionFrameworkRepositoryDummyData;
 
 @Repository
 public class QuestionRepository {
-	private List<Question> questions;
+	private final List<Question> questions;
 	private int questionIdx = 1;
 
 	public QuestionRepository() {

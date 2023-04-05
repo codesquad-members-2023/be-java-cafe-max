@@ -4,8 +4,8 @@ import kr.codesqaud.cafe.dto.SignUpDTO;
 import kr.codesqaud.cafe.dto.UserDTO;
 
 public class User {
-	private int idx;
-	private String userId;
+	private final int idx;
+	private final String userId;
 	private String password;
 	private String name;
 	private String email;
