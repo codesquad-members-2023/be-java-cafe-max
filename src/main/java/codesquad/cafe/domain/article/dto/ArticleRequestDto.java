@@ -1,4 +1,4 @@
-package codesquad.cafe.domain.article.dtio;
+package codesquad.cafe.domain.article.dto;
 
 import codesquad.cafe.domain.article.domain.Article;
 

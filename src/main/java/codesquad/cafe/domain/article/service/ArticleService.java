@@ -1,8 +1,8 @@
 package codesquad.cafe.domain.article.service;
 
 import codesquad.cafe.domain.article.domain.Article;
-import codesquad.cafe.domain.article.dtio.ArticleRequestDto;
-import codesquad.cafe.domain.article.dtio.ArticleResponseDto;
+import codesquad.cafe.domain.article.dto.ArticleRequestDto;
+import codesquad.cafe.domain.article.dto.ArticleResponseDto;
 import codesquad.cafe.domain.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 

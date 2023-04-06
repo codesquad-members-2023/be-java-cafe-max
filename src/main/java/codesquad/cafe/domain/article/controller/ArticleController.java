@@ -1,7 +1,7 @@
 package codesquad.cafe.domain.article.controller;
 
-import codesquad.cafe.domain.article.dtio.ArticleRequestDto;
-import codesquad.cafe.domain.article.dtio.ArticleResponseDto;
+import codesquad.cafe.domain.article.dto.ArticleRequestDto;
+import codesquad.cafe.domain.article.dto.ArticleResponseDto;
 import codesquad.cafe.domain.article.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

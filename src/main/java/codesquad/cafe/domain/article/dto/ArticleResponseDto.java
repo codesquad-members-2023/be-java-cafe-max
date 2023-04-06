@@ -1,7 +1,4 @@
-package codesquad.cafe.domain.article.dtio;
-
-import java.time.LocalDateTime;
-import java.util.concurrent.atomic.AtomicLong;
+package codesquad.cafe.domain.article.dto;
 
 public class ArticleResponseDto {
 
