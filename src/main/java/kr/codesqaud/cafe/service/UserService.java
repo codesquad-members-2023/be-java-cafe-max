@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.DTO.UserDTO;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.exception.signUpException.InvalidUserIdException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +25,15 @@ public class UserService {
      * 회원 가입
      */
     public void join(UserDTO userDTO) {
-//        validaDuplicateUserId(user); TODO: 각종 유효성 검증
+        validaUserIdUniqueness(userDTO);
         User user = userDTO.toEntity();
         userRepository.save(user);
     }
 
-    private void validaDuplicateUserId(User user) {
-       // TODO: 유효성 검증 로직 작성
+    private void validaUserIdUniqueness(UserDTO userDTO) {
+        findOne(userDTO.getUserId()).ifPresent(user -> {
+                    throw new InvalidUserIdException();
+                });
     }
 
     /**

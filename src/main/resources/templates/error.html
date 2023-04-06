@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/head :: head}">
+</head>
+
+<body>
+<nav class="navbar navbar-fixed-top header" th:replace="~{layout/navbar :: navbar}">
+</nav>
+
+<div class="navbar navbar-default" id="subnav" th:replace="~{layout/subnav :: subnav}">
+</div>
+
+<div class="container" id="main">
+    <p th:text="${error}"></p>
+    <button onclick="window.history.back()">돌아가기</button>
+</div>
+
+<!-- script references -->
+<script src="/js/jquery-2.2.0.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/scripts.js"></script>
+</body>
+</html>

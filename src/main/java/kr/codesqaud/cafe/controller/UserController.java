@@ -4,6 +4,7 @@ import java.util.List;
 import javax.validation.Valid;
 import kr.codesqaud.cafe.DTO.UserDTO;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.exception.signUpException.InvalidUserIdException;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,12 +28,19 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String create(@Valid final UserDTO userDTO, BindingResult bindingResult) {
+    public String create(@Valid final UserDTO userDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/user/create";
+            // TODO: 에러 내용이 출력되게끔 로직 추가
+            return "redirect:/error";
         }
-        userService.join(userDTO);
-        return "redirect:/users"; // TODO: 어떤 상황에 템플릿 or 리다이렉팅 해주는지 이해 못했다.
+        try {
+            userService.join(userDTO);
+            return "redirect:/users";
+        } catch (InvalidUserIdException e) {
+            System.out.println(e.getMessage());
+            model.addAttribute("error", e.getMessage());
+            return "/error"; // TODO: 리다이렉트하도록 수정 필요
+        }
     }
 
     @GetMapping("/users")
