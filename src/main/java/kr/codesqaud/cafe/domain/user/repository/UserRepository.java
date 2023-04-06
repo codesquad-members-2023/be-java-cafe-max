@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain.user.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import kr.codesqaud.cafe.domain.user.entity.User;
 
@@ -10,7 +11,7 @@ public interface UserRepository {
 
 	List<User> findAll();
 
-	User findById(Long id);
+	Optional<User> findById(Long id);
 
 	void update(User user);
 }
