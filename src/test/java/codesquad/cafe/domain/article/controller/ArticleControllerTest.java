@@ -49,13 +49,18 @@ class ArticleControllerTest {
                 .andExpect(MockMvcResultMatchers.view().name("redirect:/"));
     }
 
-
-
     @Test
-    void showDetailPost() {
+    @DisplayName("[GET] /articles/{postId} 로 이동하면 해당 게시글의 정보를 불러와 qna/show에 출력하기 테스트")
+    void showDetailPost() throws Exception {
+        articleRepository.save(createDummyArticle());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/articles/{postId}", 1L))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.model().attributeExists("post"))
+                .andExpect(MockMvcResultMatchers.view().name("qna/show"));
     }
 
-    private ArticleRequestDto createDummyArticleRequest() {
-        return new ArticleRequestDto("sio", "title", "contents");
+    private Article createDummyArticle() {
+        return new Article(1L, "sio", "title", "contents", LocalDateTime.of(2023, 4, 7, 3, 42));
     }
 }
