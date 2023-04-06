@@ -34,7 +34,7 @@ public class UserService {
     public UserDTO getUserById(String id){
         return userRepository.findUserById(id)
                 .map(User::toUserDTO)
-                .orElseThrow(() -> new UserNotFoundException("해당 사용자가 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException());
     }
 
     public void updateUserByUserId(ProfileEditDTO profileEditDto){
@@ -44,6 +44,6 @@ public class UserService {
             userRepository.updateUser(profileEditDto.toUser());
             return;
         }
-        throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
+        throw new InvalidPasswordException();
     }
 }

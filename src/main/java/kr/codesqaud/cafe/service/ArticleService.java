@@ -30,6 +30,6 @@ public class ArticleService {
     public ArticleDTO findArticleById(int id){
         return ArticleRepository.findArticleById(id)
                 .map(Article::toDTO)
-                .orElseThrow(() -> new ArticleNotFoundException("해당 글이 존재하지 않습니다."));
+                .orElseThrow(() -> new ArticleNotFoundException());
     }
 }
