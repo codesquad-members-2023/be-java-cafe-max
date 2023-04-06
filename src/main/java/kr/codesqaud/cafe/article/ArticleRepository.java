@@ -12,4 +12,6 @@ public interface ArticleRepository {
     void save(Article article);
 
     List<Article> findAll();
+
+    Article findById(int articleId);
 }

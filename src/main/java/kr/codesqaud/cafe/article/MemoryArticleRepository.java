@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.article;
 
-
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,5 +23,15 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return articles;
+    }
+
+    @Override
+    public Article findById(int articleId) {
+        for (Article article : articles) {
+            if (article.getArticleId() == articleId) {
+                return article;
+            }
+        }
+        return null;
     }
 }

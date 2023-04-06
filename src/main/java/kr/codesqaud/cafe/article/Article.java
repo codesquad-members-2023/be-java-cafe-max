@@ -4,14 +4,21 @@ package kr.codesqaud.cafe.article;
  * 게시글 엔티티
  */
 public class Article {
+    private static int idCount = 0;
+    private final int articleId;
     private final String writer;
     private final String title;
-    private final String content;
+    private final String contents;
 
-    public Article(String writer, String title, String content) {
+    public Article(String writer, String title, String contents) {
+        this.articleId = ++idCount;
         this.writer = writer;
         this.title = title;
-        this.content = content;
+        this.contents = contents;
+    }
+
+    public int getArticleId() {
+        return articleId;
     }
 
     public String getWriter() {
@@ -22,8 +29,8 @@ public class Article {
         return title;
     }
 
-    public String getContent() {
-        return content;
+    public String getContents() {
+        return contents;
     }
 
     @Override
@@ -31,7 +38,7 @@ public class Article {
         return "Article{" +
                 "writer='" + writer + '\'' +
                 ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
+                ", content='" + contents + '\'' +
                 '}';
     }
 }
