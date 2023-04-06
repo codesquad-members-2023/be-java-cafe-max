@@ -29,14 +29,14 @@ public class ArticleController {
     @GetMapping("/")
     public String listArticles(Model model) {
         model.addAttribute("articles", articleService.getArticleListDtos());
-        return "/index";
+        return "index";
     }
 
     //글 목록에서 제목 클릭시, 상세 글을 보여줌
     @GetMapping("/articles/{index}")
     public String showArticleDetail(Model model, @PathVariable Long index) {
         model.addAttribute("articleDetail", articleService.getArticleDetail(index));
-        return "/qna/show";
+        return "qna/show";
     }
 
 
