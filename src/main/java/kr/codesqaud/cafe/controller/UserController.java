@@ -21,7 +21,7 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@GetMapping("/users/list")
+	@GetMapping("/users")
 	public String userList(Model model) {
 		List<User> users = userService.findUsers();
 		model.addAttribute("users", users);
@@ -34,15 +34,8 @@ public class UserController {
 		return "redirect:/users";
 	}
 
-	@GetMapping("/users")
-	public String list(Model model) {
-		List<User> users = userService.findUsers();
-		model.addAttribute("users", users);
-		return "/user/list";
-	}
-
 	@GetMapping("/users/{userID}")
-	public String profile(@PathVariable("userID") String userID, Model model) {
+	public String profile(@PathVariable String userID, Model model) {
 		model.addAttribute("user", userService.findOne(userID).get());
 		return "/user/profile";
 	}
@@ -53,9 +46,9 @@ public class UserController {
 		return "/user/updateForm";
 	}
 
-	@PutMapping("/user/{index}/{signUpDate}/update")
-	public String updateUserInfo(@PathVariable long index, @PathVariable String signUpDate, UserDto userDto) {
-		userService.update(index, signUpDate, userDto);
+	@PutMapping("/user/{userID}/update")
+	public String updateUserInfo(UserDto userDto) {
+		userService.update(userDto);
 		return "redirect:/users";
 	}
 }

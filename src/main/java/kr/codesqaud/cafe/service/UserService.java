@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +11,6 @@ import kr.codesqaud.cafe.repository.UserRepository;
 
 public class UserService {
 	private final UserRepository userRepository;
-	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 	private long index = 0L;
 
 	public UserService(UserRepository userRepository) {
@@ -22,7 +20,7 @@ public class UserService {
 	public long join(UserDto userDto) {
 		validateDuplicate(userDto);
 		User user = new User(increaseIndex(), userDto.getUserID(), userDto.getEmail(), userDto.getNickname(),
-			userDto.getPassword(), signUpDate());
+			userDto.getPassword(), LocalDate.now());
 		userRepository.save(user);
 		return user.getIndex();
 	}
@@ -46,17 +44,8 @@ public class UserService {
 			});
 	}
 
-	private String signUpDate() {
-		LocalDate now = LocalDate.now();
-		return now.format(DATE_FORMATTER);
-	}
-
-	public boolean update(long index, String signUpDate, UserDto userDto) {
-		User newUser = new User(index, userDto.getUserID()
-			, userDto.getEmail(), userDto.getNickname(), userDto.getPassword(), signUpDate);
-		long userIndex = newUser.getIndex() - 1;
-
-		userRepository.update(userIndex, newUser);
+	public boolean update(UserDto userDto) {
+		userRepository.update(userDto);
 		return true;
 	}
 

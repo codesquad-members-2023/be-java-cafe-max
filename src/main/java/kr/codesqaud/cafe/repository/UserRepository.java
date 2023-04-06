@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.UserDto;
 
 public interface UserRepository {
 	User save(User user);
 
-	User update(long index, User user);
+	boolean update(UserDto userDto);
 
 	Optional<User> findByUserID(String userID);
 

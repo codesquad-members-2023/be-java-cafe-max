@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,6 @@ import kr.codesqaud.cafe.repository.ArticleRepository;
 public class ArticleController {
 	private final ArticleRepository articleRepository;
 
-	@Autowired
 	public ArticleController(ArticleRepository articleRepository) {
 		this.articleRepository = articleRepository;
 	}
@@ -36,7 +34,7 @@ public class ArticleController {
 	}
 
 	@GetMapping("/articles/{index}")
-	public String showArticle(@PathVariable("index") Long index, Model model) {
+	public String showArticle(@PathVariable Long index, Model model) {
 		model.addAttribute("article", articleRepository.findByIndex(index).get());
 		return "/qna/detail";
 	}

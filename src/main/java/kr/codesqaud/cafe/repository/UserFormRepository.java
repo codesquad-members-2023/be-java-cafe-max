@@ -3,8 +3,10 @@ package kr.codesqaud.cafe.repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.UserDto;
 
 public class UserFormRepository implements UserRepository {
 	private final List<User> userList = new ArrayList<>();
@@ -16,9 +18,9 @@ public class UserFormRepository implements UserRepository {
 	}
 
 	@Override
-	public User update(long index, User user) {
-		userList.set((int)index, user);
-		return user;
+	public boolean update(UserDto userDto) {
+		// userList.set((int)index, user);
+		return true;
 	}
 
 	@Override
@@ -44,6 +46,6 @@ public class UserFormRepository implements UserRepository {
 
 	@Override
 	public List<User> findAll() {
-		return userList;
+		return userList.stream().collect(Collectors.toUnmodifiableList());
 	}
 }

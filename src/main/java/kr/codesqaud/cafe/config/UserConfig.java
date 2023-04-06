@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe;
+package kr.codesqaud.cafe.config;
 
 import javax.sql.DataSource;
 
