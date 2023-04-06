@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.user.repository;
 
 import kr.codesqaud.cafe.user.domain.User;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -37,13 +36,9 @@ public class UserJdbcRepository {
     }
 
     public User findByUserId(String userId) {
-        try {
-            Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
-            return jdbcTemplate.queryForObject("SELECT user_id, password, user_name, email FROM users WHERE user_id = :user_id",
-                    namedParameters, userRowMapper);
-        } catch (EmptyResultDataAccessException e) {
-            throw new IllegalArgumentException("가입된 아이디가 존재하지 않습니다.");
-        }
+        Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
+        return jdbcTemplate.queryForObject("SELECT user_id, password, user_name, email FROM users WHERE user_id = :user_id",
+                namedParameters, userRowMapper);
     }
 
     public List<User> findAll() {
