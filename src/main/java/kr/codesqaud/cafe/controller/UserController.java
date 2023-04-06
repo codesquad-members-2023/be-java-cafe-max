@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public String findProfile(@PathVariable("id") Long id, Model model) {
+    public String findProfile(@PathVariable Long id, Model model) {
         UserProfileForm profile = userService.findProfile(id);
         model.addAttribute("profile", profile);
         return "user/profile";
@@ -57,8 +57,8 @@ public class UserController {
 
     @PostMapping("/users/update/{id}")
     // TODO: User를 UserUpdateForm으로 바꾸면 오류 남
-    public String postUpdate(@PathVariable Long id, @Validated User user) {
-        userService.updateUser(id, user);
+    public String postUpdate(@PathVariable Long id, @Validated UserUpdateForm updateUser) {
+        userService.updateUser(id, updateUser);
         return "redirect:/users";
     }
 }

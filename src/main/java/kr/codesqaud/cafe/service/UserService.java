@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -35,21 +34,27 @@ public class UserService {
     }
 
     public UserProfileForm findProfile(Long id) {
-        User user = findError(id);
+        User user = findUser(id);
         return new UserProfileForm(user);
     }
 
     public UserUpdateForm findUpdate(Long id) {
-        User user = findError(id);
+        User user = findUser(id);
         return new UserUpdateForm(user);
     }
 
-    private User findError(Long id) {
+    private User findUser(Long id) {
+        // Optional을 스트림으로 처리
         return userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("이 아이디를 찾을 수 없어: " + id));
     }
 
-    public void updateUser(Long id, User updateUser) {
-        userRepository.update(id, updateUser);
+    public void updateUser(Long id, UserUpdateForm updateUser) {
+        // updateUser의 정보들을 User에 덮어씌우기
+        User originUser = findUser(id);
+        originUser.setPassword(updateUser.getPassword());
+        originUser.setName(updateUser.getName());
+        originUser.setEmail(updateUser.getEmail());
+        userRepository.update(id, originUser);
     }
 }
