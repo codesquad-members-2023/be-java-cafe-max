@@ -1,13 +1,24 @@
 package kr.codesqaud.cafe.DTO;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
+import kr.codesqaud.cafe.domain.User;
+
 /**
  * 회원 DTO 객체
  */
 public class UserDTO {
 
+    @Size(min = 1, max = 10)
     private String userId;
+
+    @Size(min = 8, max = 10)
     private String password;
+
+    @Size(min = 1, max = 10)
     private String name;
+
+    @Email
     private String email;
 
     public String getUserId() {
