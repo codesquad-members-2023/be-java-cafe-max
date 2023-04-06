@@ -3,6 +3,7 @@ package codesquad.cafe.service;
 import codesquad.cafe.domain.user.domain.User;
 import codesquad.cafe.domain.user.dto.UserRequestDto;
 import codesquad.cafe.domain.user.dto.UserResponseDto;
+import codesquad.cafe.domain.user.dto.UserUpdateRequestDto;
 import codesquad.cafe.domain.user.repository.MemoryUserRepository;
 import codesquad.cafe.domain.user.service.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +24,7 @@ class UserServiceTest {
     @DisplayName("사용자 회원가입 테스트")
     void join() {
         // given
-        UserRequestDto userRequestDto = new UserRequestDto("sio", "1234", "sio", "sio@gmail.com");
+        UserRequestDto userRequestDto = createDummyUserDto1();
 
         // when
         User joinUser = userService.join(userRequestDto);
@@ -36,8 +37,8 @@ class UserServiceTest {
     @DisplayName("사용자 id 중복 시 예외")
     void checkDuplicatedUser() {
         // given
-        UserRequestDto userRequestDto1 = new UserRequestDto("sio", "1234", "sio", "sio@gmail.com");
-        UserRequestDto userRequestDto2 = new UserRequestDto("sio", "1111", "sioooo", "sioooo@gmail.com");
+        UserRequestDto userRequestDto1 = createDummyUserDto1();
+        UserRequestDto userRequestDto2 = createDummyUserDto2();
 
         // when
         userService.join(userRequestDto1);
@@ -47,12 +48,14 @@ class UserServiceTest {
                 () -> userService.join(userRequestDto2));
     }
 
+
+
     @Test
     @DisplayName("사용자 회원가입 시 목록에 정상적으로 들어가는지 테스트")
     void showUsers() {
         // given
-        UserRequestDto userRequestDto1 = new UserRequestDto("sio", "1234", "sio", "sio@gmail.com");
-        UserRequestDto userRequestDto2 = new UserRequestDto("시오", "1111", "시오", "sioooo@gmail.com");
+        UserRequestDto userRequestDto1 = createDummyUserDto1();
+        UserRequestDto userRequestDto2 = createDummyUserDto2();
         userService.join(userRequestDto1);
         userService.join(userRequestDto2);
 
@@ -72,7 +75,7 @@ class UserServiceTest {
     void findUser() {
         // given
         String id = "sio";
-        UserRequestDto userRequestDto = new UserRequestDto("sio", "1234", "sio", "sio@gmail.com");
+        UserRequestDto userRequestDto = createDummyUserDto1();
         userService.join(userRequestDto);
         User user = userRequestDto.toEntity();
 
@@ -87,7 +90,7 @@ class UserServiceTest {
     @DisplayName("사용자 id로 사용자를 찾을 수 없으면 예외")
     void checkUser() {
         // given
-        UserRequestDto userRequestDto = new UserRequestDto("sio", "1234", "sio", "sio@gmail.com");
+        UserRequestDto userRequestDto = createDummyUserDto1();
         userService.join(userRequestDto);
 
         // when
@@ -96,5 +99,28 @@ class UserServiceTest {
         // then
         Assertions.assertThrows(IllegalStateException.class,
                 () -> userService.findUser(id));
+    }
+
+    @Test
+    @DisplayName("사용자 id로 사용자를 찾아 사용자 정보 업데이트하기 테스트")
+    void updateUser() {
+        // given
+        UserRequestDto userRequestDto = createDummyUserDto1();
+        userService.join(userRequestDto);
+
+        // when
+        UserUpdateRequestDto userUpdateRequestDto = new UserUpdateRequestDto("1234", "1111", "시오", "siioo@gmail.com");
+        userService.updateUser("sio", userUpdateRequestDto);
+
+        // then
+        assertThat(userService.findUser("sio")).usingRecursiveComparison().isEqualTo(new UserResponseDto("sio", "시오", "siioo@gmail.com"));
+    }
+
+    private UserRequestDto createDummyUserDto1() {
+        return new UserRequestDto("sio", "1234", "sio", "sio@gmail.com");
+    }
+
+    private UserRequestDto createDummyUserDto2() {
+        return new UserRequestDto("sio", "1111", "sioooo", "sioooo@gmail.com");
     }
 }
