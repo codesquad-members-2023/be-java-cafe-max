@@ -1,4 +1,4 @@
-package codesquad.cafe.repository;
+package codesquad.cafe.domain.user.repository;
 
 import codesquad.cafe.domain.user.domain.User;
 import codesquad.cafe.domain.user.repository.MemoryUserRepository;

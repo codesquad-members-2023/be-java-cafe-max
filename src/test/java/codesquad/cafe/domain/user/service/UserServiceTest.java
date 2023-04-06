@@ -1,4 +1,4 @@
-package codesquad.cafe.service;
+package codesquad.cafe.domain.user.service;
 
 import codesquad.cafe.domain.user.domain.User;
 import codesquad.cafe.domain.user.dto.UserRequestDto;
