@@ -1,5 +1,5 @@
 ![](https://img.shields.io/badge/VERSION-3.0-green)
-![](https://img.shields.io/badge/LAST_UPDATE-2023--04--04-blue)
+![](https://img.shields.io/badge/LAST_UPDATE-2023--04--07-blue)
 
 # ☕️ 스프링 카페 미션
 - 미션 기간(max 4~5주차): `
@@ -16,7 +16,7 @@
 ## 🔖 버전 기록
 | 버전  | 구현 기간               | 기능                                                   |
 |:----|:--------------------|:-----------------------------------------------------|
-| 3.0 | 23-04-03 ~ 23-04-07 ||
+| 3.0 | 23-04-03 ~ 23-04-07 | H2 DB 연동 <br/>AWS 배포                                 |
 | 2.0 | 23-03-29 ~ 23-03-31 | 게시글 쓰기 기능 추가 <br/>게시글 목록 조회 기능 추가                    |
 | 1.0 | 23-03-27 ~ 23-03-29 | 회원 가입 기능 추가 <br/>회원 목록 조회 기능 추가 <br/>회원 프로필 조회 기능 추가 |
 
@@ -107,17 +107,18 @@
   - [X] 사용자 정보를 DB에 저장하는 기능
 
 - AWS 배포
-  - [ ] H2 DB를 사용하여 AWS 배포
+  - [X] H2 DB를 사용하여 AWS 배포
 
 ## 📌 URL 및 메서드 컨벤션
-| 기능            | URI                | templates           | HTTP 메서드  |
-|:--------------|:-------------------|:--------------------|:----------|
-| 회원 가입         | /user/create       | /user/form.html     | `POST`    |
-| 회원 목록 조회      | /users             | /user/list.html     | `GET`     |
-| 특정 회원 프로필 조회  | /users/{userId}    | /user/profile.html  | `GET`     |
-| 게시글 쓰기        | /article/write     | /qna/form.html      | `POST`    |
-| 게시글 목록 조회     | /articles          | /index.html         | `GET`     |
-| 게시글 상세 보기     | /articles/{index}  | /qna/show.html      | `GET`     |
+| 기능           | URI               | templates          | HTTP 메서드  |
+|:-------------|:------------------|:-------------------|:----------|
+| 회원 가입        | /user/create      | /user/form.html    | `POST`    |
+| 회원 목록 조회     | /users            | /user/list.html    | `GET`     |
+| 특정 회원 프로필 조회 | /users/{userId}   | /user/profile.html | `GET`     |
+| 게시글 쓰기       | /article/write    | /qna/form.html     | `POST`    |
+| 게시글 목록 조회    | /articles         | /index.html        | `GET`     |
+| 게시글 상세 보기    | /articles/{index} | /qna/show.html     | `GET`     |
+| 에러 페이지       | /error            | /error.html        | `GET`     |
 
 ## ⚡️ 개선 필요 사항
 - [X] html 중복 코드 분리
@@ -130,11 +131,11 @@
 - [X] ❗️: `Template` 경로 매핑이 안되는 이슈
 - [X] ❓: 매핑 후 HTML 내 `URI` 수정을 효율적으로 할 수 있는 방법?
 - [X] ❗️: CSS가 적용되지 않던 이슈
-- [ ] ❓: 어느 레이아웃에서 어떻게 DTO <-> 도메인 객체를 변환하면 좋을지?
+- [ ] ❓: 어느 레이아웃에서 어떻게 DTO <-> 도메인 객체를 변환하면 좋을지? -> 서비스 레이아웃
 - [X] ❓: 매핑 URI 앞에 `/` 가 붙을 때와 아닐 때의 차이점? (예: `"/링크"` vs `"링크")
 - [ ] ❓: `@Get/Postmapping` 시 언제 `redirect` 하고, 언제 `template`를 리턴하는지 판단 기준?
 - [X] ❗️: WebMvcConfigurer 가 적용되지 않던 이슈
-- [ ] ❓: 파라미터가 많아질 때 가독성 좋게 값을 주고 받을 수 있는 방법?
+- [ ] ❓: 파라미터가 많아질 때 가독성 좋게 값을 주고 받을 수 있는 방법? -> 빌더 패턴
 
 ## 📝 공부한 내용
 - Template Engine
