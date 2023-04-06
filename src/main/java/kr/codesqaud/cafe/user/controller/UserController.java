@@ -20,8 +20,12 @@ public class UserController {
     @PostMapping
     public String addUser(@ModelAttribute UserAddForm userAddForm) {
         String userId = userService.add(userAddForm);
-        // 중복된 아이디가 존재하는 경우 "form_failed"
-        return userId == null ? "/user/form_failed" : "redirect:/user/list";
+        String url = "redirect:/user/list";
+        // 중복된 아이디가 존재하는 경우
+        if (userId == null) {
+            url = "/user/form_failed";
+        }
+        return url;
     }
 
     @GetMapping("/list")
