@@ -28,6 +28,10 @@ public class User {
         this(null, userId, name, password, email, LocalDateTime.now(), LocalDateTime.now());
     }
 
+    public User(Long id, String userId, String password, LocalDateTime updatedAt) {
+        this(id, userId, null, password, null, null, updatedAt);
+    }
+
     public Long getId() {
         return id;
     }
@@ -82,5 +86,9 @@ public class User {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public boolean isNotMatchedPassword(String password) {
+        return !this.password.equals(password);
     }
 }

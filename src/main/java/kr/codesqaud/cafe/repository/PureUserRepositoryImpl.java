@@ -50,4 +50,9 @@ public class PureUserRepositoryImpl implements UserRepository {
                 .sorted(Comparator.comparing(User::getId))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void update(User toUser) {
+
+    }
 }

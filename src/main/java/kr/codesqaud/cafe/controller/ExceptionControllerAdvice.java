@@ -1,7 +1,10 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.ErrorDto;
+import kr.codesqaud.cafe.controller.dto.UserUpdateDto;
+import kr.codesqaud.cafe.exception.user.UserExceptionType;
 import kr.codesqaud.cafe.exception.user.UserJoinFailedException;
+import kr.codesqaud.cafe.exception.user.UserUpdateFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,9 +23,19 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler(UserJoinFailedException.class)
     public String userJoinDuplicatedExceptionHandler(UserJoinFailedException ex, Model model) {
+        final UserExceptionType exceptionType = ex.getUserExceptionType();
         model.addAttribute("user", ex.getUserJoinDto());
-        model.addAttribute(ex.getErrorField(), ex.getMessage());
+        model.addAttribute(exceptionType.getCategory(), exceptionType.getMessage());
 
         return "user/form";
+    }
+
+    @ExceptionHandler(UserUpdateFailedException.class)
+    public String userUpdateException(UserUpdateFailedException ex, Model model) {
+        final UserExceptionType userExceptionType = ex.getUserExceptionType();
+        model.addAttribute("user", ex.getUserUpdateDto());
+        model.addAttribute(userExceptionType.getCategory(), userExceptionType.getMessage());
+
+        return "user/update";
     }
 }
