@@ -81,7 +81,7 @@ public class UserController {
             loggingError(bindingResult);
             return "account/join";
         }
-        int userId = userService.createNewUser(joinForm);
+        int userId = userService.saveNewUser(joinForm);
         return "redirect:/users/" + userId;
     }
 

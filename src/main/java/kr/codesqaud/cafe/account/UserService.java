@@ -22,7 +22,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public int createNewUser(JoinForm joinForm) {
+    public int saveNewUser(JoinForm joinForm) {
         User user = joinForm.toUser();
         return userRepository.save(user);
     }

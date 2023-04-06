@@ -222,7 +222,7 @@ class UserControllerTest {
 
 	private int saveAndGetUserJack() {
 		JoinForm joinForm = new JoinForm(JACK, JACK_EMAIL, JACK_PASSWORD);
-		return userService.createNewUser(joinForm);
+		return userService.saveNewUser(joinForm);
 	}
 
 }
