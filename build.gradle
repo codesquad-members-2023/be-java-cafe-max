@@ -13,11 +13,16 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools
 	implementation 'org.springframework.boot:spring-boot-devtools:2.7.10'
+	// template engine
+	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	// jdbc
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	// h2 db
+//	implementation 'com.h2database:h2' // 읽을 .sql 파일 경로를 application.properties에 직접 입력해서 추가
+	runtimeOnly 'com.h2database:h2' // 파일 경로를 입력하지 않아도 됨.
 }
 
 tasks.named('test') {
