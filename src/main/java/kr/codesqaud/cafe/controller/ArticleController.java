@@ -36,5 +36,18 @@ public class ArticleController {
         model.addAttribute("wantedPost", wantedPost);
         return "post/show";
     }
+
+    @GetMapping("/post/modify/{id}")
+    public String modifyForm(@PathVariable final long id, final Model model) {
+        ArticleDTO wantedPost = articleService.clickOne(id);
+        model.addAttribute("wantedPost", wantedPost);
+        return "post/modifyForm";
+    }
+
+    @PostMapping("/post/modify/{id}")
+    public String modifyPost(@PathVariable final long id, @ModelAttribute final ArticleDTO articleDTO) {
+        articleService.modify(id, articleDTO);
+        return "redirect:/post/show/{id}";
+    }
 }
 
