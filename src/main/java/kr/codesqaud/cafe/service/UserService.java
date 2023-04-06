@@ -42,8 +42,8 @@ public class UserService {
 
         if(userDto.getPassword().equals(profileEditDto.getOriPassword())){
             userRepository.updateUser(profileEditDto.toUser());
-        } else {
-            throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
+            return;
         }
+        throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
     }
 }
