@@ -12,10 +12,10 @@ CREATE TABLE users
 drop table if exists articles CASCADE;
 CREATE TABLE articles
 (
-    id       bigint auto_increment,
-    writer   TEXT,
-    title    TEXT,
-    contents TEXT,
+    id          bigint auto_increment,
+    writer      TEXT      NOT NULL,
+    title       TEXT      NOT NULL,
+    contents    TEXT      NOT NULL,
+    currentTime TIMESTAMP NOT NULL,
     primary key (id)
-
 );
