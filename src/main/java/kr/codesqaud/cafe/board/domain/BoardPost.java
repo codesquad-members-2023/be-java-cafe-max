@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.board.domain;
 import kr.codesqaud.cafe.board.dto.PostResponse;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class BoardPost {
     private Long postId;
@@ -11,6 +10,9 @@ public class BoardPost {
     private String title;
     private String contents;
     private LocalDateTime writeDateTime;
+
+    public BoardPost() {
+    }
 
     public BoardPost(Long postId, String writer, String title, String contents, LocalDateTime writeDateTime) {
         this.postId = postId;
@@ -20,11 +22,10 @@ public class BoardPost {
         this.writeDateTime = writeDateTime;
     }
 
-    public BoardPost(String writer, String title, String contents, LocalDateTime writeDateTime) {
+    public BoardPost(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.writeDateTime = writeDateTime;
     }
 
     public PostResponse toPostResponse() {
@@ -43,15 +44,31 @@ public class BoardPost {
         return writer;
     }
 
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContents() {
         return contents;
     }
 
-    public String getWriteDateTime() {
-        return writeDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public LocalDateTime getWriteDateTime() {
+        return writeDateTime;
+    }
+
+    public void setWriteDateTime(LocalDateTime writeDateTime) {
+        this.writeDateTime = writeDateTime;
     }
 }

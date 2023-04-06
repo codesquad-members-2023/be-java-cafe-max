@@ -2,17 +2,13 @@ package kr.codesqaud.cafe.board.dto;
 
 import kr.codesqaud.cafe.board.domain.BoardPost;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 public class PostWriteForm {
     private String writer;
     private String title;
     private String contents;
-    private LocalDateTime writeDateTime = LocalDateTime.now();
 
     public BoardPost toBoardPost() {
-        return new BoardPost(writer, title, contents, writeDateTime);
+        return new BoardPost(writer, title, contents);
     }
 
     public String getWriter() {
@@ -39,11 +35,4 @@ public class PostWriteForm {
         this.contents = contents;
     }
 
-    public String getWriteDateTime() {
-        return writeDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    }
-
-    public void setWriteDateTime(LocalDateTime writeDateTime) {
-        this.writeDateTime = writeDateTime;
-    }
 }
