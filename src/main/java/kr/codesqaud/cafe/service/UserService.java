@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.dto.user.UserForm;
 import kr.codesqaud.cafe.controller.dto.user.UserProfileForm;
 import kr.codesqaud.cafe.controller.dto.user.UserUpdateForm;
 import kr.codesqaud.cafe.domain.User;
@@ -17,9 +18,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void join(User user) {
+    public User join(User user) {
         validateDuplicateUser(user);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     private void validateDuplicateUser(User user) {

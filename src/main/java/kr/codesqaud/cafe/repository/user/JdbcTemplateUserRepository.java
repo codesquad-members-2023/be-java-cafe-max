@@ -29,11 +29,11 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(user);
         Number key = simpleJdbcInsert.executeAndReturnKey(param);
         user.setId(key.longValue());
-
+        return user;
 //        String sql = "insert into users (userId, password, name, email) values (?, ?, ?, ?)";
 //        KeyHolder keyHolder = new GeneratedKeyHolder();
 //        jdbcTemplate.update(con -> {

@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
 import kr.codesqaud.cafe.controller.dto.user.UserForm;
-import kr.codesqaud.cafe.controller.dto.user.UserUpdateForm;
 
 public class User {
     private Long id;
@@ -14,15 +13,7 @@ public class User {
     }
 
     public User(UserForm form) {
-        this.id = form.getId();
         this.userId = form.getUserId();
-        this.password = form.getPassword();
-        this.name = form.getName();
-        this.email = form.getEmail();
-    }
-
-    public User(UserUpdateForm form) {
-        this.id = form.getId();
         this.password = form.getPassword();
         this.name = form.getName();
         this.email = form.getEmail();

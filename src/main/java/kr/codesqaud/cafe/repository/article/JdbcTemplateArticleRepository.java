@@ -28,10 +28,11 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void save(Article article) {
+    public Article save(Article article) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
         Number key = simpleJdbcInsert.executeAndReturnKey(param);
         article.setId(key.longValue());
+        return article;
 
         // #1
 //        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);

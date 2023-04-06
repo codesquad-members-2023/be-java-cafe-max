@@ -17,8 +17,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void add(Article article) {
-        articleRepository.save(article);
+    public Article add(Article article) {
+        return articleRepository.save(article);
     }
 
     public List<ArticleTimeForm> findArticles() {
