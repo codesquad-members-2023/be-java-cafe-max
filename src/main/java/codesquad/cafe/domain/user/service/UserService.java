@@ -51,7 +51,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         validatePassword(user, userUpdateRequestDto);
-        userRepository.update(user.update(userUpdateRequestDto));
+        userRepository.save(user.update(userUpdateRequestDto));
     }
 
     private void validatePassword(final User user, final UserUpdateRequestDto userUpdateRequestDto) {

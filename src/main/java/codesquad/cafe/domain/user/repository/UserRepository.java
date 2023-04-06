@@ -15,5 +15,4 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    User update(User user);
 }

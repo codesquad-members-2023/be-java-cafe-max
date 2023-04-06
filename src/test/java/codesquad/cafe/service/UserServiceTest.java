@@ -6,7 +6,6 @@ import codesquad.cafe.domain.user.dto.UserResponseDto;
 import codesquad.cafe.domain.user.dto.UserUpdateRequestDto;
 import codesquad.cafe.domain.user.repository.MemoryUserRepository;
 import codesquad.cafe.domain.user.service.UserService;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
