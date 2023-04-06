@@ -21,7 +21,9 @@ $(document).ready(function () {
         }
         if (hasFormatError(resp)) {
           writeError(resp)
+          return;
         }
+        location.href = `/user/form/${id}`
       }
     })
   })

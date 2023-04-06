@@ -52,6 +52,7 @@ public class UserController {
         return userService.signUp(requestDto);
     }
 
+    // 특정 회원 수정, TODO: PUT 메소드 방식으로 변경하기
     @PostMapping("/users/{id}/update")
     public ModelAndView modify(@PathVariable(value = "id") Long id,
         @Valid @RequestBody UserSavedRequestDto requestDto) {
