@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.exception.controller;
+package kr.codesqaud.cafe.config;
 
 import kr.codesqaud.cafe.exception.common.BadRequestException;
 import kr.codesqaud.cafe.exception.common.NotFoundException;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class ExceptionController {
+public class GlobalExceptionHandler {
 
-    private final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
+    private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(BadRequestException.class)
     public String badRequest(BadRequestException e, Model model) {
@@ -35,7 +35,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     public String notFound(NotFoundException e, Model model) {
-        logger.error("NotFoundException\n error message : {}", e.getErrorMessage());
+        logger.error("NotFoundException", e);
         model.addAttribute("errorMessage", e.getMessage());
         return "error/404";
     }
