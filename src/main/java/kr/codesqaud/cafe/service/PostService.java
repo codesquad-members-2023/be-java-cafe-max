@@ -32,7 +32,8 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PostResponse findById(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+        Post post = postRepository.findById(id)
+            .orElseThrow(PostNotFoundException::new);
         post.increaseViews();
         postRepository.update(post);
         return PostResponse.of(post, getWhiterResponse(post));
@@ -42,8 +43,7 @@ public class PostService {
     public List<PostResponse> findAll() {
         return postRepository.findAll()
             .stream()
-            .sorted(Comparator.comparing(Post::getWriteDate)
-                .thenComparing(Post::getId)
+            .sorted(Comparator.comparing(Post::getId)
                 .reversed())
             .map(post -> PostResponse.of(post, getWhiterResponse(post)))
             .collect(Collectors.toUnmodifiableList());

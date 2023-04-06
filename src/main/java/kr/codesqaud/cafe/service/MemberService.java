@@ -45,8 +45,7 @@ public class MemberService {
     public List<MemberResponse> findAll() {
         return memberRepository.findAll()
             .stream()
-            .sorted(Comparator.comparing(Member::getCreateDate)
-                .thenComparing(Member::getId)
+            .sorted(Comparator.comparing(Member::getId)
                 .reversed())
             .map(MemberResponse::from)
             .collect(Collectors.toUnmodifiableList());
