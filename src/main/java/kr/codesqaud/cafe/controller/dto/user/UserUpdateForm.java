@@ -13,6 +13,10 @@ public class UserUpdateForm {
     @NotBlank(message = "이메일을 입력해주세요.")
     private String email;
 
+    // 이 기본 생성자를 삭제한 이후 계속 인식을 못 했었습니다. ㅠㅠ
+    public UserUpdateForm() {
+    }
+
     public UserUpdateForm(User user) {
         this.id = user.getId();
         this.name = user.getName();
@@ -20,35 +24,46 @@ public class UserUpdateForm {
         this.email = user.getEmail();
     }
 
-    public Long getId() {
-        return id;
-    }
+    // TODO: 아래 방법이 나은지, 위 방법이 나은지
+    // 위처럼 넣어주면 DTO에 필드값이 들어가는 거고
+    // 아래처럼 넣어주면 새로운 객체를 전달하는 것이니 DTO 사용 목적에 더 맞다고 보는데
+    // Kyu는 어떻게 생각하시나요?
+//    public UserUpdateForm(Long id, String name, String password, String email) {
+//        this.id = id;
+//        this.name = name;
+//        this.password = password;
+//        this.email = email;
+//    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    public UserUpdateForm form(User user) {
+//        return new UserUpdateForm(user.getId(), user.getName(), user.getPassword(), user.getEmail());
+//    }
 
-    public String getPassword() {
-        return password;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public Long getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
     }
 }

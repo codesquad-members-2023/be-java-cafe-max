@@ -13,6 +13,9 @@ public class UserForm {
     @NotBlank(message = "이메일을 입력해주세요.")
     private String email;
 
+    public UserForm() {
+    }
+
     public Long getId() {
         return id;
     }
