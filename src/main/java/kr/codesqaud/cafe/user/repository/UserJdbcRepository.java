@@ -1,48 +1,46 @@
 package kr.codesqaud.cafe.user.repository;
 
 import kr.codesqaud.cafe.user.domain.User;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserJdbcRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final BeanPropertyRowMapper<User> userRowMapper = BeanPropertyRowMapper.newInstance(User.class);
 
     public UserJdbcRepository(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     public String save(User user) {
-        jdbcTemplate.update("INSERT INTO users (userid, password, username, email) VALUES (?, ?, ?, ?)",
-                user.getUserId(), user.getPassword(), user.getUserName(), user.getEmail());
+        jdbcTemplate.update("INSERT INTO users (user_id, password, user_name, email) VALUES (:userId, :password, :userName, :email)",
+                new BeanPropertySqlParameterSource(user));
         return user.getUserId();
     }
 
     public boolean containsUserId(String userId) {
+        Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
         return jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM users WHERE userid = ?", Integer.class, userId) > 0;
+                "SELECT COUNT(*) FROM users WHERE user_id = :user_id", namedParameters, Integer.class) > 0;
     }
 
     public User findByUserId(String userId) {
-        return jdbcTemplate.queryForObject("SELECT userid, password, username, email FROM users WHERE userid = ?",
-                userRowMapper,
-                userId);
+        Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
+        return jdbcTemplate.queryForObject("SELECT user_id, password, user_name, email FROM users WHERE user_id = :user_id",
+                namedParameters, userRowMapper);
     }
 
     public List<User> findAll() {
         return jdbcTemplate.query("SELECT * FROM users", userRowMapper);
     }
-
-    private RowMapper<User> userRowMapper = (resultSet, rowNum) -> {
-        return new User(resultSet.getString("userid"),
-                resultSet.getString("password"),
-                resultSet.getString("username"),
-                resultSet.getString("email"));
-    };
 
 }

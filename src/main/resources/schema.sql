@@ -10,9 +10,9 @@ CREATE TABLE post(
 
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users(
-    userid VARCHAR NOT NULL,
+    user_id VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
-    username VARCHAR NOT NULL,
+    user_name VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
-    PRIMARY KEY (userid)
+    PRIMARY KEY (user_id)
 );
