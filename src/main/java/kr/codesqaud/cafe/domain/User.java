@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
+
 public class User {
     private Long id;
     private String userId;
@@ -13,6 +15,17 @@ public class User {
         this.password = password;
         this.userName = userName;
         this.userEmail = userEmail;
+    }
+
+    public static User from(final JoinRequest joinRequest) {
+        return new User(joinRequest.getUserId(),
+                joinRequest.getPassword(),
+                joinRequest.getUserName(),
+                joinRequest.getUserEmail());
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
@@ -35,24 +48,8 @@ public class User {
         return userEmail;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public boolean isSamePassword(final String password) {
+        return this.password.equals(password);
     }
 
     @Override
