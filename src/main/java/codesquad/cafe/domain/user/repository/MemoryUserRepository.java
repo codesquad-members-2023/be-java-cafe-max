@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
+
 public class MemoryUserRepository implements UserRepository {
     private static Map<String, User> store = new ConcurrentHashMap<>();
     @Override
@@ -23,5 +23,10 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return Collections.unmodifiableList(new ArrayList<>(store.values()));
+    }
+
+    @Override
+    public void update(final User user) {
+        save(user);
     }
 }

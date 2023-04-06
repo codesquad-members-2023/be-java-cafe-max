@@ -25,6 +25,7 @@ public class UserService {
     }
 
     private void validateDuplicateUser(final User user) {
+        System.out.println(userRepository.findById(user.getId()));
         userRepository.findById(user.getId())
                 .ifPresent(u -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
@@ -51,7 +52,7 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         validatePassword(user, userUpdateRequestDto);
-        userRepository.save(user.update(userUpdateRequestDto));
+        userRepository.update(user.update(userUpdateRequestDto));
     }
 
     private void validatePassword(final User user, final UserUpdateRequestDto userUpdateRequestDto) {
