@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Controller
 public class ArticleController {
@@ -24,21 +23,21 @@ public class ArticleController {
 
     @PostMapping("/questions/post")
     // ArticleForm: 이러면 검증을 위한 dto인가??
-    public String postArticle(@Validated ArticleForm form) {
+    public String addArticle(@Validated ArticleForm form) {
         Article article = new Article(form);
         articleService.add(article);
         return "redirect:/";
     }
 
     @GetMapping("/")
-    public String articleList(Model model) {
+    public String addArticles(Model model) {
         List<ArticleTimeForm> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         return "index";
     }
 
     @GetMapping("/questions/{id}")
-    public String articleQna(@PathVariable("id") Long id, Model model) {
+    public String show(@PathVariable("id") Long id, Model model) {
         ArticleTimeForm article = articleService.findArticleId(id);
         model.addAttribute("article", article);
         return "qna/show";

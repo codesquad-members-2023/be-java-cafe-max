@@ -23,7 +23,6 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    // UserForm: 이러면 검증을 위한 dto인가??
     public String create(@Validated UserForm form) {
         User user = new User(form);
         userService.join(user);
@@ -56,7 +55,6 @@ public class UserController {
     }
 
     @PostMapping("/users/update/{id}")
-    // TODO: User를 UserUpdateForm으로 바꾸면 오류 남
     public String postUpdate(@PathVariable Long id, @Validated UserUpdateForm updateUser) {
         userService.updateUser(id, updateUser);
         return "redirect:/users";
