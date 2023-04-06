@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.user.service;
 
+import kr.codesqaud.cafe.exception.DuplicateKeyException;
 import kr.codesqaud.cafe.user.domain.User;
 import kr.codesqaud.cafe.user.dto.UserAddForm;
 import kr.codesqaud.cafe.user.dto.UserResponse;
@@ -18,8 +19,8 @@ public class UserService {
     }
 
     public String add(UserAddForm userAddForm) {
-        if (userJdbcRepository.containsUserId(userAddForm.getUserId())) {
-            return null;
+        if (userJdbcRepository.containsUserId(userAddForm.getUserId()) > 0) {
+            throw new DuplicateKeyException("중복된 아이디가 이미 존재합니다.");
         }
         return userJdbcRepository.save(userAddForm.toUser());
     }

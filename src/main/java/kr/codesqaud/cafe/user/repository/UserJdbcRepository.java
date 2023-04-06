@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.user.repository;
 
 import kr.codesqaud.cafe.user.domain.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -10,6 +11,7 @@ import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class UserJdbcRepository {
@@ -27,16 +29,21 @@ public class UserJdbcRepository {
         return user.getUserId();
     }
 
-    public boolean containsUserId(String userId) {
+    public int containsUserId(String userId) {
         Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
-        return jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM users WHERE user_id = :user_id", namedParameters, Integer.class) > 0;
+        Optional<Integer> countOfUser = Optional.ofNullable(jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM users WHERE user_id = :user_id", namedParameters, Integer.class));
+        return countOfUser.orElse(0);
     }
 
     public User findByUserId(String userId) {
-        Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
-        return jdbcTemplate.queryForObject("SELECT user_id, password, user_name, email FROM users WHERE user_id = :user_id",
-                namedParameters, userRowMapper);
+        try {
+            Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
+            return jdbcTemplate.queryForObject("SELECT user_id, password, user_name, email FROM users WHERE user_id = :user_id",
+                    namedParameters, userRowMapper);
+        } catch (EmptyResultDataAccessException e) {
+            throw new IllegalArgumentException("가입된 아이디가 존재하지 않습니다.");
+        }
     }
 
     public List<User> findAll() {
