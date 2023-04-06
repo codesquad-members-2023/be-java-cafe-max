@@ -47,7 +47,7 @@ public class PostRepository {
             Map<String, Object> parameters = getParameters(post);
             return (Integer) simpleJdbcInsert.executeAndReturnKey(parameters);
         } catch (DataAccessException e) {
-            logger.debug(SAVE_POST_FAILED_CODE.getCode());
+            logger.debug("[ Message = {} ]", SAVE_POST_FAILED_CODE.getMessage());
             throw new SavePostFailedException(SAVE_POST_FAILED_CODE);
         }
     }
@@ -77,7 +77,7 @@ public class PostRepository {
                     getPostRowMapper(),
                     postId));
         } catch (DataAccessException e) {
-            logger.info(NO_SUCH_POST_ID_CODE.getMessage());
+            logger.info("[ Message = {} ],[ Id = {} ]", NO_SUCH_POST_ID_CODE.getMessage(), postId);
             return Optional.empty();
         }
 
@@ -90,7 +90,7 @@ public class PostRepository {
                     getPostRowMapper(),
                     title));
         } catch (DataAccessException e) {
-            logger.info(NO_SUCH_POST_TITLE_CODE.getMessage());
+            logger.info("[ Message = {} ],[ Title = {} ]", NO_SUCH_POST_TITLE_CODE.getMessage(), title);
             return Optional.empty();
         }
     }
