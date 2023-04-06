@@ -45,11 +45,40 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("/users/{userId}/check")
+    public String showCheckPasswordForm(@PathVariable String userId, Model model) {
+        User user = memoryUserRepository.findById(userId);
+        model.addAttribute("user", user);
+        return "user/checkPassword";
+    }
+
+    @PutMapping("/users/{userId}/check")
+    public String checkPassword(@PathVariable String userId, String password, Model model) {
+
+        User user = memoryUserRepository.findById(userId);
+        model.addAttribute("user", user);
+
+        if (!user.getPassword().equals(password)) {
+            model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+            return "redirect:/users";
+        }
+
+        model.addAttribute("successMessage", "비밀번호가 일치합니다.");
+        return "redirect:/users/{userId}/form";
+    }
+
     @GetMapping("/users/{userId}/form")
     public String showUpdateForm(@PathVariable String userId, Model model) {
         User user = memoryUserRepository.findById(userId);
         model.addAttribute("user", user);
 
         return "user/updateForm";
+    }
+
+    @PutMapping("/users/{userId}/update")
+    public String update(@ModelAttribute User user) {
+        memoryUserRepository.update(user);
+        logger.info(user.toString());
+        return "redirect:/users";
     }
 }
