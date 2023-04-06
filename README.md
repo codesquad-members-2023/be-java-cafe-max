@@ -3,6 +3,45 @@
 마스터즈 2023 스프링 카페
 
 # TODO
+
+## 230406 thu.
+### 게시글 상세보기 기능
+- [x] Article 객체에 id 인스턴스 변수 추가
+- [x] ArticleController에 상세 페이지 접근 메서드 구현
+  - [x] URL은 '/articles/{index}'로 매핑
+  - [x] 상세 페이지에 article 인스턴스의 내용 띄워주기
+
+### 회원정보 수정 화면 출력 기능
+- [x] 회원 목록(/users)에서 개인정보수정 화면(/users/{id}/form)으로 GET 요청 // 수정할 user 인스턴스 전달
+- [x] 개인정보 수정 화면 출력(/user/updateForm.html) // value를 사용해서 컨트롤러에서 전달한 값 출력
+
+### 회원정보 수정 기능
+- [x] 사용자 아이디를 제외한 비밀번호, 이름, 이메일만 수정 가능
+- [x] 개인정보 수정 화면에서 개인정보 수정(/users/{userId}/update)으로 POST 요청
+- [x] 수정된 정보 저장 후 사용자 목록 조회(/users)로 리다이렉트해서 업데이트 된 사용자 정보 띄워주기
+  - [x] 수정된 정보는 UserRepository#save() 사용해 업데이트
+- [x] 수정 시 비밀번호가 일치하는 경우만 수정 가능
+  - [x] 비밀번호 일치 확인 페이지 구현 및 매핑
+
+### 추가로 구현할 것들
+- [ ] 게시글 작성 시 작성일자 저장
+- [ ] index.html, detail.html에서 작성자 클릭 시 profile.html 연결
+- [ ] 로고 클릭 시 index.html로 이동하도록 매핑
+- [ ] RESTful한 URL을 적용하기
+- [ ] 비밀번호 일치 확인 후 alert로 메시지 출력
+
+### 고민한 내용
+- 상세 페이지 메서드 구현 중 content가 null로 저장됨
+  - 본문의 id태그가 contents였으나 ArticleController에서는 content로 선언해 생긴 문제였던 것 같다.
+- 회원정보 수정 시 setter를 사용하지 않도록 하고 시퀀스도 유지하는 방법
+- 회원정보 수정 전 비밀번호 일치 확인을 어떻게 처리할까?
+  - 비밀번호 일치 확인 페이지를 추가해보자.
+  - 기능은 구현했지만 model에 저장한 에러 메세지를 출력하는 방법을 모르겠다.
+
+## 230405 wed.
+### 글 목록 조회 기능
+- [x] 리다이렉트 된 메인 페이지에서 저장한 article 인스턴스의 정보(articleId, title, writer) 띄워주기
+
 ## 230403 mon.
 ### 글쓰기 기능
 - [x] 사용자가 작성한 글을 저장하는 Article 클래스 생성
@@ -14,19 +53,16 @@
   - [x] 생성된 article 객체를 articles에 저장
   - [x] 게시글 저장을 완료하면 메인 페이지로 리다이렉트 // MvcConfig
 
-### 글 목록 조회 기능
-- [ ] 리다이렉트 된 메인 페이지에서 저장한 article 내용 띄워주기
-
 ### 고민한 내용
-- user, articel 인스턴스를 어떤 디렉토리(패키지)에 둬야 할까?
+- user, article 인스턴스를 어떤 디렉토리(패키지)에 둬야 할까?
   - 일단 클래스 명에 해당하는 디렉토리를 만들어 두었다.
 - config에서 POST 요청, 리다이렉트를 처리할 수 있을까?
   - WebMVCConfigurer는 HTTP 리퀘스트 중 GET만 처리 가능하다. // controller의 메서드를 config에서 호출해 처리하는 방법은 없을까? 
   - 리다이렉트는 처리할 수 있다.
 - article 인스턴스를 저장하는 컬렉션으로 어떤 것을 사용할까?
   - user는 ArrayList를 사용했는데 불변을 보장하는 리스트 자료구조에 대해 더 알아봐야겠다. 📌
-    - 유저나 아티클이 불변이어야만 하는 이유가 있을까?
-    - 이 자료구조를 사용한다고 무조건 불변인건 아니다. 내부 객체의 필드 또한 final 키워드가 붙어 있어야 한다.
+    - 유저나 아티클이 불변이어야만 하는 이유가 있을까? // 동기화였다..
+    - 이 자료구조를 사용한다고 무조건 불변인건 아니다. 내부 객체의 필드 또한 final 키워드가 붙어 있어야 한다. // final은 재할당만 금지한다,,!
   - `Optional`에 대해 알아봐야겠다. 📌
   - 구현이 늦어졌으니 이전에 사용했던 ArrayList를 사용하도록 하자. // 차후 더 고민해보기
 - 오전에 config에 대해 잠깐 학습한 후 controller 역할에 혼란이 왔는데, 호눅스의 미션 설명을 듣고 나서 개념이 좀 더 명확해졌다.
@@ -42,6 +78,11 @@
 ️▶️ [[Thymeleaf] Fragment Expressions](#thymeleaf-fragment-expressions)   
 ️▶️ [[Thymeleaf] onClick 이벤트](#thymeleaf-onclick-이벤트)   
 ️▶️ [[Spring] Annotation](#spring-annotation)
+
+## [Spring] HiddenHttpMethodFilter
+
+// 참고: [Spring의 HiddenHttpMethodFilter에 관한 이슈](https://imbf.github.io/spring/2020/05/03/Spring-HiddenHttpMethodFilter.html)   
+
 
 ## [Spring] WebMVCConfigurer
 WebMVCConfigurer는 Spring MVC 프레임워크에서 사용하는 인터페이스 중 하나다.   
@@ -71,7 +112,7 @@ public class MvcConfig extends WebMvcConfigurer {
 ### WebMvcConfigurerAdapter가 deprecated 된 이유
 WebMvcConfigurerAdapter는 Spring 5, SpringBoot 2 부터 deprecated 되었다고 한다.   
 WebMvcConfigurerAdapter는 상속인 반면, WebMvcConfigurer는 인터페이스이다.   
-WebMvcConfigurerAdapter가 deprecated 된 이유는 상속과 인터페이스 차이점 때문인 것 같은데.. 이 부분을 더 공부해봐야겠다. 📌
+WebMvcConfigurerAdapter가 deprecated 된 이유는 상속과 인터페이스 차이점 때문인 것 같은데.. 이 부분을 더 공부해봐야겠다. 📌 // 디폴트 메서드를 찾아보자
 
 ## [Thymeleaf] Fragment Expressions
 
