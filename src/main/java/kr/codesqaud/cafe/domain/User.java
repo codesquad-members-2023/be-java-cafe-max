@@ -1,21 +1,31 @@
 package kr.codesqaud.cafe.domain;
 
+import java.time.LocalDateTime;
+
 public class User {
     private Long id;
     private String userId;
     private String name;
     private String password;
     private String email;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public User() {
     }
 
-    public User(Long id, String userId, String name, String password, String email) {
+    private User(Long id, String userId, String name, String password, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.password = password;
         this.email = email;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public User(String userId, String name, String password, String email) {
+        this(null, userId, name, password, email, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Long getId() {
@@ -38,10 +48,6 @@ public class User {
         return email;
     }
 
-    public User(String userId, String name, String password, String email) {
-        this(null, userId, name, password, email);
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -60,5 +66,21 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

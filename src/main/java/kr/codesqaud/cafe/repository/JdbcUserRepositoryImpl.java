@@ -30,8 +30,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public Long save(final User user) {
-        String sql = "insert into users (user_id, name, password, email) " +
-                "values (:userId, :name, :password, :email)";
+        String sql = "insert into users (user_id, name, password, email, created_at, updated_at) " +
+                "values (:userId, :name, :password, :email, :createdAt, :updatedAt)";
 
         final SqlParameterSource param = new BeanPropertySqlParameterSource(user);
         KeyHolder keyHolder = new GeneratedKeyHolder();
