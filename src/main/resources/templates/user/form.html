@@ -15,8 +15,9 @@
         <form name="question" class="info-container" method="post" action="/users/signUp">
             <div class="form-group">
                 <label for="id">아이디</label>
-                <input class="form-control" id="id" name="id" placeholder="아이디를 입력하세요">
+                <input class="form-control" id="id" name="id" placeholder="아이디를 입력하세요" oninput="checkIdValidity(this)">
             </div>
+            <span id="id-error" class="error-message"></span>
             <div class="form-group">
                 <label for="email">이메일</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
@@ -34,4 +35,5 @@
     </div>
 </div>
 </body>
+<script src="/js/formValidate.js"></script>
 </html>
