@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.dto.user;
 
+import kr.codesqaud.cafe.domain.User;
+
 public class UserUpdateRequest {
     private String userId;
     private String currentPassword;
@@ -8,6 +10,16 @@ public class UserUpdateRequest {
     private String email;
 
     public UserUpdateRequest() {
+    }
+
+    private UserUpdateRequest(User user) {
+        this.userId = user.getUserId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+    }
+
+    public static UserUpdateRequest from(User user) { // Entity → DTO
+        return new UserUpdateRequest(user);
     }
 
     public String getUserId() { return userId; }

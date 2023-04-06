@@ -41,7 +41,7 @@ public class UserService {
         userRepository.update(User.from(userUpdateRequest));
     }
 
-    public UserResponse findByUserId(String userId) {
+    public UserResponse findByUserId(String userId) { // DTO 변환은 service 역할 vs controller 역할
         if (!userRepository.isExists(userId)) {
             throw new UserNotFoundException();
         }
@@ -49,15 +49,11 @@ public class UserService {
         return UserResponse.from(userRepository.findByUserId(userId));
     }
 
-    public UserUpdateRequest makeUserUpdateRequestByUserId(String userId) {
-        UserResponse userResponse = findByUserId(userId);
+    public UserUpdateRequest makeUserUpdateRequestByUserId(String userId) { // service 역할이 맞을까
+        if (!userRepository.isExists(userId)) {
+            throw new UserNotFoundException();
+        }
 
-        UserUpdateRequest userUpdateRequest = new UserUpdateRequest();
-        userUpdateRequest.setUserId(userResponse.getUserId());
-        userUpdateRequest.setEmail(userResponse.getEmail());
-        userUpdateRequest.setName(userResponse.getName());
-        userUpdateRequest.setCurrentPassword(userResponse.getPassword());
-
-        return userUpdateRequest;
+        return UserUpdateRequest.from(userRepository.findByUserId(userId));
     }
 }
