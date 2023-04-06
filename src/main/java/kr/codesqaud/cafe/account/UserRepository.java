@@ -45,10 +45,7 @@ public class UserRepository {
         try {
             SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME)
                     .usingGeneratedKeyColumns(COLUMN_USER_ID);
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put(COLUMN_EMAIL, user.getEmail());
-            parameters.put(COLUMN_NICKNAME, user.getNickname());
-            parameters.put(COLUMN_PASSWORD, user.getPassword());
+            Map<String, Object> parameters = getParameters(user);
             return (int) simpleJdbcInsert.executeAndReturnKey(parameters);
         } catch (DataAccessException e) {
             logger.debug("[ Message = {} ][ Nickname = {} ][ Email = {} ][ Password = {} ]",
@@ -60,16 +57,17 @@ public class UserRepository {
         }
     }
 
+    private static Map<String, Object> getParameters(User user) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put(COLUMN_EMAIL, user.getEmail());
+        parameters.put(COLUMN_NICKNAME, user.getNickname());
+        parameters.put(COLUMN_PASSWORD, user.getPassword());
+        return parameters;
+    }
+
     public List<User> getAllMembers() {
         try {
-            return jdbcTemplate.query(QUERY_FIND_ALL_USERS, (resultSet, rowNum)
-                    -> new User.Builder()
-                    .id(resultSet.getLong(COLUMN_USER_ID))
-                    .password(resultSet.getString(COLUMN_PASSWORD).trim())
-                    .nickname(resultSet.getString(COLUMN_NICKNAME).trim())
-                    .email(resultSet.getString(COLUMN_EMAIL).trim())
-                    .build()
-            );
+            return jdbcTemplate.query(QUERY_FIND_ALL_USERS, getUserRowMapper());
         } catch (DataAccessException e) {
             logger.debug("Message = {}", GET_ALL_USERS_FAILED_CODE.getMessage());
             throw new GetAllUsersFailedException(GET_ALL_USERS_FAILED_CODE);
@@ -78,13 +76,7 @@ public class UserRepository {
 
     public Optional<User> findById(Long userId) {
         try {
-            RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder()
-                    .id(userId)
-                    .email(resultSet.getString(COLUMN_EMAIL).trim())
-                    .nickname(resultSet.getString(COLUMN_NICKNAME).trim())
-                    .password(resultSet.getString(COLUMN_PASSWORD).trim())
-                    .build();
-            return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, userRowMapper, userId));
+            return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, getUserRowMapper(), userId));
         } catch (DataAccessException e) {
             logger.info("[ Message = {} ][ UserId = {} ]", NO_SUCH_USER_ID_CODE.getMessage(), userId);
             return Optional.empty();
@@ -93,12 +85,7 @@ public class UserRepository {
 
     public Optional<User> findByEmail(String email) {
         try {
-            RowMapper<User> userRowMapper = (resultSet, rowNum) -> new User.Builder()
-                    .id(resultSet.getLong(COLUMN_USER_ID))
-                    .nickname(resultSet.getString(COLUMN_NICKNAME).trim())
-                    .password(resultSet.getString(COLUMN_PASSWORD).trim())
-                    .build();
-            return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, userRowMapper, email));
+            return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, getUserRowMapper(), email));
         } catch (DataAccessException e) {
             logger.info("[ Message = {} ][ Email = {} ]", NO_SUCH_EMAIL_CODE.getMessage(), email);
             return Optional.empty();
@@ -119,5 +106,14 @@ public class UserRepository {
                     UPDATE_USER_FAILED_CODE.getMessage(), user.getId(), user.getNickname(), user.getEmail());
             throw new UpdateUserFailedException(UPDATE_USER_FAILED_CODE);
         }
+    }
+
+    private static RowMapper<User> getUserRowMapper() {
+        return (resultSet, rowNum) -> new User.Builder()
+                .id(resultSet.getLong(COLUMN_USER_ID))
+                .email(resultSet.getString(COLUMN_EMAIL).trim())
+                .nickname(resultSet.getString(COLUMN_NICKNAME).trim())
+                .password(resultSet.getString(COLUMN_PASSWORD).trim())
+                .build();
     }
 }
