@@ -28,8 +28,7 @@ public class UserService {
     }
 
     public List<UserForm> getAllUsersForm() {
-        List<User> allMembers = userRepository.getAllMembers();
-        return allMembers.stream()
+        return userRepository.getAllMembers().stream()
                 .map(UserForm::from)
                 .collect(Collectors.toList());
     }
