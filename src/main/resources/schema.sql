@@ -11,7 +11,7 @@ CREATE TABLE articles (
 drop table if exists users CASCADE;
 
 CREATE TABLE users (
-                            user_id VARCHAR(255) PRIMARY KEY NOT NULL,
+                            userid VARCHAR(255) PRIMARY KEY NOT NULL,
                             password VARCHAR(255) NOT NULL,
                             name VARCHAR(255) NOT NULL,
                             email VARCHAR(255) NOT NULL
