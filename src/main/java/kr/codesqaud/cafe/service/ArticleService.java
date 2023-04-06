@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.service.jdbc;
+package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.article.repository.ArticleRepository;
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ArticleJdbcService {
+public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public ArticleJdbcService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
