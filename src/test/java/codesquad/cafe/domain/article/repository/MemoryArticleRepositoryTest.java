@@ -48,7 +48,18 @@ class MemoryArticleRepositoryTest {
     }
 
     @Test
+    @DisplayName("게시글 id로 게시글 찾기 테스트")
     void findById() {
+        // given
+        Article article = createDummyArticle1();
+        Long id = 1L;
+
+        // when
+        articleRepository.save(article);
+        Article foundArticle = articleRepository.findById(id);
+
+        // then
+        assertThat(foundArticle).usingRecursiveComparison().isEqualTo(article);
     }
 
     private Article createDummyArticle1() {
