@@ -34,21 +34,21 @@ class UserControllerTest {
     @Test
     @DisplayName("[POST] /users 로 이동하면 회원 가입 데이터 받고 GET /users로 redirect하기 테스트")
     void registerUser() throws Exception {
-       mockMvc.perform(MockMvcRequestBuilders.post("/users")
-               .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-               .param("id", "sio")
-               .param("password","1234")
-               .param("name","sio")
-               .param("email", "sio@gmail.com"))
-               .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-               .andExpect(MockMvcResultMatchers.header().string("Location", "/users"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/users")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("id", "sio")
+                        .param("password", "1234")
+                        .param("name", "sio")
+                        .param("email", "sio@gmail.com"))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.header().string("Location", "/users"));
     }
 
     @Test
     @DisplayName("[GET] /users로 이동하면 user/list 화면 보여주면서 회원 목록 출력하기 테스트")
     void showUsers() throws Exception {
         mockMvc.perform(
-                MockMvcRequestBuilders.get("/users"))
+                        MockMvcRequestBuilders.get("/users"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("users"))
                 .andExpect(MockMvcResultMatchers.view().name("user/list"));
@@ -57,12 +57,27 @@ class UserControllerTest {
     @Test
     @DisplayName("[GET] /users/{userId} 로 이동하면 user 객체 찾아서 user/profile 화면에 출력하기 테스트")
     void showProfile() throws Exception {
-
-        userRepository.save(new User("sio", "1234", "sio", "sio@gmail.com"));
+        saveDummyUser();
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/users/{userId}", "sio"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("user"))
                 .andExpect(MockMvcResultMatchers.view().name("user/profile"));
+    }
+
+    @Test
+    @DisplayName("[GET] /users/{userId}/form 으로 이동하면 userId를 넘겨주면서 user/updateForm 화면을 출력하기 테스트")
+    void showUpdateForm() throws Exception {
+        saveDummyUser();
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/users/{userId}/form", "sio"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.model().attributeExists("userId"))
+                .andExpect(MockMvcResultMatchers.view().name("user/updateForm"));
+    }
+
+    private void saveDummyUser() {
+        userRepository.save(new User("sio", "1234", "sio", "sio@gmail.com"));
     }
 }
