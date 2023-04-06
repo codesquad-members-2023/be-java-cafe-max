@@ -1,5 +1,7 @@
 package codesquad.cafe.controller;
 
+import codesquad.cafe.domain.user.domain.User;
+import codesquad.cafe.domain.user.repository.MemoryUserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +12,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    MemoryUserRepository userRepository;
 
     @Test
     @DisplayName("[GET] /users/join 경로로 이동하면 /user/form.html 보여주기 테스트")
@@ -39,7 +45,13 @@ class UserControllerTest {
     }
 
     @Test
-    void showUsers() {
+    @DisplayName("[GET] /users로 이동하면 user/list 화면 보여주면서 회원 목록 출력하기 테스트")
+    void showUsers() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/users"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.model().attributeExists("users"))
+                .andExpect(MockMvcResultMatchers.view().name("user/list"));
     }
 
     @Test
