@@ -6,6 +6,7 @@ import codesquad.cafe.domain.user.dto.UserResponseDto;
 import codesquad.cafe.domain.user.dto.UserUpdateRequestDto;
 import codesquad.cafe.domain.user.repository.MemoryUserRepository;
 import codesquad.cafe.domain.user.service.UserService;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -114,6 +115,17 @@ class UserServiceTest {
 
         // then
         assertThat(userService.findUser("sio")).usingRecursiveComparison().isEqualTo(new UserResponseDto("sio", "시오", "siioo@gmail.com"));
+    }
+
+    @Test
+    @DisplayName("기존 패스워드와 사용자 패스워드가 일치하지 않으면 예외")
+    void validatePassword() {
+        // given
+        userService.join(createDummyUserDto1());
+        UserUpdateRequestDto userUpdateRequestDto = new UserUpdateRequestDto("1111", "4567", "siioo", "siioo@gmail.com");
+
+        Assertions.assertThrows(IllegalStateException.class,
+                () -> userService.updateUser("sio", userUpdateRequestDto));
     }
 
     private UserRequestDto createDummyUserDto1() {
