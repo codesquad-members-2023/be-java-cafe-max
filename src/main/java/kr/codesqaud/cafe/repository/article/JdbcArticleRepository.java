@@ -3,12 +3,12 @@ package kr.codesqaud.cafe.repository.article;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
@@ -29,7 +29,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     public Article findById(Long id) {
         final String SQL = "SELECT * FROM articles WHERE id = :id";
         return jdbcTemplate.queryForObject(SQL,
-                new MapSqlParameterSource().addValue("id", id),
+                Map.of("id", id),
                 BeanPropertyRowMapper.newInstance(Article.class));
     }
 
@@ -43,7 +43,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     public boolean isExists(Long id) {
         final String SQL = "SELECT count(*) FROM articles WHERE id = :id";
         final Integer count = jdbcTemplate.queryForObject(SQL,
-                new MapSqlParameterSource().addValue("id", id),
+                Map.of("id", id),
                 Integer.class);
         return count > 0;
     }
