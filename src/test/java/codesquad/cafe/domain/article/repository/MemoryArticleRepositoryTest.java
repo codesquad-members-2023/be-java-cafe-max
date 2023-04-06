@@ -6,7 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MemoryArticleRepositoryTest {
@@ -23,11 +26,25 @@ class MemoryArticleRepositoryTest {
         articleRepository.save(article);
 
         // then
-        Assertions.assertThat(articleRepository.findById(1L)).usingRecursiveComparison().isEqualTo(article.createdWith(1L));
+        assertThat(articleRepository.findById(1L)).usingRecursiveComparison().isEqualTo(article.createdWith(1L));
     }
 
     @Test
+    @DisplayName("모든 게시글 List로 받아오기 테스트")
     void findAll() {
+        // given
+        Article article1 = createDummyArticle1();
+        Article article2 = createDummyArticle2();
+        List<Article> list = new ArrayList<>();
+        list.add(article1);
+        list.add(article2);
+
+        // when
+        articleRepository.save(article1);
+        articleRepository.save(article2);
+
+        // then
+        assertThat(articleRepository.findAll()).usingRecursiveComparison().isEqualTo(list);
     }
 
     @Test
@@ -35,6 +52,9 @@ class MemoryArticleRepositoryTest {
     }
 
     private Article createDummyArticle1() {
-        return new Article("sio", "title", "contents", LocalDateTime.of(2023, 4, 7, 3, 3));
+        return new Article("sio", "title1", "contents1", LocalDateTime.of(2023, 4, 7, 3, 3));
+    }
+    private Article createDummyArticle2() {
+        return new Article("시오", "title2", "contents2", LocalDateTime.of(2023, 4, 7, 3, 9));
     }
 }
