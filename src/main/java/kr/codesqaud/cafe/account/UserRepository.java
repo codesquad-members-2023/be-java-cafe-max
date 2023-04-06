@@ -28,8 +28,8 @@ public class UserRepository {
     private static final String COLUMN_NICKNAME = "NICKNAME";
     private static final String COLUMN_EMAIL = "EMAIL";
     private static final String QUERY_UPDATE = "UPDATE USERS SET NICKNAME = ?, EMAIL = ? WHERE USER_ID = ?";
-    private static final String QUERY_FIND_BY_ID = "SELECT EMAIL,NICKNAME,PASSWORD FROM USERS WHERE USER_ID = ?";
-    private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD FROM USERS WHERE EMAIL = ?";
+    private static final String QUERY_FIND_BY_ID = "SELECT USER_ID,EMAIL,NICKNAME,PASSWORD FROM USERS WHERE USER_ID = ?";
+    private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD,EMAIL FROM USERS WHERE EMAIL = ?";
     private static final String QUERY_CONTAINS_EMAIL = "SELECT COUNT(*) FROM USERS WHERE EMAIL = ?";
     private static final String QUERY_FIND_ALL_USERS = "SELECT * FROM USERS";
     private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
