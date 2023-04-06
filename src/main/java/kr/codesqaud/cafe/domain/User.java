@@ -6,6 +6,7 @@ public class User {
     private String password;
     private String name;
     private String email;
+    private long index;
 
     public static class Builder {
 
@@ -47,6 +48,10 @@ public class User {
         password = builder.password;
         name = builder.name;
         email = builder.email;
+    }
+
+    public void setIndex(long index){
+        this.index = index;
     }
 
     public String getName() {
