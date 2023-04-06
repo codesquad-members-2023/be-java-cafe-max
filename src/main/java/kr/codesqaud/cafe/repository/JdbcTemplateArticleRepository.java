@@ -3,12 +3,9 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,15 +21,10 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     @Override
     public Article save(Article article) {
         String sql = "insert into article (writer, title, contents) values (?, ?, ?)";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(con -> {
-            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-            ps.setString(1, article.getWriter());
-            ps.setString(2, article.getTitle());
-            ps.setString(3, article.getContents());
-            return ps;
-        }, keyHolder);
-        article.setId(keyHolder.getKey().longValue());
+        jdbcTemplate.update(sql,
+                article.getWriter(),
+                article.getTitle(),
+                article.getContents());
         return article;
     }
 
@@ -62,6 +54,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                     rs.getString("title"),
                     rs.getString("contents"));
             article.setId(rs.getLong("id"));
+            article.setCreatedTime(rs.getTimestamp("createdTime").toLocalDateTime());
             return article;
         };
     }

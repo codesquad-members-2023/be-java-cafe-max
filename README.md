@@ -90,3 +90,43 @@ private RowMapper<Article> articleRowMapper() {
         };
     }
 ```
+
+7. JdbcArticleRepository의 save() 간략화하기
+
+id를 auto_increment로 설정해 놔서 저장 시 keyHolder를 사용할 필요가 없다!
+➡️ 변경 전 코드
+```
+public Article save(Article article) {
+        String sql = "insert into article (writer, title, contents) values (?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
+            ps.setString(1, article.getWriter());
+            ps.setString(2, article.getTitle());
+            ps.setString(3, article.getContents());
+            return ps;
+        }, keyHolder);
+        article.setId(keyHolder.getKey().longValue());
+        return article;
+    }
+```
+➡️ 변경 후 코드
+```
+public Article save(Article article) {
+        String sql = "insert into article (writer, title, contents) values (?, ?, ?)";
+        jdbcTemplate.update(sql,
+                article.getWriter(),
+                article.getTitle(),
+                article.getContents());
+        return article;
+    }
+```
+
+8. Article 시간 설정 문제 
+
+Article 생성자에 있는 this.createdTime = LocalDateTime.now(); 때문에 글 작성 시간이 변경되는 문제 발생!
+➡️ Article에 setCreatedTime 메서드를 추가하고,
+➡️ articleRowMapper()에 아래의 코드를 추가해 주었다.
+```
+article.setCreatedTime(rs.getTimestamp("createdTime").toLocalDateTime());
+```
