@@ -14,12 +14,19 @@ public class Article {
 		this.dateTime = LocalDateTime.now();
 	}
 
+	public Article() {
+	}
+
 	public String getContent() {
 		return content;
 	}
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public void setDateTime(LocalDateTime dateTime) {
+		this.dateTime = dateTime;
 	}
 
 	public String getTitle() {
