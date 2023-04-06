@@ -55,6 +55,14 @@ class UserControllerTest {
     }
 
     @Test
-    void showProfile() {
+    @DisplayName("[GET] /users/{userId} 로 이동하면 user 객체 찾아서 user/profile 화면에 출력하기 테스트")
+    void showProfile() throws Exception {
+
+        userRepository.save(new User("sio", "1234", "sio", "sio@gmail.com"));
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/users/{userId}", "sio"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.model().attributeExists("user"))
+                .andExpect(MockMvcResultMatchers.view().name("user/profile"));
     }
 }
