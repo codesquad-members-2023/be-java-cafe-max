@@ -7,12 +7,9 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.springframework.stereotype.Repository;
-
 import kr.codesqaud.cafe.domain.article.entity.Article;
 import kr.codesqaud.cafe.domain.article.repository.ArticleRepository;
 
-@Repository
 public class MemoryArticleRepositoryImpl implements ArticleRepository {
 	private Map<Long, Article> articles = new ConcurrentHashMap<>();
 	private static AtomicLong id = new AtomicLong();
