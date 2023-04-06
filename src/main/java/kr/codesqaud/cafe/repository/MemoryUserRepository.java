@@ -12,9 +12,10 @@ import java.util.Optional;
 public class MemoryUserRepository implements UserRepository {
 
     private static List<User> store = new ArrayList<>();
-
+    private static long index = 0L;
     @Override
     public User save(User user) {
+        user.setIndex(++index);
         store.add(user);
         return user;
     }
