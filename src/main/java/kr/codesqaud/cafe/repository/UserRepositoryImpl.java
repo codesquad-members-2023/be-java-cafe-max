@@ -1,8 +1,10 @@
 package kr.codesqaud.cafe.repository;
 
 import java.util.List;
+import java.util.Optional;
 import javax.sql.DataSource;
 import kr.codesqaud.cafe.domain.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -29,15 +31,19 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findById(String userId) {
+    public Optional<User> findById(String userId) {
         String sql = "select * from users where userId = ?";
-        return template.queryForObject(sql, userRowMapper(), userId);
+        try {
+            return Optional.ofNullable(template.queryForObject(sql, userRowMapper(), userId));
+        } catch (EmptyResultDataAccessException e) { // TODO: 해당 처리를 안하면 DB에 해당 데이터가 없을 때 예외가 발생한다. 이렇게 하는것이 맞는지 모르겠다.
+            return Optional.ofNullable(null);
+        }
     }
 
     @Override
-    public User findByName(String name) {
+    public Optional<User> findByName(String name) {
         String sql = "select * from users where name = ?";
-        return template.queryForObject(sql, userRowMapper(), name);
+        return Optional.ofNullable(template.queryForObject(sql, userRowMapper(), name));
     }
 
     @Override
