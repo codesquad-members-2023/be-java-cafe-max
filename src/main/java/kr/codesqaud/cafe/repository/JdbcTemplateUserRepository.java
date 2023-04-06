@@ -24,26 +24,26 @@ public class JdbcTemplateUserRepository implements UserRepository {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("USER_TB").usingGeneratedKeyColumns("ID");
 
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("USERID", user.getUserId());
-        parameters.put("PASSWORD", user.getPassword());
-        parameters.put("NAME", user.getName());
-        parameters.put("EMAIL", user.getEmail());
+        Map<String, Object> userParameters = new HashMap<>();
+        userParameters.put("USERID", user.getUserId());
+        userParameters.put("PASSWORD", user.getPassword());
+        userParameters.put("NAME", user.getName());
+        userParameters.put("EMAIL", user.getEmail());
 
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(userParameters));
         user.setId(key.longValue());
     }
 
     @Override
     public Optional<User> findById(long id) {
-        List<User> userList = jdbcTemplate.query("SELECT * FROM USER_TB WHERE ID = ?", userRowMapper(), id);
-        return userList.stream().findAny();
+        List<User> wantedUser = jdbcTemplate.query("SELECT * FROM USER_TB WHERE ID = ?", userRowMapper(), id);
+        return wantedUser.stream().findAny();
     }
 
     @Override
-    public Optional<User> findByName(String name) {
-        List<User> userList = jdbcTemplate.query("SELECT * FROM USER_TB WHERE USERID = ?", userRowMapper(), name);
-        return userList.stream().findAny();
+    public Optional<User> findByName(String userId) {
+        List<User> wantedUser = jdbcTemplate.query("SELECT * FROM USER_TB WHERE USERID = ?", userRowMapper(), userId);
+        return wantedUser.stream().findAny();
     }
 
     @Override
