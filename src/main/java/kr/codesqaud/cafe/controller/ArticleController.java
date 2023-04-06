@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.ArticleForm;
+import kr.codesqaud.cafe.controller.dto.article.ArticleForm;
+import kr.codesqaud.cafe.controller.dto.article.ArticleTimeForm;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
@@ -31,19 +32,14 @@ public class ArticleController {
 
     @GetMapping("/")
     public String articleList(Model model) {
-        List<Article> articles = articleService.findArticles();
+        List<ArticleTimeForm> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         return "index";
     }
 
     @GetMapping("/questions/{id}")
     public String articleQna(@PathVariable("id") Long id, Model model) {
-        Article article;
-        if (articleService.findArticleId(id).isPresent()) {
-            article = articleService.findArticleId(id).get();
-        } else {
-            throw new NoSuchElementException();
-        }
+        ArticleTimeForm article = articleService.findArticleId(id);
         model.addAttribute("article", article);
         return "qna/show";
     }

@@ -1,11 +1,13 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.dto.article.ArticleTimeForm;
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 public class ArticleService {
@@ -19,11 +21,23 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
-    public List<Article> findArticles() {
-        return articleRepository.findAll();
+    public List<ArticleTimeForm> findArticles() {
+        List<Article> articles = articleRepository.findAll();
+        List<ArticleTimeForm> articleTimeForms = new ArrayList<>();
+        for (Article article : articles) {
+            articleTimeForms.add(new ArticleTimeForm(article.getId(), article.getWriter(), article.getTitle(), article.getContents(), article.getCurrentTime()));
+        }
+        return articleTimeForms;
     }
 
-    public Optional<Article> findArticleId(Long id) {
-        return articleRepository.findById(id);
+    public ArticleTimeForm findArticleId(Long id) {
+        Article article;
+        if (articleRepository.findById(id).isPresent()) {
+            article = articleRepository.findById(id).get();
+        } else {
+            throw new NoSuchElementException();
+        }
+
+        return new ArticleTimeForm(article.getId(), article.getWriter(), article.getTitle(), article.getContents(), article.getCurrentTime());
     }
 }
