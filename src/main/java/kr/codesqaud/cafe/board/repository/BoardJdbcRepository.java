@@ -22,7 +22,7 @@ public class BoardJdbcRepository {
 
     public void save(BoardPost boardPost) {
         jdbcTemplate.update(
-                "INSERT INTO post (writer, title, contents, writedatetime) VALUES (?, ?, ?, NOW())",
+                "INSERT INTO post (writer, title, contents) VALUES (?, ?, ?)",
                 boardPost.getWriter(), boardPost.getTitle(), boardPost.getContents());
     }
 
