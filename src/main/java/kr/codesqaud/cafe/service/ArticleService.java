@@ -25,7 +25,7 @@ public class ArticleService {
         List<Article> articles = articleRepository.findAll();
         List<ArticleTimeForm> articleTimeForms = new ArrayList<>();
         for (Article article : articles) {
-            articleTimeForms.add(new ArticleTimeForm(article.getId(), article.getWriter(), article.getTitle(), article.getContents(), article.getCurrentTime()));
+            articleTimeForms.add(new ArticleTimeForm(article));
         }
         return articleTimeForms;
     }
@@ -38,6 +38,6 @@ public class ArticleService {
             throw new NoSuchElementException();
         }
 
-        return new ArticleTimeForm(article.getId(), article.getWriter(), article.getTitle(), article.getContents(), article.getCurrentTime());
+        return new ArticleTimeForm(article);
     }
 }

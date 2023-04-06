@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller.dto.article;
 
-import java.time.LocalDateTime;
+import kr.codesqaud.cafe.domain.Article;
+
 import java.time.format.DateTimeFormatter;
 
 public class ArticleTimeForm {
@@ -10,15 +11,12 @@ public class ArticleTimeForm {
     private String contents;
     private String currentTime;
 
-    public ArticleTimeForm() {
-    }
-
-    public ArticleTimeForm(Long id, String writer, String title, String contents, LocalDateTime currentTime) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-        this.currentTime = currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    public ArticleTimeForm(Article article) {
+        this.id = article.getId();
+        this.writer = article.getWriter();
+        this.title = article.getTitle();
+        this.contents = article.getContents();
+        this.currentTime = article.getCurrentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 
     public String getCurrentTime() {
