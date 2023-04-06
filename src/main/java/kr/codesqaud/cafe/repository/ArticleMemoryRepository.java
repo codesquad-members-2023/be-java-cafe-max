@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -27,8 +28,8 @@ public class ArticleMemoryRepository implements ArticleRepository{
     }
 
     @Override
-    public Article findByIndex(long index) {
-        return articleList.get(index);
+    public Optional<Article> findByArticleId(long articleId) {
+        return Optional.ofNullable(articleList.get(articleId));
     }
 
     @Override
