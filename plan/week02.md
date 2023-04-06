@@ -35,7 +35,7 @@
 2. unmodifiableList와 List.copyOf 중 User가 setter가 없어 사실상 불변 객체이기 때문에 아무거나 써도 될 것 같다.
 3. Test code에서 User 객체 생성을 메서드로 만들어 여러 메서드에서 활용할 수 있게 하면 중복을 줄일 수 있다.
 
-## 2023.04.04(수)
+## 2023.04.05(수)
 - [x] step2 구현하기
   - 글쓰기
   - 글 목록 조회하기
@@ -43,3 +43,15 @@
   - 회원정보 수정
 - [x] 알바
 - [x] 리드미 및 학습한 내용 작성
+
+## 2023.04.06(목)
+- [x] step3 db 연동하기
+  - article, user
+- [x] mockMvc 사용해서 userController test 완료하기
+- [x] step2 Service, Controller, Repository test 하기
+  - article, user
+  - article의 LocalDateTime.now() 를 테스트하기가 어려워 ArticleService test는 남겨두었다.
+- [ ] 리드미 및 학습한 내용 작성
+
+### 페어 리뷰
+UserService에서 업데이트 할 때 Repository에 update 메서드를 구현하지 말고 바로 save 메서드를 사용하는 것이 좋을 것 같다.
