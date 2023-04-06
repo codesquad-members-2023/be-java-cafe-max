@@ -29,6 +29,11 @@ public class GlobalExceptionHandler {
         return createErrorResponseModelAndView("/error/error", e);
     }
 
-
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ModelAndView handleInvalidPasswordException(InvalidPasswordException e) {
+        ModelAndView mav = createErrorResponseModelAndView("/user/updateForm", e);
+        mav.addObject("id", e.getId());
+        return mav;
+    }
 
 }

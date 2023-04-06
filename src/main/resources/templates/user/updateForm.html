@@ -22,6 +22,11 @@
                 <label for="email">기존 비밀번호</label>
                 <input type="password" class="form-control" id="password" name="oriPassword" placeholder="기존 비밀번호">
             </div>
+            {{#error}}
+            <div>
+                <p id="error-message">{{message}}</p>
+            </div>
+            {{/error}}
             <div class="form-group">
                 <label for="password">새로운 비밀번호</label>
                 <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="변경할 비밀번호">

@@ -56,6 +56,6 @@ public class UserService {
             userRepository.updateUser(profileEditDto.toUser());
             return;
         }
-        throw new InvalidPasswordException();
+        throw new InvalidPasswordException(profileEditDto.getId());
     }
 }
