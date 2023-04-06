@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import java.util.List;
+import kr.codesqaud.cafe.DTO.UserDTO;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -20,10 +21,10 @@ public class UserService {
 
     /**
      * 회원 가입
-     * @param user 회원 정보
      */
-    public void join(User user) {
+    public void join(UserDTO userDTO) {
 //        validaDuplicateUserId(user); TODO: 각종 유효성 검증
+        User user = userDTO.toEntity();
         userRepository.save(user);
     }
 

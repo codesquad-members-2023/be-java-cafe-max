@@ -21,6 +21,15 @@ public class UserDTO {
     @Email
     private String email;
 
+    public User toEntity() {
+        return new User.Builder()
+                .userId(userId)
+                .password(password)
+                .name(name)
+                .email(email)
+                .build();
+    }
+
     public String getUserId() {
         return userId;
     }
