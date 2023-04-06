@@ -50,15 +50,14 @@ public class UserController {
 
     @GetMapping("/users/update/{id}")
     public String getUpdate(@PathVariable Long id, Model model) {
-        UserUpdateForm userUpdated = userService.findUpdate(id);
-        model.addAttribute("userUpdated", userUpdated);
+        UserUpdateForm user = userService.findUpdate(id);
+        model.addAttribute("userUpdated", user);
         return "user/updateForm";
     }
 
     @PostMapping("/users/update/{id}")
-    // USerUpdateForm: 검증을 위한 dto라 생각하고 userId 필드를 뺀 상태로 만들었습니다.
-    public String postUpdate(@PathVariable Long id, @Validated UserUpdateForm form) {
-        User user = new User(form);
+    // TODO: User를 UserUpdateForm으로 바꾸면 오류 남
+    public String postUpdate(@PathVariable Long id, @Validated User user) {
         userService.updateUser(id, user);
         return "redirect:/users";
     }
