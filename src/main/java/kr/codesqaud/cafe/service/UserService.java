@@ -35,25 +35,18 @@ public class UserService {
     }
 
     public UserProfileForm findProfile(Long id) {
-        User user;
-        if (userRepository.findById(id).isPresent()) {
-            user = userRepository.findById(id).get();
-        } else {
-            throw new NoSuchElementException();
-        }
-
+        User user = findError(id);
         return new UserProfileForm(user);
     }
 
     public UserUpdateForm findUpdate(Long id) {
-        User user;
-        if (userRepository.findById(id).isPresent()) {
-            user = userRepository.findById(id).get();
-        } else {
-            throw new NoSuchElementException();
-        }
-
+        User user = findError(id);
         return new UserUpdateForm(user);
+    }
+
+    private User findError(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("이 아이디를 찾을 수 없어: " + id));
     }
 
     public void updateUser(Long id, User updateUser) {
