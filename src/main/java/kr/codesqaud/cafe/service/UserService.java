@@ -33,9 +33,7 @@ public class UserService {
     }
 
     public void updateUser(UserUpdateRequest userUpdateRequest) throws MismatchedPasswordException { // 기존 회원의 정보를 수정하기
-        String currentPassword = userRepository.findByUserId(userUpdateRequest.getUserId()).getPassword();
-
-        if (!currentPassword.equals(userUpdateRequest.getCurrentPassword())) { // 현재 비밀번호 일치 여부 검사
+        if (!userRepository.findByUserId(userUpdateRequest.getUserId()).isPasswordMatched(userUpdateRequest.getCurrentPassword())) { // 현재 비밀번호 일치 여부 검사
             throw new MismatchedPasswordException(userUpdateRequest);
         }
         userRepository.update(User.from(userUpdateRequest));

@@ -28,6 +28,10 @@ public class User {
         return new User(userUpdateRequest.getUserId(), userUpdateRequest.getNewPassword(), userUpdateRequest.getName(), userUpdateRequest.getEmail());
     }
 
+    public boolean isPasswordMatched(String password) { // 비밀번호 일치 여부 반환
+        return this.password.equals(password);
+    }
+
     public String getPassword() {
         return password;
     }
