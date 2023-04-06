@@ -1,44 +1,31 @@
 package kr.codesqaud.cafe.dto;
 
 public class UserDto {
-    private String userID;
-    private String email;
-    private String nickname;
-    private String password;
+	private String userID;
+	private String email;
+	private String nickname;
+	private String password;
 
-    public String getUserID() {
-        return userID;
-    }
+	public UserDto(String userID, String email, String nickname, String password) {
+		this.userID = userID;
+		this.email = email;
+		this.nickname = nickname;
+		this.password = password;
+	}
 
-    public boolean setUserID(String userID) {
-        this.userID = userID;
-        return true;
-    }
+	public String getUserID() {
+		return userID;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public boolean setEmail(String email) {
-        this.email = email;
-        return true;
-    }
+	public String getNickname() {
+		return nickname;
+	}
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public boolean setNickname(String nickname) {
-        this.nickname = nickname;
-        return true;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public boolean setPassword(String password) {
-        this.password = password;
-        return true;
-    }
+	public String getPassword() {
+		return password;
+	}
 }

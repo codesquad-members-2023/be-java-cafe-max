@@ -17,12 +17,12 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public long join(UserDto userDto) {
+	public boolean join(UserDto userDto) {
 		validateDuplicate(userDto);
 		User user = new User(increaseIndex(), userDto.getUserID(), userDto.getEmail(), userDto.getNickname(),
 			userDto.getPassword(), LocalDate.now());
 		userRepository.save(user);
-		return user.getIndex();
+		return true;
 	}
 
 	private long increaseIndex() {

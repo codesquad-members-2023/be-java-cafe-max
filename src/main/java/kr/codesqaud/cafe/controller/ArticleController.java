@@ -10,32 +10,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.ArticleDto;
-import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.service.ArticleService;
 
 @Controller
 public class ArticleController {
-	private final ArticleRepository articleRepository;
+	private final ArticleService articleService;
 
-	public ArticleController(ArticleRepository articleRepository) {
-		this.articleRepository = articleRepository;
+	public ArticleController(ArticleService articleService) {
+		this.articleService = articleService;
 	}
 
 	@PostMapping("/qna/write")
 	public String writeArticle(ArticleDto articleDto) {
-		articleRepository.saveArticle(articleDto);
+		articleService.saveArticle(articleDto);
 		return "redirect:/";
 	}
 
 	@GetMapping("/articles")
 	public String articleList(Model model) {
-		List<Article> articles = articleRepository.findAll();
+		List<Article> articles = articleService.findArticles();
 		model.addAttribute("articles", articles);
 		return "index";
 	}
 
 	@GetMapping("/articles/{index}")
 	public String showArticle(@PathVariable Long index, Model model) {
-		model.addAttribute("article", articleRepository.findByIndex(index).get());
+		model.addAttribute("article", articleService.findByIndex(index).get());
 		return "/qna/detail";
 	}
 }

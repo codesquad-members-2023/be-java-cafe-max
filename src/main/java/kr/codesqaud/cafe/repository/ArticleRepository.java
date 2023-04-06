@@ -4,10 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.dto.ArticleDto;
 
 public interface ArticleRepository {
-	Article saveArticle(ArticleDto articleDto);
+	Article save(Article article);
 
 	Optional<Article> findByIndex(Long index);
 
