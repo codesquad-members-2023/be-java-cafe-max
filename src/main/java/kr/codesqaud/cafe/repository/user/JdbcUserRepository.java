@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class H2UserRepository implements UserRepository {
+public class JdbcUserRepository implements UserRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public H2UserRepository(DataSource dataSource) {
+    public JdbcUserRepository(DataSource dataSource) {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 

@@ -11,11 +11,11 @@ import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
-public class H2ArticleRepository implements ArticleRepository {
+public class JdbcArticleRepository implements ArticleRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    public H2ArticleRepository(DataSource dataSource) {
+    public JdbcArticleRepository(DataSource dataSource) {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
