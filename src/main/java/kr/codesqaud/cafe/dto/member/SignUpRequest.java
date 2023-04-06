@@ -46,7 +46,7 @@ public class SignUpRequest {
         return createDate;
     }
 
-    public Member toEntity() {
+    public Member toMember() {
         return new Member(null, email, password, nickName, createDate);
     }
 }

@@ -27,7 +27,7 @@ public class PostService {
     }
 
     public Long save(PostWriteRequest postWriteRequest) {
-        return postRepository.save(postWriteRequest.toEntity());
+        return postRepository.save(postWriteRequest.toPost());
     }
 
     @Transactional(readOnly = true)

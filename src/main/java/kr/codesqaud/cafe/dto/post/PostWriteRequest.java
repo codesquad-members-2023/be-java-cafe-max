@@ -42,7 +42,7 @@ public class PostWriteRequest {
         return writeDate;
     }
 
-    public Post toEntity() {
+    public Post toPost() {
         return new Post(null, title, content, writerId, writeDate, 0L);
     }
 }

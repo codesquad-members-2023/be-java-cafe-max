@@ -56,7 +56,7 @@ public class ProfileEditRequest {
         return nickName;
     }
 
-    public Member toEntity(LocalDateTime createDate) {
+    public Member toMember(LocalDateTime createDate) {
         return new Member(id, email, newPassword, nickName, createDate);
     }
 
