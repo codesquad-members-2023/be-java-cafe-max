@@ -1,5 +1,4 @@
-drop table if exists users CASCADE;
-create table users
+CREATE TABLE IF NOT EXISTS users
 (
     sequence bigint NOT NULL AUTO_INCREMENT,
     userId   varchar(10),
@@ -9,8 +8,7 @@ create table users
     primary key (userId)
 );
 
-drop table if exists articles CASCADE;
-create table articles
+CREATE TABLE IF NOT EXISTS articles
 (
     sequence bigint NOT NULL AUTO_INCREMENT,
     writer   varchar(10),
