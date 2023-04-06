@@ -11,6 +11,13 @@ public class UserUpdateForm {
     @NotBlank(message = "이메일을 입력해주세요.")
     private String email;
 
+    public UserUpdateForm(Long id, String name, String password, String email) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.email = email;
+    }
+
     public Long getId() {
         return id;
     }
