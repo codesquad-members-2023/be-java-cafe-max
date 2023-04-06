@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.UserForm;
-import kr.codesqaud.cafe.controller.dto.UserUpdateForm;
+import kr.codesqaud.cafe.controller.dto.user.UserForm;
+import kr.codesqaud.cafe.controller.dto.user.UserUpdateForm;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;

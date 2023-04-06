@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.UserForm;
-import kr.codesqaud.cafe.controller.dto.UserUpdateForm;
+import kr.codesqaud.cafe.controller.dto.user.UserForm;
+import kr.codesqaud.cafe.controller.dto.user.UserUpdateForm;
 
 public class User {
     private Long id;
