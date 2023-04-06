@@ -22,7 +22,7 @@ public class ArticleController {
 
     @GetMapping("/article/write")
     public String articlePage() {
-        return "/qna/form";
+        return "qna/form";
     }
 
     @PostMapping("/article/write")
@@ -36,7 +36,7 @@ public class ArticleController {
     public String viewArticle(@PathVariable final long index, final Model model) {
         Article findArticle = articleService.findOne(index).get();
         model.addAttribute("article", findArticle);
-        return "/qna/show";
+        return "qna/show";
     }
 
 }

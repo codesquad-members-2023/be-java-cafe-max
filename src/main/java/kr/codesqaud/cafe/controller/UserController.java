@@ -23,7 +23,7 @@ public class UserController {
 
     @GetMapping("/user/create")
     public String signUpPage() {
-        return "/user/form";
+        return "user/form";
     }
 
     @PostMapping("/user/create")
@@ -42,13 +42,13 @@ public class UserController {
     public String listPage(final Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
-        return "/user/list";
+        return "user/list";
     }
 
     @GetMapping("/users/{userId}")
     public String viewUserProfile(@PathVariable final String userId, final Model model) {
         User findUser = userService.findOne(userId);
         model.addAttribute("user", findUser);
-        return "/user/profile";
+        return "user/profile";
     }
 }
