@@ -24,7 +24,7 @@ public class PostService {
 
     public Post createNewPost(PostForm postForm) {
         Post post = postForm.toPost();
-        Long saveId = postRepository.save(post);
+        int saveId = postRepository.save(post);
         return findById(saveId);
     }
 
@@ -34,7 +34,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public Post findById(Long postId) {
+    public Post findById(int postId) {
 
         Optional<Post> optionalPost = postRepository.findById(postId);
         if (optionalPost.isEmpty()) {

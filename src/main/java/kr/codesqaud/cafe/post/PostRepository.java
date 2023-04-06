@@ -40,12 +40,12 @@ public class PostRepository {
         this.dataSource = dataSource;
     }
 
-    public Long save(Post post) {
+    public int save(Post post) {
         try {
             SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME)
                     .usingGeneratedKeyColumns(COLUMN_ID);
             Map<String, Object> parameters = getParameters(post);
-            return (Long) simpleJdbcInsert.executeAndReturnKey(parameters);
+            return (Integer) simpleJdbcInsert.executeAndReturnKey(parameters);
         } catch (DataAccessException e) {
             logger.debug(SAVE_POST_FAILED_CODE.getCode());
             throw new SavePostFailedException(SAVE_POST_FAILED_CODE);
@@ -70,7 +70,7 @@ public class PostRepository {
         }
     }
 
-    public Optional<Post> findById(Long postId) {
+    public Optional<Post> findById(int postId) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(
                     QUERY_FIND_BY_ID,

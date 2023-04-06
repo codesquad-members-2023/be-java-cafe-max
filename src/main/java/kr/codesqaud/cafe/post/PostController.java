@@ -36,7 +36,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public String showPostPage(Model model, @PathVariable Long postId) {
+    public String showPostPage(Model model, @PathVariable int postId) {
         Post post = postService.findById(postId);
         model.addAttribute(post);
         return "/post/postDetail";
