@@ -1,5 +1,7 @@
 package codesquad.cafe.domain.article.controller;
 
+import codesquad.cafe.domain.article.domain.Article;
+import codesquad.cafe.domain.article.dto.ArticleRequestDto;
 import codesquad.cafe.domain.article.repository.MemoryArticleRepository;
 import codesquad.cafe.domain.user.repository.MemoryUserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -7,9 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,10 +38,24 @@ class ArticleControllerTest {
     }
 
     @Test
-    void writePost() {
+    @DisplayName("[POST] /questions 로 이동하면 게시글 정보를 보내고 redirect:/ 로 이동하기 테스트")
+    void writePost() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/questions")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("writer", "sio")
+                        .param("title", "sio title")
+                        .param("contents", "sio contents"))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.view().name("redirect:/"));
     }
+
+
 
     @Test
     void showDetailPost() {
+    }
+
+    private ArticleRequestDto createDummyArticleRequest() {
+        return new ArticleRequestDto("sio", "title", "contents");
     }
 }
