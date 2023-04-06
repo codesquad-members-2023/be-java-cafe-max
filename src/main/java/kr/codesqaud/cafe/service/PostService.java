@@ -52,7 +52,7 @@ public class PostService {
     private WhiterResponse getWhiterResponse(Post post) {
         WhiterResponse whiterResponse = null;
 
-        if (post.getWriterId() != 0) {
+        if (post.getWriterId() != null) {
             whiterResponse = WhiterResponse.from(memberRepository.findById(post.getWriterId())
                 .orElseThrow(MemberNotFoundException::new));
         }

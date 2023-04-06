@@ -58,8 +58,10 @@ public class JdbcPostRepository implements PostRepository {
         jdbcTemplate.update(sql, (SqlParameterSource) null);
     }
 
-    private final RowMapper<Post> postRowMapper = (rs, rowNum) ->
-        new Post(rs.getLong("id"), rs.getString("title"),
-            rs.getString("content"), rs.getLong("writer_id"),
+    private final RowMapper<Post> postRowMapper = (rs, rowNum) -> {
+        long writerId = rs.getLong("writer_id");
+        return new Post(rs.getLong("id"), rs.getString("title"),
+            rs.getString("content"), writerId == 0 ? null : writerId,
             rs.getTimestamp("write_date").toLocalDateTime(), rs.getLong("views"));
+    };
 }
