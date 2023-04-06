@@ -1,3 +1,5 @@
+drop table if exists articles CASCADE;
+
 CREATE TABLE articles (
                          id BIGINT PRIMARY KEY AUTO_INCREMENT,
                          author VARCHAR(255) NOT NULL,
@@ -5,6 +7,8 @@ CREATE TABLE articles (
                          contents VARCHAR(1000) NOT NULL,
                          time TIMESTAMP NOT NULL
 );
+
+drop table if exists users CASCADE;
 
 CREATE TABLE users (
                             user_id VARCHAR(255) PRIMARY KEY NOT NULL,
