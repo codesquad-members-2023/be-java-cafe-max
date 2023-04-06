@@ -1,12 +1,15 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.ArticleForm;
+import kr.codesqaud.cafe.controller.dto.article.ArticleForm;
+
+import java.time.LocalDateTime;
 
 public class Article {
     private Long id;
     private String writer;
     private String title;
     private String contents;
+    private LocalDateTime currentTime;
 
     public Article() {
     }
@@ -15,6 +18,15 @@ public class Article {
         this.writer = form.getWriter();
         this.title = form.getTitle();
         this.contents = form.getContents();
+        this.currentTime = LocalDateTime.now();
+    }
+
+    public LocalDateTime getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(LocalDateTime currentTime) {
+        this.currentTime = currentTime;
     }
 
     public String getWriter() {
