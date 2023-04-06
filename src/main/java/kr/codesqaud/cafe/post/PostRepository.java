@@ -44,11 +44,7 @@ public class PostRepository {
         try {
             SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME)
                     .usingGeneratedKeyColumns(COLUMN_ID);
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put(COLUMN_TITLE, post.getTitle());
-            parameters.put(COLUMN_NICKNAME, post.getNickname());
-            parameters.put(COLUMN_TEXT_CONTENT, post.getTextContent());
-            parameters.put(COLUMN_CREATE_DATETIME, Timestamp.valueOf(LocalDateTime.now()));
+            Map<String, Object> parameters = getParameters(post);
             return (Long) simpleJdbcInsert.executeAndReturnKey(parameters);
         } catch (DataAccessException e) {
             logger.debug(SAVE_POST_FAILED_CODE.getCode());
@@ -56,17 +52,18 @@ public class PostRepository {
         }
     }
 
+    private static Map<String, Object> getParameters(Post post) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put(COLUMN_TITLE, post.getTitle());
+        parameters.put(COLUMN_NICKNAME, post.getNickname());
+        parameters.put(COLUMN_TEXT_CONTENT, post.getTextContent());
+        parameters.put(COLUMN_CREATE_DATETIME, Timestamp.valueOf(LocalDateTime.now()));
+        return parameters;
+    }
+
     public List<Post> getAllPosts() {
         try {
-            return jdbcTemplate.query(QUERY_SELECT_ALL, (resultSet, rowNum) ->
-                    new Post.Builder()
-                            .id(resultSet.getLong(COLUMN_ID))
-                            .nickname(resultSet.getString(COLUMN_NICKNAME))
-                            .title(resultSet.getString(COLUMN_TITLE))
-                            .textContent(resultSet.getString(COLUMN_TEXT_CONTENT))
-                            .createdDateTime(resultSet.getTimestamp(COLUMN_CREATE_DATETIME).toLocalDateTime())
-                            .build()
-            );
+            return jdbcTemplate.query(QUERY_SELECT_ALL, getPostRowMapper());
         } catch (DataAccessException e) {
             logger.debug(SAVE_POST_FAILED_CODE.getCode());
             throw new SavePostFailedException(SAVE_POST_FAILED_CODE);
@@ -75,17 +72,9 @@ public class PostRepository {
 
     public Optional<Post> findById(Long postId) {
         try {
-            RowMapper<Post> postRowMapper = (resultSet, rowNum) -> new Post.Builder()
-                    .id(postId)
-                    .nickname(resultSet.getString(COLUMN_NICKNAME).trim())
-                    .title(resultSet.getString(COLUMN_TITLE).trim())
-                    .textContent(resultSet.getString(COLUMN_TEXT_CONTENT).trim())
-                    .createdDateTime(resultSet.getTimestamp(COLUMN_CREATE_DATETIME).toLocalDateTime())
-                    .build();
-
             return Optional.ofNullable(jdbcTemplate.queryForObject(
                     QUERY_FIND_BY_ID,
-                    postRowMapper,
+                    getPostRowMapper(),
                     postId));
         } catch (DataAccessException e) {
             logger.info(NO_SUCH_POST_ID_CODE.getMessage());
@@ -96,22 +85,24 @@ public class PostRepository {
 
     public Optional<Post> findByTitle(String title) {
         try {
-            RowMapper<Post> postRowMapper = (resultSet, rowNum) -> new Post.Builder()
-                    .id(resultSet.getLong(COLUMN_ID))
-                    .nickname(resultSet.getString(COLUMN_NICKNAME).trim())
-                    .title(resultSet.getString(COLUMN_TITLE).trim())
-                    .textContent(resultSet.getString(COLUMN_TEXT_CONTENT).trim())
-                    .createdDateTime(resultSet.getTimestamp(COLUMN_CREATE_DATETIME).toLocalDateTime())
-                    .build();
-
             return Optional.ofNullable(jdbcTemplate.queryForObject(
                     QUERY_FIND_BY_TITLE,
-                    postRowMapper,
+                    getPostRowMapper(),
                     title));
         } catch (DataAccessException e) {
             logger.info(NO_SUCH_POST_TITLE_CODE.getMessage());
             return Optional.empty();
         }
+    }
+
+    private static RowMapper<Post> getPostRowMapper() {
+        return (resultSet, rowNum) -> new Post.Builder()
+                .id(resultSet.getLong(COLUMN_ID))
+                .nickname(resultSet.getString(COLUMN_NICKNAME).trim())
+                .title(resultSet.getString(COLUMN_TITLE).trim())
+                .textContent(resultSet.getString(COLUMN_TEXT_CONTENT).trim())
+                .createdDateTime(resultSet.getTimestamp(COLUMN_CREATE_DATETIME).toLocalDateTime())
+                .build();
     }
 
 }
