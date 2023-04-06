@@ -43,15 +43,15 @@ spring.sql.init.data-locations=classpath:data.sql
 user는 h2 데이터베이스 예약어이기 때문에 식별자(identifier)로 사용될 수 없다.
 
  ➡️ 1) user를 "user"로 변경하기 or 2) user를 users로 변경하기
- ➡️ 특정 데이터베이스에서는 "name"도 식별자로 사용! "name"으로 변경 
+ ➡️ 특정 데이터베이스에서는 "name"도 식별자로 사용! 주의하기
  
 3. data.sql 파일을 실행 실패 에러
 
 'script' must not be null or empty
 
-➡️ data.sql에 코드 추가
+➡️ 1) data.sql에 코드 추가 or 2) data.sql 파일 삭제
 
-4. CREATE TABLE "user" 에러 발생
+4. CREATE TABLE users 에러 발생
 
 'schema.sql' 파일을 실행하여 'user' 테이블이 이미 생성되었다. 'user' 테이블을 다시 생성하려고 시도하면 이미 존재하기 때문에 에러가 발생했다.
 
@@ -72,17 +72,11 @@ user는 h2 데이터베이스 예약어이기 때문에 식별자(identifier)로
 6. 홈 화면에서 게시글 클릭 시 url 에러 발생
 
 ```
-http://localhost:8080/articles/{id} 
+http://localhost:8080/articles/{id} // 기대하는 결과
 
-http://localhost:8080/articles/    // id값에 null이 들어감
+http://localhost:8080/articles/    // 실제 결과 (id값에 null이 들어감)
 ```
-➡️ Article에 생성자 추가
-```
-public Article(String writer, String title, String contents, Long id) {
-        this(writer, title, contents);
-        this.id = id;
-    }
-```
+
 ➡️ articleRowMapper()에서 setId로 id 설정
 ```
 private RowMapper<Article> articleRowMapper() {
