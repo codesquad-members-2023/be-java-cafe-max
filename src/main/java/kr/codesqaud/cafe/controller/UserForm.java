@@ -15,10 +15,6 @@ public class UserForm {
 
     }
 
-
-
-
-
     public String getUserId() {
         return userId;
     }
