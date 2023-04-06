@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller.dto.user;
 
+import kr.codesqaud.cafe.domain.User;
+
 import javax.validation.constraints.NotBlank;
 
 public class UserUpdateForm {
@@ -11,11 +13,11 @@ public class UserUpdateForm {
     @NotBlank(message = "이메일을 입력해주세요.")
     private String email;
 
-    public UserUpdateForm(Long id, String name, String password, String email) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
-        this.email = email;
+    public UserUpdateForm(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.password = user.getPassword();
+        this.email = user.getEmail();
     }
 
     public Long getId() {

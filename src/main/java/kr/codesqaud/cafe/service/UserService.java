@@ -42,7 +42,7 @@ public class UserService {
             throw new NoSuchElementException();
         }
 
-        return new UserProfileForm(user.getId(), user.getName(), user.getEmail());
+        return new UserProfileForm(user);
     }
 
     public UserUpdateForm findUpdate(Long id) {
@@ -53,7 +53,7 @@ public class UserService {
             throw new NoSuchElementException();
         }
 
-        return new UserUpdateForm(user.getId(), user.getName(), user.getPassword(), user.getEmail());
+        return new UserUpdateForm(user);
     }
 
     public void updateUser(Long id, User updateUser) {

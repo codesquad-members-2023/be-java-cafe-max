@@ -1,14 +1,16 @@
 package kr.codesqaud.cafe.controller.dto.user;
 
+import kr.codesqaud.cafe.domain.User;
+
 public class UserProfileForm {
     private Long id;
     private String name;
     private String email;
 
-    public UserProfileForm(Long id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
+    public UserProfileForm(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
     }
 
     public String getName() {
