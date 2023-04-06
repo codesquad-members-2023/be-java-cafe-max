@@ -1,10 +1,13 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.dto.user.UserProfileForm;
+import kr.codesqaud.cafe.controller.dto.user.UserUpdateForm;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -31,8 +34,26 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findUserId(Long id) {
-        return userRepository.findById(id);
+    public UserProfileForm findProfile(Long id) {
+        User user;
+        if (userRepository.findById(id).isPresent()) {
+            user = userRepository.findById(id).get();
+        } else {
+            throw new NoSuchElementException();
+        }
+
+        return new UserProfileForm(user.getId(), user.getName(), user.getEmail());
+    }
+
+    public UserUpdateForm findUpdate(Long id) {
+        User user;
+        if (userRepository.findById(id).isPresent()) {
+            user = userRepository.findById(id).get();
+        } else {
+            throw new NoSuchElementException();
+        }
+
+        return new UserUpdateForm(user.getId(), user.getName(), user.getPassword(), user.getEmail());
     }
 
     public void updateUser(Long id, User updateUser) {

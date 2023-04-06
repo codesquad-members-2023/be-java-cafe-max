@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.user.UserForm;
+import kr.codesqaud.cafe.controller.dto.user.UserProfileForm;
 import kr.codesqaud.cafe.controller.dto.user.UserUpdateForm;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Controller
 public class UserController {
@@ -41,14 +41,8 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String findProfile(@PathVariable("id") Long id, Model model) {
-        User user;
-        if (userService.findUserId(id).isPresent()) {
-            user = userService.findUserId(id).get();
-        } else {
-            throw new NoSuchElementException();
-        }
-
-        model.addAttribute("user", user);
+        UserProfileForm profile = userService.findProfile(id);
+        model.addAttribute("profile", profile);
         return "user/profile";
         // gradle -> 타임리프 ViewResolver가 이걸 해줌
         // "templates/" + "user/profile" + ".html"
@@ -56,14 +50,8 @@ public class UserController {
 
     @GetMapping("/users/update/{id}")
     public String getUpdate(@PathVariable Long id, Model model) {
-        User user;
-        if (userService.findUserId(id).isPresent()) {
-            user = userService.findUserId(id).get();
-        } else {
-            throw new NoSuchElementException();
-        }
-
-        model.addAttribute("userUpdated", user);
+        UserUpdateForm userUpdated = userService.findUpdate(id);
+        model.addAttribute("userUpdated", userUpdated);
         return "user/updateForm";
     }
 
