@@ -25,10 +25,4 @@ public class ArticleController {
         logger.info(article.toString());
         return "redirect:/index";
     }
-
-    @GetMapping("/index")
-    public String showNewArticles(Model model) {
-        model.addAttribute("articles", memoryArticleRepository.findAll());
-        return "index";
-    }
 }
