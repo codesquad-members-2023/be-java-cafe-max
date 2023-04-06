@@ -41,7 +41,7 @@ class UserControllerTest {
                         .param("name", "sio")
                         .param("email", "sio@gmail.com"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.header().string("Location", "/users"));
+                .andExpect(MockMvcResultMatchers.view().name("redirect:/users"));
     }
 
     @Test
@@ -75,6 +75,22 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("userId"))
                 .andExpect(MockMvcResultMatchers.view().name("user/updateForm"));
+    }
+
+    @Test
+    @DisplayName("[PUT] /users/{userId}/update 로 이동하면 수정할 유저 정보와 userId를 넘겨주고 redirect:/user 출력하기 테스트")
+    void updateUser() throws Exception {
+        saveDummyUser();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/users/{userId}/update", "sio")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("password", "1234")
+                        .param("updatePassword", "1111")
+                        .param("name", "sio")
+                        .param("email", "sio@gmail.com"))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.view().name("redirect:/users"));
+
     }
 
     private void saveDummyUser() {
