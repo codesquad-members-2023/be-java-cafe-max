@@ -6,9 +6,12 @@ import kr.codesqaud.cafe.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+@Transactional
 class UserServiceTest {
 
     UserService userService;

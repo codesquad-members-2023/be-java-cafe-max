@@ -34,6 +34,7 @@ public class JdbcArticleRepository implements ArticleRepository {
         return keyHolder.getKey().longValue();
     }
 
+
     public List<Article> findAll() {
         String sql = "SELECT * FROM articles";
         return jdbcTemplate.query(sql, articleRowMapper());
