@@ -31,7 +31,7 @@ public class BoardController {
     @GetMapping("/{postId}")
     public String getDetailPost(@PathVariable Long postId, Model model) {
         model.addAttribute("post", boardService.getPost(postId));
-        return "/board/detail";
+        return "board/detail";
     }
 
 }
