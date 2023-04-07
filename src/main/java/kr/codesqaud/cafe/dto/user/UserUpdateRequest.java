@@ -22,6 +22,10 @@ public class UserUpdateRequest {
         return new UserUpdateRequest(user);
     }
 
+    public User toUser() { // DTO → Entity
+        return new User(this.userId, this.newPassword, this.name, this.email);
+    }
+
     public String getUserId() { return userId; }
     public String getCurrentPassword() {
         return currentPassword;

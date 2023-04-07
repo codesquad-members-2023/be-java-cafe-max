@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.user.UserResponse;
 import kr.codesqaud.cafe.dto.user.UserSaveRequest;
 import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
@@ -25,7 +24,7 @@ public class UserService {
         if (userRepository.isExists(userSaveRequest.getUserId())) { // userId 중복 여부 검사
             throw new DuplicateUserIdException(userSaveRequest);
         }
-        userRepository.save(User.from(userSaveRequest));
+        userRepository.save(userSaveRequest.toUser());
     }
 
     public List<UserResponse> getAllUsers() { // 모든 회원 가져오기
@@ -36,7 +35,7 @@ public class UserService {
         if (!userRepository.findByUserId(userUpdateRequest.getUserId()).isPasswordMatched(userUpdateRequest.getCurrentPassword())) { // 현재 비밀번호 일치 여부 검사
             throw new MismatchedPasswordException(userUpdateRequest);
         }
-        userRepository.update(User.from(userUpdateRequest));
+        userRepository.update(userUpdateRequest.toUser());
     }
 
     public UserResponse findByUserId(String userId) { // DTO 변환은 service 역할 vs controller 역할

@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.dto.user;
 
+import kr.codesqaud.cafe.domain.User;
+
 public class UserSaveRequest {
     private String userId;
     private String password;
@@ -7,6 +9,10 @@ public class UserSaveRequest {
     private String email;
 
     public UserSaveRequest() {
+    }
+
+    public User toUser() { // DTO → Entity
+        return new User(this.userId, this.password, this.name, this.email);
     }
 
     public String getUserId() {

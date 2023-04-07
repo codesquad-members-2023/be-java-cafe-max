@@ -1,8 +1,5 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.dto.user.UserSaveRequest;
-import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
-
 public class User {
     private String userId;
     private String password;
@@ -20,18 +17,13 @@ public class User {
         this.email = email;
     }
 
-    public static User from(UserSaveRequest userSaveRequest) { // DTO → Entity
-        return new User(userSaveRequest.getUserId(), userSaveRequest.getPassword(), userSaveRequest.getName(), userSaveRequest.getEmail());
-    }
-
-    public static User from(UserUpdateRequest userUpdateRequest) { // DTO → Entity
-        return new User(userUpdateRequest.getUserId(), userUpdateRequest.getNewPassword(), userUpdateRequest.getName(), userUpdateRequest.getEmail());
-    }
-
     public boolean isPasswordMatched(String password) { // 비밀번호 일치 여부 반환
         return this.password.equals(password);
     }
 
+    public String getUserId() {
+        return userId;
+    }
     public String getPassword() {
         return password;
     }
@@ -39,13 +31,10 @@ public class User {
         return name;
     }
     public String getEmail() { return email; }
+
+    // 기본 생성자와 setter가 없으니 mapping이 안된다.
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    // 기본 생성자와 setter가 없으니 mapping이 안된다. 어떻게 동작하는 걸까?
-    public String getUserId() {
-        return userId;
     }
     public void setPassword(String password) {
         this.password = password;

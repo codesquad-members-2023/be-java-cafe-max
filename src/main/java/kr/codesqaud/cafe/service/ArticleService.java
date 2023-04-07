@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.article.ArticleResponse;
 import kr.codesqaud.cafe.dto.article.ArticleSaveRequest;
 import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
@@ -19,7 +18,7 @@ public class ArticleService {
     }
 
     public void saveArticle(ArticleSaveRequest articleSaveRequest) { // 새로운 게시글 저장하기
-        articleRepository.save(Article.from(articleSaveRequest));
+        articleRepository.save(articleSaveRequest.toArticle());
     }
 
     public List<ArticleResponse> getAllArticles() { // 모든 게시글 가져오기

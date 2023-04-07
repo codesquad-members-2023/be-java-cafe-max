@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.dto.article.ArticleSaveRequest;
-
 import java.time.LocalDateTime;
 
 public class Article {
@@ -20,10 +18,6 @@ public class Article {
         this.writer = writer;
         this.contents = contents;
         this.createdAt = LocalDateTime.now();
-    }
-
-    public static Article from(ArticleSaveRequest articleSaveRequest) { // DTO → Entity
-        return new Article(articleSaveRequest.getTitle(), articleSaveRequest.getWriter(), articleSaveRequest.getContents());
     }
 
     public Long getId() {
