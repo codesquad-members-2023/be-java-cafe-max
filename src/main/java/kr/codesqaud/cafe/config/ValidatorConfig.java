@@ -5,7 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 public class ValidatorConfig {
-    MessageSource messageSource;
+    private final MessageSource messageSource;
+
+    public ValidatorConfig(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     @Bean
     public LocalValidatorFactoryBean getValidator() {
