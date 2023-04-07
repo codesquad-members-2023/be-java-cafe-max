@@ -38,6 +38,12 @@ public class MemoryUserRepository implements UserRepository {
         return new ArrayList<>(userRepository.values());
     }
 
+    @Override
+    public void update(User user) {
+        userRepository.put(user.getUserId(), user);
+    }
+
+
     public void clearRepository() {
         userRepository.clear();
     }

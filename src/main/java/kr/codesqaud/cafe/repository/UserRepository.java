@@ -13,4 +13,6 @@ public interface UserRepository {
     Optional<User> findByName(String name);
 
     List<User> findAll();
+
+    void update(User user);
 }
