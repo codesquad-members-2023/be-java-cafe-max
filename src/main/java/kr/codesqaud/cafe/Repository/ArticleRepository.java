@@ -14,12 +14,12 @@ public class ArticleRepository {
     public Article saveArticle(Article article) {
         articleRepository.add(article);
         article.setId(sequence++);
-        sequence++;
         return article;
     }
 
-    public List<Article> showAllArticle() {
-        return new ArrayList<>(articleRepository);
+    public List<Article> findAllArticle() {
+        // unmodifiableList로 불변성 보장?
+        return Collections.unmodifiableList(new ArrayList<>(articleRepository));
     }
 
     public Optional<Article> findArticleById(int articleId) {

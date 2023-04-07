@@ -20,7 +20,7 @@ public class ArticleService {
     }
 
     public List<Article> findArticles() {
-        return articleRepository.showAllArticle();
+        return articleRepository.findAllArticle();
     }
 
     public Article findArticleBySequence(int articleId) {
