@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto;
+package kr.codesqaud.cafe.controller.dto.article;
 
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.lang.Nullable;

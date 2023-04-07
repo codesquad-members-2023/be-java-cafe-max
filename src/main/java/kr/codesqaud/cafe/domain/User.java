@@ -91,4 +91,8 @@ public class User {
     public boolean isNotMatchedPassword(String password) {
         return !this.password.equals(password);
     }
+
+    public boolean isChangedUserId(String userId) {
+        return !this.userId.equals(userId);
+    }
 }

@@ -1,9 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.ArticleCreateDto;
-import kr.codesqaud.cafe.controller.dto.ArticleReadDto;
+import kr.codesqaud.cafe.controller.dto.article.ArticleCreateDto;
+import kr.codesqaud.cafe.controller.dto.article.ArticleReadDto;
 import kr.codesqaud.cafe.service.ArticleService;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

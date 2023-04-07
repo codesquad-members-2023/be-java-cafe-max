@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto;
+package kr.codesqaud.cafe.controller.dto.user;
 
 import kr.codesqaud.cafe.domain.User;
 
@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-public class UserUpdateDto {
+public class UserUpdateDto extends UserFormDto {
     private Long id;
 
     @NotBlank(message = "아이디를 입력하세요.")
