@@ -16,7 +16,7 @@
             <div class="createdAt">
                 <span class="firstText" th:text="|작성자 : ${article.writer}|">작성자</span><span th:text="|작성일자 : ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|">작성일자</span>
             </div>
-            <p th:text="${article.contents}"></p>
+            <p style="white-space: pre-wrap;정" th:text="${article.contents}"></p>
             <hr/>
 
             <div class="buttons">
