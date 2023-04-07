@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -28,10 +31,10 @@ public class UserRepository {
     private static final String COLUMN_NICKNAME = "NICKNAME";
     private static final String COLUMN_EMAIL = "EMAIL";
     private static final String QUERY_UPDATE = "UPDATE USERS SET NICKNAME = ?, EMAIL = ? WHERE USER_ID = ?";
-    private static final String QUERY_FIND_BY_ID = "SELECT USER_ID,EMAIL,NICKNAME,PASSWORD FROM USERS WHERE USER_ID = ?";
+    private static final String QUERY_FIND_BY_ID = "SELECT USER_ID,EMAIL,NICKNAME,PASSWORD FROM USERS WHERE USER_ID = :id";
     private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD,EMAIL FROM USERS WHERE EMAIL = ?";
-    private static final String QUERY_CONTAINS_EMAIL = "SELECT COUNT(*) FROM USERS WHERE EMAIL = ?";
-    private static final String QUERY_FIND_ALL_USERS = "SELECT * FROM USERS";
+    private static final String QUERY_CONTAINS_EMAIL = "SELECT count(EMAIL) FROM USERS WHERE EMAIL = ?";
+    private static final String QUERY_FIND_ALL_USERS = "SELECT USER_ID, NICKNAME, EMAIL,PASSWORD FROM USERS";
     private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
     private final JdbcTemplate jdbcTemplate;
     private final DataSource dataSource;
@@ -76,9 +79,12 @@ public class UserRepository {
 
     public Optional<User> findById(Long userId) {
         try {
-            return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_ID, getUserRowMapper(), userId));
+            NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+            SqlParameterSource namedParameters = new MapSqlParameterSource("id", userId);
+            User value = namedParameterJdbcTemplate.queryForObject(QUERY_FIND_BY_ID, namedParameters, getUserRowMapper());
+            return Optional.ofNullable(value);
         } catch (DataAccessException e) {
-            logger.info("[ Message = {} ][ UserId = {} ]", NO_SUCH_USER_ID_CODE.getMessage(), userId);
+            logger.info("[ Message = {} ][ UserId = {} ]", NO_SUCH_USER_ID_CODE.getMessage(), getUserRowMapper());
             return Optional.empty();
         }
     }
