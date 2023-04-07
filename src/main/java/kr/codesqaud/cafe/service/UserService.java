@@ -24,4 +24,8 @@ public class UserService {
     public List<User> fineUsers(){
         return memoryUserRepository.findAll();
     }
+
+    public User findById(String id){
+        return memoryUserRepository.findById(id).get();
+    }
 }
