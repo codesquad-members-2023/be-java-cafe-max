@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
-import kr.codesqaud.cafe.dto.post.WhiterResponse;
+import kr.codesqaud.cafe.dto.post.WriterResponse;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
@@ -49,14 +49,14 @@ public class PostService {
             .collect(Collectors.toUnmodifiableList());
     }
 
-    private WhiterResponse getWhiterResponse(Post post) {
-        WhiterResponse whiterResponse = null;
+    private WriterResponse getWhiterResponse(Post post) {
+        WriterResponse writerResponse = null;
 
         if (post.getWriterId() != null) {
-            whiterResponse = WhiterResponse.from(memberRepository.findById(post.getWriterId())
+            writerResponse = WriterResponse.from(memberRepository.findById(post.getWriterId())
                 .orElseThrow(MemberNotFoundException::new));
         }
 
-        return whiterResponse;
+        return writerResponse;
     }
 }

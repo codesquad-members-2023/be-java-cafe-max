@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
-import kr.codesqaud.cafe.dto.post.WhiterResponse;
+import kr.codesqaud.cafe.dto.post.WriterResponse;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
 import kr.codesqaud.cafe.service.PostService;
 import org.junit.jupiter.api.DisplayName;
@@ -167,12 +167,12 @@ public class PostControllerTest {
     }
 
     private PostResponse createPostResponseDummy() {
-        return new PostResponse(1L, "제목", "내용", new WhiterResponse(1L, "만두"), LocalDateTime.now(),
+        return new PostResponse(1L, "제목", "내용", new WriterResponse(1L, "만두"), LocalDateTime.now(),
             0L);
     }
 
     private PostResponse createPostResponseDummy2() {
-        return new PostResponse(2L, "제목2", "내용2", new WhiterResponse(2L, "만두2"), LocalDateTime.now(),
+        return new PostResponse(2L, "제목2", "내용2", new WriterResponse(2L, "만두2"), LocalDateTime.now(),
             0L);
     }
 }
