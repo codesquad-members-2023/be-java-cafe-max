@@ -49,9 +49,9 @@ class UserServiceTest {
     @DisplayName("user 조회 실패 테스트")
     void getUserList_fail_test() {
         //given
-        userService.addUser(new UserDTO("charlie1","aaa@naver.com","password","testId"));
-        userService.addUser(new UserDTO("charlie2","aaa@naver.com","password","testId"));
-        userService.addUser(new UserDTO("charlie3","aaa@naver.com","password","testId"));
+        userService.addUser(new UserDTO("charlie1","aaa@naver.com","password","testId1"));
+        userService.addUser(new UserDTO("charlie2","aaa@naver.com","password","testId2"));
+        userService.addUser(new UserDTO("charlie3","aaa@naver.com","password","testId3"));
 
         //when & then
         Assertions.assertThat(userService.getUserList().size() == 4).isFalse();
