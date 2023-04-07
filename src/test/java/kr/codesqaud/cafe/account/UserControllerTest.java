@@ -229,8 +229,8 @@ class UserControllerTest {
                                 .param(PASSWORD, JACK_PASSWORD)
                                 .param(EMAIL, JERRY_EMAIL)
                                 .param(NICKNAME, JERRY))
-                        .andExpect(status().is4xxClientError())
-                        .andExpect(view().name("error/custom"));
+                        .andExpect(status().isOk())
+                        .andExpect(view().name("account/profileUpdate"));
             }
 
             @DisplayName("실패(형식 오류)")
