@@ -17,7 +17,7 @@
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
                               <span class="time" th:text="${#temporals.format(article.createdAt, 'yy-MM-dd HH:mm')}"></span>
-                              <div th:text="${article.userId}"></div>
+                              <div th:text="${article.writer}"></div>
                           </div>
                           <div class="reply" title="댓글">
                               <i class="icon-reply"></i>

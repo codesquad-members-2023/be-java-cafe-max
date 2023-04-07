@@ -16,15 +16,15 @@ public class ArticleCreateDto {
     @NotBlank(message = "아이디를 입력하세요.")
     @Size(min = 5, max = 20, message = "아이디는 {min} ~ {max} 길이로 입력하세요.")
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "아이디는 알파벳, 숫자만 가능합니다.")
-    private String userId;
+    private String writer;
 
     @Nullable
     @Size(max = 1000, message = "본문은 {max}글자 이하로 입력하세요.")
     private String contents;
 
-    public ArticleCreateDto(String title, String userId, String contents) {
+    public ArticleCreateDto(String title, String writer, String contents) {
         this.title = title;
-        this.userId = userId;
+        this.writer = writer;
         this.contents = contents;
     }
 
@@ -35,8 +35,8 @@ public class ArticleCreateDto {
         return title;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getWriter() {
+        return writer;
     }
 
     public String getContents() {
@@ -47,8 +47,8 @@ public class ArticleCreateDto {
         this.title = title;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 
     public void setContents(@Nullable String contents) {
@@ -60,7 +60,7 @@ public class ArticleCreateDto {
             contents = "";
         }
 
-        return new Article(title, userId, contents);
+        return new Article(title, writer, contents);
     }
 
     private boolean isEmptyContents() {

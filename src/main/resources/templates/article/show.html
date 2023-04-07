@@ -16,7 +16,7 @@
                                 <img src="https://graph.facebook.com/v2.3/100000059371774/picture" class="article-author-thumb" alt="">
                             </div>
                             <div class="article-header-text">
-                                <div class="article-author-name" th:text="${article.userId}"></div>
+                                <div class="article-author-name" th:text="${article.writer}"></div>
                                 <div  class="article-header-time" th:text="${#temporals.format(article.createdAt, 'yy-MM-dd HH:mm')}"></div>
                             </div>
                         </div>

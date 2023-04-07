@@ -5,18 +5,25 @@ import java.time.LocalDateTime;
 public class Article {
     private Long id;
     private String title;
-    private String userId;
+    private String writer;
     private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    private Article(Long id, String title, String userId, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Article(Long id, String title, String writer, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
-        this.userId = userId;
+        this.writer = writer;
         this.contents = contents;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Article(String title, String writer, String contents) {
+        this(null, title, writer, contents, LocalDateTime.now(), LocalDateTime.now());
+    }
+
+    public Article() {
     }
 
     public Long getId() {
@@ -27,8 +34,8 @@ public class Article {
         return title;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getWriter() {
+        return writer;
     }
 
     public String getContents() {
@@ -47,7 +54,23 @@ public class Article {
         this.id = id;
     }
 
-    public Article(String title, String userId, String contents) {
-        this(null, title, userId, contents, LocalDateTime.now(), LocalDateTime.now());
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
