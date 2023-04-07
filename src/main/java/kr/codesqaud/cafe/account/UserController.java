@@ -81,7 +81,7 @@ public class UserController {
             return "account/join";
         }
         int userId = userService.save(joinForm);
-        return "redirect:/users/" + userId;
+        return "redirect:/users/" + userId+"/profile";
     }
 
     @GetMapping("/users")
@@ -130,6 +130,6 @@ public class UserController {
             return "account/profileUpdate";
         }
         userService.update(profileSettingForm, userId);
-        return "redirect:/users/{userId}";
+        return "redirect:/users/{userId}/profile";
     }
 }
