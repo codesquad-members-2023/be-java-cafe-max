@@ -60,6 +60,6 @@ public class UserService {
     }
 
     public boolean isDuplicateEmail(String targetEmail) {
-        return userRepository.findByEmail(targetEmail).isEmpty();
+        return userRepository.findByEmail(targetEmail).isPresent();
     }
 }
