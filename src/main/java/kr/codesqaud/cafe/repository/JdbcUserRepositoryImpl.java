@@ -31,8 +31,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public Long save(final User user) {
-        String sql = "insert into users (user_id, name, password, email, created_at, updated_at) " +
-                "values (:userId, :name, :password, :email, :createdAt, :updatedAt)";
+        final String sql = "INSERT INTO users (user_id, name, password, email, created_at, updated_at) " +
+                "VALUES (:userId, :name, :password, :email, :createdAt, :updatedAt)";
 
         final SqlParameterSource param = new BeanPropertySqlParameterSource(user);
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -44,8 +44,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findById(final Long id) {
-        String sql  = "select * from users " +
-                "where id = :id";
+        final String sql  = "SELECT * FROM users WHERE id = :id";
 
         try {
             return Optional.ofNullable(template.queryForObject(sql, Map.of("id", id), userRowMapper()));
@@ -56,8 +55,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(final String userId) {
-        String sql  = "select * from users " +
-                "where user_id = :userId";
+        final String sql  = "SELECT * FROM users WHERE user_id = :userId";
 
         try {
             return Optional.ofNullable(template.queryForObject(sql, Map.of("userId", userId), userRowMapper()));
@@ -68,8 +66,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByEmail(final String email) {
-        String sql  = "select * from users " +
-                "where email = :email";
+        final String sql  = "SELECT * FROM users WHERE email = :email";
 
         try {
             return Optional.ofNullable(template.queryForObject(sql, Map.of("email", email), userRowMapper()));
@@ -80,15 +77,14 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        String sql = "select * from users";
+        final String sql = "SELECT * FROM users";
 
         return template.query(sql, userRowMapper());
     }
 
     @Override
     public void update(User user) {
-        String sql = "update users set user_id=:userId, password=:password " +
-                "where id=:id";
+        final String sql = "UPDATE users SET user_id=:userId, password=:password WHERE id=:id";
 
         final MapSqlParameterSource param = new MapSqlParameterSource()
                 .addValue("userId", user.getUserId())
