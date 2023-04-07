@@ -1,8 +1,7 @@
-package kr.codesqaud.cafe.domain.member;
+package kr.codesqaud.cafe.domain.user;
 
-import java.util.Comparator;
 
-public class User implements Comparable<User>  {
+public class User {
 
     private int index;
     private String userId;
@@ -11,9 +10,15 @@ public class User implements Comparable<User>  {
     private String email;
 
 
-
     public User(int index, String userId, String password, String name, String email) {
         this.index = index;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
+
+    public User(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -39,13 +44,6 @@ public class User implements Comparable<User>  {
     public String getEmail() {
         return email;
     }
-
-    @Override
-    public int compareTo(User o) {
-        return Integer.compare(this.index, o.index);
-    }
-
-
 
 
 }

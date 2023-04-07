@@ -1,7 +1,7 @@
-package kr.codesqaud.cafe.domain.question;
+package kr.codesqaud.cafe.domain.article;
+
 
 public class Article {
-
     private int index;
     private String writer;
     private String title;
@@ -9,13 +9,18 @@ public class Article {
     private String date;
 
 
-
-    public Article(int index, String writer, String title, String contents,String date) {
+    public Article(int index, String writer, String title, String contents, String date) {
         this.index = index;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.date = date;
+    }
+
+    public Article(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
     }
 
     public int getIndex() {
