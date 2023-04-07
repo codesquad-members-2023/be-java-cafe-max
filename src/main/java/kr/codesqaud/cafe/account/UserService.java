@@ -1,17 +1,17 @@
 package kr.codesqaud.cafe.account;
 
-import kr.codesqaud.cafe.account.exception.InvalidUserIdException;
 import kr.codesqaud.cafe.account.dto.JoinForm;
 import kr.codesqaud.cafe.account.dto.ProfileSettingForm;
 import kr.codesqaud.cafe.account.dto.UserForm;
+import kr.codesqaud.cafe.account.exception.InvalidUserIdException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static kr.codesqaud.cafe.exception.ErrorCode.INVALID_USER_ID_CODE;
+
 
 @Service
 public class UserService {
@@ -37,8 +37,9 @@ public class UserService {
         userRepository.update(profileSettingForm.setUser(findById(userId)));
     }
 
-    public boolean checkPassword(String password, String targetPassword) {
-        return Objects.equals(targetPassword, password);
+    public boolean isSamePassword(Long userId, String targetPassword) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        return userOptional.map(user -> user.isSamePassword(targetPassword)).orElse(false);
     }
 
     public Optional<User> findByEmail(String email) {
@@ -58,8 +59,7 @@ public class UserService {
         }
     }
 
-    public boolean isDuplicateEmail(String defaultEmail, String targetEmail) {
-        return Objects.equals(defaultEmail, targetEmail)
-                && containsEmail(targetEmail);
+    public boolean isDuplicateEmail(String targetEmail) {
+        return userRepository.findByEmail(targetEmail).isEmpty();
     }
 }

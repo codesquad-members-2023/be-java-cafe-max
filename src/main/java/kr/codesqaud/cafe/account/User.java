@@ -30,6 +30,10 @@ public class User {
         return password;
     }
 
+    public boolean isSamePassword(String targetPassword) {
+        return targetPassword.equals(password);
+    }
+
     public static class Builder {
         private Long id = 0L;
         private String nickname = "";

@@ -119,15 +119,14 @@ public class UserController {
             loggingError(bindingResult);
             return "account/profileUpdate";
         }
-        User user = userService.findById(userId);
-        if (userService.isDuplicateEmail(user.getEmail(), profileSettingForm.getEmail())) {
-            loggingError(bindingResult);
+        if (userService.isDuplicateEmail(profileSettingForm.getEmail())) {
             bindingResult.rejectValue(EMAIL, "error.email.duplicate");
+            loggingError(bindingResult);
             return "account/profileUpdate";
         }
-        if (!userService.checkPassword(profileSettingForm.getPassword(), user.getPassword())) {
-            loggingError(bindingResult);
+        if (!userService.isSamePassword(userId,profileSettingForm.getPassword())) {
             bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
+            loggingError(bindingResult);
             return "account/profileUpdate";
         }
         userService.update(profileSettingForm, userId);
