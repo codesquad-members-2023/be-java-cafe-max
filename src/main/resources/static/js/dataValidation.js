@@ -98,40 +98,40 @@ function validateWriting() {
     } else {
         invalidView('#writingMessage', WRITING_NUM);
     }
+}
 
-    function createWriteObject() {
-        const loginUser = JSON.parse(localStorage.getItem("user"));
+function createWriteObject() {
+    const loginUser = JSON.parse(localStorage.getItem("user"));
+    return {
+        title: document.getElementById("title").value,
+        content: document.getElementById("content").value,
+        hits: 0,
+        date: toStringDate(),
+        nickname: loginUser.nickname
+    };
+}
+
+function createCommentDataObject() {
         return {
-            title: document.getElementById("title").value,
-            content: document.getElementById("content").value,
-            hits: 0,
-            date: toStringDate(),
-            nickname: loginUser.nickname
+            nickname: "",
+            input: "",
+            date: ""
         };
     }
 
-    function createCommentDataObject() {
-            return {
-                nickname: "",
-                input: "",
-                date: ""
-            };
-        }
+function saveDataToLocalStorage(board, comment) {
+    localStorage.setItem("board", JSON.stringify(board));
+    localStorage.setItem("comment", JSON.stringify(comment));
+}
 
-    function saveDataToLocalStorage(board, comment) {
-        localStorage.setItem("board", JSON.stringify(board));
-        localStorage.setItem("comment", JSON.stringify(comment));
-    }
+function validView(message, number) {
+    const messageElement = document.querySelector(message);
+    messageElement.innerText = validOutputView[number];
+    messageElement.style.color = "rgb(186, 75, 238)";
+}
 
-    function validView(const message, const number) {
-        const messageElement = document.querySelector(message);
-        document.innerText = validOutputView[number];
-        document.style.color = "rgb(186, 75, 238)";
-    }
-
-    function invalidView(const message, const number) {
-        const messageElement = document.querySelector(message);
-        messageElement.innerText = invalidOutputView[number];
-        messageElement.style.color = "red";
-    }
+function invalidView(message, number) {
+    const messageElement = document.querySelector(message);
+    messageElement.innerText = invalidOutputView[number];
+    messageElement.style.color = "red";
 }

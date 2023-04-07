@@ -25,7 +25,7 @@ public class UserController {
 	public String userList(Model model) {
 		List<User> users = userService.findUsers();
 		model.addAttribute("users", users);
-		return "/user/list";
+		return "user/list";
 	}
 
 	@PostMapping("/user/create")
@@ -37,13 +37,13 @@ public class UserController {
 	@GetMapping("/users/{userID}")
 	public String profile(@PathVariable String userID, Model model) {
 		model.addAttribute("user", userService.findOne(userID).get());
-		return "/user/profile";
+		return "user/profile";
 	}
 
 	@GetMapping("/users/{userID}/form")
 	public String updateForm(@PathVariable String userID, Model model) {
 		model.addAttribute("user", userService.findOne(userID).get());
-		return "/user/updateForm";
+		return "user/updateForm";
 	}
 
 	@PutMapping("/user/{userID}/update")
