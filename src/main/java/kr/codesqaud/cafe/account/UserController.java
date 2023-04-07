@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/users")
 public class UserController {
 
     private static final String PASSWORD = "password";
@@ -44,12 +43,12 @@ public class UserController {
         webDataBinder.addValidators(joinFormValidator);
     }
 
-    @GetMapping("/login")
+    @GetMapping("/users/login")
     public String showLoginPage(@ModelAttribute LoginForm loginForm) {
         return "account/login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public String login(@Valid LoginForm loginForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             loggingError(bindingResult);
@@ -70,12 +69,12 @@ public class UserController {
         return "redirect:/users/" + user.getId();
     }
 
-    @GetMapping("/join")
+    @GetMapping("/users/join")
     public String showJoinPage(@ModelAttribute JoinForm joinForm) {
         return "account/join";
     }
 
-    @PostMapping
+    @PostMapping("/users")
     public String addUser(@Valid JoinForm joinForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             loggingError(bindingResult);
@@ -85,14 +84,14 @@ public class UserController {
         return "redirect:/users/" + userId;
     }
 
-    @GetMapping
+    @GetMapping("/users")
     public String showUsers(Model model) {
         List<UserForm> allUserForm = userService.getAllUsersForm();
         model.addAttribute(USERS, allUserForm);
         return "account/members";
     }
 
-    @GetMapping("/{userId}/profile")
+    @GetMapping("/users/{userId}/profile")
     public String showUser(Model model, @PathVariable Long userId) {
         User user = userService.findById(userId);
         ProfileForm profileForm = ProfileForm.from(user);
@@ -102,7 +101,7 @@ public class UserController {
         return "account/profile";
     }
 
-    @GetMapping("/{userId}/profile/edit")
+    @GetMapping("/users/{userId}/profile/edit")
     public String showUserProfile(Model model, @PathVariable Long userId) {
         User user = userService.findById(userId);
         ProfileSettingForm profileSettingForm = ProfileSettingForm.from(user);
@@ -112,7 +111,7 @@ public class UserController {
         return "account/profileUpdate";
     }
 
-    @PutMapping("/{userId}/profile")
+    @PutMapping("/users/{userId}/profile")
     public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, BindingResult bindingResult,
                                  @PathVariable Long userId
     ) {
