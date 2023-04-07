@@ -11,22 +11,22 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class UserMemoryRepository implements UserRepository {
 
-    private static final Map<String, User> userList = new ConcurrentHashMap<>();
+    private static final Map<String, User> users = new ConcurrentHashMap<>();
 
     @Override
     public User save(User user) {
-        userList.put(user.getUserId(), user);
+        users.put(user.getUserId(), user);
         return user;
     }
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(userList.values());
+        return new ArrayList<>(users.values());
     }
 
     @Override
     public User findByUserId(String userId) {
-        return userList.get(userId);
+        return users.get(userId);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public void clearUserList() {
-        userList.clear();
+        users.clear();
     }
 
 
