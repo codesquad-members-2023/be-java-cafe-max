@@ -2,21 +2,26 @@
 
 ---
 
+
+
 ### 기능 목록
 
 - 회원 가입 및 회원 목록 조회
-    - 회원 가입 기능
-    - 회원 목록 조회 기능
-    - 회원 프로필 조회 기능
+  - 회원 가입 기능
+    - 회원가입을 할때 입력폼에 유효한 입력이 입력되지않으면 텍스트로 알림기능 구현
+    - 회원가입시 중복된 id를 입력하면 알림기능 구현
+  - 회원 목록 조회 기능
+  - 회원 프로필 조회 기능
 
 - 글 쓰기
-    - 글쓰기 기능
-    - 글 목록 조회 기능
-    - 게시글 상세보기 기능
-
+  - 글쓰기 기능
+    - 제목,내용이 공백이면 db에 저장되지 않는기능 구현
+  - 글 목록 조회 기능
+  - 게시글 상세보기 기능
 - 회원정보 수정
-    - 회원정보 수정 화면
-    - 회원정보 수정 기능
+  - 회원정보 수정 화면
+  - 회원정보 수정 기능
+    - 회원정보 수정시 기존 비밀번호를 잘못 입력하면 회원정보 수정이 불가능하도록 구현
 
 ### URL
 
@@ -30,6 +35,9 @@
 | 게시글 상세보기 기능  | /articles/{id}     | templates/post/show         | GET         |
 | 회원정보 수정 화면    | /users/{id}/form   | templates/user/updateForm   | GET         |
 | 회원정보 수정 기능    | /users/{id}/update |                             | PUT         |
+
+
+
 ## 실행결과
 
 <details markdown="1">
@@ -82,7 +90,6 @@
 </details>
 
 
-
 <details markdown="1">
 <summary>게시글 상세보기 기능</summary>
 
@@ -106,13 +113,41 @@
 </details>
 
 
-
-
 <details markdown="1">
 <summary>회원정보 수정후 화면</summary>
 
 회원정보를 수정하면 자동적으로 멤버리스트 페이지로 이동하고 변경된 멤버의 닉네임과 이메일을 볼수있습니다
 
 ![회원정보 수정후 화면](https://raw.githubusercontent.com/CDBchan/Typora-img/main/img/%E1%84%92%E1%85%AC%E1%84%8B%E1%85%AF%E1%86%AB%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%87%E1%85%A9%20%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC%E1%84%92%E1%85%AE%20%E1%84%92%E1%85%AA%E1%84%86%E1%85%A7%E1%86%AB.png)
+
+</details>
+
+
+
+<details markdown="1">
+<summary>회원가입시 유효하지 않은 정보를 입력했을때</summary>
+
+![스크린샷 2023-04-07 오후 5.01.51](https://raw.githubusercontent.com/CDBchan/Typora-img/main/img/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202023-04-07%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%205.01.51.png)
+
+</details>
+
+<details markdown="1">
+<summary>회원가입시 중복된 id를 입력했을때 </summary>
+
+![스크린샷 2023-04-07 오후 4.58.22](https://raw.githubusercontent.com/CDBchan/Typora-img/main/img/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202023-04-07%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%204.58.22.png)
+
+</details>
+
+<details markdown="1">
+<summary>회원수정시 비밀번호를 잘못 입력했을때 </summary>
+
+![스크린샷 2023-04-07 오후 4.58.47](https://raw.githubusercontent.com/CDBchan/Typora-img/main/img/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202023-04-07%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%204.58.47.png)
+
+</details>
+
+<details markdown="1">
+<summary>존재하지 않는 user의 profile을 보는 시도를 했을때 </summary>
+
+![스크린샷 2023-04-07 오후 5.41.26](https://raw.githubusercontent.com/CDBchan/Typora-img/main/img/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202023-04-07%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%205.41.26.png)
 
 </details>
