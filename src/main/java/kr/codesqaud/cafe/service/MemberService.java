@@ -51,26 +51,26 @@ public class MemberService {
             .collect(Collectors.toUnmodifiableList());
     }
 
-    public void update(ProfileEditRequest profileUpdateRequest) {
-        Member findMember = memberRepository.findById(profileUpdateRequest.getId())
+    public void update(ProfileEditRequest profileEditRequest) {
+        Member findMember = memberRepository.findById(profileEditRequest.getId())
             .orElseThrow(MemberNotFoundException::new);
-        validateDuplicateEmail(profileUpdateRequest);
-        validateNotMatchPassword(profileUpdateRequest, findMember);
-        memberRepository.update(profileUpdateRequest.toMember(findMember.getCreateDate()));
+        validateDuplicateEmail(profileEditRequest);
+        validateNotMatchPassword(profileEditRequest, findMember);
+        memberRepository.update(profileEditRequest.toMember(findMember.getCreateDate()));
     }
 
-    private void validateDuplicateEmail(ProfileEditRequest profileUpdateRequest) {
-        memberRepository.findByEmail(profileUpdateRequest.getEmail())
+    private void validateDuplicateEmail(ProfileEditRequest profileEditRequest) {
+        memberRepository.findByEmail(profileEditRequest.getEmail())
             .ifPresent(m -> {
-                if (!m.equalsId(profileUpdateRequest.getId())) {
-                    throw new DuplicateMemberEmailException("member/profileEdit", profileUpdateRequest);
+                if (!m.equalsId(profileEditRequest.getId())) {
+                    throw new DuplicateMemberEmailException("member/profileEdit", profileEditRequest);
                 }
             });
     }
 
-    private void validateNotMatchPassword(ProfileEditRequest profileUpdateRequest, Member member) {
-        if (!member.equalsPassword(profileUpdateRequest.getPassword())) {
-            throw new NotMatchMemberPassword("member/profileEdit", profileUpdateRequest);
+    private void validateNotMatchPassword(ProfileEditRequest profileEditRequest, Member member) {
+        if (!member.equalsPassword(profileEditRequest.getPassword())) {
+            throw new NotMatchMemberPassword("member/profileEdit", profileEditRequest);
         }
     }
 }

@@ -3,9 +3,12 @@ package kr.codesqaud.cafe.service;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.Optional;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
@@ -13,42 +16,36 @@ import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
 
-    @Autowired
+    @InjectMocks
     private MemberService memberService;
 
-    @Autowired
+    @Mock
     private MemberRepository memberRepository;
-
-    @BeforeEach
-    void beforeEah() {
-        memberRepository.deleteAll();
-    }
 
     @DisplayName("회원 저장 성공")
     @Test
     void create() {
         // given
         SignUpRequest signUpRequest = createRequestDummy();
+        given(memberRepository.save(any())).willReturn(1L);
+        given(memberRepository.findByEmail(signUpRequest.getEmail()))
+            .willReturn(Optional.empty());
 
         // when
         Long savedId = memberService.signUp(signUpRequest);
 
         // then
-        Member findMember = memberRepository.findById(savedId).orElseThrow();
-        assertAll(
-            () -> assertEquals(savedId, findMember.getId()),
-            () -> assertEquals(signUpRequest.getEmail(), findMember.getEmail()),
-            () -> assertEquals(signUpRequest.getPassword(), findMember.getPassword()),
-            () -> assertEquals(signUpRequest.getNickName(), findMember.getNickName()));
+        assertEquals(1L, savedId);
     }
 
     @DisplayName("회원 저장시 이메일이 중복인 경우 실패")
@@ -56,7 +53,8 @@ class MemberServiceTest {
     void createFalse2() {
         // given
         SignUpRequest signUpRequest = createRequestDummy2();
-        memberService.signUp(signUpRequest);
+        Member member = signUpRequest.toMember().createWithId(1L);
+        given(memberRepository.findByEmail(any())).willReturn(Optional.of(member));
 
         // when
 
@@ -70,8 +68,10 @@ class MemberServiceTest {
     @Test
     void findById() {
         // given
+        Long savedId = 1L;
         SignUpRequest memberCreateRequest = createRequestDummy2();
-        Long savedId = memberService.signUp(memberCreateRequest);
+        given(memberRepository.findById(any()))
+            .willReturn(Optional.of(memberCreateRequest.toMember().createWithId(savedId)));
 
         // when
         MemberResponse memberResponse = memberService.findById(savedId);
@@ -81,70 +81,66 @@ class MemberServiceTest {
             () -> assertEquals(savedId, memberResponse.getId()),
             () -> assertEquals(memberCreateRequest.getEmail(), memberResponse.getEmail()),
             () -> assertEquals(memberCreateRequest.getNickName(), memberResponse.getNickName()),
-            () -> assertEquals(memberCreateRequest.getCreateDate(), memberResponse.getCreateDate()));
+            () -> assertEquals(memberCreateRequest.getCreateDate(),
+                memberResponse.getCreateDate()));
     }
 
     @DisplayName("회원 단건 조회 실패")
     @Test
     void findByIdFalse() {
         // given
+        given(memberRepository.findById(any())).willThrow(MemberNotFoundException.class);
 
         // then
 
         // when
         assertThrows(MemberNotFoundException.class,
-            () -> memberService.findById(1));
+            () -> memberService.findById(1L));
     }
 
     @DisplayName("모든 회원 조회 성공")
     @Test
     void findAll() {
         // given
-        int memberCount = 10;
-        IntStream.rangeClosed(1, memberCount)
-            .forEach(index -> {
-                String email = String.format("test%d@gmail.com", index);
-                String password = String.format("Test123%d", index);
-                String nickName = String.format("mandu%d", index);
-                memberService.signUp(new SignUpRequest(email, password, nickName));
-            });
+        Member member = createRequestDummy().toMember().createWithId(1L);
+        Member member2 = createRequestDummy2().toMember().createWithId(2L);
+        given(memberRepository.findAll()).willReturn(List.of(member, member2));
 
         // when
         List<MemberResponse> findAll = memberService.findAll();
 
         // then
-        assertEquals(memberCount, findAll.size());
+        assertEquals(2, findAll.size());
     }
 
     @DisplayName("회원 정보 수정 성공")
     @Test
     void update() {
         // given
-        Long savedId = memberService.signUp(createRequestDummy());
-
-        String updateEmail = "mandu@gmail.com";
-        String updatePassword = "Test1234";
-        String updateNewPassword = "Mandu1234";
-        String updateNickName = "mandu";
-        ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(savedId, updateEmail
-            , updatePassword, updateNewPassword, updateNickName);
+        ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(1L, "mandu@gmail.com"
+            , "Test1234", "Mandu1234", "mandu");
+        given(memberRepository.findById(any()))
+            .willReturn(Optional.of(createRequestDummy().toMember().createWithId(1L)))
+            .willReturn(Optional.of(memberUpdateRequest.toMember(LocalDateTime.now())));
+        given(memberRepository.findByEmail(any())).willReturn(Optional.empty());
 
         // when
         memberService.update(memberUpdateRequest);
 
         // then
-        Member findMember = memberRepository.findById(savedId).orElseThrow();
+        Member findMember = memberRepository.findById(1L).orElseThrow();
         assertAll(
-            () -> assertEquals(savedId, findMember.getId()),
-            () -> assertEquals(updateEmail, findMember.getEmail()),
-            () -> assertEquals(updateNewPassword, findMember.getPassword()),
-            () -> assertEquals(updateNickName, findMember.getNickName()));
+            () -> assertEquals(memberUpdateRequest.getId(), findMember.getId()),
+            () -> assertEquals(memberUpdateRequest.getEmail(), findMember.getEmail()),
+            () -> assertEquals(memberUpdateRequest.getNewPassword(), findMember.getPassword()),
+            () -> assertEquals(memberUpdateRequest.getNickName(), findMember.getNickName()));
     }
 
     @DisplayName("회원 정보 수정시 수정할 멤버가 없는 경우 실패")
     @Test
     void updateFalse() {
         // given
+        given(memberRepository.findById(any())).willReturn(Optional.empty());
 
         // when
 
@@ -158,12 +154,12 @@ class MemberServiceTest {
     @Test
     void updateFalse2() {
         // given
-        SignUpRequest memberCreateRequest = createRequestDummy();
-        memberService.signUp(memberCreateRequest);
-        Long savedId2 = memberService.signUp(createRequestDummy2());
-        ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(savedId2,
-            memberCreateRequest.getEmail(),
-            "Mandu1234", "Mandu7777", "updateMandu");
+        given(memberRepository.findById(any()))
+            .willReturn(Optional.of(createRequestDummy().toMember().createWithId(1L)));
+        given(memberRepository.findByEmail(createRequestDummy2().getEmail()))
+            .willReturn(Optional.of(createRequestDummy2().toMember().createWithId(2L)));
+        ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(1L,
+            createRequestDummy2().getEmail(), "Mandu1234", "Mandu7777", "updateMandu");
 
         // when
 
@@ -171,7 +167,6 @@ class MemberServiceTest {
         assertThrows(DuplicateMemberEmailException.class,
             () -> memberService.update(memberUpdateRequest));
     }
-
 
     private SignUpRequest createRequestDummy() {
         String email = "test@naver.com";
