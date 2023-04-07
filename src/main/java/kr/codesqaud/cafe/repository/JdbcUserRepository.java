@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.exception.DuplicatedUserIdException;
 
 @Repository
 public class JdbcUserRepository implements UserRepository {
@@ -19,6 +20,9 @@ public class JdbcUserRepository implements UserRepository {
 
 	@Override
 	public void save(User user) {
+		findUserProfile(user.getUserId()).ifPresent(u -> {
+			throw new DuplicatedUserIdException();
+		});
 		jdbcTemplate.update("INSERT INTO user_account(user_id, name, email) values (?, ?, ?)",
 			user.getUserId(),
 			user.getName(),
