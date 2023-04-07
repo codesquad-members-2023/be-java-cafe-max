@@ -8,15 +8,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private final Map<String, User> userRepository = new ConcurrentHashMap<>();
-    private static long sequence = 0L;
+    private static final Map<String, User> userRepository = new ConcurrentHashMap<>();
+    private static final AtomicLong sequence = new AtomicLong(0L);
 
     @Override
     public User save(User user) {
-        user.setId(++sequence);
+        long newId = sequence.incrementAndGet();
+        user.setId(newId);
         userRepository.put(user.getUserId(), user);
         return user;
     }
@@ -42,10 +44,4 @@ public class MemoryUserRepository implements UserRepository {
     public void update(User user) {
         userRepository.put(user.getUserId(), user);
     }
-
-
-    public void clearRepository() {
-        userRepository.clear();
-    }
-
 }
