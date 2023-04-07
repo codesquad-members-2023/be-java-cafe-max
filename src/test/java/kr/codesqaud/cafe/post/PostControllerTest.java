@@ -21,12 +21,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class PostControllerTest {
 
-    public static final String NICKNAME = "nickname";
-    public static final String TITLE = "title";
-    public static final String TEXT_CONTENT = "textContent";
-    public static final String JACK = "jack";
-    public static final String TEST_TITLE = "testTitle";
-    public static final String TEST_CONTENT = "testContent";
+    private static final String NICKNAME = "nickname";
+    private static final String TITLE = "title";
+    private static final String TEXT_CONTENT = "textContent";
+    private static final String JACK = "jack";
+    private static final String TEST_TITLE = "testTitle";
+    private static final String TEST_CONTENT = "testContent";
+
     @Autowired
     MockMvc mockMvc;
 

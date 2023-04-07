@@ -22,18 +22,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 class UserControllerTest {
-    public static final String JACK_EMAIL = "jack@email.com";
-    public static final String JACK_PASSWORD = "123456789a";
-    public static final String JACK = "jack";
-    public static final String JERRY_EMAIL = "jerry@email.com";
-    public static final String JERRY = "jerry";
-    public static final String EMAIL = "email";
-    public static final String PASSWORD = "password";
-    public static final String NICKNAME = "nickname";
-    public static final String USER_ID = "userId";
-    public static final String PROFILE_SETTING_FORM = "profileSettingForm";
-    public static final String PROFILE_FORM = "profileForm";
-    public static final String JOIN_FORM = "joinForm";
+    private static final String JACK_EMAIL = "jack@email.com";
+    private static final String JACK_PASSWORD = "123456789a";
+    private static final String JACK = "jack";
+    private static final String JERRY_EMAIL = "jerry@email.com";
+    private static final String JERRY = "jerry";
+    private static final String EMAIL = "email";
+    private static final String PASSWORD = "password";
+    private static final String NICKNAME = "nickname";
+    private static final String USER_ID = "userId";
+    private static final String PROFILE_SETTING_FORM = "profileSettingForm";
+    private static final String PROFILE_FORM = "profileForm";
+    private static final String JOIN_FORM = "joinForm";
 
     @Autowired
     MockMvc mockMvc;
