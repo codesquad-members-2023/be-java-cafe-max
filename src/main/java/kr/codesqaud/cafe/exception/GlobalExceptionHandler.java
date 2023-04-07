@@ -11,6 +11,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DuplicateKeyException.class)
     public String duplicateKeyExceptionHandler() {
-        return "/user/form_failed";
+        return "user/form_failed";
     }
 }
