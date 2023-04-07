@@ -2,13 +2,13 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.UserDto;
 import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
+import kr.codesqaud.cafe.controller.dto.request.ProfileEditRequest;
 import kr.codesqaud.cafe.repository.UserRepository;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +33,7 @@ public class UserService {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
     }
+
     public List<UserDto> getUsers() {
         return userRepository.findAll()
                 .stream()
@@ -46,5 +47,18 @@ public class UserService {
 
     public User findByUserId(String userId) {
         return userRepository.findByName(userId).get();
+    }
+
+    public void editUserProfile(final String userId, final ProfileEditRequest request) {
+        User savedUser = userRepository.findByUserId(userId).get();
+        boolean isPasswordTrue = validatePassword(savedUser, request.getOriginalPassword());
+        if(isPasswordTrue){
+            savedUser.editProfile(request.getNewPassword(), request.getUserName(), request.getUserEmail());
+            userRepository.update(savedUser);
+        }
+    }
+
+    public boolean validatePassword(User user, String password) {
+        return user.isSamePassword(password);
     }
 }
