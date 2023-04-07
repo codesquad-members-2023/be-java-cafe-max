@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-@Repository
 public class MemoryUserRepository implements UserRepository {
     private static final Map<Long, User> store = new ConcurrentHashMap<>(); // (회원번호, User)
     private static final AtomicLong customerId = new AtomicLong(0);
