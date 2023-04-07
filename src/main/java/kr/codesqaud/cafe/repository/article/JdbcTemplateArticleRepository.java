@@ -64,7 +64,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(Long id) {
-        String sql = "select * from articles where id = :id";
+        String sql = "select ID, WRITER, TITLE, CONTENTS, CURRENTTIME from ARTICLES where ID = :id";
 
         try {
             Map<String, Object> param = Map.of("id", id);
@@ -81,11 +81,12 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select * from articles";
+        String sql = "select ID, WRITER, TITLE, CONTENTS, CURRENTTIME from ARTICLES";
         return template.query(sql, articleRowMapper());
 //        return jdbcTemplate.query("select * from articles", articleRowMapper());
     }
 
+    // TODO: 필드 or 메서드
     private RowMapper<Article> articleRowMapper() {
         return BeanPropertyRowMapper.newInstance(Article.class);
 //        return (rs, rowNum) -> {

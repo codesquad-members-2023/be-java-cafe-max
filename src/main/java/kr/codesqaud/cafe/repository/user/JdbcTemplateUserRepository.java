@@ -52,7 +52,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-        String sql = "select * from users where id = :id";
+        String sql = "select ID, USERID, PASSWORD, NAME, EMAIL from USERS where ID = :id";
 
         try {
             Map<String, Object> param = Map.of("id", id);
@@ -69,7 +69,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        String sql = "select * from users where userId = :userId";
+        String sql = "select ID, USERID, PASSWORD, NAME, EMAIL from USERS where USERID = :userId";
 
         try {
             Map<String, Object> param = Map.of("userId", userId);
@@ -94,9 +94,9 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public void update(Long id, User updateUser) {
-        String sql = "update users " +
-                "set password=:password, name=:name, email=:email " +
-                "where id=:id";
+        String sql = "update USERS " +
+                "set PASSWORD=:password, NAME=:name, EMAIL=:email " +
+                "where ID=:id";
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("password", updateUser.getPassword())
