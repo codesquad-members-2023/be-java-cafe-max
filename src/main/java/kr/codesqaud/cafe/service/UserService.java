@@ -27,6 +27,13 @@ public class UserService {
         userRepository.join(user);
     }
 
+    public void modify(final long id, final UserReadDTO userReadDTO) {
+        User originUser = userRepository.findById(id).orElse(null);
+        originUser.setName(userReadDTO.getName());
+        originUser.setEmail(userReadDTO.getEmail());
+        userRepository.update(originUser);
+    }
+
     public UserReadDTO findOne(final long id) {
         Optional<User> wantedUser = userRepository.findById(id);
         return wantedUser.map(UserReadDTO::toUserReadDTO).orElse(null);

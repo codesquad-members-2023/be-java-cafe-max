@@ -7,7 +7,10 @@ import java.util.Optional;
 
 public interface UserRepository {
     void join(final User user);
+
+    void update(final User user);
+
     Optional<User> findById(final long id);
-    Optional<User> findByName(final String name);
+
     List<User> findAll();
 }

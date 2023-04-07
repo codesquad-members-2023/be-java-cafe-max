@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.controller.dto.UserJoinDTO;
 import kr.codesqaud.cafe.controller.dto.UserReadDTO;
 import kr.codesqaud.cafe.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired //todo : 의존성 주입 시 생략 가능?
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -42,9 +40,22 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public String profileFrom(@PathVariable final long id, final Model model) {
+    public String profileForm(@PathVariable final long id, final Model model) {
         UserReadDTO wantedUser = userService.findOne(id);
         model.addAttribute("wantedUser", wantedUser);
         return "user/profile";
+    }
+
+    @GetMapping("/users/modify/{id}")
+    public String modifyProfileForm(@PathVariable final long id, final Model model) {
+        UserReadDTO wantedUser = userService.findOne(id);
+        model.addAttribute("userReadDTO", wantedUser);
+        return "user/modifyProfile";
+    }
+
+    @PostMapping("/users/modify/{id}")
+    public String modifyProfile(@PathVariable final long id, final UserReadDTO userReadDTO) {
+        userService.modify(id, userReadDTO);
+        return "redirect:/users/" + id;
     }
 }

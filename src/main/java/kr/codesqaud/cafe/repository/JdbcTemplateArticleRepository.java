@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 
+//todo : JdbcTemplate vs NamedParameterJdbcTemplate 비교해보기
 @Repository
 public class JdbcTemplateArticleRepository implements ArticleRepository {
 
@@ -54,8 +55,6 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 //        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(articleParameters));
 //        article.setId(key.longValue());
 
-
-    //todo : sully 코드 보기
     @Override
     public void update(Article updateArticle) {
         String sql = "UPDATE ARTICLE_TB SET TITLE = :TITLE, CONTENT = :CONTENT WHERE ID = :ID";
