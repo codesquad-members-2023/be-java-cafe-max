@@ -6,10 +6,9 @@ import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class ArticleController {
@@ -21,29 +20,17 @@ public class ArticleController {
         this.articleRepository = articleMemoryRepository;
     }
 
-    @GetMapping("/qna/write")
-    public String write(){
-        return "qna/form";
-    }
-
-    @PostMapping("/qna/write")
+    @RequestMapping("/qna/write")
     public String create(
-            @RequestParam("writer") String writer,
-            @RequestParam("title") String title,
-            @RequestParam("contents") String contents,
-            Model model
+            HttpServletRequest request,
+            @ModelAttribute Article article
     ){
-        Article article = new Article();
+        if("POST".equals(request.getMethod())) {
+            articleRepository.save(article);
+            return "redirect:/";
+        }
 
-        article.setWriter(writer);
-        article.setTitle(title);
-        article.setContents(contents);
-
-        articleRepository.save(article);
-
-        model.addAttribute("article", article);
-
-        return "redirect:/";
+        return "qna/form";
     }
 
     @GetMapping("/")
