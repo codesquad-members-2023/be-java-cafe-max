@@ -36,9 +36,9 @@ class ArticleServiceTest {
     @DisplayName("article 조회 성공 테스트")
     void getArticleList_success_test(){
         //given
-        articleService.post(new ArticleDTO("title","content",null));
-        articleService.post(new ArticleDTO("title","content",null));
-        articleService.post(new ArticleDTO("title","content",null));
+        articleService.post(new ArticleDTO("title","content",null,null));
+        articleService.post(new ArticleDTO("title","content",null,null));
+        articleService.post(new ArticleDTO("title","content",null,null));
 
         //when & then
         assertThat(articleService.getArticleList().size() == 3).isTrue();
@@ -48,9 +48,9 @@ class ArticleServiceTest {
     @DisplayName("article 조회 실패 테스트")
     void getArticleList_fail_test(){
         //given
-        articleService.post(new ArticleDTO("title","content",null));
-        articleService.post(new ArticleDTO("title","content",null));
-        articleService.post(new ArticleDTO("title","content",null));
+        articleService.post(new ArticleDTO("title","content",null,null));
+        articleService.post(new ArticleDTO("title","content",null,null));
+        articleService.post(new ArticleDTO("title","content",null,null));
 
         //when & then
         assertThat(articleService.getArticleList().size() == 4).isFalse();
