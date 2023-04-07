@@ -28,7 +28,7 @@ JDBC URL : jdbc:h2:~/spring-qna-db (jdbc:h2:~/test로 입력시 not found 에러
 application.properties의 spring.datasource.url와 일치해야 함!
 
 ## 문제 해결
-1. schema.sql, data.sql 경로 에러
+### 1. schema.sql, data.sql 경로 에러
 
 ➡️ application.properties에 경로 추가!
 > 의존성 추가에 Implementation으로 했다면 초기화할 schema.sql, data.sql 경로를 입력해야 한다. (runtimeOnly로 설정시 필요 없음)
@@ -38,26 +38,26 @@ spring.sql.init.schema-locations=classpath:schema.sql
 spring.sql.init.data-locations=classpath:data.sql
 ```
 
-2. CREATE TABLE user 에러 발생
+### 2. CREATE TABLE user 에러 발생
 
 user는 h2 데이터베이스 예약어이기 때문에 식별자(identifier)로 사용될 수 없다.
 
  ➡️ 1) user를 "user"로 변경하기 or 2) user를 users로 변경하기
  ➡️ 특정 데이터베이스에서는 "name"도 식별자로 사용! 주의하기
- 
-3. data.sql 파일을 실행 실패 에러
+
+### 3. data.sql 파일을 실행 실패 에러
 
 'script' must not be null or empty
 
 ➡️ 1) data.sql에 코드 추가 or 2) data.sql 파일 삭제
 
-4. CREATE TABLE users 에러 발생
+### 4. CREATE TABLE users 에러 발생
 
 'schema.sql' 파일을 실행하여 'user' 테이블이 이미 생성되었다. 'user' 테이블을 다시 생성하려고 시도하면 이미 존재하기 때문에 에러가 발생했다.
 
 ➡️ DROP TABLE IF EXISTS "user"; CREATE TABLE "user"으로 변경!
 
-5. 프로그램이 꺼져도 데이터베이스 유지하기!
+### 5. 프로그램이 꺼져도 데이터베이스 유지하기!
 
  * schema.sql 내용 변경
  ```
@@ -69,7 +69,7 @@ user는 h2 데이터베이스 예약어이기 때문에 식별자(identifier)로
  ```
  * data.sql 삭제, application.properties의 경로 삭제 
 
-6. 홈 화면에서 게시글 클릭 시 url 에러 발생
+### 6. 홈 화면에서 게시글 클릭 시 url 에러 발생
 
 ```
 http://localhost:8080/articles/{id} // 기대하는 결과
@@ -91,7 +91,7 @@ private RowMapper<Article> articleRowMapper() {
     }
 ```
 
-7. JdbcArticleRepository의 save() 간략화하기
+### 7. JdbcArticleRepository의 save() 간략화하기
 
 id를 auto_increment로 설정해 놔서 저장 시 keyHolder를 사용할 필요가 없다!
 ➡️ 변경 전 코드
@@ -122,7 +122,7 @@ public Article save(Article article) {
     }
 ```
 
-8. Article 시간 설정 문제 
+### 8. Article 시간 설정 문제 
 
 Article 생성자에 있는 this.createdTime = LocalDateTime.now(); 때문에 글 작성 시간이 변경되는 문제 발생!
 ➡️ Article에 setCreatedTime 메서드를 추가하고,

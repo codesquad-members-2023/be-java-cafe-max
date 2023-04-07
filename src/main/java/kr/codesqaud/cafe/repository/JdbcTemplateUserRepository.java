@@ -50,7 +50,10 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
-            User user = new User(rs.getString("userId"),rs.getString("password"),rs.getString("name"),rs.getString("email"));
+            User user = new User(rs.getString("userId"),
+                    rs.getString("password"),
+                    rs.getString("name"),
+                    rs.getString("email"));
             return user;
         };
     }
