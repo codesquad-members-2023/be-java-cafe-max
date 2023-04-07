@@ -10,20 +10,16 @@ import java.util.List;
 @Controller
 public class MainController {
 
-    private static final String SIMPLE_FORMS = "simpleForms";
-    private final PostRepository postRepository;
     private final PostService postService;
 
-    public MainController(PostRepository postRepository, PostService postService) {
-        this.postRepository = postRepository;
+    public MainController(PostService postService) {
         this.postService = postService;
     }
 
     @GetMapping
     public String showMainPage(Model model) {
-        List<Post> posts = postRepository.getAllPosts();
-        List<SimplePostForm> simpleForms = postService.mappingSimpleForm(posts);
-        model.addAttribute(SIMPLE_FORMS, simpleForms);
+        List<SimplePostForm> simpleForms = postService.getAllPosts();
+        model.addAttribute("simpleForms",simpleForms);
         return "index";
     }
 

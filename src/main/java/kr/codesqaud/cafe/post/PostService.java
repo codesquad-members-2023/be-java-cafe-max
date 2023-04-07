@@ -28,11 +28,6 @@ public class PostService {
         return findById(saveId);
     }
 
-    public List<SimplePostForm> mappingSimpleForm(List<Post> posts) {
-        return posts.stream()
-                .map(SimplePostForm::from)
-                .collect(Collectors.toList());
-    }
 
     public Post findById(int postId) {
 
@@ -42,5 +37,11 @@ public class PostService {
             throw new InvalidPostIdFailedException(ErrorCode.INVALID_POST_ID_CODE);
         }
         return optionalPost.get();
+    }
+
+    public List<SimplePostForm> getAllPosts() {
+        return postRepository.getAllPosts().stream()
+                .map(SimplePostForm::from)
+                .collect(Collectors.toList());
     }
 }
