@@ -52,6 +52,12 @@ public class User {
         return this.password.equals(password);
     }
 
+    public void editProfile(final String password, final String userName, final String userEmail) {
+        this.password = password;
+        this.userName = userName;
+        this.userEmail = userEmail;
+    }
+
     @Override
     public String toString() {
         return "User{" +
