@@ -26,7 +26,8 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(Exception.class)
-	public String handleAllException(final Exception e) {
-		return "에러!";
+	public String handleAllException(final Exception e, final Model model) {
+		model.addAttribute("error", "죄송합니다. 서버 에러가 발생했습니다.");
+		return "error";
 	}
 }
