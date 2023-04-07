@@ -36,10 +36,10 @@ class PostRepositoryTest {
     @Test
     void save() {
         // given
-        saveMember();
+        Long savedMemberId = saveMember();
 
         // when
-        Long savedId = postRepository.save(postDummy());
+        Long savedId = postRepository.save(postDummy(savedMemberId));
 
         // then
         Optional<Post> findPost = postRepository.findById(savedId);
@@ -52,8 +52,8 @@ class PostRepositoryTest {
     @Test
     void findById() {
         // given
-        saveMember();
-        Post post = postDummy();
+        Long savedMemberId = saveMember();
+        Post post = postDummy(savedMemberId);
         Long savedId = postRepository.save(post);
 
         // when
@@ -73,13 +73,13 @@ class PostRepositoryTest {
     @Test
     void findAll() {
         // given
-        saveMember();
+        Long savedMemberId = saveMember();
         int postCount = 5;
         IntStream.rangeClosed(1, postCount)
             .forEach(index -> {
                     String title = String.format("제목%d", index);
                     String content = String.format("내용%d", index);
-                    postRepository.save(new Post(null, title, content, 1L,
+                    postRepository.save(new Post(null, title, content, savedMemberId,
                         LocalDateTime.now(), (long) index));
             });
 
@@ -94,8 +94,8 @@ class PostRepositoryTest {
     @Test
     void update() {
         // given
-        saveMember();
-        Post post = postDummy();
+        Long savedMemberId = saveMember();
+        Post post = postDummy(savedMemberId);
         Long savedId = postRepository.save(post);
         Post updatePost = new Post(savedId, "업데이트", "업데이트 내용", post.getWriterId(),
             post.getWriteDate(), 0L);
@@ -114,15 +114,13 @@ class PostRepositoryTest {
             () -> assertEquals(updatePost.getViews(), findPost.getViews()));
     }
 
-    private Post postDummy() {
-        return new Post(null, "제목", "내용", 1L,
+    private Post postDummy(Long writerId) {
+        return new Post(null, "제목", "내용", writerId,
             LocalDateTime.now(), 0L);
     }
 
-    private void saveMember() {
-        memberRepository.save(new Member(null, "test@naver.com", "Test1234",
+    private Long saveMember() {
+        return memberRepository.save(new Member(null, "test@naver.com", "Test1234",
             "만두", LocalDateTime.now()));
-        memberRepository.save(new Member(null, "test2@naver.com", "Test1234",
-            "만두2", LocalDateTime.now()));
     }
 }
