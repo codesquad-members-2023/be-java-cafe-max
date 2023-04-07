@@ -1,13 +1,11 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
-import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.controller.dto.request.ProfileEditRequest;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 //@RequestMapping("/users")
@@ -51,9 +49,9 @@ public class UserController {
         return "user/edit_form";
     }
 
-//    @PutMapping("/users/{userId}")
-//    public String editUserProfile(@PathVariable final String userId, @ModelAttribute final ProfileEditRequest request) {
-//        userService.editUserProfile(userId, request);
-//        return "redirect:/users";
-//    }
+    @PutMapping("/users/{userId}")//리소스 수정
+    public String editUserProfile(@PathVariable final String userId, @ModelAttribute final ProfileEditRequest request) {
+        userService.editUserProfile(userId, request);
+        return "redirect:/users";
+    }
 }
