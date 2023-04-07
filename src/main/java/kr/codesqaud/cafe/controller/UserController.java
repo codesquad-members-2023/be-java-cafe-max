@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-//@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
@@ -16,12 +15,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/form")
-    public String showJoinForm(){
+    @GetMapping("/create-user-form")
+    public String showJoinForm() {
         return "user/form";
     }
-    @GetMapping("/user/login")
-    public String showLoginForm(){
+
+    @GetMapping("/login-user-form")
+    public String showLoginForm() {
         return "user/login";
     }
 
