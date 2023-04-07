@@ -36,6 +36,9 @@
 |GET|/users/{userId}/form| 회원 정보 수정 화면 출력|
 |PUT|/users/{userId}/update| 회원 정보 수정|
 
+## 배포 url
+[codesquad_cafe](http://52.79.232.139:8080/)
+- step1만 배포된 상태
 
 
 ## 동작 화면

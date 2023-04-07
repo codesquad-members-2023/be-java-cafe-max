@@ -51,11 +51,11 @@
 - [x] step2 Service, Controller, Repository test 하기
   - article, user
   - article의 LocalDateTime.now() 를 테스트하기가 어려워 ArticleService test는 남겨두었다.
-- [ ] 리드미 및 학습한 내용 작성
+- [x] 리드미 및 학습한 내용 작성
 
 ### 페어 리뷰
 UserService에서 업데이트 할 때 Repository에 update 메서드를 구현하지 말고 바로 save 메서드를 사용하는 것이 좋을 것 같다.
 
 ## 2023.04.07(금)
-- [ ] 배포
-- [ ] 리드미 및 학습 정리
+- [x] 배포
+- [x] 리드미 및 학습 정리
