@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository{
@@ -24,11 +23,10 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public Article save(Article article) {
-        SimpleJdbcInsert  jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("users_squad").usingGeneratedKeyColumns("id");
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("articles_squad").usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("id", article.getId());
         parameters.put("writer", article.getWriter());
         parameters.put("title", article.getTitle());
         parameters.put("contents", article.getContents());
