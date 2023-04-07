@@ -80,7 +80,7 @@ public class UserController {
             loggingError(bindingResult);
             return "account/join";
         }
-        int userId = userService.saveNewUser(joinForm);
+        int userId = userService.save(joinForm);
         return "redirect:/users/" + userId;
     }
 
