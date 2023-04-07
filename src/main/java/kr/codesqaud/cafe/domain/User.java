@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.domain;
 
 import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.controller.dto.UserListDTO;
+import kr.codesqaud.cafe.util.DateUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +32,7 @@ public class User {
     }
 
     public String setDate(){
-        Date date = new Date();
+        DateUtil date = new DateUtil();
         return date.getDate();
     }
 

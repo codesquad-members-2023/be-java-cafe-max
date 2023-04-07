@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDTO;
+import kr.codesqaud.cafe.util.DateUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +27,7 @@ public class Article {
     }
 
     public String setDate(){
-        Date date = new Date();
+        DateUtil date = new DateUtil();
         return date.getDate();
     }
 

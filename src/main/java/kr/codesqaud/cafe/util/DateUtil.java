@@ -1,13 +1,13 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.util;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Date {
+public class DateUtil {
 
     private String date;
 
-    public Date() {
+    public DateUtil() {
         this.date = setDate();
     }
 
