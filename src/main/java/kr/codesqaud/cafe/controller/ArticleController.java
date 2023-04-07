@@ -22,8 +22,8 @@ public class ArticleController {
     }
 
     @PostMapping("/questions/post")
-    // ArticleForm: 이러면 검증을 위한 dto인가??
     public String addArticle(@Validated ArticleForm form) {
+        // TODO: 컨트롤러에서 도메인에 dto를 넣지 않는 방법으로 재구현 필요
         Article article = new Article(form);
         articleService.add(article);
         return "redirect:/";
@@ -31,6 +31,7 @@ public class ArticleController {
 
     @GetMapping("/")
     public String addArticles(Model model) {
+        // 현재 시작을 가져오는 목적(now 메서드)으로 DTO 사용
         List<ArticleTimeForm> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         return "index";

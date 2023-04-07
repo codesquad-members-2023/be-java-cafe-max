@@ -14,6 +14,7 @@ public class Article {
     public Article() {
     }
 
+    // TODO: DTO를 domain에 생성자로 넣어주는 것은 좋지 않기 때문에 수정 예정
     public Article(ArticleForm form) {
         this.writer = form.getWriter();
         this.title = form.getTitle();

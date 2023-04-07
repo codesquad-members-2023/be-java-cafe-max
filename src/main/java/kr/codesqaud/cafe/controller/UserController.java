@@ -24,6 +24,7 @@ public class UserController {
 
     @PostMapping("/user/create")
     public String create(@Validated UserForm form) {
+        // TODO: 컨트롤러에서 도메인에 DTO를 넣지 않는 방법으로 재구현
         User user = new User(form);
         userService.join(user);
         return "redirect:/users/" + user.getId();
@@ -31,6 +32,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String findList(Model model) {
+        // 회원 정보를 다 넘겨주고 th:each문으로 전체를 출력 (DTO 사용 X)
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
@@ -40,6 +42,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String findProfile(@PathVariable Long id, Model model) {
+        // DTO 사용으로 프로필 정보만 호출
         UserProfileForm profile = userService.findProfile(id);
         model.addAttribute("profile", profile);
         return "user/profile";
@@ -49,6 +52,7 @@ public class UserController {
 
     @GetMapping("/users/update/{id}")
     public String getUpdate(@PathVariable Long id, Model model) {
+        // DTO 사용으로 업데이트 정보만 호출
         UserUpdateForm user = userService.findUpdate(id);
         model.addAttribute("userUpdated", user);
         return "user/updateForm";

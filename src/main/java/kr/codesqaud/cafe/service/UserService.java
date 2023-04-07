@@ -12,12 +12,16 @@ import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
+    // 서비스는 컨트롤러에서 DTO를 받아서 레포지토리에 domain으로 넘겨주는 역할
+    // 위와 같이 이해했습니다.
+
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    // TODO: 매개변수가 DTO를 의존하도록 변경
     public User join(User user) {
         validateDuplicateUser(user);
         return userRepository.save(user);
@@ -26,7 +30,7 @@ public class UserService {
     private void validateDuplicateUser(User user) {
         userRepository.findByUserId(user.getUserId())
                 .ifPresent(u -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                    throw new IllegalStateException("userId가 이미 존재");
                 });
     }
 

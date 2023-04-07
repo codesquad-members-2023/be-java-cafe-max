@@ -17,6 +17,9 @@ import java.util.Optional;
 
 @Repository
 public class JdbcTemplateArticleRepository implements ArticleRepository {
+    // 원래는 JdbcTemplate을 사용했지만
+    // NamedParameterJdbcTemplate와 SimpleJdbcInsert을 동시에 사용하도록 변경
+    // 이전 코드는 주석으로 처리
     private final NamedParameterJdbcTemplate template;
     private final SimpleJdbcInsert simpleJdbcInsert;
 
@@ -86,9 +89,10 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 //        return jdbcTemplate.query("select * from articles", articleRowMapper());
     }
 
-    // TODO: 필드 or 메서드
+    // TODO: 이대로 메서드로 두는 것이 좋은지, 필드로 빼는 것이 좋은지 판단 후 재구현
     private RowMapper<Article> articleRowMapper() {
         return BeanPropertyRowMapper.newInstance(Article.class);
+
 //        return (rs, rowNum) -> {
 //            Article article = new Article();
 //            article.setId(rs.getLong("id"));

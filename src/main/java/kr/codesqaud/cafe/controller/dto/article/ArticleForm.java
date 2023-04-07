@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller.dto.article;
 
 import javax.validation.constraints.NotBlank;
 
+//
 public class ArticleForm {
     @NotBlank(message = "이름을 입력해 주세요")
     private String writer;
