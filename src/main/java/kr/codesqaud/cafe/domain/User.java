@@ -12,12 +12,14 @@ public class User {
     private String email;
     private String password;
     private String id;
+    private String date;
 
     public User(String nickName, String email, String password,String id) {
         this.nickName = nickName;
         this.email = email;
         this.password = password;
         this.id = id;
+        this.date = setDate();
     }
 
     public User(ResultSet rs) throws SQLException {
@@ -25,6 +27,16 @@ public class User {
         this.email = rs.getString("email");
         this.password = rs.getString("password");
         this.id = rs.getString("id");
+        this.date = rs.getString("date");
+    }
+
+    public String setDate(){
+        Date date = new Date();
+        return date.getDate();
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public String getNickName() {
@@ -47,7 +59,7 @@ public class User {
     }
 
     public UserListDTO toUserListDTO() {
-        return new UserListDTO(nickName,email,id);
+        return new UserListDTO(nickName,email,id,date);
     }
 
 }

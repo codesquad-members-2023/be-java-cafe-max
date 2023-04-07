@@ -55,7 +55,7 @@ function checkPasswordValidity(inputField) {
     passwordError.style.height = "auto";
     passwordError.style.fontSize = "5px";
     if (!passwordRegex.test(inputValue)) {
-        passwordError.textContent = "올바르지 않은 비밀번호 형식입니다. 소문자와 숫자를 조합해 8자 이상으로 입력해 주세요";
+        passwordError.textContent = "올바르지 않은 비밀번호 형식입니다. 영문자와 숫자를 조합해 8자 이상으로 입력해 주세요";
         passwordError.style.display = "inline";
     }else{
         passwordError.textContent = "";

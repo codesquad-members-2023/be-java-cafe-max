@@ -16,10 +16,13 @@ public class ArticleDTO {
 
     private Integer id;
 
-    public ArticleDTO(String title, String content,Integer id) {
+    private String date;
+
+    public ArticleDTO(String title, String content,Integer id,String date) {
         this.title = title;
         this.content = content;
         this.id = id;
+        this.date = date;
     }
     public Article toArticle(){
         return new Article(title,content);

@@ -6,12 +6,14 @@ CREATE TABLE "USER"
     id      VARCHAR(12) PRIMARY KEY NOT NULL,
     nickName VARCHAR(12) NOT NULL,
     email   VARCHAR(255) NOT NULL,
-    password   VARCHAR(255) NOT NULL
+    password   VARCHAR(255) NOT NULL,
+    date    VARCHAR(10) NOT NULL
 );
 
 CREATE TABLE ARTICLE
 (
     id      INTEGER PRIMARY KEY AUTO_INCREMENT,
     content VARCHAR(255) NOT NULL,
-    title   VARCHAR(255) NOT NULL
+    title   VARCHAR(3000) NOT NULL,
+    date    VARCHAR(10) NOT NULL
 );
