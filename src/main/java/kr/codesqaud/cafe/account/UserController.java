@@ -92,7 +92,7 @@ public class UserController {
         return "account/members";
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{userId}/profile")
     public String showUser(Model model, @PathVariable Long userId) {
         User user = userService.findById(userId);
         ProfileForm profileForm = ProfileForm.from(user);
@@ -102,7 +102,7 @@ public class UserController {
         return "account/profile";
     }
 
-    @GetMapping("/{userId}/update")
+    @GetMapping("/{userId}/profile/edit")
     public String showUserProfile(Model model, @PathVariable Long userId) {
         User user = userService.findById(userId);
         ProfileSettingForm profileSettingForm = ProfileSettingForm.from(user);
@@ -112,7 +112,7 @@ public class UserController {
         return "account/profileUpdate";
     }
 
-    @PutMapping("/{userId}/update")
+    @PutMapping("/{userId}/profile")
     public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, BindingResult bindingResult,
                                  @PathVariable Long userId
     ) {
