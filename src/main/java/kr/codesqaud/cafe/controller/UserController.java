@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String joinSuccess(Model model) {
+    public String showUsers(Model model) {
 
         model.addAttribute("users", memoryUserRepository.findAll());
 
