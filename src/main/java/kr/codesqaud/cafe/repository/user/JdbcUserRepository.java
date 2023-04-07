@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.repository.user;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -29,7 +28,7 @@ public class JdbcUserRepository implements UserRepository {
     public User findByUserId(String userId) {
         final String SQL = "SELECT * FROM users WHERE userId = :userId";
         return jdbcTemplate.queryForObject(SQL,
-                new MapSqlParameterSource().addValue("userId", userId),
+                Map.of("userId", userId),
                 BeanPropertyRowMapper.newInstance(User.class));
     }
 
@@ -43,7 +42,7 @@ public class JdbcUserRepository implements UserRepository {
     public boolean isExists(String userId) {
         final String SQL = "SELECT count(*) FROM users WHERE userId = :userId";
         final Integer count = jdbcTemplate.queryForObject(SQL,
-                new MapSqlParameterSource().addValue("userId", userId),
+                Map.of("userId", userId),
                 Integer.class);
         return count > 0;
     }
