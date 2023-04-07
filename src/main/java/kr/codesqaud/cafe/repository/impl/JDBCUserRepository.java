@@ -30,8 +30,8 @@ public class JDBCUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findUserById(String id) {
-        User user = jdbcTemplate.queryForObject("SELECT * FROM \"USER\" WHERE id = ?",new Object[]{id},(rs,rn) -> new User (rs));
-        return Optional.ofNullable(user);
+        List<User> users = jdbcTemplate.query("SELECT * FROM \"USER\" WHERE id = ?",(rs,rn) -> new User (rs),id);
+        return users.stream().findFirst();
     }
 
     @Override

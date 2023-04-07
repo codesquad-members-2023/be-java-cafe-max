@@ -21,17 +21,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IdDuplicatedException.class)
     public ModelAndView handleIdDuplicatedException(IdDuplicatedException e) {
-        return createErrorResponseModelAndView("/user/form", e);
+        return createErrorResponseModelAndView("user/form", e);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ModelAndView handleUserNotFoundException(UserNotFoundException e) {
-        return createErrorResponseModelAndView("/error/error", e);
+        return createErrorResponseModelAndView("error/error", e);
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
     public ModelAndView handleInvalidPasswordException(InvalidPasswordException e) {
-        ModelAndView mav = createErrorResponseModelAndView("/user/updateForm", e);
+        ModelAndView mav = createErrorResponseModelAndView("user/updateForm", e);
         mav.addObject("id", e.getId());
         return mav;
     }

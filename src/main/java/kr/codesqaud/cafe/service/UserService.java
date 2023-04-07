@@ -8,7 +8,6 @@ import kr.codesqaud.cafe.exception.IdDuplicatedException;
 import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,36 +22,32 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void addUser(UserDTO userDTO){
+    public void addUser(UserDTO userDTO) {
         validateId(userDTO.getId());
         userRepository.save(userDTO.toUser());
     }
 
-    private void validateId(String id){
-        try {
-            if (userRepository.findUserById(id).isPresent()) {
-                throw new IdDuplicatedException();
-            }
-        } catch (EmptyResultDataAccessException e) {
-        }
+    private void validateId(String id) {
+        if (userRepository.findUserById(id).isPresent())
+            throw new IdDuplicatedException();
     }
 
-    public List<UserListDTO> getUserList(){
+    public List<UserListDTO> getUserList() {
         return userRepository.findAll().stream()
                 .map(user -> user.toUserListDTO())
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public UserDTO getUserById(String id){
+    public UserDTO getUserById(String id) {
         return userRepository.findUserById(id)
                 .map(User::toUserDTO)
                 .orElseThrow(() -> new UserNotFoundException());
     }
 
-    public void updateUserByUserId(ProfileEditDTO profileEditDto){
+    public void updateUserByUserId(ProfileEditDTO profileEditDto) {
         UserDTO userDto = getUserById(profileEditDto.getId());
 
-        if(userDto.getPassword().equals(profileEditDto.getOriPassword())){
+        if (userDto.getPassword().equals(profileEditDto.getOriPassword())) {
             userRepository.updateUser(profileEditDto.toUser());
             return;
         }
