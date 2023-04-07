@@ -9,7 +9,6 @@ public class ArticleDTO {
     private String content;
     private final String author;
 
-
     public ArticleDTO(Long id, String title, String content, String author) {
         this.id = id;
         this.title = title;
@@ -20,7 +19,6 @@ public class ArticleDTO {
     public static ArticleDTO toArticleDTO(final Article article) {
         return new ArticleDTO(article.getId(), article.getTitle(), article.getContent(), article.getAuthor());
     }
-
 
     public Long getId() {
         return id;

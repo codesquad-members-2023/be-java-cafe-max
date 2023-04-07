@@ -40,12 +40,13 @@ public class ArticleController {
     @GetMapping("/post/modify/{id}")
     public String modifyForm(@PathVariable final long id, final Model model) {
         ArticleDTO wantedPost = articleService.clickOne(id);
-        model.addAttribute("wantedPost", wantedPost);
+        model.addAttribute("articleDTO", wantedPost);
         return "post/modifyForm";
     }
 
+    //todo : @ModelAttribute 없어도 되는 원리 정리하기
     @PostMapping("/post/modify/{id}")
-    public String modifyPost(@PathVariable final long id, @ModelAttribute final ArticleDTO articleDTO) {
+    public String modifyPost(@PathVariable final long id, final ArticleDTO articleDTO) {
         articleService.modify(id, articleDTO);
         return "redirect:/post/show/{id}";
     }

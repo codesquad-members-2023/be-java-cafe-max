@@ -19,13 +19,13 @@
     <header class="post-header">
       <p class="title">글 수정하기</p>
     </header>
-    <form class="submit-write" method="post" th:action="@{/post/modify/{id}(id=${wantedPost.id})}">
+    <form class="submit-write" method="post" th:action="@{/post/modify/{id}(id=${articleDTO.id})}">
       <div class="text-box">
         <div class="comment-writer-container">
           <p class="post-title">제목</p>
         </div>
         <div class="form-group">
-          <label for="title"></label><textarea class="form-control" id="title" name="title" th:text="${wantedPost.title}"></textarea>
+          <label for="title"></label><textarea class="form-control" id="title" name="title" th:text="${articleDTO.title}"></textarea>
         </div>
       </div>
 
@@ -34,7 +34,7 @@
           <p class="post-content">내용</p>
         </div>
         <div class="form-group">
-          <label for="content"></label><textarea class="form-control" id="content" name="content" th:text="${wantedPost.content}"></textarea>
+          <label for="content"></label><textarea class="form-control" id="content" name="content" th:text="${articleDTO.content}"></textarea>
         </div>
       </div>
       <input class="post-write-btn" type="submit" value="수정"/>
