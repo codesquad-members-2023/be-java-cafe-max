@@ -1,5 +1,8 @@
 package kr.codesqaud.cafe.article;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * 게시글 엔티티
  */
@@ -9,12 +12,14 @@ public class Article {
     private final String writer;
     private final String title;
     private final String contents;
+    private final String createdAt;
 
     public Article(String writer, String title, String contents) {
         this.articleId = ++idCount;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 
     public int getArticleId() {
@@ -31,6 +36,10 @@ public class Article {
 
     public String getContents() {
         return contents;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
     }
 
     @Override

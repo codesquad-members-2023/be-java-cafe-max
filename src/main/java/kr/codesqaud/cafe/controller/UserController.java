@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserController {
@@ -54,18 +55,18 @@ public class UserController {
     }
 
     @PutMapping("/users/{userId}/check")
-    public String checkPassword(@PathVariable String userId, String password, Model model) {
+    public String checkPassword(@PathVariable String userId, String password, Model model, RedirectAttributes redirectAttributes) {
 
         User user = memoryUserRepository.findById(userId);
         model.addAttribute("user", user);
 
         if (!user.getPassword().equals(password)) {
-            model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+            redirectAttributes.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
 
             return "redirect:/users";
         }
 
-        model.addAttribute("successMessage", "비밀번호가 일치합니다.");
+        redirectAttributes.addFlashAttribute("successMessage", "비밀번호가 일치합니다.");
 
         return "redirect:/users/{userId}/form";
     }
