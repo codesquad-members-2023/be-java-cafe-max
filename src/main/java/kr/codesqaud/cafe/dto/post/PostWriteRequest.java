@@ -8,11 +8,11 @@ import org.hibernate.validator.constraints.Length;
 public class PostWriteRequest {
 
     @NotBlank
-    @Length(min = 1, max = 50)
+    @Length(min = 2, max = 50)
     private final String title;
 
     @NotBlank
-    @Length(min = 10, max = 3000)
+    @Length(min = 2, max = 3000)
     private final String content;
 
     private final Long writerId;
