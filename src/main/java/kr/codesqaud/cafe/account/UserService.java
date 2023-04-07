@@ -28,7 +28,7 @@ public class UserService {
     }
 
     public List<UserForm> getAllUsersForm() {
-        return userRepository.getAllMembers().stream()
+        return userRepository.getAllUsers().stream()
                 .map(UserForm::from)
                 .collect(Collectors.toList());
     }
@@ -45,8 +45,8 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public boolean containEmail(String email) {
-        return userRepository.containEmail(email);
+    public boolean containsEmail(String email) {
+        return userRepository.containsEmail(email);
     }
 
     public User findById(Long userId) {
@@ -60,6 +60,6 @@ public class UserService {
 
     public boolean isDuplicateEmail(String defaultEmail, String targetEmail) {
         return Objects.equals(defaultEmail, targetEmail)
-                && containEmail(targetEmail);
+                && containsEmail(targetEmail);
     }
 }

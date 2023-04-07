@@ -102,7 +102,7 @@ class UserControllerTest {
                         .param(PASSWORD, JACK_PASSWORD))
                 .andExpect(status().is3xxRedirection());
 
-        List<User> allMembers = userRepository.getAllMembers();
+        List<User> allMembers = userRepository.getAllUsers();
         System.out.println(allMembers);
         assertThat(userService.findByEmail(JACK_EMAIL)).isPresent();
     }

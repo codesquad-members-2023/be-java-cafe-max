@@ -65,7 +65,7 @@ public class UserRepository {
         return parameters;
     }
 
-    public List<User> getAllMembers() {
+    public List<User> getAllUsers() {
         try {
             return jdbcTemplate.query(QUERY_FIND_ALL_USERS, getUserRowMapper());
         } catch (DataAccessException e) {
@@ -92,7 +92,7 @@ public class UserRepository {
         }
     }
 
-    public boolean containEmail(String email) {
+    public boolean containsEmail(String email) {
         Integer count = jdbcTemplate.queryForObject(QUERY_CONTAINS_EMAIL, Integer.class, email);
         return count != null && count != 0;
     }
