@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ public class ArticleService {
 
     public List<ArticleDTO> getArticleList(){
         return ArticleRepository.findAll().stream()
+                .sorted(Comparator.comparing(Article::getId).reversed()) 
                 .map(article -> article.toDTO())
                 .collect(Collectors.toUnmodifiableList());
     }
