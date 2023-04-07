@@ -33,6 +33,13 @@ public class UserController {
         return "user/list";
     }
 
+    @GetMapping("/join")
+    public String joinUser(Model model) {
+        model.addAttribute("user", new UserJoinDto());
+
+        return "user/form";
+    }
+
     @PostMapping
     public String join(@Valid @ModelAttribute("user") UserJoinDto userJoinDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

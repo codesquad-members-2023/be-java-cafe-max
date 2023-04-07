@@ -1,10 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.ErrorDto;
-import kr.codesqaud.cafe.controller.dto.UserUpdateDto;
-import kr.codesqaud.cafe.exception.user.UserExceptionType;
-import kr.codesqaud.cafe.exception.user.UserJoinFailedException;
-import kr.codesqaud.cafe.exception.user.UserUpdateFailedException;
+import kr.codesqaud.cafe.common.exception.user.UserExceptionType;
+import kr.codesqaud.cafe.common.exception.user.UserJoinFailedException;
+import kr.codesqaud.cafe.common.exception.user.UserUpdateFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;

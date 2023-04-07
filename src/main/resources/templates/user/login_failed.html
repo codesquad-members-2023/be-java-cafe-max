@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragment/layout/head :: common_head}"></head>
+<head th:replace="~{fragment/layout/head :: common_head}"></head>
 <body>
+    <div th:replace="~{fragment/layout/nav :: common_nav}"></div>
     <div class="container" id="main">
        <div class="col-md-6 col-md-offset-3">
           <div class="panel panel-default content-main">

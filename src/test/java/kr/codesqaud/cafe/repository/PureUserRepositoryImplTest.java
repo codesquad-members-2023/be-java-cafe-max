@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.*;
 
 class PureUserRepositoryImplTest {
-    UserRepository userRepository = new PureUserRepositoryImpl();
+    UserRepository userRepository = new MemoryUserRepositoryImpl();
 
     @DisplayName("동시에 많은 요청이 와도 정상적으로 저장이 된다.")
     @RepeatedTest(10)

@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.exception.user;
+package kr.codesqaud.cafe.common.exception.user;
 
 import kr.codesqaud.cafe.controller.dto.UserUpdateDto;
 

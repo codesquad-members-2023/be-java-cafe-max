@@ -31,6 +31,12 @@ public class ArticleController {
         return "home";
     }
 
+    @GetMapping("/create")
+    public String createArticle(Model model) {
+        model.addAttribute("article", new ArticleCreateDto());
+        return "article/form";
+    }
+
     @PostMapping
     public String create(@Valid @ModelAttribute("article") ArticleCreateDto articleCreateDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

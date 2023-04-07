@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.exception.user;
+package kr.codesqaud.cafe.common.exception.user;
 
 public enum UserExceptionType {
     DUPLICATED_USER_ID("error-userId", "이미 존재하는 아이디입니다"),
