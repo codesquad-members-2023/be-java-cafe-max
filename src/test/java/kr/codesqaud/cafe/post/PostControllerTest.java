@@ -63,7 +63,6 @@ class PostControllerTest {
         @ParameterizedTest
         @CsvSource({"j,testTitle,testContent", "jack,t,textContent", "jack,title,te"})
         void addPostFailureFailed(String nickname, String title, String textContent) throws Exception {
-            String testTitle = TEST_TITLE;
             mockMvc.perform(post("/posts")
                             .param(NICKNAME, nickname)
                             .param(TITLE, title)
@@ -72,7 +71,7 @@ class PostControllerTest {
                     .andExpect(model().hasErrors())
                     .andExpect(view().name("/post/form"));
 
-            assertThat(postRepository.findByTitle(testTitle)).isEmpty();
+            assertThat(postRepository.findByTitle(TEST_TITLE)).isEmpty();
         }
     }
 
