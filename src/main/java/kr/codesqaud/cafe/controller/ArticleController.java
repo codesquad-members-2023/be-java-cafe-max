@@ -4,9 +4,12 @@ import kr.codesqaud.cafe.controller.dto.ArticleDTO;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
 
 @Controller
 public class ArticleController {
@@ -23,7 +26,10 @@ public class ArticleController {
     }
 
     @PostMapping("/article/post")
-    public String postArticle(ArticleDTO articleDto) {
+    public String postArticle(@Valid ArticleDTO articleDto, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return "/post/form";
+        }
         articleService.post(articleDto);
         return "redirect:/";
     }
