@@ -24,13 +24,13 @@ public class ArticleController {
 
     @GetMapping("/post")
     public String showPostArticleForm(){
-        return "/post/form";
+        return "post/form";
     }
 
     @PostMapping("/post")
     public String postArticle(@Valid ArticleDTO articleDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            return "/post/form";
+            return "post/form";
         }
         articleService.post(articleDto);
         return "redirect:/";
@@ -39,6 +39,6 @@ public class ArticleController {
     @GetMapping("/{id}")
     public String showDetailArticle(@PathVariable int id, Model model) {
         model.addAttribute("article", articleService.findArticleById(id));
-        return "/post/show";
+        return "post/show";
     }
 }

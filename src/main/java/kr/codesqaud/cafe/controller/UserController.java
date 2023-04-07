@@ -23,14 +23,14 @@ public class UserController {
 
     @GetMapping("/signUp")
     public String showSignUpForm(){
-        return "/user/form";
+        return "user/form";
     }
 
 
     @PostMapping("/signUp")
     public String signUp(@Valid UserDTO userDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            return "/user/form";
+            return "user/form";
         }
         userService.addUser(userDto);
         return "redirect:/users";
@@ -51,7 +51,7 @@ public class UserController {
     @GetMapping("/{id}/form")
     public String userUpdateForm(@PathVariable String id,Model model){
         model.addAttribute("user",userService.getUserById(id));
-        return "/user/updateForm";
+        return "user/updateForm";
     }
 
     @PutMapping("/{id}")
