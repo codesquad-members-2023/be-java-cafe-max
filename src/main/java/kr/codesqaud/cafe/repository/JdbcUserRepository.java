@@ -14,10 +14,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-/*
-    미션에서 요구한 것은 Articles의 Repository이므로 헷갈리지 말자!
-    이 코드들은 김영한님의 강의를 바탕으로 쓴 코드이니, 이해하고 쓰자!
- */
 @Repository
 public class JdbcUserRepository implements UserRepository{
     private final JdbcTemplate jdbcTemplate;
