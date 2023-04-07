@@ -7,8 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 public class UserDTO {
-    @NotBlank
-<<<<<<< HEAD
+
     @Length(min = 2,max = 12)
     private String nickName;
 
@@ -22,18 +21,7 @@ public class UserDTO {
 
     @NotBlank
     @Length(min = 2,max = 12)
-=======
-    @Length(min = 2,max = 10)
-    private String nickName;
-    @NotBlank
-    @Pattern(regexp = "^[_a-zA-Z0-9-\\\\.]+@[\\\\.a-zA-Z0-9-]+\\\\.[a-zA-Z]{2,5}$\n", message = "Invalid email")
-    private String email;
-    @NotBlank
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$",message = "Invalid password")
-    private String password;
-    @NotBlank
-    @Length(min = 2,max = 10)
->>>>>>> feature3
+
     private String id;
 
     public UserDTO(String nickName, String email, String password, String id) {
