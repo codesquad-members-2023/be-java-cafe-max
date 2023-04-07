@@ -2,18 +2,15 @@ package kr.codesqaud.cafe.post.dto;
 
 import kr.codesqaud.cafe.post.Post;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class PostForm {
     @NotEmpty
-    @NotBlank
     @Size(max = 64, min = 2, message = "{error.nickname.size}")
     private final String nickname;
     @NotEmpty
-    @NotBlank
     @Size(max = 64, min = 2, message = "{error.title.size}")
     private final String title;
     @NotEmpty
