@@ -22,7 +22,7 @@ public class PostService {
         return post;
     }
 
-    public List<Post> finePosts() {
+    public List<Post> findPosts() {
         return memoryPostRepository.findAll();
     }
 

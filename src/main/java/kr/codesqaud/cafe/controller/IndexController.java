@@ -15,7 +15,7 @@ public class IndexController {
     }
     @GetMapping("/")
     public String index(Model model){
-        model.addAttribute("posts", postService.finePosts());
+        model.addAttribute("posts", postService.findPosts());
         return "index";
     }
 }
