@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller.dto;
 
+import kr.codesqaud.cafe.domain.Article;
+
 public class PostingRequest {
 	private final String writer;
 	private final String title;
@@ -21,5 +23,9 @@ public class PostingRequest {
 
 	public String getContents() {
 		return contents;
+	}
+
+	public Article getArticleEntity() {
+		return new Article(getWriter(), getTitle(), getContents());
 	}
 }

@@ -1,10 +1,10 @@
 package kr.codesqaud.cafe.controller.dto;
 
 public class SignUpRequest {
-	private String userId;
-	private String password;
-	private String name;
-	private String email;
+	private final String userId;
+	private final String password;
+	private final String name;
+	private final String email;
 
 	public SignUpRequest(String userId, String password, String name, String email) {
 		this.userId = userId;

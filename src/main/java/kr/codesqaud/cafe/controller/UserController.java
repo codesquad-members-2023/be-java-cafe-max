@@ -19,12 +19,7 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@GetMapping("/user/create")
-	public String showSignUpForm() {
-		return "user/form";
-	}
-
-	@PostMapping("/user/create")
+	@PostMapping("/user")
 	public String signUp(@ModelAttribute SignUpRequest signUpRequest) {
 		userService.userSignUp(signUpRequest);
 		return "redirect:/users";
