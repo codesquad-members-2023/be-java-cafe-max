@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.repository.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -44,10 +45,11 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
 	@Override
 	public Optional<Article> findById(final Long id) {
-		Article article = jdbcTemplate.queryForObject("SELECT * FROM article WHERE id = ?",
-			articleMapper,
-			id
-		);
-		return Optional.ofNullable(article);
+		try {
+			return Optional.ofNullable(
+				jdbcTemplate.queryForObject("SELECT * FROM article WHERE id = ?", articleMapper, id));
+		} catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
 	}
 }

@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.repository.impl;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -46,12 +47,12 @@ public class UserJdbcRepository implements UserRepository {
 
 	@Override
 	public Optional<User> findByUserId(final String userId) {
-		User user = jdbcTemplate.queryForObject(
-			"SELECT * FROM user_account WHERE user_id = ?",
-			userMapper,
-			userId
-		);
-		return Optional.ofNullable(user);
+		try {
+			return Optional.ofNullable(
+				jdbcTemplate.queryForObject("SELECT * FROM user_account WHERE user_id = ?", userMapper, userId));
+		} catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
 	}
 
 	private boolean isExistUserByUserId(final String userId) {
