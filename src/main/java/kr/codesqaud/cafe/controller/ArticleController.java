@@ -8,10 +8,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 
 @Controller
+@RequestMapping("/article")
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -20,12 +22,12 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/article/post")
+    @GetMapping("/post")
     public String showPostArticleForm(){
         return "/post/form";
     }
 
-    @PostMapping("/article/post")
+    @PostMapping("/post")
     public String postArticle(@Valid ArticleDTO articleDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             return "/post/form";
@@ -34,7 +36,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/article/{id}")
+    @GetMapping("/{id}")
     public String showDetailArticle(@PathVariable int id, Model model) {
         model.addAttribute("article", articleService.findArticleById(id));
         return "/post/show";
