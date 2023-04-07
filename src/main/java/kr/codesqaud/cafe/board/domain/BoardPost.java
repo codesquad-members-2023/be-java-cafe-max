@@ -1,14 +1,36 @@
 package kr.codesqaud.cafe.board.domain;
 
+import kr.codesqaud.cafe.board.dto.PostResponse;
+
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class BoardPost {
     private Long postId;
     private String writer;
     private String title;
     private String contents;
-    private LocalDateTime writeDt = LocalDateTime.now();
+    private LocalDateTime writeDateTime;
+
+    public BoardPost() {
+    }
+
+    public BoardPost(Long postId, String writer, String title, String contents, LocalDateTime writeDateTime) {
+        this.postId = postId;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.writeDateTime = writeDateTime;
+    }
+
+    public BoardPost(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+    }
+
+    public PostResponse toPostResponse() {
+        return new PostResponse(postId, writer, title, contents, writeDateTime);
+    }
 
     public Long getPostId() {
         return postId;
@@ -42,11 +64,11 @@ public class BoardPost {
         this.contents = contents;
     }
 
-    public String getWriteDt() {
-        return writeDt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public LocalDateTime getWriteDateTime() {
+        return writeDateTime;
     }
 
-    public void setWriteDt(LocalDateTime writeDt) {
-        this.writeDt = writeDt;
+    public void setWriteDateTime(LocalDateTime writeDateTime) {
+        this.writeDateTime = writeDateTime;
     }
 }

@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.user.controller;
 
-import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.repository.UserRepository;
+import kr.codesqaud.cafe.user.dto.UserAddForm;
+import kr.codesqaud.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,31 +11,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/add")
-    public String addUser(@ModelAttribute User user) {
-        String userId = userRepository.add(user);
-        // 중복된 아이디가 존재하는 경우
-        if (userId == null) {
-            return "/user/form_failed";
-        }
+    @PostMapping
+    public String addUser(@ModelAttribute UserAddForm userAddForm) {
+        String userId = userService.add(userAddForm);
         return "redirect:/user/list";
     }
 
     @GetMapping("/list")
     public String list(Model model) {
-        model.addAttribute("users", userRepository.getUserList());
+        model.addAttribute("users", userService.getUserList());
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String getProfile(@PathVariable String userId, Model model) {
-        model.addAttribute("user", userRepository.getUser(userId));
+        model.addAttribute("user", userService.getUser(userId));
         return "user/profile";
     }
 

@@ -1,0 +1,33 @@
+server:
+  # encoding setting
+  servlet:
+    encoding:
+      force-response: true
+spring:
+  # console log color
+  output:
+    ansi:
+      enabled: always
+  # devtools setting
+  devtools:
+    restart:
+      enabled: true
+  # mustache
+  mustache:
+    cache: false
+  # h2 DB setting
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+    datasource:
+      driver-class-name: org.h2.Driver
+      url: jdbc:h2:~/test
+      username: sa
+      password:
+
+  sql:
+    init:
+      mode: always
+#      schema-locations: classpath:schema.sql
+#      data-locations: classpath:data.sql
