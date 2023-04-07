@@ -8,10 +8,10 @@ public class Article {
     private String contents;
     private LocalTime writtenTime;
 
-    public void setWithArticleForm(ArticleForm articleForm) {
-        this.writer = articleForm.getWriter();
-        this.title = articleForm.getTitle();
-        this.contents = articleForm.getContents();
+    public Article(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
         this.writtenTime = LocalTime.now();
     }
 

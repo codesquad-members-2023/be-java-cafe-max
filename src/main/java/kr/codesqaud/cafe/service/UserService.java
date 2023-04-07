@@ -16,8 +16,7 @@ public class UserService {
     }
 
     public void saveUser(UserForm userForm) {
-        User user = new User();
-        user.setWithUserForm(userForm);
+        User user = new User(userForm.getUserId(), userForm.getPassword(), userForm.getUserName(), userForm.getEmail());
 
         userRepository.save(user);
     }
