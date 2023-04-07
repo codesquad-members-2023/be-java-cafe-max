@@ -35,7 +35,8 @@ public class ArticleController {
 
 	@GetMapping("/articles/{index}")
 	public String showArticle(@PathVariable Long index, Model model) {
+		articleService.increaseHits(index);
 		model.addAttribute("article", articleService.findByIndex(index).get());
-		return "/qna/detail";
+		return "qna/detail";
 	}
 }

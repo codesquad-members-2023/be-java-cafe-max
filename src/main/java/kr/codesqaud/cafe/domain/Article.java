@@ -17,6 +17,14 @@ public class Article {
 		this.hits = hits;
 	}
 
+	public Article(String title, String writer, String contents, String writeDate, Long hits) {
+		this.title = title;
+		this.writer = writer;
+		this.contents = contents;
+		this.writeDate = writeDate;
+		this.hits = hits;
+	}
+
 	public Long getIndex() {
 		return index;
 	}

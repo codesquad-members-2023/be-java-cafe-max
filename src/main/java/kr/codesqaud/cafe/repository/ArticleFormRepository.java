@@ -41,4 +41,9 @@ public class ArticleFormRepository implements ArticleRepository {
 	public List<Article> findAll() {
 		return articleList;
 	}
+
+	@Override
+	public boolean increaseHits(long index) {
+		return false;
+	}
 }

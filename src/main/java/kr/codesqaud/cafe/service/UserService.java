@@ -11,7 +11,6 @@ import kr.codesqaud.cafe.repository.UserRepository;
 
 public class UserService {
 	private final UserRepository userRepository;
-	private long index = 0L;
 
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
@@ -19,14 +18,10 @@ public class UserService {
 
 	public boolean join(UserDto userDto) {
 		validateDuplicate(userDto);
-		User user = new User(increaseIndex(), userDto.getUserID(), userDto.getEmail(), userDto.getNickname(),
+		User user = new User(userDto.getUserID(), userDto.getEmail(), userDto.getNickname(),
 			userDto.getPassword(), LocalDate.now());
 		userRepository.save(user);
 		return true;
-	}
-
-	private long increaseIndex() {
-		return ++index;
 	}
 
 	private void validateDuplicate(UserDto userDto) {

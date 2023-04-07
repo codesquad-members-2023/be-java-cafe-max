@@ -19,8 +19,8 @@ public class JdbcArticleRepository implements ArticleRepository {
 
 	@Override
 	public Article save(Article article) {
-		String sql = "INSERT INTO WRITE_INFO VALUES (?, ?, ?, ?, ?, ?)";
-		jdbcTemplate.update(sql, article.getIndex(), article.getTitle(), article.getWriter(), article.getContents(),
+		String sql = "INSERT INTO WRITE_INFO(title, writer, contents, writeDate, hits) VALUES (?, ?, ?, ?, ?)";
+		jdbcTemplate.update(sql, article.getTitle(), article.getWriter(), article.getContents(),
 			article.getWriteDate(), article.getHits());
 		return article;
 	}
@@ -47,6 +47,14 @@ public class JdbcArticleRepository implements ArticleRepository {
 	public List<Article> findAll() {
 		String sql = "SELECT * FROM WRITE_INFO";
 		return jdbcTemplate.query(sql, articleRowMapper());
+	}
+
+	@Override
+	public boolean increaseHits(long index) {
+		long newIndex = findByIndex(index).get().getHits();
+		String sql = "UPDATE WRITE_INFO SET hits = ? WHERE index = ?";
+		jdbcTemplate.update(sql, ++newIndex, index);
+		return true;
 	}
 
 	private RowMapper<Article> articleRowMapper() {

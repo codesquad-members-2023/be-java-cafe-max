@@ -19,6 +19,14 @@ public class User {
 		this.signUpDate = signUpDate;
 	}
 
+	public User(String userID, String email, String nickname, String password, LocalDate signUpDate) {
+		this.userID = userID;
+		this.email = email;
+		this.nickname = nickname;
+		this.password = password;
+		this.signUpDate = signUpDate;
+	}
+
 	public Long getIndex() {
 		return index;
 	}

@@ -20,8 +20,8 @@ public class JdbcUserRepository implements UserRepository {
 
 	@Override
 	public User save(User user) {
-		String sql = "INSERT INTO USER_INFO VALUES (?, ?, ?, ?, ?, ?)";
-		jdbcTemplate.update(sql, user.getIndex(), user.getUserID(), user.getEmail(), user.getNickname(),
+		String sql = "INSERT INTO USER_INFO(userID, email, nickname, password, signUpDate) VALUES (?, ?, ?, ?, ?)";
+		jdbcTemplate.update(sql, user.getUserID(), user.getEmail(), user.getNickname(),
 			user.getPassword(), user.getSignUpDate());
 		return user;
 	}

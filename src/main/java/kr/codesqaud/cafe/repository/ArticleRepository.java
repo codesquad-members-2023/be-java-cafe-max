@@ -15,4 +15,6 @@ public interface ArticleRepository {
 	Optional<Article> findByContents(String contents);
 
 	List<Article> findAll();
+
+	boolean increaseHits(long index);
 }
