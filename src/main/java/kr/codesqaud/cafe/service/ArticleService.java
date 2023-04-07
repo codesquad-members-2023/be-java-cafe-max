@@ -9,7 +9,11 @@ import java.util.List;
 
 @Service
 public class ArticleService {
-    private ArticleRepository articleRepository = new ArticleRepository();
+    private ArticleRepository articleRepository;
+
+    public ArticleService(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
 
     public void saveArticle(ArticleForm articleForm) {
         Article article = new Article();

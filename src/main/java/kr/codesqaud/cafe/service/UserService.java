@@ -9,7 +9,11 @@ import java.util.List;
 
 @Service
 public class UserService {
-    private UserRepository userRepository = new UserRepository();
+    private UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public void saveUser(UserForm userForm) {
         User user = new User();

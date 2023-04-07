@@ -15,7 +15,11 @@ import java.util.List;
 @Controller
 @RequestMapping
 public class ArticleController {
-    ArticleService articleService = new ArticleService();
+    ArticleService articleService;
+
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
 
     @GetMapping
     public String showIndex(Model model) {
