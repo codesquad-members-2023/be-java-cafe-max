@@ -8,24 +8,26 @@
 
 ### Dion 피드백 반영
 
-- [ ] 일관성 있는 url 디자인 // PR에 url 추가하기
+- [x] 일관성 있는 url 디자인(/user를 /users로 통일) // PR에 url 추가하기
 - [x] UserController#post()
     - [x] @RequestParam 중복 제거
     - [x] 어울리는 메서드 명으로 바꾸기
-- [ ] joinSuccess() 역할에 맞는 메서드 명 고민해보기
-- [ ] UserController#post() 메서드에 User 인스턴스 생성 부분 // MVC 패턴 및 계층 분리
+    - [x] User 인스턴스 생성 부분 제거 // 이후 MVC 패턴 및 계층 분리 학습예정 📌
+- [x] joinSuccess() 역할에 맞는 메서드 명 고민해보기
+
+#### 학습 후 반영할 내용
+
+- [ ] User 클래스에서 동일성, 동등성 판단
 - [ ] 타임리프를 사용해 Model 객체 사용하지 않는 형태로 시도해보기
 - [ ] List 동기 문제 수정하고 정리하기
-- [ ] User 클래스에서 동일성, 동등성 판단 학습하기
 - [ ] UserRepository 인터페이스에서 찾고자 하는 User가 없을 때 생기는 버그 생각해보기
 - [ ] 의미 있는 로그 고민해보기. 로그가 어떻게 동작하는지 살펴보기.
 
 ### 추가로 구현할 것들
 
-- [ ] 게시글 작성 시 작성일자 저장
+- [x] 게시글 작성 시 작성 일자와 시간 저장
+- [x] 메인로고 클릭 시 "/"로 이동하도록 매핑
 - [ ] index.html, detail.html에서 작성자 클릭 시 profile.html 연결
-- [ ] 로고 클릭 시 index.html로 이동하도록 매핑
-- [ ] RESTful한 URL을 적용하기
 - [ ] 비밀번호 일치 확인 후 alert로 메시지 출력
 
 ### 고민한 내용
@@ -135,13 +137,15 @@
 - 이러한 문제를 해결하기 위해 자바에서는 멀티 스레드가 컬렉션의 요소를 병렬적으로 처리할 수 있도록 특별한 컬렉션을 제공한다.
 
 #### ConcurrentHashMap, ConCurrentLinkedQueue
+
 위 컬렉션은 세그먼트 잠금을 이용해 처리하는 요소가 포함된 부분만 잠금하고 나머지 부분은 다른 스레드가 변경할 수 있도록 한다.
+
 ```
   Map<K, V> map = new ConcurrentHashMap<K, V>();
   Queue<E> queue = new ConcurrenntLinkedQueue<E>();
 ```
 
-//참고: [이것이 자바다 정리 #15 컬렉션 프레임워크](https://velog.io/@jakeseo_me/%EC%9D%B4%EA%B2%83%EC%9D%B4-%EC%9E%90%EB%B0%94%EB%8B%A4-%EC%A0%95%EB%A6%AC-15-%EC%BB%AC%EB%A0%89%EC%85%98-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AChttps://velog.io/@jakeseo_me/%EC%9D%B4%EA%B2%83%EC%9D%B4-%EC%9E%90%EB%B0%94%EB%8B%A4-%EC%A0%95%EB%A6%AC-15-%EC%BB%AC%EB%A0%89%EC%85%98-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC)   
+//참고: [이것이 자바다 정리 #15 컬렉션 프레임워크](https://velog.io/@jakeseo_me/%EC%9D%B4%EA%B2%83%EC%9D%B4-%EC%9E%90%EB%B0%94%EB%8B%A4-%EC%A0%95%EB%A6%AC-15-%EC%BB%AC%EB%A0%89%EC%85%98-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AChttps://velog.io/@jakeseo_me/%EC%9D%B4%EA%B2%83%EC%9D%B4-%EC%9E%90%EB%B0%94%EB%8B%A4-%EC%A0%95%EB%A6%AC-15-%EC%BB%AC%EB%A0%89%EC%85%98-%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC)
 
 ## [Spring] HiddenHttpMethodFilter
 
