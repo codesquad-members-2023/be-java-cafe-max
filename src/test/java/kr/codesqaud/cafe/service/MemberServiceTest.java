@@ -118,14 +118,14 @@ class MemberServiceTest {
     }
 
     private SignUpRequestDto basicMemberData() {
-        String email = "test@test.com";
+        String email = "test@gmail.com";
         String password = "testtest";
         String nickName = "chacha";
         return new SignUpRequestDto(email, password, nickName);
     }
 
     private SignUpRequestDto dummyMemberData() {
-        String email = "dummy@dummy.com";
+        String email = "dummy@gmail.com";
         String password = "dummydummy";
         String nickName = "피오니";
         return new SignUpRequestDto(email, password, nickName);
