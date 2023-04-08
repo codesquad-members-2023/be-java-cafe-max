@@ -30,7 +30,7 @@ public class MemberController {
     @GetMapping
     public String findAll(Model model) {
         model.addAttribute("memberResponsesDto", memberService.findAll());
-        return "/members";
+        return "/all";
     }
 
     @PostMapping("/signUp")

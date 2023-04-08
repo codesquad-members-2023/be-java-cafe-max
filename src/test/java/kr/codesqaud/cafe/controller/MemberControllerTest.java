@@ -43,7 +43,7 @@ class MemberControllerTest {
     void findAll() throws Exception {
         mockMvc.perform(get("/member"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/members"))
+                .andExpect(view().name("/all"))
                 .andDo(print());
     }
 
