@@ -21,13 +21,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/signUp")
+    @GetMapping("/sign-up")
     public String showSignUpForm(){
         return "user/form";
     }
 
 
-    @PostMapping("/signUp")
+    @PostMapping("/sign-up")
     public String signUp(@Valid UserDTO userDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             return "user/form";
@@ -36,7 +36,7 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping()
+    @GetMapping
     public String showUserList(Model model) {
         model.addAttribute("users", userService.getUserList());
         return "user/list";
