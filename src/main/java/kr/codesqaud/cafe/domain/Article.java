@@ -1,10 +1,11 @@
 package kr.codesqaud.cafe.domain;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDTO;
-import kr.codesqaud.cafe.util.DateUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import static kr.codesqaud.cafe.util.DateUtil.getCurrentDate;
 
 
 public class Article {
@@ -16,7 +17,7 @@ public class Article {
     public Article(String title,String content){
         this.title = title;
         this.content = content;
-        this.date = setDate();
+        this.date = getCurrentDate();
     }
 
     public Article(ResultSet rs) throws SQLException{
@@ -24,11 +25,6 @@ public class Article {
         this.content = rs.getString("content");
         this.id = rs.getInt("id");
         this.date = rs.getString("date");
-    }
-
-    public String setDate(){
-        DateUtil date = new DateUtil();
-        return date.getDate();
     }
 
     public String getDate() {

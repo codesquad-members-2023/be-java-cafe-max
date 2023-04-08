@@ -2,10 +2,11 @@ package kr.codesqaud.cafe.domain;
 
 import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.controller.dto.UserListDTO;
-import kr.codesqaud.cafe.util.DateUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import static kr.codesqaud.cafe.util.DateUtil.getCurrentDate;
 
 public class User {
 
@@ -20,7 +21,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.id = id;
-        this.date = setDate();
+        this.date = getCurrentDate();
     }
 
     public User(ResultSet rs) throws SQLException {
@@ -29,11 +30,6 @@ public class User {
         this.password = rs.getString("password");
         this.id = rs.getString("id");
         this.date = rs.getString("date");
-    }
-
-    public String setDate(){
-        DateUtil date = new DateUtil();
-        return date.getDate();
     }
 
     public String getDate() {
