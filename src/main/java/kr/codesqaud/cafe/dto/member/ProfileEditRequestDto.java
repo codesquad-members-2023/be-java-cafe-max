@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.dto.member;
 
 import org.hibernate.validator.constraints.Length;
 
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;

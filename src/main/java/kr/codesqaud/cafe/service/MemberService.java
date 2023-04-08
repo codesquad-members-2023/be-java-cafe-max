@@ -27,7 +27,6 @@ public class MemberService {
         if (member == null) {
             throw new IllegalArgumentException("Member 객체를 생성할 수 없습니다.");
         }
-
         return memberRepository.save(member);
     }
 

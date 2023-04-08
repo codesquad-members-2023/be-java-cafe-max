@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
@@ -48,6 +47,7 @@ class MemberControllerTest {
                 .andExpect(view().name("/all"))
                 .andDo(print());
     }
+
 
     @Test
     @DisplayName("/post 요청시 db에 회원이 저장이 된다.(회원가입)")
