@@ -2,54 +2,76 @@ package kr.codesqaud.cafe.web.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.domain.user.UserRepository;
-import kr.codesqaud.cafe.exception.user.UserDuplicatedException;
-import kr.codesqaud.cafe.exception.user.UserDuplicatedExceptionType;
-import kr.codesqaud.cafe.exception.user.UserNotFoundException;
-import kr.codesqaud.cafe.exception.user.UserNotFoundExceptionType;
-import kr.codesqaud.cafe.web.dto.UserResponseDto;
-import kr.codesqaud.cafe.web.dto.UserSavedRequestDto;
+import kr.codesqaud.cafe.web.dto.user.UserLoginRequestDto;
+import kr.codesqaud.cafe.web.dto.user.UserResponseDto;
+import kr.codesqaud.cafe.web.dto.user.UserSavedRequestDto;
+import kr.codesqaud.cafe.web.dto.user.UserUpdatedResponseDto;
+import kr.codesqaud.cafe.web.validator.UserValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserValidator validator;
 
-    public UserService(UserRepository userRepository) {
+    @Autowired
+    public UserService(UserRepository userRepository, UserValidator validator) {
         this.userRepository = userRepository;
+        this.validator = validator;
     }
 
-    public List<UserResponseDto> findAll() {
+    // 전체 회원 목록
+    public List<UserResponseDto> getAllUsers() {
         return userRepository.findAll().stream()
             .map(UserResponseDto::new)
             .collect(Collectors.toUnmodifiableList());
     }
 
-    public UserResponseDto save(UserSavedRequestDto requestDto) {
-        validateDuplicatedUserId(requestDto);
-        validateDuplicateUserEmail(requestDto);
-        User saveUser = userRepository.save(requestDto.toEntity());
+    // 회원가입
+    public UserResponseDto signUp(UserSavedRequestDto requestDto) {
+        validator.validateDuplicatedUserId(requestDto.toEntity());
+        validator.validateDuplicatedUserEmail(requestDto.toEntity());
+        Long nextId = userRepository.nextId();
+        User saveUser = userRepository.save(requestDto.toEntity(nextId));
         return new UserResponseDto(saveUser);
     }
 
-    private void validateDuplicatedUserId(UserSavedRequestDto requestDto) {
-        if (userRepository.findByUserId(requestDto.getUserId()).isPresent()) {
-            throw new UserDuplicatedException(UserDuplicatedExceptionType.ALREADY_EXIST_USERID);
-        }
+    // 특정 회원 조회
+    public User findUser(Long id) {
+        return validator.validateExistUser(id);
     }
 
-    private void validateDuplicateUserEmail(UserSavedRequestDto requestDto) {
-        if (userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
-            throw new UserDuplicatedException(UserDuplicatedExceptionType.ALREADY_EXIST_EMAIL);
-        }
+    // 특정 회원 조회
+    public User findUser(String userId) {
+        return validator.validateExistUser(userId);
     }
 
-    public UserResponseDto findById(String userId) {
-        User user = userRepository.findByUserId(userId).orElseThrow(() -> {
-            throw new UserNotFoundException(UserNotFoundExceptionType.NOT_FOUND_USER);
-        });
-        return new UserResponseDto(user);
+    // 특정 회원 조회 (비밀번호 포함)
+    public UserUpdatedResponseDto findUpdateUser(Long id) {
+        return new UserUpdatedResponseDto(findUser(id));
+    }
+
+    // 로그인
+    public void login(UserLoginRequestDto requestDto, HttpSession session) {
+        User user = validator.validateLogin(requestDto.toEntity());
+        session.setAttribute("user", new UserResponseDto(user));
+    }
+
+    public void modifyUser(Long id, UserSavedRequestDto requestDto) {
+        User requestUser = requestDto.toEntity(id);
+        User currentUser = findUser(id);
+        validator.validateModifiedUserEmail(requestUser, currentUser);
+        userRepository.save(requestUser);
+    }
+
+    public void confirmPassword(Long id, UserSavedRequestDto requestDto) {
+        User requestUser = requestDto.toEntity();
+        User currentUser = findUser(id);
+        validator.validateEqualPassword(requestUser, currentUser);
     }
 }

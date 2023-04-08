@@ -5,38 +5,31 @@ $(document).ready(function () {
 
     const data = {
       "userId": $("#userId").val(),
-      "password": $("#password").val(),
-      "name": $("#name").val(),
-      "email": $("#email").val()
+      "password": $("#password").val()
     }
-
     $.ajax({
       type: "POST",
-      url: "/users",
+      url: "/users/login",
       data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8',
       success: function (resp) {
-        // TODO : 회원가입시 입력 정보가 늘어날수록 파일을 수정해야하는 문제가 있음
-        if (resp.errorCode === 600) {
-          $("#userIdError").text(resp.errorMessage)
-          return;
-        }
-        if (resp.errorCode === 601) {
-          $("#emailError").text(resp.errorMessage)
+        if (resp.errorCode === 801) {
+          $("#loginError").removeClass("hidden")
+          $("#loginError").text(resp.errorMessage)
           return;
         }
         if (hasFormatError(resp)) {
           writeError(resp)
           return;
         }
-        alert("회원가입이 성공하였습니다.")
-        location.href = "/users"
+        location.href = "/"
       }
     })
   })
 
   function clearErrorMessage() {
     $("#form p").text("")
+    $("#loginError").addClass("hidden")
   }
 
   function hasFormatError(respMap) {
@@ -55,4 +48,5 @@ $(document).ready(function () {
       $(`#${key}Error`).text(value.errorMessage)
     }
   }
+
 })
