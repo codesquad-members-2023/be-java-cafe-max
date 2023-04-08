@@ -12,7 +12,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String joinUser(User user) {
+    public String joinUser(User user) { // 회원가입 페이지의 form으로 받은 데이터를 Post 리퀘스트 받기
         return "";
     }
     @GetMapping("/users")
