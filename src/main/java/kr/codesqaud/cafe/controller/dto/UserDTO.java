@@ -9,20 +9,20 @@ import javax.validation.constraints.Pattern;
 public class UserDTO {
 
     @Length(min = 2,max = 12)
-    private String nickName;
+    private final String nickName;
 
     @NotBlank
     @Pattern(regexp = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$")
-    private String email;
+    private final String email;
 
     @NotBlank
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")
-    private String password;
+    private final String password;
 
     @NotBlank
     @Length(min = 2,max = 12)
 
-    private String id;
+    private final String id;
 
     public UserDTO(String nickName, String email, String password, String id) {
         this.nickName = nickName;

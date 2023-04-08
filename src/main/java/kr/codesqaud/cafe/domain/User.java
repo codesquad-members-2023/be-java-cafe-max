@@ -10,11 +10,11 @@ import static kr.codesqaud.cafe.util.DateUtil.getCurrentDate;
 
 public class User {
 
-    private String nickName;
-    private String email;
-    private String password;
-    private String id;
-    private String date;
+    private final String nickName;
+    private final String email;
+    private final String password;
+    private final String id;
+    private final String date;
 
     public User(String nickName, String email, String password,String id) {
         this.nickName = nickName;

@@ -9,10 +9,10 @@ import static kr.codesqaud.cafe.util.DateUtil.getCurrentDate;
 
 
 public class Article {
-    private String title;
-    private String content;
+    private final String title;
+    private final String content;
     private int id;
-    private String date;
+    private final String date;
 
     public Article(String title,String content){
         this.title = title;

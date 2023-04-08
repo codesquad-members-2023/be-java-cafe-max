@@ -8,15 +8,15 @@ import javax.validation.constraints.Pattern;
 public class ArticleDTO {
     @NotBlank
     @Pattern(regexp = "^\\s*[\\S\\s]+\\s*$")
-    private String title;
+    private final String title;
 
     @NotBlank
     @Pattern(regexp = "^[\\s\\S]{3,1000}$")
-    private String content;
+    private final String content;
 
-    private Integer id;
+    private final Integer id;
 
-    private String date;
+    private final String date;
 
     public ArticleDTO(String title, String content,Integer id,String date) {
         this.title = title;

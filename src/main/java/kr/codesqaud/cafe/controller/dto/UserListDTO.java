@@ -1,10 +1,10 @@
 package kr.codesqaud.cafe.controller.dto;
 
 public class UserListDTO {
-    private String nickName;
-    private String email;
-    private String id;
-    private String date;
+    private final String nickName;
+    private final String email;
+    private final String id;
+    private final String date;
     public UserListDTO(String nickName, String email,String id,String date) {
         this.nickName = nickName;
         this.email = email;

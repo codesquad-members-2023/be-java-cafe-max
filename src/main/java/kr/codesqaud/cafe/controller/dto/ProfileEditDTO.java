@@ -8,22 +8,22 @@ import javax.validation.constraints.Pattern;
 
 public class ProfileEditDTO {
 
-    private String id;
+    private final String id;
 
     @NotBlank
     @Length(min = 2,max = 12)
-    private String nickName;
+    private final String nickName;
 
     @NotBlank
     @Pattern(regexp = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$")
-    private String email;
+    private final String email;
 
     @NotBlank
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")
-    private String newPassword;
+    private final String newPassword;
 
     @NotBlank
-    private String oriPassword;
+    private final String oriPassword;
 
     public ProfileEditDTO(String nickName, String email, String newPassword, String oriPassword,String id) {
         this.nickName = nickName;
