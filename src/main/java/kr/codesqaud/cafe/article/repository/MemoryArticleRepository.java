@@ -1,23 +1,26 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.article.repository;
 
-import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.article.domain.Article;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
-import java.util.*;
 
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
     private static Map<Long, Article> storage = new HashMap<>();
 
-    private static long sequence = 0L;
+    private static AtomicLong sequence = new AtomicLong(0);
 
     //key 값은 글 상세보기 링크에 사용되기에 저장할때 ID 값으로 넣어줌
     public Long save(Article article) {
-        article.setId(++sequence);
+        long id = sequence.incrementAndGet();
+        article.setId(id);
         storage.put(article.getId(), article);
         return article.getId();
     }

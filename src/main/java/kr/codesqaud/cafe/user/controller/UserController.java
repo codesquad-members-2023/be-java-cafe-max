@@ -1,9 +1,8 @@
-package kr.codesqaud.cafe.Controller;
+package kr.codesqaud.cafe.user.controller;
 
-import kr.codesqaud.cafe.Dto.UserFormDto;
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.dto.UserFormDto;
+import kr.codesqaud.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }

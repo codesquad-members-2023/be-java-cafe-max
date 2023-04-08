@@ -1,17 +1,17 @@
-package kr.codesqaud.cafe.Dto;
+package kr.codesqaud.cafe.article.dto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class ArticleListDto {
     //글 목록에 표시할 내용 DTO
-    String author;
+    private String author;
 
-    String title;
+    private String title;
 
-    String time;
+    private String time;
 
-    long id;
+    private long id;
 
 
     public ArticleListDto(String author, String title, LocalDateTime time, Long id) {

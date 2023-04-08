@@ -1,12 +1,12 @@
-package kr.codesqaud.cafe.Dto;
+package kr.codesqaud.cafe.article.dto;
 
 public class ArticleFormDto {
     //글 작성했을때 사용하는 DTO
-    String author;
+    private String author;
 
-    String title;
+    private String title;
 
-    String contents;
+    private String contents;
 
     public void setAuthor(String author) {
         this.author = author;

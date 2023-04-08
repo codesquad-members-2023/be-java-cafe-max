@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.Dto;
+package kr.codesqaud.cafe.user.dto;
 
 public class UserFormDto {
     //회원 가입 형식 DTO

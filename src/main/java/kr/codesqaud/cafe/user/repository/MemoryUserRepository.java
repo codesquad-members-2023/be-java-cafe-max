@@ -1,11 +1,11 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.user.repository;
 
-import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.user.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
+
 public class MemoryUserRepository implements UserRepository {
 
     private static Map<String, User> storage = new HashMap<>();
@@ -25,9 +25,9 @@ public class MemoryUserRepository implements UserRepository {
 
     //userID로 찾아서 반환
     @Override
-    public Optional<User> findByID(String userID) {
+    public Optional<User> findByID(String userId) {
         return storage.values().stream()
-                .filter(user -> user.getUserId().equals(userID))
+                .filter(user -> user.getUserId().equals(userId))
                 .findAny();
     }
 }
