@@ -1,0 +1,39 @@
+#mainBanner {
+    margin-top: 80px;
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 8px;
+    height: 148px;
+}
+
+#mainBanner > div {
+    padding: 0 40px 0 40px;
+}
+
+#posts {
+    margin-top: 80px;
+}
+
+th {
+    font-weight: normal !important;
+}
+
+th, tr {
+    border-width: 0 0 1px 0 !important;
+    border-style: solid !important;
+    border-color: #D2DAE0 !important;
+    height: 48px;
+    text-align: center;
+}
+
+.title {
+    width: 40%;
+}
+
+.writer, .writeDate, .views {
+    width: 18%;
+}
+
+nav {
+    margin-top: 20px!important;
+}
