@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository.impl;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Repository
 public class MemoryUserRepository implements UserRepository {
 
     private final Map<String, User> userRepository;

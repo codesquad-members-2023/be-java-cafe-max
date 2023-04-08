@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
+
 class ArticleServiceTest {
 
     private ArticleService articleService;
@@ -66,14 +67,14 @@ class ArticleServiceTest {
         assertThatThrownBy(() -> articleService.findArticleById(id)).isInstanceOf(ArticleNotFoundException.class);
     }
 
-//    @Test
-//    @DisplayName("저장된 아이디를 검색했을때 예외가 발생하지 않는다.")
-//    void findArticleById_doesNotThrowException_test() {
-//        //given
-//        articleService.post(new ArticleDTO("title","content",null));
-//        int id = 1;
-//
-//        //when & then
-//        assertThatCode(() -> articleService.findArticleById(id)).doesNotThrowAnyException();
-//    }
+    @Test
+    @DisplayName("저장된 아이디를 검색했을때 예외가 발생하지 않는다.")
+    void findArticleById_doesNotThrowException_test() {
+        //given
+        articleService.post(new ArticleDTO("title","content",null,null));
+        int id = 1;
+
+        //when & then
+        assertThatCode(() -> articleService.findArticleById(id)).doesNotThrowAnyException();
+    }
 }
