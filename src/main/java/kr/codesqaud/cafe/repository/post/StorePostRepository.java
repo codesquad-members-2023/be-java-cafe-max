@@ -37,7 +37,7 @@ public class StorePostRepository implements PostRepository {
     }
 
     @Override
-    public List<Post> findPostIdByWriterId(String writerId) {
+    public List<Post> findPostIdByWriterId(Long writerId) {
         return store.values().stream()
                 .filter(post -> post.getWriterId().equals(writerId))
                 .sorted(Comparator.comparing(Post::getWriteDate).reversed())
