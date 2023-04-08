@@ -25,13 +25,13 @@ public class ArticleService {
     public List<ArticleDTO> getArticleList(){
         return ArticleRepository.findAll().stream()
                 .sorted(Comparator.comparing(Article::getId).reversed()) 
-                .map(article -> article.toDTO())
+                .map(Article::toDTO)
                 .collect(Collectors.toUnmodifiableList());
     }
 
     public ArticleDTO findArticleById(int id){
         return ArticleRepository.findArticleById(id)
                 .map(Article::toDTO)
-                .orElseThrow(() -> new ArticleNotFoundException());
+                .orElseThrow(ArticleNotFoundException::new);
     }
 }
