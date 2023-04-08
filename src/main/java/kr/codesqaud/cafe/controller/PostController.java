@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
+import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.service.PostService;
 
@@ -49,5 +52,12 @@ public class PostController {
         PostWriteRequest postWriteRequest = new PostWriteRequest("", "", null, null);
         model.addAttribute("postWriteRequest", postWriteRequest);
         return "post/write";
+    }
+
+    @GetMapping("/writer/{writerId}")
+    public String findPostByWriterId(@PathVariable Long writerId, Model model) {
+        List<Post> posts = postService.findPostIdByWriterId(writerId);
+        model.addAttribute("postResponses", posts);
+        return "post/all";
     }
 }
