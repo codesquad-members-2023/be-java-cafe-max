@@ -56,7 +56,7 @@ class MemberControllerTest {
         String nickName = "chacha";
 
         //when,then
-        mockMvc.perform(post("/member/signUp")
+        mockMvc.perform(post("/members/signUp")
                         .param("email", email)
                         .param("password", password)
                         .param("nickName", nickName)
