@@ -4,7 +4,7 @@ import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.controller.dto.UserListDTO;
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.exception.IdDuplicatedException;
+import kr.codesqaud.cafe.exception.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
@@ -29,7 +29,7 @@ public class UserService {
 
     private void validateId(String id) {
         if(userRepository.exist(id)){
-            throw new IdDuplicatedException();
+            throw new AlreadyUserExistenceException();
         }
     }
 

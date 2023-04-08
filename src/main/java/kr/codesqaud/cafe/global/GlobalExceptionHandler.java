@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.global;
 
 
-import kr.codesqaud.cafe.exception.IdDuplicatedException;
+import kr.codesqaud.cafe.exception.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -19,8 +19,8 @@ public class GlobalExceptionHandler {
         return mav;
     }
 
-    @ExceptionHandler(IdDuplicatedException.class)
-    public ModelAndView handleIdDuplicatedException(IdDuplicatedException e) {
+    @ExceptionHandler(AlreadyUserExistenceException.class)
+    public ModelAndView handleIdDuplicatedException(AlreadyUserExistenceException e) {
         return createErrorResponseModelAndView("user/form", e);
     }
 
