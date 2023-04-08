@@ -1,10 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
-import java.util.NoSuchElementException;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,19 +60,16 @@ public class QuestionController {
 	/**
 	 * Q&A 게시글 상세 보기 페이지로 이동
 	 * @param questionIdx 조회하고자 하는 Q&A 게시글의 idx
+	 * @param errorMessage 없는 게시글 또는 잘못된 입력값이 들어왔을때 받아올 에러 메시지
 	 * @param model `Q&A 게시글 상세 내역` 또는 `에러 메시지`를 전달하기 위한 model
 	 * @return Q&A 게시글 상세 보기 페이지
 	 */
 	@GetMapping("/{questionIdx}")
-	public String questionDetails(@PathVariable String questionIdx, Model model) {
-
-		try {
+	public String questionDetails(@PathVariable String questionIdx, @ModelAttribute("errorMessage") String errorMessage,
+		Model model) {
+		if (errorMessage.isBlank()) {
 			int idx = Integer.parseInt(questionIdx);
 			model.addAttribute("questionDetails", service.findQuestion(idx));
-		} catch (NumberFormatException e) {
-			model.addAttribute("errorMessage", "잘못된 값이 입력되었습니다.");
-		} catch (NoSuchElementException e) {
-			model.addAttribute("errorMessage", e.getMessage());
 		}
 
 		return "qna/show";

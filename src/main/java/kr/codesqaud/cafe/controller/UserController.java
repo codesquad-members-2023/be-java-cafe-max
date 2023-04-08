@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -9,20 +8,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.codesqaud.cafe.dto.SignUpDTO;
-import kr.codesqaud.cafe.dto.UserDTO;
 import kr.codesqaud.cafe.service.UserService;
 
 @Controller
@@ -36,15 +33,11 @@ public class UserController {
 
 	/**
 	 * 회원가입 페이지로 이동
-	 * @param errorMessages 회원가입 정보 유효성 검사 실패시 받아올 에러 메시지들
 	 * @param model 회원가입 정보 유효성 검사 실패시 에러 메시지를 전달하기 위한 model
 	 * @return 회원가입 페이지
 	 */
 	@GetMapping("/signup")
-	public String signup(@RequestParam @Nullable List<String> errorMessages, Model model) {
-		if (errorMessages != null && !errorMessages.isEmpty()) {
-			addAttributeErrorMessages(model, errorMessages);
-		}
+	public String signup(Model model) {
 		return "user/form";
 	}
 
@@ -72,49 +65,41 @@ public class UserController {
 			addAttributeErrorMessages(redirect, collectErrorMessages(result));
 			return "redirect:/users/signup";
 		}
-
-		try {
-			service.addUser(dto);
-		} catch (IllegalArgumentException e) {
-			addAttributeErrorMessage(redirect, e.getMessage());
-			return "redirect:/users/signup";
-		}
+		service.addUser(dto);
 		return "redirect:/users";
 	}
 
 	/**
 	 * 회원 프로필 보기 페이지로 이동
 	 * @param userId 회원 아이디
+	 * @param errorMessage 존재하지 않는 회원을 조회했을 때 받아올 에러 메시지
 	 * @param model 존재하지 않는 회원을 조회했을 때 에러 메시지를 보내기 위한 model
 	 * @return 회원 프로필 보기 페이지
 	 */
 	@GetMapping("/{userId}")
-	public String userDetails(@PathVariable String userId, Model model) {
-		UserDTO userDto = null;
-		try {
-			userDto = service.findUser(userId);
-		} catch (NoSuchElementException e) {
-			addAttributeErrorMessage(model, e.getMessage());
+	public String userDetails(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
+		Model model) {
+		if (errorMessage.isBlank()) {
+			model.addAttribute("userDto", service.findUser(userId));
 		}
-		model.addAttribute("userDto", userDto);
+
 		return "user/profile";
 	}
 
 	/**
 	 * 회원 정보 수정 페이지로 이동
 	 * @param userId 회원 아이디
+	 * @param errorMessage 존재하지 않는 회원을 조회했을 때 받아올 에러 메시지
 	 * @param model 존재하지 않는 회원을 조회했을 때 에러 메시지를 보내기 위한 model
 	 * @return 회원 정보 수정 페이지
 	 */
 	@GetMapping("/{userId}/modify-form")
-	public String modifyForm(@PathVariable String userId, Model model) {
-		UserDTO userDto = null;
-		try {
-			userDto = service.findUser(userId);
-		} catch (NoSuchElementException e) {
-			addAttributeErrorMessage(model, e.getMessage());
+	public String modifyForm(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
+		Model model) {
+		if (errorMessage.isBlank()) {
+			model.addAttribute("userDto", service.findUser(userId));
 		}
-		model.addAttribute("userDto", userDto);
+
 		return "user/modify-form";
 	}
 
@@ -142,11 +127,8 @@ public class UserController {
 			return redirectBack(request);
 		}
 
-		try {
-			service.modifyUser(dto);
-		} catch (NoSuchElementException e) {
-			addAttributeErrorMessage(redirect, e.getMessage());
-		}
+		service.modifyUser(dto);
+
 		return "redirect:/users/" + dto.getUserId();
 	}
 
@@ -191,6 +173,7 @@ public class UserController {
 	 * @return 에러 메시지 목록
 	 */
 	private List<String> collectErrorMessages(BindingResult result) {
+
 		return result.getFieldErrors().stream()
 			.map(DefaultMessageSourceResolvable::getDefaultMessage)
 			.filter(Objects::nonNull)
