@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.global;
 
 public class ErrorResponse {
-    private int status;
-    private String message;
+    private final int status;
+    private final String message;
 
     public ErrorResponse(int status, String message) {
         this.status = status;

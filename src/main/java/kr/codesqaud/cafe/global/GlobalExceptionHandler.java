@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AlreadyUserExistenceException.class)
-    public ModelAndView handleIdDuplicatedException(AlreadyUserExistenceException e) {
+    public ModelAndView handleAlreadyUserExistenceException(AlreadyUserExistenceException e) {
         return createErrorResponseModelAndView("user/form", e);
     }
 
