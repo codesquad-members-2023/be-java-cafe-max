@@ -1,6 +1,5 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe;
 
-import kr.codesqaud.cafe.dto.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +12,7 @@ public class UserController {
     }
 
     @PostMapping("/users/create")
-    public String createUser(User user) {
+    public String joinUser(User user) {
         System.out.println(user.toString());
         return "";
     }
