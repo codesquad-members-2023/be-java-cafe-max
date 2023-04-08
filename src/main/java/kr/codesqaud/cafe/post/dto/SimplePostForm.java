@@ -1,8 +1,10 @@
-package kr.codesqaud.cafe.post;
+package kr.codesqaud.cafe.post.dto;
+
+import kr.codesqaud.cafe.post.Post;
 
 import java.time.LocalDateTime;
 
-public class Post {
+public class SimplePostForm {
     private final Long id;
 
     private final String nickname;
@@ -13,12 +15,22 @@ public class Post {
 
     private final LocalDateTime createdDateTime;
 
-    private Post(Builder builder) {
-        this.id = builder.id;
-        this.nickname = builder.nickname;
-        this.createdDateTime = builder.createdDateTime;
-        this.title = builder.title;
-        this.textContent = builder.textContent;
+    private SimplePostForm(Builder builder) {
+        id = builder.id;
+        nickname = builder.nickname;
+        title = builder.title;
+        textContent = builder.textContent;
+        createdDateTime = builder.createdDateTime;
+    }
+
+    public static SimplePostForm from(Post post) {
+        return new SimplePostForm.Builder()
+                .id(post.getId())
+                .nickname(post.getNickname())
+                .textContent(post.getTextContent())
+                .title(post.getTitle())
+                .createdDateTime(post.getCreatedDateTime())
+                .build();
     }
 
     public Long getId() {
@@ -52,10 +64,6 @@ public class Post {
 
         private LocalDateTime createdDateTime;
 
-        public Builder() {
-
-        }
-
         public Builder id(Long id) {
             this.id = id;
             return this;
@@ -81,8 +89,9 @@ public class Post {
             return this;
         }
 
-        public Post build() {
-            return new Post(this);
+        public SimplePostForm build() {
+            return new SimplePostForm(this);
         }
     }
+
 }

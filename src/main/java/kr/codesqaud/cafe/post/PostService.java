@@ -1,36 +1,47 @@
 package kr.codesqaud.cafe.post;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import kr.codesqaud.cafe.exception.ErrorCode;
+import kr.codesqaud.cafe.post.dto.PostForm;
+import kr.codesqaud.cafe.post.dto.SimplePostForm;
+import kr.codesqaud.cafe.post.exception.InvalidPostIdFailedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import kr.codesqaud.cafe.post.form.PostForm;
-import kr.codesqaud.cafe.post.form.SimplePostForm;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostService {
 
-	private final PostsRepository postsRepository;
+    private static final Logger logger = LoggerFactory.getLogger(PostService.class);
+    private final PostRepository postRepository;
 
-	public PostService(PostsRepository postsRepository) {
-		this.postsRepository = postsRepository;
-	}
+    public PostService(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
-	public Post createNewPost(PostForm postForm) {
-		Post post = new Post();
-		post.setNickname(postForm.getNickname());
-		post.setTitle(postForm.getTitle());
-		post.setTextContent(postForm.getTextContent());
-		post.setCreatedDateTime(LocalDateTime.now());
-		postsRepository.add(post);
-		return post;
-	}
+    public Post createNewPost(PostForm postForm) {
+        Post post = postForm.toPost();
+        int saveId = postRepository.save(post);
+        return findById(saveId);
+    }
 
-	public List<SimplePostForm> mappingSimpleForm(List<Post> posts) {
-		return posts.stream()
-			.map(Post::mappingSimpleForm)
-			.collect(Collectors.toList());
-	}
+
+    public Post findById(int postId) {
+
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        if (optionalPost.isEmpty()) {
+            logger.info(ErrorCode.INVALID_POST_ID_CODE.getMessage());
+            throw new InvalidPostIdFailedException(ErrorCode.INVALID_POST_ID_CODE);
+        }
+        return optionalPost.get();
+    }
+
+    public List<SimplePostForm> getAllPosts() {
+        return postRepository.getAllPosts().stream()
+                .map(SimplePostForm::from)
+                .collect(Collectors.toList());
+    }
 }

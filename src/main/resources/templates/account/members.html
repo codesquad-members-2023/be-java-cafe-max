@@ -43,16 +43,16 @@
         </div>
         <div class="row col-10">
             <ol class="justify-content-center" id="memberList">
-                <li class="row text-center" th:each="usersForm,iterStat: ${users}">
+                <li class="row text-center" th:each="userForm,iterStat: ${users}">
                     <div class="col-2 align-self-center">
-                        <a th:href="@{/users/{id}(id = ${usersForm.id})}" th:text="${iterStat.count}"></a>
+                        <a th:href="@{/users/{id}(id = ${userForm.id})}" th:text="${iterStat.count}"></a>
                     </div>
-                    <div class="col-6 align-self-center text-break" th:text="${usersForm.email}"></div>
-                    <div class="col-2 align-self-center text-break" th:text="${usersForm.nickname}"></div>
+                    <div class="col-6 align-self-center text-break" th:text="${userForm.email}"></div>
+                    <div class="col-2 align-self-center text-break" th:text="${userForm.nickname}"></div>
                     <div class="col-2">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <button class="btn btn-primary" type="submit"
-                                    th:onclick="|location.href='@{/users/{id}/update(id = ${usersForm.id})}'|">수정
+                                    th:onclick="|location.href='@{/users/{id}/update(id = ${userForm.id})}'|">수정
                             </button>
                         </div>
                     </div>

@@ -1,128 +1,135 @@
 package kr.codesqaud.cafe.account;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import org.springframework.lang.Nullable;
+import kr.codesqaud.cafe.account.dto.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
-import kr.codesqaud.cafe.account.form.JoinForm;
-import kr.codesqaud.cafe.account.form.LoginForm;
-import kr.codesqaud.cafe.account.form.ProfileForm;
-import kr.codesqaud.cafe.account.form.ProfileSettingForm;
-import kr.codesqaud.cafe.account.form.UsersForm;
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
 
-	private final UserService userService;
-	private final UsersRepository usersRepository;
+    private static final String PASSWORD = "password";
+    private static final String USER_ID = "userId";
+    private static final String PROFILE_FORM = "profileForm";
+    private static final String PROFILE_SETTING_FORM = "profileSettingForm";
+    private static final String USERS = "users";
+    private static final String EMAIL = "email";
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final UserService userService;
+    private final JoinFormValidator joinFormValidator;
 
-	public UserController(UserService userService, UsersRepository usersRepository) {
-		this.userService = userService;
-		this.usersRepository = usersRepository;
-	}
+    public UserController(UserService userService,
+                          JoinFormValidator joinFormValidator) {
+        this.userService = userService;
+        this.joinFormValidator = joinFormValidator;
+    }
 
-	@GetMapping("/users/login")
-	public String showLoginPage(Model model, @Nullable @RequestParam boolean errors) {
-		model.addAttribute("loginForm", new LoginForm());
-		model.addAttribute("errors", errors);
-		return "account/login";
-	}
+    private static void loggingError(BindingResult bindingResult) {
+        bindingResult.getAllErrors()
+                .forEach(error -> logger.error("[ Name = {} ][ Message = {} ]", error.getObjectName(),
+                        error.getDefaultMessage()));
+    }
 
-	@PostMapping("/users/login")
-	public String login(@Valid LoginForm loginForm, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return "account/login";
-		}
-		Optional<User> userOptional = usersRepository.findByEmail(loginForm.getEmail());
-		if (userOptional.isEmpty()) {
-			bindingResult.rejectValue("email", "noExist", "이메일이 존재하지 않습니다.");
-			return "account/login";
-		}
-		User user = userOptional.get();
-		if (!user.getPassword().equals(loginForm.getPassword())) {
-			bindingResult.rejectValue("password", "noMatch", "비밀번호가 일치하지 않습니다.");
-			return "account/login";
-		}
-		return "redirect:/users/" + user.getId();
-	}
+    @InitBinder("joinForm")
+    public void joinFormInitBinder(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(joinFormValidator);
+    }
 
-	@GetMapping("/users/join")
-	public String showJoinPage(Model model) {
-		model.addAttribute("joinForm", new JoinForm());
-		return "account/join";
-	}
+    @GetMapping("/users/login")
+    public String showLoginPage(@ModelAttribute LoginForm loginForm) {
+        return "account/login";
+    }
 
-	@PostMapping("/users/join")
-	public String addUser(@Valid JoinForm joinForm, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return "account/join";
-		}
-		if (usersRepository.containEmail(joinForm.getEmail())) {
-			bindingResult.rejectValue("email", "duplicate", "중복된 이메일입니다.");
-			return "account/join";
-		}
-		User user = userService.createNewUser(joinForm);
-		return "redirect:/users/" + user.getId();
-	}
+    @PostMapping("/users/login")
+    public String login(@Valid LoginForm loginForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            loggingError(bindingResult);
+            return "account/login";
+        }
+        Optional<User> userOptional = userService.findByEmail(loginForm.getEmail());
+        if (userOptional.isEmpty()) {
+            loggingError(bindingResult);
+            bindingResult.rejectValue(EMAIL, "error.email.notExist");
+            return "account/login";
+        }
+        User user = userOptional.get();
+        if (!user.getPassword().equals(loginForm.getPassword())) {
+            loggingError(bindingResult);
+            bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
+            return "account/login";
+        }
+        return "redirect:/users/" + user.getId();
+    }
 
-	@GetMapping("/users")
-	public String showUsers(Model model) {
-		List<UsersForm> allUsersForm = userService.getAllUsersForm();
-		model.addAttribute("users", allUsersForm);
-		return "account/members";
-	}
+    @GetMapping("/users/join")
+    public String showJoinPage(@ModelAttribute JoinForm joinForm) {
+        return "account/join";
+    }
 
-	@GetMapping("/users/{userId}")
-	public String showUser(Model model, @PathVariable Long userId) {
-		Optional<User> userOptional = usersRepository.findById(userId);
-		if (userOptional.isEmpty()) {
-			return "redirect:/";
-		}
-		ProfileForm profileForm = userOptional.get().mappingProfileForm();
-		model.addAttribute("profileForm", profileForm);
-		model.addAttribute("userId", userId);
-		return "account/profile";
-	}
+    @PostMapping("/users")
+    public String addUser(@Valid JoinForm joinForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            loggingError(bindingResult);
+            return "account/join";
+        }
+        int userId = userService.save(joinForm);
+        return "redirect:/users/" + userId+"/profile";
+    }
 
-	@GetMapping("/users/{userId}/update")
-	public String showUserProfile(Model model, @PathVariable Long userId) {
-		Optional<User> userOptional = usersRepository.findById(userId);
-		if (userOptional.isEmpty()) {
-			return "redirect:/";
-		}
-		ProfileSettingForm profileSettingForm = userOptional.get().mappingProfileSettingFormWithPassword();
-		model.addAttribute("userId", userId);
-		model.addAttribute("profileSettingForm", profileSettingForm);
-		return "account/profileUpdate";
-	}
+    @GetMapping("/users")
+    public String showUsers(Model model) {
+        List<UserForm> allUserForm = userService.getAllUsersForm();
+        model.addAttribute(USERS, allUserForm);
+        return "account/members";
+    }
 
-	@PutMapping("/users/{userId}/update")
-	public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, Errors errors, @PathVariable Long userId
-	) {
-		Optional<User> userOptional = usersRepository.findById(userId);
-		if (userOptional.isEmpty()) {
-			return "redirect:/";
-		}
-		if (errors.hasErrors()) {
-			return "account/profileUpdate";
-		}
-		if (!userService.checkPasswordByUserId(profileSettingForm.getPassword(), userId)) {
-			errors.rejectValue("password", "noMatch", "비밀번호가 일치하지 않습니다.");
-			return "account/profileUpdate";
-		}
-		userService.update(profileSettingForm, userId);
-		return "redirect:/users/{userId}";
-	}
+    @GetMapping("/users/{userId}/profile")
+    public String showUser(Model model, @PathVariable Long userId) {
+        User user = userService.findById(userId);
+        ProfileForm profileForm = ProfileForm.from(user);
+
+        model.addAttribute(PROFILE_FORM, profileForm);
+        model.addAttribute(USER_ID, userId);
+        return "account/profile";
+    }
+
+    @GetMapping("/users/{userId}/profile/edit")
+    public String showUserProfile(Model model, @PathVariable Long userId) {
+        User user = userService.findById(userId);
+        ProfileSettingForm profileSettingForm = ProfileSettingForm.from(user);
+
+        model.addAttribute(USER_ID, userId);
+        model.addAttribute(PROFILE_SETTING_FORM, profileSettingForm);
+        return "account/profileUpdate";
+    }
+
+    @PutMapping("/users/{userId}/profile")
+    public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, BindingResult bindingResult,
+                                 @PathVariable Long userId
+    ) {
+        if (bindingResult.hasErrors()) {
+            loggingError(bindingResult);
+            return "account/profileUpdate";
+        }
+        if (userService.isDuplicateEmail(profileSettingForm.getEmail())) {
+            bindingResult.rejectValue(EMAIL, "error.email.duplicate");
+            loggingError(bindingResult);
+            return "account/profileUpdate";
+        }
+        if (!userService.isSamePassword(userId,profileSettingForm.getPassword())) {
+            bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
+            loggingError(bindingResult);
+            return "account/profileUpdate";
+        }
+        userService.update(profileSettingForm, userId);
+        return "redirect:/users/{userId}/profile";
+    }
 }

@@ -1,52 +1,65 @@
 package kr.codesqaud.cafe.account;
 
+import kr.codesqaud.cafe.account.dto.JoinForm;
+import kr.codesqaud.cafe.account.dto.ProfileSettingForm;
+import kr.codesqaud.cafe.account.dto.UserForm;
+import kr.codesqaud.cafe.account.exception.InvalidUserIdException;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Service;
+import static kr.codesqaud.cafe.exception.ErrorCode.INVALID_USER_ID_CODE;
 
-import kr.codesqaud.cafe.account.form.JoinForm;
-import kr.codesqaud.cafe.account.form.ProfileSettingForm;
-import kr.codesqaud.cafe.account.form.UsersForm;
 
 @Service
 public class UserService {
 
-	private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
 
-	public UserService(UsersRepository usersRepository) {
-		this.usersRepository = usersRepository;
-	}
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-	public User createNewUser(JoinForm joinForm) {
-		User user = new User();
-		user.setNickname(joinForm.getNickname());
-		user.setEmail(joinForm.getEmail());
-		user.setPassword(joinForm.getPassword());
-		usersRepository.save(user);
-		return user;
-	}
+    public int save(JoinForm joinForm) {
+        User user = joinForm.toUser();
+        return userRepository.save(user);
+    }
 
-	public List<UsersForm> getAllUsersForm() {
-		List<User> allMembers = usersRepository.getAllMembers();
-		return allMembers.stream()
-			.map(User::mappingUsersForm)
-			.collect(Collectors.toList());
-	}
+    public List<UserForm> getAllUsersForm() {
+        return userRepository.getAllUsers().stream()
+                .map(UserForm::from)
+                .collect(Collectors.toList());
+    }
 
-	public void update(ProfileSettingForm profileSettingForm, Long userId) {
-		usersRepository.findById(userId).ifPresent(user -> {
-				user.setEmail(profileSettingForm.getEmail());
-				user.setNickname(profileSettingForm.getNickname());
-			}
-		);
-	}
+    public void update(ProfileSettingForm profileSettingForm, Long userId) {
+        userRepository.update(profileSettingForm.setUser(findById(userId)));
+    }
 
-	public boolean checkPasswordByUserId(String password, Long userId) {
-		Optional<User> optionalUser = usersRepository.findById(userId);
-		return optionalUser.map(user -> Objects.equals(user.getPassword(), password)).orElse(false);
-	}
+    public boolean isSamePassword(Long userId, String targetPassword) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        return userOptional.map(user -> user.isSamePassword(targetPassword)).orElse(false);
+    }
 
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public boolean containsEmail(String email) {
+        return userRepository.containsEmail(email);
+    }
+
+    public User findById(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            return userOptional.get();
+        } else {
+            throw new InvalidUserIdException(INVALID_USER_ID_CODE);
+        }
+    }
+
+    public boolean isDuplicateEmail(String targetEmail) {
+        return userRepository.findByEmail(targetEmail).isPresent();
+    }
 }

@@ -4,67 +4,121 @@
 <body>
 <nav th:replace="fragments/navbar.html :: user">
 </nav>
-<form class="container" id="postingForm" th:action="@{/post}" th:object="${postForm}" method="post" novalidate>
-    <div class="row justify-content-center">
-        <div class="col-6 row row-cols-auto mt-5 mb-5">
-            <h3>글쓰기</h3>
-        </div>
-    </div>
-    <div class="row justify-content-center mb-5">
-        <div class="col-6">
-            <div th:if="${errors}" class="alert alert-danger" role="alert">
-                잘못 입력했습니다.
+<form class="container" id="postForm" th:action="@{/posts}" th:object="${postForm}" method="post" novalidate>
+    <div th:if="${#fields.hasErrors()}">
+        <div class="row justify-content-center">
+            <div class="col-6 row row-cols-auto mt-5 mb-5">
+                <h3>글쓰기</h3>
             </div>
         </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="mb-3 col-6">
-            <div class="form-floating">
-                <input type="text" th:if="${#fields.hasErrors('nickname')}" class="form-control is-invalid"
-                       th:field="*{nickname}" id="nickName" placeholder="닉네임을 입력하세요">
-                <input type="text" th:if="!${#fields.hasErrors('nickname')}" class="form-control" th:field="*{nickname}"
-                       id="nickName" placeholder="닉네임을 입력하세요">
-                <label for="nickName">닉네임</label>
-                <div class="invalid-feedback" th:errors="*{nickname}">
-                    공란일 수 없다.
+        <div class="row justify-content-center mb-5">
+            <div class="col-6">
+                <div th:if="${errors}" class="alert alert-danger" role="alert">
+                    잘못 입력했습니다.
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="mb-3 col-6">
-            <div class="form-floating">
-                <input type="text" th:if="${#fields.hasErrors('title')}" class="form-control is-invalid"
-                       th:field="*{title}" id="title" placeholder="글의 제목을 입력하세요">
-                <input type="text" th:if="!${#fields.hasErrors('title')}" class="form-control" th:field="*{title}"
-                       id="title" placeholder="글의 제목을 입력하세요">
-                <label for="title">제목</label>
-                <div class="invalid-feedback" th:errors="*{title}">
-                    공란일 수 없다.
+        <div class="row justify-content-center">
+            <div class="mb-3 col-6">
+                <div class="form-floating">
+                    <input type="text" th:if="${#fields.hasErrors('nickname')}" class="form-control is-invalid"
+                           th:field="*{nickname}" id="nickname" placeholder="닉네임을 입력하세요">
+                    <input type="text" th:if="!${#fields.hasErrors('nickname')}" class="form-control is-valid"
+                           th:field="*{nickname}"
+                           id="nickname" placeholder="닉네임을 입력하세요">
+                    <label for="nickName">닉네임</label>
+                    <div class="invalid-feedback" th:errors="*{nickname}">
+                        공란일 수 없다.
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="mb-3 col-6 ">
-            <div class="form-floating">
+        <div class="row justify-content-center">
+            <div class="mb-3 col-6">
+                <div class="form-floating">
+                    <input type="text" th:if="${#fields.hasErrors('title')}" class="form-control is-invalid"
+                           th:field="*{title}" id="title" placeholder="글의 제목을 입력하세요">
+                    <input type="text" th:if="!${#fields.hasErrors('title')}" class="form-control is-valid"
+                           th:field="*{title}"
+                           id="title" placeholder="글의 제목을 입력하세요">
+                    <label for="title">제목</label>
+                    <div class="invalid-feedback" th:errors="*{title}">
+                        공란일 수 없다.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3 col-6 ">
+                <div class="form-floating">
                 <textarea class="form-control is-invalid" th:if="${#fields.hasErrors('textContent')}" id="textContent"
                           th:field="*{textContent}" placeholder="글의 내용을 입력하세요"
                           style="height: 500px;resize: none"></textarea>
-                <textarea class="form-control" th:if="!${#fields.hasErrors('textContent')}" id="textContent"
-                          th:field="*{textContent}" placeholder="글의 내용을 입력하세요"
-                          style="height: 500px;resize: none"></textarea>
-                <label for="textContent">내용</label>
-                <div class="invalid-feedback" th:errors="*{textContent}">
-                    3글자 이상 1000 글자 이하여야 한다
+                    <textarea class="form-control is-valid" th:if="!${#fields.hasErrors('textContent')}"
+                              id="textContent"
+                              th:field="*{textContent}" placeholder="글의 내용을 입력하세요"
+                              style="height: 500px;resize: none"></textarea>
+                    <label for="textContent">내용</label>
+                    <div class="invalid-feedback" th:errors="*{textContent}">
+                        3글자 이상 1000 글자 이하여야 한다
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center col">
+            <div class="col-6 mb-3 row row-cols-auto justify-content-end">
+                <div class="col">
+                    <button class="btn btn-primary" type="submit" role="button">작성완료</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row justify-content-center col">
-        <div class="col-6 mb-3 row row-cols-auto justify-content-end">
-            <div class="col">
-                <button class="btn btn-primary" type="submit" role="button">작성완료</button>
+    <div th:if="!${#fields.hasErrors()}">
+        <div class="row justify-content-center">
+            <div class="col-6 row row-cols-auto mt-5 mb-5">
+                <h3>글쓰기</h3>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-5">
+            <div class="col-6">
+                <div th:if="${errors}" class="alert alert-danger" role="alert">
+                    잘못 입력했습니다.
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3 col-6">
+                <div class="form-floating">
+                    <input type="text" class="form-control" th:field="*{nickname}"
+                           id="nickname" placeholder="닉네임을 입력하세요">
+                    <label for="nickName">닉네임</label>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3 col-6">
+                <div class="form-floating">
+                    <input type="text" class="form-control" th:field="*{title}"
+                           id="title" placeholder="글의 제목을 입력하세요">
+                    <label for="title">제목</label>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="mb-3 col-6 ">
+                <div class="form-floating">
+                <textarea class="form-control" id="textContent"
+                          th:field="*{textContent}" placeholder="글의 내용을 입력하세요"
+                          style="height: 500px;resize: none"></textarea>
+                    <label for="textContent">내용</label>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center col">
+            <div class="col-6 mb-3 row row-cols-auto justify-content-end">
+                <div class="col">
+                    <button class="btn btn-primary" type="submit" role="button">작성완료</button>
+                </div>
             </div>
         </div>
     </div>
