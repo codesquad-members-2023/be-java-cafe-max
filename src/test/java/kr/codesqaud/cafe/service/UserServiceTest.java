@@ -88,7 +88,7 @@ class UserServiceTest {
         ProfileEditDTO profileEditDTO = new ProfileEditDTO("newName", "newEmail@naver.com", "newPassword", "password","testId");
 
         //when
-        Assertions.assertThatCode(() -> userService.updateUserByUserId(profileEditDTO)).doesNotThrowAnyException();
+        Assertions.assertThatCode(() -> userService.updateUserById(profileEditDTO)).doesNotThrowAnyException();
 
         //then
         UserDTO changedUser = userService.getUserById("testId");
@@ -105,7 +105,7 @@ class UserServiceTest {
         ProfileEditDTO profileEditDTO = new ProfileEditDTO("newName","newEmail@naver.com","newPassword","password123","testId");
 
         //when
-        Assertions.assertThatThrownBy(() -> userService.updateUserByUserId(profileEditDTO)).isInstanceOf(InvalidPasswordException.class);
+        Assertions.assertThatThrownBy(() -> userService.updateUserById(profileEditDTO)).isInstanceOf(InvalidPasswordException.class);
 
         //then
         UserDTO changedUser = userService.getUserById("testId");

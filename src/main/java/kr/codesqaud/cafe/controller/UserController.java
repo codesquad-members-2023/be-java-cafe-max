@@ -56,7 +56,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public String updateUserData(@Valid ProfileEditDTO profileEditDto){
-        userService.updateUserByUserId(profileEditDto);
+        userService.updateUserById(profileEditDto);
         return "redirect:/users";
     }
 }

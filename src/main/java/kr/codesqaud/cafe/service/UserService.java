@@ -45,13 +45,17 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException());
     }
 
-    public void updateUserByUserId(ProfileEditDTO profileEditDto) {
+    public void updateUserById(ProfileEditDTO profileEditDto) {
         UserDTO userDto = getUserById(profileEditDto.getId());
 
-        if (userDto.getPassword().equals(profileEditDto.getOriPassword())) {
-            userRepository.updateUser(profileEditDto.toUser());
-            return;
+        if (!matchPassword(profileEditDto, userDto)){
+            throw new InvalidPasswordException(profileEditDto.getId());
         }
-        throw new InvalidPasswordException(profileEditDto.getId());
+
+        userRepository.updateUser(profileEditDto.toUser());
+    }
+
+    private boolean matchPassword(ProfileEditDTO profileEditDto, UserDTO userDto) {
+        return userDto.getPassword().equals(profileEditDto.getOriPassword());
     }
 }
