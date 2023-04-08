@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class UserController {
@@ -18,18 +19,9 @@ public class UserController {
         this.memoryUserRepository = memoryUserRepository;
     }
 
-    @GetMapping("/user/form")
-    public String join() {
-        return "user/form";
-    }
-
     @PostMapping("/user/form")
-    public String post(@RequestParam("userId") String userId,
-                       @RequestParam String password,
-                       @RequestParam String name,
-                       @RequestParam String email) {
+    public String saveUser(User user) {
 
-        User user = new User(userId, password, name, email);
         memoryUserRepository.save(user);
         logger.info(user.toString());
 
@@ -37,21 +29,63 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String joinSuccess(Model model) {
+    public String showUsers(Model model) {
+
         model.addAttribute("users", memoryUserRepository.findAll());
+
         return "user/list";
     }
 
     @GetMapping("/users/{userId}")
     public String showProfile(@PathVariable("userId") String userId, Model model) {
+
         User user = memoryUserRepository.findById(userId);
         model.addAttribute("user", user);
 
         return "user/profile";
     }
 
-    @GetMapping("/user/login")
-    public String login() {
-        return "user/login";
+    @GetMapping("/users/{userId}/check")
+    public String showCheckPasswordForm(@PathVariable String userId, Model model) {
+
+        User user = memoryUserRepository.findById(userId);
+        model.addAttribute("user", user);
+
+        return "user/checkPassword";
+    }
+
+    @PutMapping("/users/{userId}/check")
+    public String checkPassword(@PathVariable String userId, String password, Model model, RedirectAttributes redirectAttributes) {
+
+        User user = memoryUserRepository.findById(userId);
+        model.addAttribute("user", user);
+
+        if (!user.getPassword().equals(password)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+
+            return "redirect:/users";
+        }
+
+        redirectAttributes.addFlashAttribute("successMessage", "비밀번호가 일치합니다.");
+
+        return "redirect:/users/{userId}/form";
+    }
+
+    @GetMapping("/users/{userId}/form")
+    public String showUpdateForm(@PathVariable String userId, Model model) {
+
+        User user = memoryUserRepository.findById(userId);
+        model.addAttribute("user", user);
+
+        return "user/updateForm";
+    }
+
+    @PutMapping("/users/{userId}/update")
+    public String update(@ModelAttribute User user) {
+
+        memoryUserRepository.update(user);
+        logger.info(user.toString());
+
+        return "redirect:/users";
     }
 }
