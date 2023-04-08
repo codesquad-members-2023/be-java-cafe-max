@@ -1,58 +1,57 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.dto.UserDTO;
-import kr.codesqaud.cafe.repository.MemoryUserRepository;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
+import kr.codesqaud.cafe.controller.dto.request.ProfileEditRequest;
 import kr.codesqaud.cafe.service.UserService;
-import kr.codesqaud.cafe.user.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
-@RequestMapping("/users")
 public class UserController {
-    private final MemoryUserRepository memoryUserRepository;
+    private final UserService userService;
 
-    @Autowired
-    public UserController(MemoryUserRepository memoryUserRepository) {
-        this.memoryUserRepository = memoryUserRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/user/form")
-    public String join() {
+    @GetMapping("/create-user-form")
+    public String showJoinForm() {
         return "user/form";
     }
 
-    @GetMapping
-    public String listAllUsers(Model model){
-        List<User> users = memoryUserRepository.findAll();
-        model.addAttribute("users", users);
-        return "user/list";
+    @GetMapping("/login-user-form")
+    public String showLoginForm() {
+        return "user/login";
     }
 
-    @PostMapping("/user/create")
-    public String create(UserDTO userDTO) {
-        User user = new User(userDTO.getUserId(), userDTO.getPassword(),
-                userDTO.getName(), userDTO.getEmail());
-        memoryUserRepository.save(user);
+    @PostMapping("/join")//생성
+    public String join(@ModelAttribute JoinRequest joinRequest) {
+        userService.join(joinRequest);
         return "redirect:/users";
     }
 
-    @GetMapping("/users")
-    public String listPage(final Model model) {
-        List<User> users = memoryUserRepository.findAll();
-        model.addAttribute("users", users);
-        return "/user/list";
+    @GetMapping("/users")//view 가져오기
+    public String listAllUsers(Model model) {
+        model.addAttribute("users", userService.getUsers());
+        return "user/list";
     }
 
-//    @GetMapping("/users/{userId}")
-//    public String viewUserProfile(@PathVariable final String userId, final Model model) {
-//        User findUser = userService.findOne(userId).get();
-//        model.addAttribute("user", findUser);
-//        return "/user/profile";
-//    }
+    @GetMapping("/users/{userId}")
+    public String showProfilePage(@PathVariable final String userId, final Model model) {
+        model.addAttribute("user", userService.findByUserId(userId));
+        return "user/profile";
+    }
+
+    @GetMapping("/users/{userId}/form")
+    public String showProfileEditPage(@PathVariable final String userId, final Model model) {
+        model.addAttribute("userId", userId);
+        return "user/edit_form";
+    }
+
+    @PutMapping("/users/{userId}")//리소스 수정
+    public String editUserProfile(@PathVariable final String userId, @ModelAttribute final ProfileEditRequest request) {
+        userService.editUserProfile(userId, request);
+        return "redirect:/users";
+    }
 }

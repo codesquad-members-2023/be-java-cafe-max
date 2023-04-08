@@ -1,30 +1,47 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private final Map<String, User> userRepository = new ConcurrentHashMap<>();
-    private static Long sequence = 0L;
+    private static final Map<String, User> userRepository = new ConcurrentHashMap<>();
+    private static final AtomicLong sequence = new AtomicLong(0L);
+
     @Override
     public User save(User user) {
-        user.setSequence(++sequence);
+        long newId = sequence.incrementAndGet();
+        user.setId(newId);
         userRepository.put(user.getUserId(), user);
         return user;
     }
 
     @Override
-    public User findById(String id) {
-        return userRepository.get(id);
+    public Optional<User> findByUserId(String userId) {
+        return Optional.ofNullable(userRepository.get(userId));
+    }
+
+    @Override
+    public Optional<User> findByName(String name) {
+        return userRepository.values().stream()
+                .filter(user -> user.getUserName().equals(name))
+                .findAny();
     }
 
     @Override
     public List<User> findAll() {
-        return null;
+        return new ArrayList<>(userRepository.values());
     }
 
+    @Override
+    public void update(User user) {
+        userRepository.put(user.getUserId(), user);
+    }
 }

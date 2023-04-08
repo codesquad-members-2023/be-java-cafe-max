@@ -1,37 +1,30 @@
-<!DOCTYPE html>
-<html lang="kr" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/head :: head}">
-</head>
-
+{{> fragments/header}}
 <body>
-<nav class="navbar navbar-fixed-top header" th:replace="~{layout/navbar :: navbar}">
-</nav>
-
-<div class="navbar navbar-default" id="subnav" th:replace="~{layout/subnav :: subnav}">
-</div>
-
+{{> fragments/footer}}
 <div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
+            {{#article}}
             <header class="qna-header">
-                <h2 class="qna-title" th:text="${article.title}"></h2>
+                <h2 class="qna-title">{{title}}</h2>
             </header>
             <div class="content-main">
                 <article class="article">
                     <div class="article-header">
                         <div class="article-header-thumb">
-                            <img src="https://graph.facebook.com/v2.3/100000059371774/picture" class="article-author-thumb" alt="">
+                            <img src="https://graph.facebook.com/v2.3/100000059371774/picture"
+                                 class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/users/92/kimmunsu" class="article-author-name" th:text="${article.writer}"></a>
+                            <a href="/users/{{writer}}" class="article-author-name">{{writer}}</a>
                             <a href="/questions/413" class="article-header-time" title="퍼머링크">
-                                2015-12-30 01:47
+                                {{createdAt}}
                                 <i class="icon-link"></i>
                             </a>
                         </div>
                     </div>
                     <div class="article-doc">
-                        <p th:text="${article.contents}"></p>
+                        {{content}}
                     </div>
                     <div class="article-util">
                         <ul class="article-util-list">
@@ -45,11 +38,12 @@
                                 </form>
                             </li>
                             <li>
-                                <a class="link-modify-article" href="/templates/index.html">목록</a>
+                                <a class="link-modify-article" href="/">목록</a>
                             </li>
                         </ul>
                     </div>
                 </article>
+                {{/article}}
 
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
@@ -59,7 +53,8 @@
                             <article class="article" id="answer-1405">
                                 <div class="article-header">
                                     <div class="article-header-thumb">
-                                        <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
+                                        <img src="https://graph.facebook.com/v2.3/1324855987/picture"
+                                             class="article-author-thumb" alt="">
                                     </div>
                                     <div class="article-header-text">
                                         <a href="/users/1/자바지기" class="article-author-name">자바지기</a>
@@ -74,10 +69,12 @@
                                 <div class="article-util">
                                     <ul class="article-util-list">
                                         <li>
-                                            <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
+                                            <a class="link-modify-article"
+                                               href="/questions/413/answers/1405/form">수정</a>
                                         </li>
                                         <li>
-                                            <form class="delete-answer-form" action="/questions/413/answers/1405" method="POST">
+                                            <form class="delete-answer-form" action="/questions/413/answers/1405"
+                                                  method="POST">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="delete-answer-button">삭제</button>
                                             </form>
@@ -88,7 +85,8 @@
                             <article class="article" id="answer-1406">
                                 <div class="article-header">
                                     <div class="article-header-thumb">
-                                        <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
+                                        <img src="https://graph.facebook.com/v2.3/1324855987/picture"
+                                             class="article-author-thumb" alt="">
                                     </div>
                                     <div class="article-header-text">
                                         <a href="/users/1/자바지기" class="article-author-name">자바지기</a>
@@ -103,10 +101,12 @@
                                 <div class="article-util">
                                     <ul class="article-util-list">
                                         <li>
-                                            <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
+                                            <a class="link-modify-article"
+                                               href="/questions/413/answers/1405/form">수정</a>
                                         </li>
                                         <li>
-                                            <form class="form-delete" action="/questions/413/answers/1405" method="POST">
+                                            <form class="form-delete" action="/questions/413/answers/1405"
+                                                  method="POST">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="delete-answer-button">삭제</button>
                                             </form>
@@ -119,7 +119,7 @@
                                     <textarea class="form-control" placeholder="Update your status"></textarea>
                                 </div>
                                 <button class="btn btn-success pull-right" type="button">답변하기</button>
-                                <div class="clearfix" />
+                                <div class="clearfix"/>
                             </form>
                         </div>
                     </div>
@@ -158,10 +158,4 @@
         </div>
     </article>
 </script>
-
-<!-- script references -->
-<script src="/js/jquery-2.2.0.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/scripts.js"></script>
-</body>
-</html>
+{{> fragments/footer}}

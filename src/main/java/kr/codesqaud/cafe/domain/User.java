@@ -1,7 +1,9 @@
-package kr.codesqaud.cafe.user;
+package kr.codesqaud.cafe.domain;
+
+import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
 
 public class User {
-    private Long sequence;
+    private Long id;
     private String userId;
     private String password;
     private String userName;
@@ -15,12 +17,19 @@ public class User {
         this.userEmail = userEmail;
     }
 
-    public Long getSequence() {
-        return sequence;
+    public static User from(final JoinRequest joinRequest) {
+        return new User(joinRequest.getUserId(),
+                joinRequest.getPassword(),
+                joinRequest.getUserName(),
+                joinRequest.getUserEmail());
     }
 
-    public void setSequence(final Long sequence) {
-        this.sequence = sequence;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getUserId() {
@@ -39,19 +48,13 @@ public class User {
         return userEmail;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public boolean isSamePassword(final String password) {
+        return this.password.equals(password);
     }
 
-    public void setPassword(String password) {
+    public void editProfile(final String password, final String userName, final String userEmail) {
         this.password = password;
-    }
-
-    public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
     }
 

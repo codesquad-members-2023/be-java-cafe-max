@@ -1,29 +1,21 @@
-<!DOCTYPE html>
-<html lang="kr" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/head :: head}">
-</head>
-
+{{> fragments/header}}
 <body>
-<nav class="navbar navbar-fixed-top header" th:replace="~{layout/navbar :: navbar}">
-</nav>
-
-<div class="navbar navbar-default" id="subnav" th:replace="~{layout/subnavbar :: subnav}">
-</div>
-
+{{> fragments/navbar}}
 <div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default qna-list">
-            <ul class="list" th:each="article : ${articles}">
+            <ul class="list">
+                {{#articles}}
                 <li>
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a th:href="@{/articles/{index}(index=${article.index})}" th:text="${article.getTitle()}"></a>
+                                <a href="articles/{{id}}">{{title}}</a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
-                                <span class="time">2016-01-15 18:47</span>
-                                <a href="user/profile.html" class="author" th:text="${article.getWriter()}"></a>
+                                <span class="time">{{createdAt}}</span>
+                                <a href="/users/{{writer}}" class="author">{{writer}}</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
@@ -32,6 +24,7 @@
                         </div>
                     </div>
                 </li>
+                {{/articles}}
             </ul>
             <div class="row">
                 <div class="col-md-3"></div>
@@ -47,7 +40,7 @@
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">
-                    <a href="/article/write" class="btn btn-primary pull-right" role="button">질문하기</a>
+                    <a href="/question/form" class="btn btn-primary pull-right" role="button">질문하기</a>
                 </div>
             </div>
         </div>
@@ -130,10 +123,4 @@
   </div>
 </div>
 -->
-
-<!-- script references -->
-<script src="/js/jquery-2.2.0.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/scripts.js"></script>
-</body>
-</html>
+{{> fragments/footer}}
