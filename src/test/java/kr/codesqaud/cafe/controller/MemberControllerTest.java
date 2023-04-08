@@ -87,7 +87,7 @@ class MemberControllerTest {
         String newNickName = "피오니";
 
         //when
-        mockMvc.perform(put("/member/{id}", saveMemberId)
+        mockMvc.perform(put("/member/{memberId}", saveMemberId)
                         .param("email", newEmail)
                         .param("password", newPassword)
                         .param("nickName", newNickName)
@@ -104,7 +104,7 @@ class MemberControllerTest {
                 new Member("test@test.com", "testtest", "chacha", LocalDateTime.now()));
 
         // when,then
-        mockMvc.perform(get("/member/{id}/edit", savedId))
+        mockMvc.perform(get("/member/{memberId}/edit", savedId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/profileEdit"))
                 .andDo(print());
@@ -123,8 +123,8 @@ class MemberControllerTest {
         SignUpRequestDto signUpRequestDto = basicMemberData();
         Long memberId = memberService.signUp(signUpRequestDto);
 
-        mockMvc.perform(delete("/member/{id}",member.getId())
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete("/member/{memberId}", memberId)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
