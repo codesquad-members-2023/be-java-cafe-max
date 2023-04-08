@@ -1,9 +1,11 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.controller.dto.UserJoinDto;
-import kr.codesqaud.cafe.controller.dto.UserReadDto;
+import kr.codesqaud.cafe.controller.dto.user.UserJoinDto;
+import kr.codesqaud.cafe.controller.dto.user.UserReadDto;
+import kr.codesqaud.cafe.controller.dto.user.UserUpdateDto;
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.exception.user.UserJoinFailedException;
+import kr.codesqaud.cafe.common.exception.user.UserExceptionType;
+import kr.codesqaud.cafe.common.exception.user.UserFormInputException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,10 @@ public class UserService {
     }
 
     public Long join(final UserJoinDto userJoinDto) {
-        if (userRepository.findByUserId(userJoinDto.getUserId()).isPresent()) {
-            throw new UserJoinFailedException("이미 존재하는 아이디입니다", userJoinDto, "error-userId");
-        }
-        if (userRepository.findByEmail(userJoinDto.getEmail()).isPresent()) {
-            throw new UserJoinFailedException("이미 존재하는 이메일입니다.", userJoinDto, "error-email");
-        }
+        userRepository.findByEmail(userJoinDto.getUserId())
+                .ifPresent(m -> {throw new UserFormInputException(UserExceptionType.DUPLICATED_EMAIL, userJoinDto);});
+        userRepository.findByUserId(userJoinDto.getUserId())
+                .ifPresent(m -> { throw new UserFormInputException(UserExceptionType.DUPLICATED_USER_ID, userJoinDto);});
 
         return userRepository.save(userJoinDto.toUser());
     }
@@ -42,5 +42,20 @@ public class UserService {
         return userRepository.findAll().stream()
                 .map(UserReadDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public void update(UserUpdateDto userUpdateDto) {
+        final User user = userRepository.findById(userUpdateDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
+
+        if (user.isChangedUserId(userUpdateDto.getUserId())) {
+            userRepository.findByUserId(userUpdateDto.getUserId())
+                    .ifPresent(m -> { throw new UserFormInputException(UserExceptionType.DUPLICATED_USER_ID, userUpdateDto);});
+        }
+        if (user.isNotMatchedPassword(userUpdateDto.getPassword())) {
+            throw new UserFormInputException(UserExceptionType.NOT_MATCHED_BEFORE_PASSWORD, userUpdateDto);
+        }
+
+        userRepository.update(userUpdateDto.toUser());
     }
 }

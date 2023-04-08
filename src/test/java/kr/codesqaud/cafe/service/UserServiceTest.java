@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.repository.PureUserRepositoryImpl;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

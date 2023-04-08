@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.UserJoinDto;
+import kr.codesqaud.cafe.controller.dto.user.UserJoinDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

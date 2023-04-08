@@ -3,15 +3,16 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Repository
-public class PureUserRepositoryImpl implements UserRepository {
+public class MemoryUserRepositoryImpl implements UserRepository {
     private final Map<Long, User> users = new ConcurrentHashMap<>();
     private final AtomicLong atomicId = new AtomicLong();
 
@@ -44,10 +45,14 @@ public class PureUserRepositoryImpl implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        final List<User> findUsers = new ArrayList<>(this.users.values());
+        return users.values()
+                .stream()
+                .sorted(Comparator.comparing(User::getId))
+                .collect(Collectors.toList());
+    }
 
-        findUsers.sort((u1, u2) -> (int) (u1.getId() - u2.getId()));
+    @Override
+    public void update(User toUser) {
 
-        return findUsers;
     }
 }

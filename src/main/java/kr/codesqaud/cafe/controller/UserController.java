@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.UserJoinDto;
+import kr.codesqaud.cafe.controller.dto.user.UserJoinDto;
+import kr.codesqaud.cafe.controller.dto.user.UserUpdateDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,13 @@ public class UserController {
         return "user/list";
     }
 
+    @GetMapping("/join")
+    public String joinUser(Model model) {
+        model.addAttribute("user", new UserJoinDto());
+
+        return "user/form";
+    }
+
     @PostMapping
     public String join(@Valid @ModelAttribute("user") UserJoinDto userJoinDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -47,5 +55,19 @@ public class UserController {
         model.addAttribute("user", userService.find(id));
 
         return "user/profile";
+    }
+
+    @GetMapping("/{id}/update")
+    public String updateUserForm(@PathVariable Long id, Model model) {
+        model.addAttribute("user", new UserUpdateDto(userService.find(id)));
+
+        return "user/update";
+    }
+
+    @PostMapping("/{id}/update")
+    public String updateUser(@ModelAttribute("user") UserUpdateDto userUpdateDto) {
+        userService.update(userUpdateDto);
+
+        return "redirect:/users";
     }
 }

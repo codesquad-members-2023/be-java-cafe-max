@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto;
+package kr.codesqaud.cafe.controller.dto.user;
 
 import kr.codesqaud.cafe.domain.User;
 
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class UserJoinDto {
+public class UserJoinDto extends UserFormDto {
     @NotBlank(message = "아이디를 입력하세요.")
     @Size(min = 5, max = 20, message = "아이디는 {min} ~ {max} 길이로 입력하세요.")
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "아이디는 알파벳, 숫자만 가능합니다.")
