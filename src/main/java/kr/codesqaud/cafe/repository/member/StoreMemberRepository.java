@@ -13,7 +13,7 @@ import kr.codesqaud.cafe.domain.Member;
 public class StoreMemberRepository implements MemberRepository {
     private final Map<Long, Member> store;
 
-    public MemoryMemberRepository() {
+    public StoreMemberRepository() {
         this.store = new ConcurrentHashMap<>();
     }
 
