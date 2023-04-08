@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository.impl;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Qualifier("jdbcRepository")
 public class JDBCArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;

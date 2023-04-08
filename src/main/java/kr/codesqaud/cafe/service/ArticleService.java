@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.controller.dto.ArticleDTO;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 public class ArticleService {
     private final ArticleRepository ArticleRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(@Qualifier("memoryRepository")ArticleRepository articleRepository) {
         this.ArticleRepository = articleRepository;
     }
 

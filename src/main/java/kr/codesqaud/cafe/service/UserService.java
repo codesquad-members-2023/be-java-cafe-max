@@ -8,6 +8,7 @@ import kr.codesqaud.cafe.exception.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(@Qualifier("memoryRepository")UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

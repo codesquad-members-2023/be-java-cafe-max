@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository.impl;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -9,8 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Primary
+
 @Repository
+@Qualifier("jdbcRepository")
 public class JDBCUserRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;

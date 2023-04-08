@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository.impl;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedHashMap;
@@ -11,6 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
+@Qualifier("memoryRepository")
 public class MemoryUserRepository implements UserRepository {
 
     private final Map<String, User> userRepository;
