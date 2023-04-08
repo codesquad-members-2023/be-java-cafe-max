@@ -70,7 +70,7 @@ class MemberControllerTest {
         String memberId = memberRepository.save(new Member(UUID.randomUUID().toString(), "test@test.com", "testtest", "chacha", LocalDateTime.now()));
 
         //when
-        mockMvc.perform(get("/member/{id}", memberId))
+        mockMvc.perform(get("/member/{memberId}", memberId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/profile"));
     }

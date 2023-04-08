@@ -42,7 +42,7 @@ class MemberServiceTest {
 
         //then
         Member targetMember = memberRepository.findById(savedMemberId).orElseThrow();
-        assertAll(() -> assertEquals(savedMemberId, targetMember.getId()),
+        assertAll(() -> assertEquals(savedMemberId, targetMember.getMemberId()),
                 () -> assertEquals(signUpRequestDto.getEmail(), targetMember.getEmail()),
                 () -> assertEquals(signUpRequestDto.getPassword(), targetMember.getPassword()),
                 () -> assertEquals(signUpRequestDto.getNickName(), targetMember.getNickName()));
@@ -80,7 +80,7 @@ class MemberServiceTest {
 
         //then
         assertAll(
-                () -> assertEquals(member1Id, memberResponseDto.getId()),
+                () -> assertEquals(member1Id, memberResponseDto.getMemberId()),
                 () -> assertEquals(requestDtoMember1.getEmail(), memberResponseDto.getEmail()),
                 () -> assertEquals(requestDtoMember1.getNickName(), memberResponseDto.getNickName()));
 
@@ -98,7 +98,7 @@ class MemberServiceTest {
         //then
         Member targetMember = memberRepository.findById(saveId).orElseThrow();
         assertAll(
-                () -> assertEquals(saveId, targetMember.getId()),
+                () -> assertEquals(saveId, targetMember.getMemberId()),
                 () -> assertEquals(dummyMemberData().getEmail(), targetMember.getEmail()),
                 () -> assertEquals(dummyMemberData().getNickName(), targetMember.getNickName()));
     }
