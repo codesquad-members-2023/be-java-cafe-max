@@ -11,16 +11,12 @@ public class UserController {
         return "user/form";             // 회원가입 페이지
     }
 
-    @PostMapping("/users/create")
+    @PostMapping("/users")
     public String joinUser(User user) {
-        System.out.println(user.toString());
         return "";
     }
-
     @GetMapping("/users")
     public String getUserList() {
         return "list";
     }
-
-
 }

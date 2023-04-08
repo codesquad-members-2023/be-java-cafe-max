@@ -33,6 +33,7 @@
 - 우연히 알게 된 어노테이션들:<br> 
         @Service -> 비지니스 로직(무슨 뜻인지 아직 잘 모름)<br> 
         @Repository -> 저장소<br>@AutoWired -> (뭔지 아직 모름)
+        @RequestBody: POST API인데 Json일때 필요
 
 
 - 기존에 가입했던 회원들 목록이 조회 화면에서 정렬되서 보여져야 될 텐데(자동으로 되는지 아직 모름)<br>
