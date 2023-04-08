@@ -14,8 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
-import kr.codesqaud.cafe.dto.ProfileEditRequestDto;
-import kr.codesqaud.cafe.dto.SignUpRequestDto;
+import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
+import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
 import kr.codesqaud.cafe.service.MemberService;
 
 @Controller

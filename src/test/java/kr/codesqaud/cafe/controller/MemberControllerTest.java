@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.SignUpRequestDto;
-import kr.codesqaud.cafe.repository.MemberRepository;
+import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.service.MemberService;
 
 import org.junit.jupiter.api.BeforeEach;
