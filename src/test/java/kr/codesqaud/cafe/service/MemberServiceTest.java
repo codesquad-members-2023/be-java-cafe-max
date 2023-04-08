@@ -38,7 +38,7 @@ class MemberServiceTest {
     void signUp() {
         SignUpRequestDto signUpRequestDto = basicMemberData();
 
-        String savedMemberId = memberService.signUp(signUpRequestDto);
+        Long savedMemberId = memberService.signUp(signUpRequestDto);
 
         //then
         Member targetMember = memberRepository.findById(savedMemberId).orElseThrow();
@@ -73,7 +73,7 @@ class MemberServiceTest {
     @DisplayName("회원 단건 조회")
     void findById() {
         SignUpRequestDto requestDtoMember1 = basicMemberData();
-        String member1Id = memberService.signUp(requestDtoMember1);
+        Long member1Id = memberService.signUp(requestDtoMember1);
 
         //when
         MemberResponseDto memberResponseDto = memberService.findById(member1Id);
@@ -89,7 +89,7 @@ class MemberServiceTest {
     @Test
     void update() {
         //given
-        String saveId = memberService.signUp(basicMemberData());
+        Long saveId = memberService.signUp(basicMemberData());
         ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(saveId, dummyMemberData().getEmail(), dummyMemberData().getPassword(), dummyMemberData().getNickName());
 
         //when
@@ -107,7 +107,7 @@ class MemberServiceTest {
     void deleteById() {
         //given
         SignUpRequestDto signUpRequestDto = basicMemberData();
-        String userId = memberService.signUp(signUpRequestDto);
+        Long userId = memberService.signUp(signUpRequestDto);
 
         //when
         memberService.deleteById(userId);

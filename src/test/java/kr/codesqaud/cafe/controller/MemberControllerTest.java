@@ -67,7 +67,7 @@ class MemberControllerTest {
 
     @Test
     void profile() throws Exception {
-        String memberId = memberRepository.save(new Member(UUID.randomUUID().toString(), "test@test.com", "testtest", "chacha", LocalDateTime.now()));
+        Long memberId = memberRepository.save(new Member("test@test.com", "testtest", "chacha", LocalDateTime.now()));
 
         //when
         mockMvc.perform(get("/member/{memberId}", memberId))
@@ -79,8 +79,8 @@ class MemberControllerTest {
     @DisplayName("/put 요청시 db에서 회원 프로필을 수정한다.")
     void editProfile() throws Exception {
         //given
-        Member savedMember = new Member(UUID.randomUUID().toString(), "test@test.com", "testtest", "chacha", LocalDateTime.now());
-        String saveMemberId = memberRepository.save(savedMember);
+        Member savedMember = new Member("test@test.com", "testtest", "chacha", LocalDateTime.now());
+        Long saveMemberId = memberRepository.save(savedMember);
 
         String newEmail = "newTest@test.com";
         String newPassword = "testtesttest";
@@ -100,8 +100,8 @@ class MemberControllerTest {
     @Test
     void profileEditForm() throws Exception {
         // given
-        String savedId = memberRepository.save(
-                new Member(UUID.randomUUID().toString(), "test@test.com", "testtest", "chacha", LocalDateTime.now()));
+        Long savedId = memberRepository.save(
+                new Member("test@test.com", "testtest", "chacha", LocalDateTime.now()));
 
         // when,then
         mockMvc.perform(get("/member/{id}/edit", savedId))
@@ -121,7 +121,7 @@ class MemberControllerTest {
     @Test
     void deleteId() throws Exception {
         SignUpRequestDto signUpRequestDto = basicMemberData();
-        Member member = signUpRequestDto.toEntity();
+        Long memberId = memberService.signUp(signUpRequestDto);
 
         mockMvc.perform(delete("/member/{id}",member.getId())
                 .contentType(MediaType.APPLICATION_JSON))

@@ -6,7 +6,7 @@ import java.util.Optional;
 import kr.codesqaud.cafe.domain.Member;
 
 public interface MemberRepository {
-    String save(Member member);
+    Long save(Member member);
 
     Optional<Member> findById(Long memberId);
 
