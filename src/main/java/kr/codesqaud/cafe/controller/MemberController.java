@@ -42,9 +42,9 @@ public class MemberController {
         return "redirect:/member";
     }
 
-    @GetMapping("/{id}")
-    public String profile(@PathVariable String id, Model model) {
-        model.addAttribute("memberResponsesDto", memberService.findById(id));
+    @GetMapping("/{memberId}")
+    public String profile(@PathVariable Long memberId, Model model) {
+        model.addAttribute("memberResponsesDto", memberService.findById(memberId));
         return "/profile";
     }
 
