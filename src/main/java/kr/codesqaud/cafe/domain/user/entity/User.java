@@ -17,8 +17,27 @@ public class User {
 		this.dateTime = LocalDateTime.now();
 	}
 
+	public User() {
+	}
+
 	public String getName() {
 		return name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setDateTime(LocalDateTime dateTime) {
+		this.dateTime = dateTime;
 	}
 
 	public void setName(String name) {
