@@ -9,14 +9,14 @@ public class MemberResponseDto {
     private final String email;
     private final String password;
     private final String nickName;
-    private final LocalDateTime createTime;
+    private final LocalDateTime createDate;
 
     public MemberResponseDto(Long memberId, String email, String password, String nickName, LocalDateTime createDate) {
         this.memberId = memberId;
         this.email = email;
         this.password = password;
         this.nickName = nickName;
-        this.createTime = createTime;
+        this.createDate = createDate;
     }
 
     public Long getMemberId() {
@@ -35,8 +35,8 @@ public class MemberResponseDto {
         return nickName;
     }
 
-    public LocalDateTime getCreateTime() {
-        return createTime;
+    public LocalDateTime getCreateDate() {
+        return createDate;
     }
 
 

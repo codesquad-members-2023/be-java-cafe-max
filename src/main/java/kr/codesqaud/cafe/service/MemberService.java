@@ -33,10 +33,8 @@ public class MemberService {
 
     public List<MemberResponseDto> findAll() {
         List<Member> members = new ArrayList<>(memberRepository.findAll());
-        members.sort(Comparator.comparing(Member::getCreateTime).reversed().thenComparing(Member::getId));
-        return members.stream()
-                .map(MemberResponseDto::of)
-                .collect(Collectors.toList());
+        members.sort(Comparator.comparing(Member::getCreateDate).reversed().thenComparing(Member::getMemberId));
+        return members.stream().map(MemberResponseDto::of).collect(Collectors.toList());
     }
 
     public MemberResponseDto findById(Long memberId) {

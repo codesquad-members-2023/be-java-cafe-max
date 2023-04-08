@@ -7,10 +7,10 @@ public class Member {
     private String email;
     private final String password;
     private String nickName;
-    private final LocalDateTime createTime;
+    private final LocalDateTime createDate;
 
-    public Member(String id, String email, String password, String nickName, LocalDateTime createTime) {
-        this.id = id;
+    public Member(String email, String password, String nickName, LocalDateTime createDate) {
+
         this.email = email;
         this.password = password;
         this.nickName = nickName;
@@ -33,8 +33,8 @@ public class Member {
         return nickName;
     }
 
-    public LocalDateTime getCreateTime() {
-        return createTime;
+    public LocalDateTime getCreateDate() {
+        return createDate;
     }
 
     public void setEmail(String email) {
