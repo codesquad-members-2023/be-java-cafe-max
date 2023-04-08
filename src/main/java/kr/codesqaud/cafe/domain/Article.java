@@ -4,22 +4,24 @@ import kr.codesqaud.cafe.controller.dto.ArticleDTO;
 
 public class Article {
 
-    private Long id;
+    private long id;
     private String title;
     private String content;
+    private String author;
 
     public static Article toArticle(final ArticleDTO articleDTO) {
         Article article = new Article();
         article.setTitle(articleDTO.getTitle());
         article.setContent(articleDTO.getContent());
+        article.setAuthor("익명");
         return article;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -38,4 +40,13 @@ public class Article {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
 }

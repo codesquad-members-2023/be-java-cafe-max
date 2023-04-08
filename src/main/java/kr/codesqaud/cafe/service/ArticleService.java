@@ -22,6 +22,14 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    public void modify(final long id, final ArticleDTO articleDTO) {
+        Article originArticle = articleRepository.findById(id).orElse(null);
+        originArticle.setTitle(articleDTO.getTitle());
+        originArticle.setContent(articleDTO.getTitle());
+        articleRepository.update(originArticle);
+    }
+
+    //todo : DTO Entity 변환 Controller에서?
     public List<ArticleDTO> gatherPosts() {
         List<Article> postList = articleRepository.gatherAll();
         List<ArticleDTO> postDTOList = new ArrayList<>();

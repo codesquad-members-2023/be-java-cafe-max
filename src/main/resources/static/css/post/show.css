@@ -160,3 +160,44 @@ li {
     display: flex;
     flex-direction: column;
 }
+
+.btn-modify {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.post-action-btn {
+    padding: 10px 15px;
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.post-action-btn:hover {
+    background-color: #555;
+}
+
+.btn-modify {
+    background-color: #007bff;
+}
+
+.btn-list {
+    background-color: #28a745;
+}

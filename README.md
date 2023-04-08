@@ -187,12 +187,107 @@
 - ConcurrentHashMap<>() : HashMap<>()과 다르게 thread-safe
 - AtomicLong : long 자료형을 가지고 있는 Wrapping class로 thread-safe
 
+<br>
+
+(7) SimpleJdbcInsert : Spring JDBC에서 제공하는 클래스 중 하나. SQL INSERT 문을 간단하게 실행할 수 있도록 도와주는 유틸리티 클래스다.  지정된 테이블에 데이터를 삽입할 때 사용한다.
+
+SimpleJdbcInsert를 사용하면 쿼리문을 직접 작성하지 않고도 다음과 같은 기능을 수행할 수 있다.
+
+1. 삽입할 데이터를 Java 객체로 전달하여 INSERT 문 실행
+2. 테이블 이름과 자동 생성된 key 컬럼 설정
+3. 자동 생성된 key 값 반환
+
+SimpleJdbcInsert 객체 생성 시 JdbcTemplate 객체를 생성자 파라미터로 전달해야 한다. 그 다음 withTableName() 메서드를 이용하여 테이블 이름을 설정하고, usingGeneratedKeyColumns() 메서드를 이용하여 자동 생성된 key 컬럼을 설정한다.
+
+```java
+@Override
+    public void join(User user) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("USER_TB").usingGeneratedKeyColumns("ID");
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("USERID", user.getUserId());
+        parameters.put("PASSWORD", user.getPassword());
+        parameters.put("NAME", user.getName());
+        parameters.put("EMAIL", user.getEmail());
+        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
+        user.setId(key.longValue());
+    }
+```
+
+이후 execute() 메서드를 호출하여 INSERT 문을 실행하면 해당 테이블에 새로운 레코드가 삽입되며 자동 생성된 key 값을 반환받을 수 있다.
+
+- withTableName() : SimpleJdbcInsert 객체가 삽입할 데이터가 저장될 테이블의 이름을 설정.
+
+
+- usingGeneratedKeyColumns(key column name) : key column을 설정하면 새로운 레코드가 삽입될 때마다 해당 key column에 자동으로 증가되는 값이 부여되며, 이 값을 반환 받아서 자동으로 생성된 key 값을 사용할 수 있다.
+  - 단, AUTO_INCREMENT 처럼 key-column이 자동으로 증가되도록 설정되어 있어야 한다. 만약 usingGeneratedKeyColumns()를 사용하여 key-column을 설정하였는데 해당 컬럼이 AUTO_INCREMENT 같은 속성이 없다면, executeAndReturnKey() 메서드를 실행하는 과정에서 **`org.springframework.dao.DataIntegrityViolationException`**예외가 발생한다.
+
+  ⇒ usingGeneratedKeyColumns() 를 사용하여 자동 생성된 key 값을 반환 받으려면 해당 key-column이 자동으로 증가되도록 설정되어 있어야 하며, 이를 위해 일반적으로 AUTO_INCREMENT 속성을 사용한다.
+
+
+- jdbcInsert.withTableName("USER_TB").usingGeneratedKeyColumns("ID") : jdbcInsert 객체에 USER_TB 테이블을 사용하고, ID 컬럼을 자동 생성 키로 사용하도록 설정.
+
+
+- Map<String, Object> parameters : Map<column name type, column value type>으로 구성되며 comumn value type에 상관 없이 모두 저장하기 위해 두번째 인자 타입을 Object로 설정한다. Map을 생성한 이유는 아래 MapSqlParameterSource를 사용하기 위해서다.
+
+
+- MapSqlParameterSource :  Map과 SqlParameterSource 인터페이스를 구현한 클래스.  Map에 저장된 필드 값들을 매개변수로 전달받아 SQL 쿼리에서 사용될 수 있는 형식으로 변환한다.
+  - SqlParameterSource : Spring 프레임워크에서 제공하는 인터페이스로, SQL 쿼리의 매개변수 값을 지정하는 데 사용한다.
+
+
+- executeAndReturnKey() : 매개변수로 전달된 객체의 저장 값을 이용해 INSERT 문을 실행하고, 자동으로 생성된 Primary Key 값을 반환해주는 메서드. 이때 Primary Key 값은 usingGeneratedKeyColumns()에서 지정한 컬럼 값으로 반환한다.
+
+
+- user.setId(key.longValue()) : 반환된 key 값을 long type으로 변환하여 article 객체의 ID 값으로 갱신한다.
+
+<br>
+
+(8) query(), ResultSet, RowMapper
+
+```java
+@Repository
+public class JdbcTemplateArticleRepository implements ArticleRepository {
+
+		...
+
+		@Override
+    public Optional<Article> findById(long id) {
+        List<Article> wantedPost = jdbcTemplate.query("SELECT * FROM ARTICLE_TB WHERE ID = ?", articleRowMapper(), id);
+        return wantedPost.stream().findAny();
+    }
+
+		public RowMapper<Article> articleRowMapper() {
+        return (rs, rowNum) -> {
+            Article article = new Article();
+            article.setId(rs.getLong("ID"));
+            article.setTitle(rs.getString("TITLE"));
+            article.setAuthor(rs.getString("AUTHOR"));
+            return article;
+        };
+    }
+
+		...
+
+}
+```
+
+- qeury(SQL String, callback function)
+  - SQL String : 해당 SQL문을 실행하여 ResultSet 객체을 생성하고, 두 번째 인자에 해당하는 callback 함수의 매개변수로 ResultSet을 전달
+  - callback function : ResultSet 데이터를 전달받아 원하는 객체(위의 경우 Article 객체)로 매핑하는 역할
+- ResultSet : SELECT문의 결과를 저장하는 객체.
+- RowMapper<T> :  jdbcTemplate에서 ResultSet을 행별로 매핑하는 데 사용하는 인터페이스.
+- resultSet.getXXX(int columnIndex or String coumnName)
+  - getXXX : 가져오려는 열(column) 데이터의 Type
+  - int columnIndex or String coumnName : 가져올 열(column)의 인덱스 혹은 이름.
+- rowNum : query() 메서드의 SQL문을 실행했을 때 ResultSet 객체의 행(row) 개수만큼 callback function이 호출되는데, 이때 행의 인덱스로 사용되는 변수. ResultSet의 각 행을 반복하면서 callback function이 호출될 때마다 rowNum의 값이 1씩 증가한다.
 
 <br>
 
 ❓ ~ing
 
 Q. @RequestMapping과 @GetMapping의 차이
+
 
 
 
@@ -294,3 +389,149 @@ spring:
 ```
 
 <br>
+
+## 📝 동작정리
+※ 동작 헷갈려서 정리
+
+### (1) Article이 저장되는 과정
+
+1. [글쓰기] 버튼 클릭
+
+```java
+// ArticleController
+@Controller
+public class ArticleController {
+
+   ...
+
+    @GetMapping("/post/write")
+    public String postForm() {
+        return "post/form";
+    }
+
+	...
+
+}
+```
+
+/post/write URL로 GET 요청이 보내지면 form.html 템플릿이 클라이언트 측에 렌더링 되어 보여진다.
+
+1. 글 작성 후 [등록] 버튼 클릭
+
+```javascript
+<!--form.html-->
+<form class="submit-write" method="post" action="/post/write">
+	<div class="text-box">
+		<div class="comment-writer-container">
+			<p class="post-title">제목</p>
+		</div>
+		<div class="form-group">
+			<label for="title"></label><textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요"></textarea>
+		</div>
+	</div>
+
+	<div class="text-box">
+		<div class="comment-writer-container">
+			<p class="post-content">내용</p>
+		</div>
+		<div class="form-group">
+			<label for="content"></label><textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
+		</div>
+	</div>
+	<input class="post-write-btn" type="submit" value="등록"/>
+</form>
+```
+
+- <form> 태그 : 사용자가 입력한 값을 서버로 전송하기 위해 사용
+    - action 속성이 /post/wirte로 설정되어 있고, method 속성이 post로 설정되어 있으므로 입력된 title과 content가 POST 방식으로 /post/write 주소로 전송된다.
+
+등록 버튼을 누르면 HTML은 다음과 같은 요청을 서버에 보낸다.
+
+(❗ 아래는 예시일 뿐 정확한 요청은 아님)
+
+```bash
+#HTML 요청(request) 예시
+POST /post/write HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+title=제목입니다.&content=내용입니다.
+```
+
+1. ArticleDto 객체 생성 후 articleService.write() 메서드 호출
+
+```java
+// ArticleController
+@Controller
+public class ArticleController {
+
+   ...
+
+    @PostMapping("/post/write")
+    public String writePost(@ModelAttribute final ArticleDTO articleDto) {
+        articleService.write(articleDto);
+        return "redirect:/";
+    }
+
+	...
+
+}
+```
+
+- @ModelAttribute : 컨트롤러 메서드의 매개변수로 선언된 객체를 자동으로 바인딩하여 모델에 추가한다. 이때 해당 요청(request)의 body에 포함된 값을 메서드의 인자로 전달하는데, 요청 파라미터(name)와 ArticleDTO 필드의 이름이 일치해야 자동 바인딩이 동작한다. 만약 서로 일치하지 않으면 수동으로 바인딩 해주어야 한다.
+  - 바인딩
+  - 모델
+
+1. articleService.write() 메서드 동작 및 articleRepository.save() 메서드 호출
+
+```java
+@Service
+public class ArticleService {
+
+		...
+
+    public void write(final ArticleDTO articleDto) {
+        Article article = Article.toArticle(articleDto);
+        articleRepository.save(article);
+    }
+
+		...
+
+}
+```
+
+ArticleDTO 인스턴스를 Article 객체로 변환한 후 articleRepository.save() 메서드의 매개변수로 전달한다.
+
+1. articleRepository.save() 메서드 동작
+
+```java
+@Repository
+public class JdbcTemplateArticleRepository implements ArticleRepository {
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public JdbcTemplateArticleRepository(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    @Override
+    public void save(Article article) {
+        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        jdbcInsert.withTableName("ARTICLE_TB").usingGeneratedKeyColumns("ID");
+
+        Map<String, Object> articleParameters = new HashMap<>();
+        articleParameters.put("TITLE", article.getTitle());
+        articleParameters.put("CONTENT", article.getContent());
+        articleParameters.put("AUTHOR", article.getAuthor());
+        articleParameters.put("CREATED_AT", Timestamp.valueOf(LocalDateTime.now()));
+
+        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(articleParameters));
+        article.setId(key.longValue());
+    }
+
+		...
+
+}
+```
+
+article 객체에 저장된 값을 데이터베이스에 저장
+
