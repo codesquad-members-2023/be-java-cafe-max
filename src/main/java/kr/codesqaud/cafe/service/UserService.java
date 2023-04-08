@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,24 +12,33 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
     // 회원 가입
-    public Long join(User user){
-        // 같은 이름이 있는 중복 회원X
-        validateDuplicateUser(user);
+    public String join(User user){
+        // 같은 이름, 같은 아이디가 있는 중복 회원X
+        validateDuplicateUserName(user);
+        validateDuplicateUserId(user);
 
         userRepository.save(user);
-        return user.getCustomerId();
+        return user.getUserId();
     }
 
-    private void validateDuplicateUser(User user) {
+    // 중복 이름 예외
+    private void validateDuplicateUserName(User user) {
         // ifPresent = 값이 있으면. optional으로 감쌌기 때문에 가능하다.
         userRepository.findByName(user.getName())
                 .ifPresent(u -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                    throw new IllegalStateException("이미 존재하는 이름입니다.");
+                });
+    }
+
+    // 중복 아이디 예외
+    private void validateDuplicateUserId(User user) {
+        userRepository.findByUserId(user.getUserId())
+                .ifPresent(u -> {
+                    throw new IllegalStateException("이미 존재하는 아이디입니다.");
                 });
     }
 
@@ -39,7 +47,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findOne(Long number) {
-        return userRepository.findByNumber(number);
+    public Optional<User> findOne(String userId) {
+        return userRepository.findByUserId(userId);
     }
 }
