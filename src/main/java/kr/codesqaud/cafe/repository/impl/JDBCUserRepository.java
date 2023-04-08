@@ -25,6 +25,20 @@ public class JDBCUserRepository implements UserRepository {
                 user.getNickName(),user.getEmail(),user.getPassword(),user.getId(),user.getDate());
     }
 
+    /**
+     * db에 같은 id가 존재한다면 return true;
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean exist(String id) {
+        boolean exist = jdbcTemplate.query("SELECT id FROM \"USER\" WHERE id = ? LIMIT 1 ",(rs,rn) -> rs.getString("id"),id)
+                .stream()
+                .findFirst()
+                .isPresent();
+        return exist;
+    }
+
     @Override
     public List<User> findAll() {
         return jdbcTemplate.query("SELECT * FROM \"USER\"", (rs,rn) -> new User(rs));

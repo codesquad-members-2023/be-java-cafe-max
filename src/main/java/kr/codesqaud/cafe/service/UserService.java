@@ -28,8 +28,9 @@ public class UserService {
     }
 
     private void validateId(String id) {
-        if (userRepository.findUserById(id).isPresent())
+        if(userRepository.exist(id)){
             throw new IdDuplicatedException();
+        }
     }
 
     public List<UserListDTO> getUserList() {

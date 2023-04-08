@@ -12,5 +12,7 @@ public interface UserRepository {
 
     Optional<User> findUserById(String id);
 
+    boolean exist(String id);
+
     void updateUser(User User);
 }

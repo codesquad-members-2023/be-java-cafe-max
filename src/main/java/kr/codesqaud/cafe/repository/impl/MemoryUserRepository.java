@@ -25,6 +25,14 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
+    public boolean exist(String id) {
+        return userRepository.keySet().stream()
+                .filter(mapId -> mapId.equals(id))
+                .findFirst()
+                .isPresent();
+    }
+
+    @Override
     public List<User> findAll() {
         return userRepository.values().stream()
                 .collect(Collectors.toUnmodifiableList());
