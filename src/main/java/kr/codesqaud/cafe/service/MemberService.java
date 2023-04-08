@@ -39,8 +39,8 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
-    public MemberResponseDto findById(String id) {
-        return MemberResponseDto.of(memberRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당 id를 가진 멤버를 찾을 수 없습니다.")));
+    public MemberResponseDto findById(Long memberId) {
+        return MemberResponseDto.of(memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("해당 id를 가진 멤버를 찾을 수 없습니다.")));
     }
 
 
@@ -52,7 +52,7 @@ public class MemberService {
         memberRepository.update(findMember);
     }
 
-    public void deleteById(String id) {
-        memberRepository.deleteById(id);
+    public void deleteById(Long memberId) {
+        memberRepository.deleteById(memberId);
     }
 }

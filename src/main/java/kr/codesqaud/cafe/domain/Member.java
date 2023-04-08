@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.domain;
 import java.time.LocalDateTime;
 
 public class Member {
-    private final String id;
+    private Long memberId;
     private String email;
     private final String password;
     private String nickName;
@@ -17,8 +17,8 @@ public class Member {
         this.createTime = createTime;
     }
 
-    public String getId() {
-        return id;
+    public Long getMemberId() {
+        return memberId;
     }
 
     public String getEmail() {

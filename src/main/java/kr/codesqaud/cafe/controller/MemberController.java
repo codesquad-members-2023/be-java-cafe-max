@@ -48,20 +48,20 @@ public class MemberController {
         return "/profile";
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{memberId}")
     public String editProfile(@ModelAttribute @Valid ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "member/profiledEdit";
         }
 
         memberService.update(profileEditRequestDto);
-        redirectAttributes.addAttribute("id", profileEditRequestDto.getId());
-        return "redirect:/member/{id}";
+        redirectAttributes.addAttribute("memberId", profileEditRequestDto.getMemberId());
+        return "redirect:/member/{memberId}";
     }
 
-    @GetMapping("/{id}/edit")
-    public String profileEditForm(@PathVariable String id, Model model) {
-        model.addAttribute("profileEditRequest", ProfileEditRequestDto.of(memberService.findById(id)));
+    @GetMapping("/{memberId}/edit")
+    public String profileEditForm(@PathVariable Long memberId, Model model) {
+        model.addAttribute("profileEditRequest", ProfileEditRequestDto.of(memberService.findById(memberId)));
         return "/profileEdit";
     }
 
@@ -70,8 +70,8 @@ public class MemberController {
         return "/signUp";
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteId(@PathVariable String id) {
-        memberService.deleteById(id);
+    @DeleteMapping("/{memberId}")
+    public void deleteId(@PathVariable Long memberId) {
+        memberService.deleteById(memberId);
     }
 }

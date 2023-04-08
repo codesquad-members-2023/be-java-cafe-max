@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 public class ProfileEditRequestDto {
-    private final String id;
+    private final Long memberId;
 
     @NotBlank
     @Email
@@ -22,15 +22,15 @@ public class ProfileEditRequestDto {
     @Length(min = 2, max = 10)
     private final String nickName;
 
-    public ProfileEditRequestDto(String id, String email, String password, String nickName) {
-        this.id = id;
+    public ProfileEditRequestDto(Long memberId, String email, String password, String nickName) {
+        this.memberId = memberId;
         this.email = email;
         this.password = password;
         this.nickName = nickName;
     }
 
-    public String getId() {
-        return id;
+    public Long getMemberId() {
+        return memberId;
     }
 
     public String getEmail() {
@@ -46,6 +46,6 @@ public class ProfileEditRequestDto {
     }
 
     public static ProfileEditRequestDto of(MemberResponseDto memberResponseDto) {
-        return new ProfileEditRequestDto(memberResponseDto.getId(), memberResponseDto.getEmail(), null, memberResponseDto.getNickName());
+        return new ProfileEditRequestDto(memberResponseDto.getMemberId(), memberResponseDto.getEmail(), null, memberResponseDto.getNickName());
     }
 }
