@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe;
 
-import kr.codesqaud.cafe.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
