@@ -7,6 +7,7 @@ import kr.codesqaud.cafe.exception.user.DuplicateUserIdException;
 import kr.codesqaud.cafe.exception.user.MismatchedPasswordException;
 import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.repository.user.UserRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,8 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+
+    public UserService(@Qualifier("jdbcUserRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

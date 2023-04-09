@@ -1,12 +1,14 @@
 package kr.codesqaud.cafe.repository.user;
 
 import kr.codesqaud.cafe.domain.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class MemoryUserRepository implements UserRepository {
 
     private final Map<String, User> STORE = new ConcurrentHashMap<>(); // 동시성 문제
