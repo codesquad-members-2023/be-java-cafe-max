@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.user.UserForm;
+import kr.codesqaud.cafe.controller.dto.user.UserListForm;
 import kr.codesqaud.cafe.controller.dto.user.UserProfileForm;
 import kr.codesqaud.cafe.controller.dto.user.UserUpdateForm;
 import kr.codesqaud.cafe.domain.User;
@@ -33,8 +34,8 @@ public class UserController {
 
     @GetMapping("/users")
     public String findList(Model model) {
-        // 회원 정보를 다 넘겨주고 th:each문으로 전체를 출력 (DTO 사용 X)
-        List<User> users = userService.findUsers();
+        // DTO 사용으로 패스워드를 제외한 정보만 호출
+        List<UserListForm> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
         // gradle -> 타임리프 ViewResolver가 이걸 해줌

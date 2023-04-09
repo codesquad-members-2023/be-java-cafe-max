@@ -1,12 +1,14 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.user.UserForm;
+import kr.codesqaud.cafe.controller.dto.user.UserListForm;
 import kr.codesqaud.cafe.controller.dto.user.UserProfileForm;
 import kr.codesqaud.cafe.controller.dto.user.UserUpdateForm;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -34,8 +36,15 @@ public class UserService {
                 });
     }
 
-    public List<User> findUsers() {
-        return userRepository.findAll();
+    public List<UserListForm> findUsers() {
+        // 이럴 때 필터링을 써주는구나
+        // 다른 코드 참고하지 않고 직접 처음 생각해낸 코드 (패스워드를 뺀)
+        List<User> users = userRepository.findAll();
+        List<UserListForm> userListForms = new ArrayList<>();
+        for (User user : users) {
+            userListForms.add(UserListForm.from(user));
+        }
+        return userListForms;
     }
 
     public UserProfileForm findProfile(Long id) {

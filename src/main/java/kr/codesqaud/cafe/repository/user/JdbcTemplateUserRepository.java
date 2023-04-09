@@ -66,7 +66,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        String sql = "select * from users";
+        String sql = "select ID, USERID, PASSWORD, NAME, EMAIL from USERS";
         return template.query(sql, userRowMapper());
     }
 
