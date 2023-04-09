@@ -16,9 +16,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void signUp(SignUpFormDto dto) {
+    public boolean signUp(SignUpFormDto dto) {
         User user = new User(dto.getUserId(), dto.getPassword(), dto.getName(), dto.getEmail());
         userRepository.save(user);
+        return true;
     }
 
     public User findById(String id) {
@@ -27,11 +28,13 @@ public class UserService {
     }
 
 
-    public void update(User user, UpdateFormDto dto) {
+    public boolean update(User user, UpdateFormDto dto) {
         User current = user;
-        if (current.checkPassword( dto)) {
+        if (current.checkPassword(dto)) {
             userRepository.update(new User(user.getUserId(), dto.getNewPassword(), dto.getName(), dto.getEmail()));
+            return true;
         }
+        return false;
 
     }
 

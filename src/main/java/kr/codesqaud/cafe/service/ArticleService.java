@@ -16,13 +16,14 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void writeArticle(ArticleFormDto dto){
+    public boolean writeArticle(ArticleFormDto dto){
         Article article = new Article.Builder()
                 .title( dto.getTitle())
                 .writer( dto.getWriter())
                 .contents(dto.getContents())
                 .build();
         articleRepository.save(article);
+        return true;
     }
 
     public List<Article> getAricleList(){
