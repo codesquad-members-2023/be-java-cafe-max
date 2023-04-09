@@ -184,7 +184,7 @@ class UserControllerTest {
                 int userId = saveAndGetUserJack();
                 mockMvc.perform(get("/users/" + (++userId) + "/profile/edit"))
                         .andExpect(status().is4xxClientError())
-                        .andExpect(view().name("error/custom"));
+                        .andExpect(view().name("error/4xx"));
             }
         }
 
@@ -229,8 +229,8 @@ class UserControllerTest {
                                 .param(PASSWORD, JACK_PASSWORD)
                                 .param(EMAIL, JERRY_EMAIL)
                                 .param(NICKNAME, JERRY))
-                        .andExpect(status().isOk())
-                        .andExpect(view().name("account/profileEdit"));
+                        .andExpect(status().is4xxClientError())
+                        .andExpect(view().name("error/4xx"));
             }
 
             @DisplayName("실패(형식 오류)")

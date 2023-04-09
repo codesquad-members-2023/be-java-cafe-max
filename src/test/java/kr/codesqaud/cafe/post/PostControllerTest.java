@@ -102,7 +102,7 @@ class PostControllerTest {
                     .build());
             mockMvc.perform(get("/posts/" + (++savedId)))
                     .andExpect(status().is4xxClientError())
-                    .andExpect(view().name("error/custom"));
+                    .andExpect(view().name("error/4xx"));
         }
     }
 
