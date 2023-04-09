@@ -9,10 +9,10 @@ import java.util.List;
 
 @Repository
 
-public class UserJdbcImpl implements UserRepository {
+public class UserJdbcRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public UserJdbcImpl(JdbcTemplate jdbcTemplate) {
+    public UserJdbcRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -26,7 +26,7 @@ public class UserJdbcImpl implements UserRepository {
     @Override
     public User findById(String id) {
         return jdbcTemplate.queryForObject(
-                "SELECT * FROM USERS WHERE ID = ?", rowMapper(), id
+                "SELECT IDX , ID , PASSWORD , NAME , EMAIL FROM USERS WHERE ID = ?", rowMapper(), id
         );
     }
 
@@ -47,7 +47,7 @@ public class UserJdbcImpl implements UserRepository {
     @Override
     public List<User> findAll() {
         return jdbcTemplate.query(
-                "SELECT * FROM USERS", rowMapper()
+                "SELECT IDX , ID , PASSWORD , NAME , EMAIL  FROM USERS", rowMapper()
         );
     }
 }

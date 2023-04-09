@@ -1,13 +1,12 @@
 package kr.codesqaud.cafe.domain.article.repository;
 
 import kr.codesqaud.cafe.domain.article.Article;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ArticleMemoryImpl implements ArticleRepository {
+public class ArticleMemoryRepository implements ArticleRepository {
     private final List<Article> articles = new ArrayList<>();
 
     @Override
@@ -21,7 +20,7 @@ public class ArticleMemoryImpl implements ArticleRepository {
     }
 
     @Override
-    public Article findByIDX(int idx) {
+    public Article findByIdx(int idx) {
         return null;
     }
 }

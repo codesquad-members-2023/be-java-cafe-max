@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-public class UserMemoryImpl implements UserRepository {
+public class UserMemoryRepository implements UserRepository {
 
     private final Map<Integer, User> users = new HashMap<>();
 

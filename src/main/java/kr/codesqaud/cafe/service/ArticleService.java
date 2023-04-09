@@ -29,8 +29,8 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public Article findByIDX(int idx){
-        return articleRepository.findByIDX(idx);
+    public Article findByIdx(int idx){
+        return articleRepository.findByIdx(idx);
     }
 
 }

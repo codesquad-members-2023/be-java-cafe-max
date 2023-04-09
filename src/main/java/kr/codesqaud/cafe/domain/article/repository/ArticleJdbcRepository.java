@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ArticleJdbcImpl implements ArticleRepository {
+public class ArticleJdbcRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    public ArticleJdbcImpl(JdbcTemplate jdbcTemplate) {
+    public ArticleJdbcRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -33,13 +33,13 @@ public class ArticleJdbcImpl implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query(
-                "SELECT * FROM ARTICLES ORDER BY IDX DESC ",rowMapper());
+                "SELECT IDX , WRITER , TITLE , CONTENTS , DATE  FROM ARTICLES ORDER BY IDX DESC ",rowMapper());
     }
 
     @Override
-    public Article findByIDX(int idx) {
+    public Article findByIdx(int idx) {
         return jdbcTemplate.queryForObject(
-                "SELECT * FROM ARTICLES WHERE IDX = ?", rowMapper(), idx
+                "SELECT IDX , WRITER , TITLE , CONTENTS , DATE FROM ARTICLES WHERE IDX = ?", rowMapper(), idx
         );
     }
 }
