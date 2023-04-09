@@ -3,15 +3,18 @@ package kr.codesqaud.cafe;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserRepository {
 
     private List<User> users = new ArrayList<>();
+    private Map<String, User> dataBase  = new HashMap<>();
 
     public void save(User user){
-        users.add(user);
+        dataBase.put(user.getUserId(), user);
     }
 
     public List<User> getUserList() {
