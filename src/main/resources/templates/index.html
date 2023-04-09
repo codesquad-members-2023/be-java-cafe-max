@@ -16,12 +16,12 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a th:href="@{/questions/{articleIndex}(articleIndex=${article.articleIndex})}" th:text="${article.title}">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
+                                <a th:href="@{/questions/{id}(id=${article.id})}" th:text="${article.title}">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
-                                <span class="time">2016-01-15 18:47</span>
-                                <a href="user/profile.html" class="author" th:href="@{/questions/{articleIndex}(articleIndex=${article.articleIndex})}" th:text="${article.writer}">자바지기</a>
+                                <span class="time" th:text="${article.currentTime}">2016-01-15 18:47</span>
+                                <a href="user/profile.html" class="author" th:href="@{/questions/{id}(id=${article.id})}" th:text="${article.writer}">자바지기</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>

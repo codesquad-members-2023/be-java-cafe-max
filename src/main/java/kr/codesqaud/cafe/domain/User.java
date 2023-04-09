@@ -1,6 +1,9 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.controller.dto.user.UserForm;
+
 public class User {
+    private Long id;
     private String userId;
     private String password;
     private String name;
@@ -14,6 +17,14 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUserId() {

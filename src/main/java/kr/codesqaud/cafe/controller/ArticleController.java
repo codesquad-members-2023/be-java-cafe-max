@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.ArticleForm;
+import kr.codesqaud.cafe.controller.dto.article.ArticleForm;
+import kr.codesqaud.cafe.controller.dto.article.ArticleTimeForm;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -20,24 +22,25 @@ public class ArticleController {
     }
 
     @PostMapping("/questions/post")
-    public String postArticle(ArticleForm form) {
+    public String addArticle(@Valid ArticleForm form) {
+        // TODO: 컨트롤러에서 도메인에 dto를 넣지 않는 방법으로 재구현 필요
+        // 객체를 넣어주지 말고 필드 넣어주기
         Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
-
         articleService.add(article);
-
         return "redirect:/";
     }
 
     @GetMapping("/")
-    public String articleList(Model model) {
-        List<Article> articles = articleService.findArticles();
+    public String addArticles(Model model) {
+        // 현재 시작을 가져오는 목적(now 메서드)으로 DTO 사용
+        List<ArticleTimeForm> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         return "index";
     }
 
-    @GetMapping("/questions/{articleIndex}")
-    public String articleQna(@PathVariable("articleIndex") Long articleIndex, Model model) {
-        Article article = articleService.findByArticleIndex(articleIndex);
+    @GetMapping("/questions/{id}")
+    public String show(@PathVariable("id") Long id, Model model) {
+        ArticleTimeForm article = articleService.findArticleId(id);
         model.addAttribute("article", article);
         return "qna/show";
     }

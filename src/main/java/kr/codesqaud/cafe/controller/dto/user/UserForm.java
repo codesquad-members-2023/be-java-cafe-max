@@ -1,10 +1,19 @@
-package kr.codesqaud.cafe.controller.dto;
+package kr.codesqaud.cafe.controller.dto.user;
+
+import javax.validation.constraints.NotBlank;
 
 public class UserForm {
+    @NotBlank(message = "아이디를 입력해주세요.")
     private String userId;
+    @NotBlank(message = "이름을 입력해주세요.")
     private String name;
+    @NotBlank(message = "패스워드를 입력해주세요.")
     private String password;
+    @NotBlank(message = "이메일을 입력해주세요.")
     private String email;
+
+    public UserForm() {
+    }
 
     public String getUserId() {
         return userId;

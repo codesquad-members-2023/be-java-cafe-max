@@ -23,8 +23,8 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/users/92/kimmunsu" class="article-author-name" th:href="@{/questions/{articleIndex}(articleIndex=${article.articleIndex})}" th:text="${article.writer}">kimmunsu</a>
-                            <a href="/questions/413" class="article-header-time" title="퍼머링크">
+                            <a href="/users/92/kimmunsu" class="article-author-name" th:href="@{/questions/{id}(id=${article.id})}" th:text="${article.writer}">kimmunsu</a>
+                            <a href="/questions/413" class="article-header-time" title="퍼머링크" th:href="@{/questions/{id}(id=${article.id})}" th:text="${article.currentTime}">
                                 2015-12-30 01:47
                                 <i class="icon-link"></i>
                             </a>

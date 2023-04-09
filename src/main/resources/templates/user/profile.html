@@ -19,9 +19,9 @@
                             <img class="media-object" src="/images/80-text.png">
                         </a>
                         <div class="media-body">
-                            <h4 class="media-heading" th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.name}">자바지기</h4>
+                            <h4 class="media-heading" th:href="@{/users/{id}(id=${profile.id})}" th:text="${profile.name}">자바지기</h4>
                             <p>
-                                <a class="btn btn-xs btn-default" th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.email}">
+                                <a class="btn btn-xs btn-default" th:href="@{/users/{id}(id=${profile.id})}" th:text="${profile.email}">
                                     <span class="glyphicon glyphicon-envelope"></span>
                                     &nbsp;javajigi@slipp.net
                                 </a>
