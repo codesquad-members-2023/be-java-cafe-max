@@ -1,10 +1,5 @@
 package kr.codesqaud.cafe.account;
 
-import kr.codesqaud.cafe.account.exception.GetAllUsersFailedException;
-import kr.codesqaud.cafe.account.exception.SaveUserFailedException;
-import kr.codesqaud.cafe.account.exception.UpdateUserFailedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static kr.codesqaud.cafe.exception.ErrorCode.*;
 
 @Repository
 public class UserRepository {
@@ -35,7 +29,6 @@ public class UserRepository {
     private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD,EMAIL FROM ACCOUNT WHERE EMAIL = ?";
     private static final String QUERY_CONTAINS_EMAIL = "SELECT count(EMAIL) FROM ACCOUNT WHERE EMAIL = ?";
     private static final String QUERY_FIND_ALL_USERS = "SELECT USER_ID, NICKNAME, EMAIL,PASSWORD FROM ACCOUNT";
-    private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
 
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -47,19 +40,10 @@ public class UserRepository {
     }
 
     public int save(User user) {
-        try {
-            SqlParameterSource sqlParameterSource = new MapSqlParameterSource(getParameters(user));
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-            namedParameterJdbcTemplate.update(QUERY_SAVE, sqlParameterSource, keyHolder);
-            return (int) keyHolder.getKey();
-        } catch (DataAccessException e) {
-            logger.debug("[ Message = {} ][ Nickname = {} ][ Email = {} ][ Password = {} ]",
-                    SAVE_USER_FAILED_CODE.getMessage(),
-                    user.getNickname(),
-                    user.getEmail(),
-                    user.getPassword());
-            throw new SaveUserFailedException(SAVE_USER_FAILED_CODE);
-        }
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource(getParameters(user));
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(QUERY_SAVE, sqlParameterSource, keyHolder);
+        return (int) keyHolder.getKey();
     }
 
     private static Map<String, Object> getParameters(User user) {
@@ -71,30 +55,18 @@ public class UserRepository {
     }
 
     public List<User> getAllUsers() {
-        try {
-            return jdbcTemplate.query(QUERY_FIND_ALL_USERS, getUserRowMapper());
-        } catch (DataAccessException e) {
-            logger.debug("Message = {}", GET_ALL_USERS_FAILED_CODE.getMessage());
-            throw new GetAllUsersFailedException(GET_ALL_USERS_FAILED_CODE);
-        }
+        return jdbcTemplate.query(QUERY_FIND_ALL_USERS, getUserRowMapper());
     }
 
-    public Optional<User> findById(Long userId) {
-        try {
-            SqlParameterSource namedParameters = new MapSqlParameterSource("id", userId);
-            User value = namedParameterJdbcTemplate.queryForObject(QUERY_FIND_BY_ID, namedParameters, getUserRowMapper());
-            return Optional.ofNullable(value);
-        } catch (DataAccessException e) {
-            logger.info("[ Message = {} ][ UserId = {} ]", NO_SUCH_USER_ID_CODE.getMessage(), getUserRowMapper());
-            return Optional.empty();
-        }
+    public User findById(Long userId) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("id", userId);
+        return namedParameterJdbcTemplate.queryForObject(QUERY_FIND_BY_ID, namedParameters, getUserRowMapper());
     }
 
     public Optional<User> findByEmail(String email) {
         try {
             return Optional.ofNullable(this.jdbcTemplate.queryForObject(QUERY_FIND_BY_EMAIL, getUserRowMapper(), email));
         } catch (DataAccessException e) {
-            logger.info("[ Message = {} ][ Email = {} ]", NO_SUCH_EMAIL_CODE.getMessage(), email);
             return Optional.empty();
         }
     }
@@ -105,14 +77,7 @@ public class UserRepository {
     }
 
     public void update(User user) {
-        try {
-            jdbcTemplate.update(QUERY_UPDATE, user.getNickname(), user.getEmail(),
-                    user.getId());
-        } catch (DataAccessException e) {
-            logger.debug("[ Message = {} ][ Id = {} ][ Nickname = {} ][ Email = {} ]",
-                    UPDATE_USER_FAILED_CODE.getMessage(), user.getId(), user.getNickname(), user.getEmail());
-            throw new UpdateUserFailedException(UPDATE_USER_FAILED_CODE);
-        }
+        jdbcTemplate.update(QUERY_UPDATE, user.getNickname(), user.getEmail(), user.getId());
     }
 
     private static RowMapper<User> getUserRowMapper() {

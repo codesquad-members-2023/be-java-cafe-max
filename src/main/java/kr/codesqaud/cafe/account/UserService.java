@@ -3,14 +3,11 @@ package kr.codesqaud.cafe.account;
 import kr.codesqaud.cafe.account.dto.JoinForm;
 import kr.codesqaud.cafe.account.dto.ProfileSettingForm;
 import kr.codesqaud.cafe.account.dto.UserForm;
-import kr.codesqaud.cafe.account.exception.InvalidUserIdException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static kr.codesqaud.cafe.exception.ErrorCode.INVALID_USER_ID_CODE;
 
 
 @Service
@@ -38,8 +35,8 @@ public class UserService {
     }
 
     public boolean isSamePassword(Long userId, String targetPassword) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        return userOptional.map(user -> user.isSamePassword(targetPassword)).orElse(false);
+        User user = userRepository.findById(userId);
+        return user.isSamePassword(targetPassword);
     }
 
     public Optional<User> findByEmail(String email) {
@@ -51,12 +48,7 @@ public class UserService {
     }
 
     public User findById(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            return userOptional.get();
-        } else {
-            throw new InvalidUserIdException(INVALID_USER_ID_CODE);
-        }
+        return userRepository.findById(userId);
     }
 
     public boolean isDuplicateEmail(String targetEmail) {

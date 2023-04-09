@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.post;
 
-import kr.codesqaud.cafe.post.exception.SavePostFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -16,8 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static kr.codesqaud.cafe.exception.ErrorCode.*;
 
 @Repository
 public class PostRepository {
@@ -41,15 +38,10 @@ public class PostRepository {
     }
 
     public int save(Post post) {
-        try {
-            SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME)
-                    .usingGeneratedKeyColumns(COLUMN_ID);
-            Map<String, Object> parameters = getParameters(post);
-            return (Integer) simpleJdbcInsert.executeAndReturnKey(parameters);
-        } catch (DataAccessException e) {
-            logger.debug("[ Message = {} ]", SAVE_POST_FAILED_CODE.getMessage());
-            throw new SavePostFailedException(SAVE_POST_FAILED_CODE);
-        }
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME)
+                .usingGeneratedKeyColumns(COLUMN_ID);
+        Map<String, Object> parameters = getParameters(post);
+        return (Integer) simpleJdbcInsert.executeAndReturnKey(parameters);
     }
 
     private static Map<String, Object> getParameters(Post post) {
@@ -62,24 +54,14 @@ public class PostRepository {
     }
 
     public List<Post> getAllPosts() {
-        try {
-            return jdbcTemplate.query(QUERY_SELECT_ALL, getPostRowMapper());
-        } catch (DataAccessException e) {
-            logger.debug(SAVE_POST_FAILED_CODE.getCode());
-            throw new SavePostFailedException(SAVE_POST_FAILED_CODE);
-        }
+        return jdbcTemplate.query(QUERY_SELECT_ALL, getPostRowMapper());
     }
 
-    public Optional<Post> findById(int postId) {
-        try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(
-                    QUERY_FIND_BY_ID,
-                    getPostRowMapper(),
-                    postId));
-        } catch (DataAccessException e) {
-            logger.info("[ Message = {} ],[ Id = {} ]", NO_SUCH_POST_ID_CODE.getMessage(), postId);
-            return Optional.empty();
-        }
+    public Post findById(int postId) {
+        return jdbcTemplate.queryForObject(
+                QUERY_FIND_BY_ID,
+                getPostRowMapper(),
+                postId);
 
     }
 
@@ -90,7 +72,6 @@ public class PostRepository {
                     getPostRowMapper(),
                     title));
         } catch (DataAccessException e) {
-            logger.info("[ Message = {} ],[ Title = {} ]", NO_SUCH_POST_TITLE_CODE.getMessage(), title);
             return Optional.empty();
         }
     }
