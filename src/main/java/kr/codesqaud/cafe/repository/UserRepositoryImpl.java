@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import javax.sql.DataSource;
 import kr.codesqaud.cafe.domain.User;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,18 +16,21 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    private final JdbcTemplate template;
+    private final NamedParameterJdbcTemplate template;
 
     public UserRepositoryImpl(DataSource dataSource) {
-        this.template = new JdbcTemplate(dataSource);
+        this.template = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Override
     public User save(User user) {
-        String sql = "insert into users(userId, password, name, email) values(?, ?, ?, ?)"; // TODO: 컬럼이 많아질 수록 순서가 헷갈리는데 개선할 수 있는 방법이 있을까
-        template.update(
-                sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail()
-        );
+        String sql = "insert into users (userId, password, name, email) values (:userId, :password, :name, :email)";
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("userId", user.getUserId())
+                .addValue("password", user.getPassword())
+                .addValue("name", user.getName())
+                .addValue("email", user.getEmail());
+        template.update(sql, param);
         return user;
     }
 
