@@ -4,7 +4,6 @@ import java.util.List;
 import javax.validation.Valid;
 import kr.codesqaud.cafe.DTO.UserDTO;
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.exception.signUpException.InvalidUserIdException;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,19 +27,13 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String create(@Valid final UserDTO userDTO, BindingResult bindingResult, Model model) {
+    public String create(@Valid final UserDTO userDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // TODO: 에러 내용이 출력되게끔 로직 추가
             return "redirect:/error";
         }
-        try {
-            userService.join(userDTO);
-            return "redirect:/users";
-        } catch (InvalidUserIdException e) {
-            System.out.println(e.getMessage());
-            model.addAttribute("error", e.getMessage());
-            return "/error"; // TODO: 리다이렉트하도록 수정 필요
-        }
+        userService.join(userDTO);
+        return "redirect:/users";
     }
 
     @GetMapping("/users")
