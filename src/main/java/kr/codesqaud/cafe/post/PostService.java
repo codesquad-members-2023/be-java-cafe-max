@@ -22,15 +22,13 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Post createNewPost(PostForm postForm) {
+    public long save(PostForm postForm) {
         Post post = postForm.toPost();
-        int saveId = postRepository.save(post);
-        return findById(saveId);
+        return postRepository.save(post);
     }
 
 
     public Post findById(int postId) {
-
         Optional<Post> optionalPost = postRepository.findById(postId);
         if (optionalPost.isEmpty()) {
             logger.info(ErrorCode.INVALID_POST_ID_CODE.getMessage());

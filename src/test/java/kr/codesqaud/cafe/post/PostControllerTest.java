@@ -48,14 +48,13 @@ class PostControllerTest {
         @Test
         void addPostSuccess() throws Exception {
             String testTitle = TEST_TITLE;
+            assertThat(postRepository.findByTitle(testTitle)).isEmpty();
             mockMvc.perform(post("/posts")
                             .param(NICKNAME, JACK)
                             .param(TITLE, testTitle)
                             .param(TEXT_CONTENT, TEST_CONTENT))
-                    .andExpect(status().isOk())
-                    .andExpect(model().attributeExists("post"))
-                    .andExpect(view().name("/post/postDetail"));
-
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(redirectedUrlPattern("/posts/*"));
             assertThat(postRepository.findByTitle(testTitle)).isPresent();
         }
 

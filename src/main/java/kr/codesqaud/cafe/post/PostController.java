@@ -21,24 +21,23 @@ public class PostController {
     }
 
     @GetMapping(value = {"/posts/new", "/posts/form"})
-    public String showNewPage(@ModelAttribute PostForm postForm) {
+    public String viewPostForm(@ModelAttribute PostForm postForm) {
         return "/post/form";
     }
 
     @PostMapping("/posts")
-    public String addPost(@Valid PostForm postForm, Errors errors, Model model) {
+    public String savePost(@Valid PostForm postForm, Errors errors) {
         if (errors.hasErrors()) {
             return "/post/form";
         }
-        Post post = postService.createNewPost(postForm);
-        model.addAttribute(post);
-        return "/post/postDetail";
+        long postId = postService.save(postForm);
+        return "redirect:/posts/" + postId;
     }
 
     @GetMapping("/posts/{postId}")
-    public String showPostPage(Model model, @PathVariable int postId) {
+    public String viewPost(Model model, @PathVariable int postId) {
         Post post = postService.findById(postId);
         model.addAttribute(post);
-        return "/post/postDetail";
+        return "/post/detail";
     }
 }

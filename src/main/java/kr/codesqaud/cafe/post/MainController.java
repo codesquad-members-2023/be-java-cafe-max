@@ -17,7 +17,7 @@ public class MainController {
     }
 
     @GetMapping
-    public String showMainPage(Model model) {
+    public String viewIndex(Model model) {
         List<SimplePostForm> simpleForms = postService.getAllPosts();
         model.addAttribute("simpleForms",simpleForms);
         return "index";
