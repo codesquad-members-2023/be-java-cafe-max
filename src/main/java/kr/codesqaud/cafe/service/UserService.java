@@ -33,7 +33,7 @@ public class UserService {
         return userRepository.findAll().stream().map(UserResponse::from).collect(Collectors.toUnmodifiableList());
     }
 
-    public void updateUser(UserUpdateRequest userUpdateRequest) throws MismatchedPasswordException { // 기존 회원의 정보를 수정하기
+    public void updateUser(UserUpdateRequest userUpdateRequest) { // 기존 회원의 정보를 수정하기
         if (!userRepository.findByUserId(userUpdateRequest.getUserId()).isPasswordMatched(userUpdateRequest.getCurrentPassword())) { // 현재 비밀번호 일치 여부 검사
             throw new MismatchedPasswordException(userUpdateRequest);
         }
