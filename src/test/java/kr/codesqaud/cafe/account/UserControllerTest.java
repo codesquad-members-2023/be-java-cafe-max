@@ -63,7 +63,7 @@ class UserControllerTest {
                             .param(EMAIL, JACK_EMAIL)
                             .param(PASSWORD, JACK_PASSWORD))
                     .andExpect(status().is3xxRedirection())
-                    .andExpect(redirectedUrl("/users/" + userId));
+                    .andExpect(redirectedUrl("/users/" + userId+"/profile"));
         }
 
         @DisplayName("비밀번호 실패")
@@ -137,7 +137,7 @@ class UserControllerTest {
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("users"))
-                .andExpect(view().name("account/members"));
+                .andExpect(view().name("account/users"));
     }
 
     @DisplayName("유저 프로필 페이지 테스트")
@@ -175,7 +175,7 @@ class UserControllerTest {
                 mockMvc.perform(get("/users/" + userId + "/profile/edit"))
                         .andExpect(status().isOk())
                         .andExpect(model().attributeExists(USER_ID, PROFILE_SETTING_FORM))
-                        .andExpect(view().name("account/profileUpdate"));
+                        .andExpect(view().name("account/profileEdit"));
             }
 
             @DisplayName("실패")
@@ -218,7 +218,7 @@ class UserControllerTest {
                                 .param(NICKNAME, JERRY))
                         .andExpect(status().isOk())
                         .andExpect(model().hasErrors())
-                        .andExpect(view().name("account/profileUpdate"));
+                        .andExpect(view().name("account/profileEdit"));
             }
 
             @DisplayName("실패(유저 아이디)")
@@ -230,7 +230,7 @@ class UserControllerTest {
                                 .param(EMAIL, JERRY_EMAIL)
                                 .param(NICKNAME, JERRY))
                         .andExpect(status().isOk())
-                        .andExpect(view().name("account/profileUpdate"));
+                        .andExpect(view().name("account/profileEdit"));
             }
 
             @DisplayName("실패(형식 오류)")
@@ -244,7 +244,7 @@ class UserControllerTest {
                                 .param(NICKNAME, nickname))
                         .andExpect(status().isOk())
                         .andExpect(model().hasErrors())
-                        .andExpect(view().name("account/profileUpdate"));
+                        .andExpect(view().name("account/profileEdit"));
             }
         }
     }

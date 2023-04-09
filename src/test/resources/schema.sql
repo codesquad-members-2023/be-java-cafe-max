@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS post;
-DROP TABLE IF EXISTS users;
-CREATE TABLE users
+DROP TABLE IF EXISTS account;
+CREATE TABLE account
 (
     user_id  INT       NOT NULl AUTO_INCREMENT,
     nickname CHAR(256) NOT NULL,

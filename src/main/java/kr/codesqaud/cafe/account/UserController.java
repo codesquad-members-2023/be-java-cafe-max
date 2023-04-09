@@ -26,8 +26,7 @@ public class UserController {
     private final UserService userService;
     private final JoinFormValidator joinFormValidator;
 
-    public UserController(UserService userService,
-                          JoinFormValidator joinFormValidator) {
+    public UserController(UserService userService, JoinFormValidator joinFormValidator) {
         this.userService = userService;
         this.joinFormValidator = joinFormValidator;
     }
@@ -38,13 +37,13 @@ public class UserController {
                         error.getDefaultMessage()));
     }
 
-    @InitBinder("joinForm")
+    @InitBinder(value = "joinForm")
     public void joinFormInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(joinFormValidator);
     }
 
     @GetMapping("/users/login")
-    public String showLoginPage(@ModelAttribute LoginForm loginForm) {
+    public String viewLoginForm(@ModelAttribute LoginForm loginForm) {
         return "account/login";
     }
 
@@ -66,33 +65,33 @@ public class UserController {
             bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
             return "account/login";
         }
-        return "redirect:/users/" + user.getId();
+        return "redirect:/users/" + user.getId()+"/profile";
     }
 
     @GetMapping("/users/join")
-    public String showJoinPage(@ModelAttribute JoinForm joinForm) {
+    public String viewJoinForm(@ModelAttribute JoinForm joinForm) {
         return "account/join";
     }
 
     @PostMapping("/users")
-    public String addUser(@Valid JoinForm joinForm, BindingResult bindingResult) {
+    public String saveUser(@Valid JoinForm joinForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             loggingError(bindingResult);
             return "account/join";
         }
         int userId = userService.save(joinForm);
-        return "redirect:/users/" + userId+"/profile";
+        return "redirect:/users/" + userId + "/profile";
     }
 
     @GetMapping("/users")
-    public String showUsers(Model model) {
+    public String viewUsers(Model model) {
         List<UserForm> allUserForm = userService.getAllUsersForm();
         model.addAttribute(USERS, allUserForm);
-        return "account/members";
+        return "account/users";
     }
 
     @GetMapping("/users/{userId}/profile")
-    public String showUser(Model model, @PathVariable Long userId) {
+    public String viewUser(Model model, @PathVariable Long userId) {
         User user = userService.findById(userId);
         ProfileForm profileForm = ProfileForm.from(user);
 
@@ -102,34 +101,34 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/profile/edit")
-    public String showUserProfile(Model model, @PathVariable Long userId) {
+    public String viewUserProfileEditForm(Model model, @PathVariable Long userId) {
         User user = userService.findById(userId);
-        ProfileSettingForm profileSettingForm = ProfileSettingForm.from(user);
+        ProfileSettingForm profileEditForm = ProfileSettingForm.from(user);
 
         model.addAttribute(USER_ID, userId);
-        model.addAttribute(PROFILE_SETTING_FORM, profileSettingForm);
-        return "account/profileUpdate";
+        model.addAttribute(PROFILE_SETTING_FORM, profileEditForm);
+        return "account/profileEdit";
     }
 
     @PutMapping("/users/{userId}/profile")
-    public String setUserProfile(@Valid ProfileSettingForm profileSettingForm, BindingResult bindingResult,
-                                 @PathVariable Long userId
+    public String upsertUserProfile(@Valid ProfileSettingForm profileSettingForm, BindingResult bindingResult,
+                                    @PathVariable Long userId
     ) {
         if (bindingResult.hasErrors()) {
             loggingError(bindingResult);
-            return "account/profileUpdate";
+            return "account/profileEdit";
         }
         if (userService.isDuplicateEmail(profileSettingForm.getEmail())) {
             bindingResult.rejectValue(EMAIL, "error.email.duplicate");
             loggingError(bindingResult);
-            return "account/profileUpdate";
+            return "account/profileEdit";
         }
-        if (!userService.isSamePassword(userId,profileSettingForm.getPassword())) {
+        if (!userService.isSamePassword(userId, profileSettingForm.getPassword())) {
             bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
             loggingError(bindingResult);
-            return "account/profileUpdate";
+            return "account/profileEdit";
         }
-        userService.update(profileSettingForm, userId);
+        userService.upsert(profileSettingForm, userId);
         return "redirect:/users/{userId}/profile";
     }
 }

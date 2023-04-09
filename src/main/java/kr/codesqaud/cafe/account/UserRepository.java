@@ -29,12 +29,12 @@ public class UserRepository {
     private static final String COLUMN_PASSWORD = "PASSWORD";
     private static final String COLUMN_NICKNAME = "NICKNAME";
     private static final String COLUMN_EMAIL = "EMAIL";
-    private static final String QUERY_UPDATE = "UPDATE USERS SET NICKNAME = ?, EMAIL = ? WHERE USER_ID = ?";
-    private static final String QUERY_SAVE = "INSERT INTO USERS (NICKNAME, EMAIL, PASSWORD) values ( :nickname,:email,:password )";
-    private static final String QUERY_FIND_BY_ID = "SELECT USER_ID,EMAIL,NICKNAME,PASSWORD FROM USERS WHERE USER_ID = :id";
-    private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD,EMAIL FROM USERS WHERE EMAIL = ?";
-    private static final String QUERY_CONTAINS_EMAIL = "SELECT count(EMAIL) FROM USERS WHERE EMAIL = ?";
-    private static final String QUERY_FIND_ALL_USERS = "SELECT USER_ID, NICKNAME, EMAIL,PASSWORD FROM USERS";
+    private static final String QUERY_UPDATE = "UPDATE ACCOUNT SET NICKNAME = ?, EMAIL = ? WHERE USER_ID = ?";
+    private static final String QUERY_SAVE = "INSERT INTO ACCOUNT (NICKNAME, EMAIL, PASSWORD) values ( :nickname,:email,:password )";
+    private static final String QUERY_FIND_BY_ID = "SELECT USER_ID,EMAIL,NICKNAME,PASSWORD FROM ACCOUNT WHERE USER_ID = :id";
+    private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD,EMAIL FROM ACCOUNT WHERE EMAIL = ?";
+    private static final String QUERY_CONTAINS_EMAIL = "SELECT count(EMAIL) FROM ACCOUNT WHERE EMAIL = ?";
+    private static final String QUERY_FIND_ALL_USERS = "SELECT USER_ID, NICKNAME, EMAIL,PASSWORD FROM ACCOUNT";
     private static final Logger logger = LoggerFactory.getLogger(UserRepository.class);
 
     private final JdbcTemplate jdbcTemplate;

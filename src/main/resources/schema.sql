@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS post;
-DROP TABLE IF EXISTS users;
-CREATE TABLE users
+DROP TABLE IF EXISTS account;
+CREATE TABLE account
 (
     user_id  INT       NOT NULl AUTO_INCREMENT,
     nickname CHAR(256) NOT NULL,
@@ -15,6 +15,6 @@ CREATE TABLE post
     nickname       CHAR(256) NOT NULL,
     title          CHAR(256) NOT NULL,
     text_content   BLOB      NOT NULL,
-    create_DateTime DATETIME  NOT NULL,
+    create_datetime DATETIME  NOT NULL,
     PRIMARY KEY (post_id)
 )
