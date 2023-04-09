@@ -179,13 +179,14 @@ class MemberControllerTest {
     @Test
     void profileEditForm() throws Exception {
         // given
-        given(memberService.findById(1L)).willReturn(new MemberResponse(1L, "test@nave.com",
+        Long savedId = 1L;
+        given(memberService.findById(savedId)).willReturn(new MemberResponse(savedId, "test@nave.com",
             "만두", LocalDateTime.now()));
 
         // when
 
         // then
-        mockMvc.perform(get("/members/{id}/edit", 1L))
+        mockMvc.perform(get("/members/{id}/edit", savedId))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/profileEdit"))

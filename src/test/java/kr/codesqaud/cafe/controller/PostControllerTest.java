@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
@@ -20,7 +21,9 @@ import kr.codesqaud.cafe.service.PostService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -77,7 +80,7 @@ public class PostControllerTest {
 
     @DisplayName("게시글 작성시 게시글 제목이 빈값이거나 2글자 미만 또는 50글자 초과하는 경우 실패")
     @ParameterizedTest
-    @CsvSource(value = {",NotBlank", "호,Length", "게시글 제목 최대 길이는 50글자 인데 언제 이걸 다 써야 하는지 모르겠네요. 제목이 얼마나 길어야 50글자를 채울까요?,Length"})
+    @MethodSource("provideValueForValidatorName")
     void writeFalse(String title, String error) throws Exception {
         // given
         PostWriteRequest postWriteRequest = new PostWriteRequest(title, "게시글 내용", 1L);
@@ -94,6 +97,12 @@ public class PostControllerTest {
             .andExpect(view().name("post/write"))
             .andExpect(model().attributeHasFieldErrorCode("postWriteRequest", "title", error))
             .andDo(print());
+    }
+
+    private static Stream<Arguments> provideValueForValidatorName() {
+        return Stream.of(Arguments.of(null, "NotBlank"),
+            Arguments.of("호", "Length"),
+            Arguments.of("1".repeat(51), "Length"));
     }
 
     @DisplayName("게시글 작성시 게시글 내용이 빈값이거나 2글자 미만인 경우 실패")
