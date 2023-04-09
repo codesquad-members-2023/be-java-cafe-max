@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -58,7 +59,7 @@ public class UserController {
     }
 
     @PostMapping("/users/update/{id}")
-    public String postUpdate(@PathVariable Long id, @Validated UserUpdateForm updateUser) {
+    public String postUpdate(@PathVariable Long id, @Valid UserUpdateForm updateUser) {
         userService.updateUser(id, updateUser);
         return "redirect:/users";
     }
