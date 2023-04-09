@@ -38,7 +38,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean isExists(final String userId) {
+    public boolean exist(final String userId) {
         final String sql = "SELECT userId FROM users WHERE userId = :userId LIMIT 1";
         final Integer count = jdbcTemplate.queryForObject(sql,
                 Map.of("userId", userId),

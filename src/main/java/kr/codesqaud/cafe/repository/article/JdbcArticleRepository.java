@@ -39,7 +39,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public boolean isExists(final Long id) {
+    public boolean exists(final Long id) {
         final String SQL = "SELECT id FROM articles WHERE id = :id LIMIT 1";
         final Integer count = jdbcTemplate.queryForObject(SQL,
                 Map.of("id", id),

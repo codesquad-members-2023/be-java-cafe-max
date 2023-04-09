@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public void saveUser(UserSaveRequest userSaveRequest) throws AlreadyUserExistenceException { // 새로운 회원 저장하기
-        if (userRepository.isExists(userSaveRequest.getUserId())) { // userId 중복 여부 검사
+        if (userRepository.exist(userSaveRequest.getUserId())) { // userId 중복 여부 검사
             throw new AlreadyUserExistenceException(userSaveRequest);
         }
         userRepository.save(userSaveRequest.toUser());
@@ -41,7 +41,7 @@ public class UserService {
     }
 
     public UserResponse findByUserId(String userId) { // DTO 변환은 service 역할 vs controller 역할
-        if (!userRepository.isExists(userId)) {
+        if (!userRepository.exist(userId)) {
             throw new UserNotFoundException();
         }
 
@@ -49,7 +49,7 @@ public class UserService {
     }
 
     public UserUpdateRequest makeUserUpdateRequestByUserId(String userId) { // service 역할이 맞을까
-        if (!userRepository.isExists(userId)) {
+        if (!userRepository.exist(userId)) {
             throw new UserNotFoundException();
         }
 

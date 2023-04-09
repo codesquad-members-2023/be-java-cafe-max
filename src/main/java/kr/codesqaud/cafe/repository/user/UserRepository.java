@@ -8,6 +8,6 @@ public interface UserRepository {
     void save(User user);
     User findByUserId(String userId);
     List<User> findAll();
-    boolean isExists(String userId);
+    boolean exist(String userId);
     void update(User user);
 }

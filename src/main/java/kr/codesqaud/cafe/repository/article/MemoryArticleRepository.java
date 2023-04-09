@@ -32,5 +32,5 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public boolean isExists(Long id) { return STORE.containsKey(id); }
+    public boolean exists(Long id) { return STORE.containsKey(id); }
 }

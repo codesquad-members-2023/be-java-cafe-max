@@ -28,7 +28,7 @@ public class ArticleService {
     }
 
     public ArticleResponse findById(Long id) {
-        if (!articleRepository.isExists(id)) { // 게시글 존재 여부 검사
+        if (!articleRepository.exists(id)) { // 게시글 존재 여부 검사
             throw new ArticleNotFoundException();
         }
 

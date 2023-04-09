@@ -29,7 +29,7 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean isExists(String userId) {
+    public boolean exist(String userId) {
         return STORE.containsKey(userId);
     }
 
