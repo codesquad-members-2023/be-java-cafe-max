@@ -7,15 +7,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import kr.codesqaud.annotation.RepositoryTest;
 import kr.codesqaud.cafe.domain.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class MemoryMemberRepositoryTest {
+@RepositoryTest
+class MemberRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
@@ -91,8 +91,8 @@ class MemoryMemberRepositoryTest {
         // then
         assertAll(
             () -> assertEquals(2, findAll.size()),
-            () -> assertEquals(member2.getEmail(), findAll.get(0).getEmail()),
-            () -> assertEquals(member1.getEmail(), findAll.get(1).getEmail()));
+            () -> assertEquals(member1.getEmail(), findAll.get(0).getEmail()),
+            () -> assertEquals(member2.getEmail(), findAll.get(1).getEmail()));
     }
 
     @DisplayName("회원 정보 수정")
@@ -102,7 +102,7 @@ class MemoryMemberRepositoryTest {
         Member member = dummyData();
         Long savedId = memberRepository.save(member);
         Member updateMember = new Member(savedId, "mandu@gmail.com"
-            , "mandu12345", "manduUpdate", LocalDateTime.now());
+            , "mandu12345", "manduUpdat", LocalDateTime.now());
 
         // when
         memberRepository.update(updateMember);

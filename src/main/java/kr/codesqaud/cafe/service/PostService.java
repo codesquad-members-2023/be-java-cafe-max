@@ -1,18 +1,21 @@
 package kr.codesqaud.cafe.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Post;
-import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
+import kr.codesqaud.cafe.dto.post.WriterResponse;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class PostService {
 
     private final PostRepository postRepository;
@@ -24,29 +27,36 @@ public class PostService {
     }
 
     public Long save(PostWriteRequest postWriteRequest) {
-        return postRepository.save(Post.from(postWriteRequest));
+        return postRepository.save(postWriteRequest.toPost());
     }
 
+    @Transactional(readOnly = true)
     public PostResponse findById(Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
-        return PostResponse.of(post, getMemberResponse(post));
+        Post post = postRepository.findById(id)
+            .orElseThrow(PostNotFoundException::new);
+        post.increaseViews();
+        postRepository.update(post);
+        return PostResponse.of(post, getWhiterResponse(post));
     }
 
+    @Transactional(readOnly = true)
     public List<PostResponse> findAll() {
         return postRepository.findAll()
             .stream()
-            .map(post -> PostResponse.of(post, getMemberResponse(post)))
+            .sorted(Comparator.comparing(Post::getId)
+                .reversed())
+            .map(post -> PostResponse.of(post, getWhiterResponse(post)))
             .collect(Collectors.toUnmodifiableList());
     }
 
-    private MemberResponse getMemberResponse(Post post) {
-        MemberResponse memberResponse = null;
+    private WriterResponse getWhiterResponse(Post post) {
+        WriterResponse writerResponse = null;
 
         if (post.getWriterId() != null) {
-            memberResponse = MemberResponse.from(memberRepository.findById(post.getWriterId())
-                .orElseThrow(() -> new MemberNotFoundException(post.getWriterId())));
+            writerResponse = WriterResponse.from(memberRepository.findById(post.getWriterId())
+                .orElseThrow(MemberNotFoundException::new));
         }
 
-        return memberResponse;
+        return writerResponse;
     }
 }

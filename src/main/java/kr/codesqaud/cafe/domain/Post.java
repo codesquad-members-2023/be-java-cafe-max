@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDateTime;
-import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 
 public class Post {
 
@@ -10,7 +9,7 @@ public class Post {
     private final String content;
     private final Long writerId;
     private final LocalDateTime writeDate;
-    private final Long views;
+    private Long views;
 
     public Post(Long id, String title, String content, Long writerId, LocalDateTime writeDate,
         Long views) {
@@ -46,12 +45,11 @@ public class Post {
         return views;
     }
 
-    public Post createWithId(Long id) {
-        return new Post(id, title, content, writerId, writeDate, views);
+    public void increaseViews() {
+        views++;
     }
 
-    public static Post from(PostWriteRequest postWriteRequest) {
-        return new Post(null, postWriteRequest.getTitle(), postWriteRequest.getContent(),
-            postWriteRequest.getWriterId(), postWriteRequest.getWriteDate(), 0L);
+    public Post createWithId(Long id) {
+        return new Post(id, title, content, writerId, writeDate, views);
     }
 }

@@ -1,10 +1,12 @@
 package kr.codesqaud.cafe.exception.post;
 
-import kr.codesqaud.cafe.exception.common.BadRequestException;
+import kr.codesqaud.cafe.exception.common.NotFoundException;
 
-public class PostNotFoundException extends BadRequestException {
+public class PostNotFoundException extends NotFoundException {
 
-    public PostNotFoundException(Object errorValue) {
-        super(errorValue);
+    private static final String ERROR_MASSAGE = "해당 게시물을 찾을 수 없습니다.";
+
+    public PostNotFoundException() {
+        super(ERROR_MASSAGE);
     }
 }

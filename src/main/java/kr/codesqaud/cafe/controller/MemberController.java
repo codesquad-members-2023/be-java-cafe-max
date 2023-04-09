@@ -1,19 +1,17 @@
 package kr.codesqaud.cafe.controller;
 
+import javax.validation.Valid;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RequestMapping("/members")
 @Controller
@@ -32,7 +30,7 @@ public class MemberController {
     }
 
     @PostMapping
-    public String signUp(@ModelAttribute @Validated SignUpRequest signUpRequest,
+    public String signUp(@Valid SignUpRequest signUpRequest,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "member/signUp";
@@ -49,14 +47,13 @@ public class MemberController {
     }
 
     @PutMapping("/{id}")
-    public String editProfile(@ModelAttribute @Validated ProfileEditRequest profileEditRequest,
-        BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String editProfile(@Valid ProfileEditRequest profileEditRequest,
+        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "member/profileEdit";
         }
 
         memberService.update(profileEditRequest);
-        redirectAttributes.addAttribute("id", profileEditRequest.getId());
         return "redirect:/members/{id}";
     }
 
@@ -67,7 +64,7 @@ public class MemberController {
     }
 
     @GetMapping("/sign-up")
-    public String signUpForm(@ModelAttribute SignUpRequest signUpRequest) {
+    public String signUpForm(SignUpRequest signUpRequest) {
         return "member/signUp";
     }
 }

@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Member;
@@ -8,10 +9,13 @@ import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
+import kr.codesqaud.cafe.exception.member.NotMatchMemberPassword;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -22,40 +26,51 @@ public class MemberService {
 
     public Long signUp(SignUpRequest signUpRequest) {
         validateDuplicateEmail(signUpRequest);
-        return memberRepository.save(Member.from(signUpRequest));
+        return memberRepository.save(signUpRequest.toMember());
     }
 
     private void validateDuplicateEmail(SignUpRequest signUpRequest) {
         if (memberRepository.findByEmail(signUpRequest.getEmail()).isPresent()) {
-            throw new DuplicateMemberEmailException(signUpRequest);
+            throw new DuplicateMemberEmailException("member/signUp", signUpRequest);
         }
     }
 
+    @Transactional(readOnly = true)
+    public MemberResponse findById(long id) {
+        return MemberResponse.from(memberRepository.findById(id)
+            .orElseThrow(MemberNotFoundException::new));
+    }
+
+    @Transactional(readOnly = true)
     public List<MemberResponse> findAll() {
         return memberRepository.findAll()
             .stream()
+            .sorted(Comparator.comparing(Member::getId)
+                .reversed())
             .map(MemberResponse::from)
             .collect(Collectors.toUnmodifiableList());
     }
 
-    public MemberResponse findById(long id) {
-        return MemberResponse.from(memberRepository.findById(id)
-            .orElseThrow(() -> new MemberNotFoundException(id)));
+    public void update(ProfileEditRequest profileEditRequest) {
+        Member findMember = memberRepository.findById(profileEditRequest.getId())
+            .orElseThrow(MemberNotFoundException::new);
+        validateDuplicateEmail(profileEditRequest);
+        validateNotMatchPassword(profileEditRequest, findMember);
+        memberRepository.update(profileEditRequest.toMember(findMember.getCreateDate()));
     }
 
-    public void update(ProfileEditRequest profileUpdateRequest) {
-        Member findMember = memberRepository.findById(profileUpdateRequest.getId())
-            .orElseThrow(() -> new MemberNotFoundException(profileUpdateRequest));
-        validateDuplicateEmail(profileUpdateRequest);
-        memberRepository.update(Member.of(profileUpdateRequest, findMember.getCreateDate()));
-    }
-
-    private void validateDuplicateEmail(ProfileEditRequest profileUpdateRequest) {
-        memberRepository.findByEmail(profileUpdateRequest.getEmail())
+    private void validateDuplicateEmail(ProfileEditRequest profileEditRequest) {
+        memberRepository.findByEmail(profileEditRequest.getEmail())
             .ifPresent(m -> {
-                if (!m.equalsId(profileUpdateRequest.getId())) {
-                    throw new DuplicateMemberEmailException(profileUpdateRequest);
+                if (!m.equalsId(profileEditRequest.getId())) {
+                    throw new DuplicateMemberEmailException("member/profileEdit", profileEditRequest);
                 }
             });
+    }
+
+    private void validateNotMatchPassword(ProfileEditRequest profileEditRequest, Member member) {
+        if (!member.equalsPassword(profileEditRequest.getPassword())) {
+            throw new NotMatchMemberPassword("member/profileEdit", profileEditRequest);
+        }
     }
 }

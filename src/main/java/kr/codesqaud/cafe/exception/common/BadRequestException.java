@@ -2,27 +2,31 @@ package kr.codesqaud.cafe.exception.common;
 
 public class BadRequestException extends RuntimeException {
 
-    private final BadRequestExceptionCode badRequestExceptionCode;
-    private final String errorCode;
+    private final String viewName;
     private final Object errorData;
+    private final String field;
+    private final String errorCode;
 
-    public BadRequestException(Object errorData) {
-        badRequestExceptionCode = BadRequestExceptionCode
-            .getBadException(this.getClass());
-        this.errorCode = badRequestExceptionCode.getErrorCode();
+    public BadRequestException(String viewName, Object errorData, String field, String errorCode) {
+        this.viewName = viewName;
         this.errorData = errorData;
+        this.field = field;
+        this.errorCode = errorCode;
     }
 
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    @Override
-    public String getMessage() {
-        return badRequestExceptionCode.getErrorMessage();
+    public String getViewName() {
+        return viewName;
     }
 
     public Object getErrorData() {
         return errorData;
+    }
+
+    public String getField() {
+        return field;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
     }
 }

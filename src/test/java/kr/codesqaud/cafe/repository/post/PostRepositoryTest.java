@@ -8,31 +8,38 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
+import kr.codesqaud.annotation.RepositoryTest;
+import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class MemoryPostRepositoryTest {
+@RepositoryTest
+class PostRepositoryTest {
 
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     @BeforeEach
     void beforeEach() {
         postRepository.deleteAll();
+        memberRepository.deleteAll();
     }
 
     @DisplayName("게시글 저장 성공")
     @Test
     void save() {
         // given
+        Long savedMemberId = saveMember();
 
         // when
-        Long savedId = postRepository.save(postDummy());
+        Long savedId = postRepository.save(postDummy(savedMemberId));
 
         // then
         Optional<Post> findPost = postRepository.findById(savedId);
@@ -45,7 +52,8 @@ class MemoryPostRepositoryTest {
     @Test
     void findById() {
         // given
-        Post post = postDummy();
+        Long savedMemberId = saveMember();
+        Post post = postDummy(savedMemberId);
         Long savedId = postRepository.save(post);
 
         // when
@@ -65,12 +73,13 @@ class MemoryPostRepositoryTest {
     @Test
     void findAll() {
         // given
+        Long savedMemberId = saveMember();
         int postCount = 5;
         IntStream.rangeClosed(1, postCount)
             .forEach(index -> {
                     String title = String.format("제목%d", index);
                     String content = String.format("내용%d", index);
-                    postRepository.save(new Post(null, title, content, 1L,
+                    postRepository.save(new Post(null, title, content, savedMemberId,
                         LocalDateTime.now(), (long) index));
             });
 
@@ -81,13 +90,37 @@ class MemoryPostRepositoryTest {
         assertEquals(postCount, findAll.size());
     }
 
-    private Post postDummy() {
-        return new Post(null, "제목", "내용", 1L,
+    @DisplayName("게시글 수정 성공")
+    @Test
+    void update() {
+        // given
+        Long savedMemberId = saveMember();
+        Post post = postDummy(savedMemberId);
+        Long savedId = postRepository.save(post);
+        Post updatePost = new Post(savedId, "업데이트", "업데이트 내용", post.getWriterId(),
+            post.getWriteDate(), 0L);
+
+        // when
+        postRepository.update(updatePost);
+
+        // then
+        Post findPost = postRepository.findById(savedId).orElseThrow();
+        assertAll(
+            () -> assertEquals(updatePost.getId(), findPost.getId()),
+            () -> assertEquals(updatePost.getTitle(), findPost.getTitle()),
+            () -> assertEquals(updatePost.getContent(), findPost.getContent()),
+            () -> assertEquals(updatePost.getWriterId(), findPost.getWriterId()),
+            () -> assertEquals(updatePost.getWriteDate(), findPost.getWriteDate()),
+            () -> assertEquals(updatePost.getViews(), findPost.getViews()));
+    }
+
+    private Post postDummy(Long writerId) {
+        return new Post(null, "제목", "내용", writerId,
             LocalDateTime.now(), 0L);
     }
 
-    private Post postDummy2() {
-        return new Post(null, "제목테스트", "내용테스트", 2L,
-            LocalDateTime.now(), 5L);
+    private Long saveMember() {
+        return memberRepository.save(new Member(null, "test@naver.com", "Test1234",
+            "만두", LocalDateTime.now()));
     }
 }

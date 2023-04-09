@@ -1,12 +1,10 @@
 package kr.codesqaud.cafe.repository.member;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Member;
 import org.springframework.stereotype.Repository;
 
@@ -41,10 +39,7 @@ public class MemoryMemberRepository implements MemberRepository {
 
     @Override
     public List<Member> findAll() {
-        return store.values()
-            .stream()
-            .sorted(Comparator.comparing(Member::getCreateDate).reversed())
-            .collect(Collectors.toUnmodifiableList());
+        return List.copyOf(store.values());
     }
 
     @Override
