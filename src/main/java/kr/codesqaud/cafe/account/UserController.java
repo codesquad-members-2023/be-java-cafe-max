@@ -19,7 +19,6 @@ public class UserController {
     private static final String PROFILE_FORM = "profileForm";
     private static final String PROFILE_SETTING_FORM = "profileEditForm";
     private static final String USERS = "users";
-    private static final String EMAIL = "email";
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final JoinFormValidator joinFormValidator;

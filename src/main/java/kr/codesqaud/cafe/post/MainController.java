@@ -10,6 +10,7 @@ import java.util.List;
 @Controller
 public class MainController {
 
+    public static final String SIMPLE_FORMS = "simpleForms";
     private final PostService postService;
 
     public MainController(PostService postService) {
@@ -19,7 +20,7 @@ public class MainController {
     @GetMapping
     public String viewIndex(Model model) {
         List<SimplePostForm> simpleForms = postService.getAllPosts();
-        model.addAttribute("simpleForms",simpleForms);
+        model.addAttribute(SIMPLE_FORMS,simpleForms);
         return "index";
     }
 

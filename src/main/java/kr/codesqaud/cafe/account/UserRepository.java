@@ -24,8 +24,8 @@ public class UserRepository {
     private static final String COLUMN_NICKNAME = "NICKNAME";
     private static final String COLUMN_EMAIL = "EMAIL";
     private static final String QUERY_UPDATE = "UPDATE ACCOUNT SET NICKNAME = ?, EMAIL = ? WHERE USER_ID = ?";
-    private static final String QUERY_SAVE = "INSERT INTO ACCOUNT (NICKNAME, EMAIL, PASSWORD) values ( :nickname,:email,:password )";
-    private static final String QUERY_FIND_BY_ID = "SELECT USER_ID,EMAIL,NICKNAME,PASSWORD FROM ACCOUNT WHERE USER_ID = :id";
+    private static final String QUERY_SAVE = "INSERT INTO ACCOUNT (NICKNAME, EMAIL, PASSWORD) values ( :NICKNAME,:EMAIL,:PASSWORD )";
+    private static final String QUERY_FIND_BY_ID = "SELECT USER_ID,EMAIL,NICKNAME,PASSWORD FROM ACCOUNT WHERE USER_ID = :USER_ID";
     private static final String QUERY_FIND_BY_EMAIL = "SELECT USER_ID,NICKNAME,PASSWORD,EMAIL FROM ACCOUNT WHERE EMAIL = ?";
     private static final String QUERY_CONTAINS_EMAIL = "SELECT count(EMAIL) FROM ACCOUNT WHERE EMAIL = ?";
     private static final String QUERY_FIND_ALL_USERS = "SELECT USER_ID, NICKNAME, EMAIL,PASSWORD FROM ACCOUNT";
@@ -48,9 +48,9 @@ public class UserRepository {
 
     private static Map<String, Object> getParameters(User user) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("email", user.getEmail());
-        parameters.put("nickname", user.getNickname());
-        parameters.put("password", user.getPassword());
+        parameters.put(COLUMN_EMAIL, user.getEmail());
+        parameters.put(COLUMN_NICKNAME, user.getNickname());
+        parameters.put(COLUMN_PASSWORD, user.getPassword());
         return parameters;
     }
 
@@ -59,7 +59,7 @@ public class UserRepository {
     }
 
     public User findById(Long userId) {
-        SqlParameterSource namedParameters = new MapSqlParameterSource("id", userId);
+        SqlParameterSource namedParameters = new MapSqlParameterSource(COLUMN_USER_ID, userId);
         return namedParameterJdbcTemplate.queryForObject(QUERY_FIND_BY_ID, namedParameters, getUserRowMapper());
     }
 

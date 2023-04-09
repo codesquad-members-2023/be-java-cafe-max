@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.account;
 
 public class User {
 
+    public static final String BLANK = "";
     private final Long id;
     private final String nickname;
     private final String email;
@@ -39,10 +40,10 @@ public class User {
     }
 
     public static class Builder {
-        private Long id = 0L;
-        private String nickname = "";
-        private String email = "";
-        private String password = "";
+        private Long id = Long.MIN_VALUE;
+        private String nickname = BLANK;
+        private String email = BLANK;
+        private String password = BLANK;
 
         public Builder id(Long id) {
             this.id = id;
