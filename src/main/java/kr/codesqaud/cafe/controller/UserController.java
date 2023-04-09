@@ -27,7 +27,12 @@ public class UserController {
     }
 
     @PostMapping("/user/join")
-    public String signUp(@ModelAttribute final UserJoinDTO userJoinDTO) {
+    public String signUp(@ModelAttribute final UserJoinDTO userJoinDTO, Model model) {
+        boolean isIdDuplicated = userService.checkDuplicate(userJoinDTO.getUserId());
+        if(isIdDuplicated) {
+            model.addAttribute("duplicate", true);
+            return "user/form";
+        }
         userService.signUp(userJoinDTO);
         return "redirect:/users/list";
     }
