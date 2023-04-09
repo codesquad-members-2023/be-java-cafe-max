@@ -31,7 +31,7 @@ class UserControllerTest {
     private static final String PASSWORD = "password";
     private static final String NICKNAME = "nickname";
     private static final String USER_ID = "userId";
-    private static final String PROFILE_SETTING_FORM = "profileSettingForm";
+    private static final String PROFILE_EDIT_FORM = "profileEditForm";
     private static final String PROFILE_FORM = "profileForm";
     private static final String JOIN_FORM = "joinForm";
 
@@ -174,8 +174,8 @@ class UserControllerTest {
                 int userId = saveAndGetUserJack();
                 mockMvc.perform(get("/users/" + userId + "/profile/edit"))
                         .andExpect(status().isOk())
-                        .andExpect(model().attributeExists(USER_ID, PROFILE_SETTING_FORM))
-                        .andExpect(view().name("account/profileEdit"));
+                        .andExpect(model().attributeExists(USER_ID, PROFILE_EDIT_FORM))
+                        .andExpect(view().name("account/profileEditForm"));
             }
 
             @DisplayName("실패")
@@ -218,7 +218,7 @@ class UserControllerTest {
                                 .param(NICKNAME, JERRY))
                         .andExpect(status().isOk())
                         .andExpect(model().hasErrors())
-                        .andExpect(view().name("account/profileEdit"));
+                        .andExpect(view().name("account/profileEditForm"));
             }
 
             @DisplayName("실패(유저 아이디)")
@@ -244,7 +244,7 @@ class UserControllerTest {
                                 .param(NICKNAME, nickname))
                         .andExpect(status().isOk())
                         .andExpect(model().hasErrors())
-                        .andExpect(view().name("account/profileEdit"));
+                        .andExpect(view().name("account/profileEditForm"));
             }
         }
     }

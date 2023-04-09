@@ -5,7 +5,7 @@
 <nav th:replace="fragments/navbar.html :: user">
 </nav>
 
-<form class="container" id="postingForm" th:action="@{/users/{id}/update(id = ${userId})}"
+<form class="container" id="postingForm" th:action="@{/users/{id}/profile(id = ${userId})}"
       th:object="${profileEditForm}"
       method="post" novalidate>
     <input type="hidden" name="_method" value="PUT"/>

@@ -34,6 +34,10 @@ public class User {
         return targetPassword.equals(password);
     }
 
+    public boolean isSameEmail(String email) {
+        return this.email.equals(email);
+    }
+
     public static class Builder {
         private Long id = 0L;
         private String nickname = "";
