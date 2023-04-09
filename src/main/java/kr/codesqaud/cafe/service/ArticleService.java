@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.dto.article.ArticleForm;
 import kr.codesqaud.cafe.controller.dto.article.ArticleTimeForm;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
@@ -21,7 +22,8 @@ public class ArticleService {
     }
 
     // TODO: 매개변수가 DTO를 의존하도록 변경
-    public Article add(Article article) {
+    public Article add(ArticleForm form) {
+        Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
         return articleRepository.save(article);
     }
 

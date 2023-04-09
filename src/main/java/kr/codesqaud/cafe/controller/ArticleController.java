@@ -23,10 +23,7 @@ public class ArticleController {
 
     @PostMapping("/questions/post")
     public String addArticle(@Valid ArticleForm form) {
-        // TODO: 컨트롤러에서 도메인에 dto를 넣지 않는 방법으로 재구현 필요
-        // 객체를 넣어주지 말고 필드 넣어주기
-        Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
-        articleService.add(article);
+        articleService.add(form);
         return "redirect:/";
     }
 
