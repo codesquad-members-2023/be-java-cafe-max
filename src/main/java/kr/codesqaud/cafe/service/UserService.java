@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.dto.user.UserResponse;
 import kr.codesqaud.cafe.dto.user.UserSaveRequest;
 import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
-import kr.codesqaud.cafe.exception.user.DuplicateUserIdException;
+import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.exception.user.MismatchedPasswordException;
 import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.repository.user.UserRepository;
@@ -22,9 +22,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void saveUser(UserSaveRequest userSaveRequest) throws DuplicateUserIdException { // 새로운 회원 저장하기
+    public void saveUser(UserSaveRequest userSaveRequest) throws AlreadyUserExistenceException { // 새로운 회원 저장하기
         if (userRepository.isExists(userSaveRequest.getUserId())) { // userId 중복 여부 검사
-            throw new DuplicateUserIdException(userSaveRequest);
+            throw new AlreadyUserExistenceException(userSaveRequest);
         }
         userRepository.save(userSaveRequest.toUser());
     }

@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.exception;
 
 import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
-import kr.codesqaud.cafe.exception.user.DuplicateUserIdException;
+import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.exception.user.MismatchedPasswordException;
 import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class AllExceptionHandler {
 
-    @ExceptionHandler(DuplicateUserIdException.class)
-    public String handleDuplicateUserIdException(DuplicateUserIdException exception, Model model) {
+    @ExceptionHandler(AlreadyUserExistenceException.class)
+    public String handleDuplicateUserIdException(AlreadyUserExistenceException exception, Model model) {
         model.addAttribute("userSaveRequest", exception.getUserSaveRequest());
         model.addAttribute("duplicateUserIdMessage", exception.getMessage());
         return "user/sign-up";
