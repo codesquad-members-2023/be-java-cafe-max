@@ -1,16 +1,18 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository {
     void save(User user);
 
     List<User> findAll();
 
-    User findUserById(String id);
+    Optional<User> findUserById(String id);
 
-    void updateUser(ProfileEditDTO profileEditDTO,String id);
+    boolean exist(String id);
+
+    void updateUser(User User);
 }

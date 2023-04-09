@@ -16,8 +16,8 @@
 
             <ul class="nav navbar-nav navbar-right">
                 </li><li class="active"><a href="/">메인페이지</a></li>
-                <li><a class="black-component" href="/user/login" role="button">로그인</a></li>
-                <li><a class="black-component" href="/user/signUp" role="button">회원가입</a></li>
+                <li><a class="black-component" href="/users/login" role="button">로그인</a></li>
+                <li><a class="black-component" href="/users/sign-up" role="button">회원가입</a></li>
             </ul>
         </div>
     </nav>
@@ -46,9 +46,9 @@
                     <tbody>
                     {{#users}}
                     <tr>
-                        <td><a href="/users/{{Id}}">{{nickName}}</a></td>
+                        <td><a href="/users/{{id}}">{{nickName}}</a></td>
                         <td>{{email}}</td>
-                        <td>2023-3-29</td>
+                        <td>{{date}}</td>
                     </tr>
                     {{/users}}
                     </tbody>

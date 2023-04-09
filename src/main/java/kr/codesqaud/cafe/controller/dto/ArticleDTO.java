@@ -2,31 +2,28 @@ package kr.codesqaud.cafe.controller.dto;
 
 import kr.codesqaud.cafe.domain.Article;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 public class ArticleDTO {
-    private String title;
-    private String content;
+    @NotBlank
+    @Pattern(regexp = "^\\s*[\\S\\s]+\\s*$")
+    private final String title;
 
-    public ArticleDTO(String title, String content) {
+    @NotBlank
+    @Pattern(regexp = "^[\\s\\S]{3,1000}$")
+    private final String content;
+
+    private final Integer id;
+
+    private final String date;
+
+    public ArticleDTO(String title, String content,Integer id,String date) {
         this.title = title;
         this.content = content;
+        this.id = id;
+        this.date = date;
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public Article toArticle(){
         return new Article(title,content);
     }

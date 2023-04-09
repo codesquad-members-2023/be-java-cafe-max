@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository {
 
@@ -10,5 +11,5 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
-    Article findArticleById(int id);
+    Optional<Article> findArticleById(int id);
 }

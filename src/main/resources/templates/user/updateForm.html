@@ -22,22 +22,33 @@
                 <label for="email">기존 비밀번호</label>
                 <input type="password" class="form-control" id="password" name="oriPassword" placeholder="기존 비밀번호">
             </div>
+            {{#error}}
+            <div>
+                <p id="error-message">{{message}}</p>
+            </div>
+            {{/error}}
             <div class="form-group">
                 <label for="password">새로운 비밀번호</label>
-                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="변경할 비밀번호">
+                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="변경할 비밀번호" oninput="checkPasswordValidity(this)">
             </div>
+            <span id="password-error" class="error-message"></span>
+
             <div class="form-group">
                 <label for="email">이메일</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="변경할 이메일">
+                <input type="email" class="form-control" id="email" name="email" placeholder="변경할 이메일" oninput="checkEmailValidity(this)">
             </div>
+            <span id="email-error" class="error-message"></span>
+
             <div class="form-group">
                 <label for="nickName">닉네임</label>
-                <input class="form-control" id="nickName" name="nickName" placeholder="변경할 닉네임">
+                <input class="form-control" id="nickName" name="nickName" placeholder="변경할 닉네임" oninput="checkNickNameValidity(this)">
             </div>
+            <span id="nickName-error" class="error-message"></span>
 
             <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
         </form>
     </div>
 </div>
 </body>
+<script src="/js/loginValidator.js"></script>
 </html>

@@ -1,25 +1,24 @@
 package kr.codesqaud.cafe.repository.impl;
 
-import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.exception.PasswordNotFoundException;
-import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
+@Qualifier("memoryRepository")
 public class MemoryUserRepository implements UserRepository {
 
-    private Map<String, User> userRepository;
+    private final Map<String, User> userRepository;
 
     public MemoryUserRepository() {
-        this.userRepository = new LinkedHashMap();
+        this.userRepository = new LinkedHashMap<>();
     }
 
     @Override
@@ -28,25 +27,28 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public List<User> findAll() {
-        List<User> users = userRepository.values().stream()
-                .collect(Collectors.toList());
-        return Collections.unmodifiableList(users);
+    public boolean exist(String id) {
+        return userRepository.keySet().stream()
+                .filter(mapId -> mapId.equals(id))
+                .findFirst()
+                .isPresent();
     }
 
     @Override
-    public User findUserById(String userId) {
+    public List<User> findAll() {
         return userRepository.values().stream()
-                .filter(user -> user.getId().equals(userId))
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("해당 사용자가 없습니다.") );
+                .collect(Collectors.toUnmodifiableList());
     }
 
-    public void updateUser(ProfileEditDTO profileEditDto,String id) {
-        String oriPassword = userRepository.get(id).getPassword();
-        if (!oriPassword.equals(profileEditDto.getOriPassword())) {
-            throw new PasswordNotFoundException("비밀번호가 일치하지 않습니다.");
-        }
-        save(profileEditDto.toUser(id));
+    @Override
+    public Optional<User> findUserById(String userId) {
+        return userRepository.values().stream()
+                .filter(u -> u.getId().equals(userId))
+                .findFirst();
+    }
+
+    @Override
+    public void updateUser(User user) {
+        save(user);
     }
 }
