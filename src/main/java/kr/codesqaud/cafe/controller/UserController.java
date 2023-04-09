@@ -24,8 +24,7 @@ public class UserController {
 
     @PostMapping("/user/create")
     public String create(@Validated UserForm form) {
-        // TODO: 컨트롤러에서 도메인에 DTO를 넣지 않는 방법으로 재구현
-        User user = new User(form);
+        User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
         userService.join(user);
         return "redirect:/users/" + user.getId();
     }

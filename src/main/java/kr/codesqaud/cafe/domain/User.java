@@ -12,12 +12,11 @@ public class User {
     public User() {
     }
 
-    // TODO: DTO를 domain에 생성자로 넣어주는 것은 좋지 않기 때문에 수정 예정
-    public User(UserForm form) {
-        this.userId = form.getUserId();
-        this.password = form.getPassword();
-        this.name = form.getName();
-        this.email = form.getEmail();
+    public User(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
     public Long getId() {
