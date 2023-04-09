@@ -72,14 +72,27 @@ public class JdbcTemplateUserRepository implements UserRepository {
         try {
             Map<String, Object> param = Map.of("ID", id);
             User user = template.queryForObject(sql, param, userRowMapper());
-            assert user != null;
-            return Optional.of(user);
+            return Optional.ofNullable(user);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
-//        List<User> wantedUser = jdbcTemplate.query("SELECT * FROM USER_TB WHERE ID = ?", userRowMapper(), id);
-//        return wantedUser.stream().findAny();
+
+    //        List<User> wantedUser = jdbcTemplate.query("SELECT * FROM USER_TB WHERE ID = ?", userRowMapper(), id);
+    //        return wantedUser.stream().findAny();
+
+    @Override
+    public Optional<User> findByUserId(String userId) {
+        String sql = "SELECT * FROM USER_TB WHERE USERID = :USERID";
+
+        try {
+            Map<String, Object> param = Map.of("USERID", userId);
+            User user = template.queryForObject(sql, param, userRowMapper());
+            return Optional.ofNullable(user);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
 
     @Override
     public List<User> findAll() {
