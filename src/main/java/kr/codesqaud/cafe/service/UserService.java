@@ -23,8 +23,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // TODO: 매개변수가 DTO를 의존하도록 변경
-    public User join(User user) {
+    public User join(UserForm form) {
+        User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
         validateDuplicateUser(user);
         return userRepository.save(user);
     }

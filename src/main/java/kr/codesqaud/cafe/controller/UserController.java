@@ -27,9 +27,8 @@ public class UserController {
 
     @PostMapping("/user/create")
     public String create(@Validated UserForm form) {
-        User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
-        userService.join(user);
-        return "redirect:/users/" + user.getId();
+        userService.join(form);
+        return "redirect:/users/";
     }
 
     @GetMapping("/users")
