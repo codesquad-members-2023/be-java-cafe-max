@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.service.ArticleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +17,6 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
@@ -30,6 +28,7 @@ public class ArticleController {
         articleService.write(article);
 
         return "redirect:/";
+
     }
 
     @GetMapping(value = {"/", "index"})
@@ -40,9 +39,9 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("articles/{title}")
-    public String showArticle(Model model, @PathVariable String title) {
-        model.addAttribute("article", articleService.findOne(title));
+    @GetMapping("articles/{id}")
+    public String showArticle(Model model, @PathVariable Long id) {
+        model.addAttribute("article", articleService.findOne(id));
         return "qna/show";
     }
 }

@@ -15,23 +15,17 @@ public class ArticleService {
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
-    public String write(Article article) {
-        validateDuplicateTitle(article);
+    public Long write(Article article) {
         articleRepository.save(article);
-        return article.getTitle();
+        return article.getId();
     }
-    private void validateDuplicateTitle(Article article) {
-        articleRepository.findByTitle(article.getTitle())
-                .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 글입니다");
-                });
-    }
+
 
     public List<Article> findArticles() {
         return articleRepository.findAll();
     }
 
-    public Optional<Article> findOne(String title) {
-        return articleRepository.findByTitle(title);
+    public Optional<Article> findOne(Long id) {
+        return articleRepository.findById(id);
     }
 }

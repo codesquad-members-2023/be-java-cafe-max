@@ -17,18 +17,18 @@
                 <li>
                     <div class="wrap">
                         <div class="main">
-                            <span th:each="article, articleStat : ${articles}">
+                            <span th:each="article : ${articles}">
                             <strong class="subject">
-                                <a th:href="@{/articles/{title}(title=${article.title})}" th:text="${article.title}">title</a>
+                                <a th:href="@{/articles/{id}(id=${article.id})}" th:text="${article.title}">title</a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
-                                <span class="time" th:text="${article.localDateTime}">localDateTime</span>
+                                <span class="time" th:text="${article.createdTime}">createdTime</span>
                                 <a th:text="${article.writer}" th:href="@{/users/{userId}(userId=${article.writer})}" class="author">writer</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
-                                <span class="point" th:text="${articleStat.count}">article</span>
+<!--                                <span class="point" th:text="${article.id}">id</span>-->
                             </div>
                             </span>
                         </div>

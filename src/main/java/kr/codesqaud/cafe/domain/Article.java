@@ -8,14 +8,17 @@ public class Article {
     private String title;
     private String contents;
 
-    private LocalDateTime localDateTime;
+    private Long id;
+
+    private LocalDateTime createdTime;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.localDateTime = LocalDateTime.now();
+        this.createdTime = LocalDateTime.now();
     }
+
 
     public String getWriter() {
         return writer;
@@ -29,7 +32,19 @@ public class Article {
         return contents;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public LocalDateTime getCreatedTime() {
+        return createdTime;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setCreatedTime(LocalDateTime createdTime) {
+        this.createdTime = createdTime;
     }
 }

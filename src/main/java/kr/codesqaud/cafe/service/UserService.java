@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,26 +12,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public String join(User user) {
-        try {
-            validateDuplicateUser(user);   // 중복아이디라면, user를 저장하지 않고 " "반환
-            userRepository.save(user);
-            return user.getUserId();
-        } catch (IllegalStateException e) {
-            return " ";
-        }
-    }
-
-    private void validateDuplicateUser(User user) {
-        userRepository.findById(user.getUserId())
-                .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 아이디입니다");
-                });
+    public boolean join(User user) {
+       if (findOne(user.getUserId()).isPresent()) {
+           return false;
+       }
+       userRepository.save(user);
+       return true;
     }
 
     public List<User> findUsers() {
