@@ -19,7 +19,6 @@ import java.util.Optional;
 public class JdbcTemplateArticleRepository implements ArticleRepository {
     // 원래는 JdbcTemplate을 사용했지만
     // NamedParameterJdbcTemplate와 SimpleJdbcInsert을 동시에 사용하도록 변경
-    // 이전 코드는 주석으로 처리
     private final NamedParameterJdbcTemplate template;
     private final SimpleJdbcInsert simpleJdbcInsert;
 
@@ -36,33 +35,6 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
         Number key = simpleJdbcInsert.executeAndReturnKey(param);
         article.setId(key.longValue());
         return article;
-
-        // #1
-//        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-//        jdbcInsert.withTableName("articles").usingGeneratedKeyColumns("id");
-//
-//        Map<String, Object> parameters = new HashMap<>();
-//        parameters.put("writer", article.getWriter());
-//        parameters.put("title", article.getTitle());
-//        parameters.put("contents", article.getContents());
-//
-//        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-//        article.setId(key.longValue());
-
-        // #2
-//        String sql = "insert into articles (writer, title, contents, ts) values (?, ?, ?, now())";
-//        KeyHolder keyHolder = new GeneratedKeyHolder();
-//        jc.update(con -> {
-//            // 자동 증가 키
-//            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-//            ps.setString(1, article.getWriter());
-//            ps.setString(2, article.getTitle());
-//            ps.setString(3, article.getContents());
-//            return ps;
-//        }, keyHolder);
-//
-//        Long key = Objects.requireNonNull(keyHolder.getKey()).longValue();
-//        article.setId(key);
     }
 
     @Override
@@ -77,29 +49,16 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
-
-//        List<Article> result = jdbcTemplate.query("select * from articles where id = ?", articleRowMapper(), id);
-//        return result.stream().findAny();
     }
 
     @Override
     public List<Article> findAll() {
         String sql = "select ID, WRITER, TITLE, CONTENTS, CURRENTTIME from ARTICLES";
         return template.query(sql, articleRowMapper());
-//        return jdbcTemplate.query("select * from articles", articleRowMapper());
     }
 
     // TODO: 이대로 메서드로 두는 것이 좋은지, 필드로 빼는 것이 좋은지 판단 후 재구현
     private RowMapper<Article> articleRowMapper() {
         return BeanPropertyRowMapper.newInstance(Article.class);
-
-//        return (rs, rowNum) -> {
-//            Article article = new Article();
-//            article.setId(rs.getLong("id"));
-//            article.setWriter(rs.getString("writer"));
-//            article.setTitle(rs.getString("title"));
-//            article.setContents(rs.getString("contents"));
-//            return article;
-//        };
     }
 }
