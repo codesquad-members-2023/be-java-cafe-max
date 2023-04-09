@@ -11,10 +11,10 @@ public class UserRepository {
     private List<User> users = new ArrayList<>();
 
     public void save(User user){
-     users.add(user);
+        users.add(user);
     }
 
     public List<User> getUserList() {
         return users;
-    }
+    } // 머스테치 #users에 쓰일 듯
 }

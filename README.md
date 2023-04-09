@@ -48,6 +48,6 @@
 - bean: @Controller, @Service, @Repository 등이 붙으면 bean이다(@Component)
 - @AutoWired: 생성자에 사용(@Service)
 - @Service: Service 클래스(@Component)
-- Service 클래스 하는 역할: 
+- Service 클래스 하는 역할: ??
 - Model: .addAttribute로 컨트롤러에서 데이터를 받아서 view(mustache)에 전달(ui 구성 역할)
 - redirect: F5
