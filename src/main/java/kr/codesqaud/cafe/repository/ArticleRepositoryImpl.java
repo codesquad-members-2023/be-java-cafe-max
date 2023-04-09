@@ -2,10 +2,11 @@ package kr.codesqaud.cafe.repository;
 
 import java.util.List;
 import java.util.Optional;
-import javax.sql.DataSource;
 import kr.codesqaud.cafe.domain.Article;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -20,8 +21,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     private final NamedParameterJdbcTemplate template;
 
-    public ArticleRepositoryImpl(DataSource dataSource) {
-        this.template = new NamedParameterJdbcTemplate(dataSource);
+    public ArticleRepositoryImpl(NamedParameterJdbcTemplate template) {
+        this.template = template;
     }
 
     @Override
@@ -35,18 +36,24 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Optional<Article> findBySequence(long sequence) {
-        String sql = "select * from articles where sequence = ?";
-        return Optional.ofNullable(template.queryForObject(sql, articleRowMapper(), sequence));
+        String sql = "select sequence, writer, title, contents from articles where sequence = :sequence";
+        SqlParameterSource param = new MapSqlParameterSource("sequence", sequence);
+        try {
+            return Optional.ofNullable(template.queryForObject(sql, param, articleRowMapper())); // TODO: RowMapper 대신 Article.class를 사용하면 에러 발생
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<Article> findAll() {
-        String sql = "select * from articles";
+        String sql = "select sequence, writer, title, contents from articles";
         return template.query(sql, articleRowMapper());
     }
 
     private RowMapper<Article> articleRowMapper() {
         return (resultSet, rowNumber) -> new Article(
+                resultSet.getLong("sequence"),
                 resultSet.getString("writer"),
                 resultSet.getString("title"),
                 resultSet.getString("contents")
