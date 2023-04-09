@@ -29,15 +29,13 @@ public class UserService {
 
     public void update(User user, UpdateFormDto dto) {
         User current = user;
-        if (checkPassword(current, dto)) {
+        if (current.checkPassword( dto)) {
             userRepository.update(new User(user.getUserId(), dto.getNewPassword(), dto.getName(), dto.getEmail()));
         }
 
     }
 
-    public boolean checkPassword(User user, UpdateFormDto updateFormDto) {
-        return user.getPassword().equals(updateFormDto.getPassword());
-    }
+
 
 
     public List<User> users() {
