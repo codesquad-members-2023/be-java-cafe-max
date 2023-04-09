@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class JdbcTemplateArticleRepository implements ArticleRepository {
     private final NamedParameterJdbcTemplate template;
     private final SimpleJdbcInsert simpleJdbcInsert;
+    private final RowMapper<Article> articleRowMapper = BeanPropertyRowMapper.newInstance(Article.class);
 
     public JdbcTemplateArticleRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
@@ -41,7 +43,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
         try {
             Map<String, Object> param = Map.of("id", id);
-            Article article = template.queryForObject(sql, param, articleRowMapper());
+            Article article = template.queryForObject(sql, param, articleRowMapper);
             assert article != null;
             return Optional.of(article);
         } catch (EmptyResultDataAccessException e) {
@@ -52,11 +54,6 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         String sql = "select ID, WRITER, TITLE, CONTENTS, CURRENTTIME from ARTICLES";
-        return template.query(sql, articleRowMapper());
-    }
-
-    // TODO: 이대로 메서드로 두는 것이 좋은지, 필드로 빼는 것이 좋은지 판단 후 재구현
-    private RowMapper<Article> articleRowMapper() {
-        return BeanPropertyRowMapper.newInstance(Article.class);
+        return template.query(sql, articleRowMapper);
     }
 }

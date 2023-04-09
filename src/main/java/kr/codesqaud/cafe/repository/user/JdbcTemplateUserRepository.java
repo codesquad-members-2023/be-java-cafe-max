@@ -20,6 +20,7 @@ import java.util.Optional;
 public class JdbcTemplateUserRepository implements UserRepository {
     private final NamedParameterJdbcTemplate template;
     private final SimpleJdbcInsert simpleJdbcInsert;
+    private final RowMapper<User> userRowMapper = BeanPropertyRowMapper.newInstance(User.class);
 
     public JdbcTemplateUserRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
@@ -42,7 +43,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
         try {
             Map<String, Object> param = Map.of("id", id);
-            User user = template.queryForObject(sql, param, userRowMapper());
+            User user = template.queryForObject(sql, param, userRowMapper);
             assert user != null;
             return Optional.of(user);
         } catch (EmptyResultDataAccessException e) {
@@ -56,7 +57,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
         try {
             Map<String, Object> param = Map.of("userId", userId);
-            User user = template.queryForObject(sql, param, userRowMapper());
+            User user = template.queryForObject(sql, param, userRowMapper);
             assert user != null;
             return Optional.of(user);
         } catch (EmptyResultDataAccessException e) {
@@ -67,7 +68,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         String sql = "select ID, USERID, PASSWORD, NAME, EMAIL from USERS";
-        return template.query(sql, userRowMapper());
+        return template.query(sql, userRowMapper);
     }
 
     @Override
@@ -83,10 +84,5 @@ public class JdbcTemplateUserRepository implements UserRepository {
                 .addValue("id", id);
 
         template.update(sql, param);
-    }
-
-    // TODO: 이대로 메서드로 두는 것이 좋은지, 필드로 빼는 것이 좋은지 판단 후 재구현
-    private RowMapper<User> userRowMapper() {
-        return BeanPropertyRowMapper.newInstance(User.class);
     }
 }
