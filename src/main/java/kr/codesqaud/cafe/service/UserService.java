@@ -40,12 +40,12 @@ public class UserService {
 
     public UserProfileForm findProfile(Long id) {
         User user = findUser(id);
-        return new UserProfileForm(user);
+        return UserProfileForm.form(user);
     }
 
     public UserUpdateForm findUpdate(Long id) {
         User user = findUser(id);
-        return new UserUpdateForm(user);
+        return UserUpdateForm.form(user);
     }
 
     private User findUser(Long id) {

@@ -14,29 +14,21 @@ public class ArticleTimeForm {
     public ArticleTimeForm() {
     }
 
-    public ArticleTimeForm(Article article) {
-        this.id = article.getId();
-        this.writer = article.getWriter();
-        this.title = article.getTitle();
-        this.contents = article.getContents();
-        this.currentTime = article.getCurrentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    // 정적 팩토리 메서드
+    // form에서만 쓰이니까 private으로 보이지 않게 (바깥에서 주입할 일이 없으니까)
+    private ArticleTimeForm(Long id, String writer, String title, String contents, String currentTime) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.currentTime = currentTime;
     }
 
-    // TODO: 아래 방법이 나은지, 위 방법이 나은지
-    // 위처럼 넣어주면 DTO에 필드값이 들어가는 거고
-    // 아래처럼 넣어주면 새로운 객체를 전달하는 것이니 DTO 사용 목적에 더 맞다고 보는데
-    // Kyu는 어떻게 생각하시나요?
-//    public ArticleTimeForm(Long id, String writer, String title, String contents, String currentTime) {
-//        this.id = id;
-//        this.writer = writer;
-//        this.title = title;
-//        this.contents = contents;
-//        this.currentTime = currentTime;
-//    }
-
-//    public ArticleTimeForm form(Article article) {
-//        return new ArticleTimeForm(article.getId(), article.getWriter(), article.getTitle(), article.getContents(), article.getCurrentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-//    }
+    // static을 안 붙이면 객체를 또 만들어야 하니까, 인스턴스면 또 객체를 안들어서 return new가 필요 없네
+    public static ArticleTimeForm from(Article article) {
+        return new ArticleTimeForm(article.getId(), article.getWriter(),
+        article.getTitle(), article.getContents(), article.getCurrentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+    }
 
     public String getCurrentTime() {
         return currentTime;

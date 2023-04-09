@@ -30,7 +30,7 @@ public class ArticleService {
         List<Article> articles = articleRepository.findAll();
         List<ArticleTimeForm> articleTimeForms = new ArrayList<>();
         for (Article article : articles) {
-            articleTimeForms.add(new ArticleTimeForm(article));
+            articleTimeForms.add(ArticleTimeForm.from(article));
         }
         return articleTimeForms;
     }
@@ -39,6 +39,6 @@ public class ArticleService {
         // Optional을 스트림으로 처리
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("이 아이디를 찾을 수 없어: " + id));
-        return new ArticleTimeForm(article);
+        return ArticleTimeForm.from(article);
     }
 }

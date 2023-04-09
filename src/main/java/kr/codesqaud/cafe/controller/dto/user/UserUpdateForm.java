@@ -17,27 +17,16 @@ public class UserUpdateForm {
     public UserUpdateForm() {
     }
 
-    public UserUpdateForm(User user) {
-        this.id = user.getId();
-        this.name = user.getName();
-        this.password = user.getPassword();
-        this.email = user.getEmail();
+    private UserUpdateForm(Long id, String name, String password, String email) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.email = email;
     }
 
-    // TODO: 아래 방법이 나은지, 위 방법이 나은지
-    // 위처럼 넣어주면 DTO에 필드값이 들어가는 거고
-    // 아래처럼 넣어주면 새로운 객체를 전달하는 것이니 DTO 사용 목적에 더 맞다고 보는데
-    // Kyu는 어떻게 생각하시나요?
-//    public UserUpdateForm(Long id, String name, String password, String email) {
-//        this.id = id;
-//        this.name = name;
-//        this.password = password;
-//        this.email = email;
-//    }
-
-//    public UserUpdateForm form(User user) {
-//        return new UserUpdateForm(user.getId(), user.getName(), user.getPassword(), user.getEmail());
-//    }
+    public static UserUpdateForm form(User user) {
+        return new UserUpdateForm(user.getId(), user.getName(), user.getPassword(), user.getEmail());
+    }
 
     public void setName(String name) {
         this.name = name;
