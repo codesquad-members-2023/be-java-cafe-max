@@ -23,10 +23,8 @@ public class UserController {
     }
     @GetMapping("/users")
     public String getUserList(Model model) {
-
         List<User> users = userService.getUserList;
         model.addAttribute("users", users);
-
         return "list";
     }
 }
