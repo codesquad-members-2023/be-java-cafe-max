@@ -14,7 +14,8 @@ public class UserRepository {
     private Map<String, User> dataBase  = new HashMap<>();
 
     public void save(User user){
-        dataBase.put(user.getUserId(), user);
+        User newUser = user;
+        dataBase.put(user.getUserId(), newUser);
     }
 
     public List<User> getUserList() {
