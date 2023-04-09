@@ -19,14 +19,14 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void save(Article article) {
+    public void save(final Article article) {
         final String SQL = "INSERT INTO articles (title, writer, contents, createdAt) VALUES (:title, :writer, :contents, :createdAt)";
         jdbcTemplate.update(SQL, new BeanPropertySqlParameterSource(article));
     }
 
     @Override
-    public Article findById(Long id) {
-        final String SQL = "SELECT * FROM articles WHERE id = :id";
+    public Article findById(final Long id) {
+        final String SQL = "SELECT id, title, writer, contents, createdAt FROM articles WHERE id = :id LIMIT 1";
         return jdbcTemplate.queryForObject(SQL,
                 Map.of("id", id),
                 BeanPropertyRowMapper.newInstance(Article.class));
@@ -34,13 +34,13 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        final String SQL = "SELECT * FROM articles";
+        final String SQL = "SELECT id, title, writer, contents, createdAt FROM articles";
         return jdbcTemplate.query(SQL, BeanPropertyRowMapper.newInstance(Article.class));
     }
 
     @Override
-    public boolean isExists(Long id) {
-        final String SQL = "SELECT count(*) FROM articles WHERE id = :id";
+    public boolean isExists(final Long id) {
+        final String SQL = "SELECT id FROM articles WHERE id = :id LIMIT 1";
         final Integer count = jdbcTemplate.queryForObject(SQL,
                 Map.of("id", id),
                 Integer.class);

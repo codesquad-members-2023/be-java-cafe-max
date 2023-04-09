@@ -18,42 +18,42 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public void save(User user) {
-        final String SQL = "INSERT INTO users (userId, password, name, email) VALUES (:userId, :password, :name, :email)";
-        jdbcTemplate.update(SQL, new BeanPropertySqlParameterSource(user));
+    public void save(final User user) {
+        final String sql = "INSERT INTO users (userId, password, name, email) VALUES (:userId, :password, :name, :email)";
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(user));
     }
 
     @Override
-    public User findByUserId(String userId) {
-        final String SQL = "SELECT * FROM users WHERE userId = :userId";
-        return jdbcTemplate.queryForObject(SQL,
+    public User findByUserId(final String userId) {
+        final String sql = "SELECT userId, password, name, email FROM users WHERE userId = :userId LIMIT 1";
+        return jdbcTemplate.queryForObject(sql,
                 Map.of("userId", userId),
                 BeanPropertyRowMapper.newInstance(User.class));
     }
 
     @Override
     public List<User> findAll() {
-        final String SQL = "SELECT * FROM users";
-        return jdbcTemplate.query(SQL, BeanPropertyRowMapper.newInstance(User.class));
+        final String sql = "SELECT userId, password, name, email FROM users";
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(User.class));
     }
 
     @Override
-    public boolean isExists(String userId) {
-        final String SQL = "SELECT count(*) FROM users WHERE userId = :userId";
-        final Integer count = jdbcTemplate.queryForObject(SQL,
+    public boolean isExists(final String userId) {
+        final String sql = "SELECT userId FROM users WHERE userId = :userId LIMIT 1";
+        final Integer count = jdbcTemplate.queryForObject(sql,
                 Map.of("userId", userId),
                 Integer.class);
         return count > 0;
     }
 
     @Override
-    public void update(User user) {
-        final String SQL = "UPDATE users SET name = :name, email = :email, password = :password WHERE userId = :userId";
+    public void update(final User user) {
+        final String sql = "UPDATE users SET name = :name, email = :email, password = :password WHERE userId = :userId";
         Map<String, Object> parameter = Map.of(
                 "name", user.getName(),
                 "email", user.getEmail(),
                 "password", user.getPassword(),
                 "userId", user.getUserId());
-        jdbcTemplate.update(SQL, parameter);
+        jdbcTemplate.update(sql, parameter);
     }
 }
