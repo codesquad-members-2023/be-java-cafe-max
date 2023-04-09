@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RuntimeException.class)
-    public String executeRuntimeErrorHandler(HttpServletRequest request, RuntimeException e) {
+    public String executeRuntimeErrorHandler(HttpServletRequest request) {
         logger.warn("request:url {}", request.getRequestURI());
         return "error/4xx";
     }

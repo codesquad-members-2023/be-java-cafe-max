@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.post;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,7 +26,6 @@ public class PostRepository {
     public static final String QUERY_SELECT_ALL = "SELECT * FROM POST";
     public static final String QUERY_FIND_BY_ID = "SELECT POST_ID , NICKNAME, TITLE, TEXT_CONTENT, CREATE_DATETIME FROM POST WHERE POST_ID = ?";
     public static final String QUERY_FIND_BY_TITLE = "SELECT POST_ID , NICKNAME, TITLE, TEXT_CONTENT, CREATE_DATETIME FROM POST WHERE TITLE = ?";
-    private static final Logger logger = LoggerFactory.getLogger(PostRepository.class);
     private final JdbcTemplate jdbcTemplate;
     private final DataSource dataSource;
 
