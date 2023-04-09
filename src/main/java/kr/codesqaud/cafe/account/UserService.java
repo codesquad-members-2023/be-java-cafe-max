@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.account;
 
 import kr.codesqaud.cafe.account.dto.JoinForm;
+import kr.codesqaud.cafe.account.dto.LoginForm;
 import kr.codesqaud.cafe.account.dto.ProfileEditForm;
 import kr.codesqaud.cafe.account.dto.UserForm;
 import org.slf4j.Logger;
@@ -53,8 +54,7 @@ public class UserService {
         userRepository.update(profileEditForm.setUser(findById(userId)));
     }
 
-    public boolean isSamePassword(Long userId, String targetPassword) {
-        User user = userRepository.findById(userId);
+    public boolean isSamePassword(User user, String targetPassword) {
         return user.isSamePassword(targetPassword);
     }
 
@@ -78,5 +78,21 @@ public class UserService {
         bindingResult.getAllErrors()
                 .forEach(error -> logger.error("[ Name = {} ][ Message = {} ]", error.getObjectName(),
                         error.getDefaultMessage()));
+    }
+
+    public Long login(LoginForm loginForm, BindingResult bindingResult) {
+        Optional<User> userOptional = findByEmail(loginForm.getEmail());
+        if (userOptional.isEmpty()) {
+            loggingError(bindingResult);
+            bindingResult.rejectValue(EMAIL, "error.email.notExist");
+            return Long.MIN_VALUE;
+        }
+        User user = userOptional.get();
+        if (!isSamePassword(user, loginForm.getPassword())) {
+            loggingError(bindingResult);
+            bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
+            return Long.MIN_VALUE;
+        }
+        return user.getId();
     }
 }

@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserController {
 
-    private static final String PASSWORD = "password";
     private static final String USER_ID = "userId";
     private static final String PROFILE_FORM = "profileForm";
     private static final String PROFILE_SETTING_FORM = "profileEditForm";
@@ -53,19 +51,11 @@ public class UserController {
             loggingError(bindingResult);
             return "account/login";
         }
-        Optional<User> userOptional = userService.findByEmail(loginForm.getEmail());
-        if (userOptional.isEmpty()) {
-            loggingError(bindingResult);
-            bindingResult.rejectValue(EMAIL, "error.email.notExist");
+        Long userId = userService.login(loginForm, bindingResult);
+        if (bindingResult.hasErrors()) {
             return "account/login";
         }
-        User user = userOptional.get();
-        if (!user.getPassword().equals(loginForm.getPassword())) {
-            loggingError(bindingResult);
-            bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
-            return "account/login";
-        }
-        return "redirect:/users/" + user.getId() + "/profile";
+        return "redirect:/users/" + userId + "/profile";
     }
 
     @GetMapping("/users/join")
