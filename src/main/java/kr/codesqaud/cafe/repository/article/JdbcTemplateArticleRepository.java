@@ -17,8 +17,6 @@ import java.util.Optional;
 
 @Repository
 public class JdbcTemplateArticleRepository implements ArticleRepository {
-    // 원래는 JdbcTemplate을 사용했지만
-    // NamedParameterJdbcTemplate와 SimpleJdbcInsert을 동시에 사용하도록 변경
     private final NamedParameterJdbcTemplate template;
     private final SimpleJdbcInsert simpleJdbcInsert;
 
