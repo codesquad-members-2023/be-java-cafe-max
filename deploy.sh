@@ -1,3 +1,4 @@
+#!/bin/sh
 REPOSITORY=/home/ec2-user/application
 PROJECT_NAME=cafe
 
