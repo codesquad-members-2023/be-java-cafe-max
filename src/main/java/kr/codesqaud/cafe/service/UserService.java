@@ -20,11 +20,12 @@ public class UserService {
     }
 
     public void signUp(final UserJoinDTO userJoinDTO) {
-        //1. UserJoinDTO -> User 변환
         User user = User.toUser(userJoinDTO);
-
-        //2. repository signUp 메서드 호출
         userRepository.join(user);
+    }
+
+    public boolean checkDuplicate(String userId) {
+        return userRepository.findByUserId(userId).isPresent();
     }
 
     public void modify(final long id, final UserReadDTO userReadDTO) {
