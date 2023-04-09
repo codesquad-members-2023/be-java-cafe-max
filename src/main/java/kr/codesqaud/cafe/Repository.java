@@ -12,10 +12,10 @@ public class UserRepository {
     private List<User> users = new ArrayList<>();
 
     public void save(User user){
-     users.add(User);
+     users.add(user);
     }
 
-    public void findAll() {
+    public List<User> getUserList() {
         return users;
     }
 }
