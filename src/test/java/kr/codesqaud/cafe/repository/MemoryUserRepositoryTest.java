@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class MemoryUserRepositoryTest {
 
-    MemoryUserRepository memoryUserRepository = new MemoryUserRepository();
+    MemoryUserRepository memoryUserRepository;
 
     @BeforeEach
     void afterEach() {

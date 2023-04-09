@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class MemoryArticleRepositoryTest {
 
-    MemoryArticleRepository memoryArticleRepository = new MemoryArticleRepository();
+    MemoryArticleRepository memoryArticleRepository;
 
     @BeforeEach
     void afterEach() {
