@@ -14,8 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
-import kr.codesqaud.cafe.dto.ProfileEditRequestDto;
-import kr.codesqaud.cafe.dto.SignUpRequestDto;
+import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
+import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
 import kr.codesqaud.cafe.service.MemberService;
 
 @Controller
@@ -30,7 +30,7 @@ public class MemberController {
     @GetMapping
     public String findAll(Model model) {
         model.addAttribute("memberResponsesDto", memberService.findAll());
-        return "/members";
+        return "/all";
     }
 
     @PostMapping("/signUp")
@@ -42,26 +42,26 @@ public class MemberController {
         return "redirect:/member";
     }
 
-    @GetMapping("/{id}")
-    public String profile(@PathVariable String id, Model model) {
-        model.addAttribute("memberResponsesDto", memberService.findById(id));
+    @GetMapping("/{memberId}")
+    public String profile(@PathVariable Long memberId, Model model) {
+        model.addAttribute("memberResponsesDto", memberService.findById(memberId));
         return "/profile";
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{memberId}")
     public String editProfile(@ModelAttribute @Valid ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "member/profiledEdit";
         }
 
         memberService.update(profileEditRequestDto);
-        redirectAttributes.addAttribute("id", profileEditRequestDto.getId());
-        return "redirect:/member/{id}";
+        redirectAttributes.addAttribute("memberId", profileEditRequestDto.getMemberId());
+        return "redirect:/member/{memberId}";
     }
 
-    @GetMapping("/{id}/edit")
-    public String profileEditForm(@PathVariable String id, Model model) {
-        model.addAttribute("profileEditRequest", ProfileEditRequestDto.of(memberService.findById(id)));
+    @GetMapping("/{memberId}/edit")
+    public String profileEditForm(@PathVariable Long memberId, Model model) {
+        model.addAttribute("profileEditRequest", ProfileEditRequestDto.of(memberService.findById(memberId)));
         return "/profileEdit";
     }
 
@@ -70,8 +70,8 @@ public class MemberController {
         return "/signUp";
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteId(@PathVariable String id) {
-        memberService.deleteById(id);
+    @DeleteMapping("/{memberId}")
+    public void deleteId(@PathVariable Long memberId) {
+        memberService.deleteById(memberId);
     }
 }

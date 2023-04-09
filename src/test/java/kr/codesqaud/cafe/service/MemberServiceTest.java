@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.MemberResponseDto;
-import kr.codesqaud.cafe.dto.ProfileEditRequestDto;
-import kr.codesqaud.cafe.dto.SignUpRequestDto;
-import kr.codesqaud.cafe.repository.MemberRepository;
+import kr.codesqaud.cafe.dto.member.MemberResponseDto;
+import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
+import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,11 +38,11 @@ class MemberServiceTest {
     void signUp() {
         SignUpRequestDto signUpRequestDto = basicMemberData();
 
-        String savedMemberId = memberService.signUp(signUpRequestDto);
+        Long savedMemberId = memberService.signUp(signUpRequestDto);
 
         //then
         Member targetMember = memberRepository.findById(savedMemberId).orElseThrow();
-        assertAll(() -> assertEquals(savedMemberId, targetMember.getId()),
+        assertAll(() -> assertEquals(savedMemberId, targetMember.getMemberId()),
                 () -> assertEquals(signUpRequestDto.getEmail(), targetMember.getEmail()),
                 () -> assertEquals(signUpRequestDto.getPassword(), targetMember.getPassword()),
                 () -> assertEquals(signUpRequestDto.getNickName(), targetMember.getNickName()));
@@ -73,14 +73,14 @@ class MemberServiceTest {
     @DisplayName("회원 단건 조회")
     void findById() {
         SignUpRequestDto requestDtoMember1 = basicMemberData();
-        String member1Id = memberService.signUp(requestDtoMember1);
+        Long member1Id = memberService.signUp(requestDtoMember1);
 
         //when
         MemberResponseDto memberResponseDto = memberService.findById(member1Id);
 
         //then
         assertAll(
-                () -> assertEquals(member1Id, memberResponseDto.getId()),
+                () -> assertEquals(member1Id, memberResponseDto.getMemberId()),
                 () -> assertEquals(requestDtoMember1.getEmail(), memberResponseDto.getEmail()),
                 () -> assertEquals(requestDtoMember1.getNickName(), memberResponseDto.getNickName()));
 
@@ -89,7 +89,7 @@ class MemberServiceTest {
     @Test
     void update() {
         //given
-        String saveId = memberService.signUp(basicMemberData());
+        Long saveId = memberService.signUp(basicMemberData());
         ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(saveId, dummyMemberData().getEmail(), dummyMemberData().getPassword(), dummyMemberData().getNickName());
 
         //when
@@ -98,7 +98,7 @@ class MemberServiceTest {
         //then
         Member targetMember = memberRepository.findById(saveId).orElseThrow();
         assertAll(
-                () -> assertEquals(saveId, targetMember.getId()),
+                () -> assertEquals(saveId, targetMember.getMemberId()),
                 () -> assertEquals(dummyMemberData().getEmail(), targetMember.getEmail()),
                 () -> assertEquals(dummyMemberData().getNickName(), targetMember.getNickName()));
     }
@@ -107,7 +107,7 @@ class MemberServiceTest {
     void deleteById() {
         //given
         SignUpRequestDto signUpRequestDto = basicMemberData();
-        String userId = memberService.signUp(signUpRequestDto);
+        Long userId = memberService.signUp(signUpRequestDto);
 
         //when
         memberService.deleteById(userId);
@@ -118,14 +118,14 @@ class MemberServiceTest {
     }
 
     private SignUpRequestDto basicMemberData() {
-        String email = "test@test.com";
+        String email = "test@gmail.com";
         String password = "testtest";
         String nickName = "chacha";
         return new SignUpRequestDto(email, password, nickName);
     }
 
     private SignUpRequestDto dummyMemberData() {
-        String email = "dummy@dummy.com";
+        String email = "dummy@gmail.com";
         String password = "dummydummy";
         String nickName = "피오니";
         return new SignUpRequestDto(email, password, nickName);

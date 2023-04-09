@@ -1,9 +1,8 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.dto.member;
 
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -24,13 +23,13 @@ public class SignUpRequestDto {
     @Length(min = 2, max = 10)
     private final String nickName;
 
-    private final LocalDateTime createTime;
+    private final LocalDateTime createDate;
 
     public SignUpRequestDto(String email, String password, String nickName) {
         this.email = email;
         this.password = password;
         this.nickName = nickName;
-        this.createTime = LocalDateTime.now();
+        this.createDate = LocalDateTime.now();
     }
 
     public String getEmail() {
@@ -46,6 +45,6 @@ public class SignUpRequestDto {
     }
 
     public Member toEntity() {
-        return new Member(UUID.randomUUID().toString(), email, password, nickName, createTime);
+        return new Member(email, password, nickName, createDate);
     }
 }

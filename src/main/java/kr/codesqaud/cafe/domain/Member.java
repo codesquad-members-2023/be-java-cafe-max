@@ -3,22 +3,30 @@ package kr.codesqaud.cafe.domain;
 import java.time.LocalDateTime;
 
 public class Member {
-    private final String id;
+    private Long memberId;
     private String email;
     private final String password;
     private String nickName;
-    private final LocalDateTime createTime;
+    private final LocalDateTime createDate;
 
-    public Member(String id, String email, String password, String nickName, LocalDateTime createTime) {
-        this.id = id;
+    public Member(String email, String password, String nickName, LocalDateTime createDate) {
+
         this.email = email;
         this.password = password;
         this.nickName = nickName;
-        this.createTime = createTime;
+        this.createDate = createDate;
     }
 
-    public String getId() {
-        return id;
+    public Member(Long memberId, String email, String password, String nickName, LocalDateTime createDate) {
+        this.memberId = memberId;
+        this.email = email;
+        this.password = password;
+        this.nickName = nickName;
+        this.createDate = createDate;
+    }
+
+    public Long getMemberId() {
+        return memberId;
     }
 
     public String getEmail() {
@@ -33,8 +41,8 @@ public class Member {
         return nickName;
     }
 
-    public LocalDateTime getCreateTime() {
-        return createTime;
+    public LocalDateTime getCreateDate() {
+        return createDate;
     }
 
     public void setEmail(String email) {

@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.member;
 
 import org.springframework.stereotype.Repository;
 
@@ -10,22 +10,22 @@ import java.util.concurrent.ConcurrentHashMap;
 import kr.codesqaud.cafe.domain.Member;
 
 @Repository
-public class MemoryMemberRepository implements MemberRepository {
-    private final Map<String, Member> store;
+public class StoreMemberRepository implements MemberRepository {
+    private final Map<Long, Member> store;
 
-    public MemoryMemberRepository() {
+    public StoreMemberRepository() {
         this.store = new ConcurrentHashMap<>();
     }
 
     @Override
-    public String save(Member member) {
-        store.put(member.getId(), member);
-        return member.getId();
+    public Long save(Member member) {
+        store.put(member.getMemberId(), member);
+        return member.getMemberId();
     }
 
     @Override
-    public Optional<Member> findById(String id) {
-        return Optional.ofNullable(store.get(id));
+    public Optional<Member> findById(Long memberId) {
+        return Optional.ofNullable(store.get(memberId));
     }
 
     @Override
@@ -35,13 +35,13 @@ public class MemoryMemberRepository implements MemberRepository {
 
     @Override
     public void update(Member member) {
-        store.put(member.getId(), member);
+        store.put(member.getMemberId(), member);
     }
 
 
     @Override
-    public void deleteById(String id) {
-        store.remove(id);
+    public void deleteById(Long memberId) {
+        store.remove(memberId);
     }
 
     @Override

@@ -1,26 +1,26 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.dto.member;
 
 import java.time.LocalDateTime;
 
 import kr.codesqaud.cafe.domain.Member;
 
 public class MemberResponseDto {
-    private final String id;
+    private final Long memberId;
     private final String email;
     private final String password;
     private final String nickName;
-    private final LocalDateTime createTime;
+    private final LocalDateTime createDate;
 
-    public MemberResponseDto(String id, String email, String password, String nickName, LocalDateTime createTime) {
-        this.id = id;
+    public MemberResponseDto(Long memberId, String email, String password, String nickName, LocalDateTime createDate) {
+        this.memberId = memberId;
         this.email = email;
         this.password = password;
         this.nickName = nickName;
-        this.createTime = createTime;
+        this.createDate = createDate;
     }
 
-    public String getId() {
-        return id;
+    public Long getMemberId() {
+        return memberId;
     }
 
     public String getEmail() {
@@ -35,12 +35,12 @@ public class MemberResponseDto {
         return nickName;
     }
 
-    public LocalDateTime getCreateTime() {
-        return createTime;
+    public LocalDateTime getCreateDate() {
+        return createDate;
     }
 
 
     public static MemberResponseDto of(Member member) {
-        return new MemberResponseDto(member.getId(), member.getEmail(), member.getPassword(), member.getNickName(), member.getCreateTime());
+        return new MemberResponseDto(member.getMemberId(), member.getEmail(), member.getPassword(), member.getNickName(), member.getCreateDate());
     }
 }

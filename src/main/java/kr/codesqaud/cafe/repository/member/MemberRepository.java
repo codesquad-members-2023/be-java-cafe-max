@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.member;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,15 +6,15 @@ import java.util.Optional;
 import kr.codesqaud.cafe.domain.Member;
 
 public interface MemberRepository {
-    String save(Member member);
+    Long save(Member member);
 
-    Optional<Member> findById(String id);
+    Optional<Member> findById(Long memberId);
 
     List<Member> findAll();
 
     void update(Member member);
 
-    void deleteById(String id);
+    void deleteById(Long memberId);
 
     void deleteAll();
 }
