@@ -1,4 +1,7 @@
-package codesquad.cafe.domain;
+package codesquad.cafe.domain.user.domain;
+
+import codesquad.cafe.domain.user.dto.UserRequestDto;
+import codesquad.cafe.domain.user.dto.UserUpdateRequestDto;
 
 import java.time.LocalDate;
 
@@ -8,14 +11,12 @@ public class User {
     private String password;
     private String name;
     private String email;
-    private LocalDate date;
 
-    public User(String id, String password, String name, String email, LocalDate date) {
+    public User(String id, String password, String name, String email) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
-        this.date = date;
     }
 
     public String getId() {
@@ -34,7 +35,10 @@ public class User {
         return password;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public User update(final UserUpdateRequestDto userUpdateRequestDto) {
+        this.name = userUpdateRequestDto.getName();
+        this.password = userUpdateRequestDto.getUpdatedPassword();
+        this.email = userUpdateRequestDto.getEmail();
+        return this;
     }
 }

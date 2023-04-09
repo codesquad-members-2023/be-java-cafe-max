@@ -1,7 +1,6 @@
-package codesquad.cafe.repository;
+package codesquad.cafe.domain.user.repository;
 
-import codesquad.cafe.domain.User;
-import org.springframework.stereotype.Repository;
+import codesquad.cafe.domain.user.domain.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,4 +14,6 @@ public interface UserRepository {
     Optional<User> findById(String id);
 
     List<User> findAll();
+
+    void update(User user);
 }

@@ -1,131 +1,115 @@
 # be-java-cafe
 마스터즈 2023 스프링 카페 
 
-## 이번 주 목표
-- 하루 1시간 산책하기
-- 미션 구현에 급급해하지 말고 하나씩 공부하며 적용하기
-- TIL 작성하기
-- 백준 4문제 풀기
-- Object 9장 읽고 정리
-- 스프링 MVC1 강의 듣기
-- Java 8 문법 적용해보기
+## 기능 목록
+- [x] 루트 경로일 때 홈 화면을 출력한다.
+- [x] 아이디, 비밀번호, 이름, 이메일을 입력받아 회원가입을 한다.
+  - 같은 id를 가진 회원이 있다면 중복 회원 예외를 발생시킨다. 
+  - 회원가입이 완료되면 회원 목록 조회로 이동한다.
+- [x] 회원 목록 조회 화면에서 이름을 클릭하면 해당 유저의 프로필 화면을 출력한다.
+- [x] 홈 화면에서 질문하기 버튼을 누르면 질문하기 폼으로 이동한다.
+- [x] 글쓴이, 제목, 내용을 입력받아 질문글을 생성한다.
+  - 질문글을 생성하면 홈 화면(질문 목록 조회)으로 이동한다.
+  - 홈 화면에서 게시글 목록을 조회한다.
+  - 모든 사용자는 게시글을 작성할 수 있다.
+- [x] 홈 화면에 게시글 목록을 출력한다.
+- [x] 게시글 목록의 제목을 클릭했을 때 게시글 상세 화면으로 이동한다.
+  - url에 article index를 넣어서 접근한다.
+- [x] 회원 목록에서 수정 버튼을 누르면 회원 정보 수정 화면으로 이동한다.
+  - 사용자의 id 값을 url에 넣어서 이동한다.
+- [x] 비밀번호, 이름, 이메일을 수정할 수 있다.
+  - 사용자 아이디는 수정할 수 없다.
+  - 비밀번호가 일치하는 경우에만 수정 가능하다.
+  - 수정 완료하면 사용자 목록 조회 화면(/users)로 redirect 한다.
 
-## 2023.03.27(월)
-- [x] 1단계 - 회원 가입 기능 구현
-  - UserRepository는 추후 db가 변동될 수 있기 때문에 interface로 구현
-  - UserRepository는 일단 HashMap으로 구현
-  - UserService에서 이미 존재하는 유저 아이디라면 중복 예외 처리
-- [x] 1단계 - 회원 목록 조회 기능 구현
-- [x] 1시간 산책
+## URL
+|__HTTP Method__|__URL__| __기능__            |
+|---------------|-------|-------------------|
+|GET|/| 홈 화면 출력(질문 목록 조회) |
+|GET|/users/join| 회원 가입 화면 출력       |
+|POST|/users| 회원 가입             |
+|GET|/users| 회원 목록 조회 화면 출력    |
+|GET|/users/{userId}| 유저 프로필 화면 조회      |
+|POST|/questions| 질문하기 게시글 작성       |
+|GET|/questions/form| 글쓰기 화면 조회|
+|GET|/articles/{postId}| 게시글 상세 조회|
+|GET|/users/{userId}/form| 회원 정보 수정 화면 출력|
+|PUT|/users/{userId}/update| 회원 정보 수정|
 
-### 학습
-```
-A problem occurred configuring root project 'cafe'.
-> Could not resolve all files for configuration ':classpath'.
-```
-- 스프링부트 3 이상에서는 자바 17이 필요한데 나는 자바 11을 사용해서 일어난 오류
-- 스프링부트 버전을 2.7.10을 선택해서 다시 실행했더니 해결    
-
-__Controller import 안됨__    
-- 클래스명과 컨트롤러 어노테이션 명이 같으면 생기는 오류
-- 클래스명을 바꾸면 정상적으로 @Controller가 import 된다.
-
-__사용자 목록 페이지가 두개?__    
-회원가입 기능에서 사용자 추가 완료 후 사용자 목록 페이지(redirect:/users)로 이동한다라고 되어있고,    
-회원목록 기능에서 회원 목록 페이지는 static/user/list.html을 사용한다고 되어있다.    
-이 페이지들을 나눠야 할 필요성을 못 느껴서 users.html 이라는 페이지 하나만 만들었다.    
-
-__Thymeleaf에서 어떤 요소 onclick 시 이동할 url에 pathvariable 추가하고 싶음__    
-찾는중..
-
-### 더 공부할 것
-1. ResponseBody, RequestParam, RestController
-2. 템플릿 엔진, 머스테치, 타임리프
-3. GET, POST
-
-## 2023.03.28(화)
-- [x] 회원 프로필 정보 보기 기능 구현
-  - 회원이 아닌 사람을 프로필 조회하려고 하면 에러
-- [x] 백트래킹 알고리즘 학습
-- [x] BoJ 15649 구현
-- [x] @ResponseBody, @RestController, @RequestParam, @PathVariable, @ModelAttribute 학습
-- [x] GET과 POST의 차이 학습
-- [x] 알바
-
-### 학습
-__타임리프를 사용해서 HTML 중복 코드 제거__    
-애먹는중..    
-    
-__Thymeleaf에서 어떤 요소 onclick 시 이동할 url에 pathvariable 추가하고 싶음__    
-```html
-<td><a href="profile.html" th:href="@{/users/{userId}(userId=${user.id})}" th:text="${user.name}"></a></td>
-```
-a 태그 안에 이동할 url과 pathvariable, 보여줄 데이터를 명시하여 해결함    
-    
-__백트래킹__    
-알고리즘 기법 중 하나로, 재귀적으로 문제를 풀어나가는데 현재 노드가 제한 조건에 위배되면 __해당 노드를 제외(가지치기, pruning)__ 하고 다음 단계로 나아가는 방식    
-이 방법을 통해 모든 경우의 수를 체크하지 않고 필요한 것만 체크하여 전체 풀이시간을 단축할 수 있게 된다.    
-백트래킹을 사용하는 알고리즘 중 대표적으로 __DFS__가 있다. DFS를 실행하면서 더 이상 탐색을 진행할 수 없는 상황이면 다시 되돌아가서 탐색을 진행한다.         
-__시간복잡도가 보통 O(2^n)__ 이며, 대부분 DP나 그리디 알고리즘 등으로 더 빠르게 해결할 수 있다.
-
-__기본 틀__    
-```java
-void backtracing(int cnt, int idx) {
-    if(cnt == m) {
-        return;
-    }
-    for(int i=idx; i<=n; i++) {
-        if(!visited[i]) {
-            visited[i] = true; // 상태변화
-            backtracking(cnt+1, i);
-            visited[i] = false; // 원상복구
-        }
-    }
-}
-```
-위의 코드를 문제에 맞게 적절히 변경해서 사용하면 된다.    
-    
-__@ResponseBody__    
-서버에서 클라이언트로 응답 데이터를 전송하기 위해 @ResponseBody 어노테이션을 사용하여 자바 객체를 HTTP 응답 
-본문의 객체로 변환하여 Json 형태로 클라이언트에 전송한다.    
-viewResolver를 무시하고 화면에 출력하겠다.    
-
-__@RestController__    
-리턴값에 자동으로 @ResponseBody가 붙게되어 별도 어노테이션을 명시해주지 않아도 HTTP 
-응답 데이터(body)에 자바 객체가 매핑되어 전달된다.    
-    
-__@RequestParam__    
-GET 방식으로 url이 전달될 때 담긴 쿼리 스트링(파라미터)를 받아올 수 있다.    
-RequestParam에 key값이 존재하지 않을 경우 400대 에러(Bad Request)가 발생한다.    
-이를 방지하기 위해서는 default로 "require=false"를 꼭 명시해 줘야 한다.    
-생략 가능한 어노테이션이다. 보통 String이나 int같은 단순 타입을 사용할 때에 생략되었다고 생각하면 된다.    
-    
-__@PathVariable__    
-url path로부터 값을 얻는다.    
-
-__@ModelAttribute__    
-Http Body 내용과 HTTP 파라미터의 값들을 getter, setter, 생성자를 통해 주입하기 위해 사용한다.    
-일반 변수의 경우 전달이 불가능하기 때문에 model 객체를 통해서 전달해야 한다.    
-보통 @RequestParam을 사용해서 값을 받고, set을 사용해서 값을 넣어주는 방식을 사용하는데, 이 과정을 자동화시켜준다.    
-@ModelAttribute 어노테이션은 생략 가능하다.    
-
-__GET과 POST의 차이__    
-GET은 클라이언트에서 서버로 어떠한 리소스로부터 정보를 요청하기 위해 사용되는 메서드이다.    
-URL 주소 끝에 파라미터(쿼리 스트링)로 값이 전송된다.    
-GET 요청은 파라미터에 다 노출되어버리기 때문에 중요한 정보를 다루면 안된다.    
-POST는 클라이언트에서 서버로 리소스를 생성하거나 업데이트하기 위해 데이터를 보낼 때 사용되는 메서드이다.    
-전송할 데이터를 HTTP 메세지 BODY 부분에 담아서 서버로 보낸다.    
-POST 방식도 데이터를 암호화하지 않으면 body의 데이터를 볼 수 있기 때문에 그렇게 보안이 좋은 방법은 아니다.    
-
-## 2023.03.29(수)
-- [x] 타임리프로 html 중복 코드 제거
-  - index와 users 디렉토리 안의 파일들은 경로가 다르기 때문에 navigation 에서 공통되는 부분을 따로 빼서 navigation.html로 만들어 모든 파일에 적용함
-  - 경로가 다른 부분은 user_navigation.html 로 만들어 users의 파일들에만 적용하고, index에는 적용을 하지 않음
-  - head는 공통된 부분이기 때문에 모든 파일에 적용함
-- [ ] mvc1 section 2까지 듣기
-- [ ] 알바
+## 배포 url
+[codesquad_cafe](http://52.79.232.139:8080/)
+- step1만 배포된 상태
 
 
-### 팀원 피드백
-1. HashMap 보다 ConcurrentHashMap 이 멀티쓰레드 환경에서 더 좋다.
-2. static 파일은 사용자가 직접 접근이 가능하기 때문에 웬만하면 파일을 올리지 않는 것이 좋다.
+## 동작 화면
+<details>
+<summary>회원 가입 화면</summary>
+<div>
+
+![join](https://user-images.githubusercontent.com/57451700/228421158-31b1cb57-4d2a-4f82-a076-1f45b592725b.png)
+
+</div>
+</details>
+
+<details>
+<summary>회원 목록 화면</summary>
+<div>
+
+![list](https://user-images.githubusercontent.com/57451700/228422180-0ce2e663-7884-4416-af84-e9b22a9e9577.png)
+
+</div>
+</details>
+
+<details>
+<summary>회원 프로필 화면</summary>
+<div>
+
+![profile](https://user-images.githubusercontent.com/57451700/228422257-efad632c-1b2e-4466-ad0c-86f25ca3e782.png)
+</div>
+</details>
+
+<details>
+<summary>글 쓰기 화면</summary>
+<div>
+
+![qnahome](https://user-images.githubusercontent.com/57451700/230138787-e5bc6df5-c552-46b6-a10b-d2f4d87b97c9.png)
+
+</div>
+</details>
+
+<details>
+<summary>글 목록 조회 화면</summary>
+<div>
+
+![home](https://user-images.githubusercontent.com/57451700/230138874-eaf86b43-34a4-40c7-be5d-4568c614798b.png)
+
+</div>
+</details>
+
+<details>
+<summary>게시글 상세보기 화면</summary>
+<div>
+
+![detail](https://user-images.githubusercontent.com/57451700/230138947-09aa8971-a73e-46f7-82a7-cd04f158d86e.png)
+
+</div>
+</details>
+
+<details>
+<summary>회원 정보 수정 화면</summary>
+<div>
+
+![form](https://user-images.githubusercontent.com/57451700/230179012-c77d8570-97f8-425e-9866-04c998422589.png)
+
+</div>
+</details>
+
+<details>
+<summary>회원 정보 수정 완료 화면</summary>
+<div>
+
+![update](https://user-images.githubusercontent.com/57451700/230179038-0ce9898b-ade4-4f0b-a8cb-5eaab10fc48a.png)
+
+</div>
+</details>
+
