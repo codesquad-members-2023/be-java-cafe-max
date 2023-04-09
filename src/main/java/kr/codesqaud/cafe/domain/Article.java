@@ -18,6 +18,7 @@ public class Article {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.currentTime = LocalDateTime.now();
     }
 
     public LocalDateTime getCurrentTime() {
