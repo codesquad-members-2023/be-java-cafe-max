@@ -17,7 +17,11 @@ public class ArticleService {
     }
 
     public void writeArticle(ArticleFormDto dto){
-        Article article = new Article(dto.getWriter(), dto.getTitle(), dto.getContents());
+        Article article = new Article.Builder()
+                .title( dto.getTitle())
+                .writer( dto.getWriter())
+                .contents(dto.getContents())
+                .build();
         articleRepository.save(article);
     }
 

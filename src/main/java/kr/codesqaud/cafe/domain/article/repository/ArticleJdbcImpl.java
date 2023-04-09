@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.domain.article.repository;
 
 import kr.codesqaud.cafe.domain.article.Article;
-import kr.codesqaud.cafe.domain.user.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -23,9 +22,13 @@ public class ArticleJdbcImpl implements ArticleRepository {
     }
     private RowMapper<Article> rowMapper () {
         return (rs, rowNum) ->
-                new Article(rs.getInt("IDX"),rs.getString("WRITER"),
-                        rs.getString("TITLE"),rs.getString("CONTENTS"),
-                        rs.getString("DATE"));
+                new Article.Builder()
+                        .index(rs.getInt("IDX"))
+                        .writer(rs.getString("WRITER"))
+                        .title(rs.getString("TITLE"))
+                        .contents(rs.getString("CONTENTS"))
+                        .date( rs.getString("DATE"))
+                        .build();
     }
     @Override
     public List<Article> findAll() {
