@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.codesqaud.cafe.controller.dto.UserDto;
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
@@ -14,6 +15,7 @@ import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 
+@Transactional(readOnly = true)
 @Service
 public class UserService {
 
@@ -23,6 +25,7 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
+	@Transactional
 	public void join(final JoinRequest request) {
 		User user = User.from(request);
 		userRepository.save(user)
@@ -42,12 +45,14 @@ public class UserService {
 			.orElseThrow(() -> new NotFoundException(userId.concat("는 존재하지 않는 아이디입니다.")));
 	}
 
+	@Transactional
 	public void editUserProfile(final String userId, final ProfileEditRequest request) {
 		User savedUser = userRepository.findByUserId(userId)
 			.orElseThrow(() -> new NotFoundException(userId.concat("를 가진 회원을 찾을 수 없습니다.")));
 
 		validatePassword(savedUser, request.getOriginalPassword());
 		savedUser.editProfile(request.getNewPassword(), request.getName(), request.getEmail());
+		userRepository.update(savedUser);
 	}
 
 	private void validatePassword(final User user, final String password) {

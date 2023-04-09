@@ -7,12 +7,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Repository;
-
 import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.repository.UserRepository;
 
-@Repository
 public class UserMemoryRepository implements UserRepository {
 
 	private final Map<String, User> userRepository = new HashMap<>();
@@ -36,5 +33,10 @@ public class UserMemoryRepository implements UserRepository {
 	@Override
 	public Optional<User> findByUserId(final String userId) {
 		return Optional.ofNullable(userRepository.get(userId));
+	}
+
+	@Override
+	public void update(User user) {
+		userRepository.put(user.getUserId(), user);
 	}
 }

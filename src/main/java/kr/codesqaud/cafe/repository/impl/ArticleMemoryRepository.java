@@ -7,12 +7,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Repository;
-
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 
-@Repository
 public class ArticleMemoryRepository implements ArticleRepository {
 
 	private static Long sequence = 1L;
