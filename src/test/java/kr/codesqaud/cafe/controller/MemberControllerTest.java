@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -17,21 +16,20 @@ import java.util.List;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
-import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
-import kr.codesqaud.cafe.exception.member.NotMatchMemberPassword;
 import kr.codesqaud.cafe.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-
-@WebMvcTest(MemberController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class MemberControllerTest {
 
     @Autowired
@@ -135,8 +133,8 @@ class MemberControllerTest {
     void signUpFalse4() throws Exception {
         // given
         SignUpRequest signUpRequest = new SignUpRequest("test@gmail.com", "Test1234", "만두");
-        given(memberService.signUp(any()))
-            .willThrow(new DuplicateMemberEmailException("member/signUp", signUpRequest));
+        given(memberService.isDuplicateEmail(signUpRequest.getEmail()))
+            .willReturn(true);
         String email = "test@gmail.com";
         String password = "Test4444";
         String nickName = "만두2";
@@ -154,6 +152,7 @@ class MemberControllerTest {
             .andExpect(view().name("member/signUp"))
             .andExpect(model().attributeHasFieldErrorCode("signUpRequest", "email", "Duplicate"))
             .andDo(print());
+
     }
 
     @DisplayName("회원 목록 조회")
@@ -219,8 +218,8 @@ class MemberControllerTest {
         // given
         ProfileEditRequest profileEditRequest = new ProfileEditRequest(1L, "test@gmail.com",
             "Test1234", "Mandu1234", "mandu");
-        willThrow(new DuplicateMemberEmailException("member/profileEdit", profileEditRequest))
-            .given(memberService).update(any());
+        given(memberService.isDuplicateEmailAndId(profileEditRequest.getEmail(), profileEditRequest.getId()))
+            .willReturn(true);
 
         // when
 
@@ -244,8 +243,8 @@ class MemberControllerTest {
         // given
         ProfileEditRequest profileEditRequest = new ProfileEditRequest(1L, "test@gmail.com",
             "Test1234", "Mandu1234", "mandu");
-        willThrow(new NotMatchMemberPassword("member/profileEdit", profileEditRequest))
-            .given(memberService).update(any());
+        given(memberService.isNotSamePassword(profileEditRequest.getId(), profileEditRequest.getPassword()))
+            .willReturn(true);
 
         // when
 

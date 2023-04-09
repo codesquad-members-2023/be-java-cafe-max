@@ -4,10 +4,14 @@ import javax.validation.Valid;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.service.MemberService;
+import kr.codesqaud.cafe.validator.ProfileEditRequestValidator;
+import kr.codesqaud.cafe.validator.SignUpRequestValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,9 +22,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MemberController {
 
     private final MemberService memberService;
+    private final SignUpRequestValidator signUpRequestValidator;
+    private final ProfileEditRequestValidator profileEditRequestValidator;
 
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService,
+        SignUpRequestValidator signUpRequestValidator,
+        ProfileEditRequestValidator profileEditRequestValidator) {
         this.memberService = memberService;
+        this.signUpRequestValidator = signUpRequestValidator;
+        this.profileEditRequestValidator = profileEditRequestValidator;
+    }
+
+    @InitBinder("signUpRequest")
+    public void initSignUpRequest(WebDataBinder dataBinder) {
+        dataBinder.addValidators(signUpRequestValidator);
+    }
+
+    @InitBinder("profileEditRequest")
+    public void initProfileEditRequest(WebDataBinder dataBinder) {
+        dataBinder.addValidators(profileEditRequestValidator);
     }
 
     @GetMapping
