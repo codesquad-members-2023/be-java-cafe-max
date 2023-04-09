@@ -24,7 +24,8 @@ public class ArticleTimeForm {
         this.currentTime = currentTime;
     }
 
-    // static을 안 붙이면 객체를 또 만들어야 하니까, 인스턴스면 또 객체를 안들어서 return new가 필요 없네
+    // static을 안 붙이면 객체를 또 만들어야 하니까
+    // 인스턴스면 또 객체를 안들어서 return new가 필요 없음
     public static ArticleTimeForm from(Article article) {
         return new ArticleTimeForm(article.getId(), article.getWriter(),
         article.getTitle(), article.getContents(), article.getCurrentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));

@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.article.ArticleForm;
 import kr.codesqaud.cafe.controller.dto.article.ArticleTimeForm;
-import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +22,7 @@ public class ArticleController {
 
     @PostMapping("/questions/post")
     public String addArticle(@Valid ArticleForm form) {
+        // 서비스에서 DTO 사용으로 User에 넣어줄 필요가 없어짐
         articleService.add(form);
         return "redirect:/";
     }

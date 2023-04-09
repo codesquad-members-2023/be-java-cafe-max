@@ -13,7 +13,7 @@ public class UserUpdateForm {
     @NotBlank(message = "이메일을 입력해주세요.")
     private String email;
 
-    // 이 기본 생성자를 삭제한 이후 계속 인식을 못 했었습니다. ㅠㅠ
+    // 이 기본 생성자를 삭제한 이후 계속 db를 인식을 못 했음
     public UserUpdateForm() {
     }
 

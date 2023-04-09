@@ -12,16 +12,12 @@ import java.util.NoSuchElementException;
 
 @Service
 public class ArticleService {
-    // 서비스는 컨트롤러에서 DTO를 받아서 레포지토리에 domain으로 넘겨주는 역할
-    // 위와 같이 이해했습니다.
-
     private final ArticleRepository articleRepository;
 
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
-    // TODO: 매개변수가 DTO를 의존하도록 변경
     public Article add(ArticleForm form) {
         Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
         return articleRepository.save(article);

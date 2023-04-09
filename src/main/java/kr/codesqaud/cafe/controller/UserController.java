@@ -4,7 +4,6 @@ import kr.codesqaud.cafe.controller.dto.user.UserForm;
 import kr.codesqaud.cafe.controller.dto.user.UserListForm;
 import kr.codesqaud.cafe.controller.dto.user.UserProfileForm;
 import kr.codesqaud.cafe.controller.dto.user.UserUpdateForm;
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +26,7 @@ public class UserController {
 
     @PostMapping("/user/create")
     public String create(@Validated UserForm form) {
+        // 서비스에서 DTO 사용으로 User에 넣어줄 필요가 없어짐
         userService.join(form);
         return "redirect:/users/";
     }
