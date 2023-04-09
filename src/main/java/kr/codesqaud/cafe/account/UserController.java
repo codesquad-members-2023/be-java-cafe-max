@@ -19,7 +19,7 @@ public class UserController {
     private static final String PASSWORD = "password";
     private static final String USER_ID = "userId";
     private static final String PROFILE_FORM = "profileForm";
-    private static final String PROFILE_SETTING_FORM = "profileSettingForm";
+    private static final String PROFILE_SETTING_FORM = "profileEditForm";
     private static final String USERS = "users";
     private static final String EMAIL = "email";
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -65,7 +65,7 @@ public class UserController {
             bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
             return "account/login";
         }
-        return "redirect:/users/" + user.getId()+"/profile";
+        return "redirect:/users/" + user.getId() + "/profile";
     }
 
     @GetMapping("/users/join")
@@ -107,7 +107,7 @@ public class UserController {
 
         model.addAttribute(USER_ID, userId);
         model.addAttribute(PROFILE_SETTING_FORM, profileEditForm);
-        return "profileEditForm";
+        return "account/profileEditForm";
     }
 
     @PutMapping("/users/{userId}/profile")
@@ -116,19 +116,12 @@ public class UserController {
     ) {
         if (bindingResult.hasErrors()) {
             loggingError(bindingResult);
-            return "profileEditForm";
+            return "account/profileEditForm";
         }
-        if (userService.isDuplicateEmail(profileEditForm.getEmail())) {
-            bindingResult.rejectValue(EMAIL, "error.email.duplicate");
-            loggingError(bindingResult);
-            return "profileEditForm";
+        userService.update(profileEditForm, userId, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "account/profileEditForm";
         }
-        if (!userService.isSamePassword(userId, profileEditForm.getPassword())) {
-            bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
-            loggingError(bindingResult);
-            return "profileEditForm";
-        }
-        userService.update(profileEditForm, userId);
         return "redirect:/users/{userId}/profile";
     }
 }
