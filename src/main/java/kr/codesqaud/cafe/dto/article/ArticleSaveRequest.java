@@ -3,11 +3,11 @@ package kr.codesqaud.cafe.dto.article;
 import kr.codesqaud.cafe.domain.Article;
 
 public class ArticleSaveRequest {
-    private String title;
-    private String writer;
-    private String contents;
+    private final String title;
+    private final String writer;
+    private final String contents;
 
-    public ArticleSaveRequest(String title, String writer, String contents) {
+    public ArticleSaveRequest(final String title, final String writer, final String contents) {
         this.title = title;
         this.writer = writer;
         this.contents = contents;
