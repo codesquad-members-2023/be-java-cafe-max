@@ -11,7 +11,7 @@ public class ArticleResponse {
     private String contents;
     private final LocalDateTime createdAt;
 
-    public ArticleResponse(Long id, String title, String writer, String contents, LocalDateTime createdAt) {
+    private ArticleResponse(Long id, String title, String writer, String contents, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.writer = writer;
