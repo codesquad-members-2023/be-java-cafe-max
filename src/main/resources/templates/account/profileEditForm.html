@@ -6,7 +6,7 @@
 </nav>
 
 <form class="container" id="postingForm" th:action="@{/users/{id}/update(id = ${userId})}"
-      th:object="${profileSettingForm}"
+      th:object="${profileEditForm}"
       method="post" novalidate>
     <input type="hidden" name="_method" value="PUT"/>
     <div class="row justify-content-center mt-5">
@@ -15,7 +15,7 @@
                 <div class="col-md-4">
                     <div class="row justify-content-center mt-2">
                         <svg width="120" height="120" data-jdenticon-value="user127"
-                             th:data-jdenticon-value="${profileSettingForm.getNickname()}"></svg>
+                             th:data-jdenticon-value="${profileEditForm.getNickname()}"></svg>
                     </div>
                 </div>
                 <div class="col-md-8">
@@ -23,11 +23,11 @@
                         <div class="input-group mb-3">
                             <span class="input-group-text col-5">Nickname</span>
                             <input th:if="${#fields.hasErrors('nickname')}" id="nickname" type="text" class="form-control is-invalid" aria-label="Sizing example input"
-                                   aria-describedby="nickname" th:value="${profileSettingForm.nickname}"
+                                   aria-describedby="nickname" th:value="${profileEditForm.nickname}"
                                    th:field="*{nickname}"
                                    value="nickname">
                             <input th:if="!${#fields.hasErrors('nickname')}" id="nickname" type="text" class="form-control" aria-label="Sizing example input"
-                                   aria-describedby="nickname" th:value="${profileSettingForm.nickname}"
+                                   aria-describedby="nickname" th:value="${profileEditForm.nickname}"
                                    th:field="*{nickname}"
                                    value="nickname">
                             <div class="invalid-feedback" th:errors="*{nickname}">
@@ -37,10 +37,10 @@
                         <div class="input-group mb-3">
                             <span class="input-group-text col-5">Email</span>
                             <input th:if="${#fields.hasErrors('email')}" id="email" type="email" class="form-control is-invalid" aria-label="Sizing example input"
-                                   aria-describedby="email" th:value="${profileSettingForm.email}" th:field="*{email}"
+                                   aria-describedby="email" th:value="${profileEditForm.email}" th:field="*{email}"
                                    value="email">
                             <input th:if="!${#fields.hasErrors('email')}" id="email" type="email" class="form-control" aria-label="Sizing example input"
-                                   aria-describedby="email" th:value="${profileSettingForm.email}" th:field="*{email}"
+                                   aria-describedby="email" th:value="${profileEditForm.email}" th:field="*{email}"
                                    value="email">
                             <div class="invalid-feedback" th:errors="*{email}">
                                 이메일을 정확히 입력해주세요

@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-public class ProfileSettingForm {
+public class ProfileEditForm {
     @NotEmpty
     @Size(max = 64, min = 2, message = "{error.nickname.size}")
     private final String nickname;
@@ -19,19 +19,19 @@ public class ProfileSettingForm {
     @Pattern(regexp = "^(.*[a-z]+.*[1-9]+가.*)|(.*[1-9]+.*[a-z]+.*)$", message = "{error.password.pattern}")
     private final String password;
 
-    public ProfileSettingForm(String nickname, String email, String password) {
+    public ProfileEditForm(String nickname, String email, String password) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
     }
 
-    private ProfileSettingForm(Builder builder) {
+    private ProfileEditForm(Builder builder) {
         this.email = builder.email;
         this.nickname = builder.nickname;
         this.password = builder.password;
     }
 
-    public static ProfileSettingForm from(User user) {
+    public static ProfileEditForm from(User user) {
         return new Builder()
                 .password(user.getPassword())
                 .email(user.getEmail())
@@ -80,8 +80,8 @@ public class ProfileSettingForm {
             return this;
         }
 
-        public ProfileSettingForm build() {
-            return new ProfileSettingForm(this);
+        public ProfileEditForm build() {
+            return new ProfileEditForm(this);
         }
     }
 }

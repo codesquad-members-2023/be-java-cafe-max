@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.account;
 
 import kr.codesqaud.cafe.account.dto.JoinForm;
-import kr.codesqaud.cafe.account.dto.ProfileSettingForm;
+import kr.codesqaud.cafe.account.dto.ProfileEditForm;
 import kr.codesqaud.cafe.account.dto.UserForm;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +30,8 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public void update(ProfileSettingForm profileSettingForm, Long userId) {
-        userRepository.update(profileSettingForm.setUser(findById(userId)));
+    public void update(ProfileEditForm profileEditForm, Long userId) {
+        userRepository.update(profileEditForm.setUser(findById(userId)));
     }
 
     public boolean isSamePassword(Long userId, String targetPassword) {

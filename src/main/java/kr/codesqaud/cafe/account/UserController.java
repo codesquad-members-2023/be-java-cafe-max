@@ -103,32 +103,32 @@ public class UserController {
     @GetMapping("/users/{userId}/profile/edit")
     public String viewUserProfileEditForm(Model model, @PathVariable Long userId) {
         User user = userService.findById(userId);
-        ProfileSettingForm profileEditForm = ProfileSettingForm.from(user);
+        ProfileEditForm profileEditForm = ProfileEditForm.from(user);
 
         model.addAttribute(USER_ID, userId);
         model.addAttribute(PROFILE_SETTING_FORM, profileEditForm);
-        return "account/profileEdit";
+        return "profileEditForm";
     }
 
     @PutMapping("/users/{userId}/profile")
-    public String updateUserProfile(@Valid ProfileSettingForm profileSettingForm, BindingResult bindingResult,
+    public String updateUserProfile(@Valid ProfileEditForm profileEditForm, BindingResult bindingResult,
                                     @PathVariable Long userId
     ) {
         if (bindingResult.hasErrors()) {
             loggingError(bindingResult);
-            return "account/profileEdit";
+            return "profileEditForm";
         }
-        if (userService.isDuplicateEmail(profileSettingForm.getEmail())) {
+        if (userService.isDuplicateEmail(profileEditForm.getEmail())) {
             bindingResult.rejectValue(EMAIL, "error.email.duplicate");
             loggingError(bindingResult);
-            return "account/profileEdit";
+            return "profileEditForm";
         }
-        if (!userService.isSamePassword(userId, profileSettingForm.getPassword())) {
+        if (!userService.isSamePassword(userId, profileEditForm.getPassword())) {
             bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
             loggingError(bindingResult);
-            return "account/profileEdit";
+            return "profileEditForm";
         }
-        userService.update(profileSettingForm, userId);
+        userService.update(profileEditForm, userId);
         return "redirect:/users/{userId}/profile";
     }
 }
