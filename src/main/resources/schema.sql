@@ -1,21 +1,21 @@
-drop table if exists users CASCADE;
-CREATE TABLE users
+DROP TABLE IF EXISTS USERS CASCADE;
+CREATE TABLE USERS
 (
-    id       bigint auto_increment,
-    userId   VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    name     VARCHAR(255) NOT NULL,
-    email    VARCHAR(255) NOT NULL,
-    primary key (id)
+    id       BIGINT AUTO_INCREMENT,
+    userId   VARCHAR(255)   NOT NULL,
+    password VARBINARY(255) NOT NULL,
+    name     VARCHAR(255)   NOT NULL,
+    email    VARCHAR(255)   NOT NULL,
+    PRIMARY KEY (id)
 );
 
-drop table if exists articles CASCADE;
-CREATE TABLE articles
+DROP TABLE IF EXISTS ARTICLES CASCADE;
+CREATE TABLE ARTICLES
 (
     id          bigint auto_increment,
-    writer      TEXT      NOT NULL,
-    title       TEXT      NOT NULL,
-    contents    TEXT      NOT NULL,
-    currentTime TIMESTAMP NOT NULL,
-    primary key (id)
+    writer      VARCHAR(255) NOT NULL,
+    title       VARCHAR(255) NOT NULL,
+    contents    TEXT         NOT NULL,
+    currentTime TIMESTAMP    NOT NULL,
+    PRIMARY KEY (id)
 );
