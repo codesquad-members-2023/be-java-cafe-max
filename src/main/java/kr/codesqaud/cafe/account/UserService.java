@@ -30,7 +30,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public void upsert(ProfileSettingForm profileSettingForm, Long userId) {
+    public void update(ProfileSettingForm profileSettingForm, Long userId) {
         userRepository.update(profileSettingForm.setUser(findById(userId)));
     }
 

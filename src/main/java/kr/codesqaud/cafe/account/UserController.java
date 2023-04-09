@@ -111,7 +111,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{userId}/profile")
-    public String upsertUserProfile(@Valid ProfileSettingForm profileSettingForm, BindingResult bindingResult,
+    public String updateUserProfile(@Valid ProfileSettingForm profileSettingForm, BindingResult bindingResult,
                                     @PathVariable Long userId
     ) {
         if (bindingResult.hasErrors()) {
@@ -128,7 +128,7 @@ public class UserController {
             loggingError(bindingResult);
             return "account/profileEdit";
         }
-        userService.upsert(profileSettingForm, userId);
+        userService.update(profileSettingForm, userId);
         return "redirect:/users/{userId}/profile";
     }
 }
