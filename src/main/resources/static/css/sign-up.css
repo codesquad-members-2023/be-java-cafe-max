@@ -101,7 +101,13 @@ form > button {
     
     text-align: center;
 
+    transition: all 0.4s;
+
     color: #FFFFFF;
+}
+
+form > button:hover {
+    background: #203faf;
 }
 
 form > div > span {
@@ -110,7 +116,7 @@ form > div > span {
     font-weight: 400;
     font-size: 12px;
 
-    color: #4B5966;
+    color: #4362D0;
 }
 
 .hide {

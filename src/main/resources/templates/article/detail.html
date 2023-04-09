@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <th:block th:include="fragments/config::config"/>
+    <link rel="stylesheet" href="/css/post.css">
+    <title>CodeSquad - Articles</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <section class="post">
+        <div class="detailContainer">
+            <h2 th:text="${article.title}">제목</h2>
+            <div class="createdAt">
+                <span class="firstText" th:text="|작성자 : ${article.writer}|">작성자</span><span th:text="|작성일자 : ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|">작성일자</span>
+            </div>
+            <p style="white-space: pre-wrap;정" th:text="${article.contents}"></p>
+            <hr/>
+
+            <div class="buttons">
+                <div>
+                    <a th:if="${article.id > 1}" class="firstText" th:href="@{/articles/{id}(id=${article.id - 1})}">이전 글</a>
+                    <a th:href="@{/articles/{id}(id=${article.id + 1})}">다음 글</a>
+                </div>
+                <a th:href="@{/}">목록으로</a>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

@@ -6,7 +6,6 @@ function validateAll() {
     const userId = checkUserId();
 
     if (email && nickname && password && userId) {
-        alert("회원가입이 완료되었습니다");
         return true;
     }
     
@@ -126,11 +125,25 @@ function checkWriter() {
 function validateUpdate() {
     const email = checkEmail();
     const nickname = checkNickname();
-    const password = checkPassword();
+    const password = checkNewPassword();
 
     if (email && nickname && password) {
         return true;
     }
 
     return false;
+}
+
+function checkNewPassword() {
+    const passwordRegex = /^(?=.*?[a-z])(?=.*?[0-9]).{8,32}$/;
+    const newPassword = document.getElementById('newPassword').value;
+    const message = document.querySelector('.checkPassword');
+
+    if (!passwordRegex.test(newPassword)) {
+        message.classList.remove('hide');
+        return false;
+    }
+
+    message.classList.add('hide');
+    return true;
 }

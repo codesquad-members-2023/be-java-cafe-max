@@ -2,16 +2,13 @@
 <html lang="kr"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-    <div th:replace="/fragments/config::config"></div>
-</head>
+<head></head>
+
 <body>
 
-    <div th:replace="/fragments/header::header"></div>
+    <div th:replace="fragments/header::header"></div>
 
     <th:block layout:fragment="content"></th:block>
-
-    <div th:replace="/fragments/scripts::scripts"></div>
 
 </body>
 </html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <th:block th:include="fragments/config::config"/>
+    <title>Error</title>
+</head>
+
+<body>
+
+<div layout:fragment="content">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <img th:if="${failMessage == '존재하지 않는 회원입니다.'}" src="/images/man-with-box.png" width="400px"
+             style="padding: 40px 0px 30px;">
+        <img th:if="${failMessage == '존재하지 않는 게시글입니다.'}" src="/images/paper-plane.png" width="400px"
+             style="padding: 40px 0px 30px;">
+        <span style="font-weight: 500; font-size: 20px; padding: 10px 0px 10px;">죄송합니다.</span>
+        <span th:text="${failMessage}" style="font-weight: 500; font-size: 20px;">에러 메세지 표시하는 곳</span>
+    </div>
+</div>
+
+</body>
+</html>

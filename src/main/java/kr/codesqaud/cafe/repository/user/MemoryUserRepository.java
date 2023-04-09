@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.user;
 
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
@@ -12,13 +12,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MemoryUserRepository implements UserRepository {
 
     private final Map<String, User> STORE = new ConcurrentHashMap<>(); // 동시성 문제
-    private static Long sequence = 0L;
 
     @Override
-    public User save(User user) {
-        user.setId(++sequence);
+    public void save(User user) {
         STORE.put(user.getUserId(), user);
-        return user;
     }
 
     @Override
@@ -32,11 +29,12 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean isExists(String userId) {
+    public boolean exist(String userId) {
         return STORE.containsKey(userId);
     }
 
-    public void clearStore() {
-        STORE.clear();
+    @Override
+    public void update(User user) {
+        STORE.put(user.getUserId(), user);
     }
 }

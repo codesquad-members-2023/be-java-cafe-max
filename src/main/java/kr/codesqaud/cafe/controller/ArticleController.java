@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.dto.article.ArticleSaveRequest;
+import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,39 +9,35 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
-
 @Controller
 public class ArticleController {
 
-    private final ArticleRepository articleRepository;
+    private final ArticleService articleService;
 
-    public ArticleController(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
     }
 
     @GetMapping
     public String listAllArticles(Model model) {
-        List<Article> articles = articleRepository.findAll();
-        model.addAttribute("articles", articles);
+        model.addAttribute("articles", articleService.getAllArticles());
         return "article/main";
     }
 
     @GetMapping("/articles/write")
     public String write() {
-        return "article/form";
+        return "article/write";
     }
 
     @PostMapping("/articles")
-    public String write(@ModelAttribute Article article) {
-        articleRepository.save(article);
+    public String write(@ModelAttribute ArticleSaveRequest articleSaveRequest) {
+        articleService.saveArticle(articleSaveRequest);
         return "redirect:/";
     }
 
     @GetMapping("/articles/{id}")
     public String getArticle(@PathVariable Long id, Model model) {
-        Article article = articleRepository.findById(id);
-        model.addAttribute("article", article);
-        return "article/show";
+        model.addAttribute("article", articleService.findById(id));
+        return "article/detail";
     }
 }

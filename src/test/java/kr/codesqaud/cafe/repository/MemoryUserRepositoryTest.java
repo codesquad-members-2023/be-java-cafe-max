@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
-import org.junit.jupiter.api.AfterEach;
+import kr.codesqaud.cafe.repository.user.MemoryUserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,26 +12,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class MemoryUserRepositoryTest {
 
-    MemoryUserRepository memoryUserRepository = new MemoryUserRepository();
+    MemoryUserRepository memoryUserRepository;
 
-    @AfterEach
+    @BeforeEach
     void afterEach() {
-        memoryUserRepository.clearStore();
+        memoryUserRepository = new MemoryUserRepository();
     }
 
+    @DisplayName("회원이 정상적으로 저장되는지 확인하는 테스트")
     @Test
     void save() {
         // given
         User user = new User("testId", "testPassword", "testName", "testEmail");
-        User savedUser = memoryUserRepository.save(user);
+        memoryUserRepository.save(user);
 
         // when
         User findUser = memoryUserRepository.findByUserId(user.getUserId());
 
         // then
-        assertThat(findUser).isEqualTo(savedUser);
+        assertThat(findUser).isEqualTo(user);
     }
 
+    @DisplayName("모든 회원을 가져오는지 확인하는 테스트")
     @Test
     void findAll() {
         // given

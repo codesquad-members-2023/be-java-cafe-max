@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.dto.user.UserResponse;
+import kr.codesqaud.cafe.dto.user.UserSaveRequest;
+import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
+import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,63 +12,53 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public String listAllUsers(Model model) {
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
+        model.addAttribute("users", userService.getAllUsers());
         return "user/list";
     }
 
-    @GetMapping("/join")
-    public String join() {
-        return "user/join";
+    @GetMapping("/sign-up")
+    public String signUp(Model model) {
+        model.addAttribute("userSaveRequest", new UserSaveRequest());
+        return "user/sign-up";
     }
 
-    @PostMapping("/join")
-    public String join(@ModelAttribute User user) { // ModelAttribute 이름 미지정 시 클래스 'User'의 첫 글자를 소문자로 바꾼 'user'로 자동 설정된다.
-        if (userRepository.isExists(user.getUserId())) {
-            throw new IllegalArgumentException("이미 사용 중인 아이디입니다");
-        }
-        userRepository.save(user);
+    @PostMapping
+    public String signUp(@ModelAttribute UserSaveRequest userSaveRequest) { // ModelAttribute 이름 미지정 시 클래스 'UserSaveRequest'의 첫 글자를 소문자로 바꾼 'userSaveRequest'로 자동 설정된다.
+        userService.saveUser(userSaveRequest);
         return "redirect:/users";
     }
 
     @GetMapping("/{userId}")
-    public String getUserProfile(@PathVariable String userId, Model model) {
-        User user = userRepository.findByUserId(userId);
-        model.addAttribute("user", user);
+    public String showUserProfile(@PathVariable String userId, Model model) {
+        UserResponse userResponse = userService.findByUserId(userId);
+        model.addAttribute("user", userResponse);
 
         return "user/profile";
     }
 
     @GetMapping("/{userId}/update")
     public String updateUser(@PathVariable String userId, Model model) {
-        User user = userRepository.findByUserId(userId);
-        model.addAttribute("user", user);
+        UserUpdateRequest userUpdateRequest = userService.makeUserUpdateRequestByUserId(userId); // UserUpdateRequest를 받아야지만 정상적으로 작동하는데 정확한 이유를 찾지 못했다.
+        model.addAttribute("user", userUpdateRequest);
 
         return "user/update";
     }
 
     @PostMapping("/{userId}/update")
-    public String updateUser(@ModelAttribute User user, String match) {
-        User findUser = userRepository.findByUserId(user.getUserId());
-
-        if (!match.equals(findUser.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
-        }
-        userRepository.save(user);
+    public String updateUser(@ModelAttribute UserUpdateRequest userUpdateRequest) {
+        userService.updateUser(userUpdateRequest);
         return "redirect:/users";
     }
 }

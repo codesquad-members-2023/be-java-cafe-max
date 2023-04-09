@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
-import org.junit.jupiter.api.AfterEach;
+import kr.codesqaud.cafe.repository.article.MemoryArticleRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,26 +12,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class MemoryArticleRepositoryTest {
 
-    MemoryArticleRepository memoryArticleRepository = new MemoryArticleRepository();
+    MemoryArticleRepository memoryArticleRepository;
 
-    @AfterEach
+    @BeforeEach
     void afterEach() {
         memoryArticleRepository = new MemoryArticleRepository();
     }
 
+    @DisplayName("게시글이 정상적으로 저장되는지 확인하는 테스트")
     @Test
     void save() {
         // given
         Article article = new Article("title", "userId", "content");
-        Article savedArticle = memoryArticleRepository.save(article);
+        memoryArticleRepository.save(article);
 
         // when
         Article findArticle = memoryArticleRepository.findById(article.getId());
 
         // then
-        assertThat(findArticle).isEqualTo(savedArticle);
+        assertThat(findArticle).isEqualTo(article);
     }
 
+    @DisplayName("모든 게시글을 가져오는지 확인하는 테스트")
     @Test
     void findAll() {
         // given
