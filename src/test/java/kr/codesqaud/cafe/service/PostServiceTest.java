@@ -60,7 +60,7 @@ class PostServiceTest {
         Post post = createPostDummy();
         given(postRepository.findById(1L)).willReturn(Optional.of(post));
         given(memberRepository.findById(1L)).willReturn(Optional.of(createMemberDummy()));
-        willDoNothing().given(postRepository).update(post);
+        willDoNothing().given(postRepository).update(any());
 
         // when
         PostResponse findPostResponse = postService.findById(1L);
@@ -83,7 +83,7 @@ class PostServiceTest {
         Member member = new Member(1L, "test@gmail.com", "Test1234", "test", LocalDateTime.now());
         given(postRepository.findById(1L)).willReturn(Optional.of(post));
         given(memberRepository.findById(1L)).willReturn(Optional.of(member));
-        willDoNothing().given(postRepository).update(post);
+        willDoNothing().given(postRepository).update(any());
 
         // when
         PostResponse findPostResponse = postService.findById(1L);

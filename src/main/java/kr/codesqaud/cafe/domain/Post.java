@@ -9,7 +9,7 @@ public class Post {
     private final String content;
     private final Long writerId;
     private final LocalDateTime writeDate;
-    private Long views;
+    private final Long views;
 
     public Post(Long id, String title, String content, Long writerId, LocalDateTime writeDate,
         Long views) {
@@ -45,8 +45,8 @@ public class Post {
         return views;
     }
 
-    public void increaseViews() {
-        views++;
+    public Post increaseViews() {
+        return new Post(id, title, content, writerId, writeDate, views + 1);
     }
 
     public Post createWithId(Long id) {

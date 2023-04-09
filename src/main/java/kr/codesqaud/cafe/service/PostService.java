@@ -33,8 +33,8 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponse findById(Long id) {
         Post post = postRepository.findById(id)
-            .orElseThrow(PostNotFoundException::new);
-        post.increaseViews();
+            .orElseThrow(PostNotFoundException::new)
+            .increaseViews();
         postRepository.update(post);
         return PostResponse.of(post, getWhiterResponse(post));
     }
