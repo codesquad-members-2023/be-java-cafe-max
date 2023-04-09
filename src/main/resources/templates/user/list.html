@@ -35,7 +35,7 @@
                     <td th:text="${user.name}"></td>
                     <td th:text="${user.email}"></td>
                     <td><a href="/user/update" class="btn btn-success" role="button"
-                           th:href="@{/users/update/{id}(id=${user.id})}">수정</a></td>
+                           th:href="@{/users/{id}/updateForm(id=${user.id})}">수정</a></td>
                 </tr>
                 </tbody>
             </table>
