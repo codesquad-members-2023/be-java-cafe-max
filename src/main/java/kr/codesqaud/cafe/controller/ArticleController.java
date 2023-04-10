@@ -22,12 +22,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping
-    public String showPostArticleForm(){
-        return "post/form";
-    }
-
-    @PostMapping
+    @PostMapping("/submit")
     public String postArticle(@Valid ArticleDTO articleDto, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             return "post/form";
