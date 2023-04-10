@@ -19,7 +19,7 @@ class MemoryUserRepositoryTest {
         memoryUserRepository = new MemoryUserRepository();
     }
 
-    @DisplayName("회원이 정상적으로 저장되는지 확인하는 테스트")
+    @DisplayName("user를 save하면 memoryRepository에 정상적으로 저장되는지 확인하는 테스트")
     @Test
     void save() {
         // given
@@ -33,7 +33,7 @@ class MemoryUserRepositoryTest {
         assertThat(findUser).isEqualTo(user);
     }
 
-    @DisplayName("모든 회원을 가져오는지 확인하는 테스트")
+    @DisplayName("findAll을 통해 모든 user를 List로 가져오는지 확인하는 테스트")
     @Test
     void findAll() {
         // given
