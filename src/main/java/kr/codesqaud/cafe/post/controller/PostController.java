@@ -1,14 +1,16 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.post.controller;
 
-import kr.codesqaud.cafe.dto.PostWriteRequest;
-import kr.codesqaud.cafe.service.PostService;
+import kr.codesqaud.cafe.post.controller.request.PostWriteRequest;
+import kr.codesqaud.cafe.post.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;
@@ -17,26 +19,26 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping("/qna/write")
+    @GetMapping("/write")
     public String writePost() {
-        return "qna/form";
+        return "post/form";
     }
 
-    @PostMapping("/qna/write")
+    @PostMapping("/write")
     public String writePost(PostWriteRequest postWriteRequest) {
         postService.writePost(postWriteRequest);
-        return "redirect:/";
+        return "redirect:";
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public String showPostList(Model model) {
         postService.showPostList(model);
         return "index";
     }
 
-    @GetMapping("/qna/{id}")
+    @GetMapping("/{id}")
     public String showPost(@PathVariable("id") long id, Model model) {
         postService.showPost(id, model);
-        return "qna/show";
+        return "post/show";
     }
 }

@@ -1,9 +1,9 @@
 package kr.codesqaud.cafe.config;
 
-import kr.codesqaud.cafe.repository.MemoryPostRepository;
-import kr.codesqaud.cafe.repository.MemoryUserRepository;
-import kr.codesqaud.cafe.repository.PostRepository;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.post.repository.MemoryPostRepository;
+import kr.codesqaud.cafe.user.repository.MemoryUserRepository;
+import kr.codesqaud.cafe.post.repository.PostRepository;
+import kr.codesqaud.cafe.user.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

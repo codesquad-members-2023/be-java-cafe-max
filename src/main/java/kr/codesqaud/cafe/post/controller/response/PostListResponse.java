@@ -1,7 +1,8 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.post.controller.response;
+
+import kr.codesqaud.cafe.util.DateUtils;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class PostListResponse {
 
@@ -14,6 +15,6 @@ public class PostListResponse {
         this.id = id;
         this.writer = writer;
         this.title = title;
-        this.writingTime = writingTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.writingTime = DateUtils.toStringDate(writingTime);
     }
 }

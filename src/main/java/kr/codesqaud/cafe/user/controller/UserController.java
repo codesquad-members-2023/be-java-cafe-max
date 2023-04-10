@@ -1,7 +1,7 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.user.controller;
 
-import kr.codesqaud.cafe.dto.UserRegisterRequest;
-import kr.codesqaud.cafe.service.UserService;
+import kr.codesqaud.cafe.user.controller.request.UserRegisterRequest;
+import kr.codesqaud.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,20 +24,20 @@ public class UserController {
         return "users/register";
     }
 
-    @PostMapping("/register")
+    @PostMapping("")
     public String register(UserRegisterRequest user) {
         userService.register(user);
-        return "redirect:list";
+        return "redirect:users";
     }
 
-    @GetMapping("/list")
+    @GetMapping("")
     public String showUserList(Model model) {
         userService.showUserList(model);
         return "users/list";
     }
 
     @GetMapping("/{id}")
-    public String showProfile(@PathVariable("id") String id, Model model) {
+    public String showUser(@PathVariable("id") String id, Model model) {
         userService.showProfile(id, model);
         return "users/profile";
     }

@@ -1,7 +1,7 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.user.service;
 
-import kr.codesqaud.cafe.dto.UserListResponse;
-import kr.codesqaud.cafe.dto.UserProfileResponse;
+import kr.codesqaud.cafe.user.controller.response.UserListResponse;
+import kr.codesqaud.cafe.user.controller.response.UserProfileResponse;
 
 public class User {
 

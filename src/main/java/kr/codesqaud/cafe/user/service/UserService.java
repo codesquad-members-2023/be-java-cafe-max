@@ -1,10 +1,9 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.user.service;
 
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.UserProfileResponse;
-import kr.codesqaud.cafe.dto.UserRegisterRequest;
-import kr.codesqaud.cafe.dto.UserListResponse;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.user.controller.response.UserProfileResponse;
+import kr.codesqaud.cafe.user.controller.request.UserRegisterRequest;
+import kr.codesqaud.cafe.user.controller.response.UserListResponse;
+import kr.codesqaud.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 

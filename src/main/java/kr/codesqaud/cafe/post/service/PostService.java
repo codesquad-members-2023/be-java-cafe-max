@@ -1,11 +1,9 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.post.service;
 
-import kr.codesqaud.cafe.domain.Post;
-import kr.codesqaud.cafe.dto.PostDetailResponse;
-import kr.codesqaud.cafe.dto.PostListResponse;
-import kr.codesqaud.cafe.dto.PostWriteRequest;
-import kr.codesqaud.cafe.dto.UserProfileResponse;
-import kr.codesqaud.cafe.repository.PostRepository;
+import kr.codesqaud.cafe.post.controller.response.PostDetailResponse;
+import kr.codesqaud.cafe.post.controller.response.PostListResponse;
+import kr.codesqaud.cafe.post.controller.request.PostWriteRequest;
+import kr.codesqaud.cafe.post.repository.PostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 

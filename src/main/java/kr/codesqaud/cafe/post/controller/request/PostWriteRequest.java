@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.post.controller.request;
 
-import kr.codesqaud.cafe.domain.Post;
+import kr.codesqaud.cafe.post.service.Post;
 
 public class PostWriteRequest {
 

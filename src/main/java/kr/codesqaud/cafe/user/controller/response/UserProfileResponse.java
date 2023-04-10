@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.user.controller.response;
 
 public class UserProfileResponse {
 

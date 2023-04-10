@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.user.controller.request;
 
-import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.user.service.User;
 
 public class UserRegisterRequest {
 

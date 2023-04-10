@@ -1,7 +1,7 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.post.service;
 
-import kr.codesqaud.cafe.dto.PostDetailResponse;
-import kr.codesqaud.cafe.dto.PostListResponse;
+import kr.codesqaud.cafe.post.controller.response.PostDetailResponse;
+import kr.codesqaud.cafe.post.controller.response.PostListResponse;
 
 import java.time.LocalDateTime;
 

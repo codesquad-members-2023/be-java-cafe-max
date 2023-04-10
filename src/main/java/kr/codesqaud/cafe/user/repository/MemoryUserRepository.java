@@ -1,9 +1,13 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.user.repository;
 
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.UserRegisterRequest;
+import kr.codesqaud.cafe.user.service.User;
+import kr.codesqaud.cafe.user.controller.request.UserRegisterRequest;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class MemoryUserRepository implements UserRepository {
 
