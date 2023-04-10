@@ -5,7 +5,6 @@ import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,10 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/sign-up")
-    public String signUp(@Valid UserDTO userDto, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
-            return "user/form";
-        }
+    public String signUp(@ModelAttribute @Valid UserDTO userDto) {
         userService.addUser(userDto);
         return "redirect:/user/list";
     }
