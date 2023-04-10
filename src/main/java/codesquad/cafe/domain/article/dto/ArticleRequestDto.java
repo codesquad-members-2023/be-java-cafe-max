@@ -2,7 +2,6 @@ package codesquad.cafe.domain.article.dto;
 
 import codesquad.cafe.domain.article.domain.Article;
 
-import java.time.LocalDateTime;
 
 public class ArticleRequestDto {
 

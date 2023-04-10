@@ -38,7 +38,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                             , rs.getString("writer")
                             , rs.getString("title")
                             , rs.getString("contents")
-                            , rs.getTimestamp("date").toLocalDateTime()));
+                            , rs.getTimestamp("createdAt").toLocalDateTime()));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                                 , rs.getString("writer")
                                 , rs.getString("title")
                                 , rs.getString("contents")
-                                , rs.getTimestamp("date").toLocalDateTime());
+                                , rs.getTimestamp("createdAt").toLocalDateTime());
                     return article;
         });
     }

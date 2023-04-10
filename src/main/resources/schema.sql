@@ -4,7 +4,7 @@ create table article(
     writer varchar(200) not null,
     title varchar(200) not null,
     contents text not null,
-    date datetime,
+    createdAt datetime,
     primary key(id)
 );
 

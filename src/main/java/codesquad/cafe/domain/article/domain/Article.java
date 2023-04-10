@@ -11,22 +11,22 @@ public class Article {
     private String writer;
     private String title;
     private String contents;
-    private LocalDateTime date;
+    private LocalDateTime createdAt;
 
 
-    public Article(final Long id, final String writer, final String title, final String contents, final LocalDateTime date) {
+    public Article(final Long id, final String writer, final String title, final String contents, final LocalDateTime createdAt) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.date = date;
+        this.createdAt = createdAt;
     }
 
     public Article(final String writer, final String title, final String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.date = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     public String getWriter() {
@@ -37,20 +37,12 @@ public class Article {
         return title;
     }
 
-    public String getContents() {
-        return contents;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
     public Article createdWith(final long id) {
         this.id = id;
         return this;
     }
 
     public ArticleResponseDto toDto() {
-        return new ArticleResponseDto(id, writer, title, contents, date.format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm")));
+        return new ArticleResponseDto(id, writer, title, contents, createdAt.format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm")));
     }
 }
