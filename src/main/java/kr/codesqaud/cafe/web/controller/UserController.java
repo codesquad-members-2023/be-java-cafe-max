@@ -63,8 +63,7 @@ public class UserController {
 
     // 로그인
     @PostMapping("/users/login")
-    public String login(@Valid @RequestBody UserLoginRequestDto requestDto,
-        HttpSession session) {
+    public String login(@Valid @RequestBody UserLoginRequestDto requestDto, HttpSession session) {
         logger.info("login" + requestDto.toString());
         userService.login(requestDto, session);
         return "redirect:/";

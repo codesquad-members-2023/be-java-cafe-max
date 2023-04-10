@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain.user;
 
+import java.util.Objects;
+
 public class User {
 
     private final Long id;
@@ -34,5 +36,28 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof User)) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("User={id=%d, userId=%s, password=%s, name=%s, email=%s}", id, userId,
+            password, name, email);
     }
 }
