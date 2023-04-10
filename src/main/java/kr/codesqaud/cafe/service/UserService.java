@@ -2,30 +2,30 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.domain.UserForm;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.repository.MemoryUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private MemoryUserRepository memoryUserRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserService(MemoryUserRepository memoryUserRepository) {
+        this.memoryUserRepository = memoryUserRepository;
     }
 
     public void saveUser(UserForm userForm) {
         User user = new User(userForm.getUserId(), userForm.getPassword(), userForm.getUserName(), userForm.getEmail());
 
-        userRepository.save(user);
+        memoryUserRepository.save(user);
     }
 
     public List<User> getUserList() {
-        return userRepository.getAllUsers();
+        return memoryUserRepository.getAllUsers();
     }
 
     public User findByUserId(String userId) {
-        return userRepository.getSpecificUser(userId);
+        return memoryUserRepository.getSpecificUser(userId);
     }
 }

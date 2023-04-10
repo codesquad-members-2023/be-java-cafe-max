@@ -1,26 +1,13 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
-import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-@Repository
-public class UserRepository {
-    private Map<String, User> repository = new HashMap<>();
+public interface UserRepository {
+    void save(User user);
 
-    public void save(User user) {
-        repository.put(user.getUserId(), user);
-    }
+    List<User> getAllUsers();
 
-    public List<User> getAllUsers() {
-        return new ArrayList<>(repository.values());
-    }
-
-    public User getSpecificUser(String userId) {
-        return repository.get(userId);
-    }
+    User getSpecificUser(String userId);
 }
