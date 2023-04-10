@@ -16,7 +16,7 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    @PostMapping("/post")
+    @PostMapping
     public String writePost(@ModelAttribute PostWriteForm postWriteForm) {
         boardService.write(postWriteForm);
         return "redirect:/board/list";
