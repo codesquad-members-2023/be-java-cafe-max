@@ -18,12 +18,12 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/article/write")
+    @GetMapping("/articles/new")
     public String articlePage() {
         return "qna/form";
     }
 
-    @PostMapping("/article/write")
+    @PostMapping("/articles")
     public String write(final ArticleDTO articleDTO) {
         Article article = new Article(articleDTO.getWriter(), articleDTO.getTitle(), articleDTO.getContents());
         articleService.save(article);

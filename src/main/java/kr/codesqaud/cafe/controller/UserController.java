@@ -21,12 +21,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/create")
+    @GetMapping("/users/new")
     public String signUpPage() {
         return "user/form";
     }
 
-    @PostMapping("/user/create")
+    @PostMapping("/users")
     public String create(@Valid final UserDTO userDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // TODO: 에러 내용이 출력되게끔 로직 추가
