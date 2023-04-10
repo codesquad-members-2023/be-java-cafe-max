@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository{
@@ -25,7 +26,7 @@ public class JdbcArticleRepository implements ArticleRepository{
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("articles_squad").usingGeneratedKeyColumns("id");
 
-        Map<String, Object> parameters = new HashMap<>();
+        Map<String, Object> parameters = new ConcurrentHashMap<>();
         parameters.put("writer", article.getWriter());
         parameters.put("title", article.getTitle());
         parameters.put("contents", article.getContents());
