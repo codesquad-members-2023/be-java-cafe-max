@@ -14,13 +14,13 @@ class UserServiceTest {
     MemoryUserRepository userRepository;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         userRepository = new MemoryUserRepository();
         userService = new UserService(userRepository);
     }
 
     @AfterEach
-    public void afterEach() {
+    void afterEach() {
         userRepository.clearStore();
     }
 
@@ -40,7 +40,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void 중복_회원_이름_예외() {
+    void 중복_회원_이름_예외() {
         // given
         User user1 = new User();
         user1.setName("springName1");
@@ -60,7 +60,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void 중복_회원_아이디_예외() {
+    void 중복_회원_아이디_예외() {
         // given
         User user1 = new User();
         user1.setName("springName1");
