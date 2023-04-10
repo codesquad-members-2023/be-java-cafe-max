@@ -1,17 +1,22 @@
 package kr.codesqaud.cafe.post;
 
+import kr.codesqaud.cafe.account.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -27,6 +32,7 @@ class PostControllerTest {
     private static final String JACK = "jack";
     private static final String TEST_TITLE = "testTitle";
     private static final String TEST_CONTENT = "testContent";
+    public static final String USER = "user";
 
     @Autowired
     MockMvc mockMvc;
@@ -34,10 +40,24 @@ class PostControllerTest {
     @Autowired
     PostRepository postRepository;
 
+    MockHttpSession session;
+
+
+    @BeforeEach
+    void setSession() {
+        User user = mock(User.class);
+        Mockito.when(user.getNickname()).thenReturn(JACK);
+        String testTitle = TEST_TITLE;
+        assertThat(postRepository.findByTitle(testTitle)).isEmpty();
+        session = new MockHttpSession();
+        session.setAttribute(USER, user);
+    }
+
     @DisplayName("게시글 작성 페이지 열람")
     @Test
     void showPostPage() throws Exception {
-        mockMvc.perform(get("/posts/form"))
+        mockMvc.perform(get("/posts/form")
+                        .session(session))
                 .andExpect(status().isOk());
     }
 
@@ -47,15 +67,14 @@ class PostControllerTest {
         @DisplayName("성공")
         @Test
         void addPostSuccess() throws Exception {
-            String testTitle = TEST_TITLE;
-            assertThat(postRepository.findByTitle(testTitle)).isEmpty();
             mockMvc.perform(post("/posts")
                             .param(NICKNAME, JACK)
-                            .param(TITLE, testTitle)
-                            .param(TEXT_CONTENT, TEST_CONTENT))
+                            .param(TITLE, TEST_TITLE)
+                            .param(TEXT_CONTENT, TEST_CONTENT)
+                            .session(session))
                     .andExpect(status().is3xxRedirection())
                     .andExpect(redirectedUrlPattern("/posts/*"));
-            assertThat(postRepository.findByTitle(testTitle)).isPresent();
+            assertThat(postRepository.findByTitle(TEST_TITLE)).isPresent();
         }
 
         @DisplayName("실패")
@@ -65,29 +84,29 @@ class PostControllerTest {
             mockMvc.perform(post("/posts")
                             .param(NICKNAME, nickname)
                             .param(TITLE, title)
-                            .param(TEXT_CONTENT, textContent))
+                            .param(TEXT_CONTENT, textContent)
+                            .session(session))
                     .andExpect(status().isOk())
                     .andExpect(model().hasErrors())
                     .andExpect(view().name("/post/form"));
-
             assertThat(postRepository.findByTitle(TEST_TITLE)).isEmpty();
         }
     }
 
-    @DisplayName("지정 게시를 얄람")
+    @DisplayName("지정 게시를 알람")
     @Nested
     class PostPageTest {
 
         @DisplayName("성공")
         @Test
         void testShowPostPageSuccess() throws Exception {
-            int savedId = postRepository.save(new Post.Builder()
+            Post post = postRepository.save(new Post.Builder()
                     .nickname(JACK)
                     .title(TEST_TITLE)
                     .textContent(TEST_CONTENT)
                     .build());
 
-            mockMvc.perform(get("/posts/" + savedId))
+            mockMvc.perform(get("/posts/" + post.getId()).session(session))
                     .andExpect(status().isOk())
                     .andExpect(model().attributeExists("post"));
         }
@@ -95,12 +114,13 @@ class PostControllerTest {
         @DisplayName("실패")
         @Test
         void testShowPostPageFailed() throws Exception {
-            int savedId = postRepository.save(new Post.Builder()
+            Post post = postRepository.save(new Post.Builder()
                     .nickname(JACK)
                     .title(TEST_TITLE)
                     .textContent(TEST_CONTENT)
                     .build());
-            mockMvc.perform(get("/posts/" + (++savedId)))
+
+            mockMvc.perform(get("/posts/" + (post.getId() + 1)).session(session))
                     .andExpect(status().is4xxClientError())
                     .andExpect(view().name("error/4xx"));
         }
