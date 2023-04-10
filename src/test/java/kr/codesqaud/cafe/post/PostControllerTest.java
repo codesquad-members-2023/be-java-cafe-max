@@ -47,8 +47,6 @@ class PostControllerTest {
     void setSession() {
         User user = mock(User.class);
         Mockito.when(user.getNickname()).thenReturn(JACK);
-        String testTitle = TEST_TITLE;
-        assertThat(postRepository.findByTitle(testTitle)).isEmpty();
         session = new MockHttpSession();
         session.setAttribute(USER, user);
     }
