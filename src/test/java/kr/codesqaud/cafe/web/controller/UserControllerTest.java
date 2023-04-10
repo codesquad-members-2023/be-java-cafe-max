@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.web.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,7 +27,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.ModelMap;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -172,11 +172,10 @@ class UserControllerTest {
         Long id = userRepository.findByUserId("yonghwan1107").orElseThrow().getId();
         String url = "/users/" + id;
         //when
-        ModelMap modelMap = mockMvc.perform(get(url))
+        UserResponseDto profile = (UserResponseDto) mockMvc.perform(get(url))
             .andExpect(status().isOk())
-            .andReturn().getModelAndView().getModelMap();
+            .andReturn().getModelAndView().getModelMap().get("user");
         //then
-        UserResponseDto profile = (UserResponseDto) modelMap.getAttribute("user");
         Assertions.assertThat(profile.getId()).isEqualTo(id);
         Assertions.assertThat(profile.getUserId()).isEqualTo("yonghwan1107");
         Assertions.assertThat(profile.getName()).isEqualTo("김용환");
@@ -305,10 +304,10 @@ class UserControllerTest {
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, modifiedPassword, modifiedName,
             modifiedEmail);
         //when
-        mockMvc.perform(post(url)
+        mockMvc.perform(put(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
-            .andExpect(status().is3xxRedirection());
+            .andExpect(status().isOk());
         //then
         User actual = userRepository.findByUserId(userId).orElseThrow();
         Assertions.assertThat(actual.getName()).isEqualTo(modifiedName);
@@ -331,7 +330,7 @@ class UserControllerTest {
             modifiedEmail);
         //when
         MockHttpServletResponse response =
-            mockMvc.perform(post(url)
+            mockMvc.perform(put(url)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(toJSON(dto)))
                 .andExpect(status().isOk())

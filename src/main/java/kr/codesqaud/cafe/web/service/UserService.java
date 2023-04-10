@@ -73,11 +73,12 @@ public class UserService {
     }
 
     // 회원 정보 수정
-    public void modifyUser(Long id, UserSavedRequestDto requestDto) {
+    public UserResponseDto modifyUser(Long id, UserSavedRequestDto requestDto) {
         User requestUser = requestDto.toEntity(id);
         User currentUser = findUser(id);
         validator.validateModifiedUserEmail(requestUser, currentUser);
-        userRepository.modify(requestUser);
+        User modifyUser = userRepository.modify(requestUser);
+        return new UserResponseDto(modifyUser);
     }
 
     // 비밀번호 확인
