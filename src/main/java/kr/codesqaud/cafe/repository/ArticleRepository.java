@@ -8,7 +8,7 @@ public interface ArticleRepository {
 
     Article save(Article article);
 
-    Optional<Article> findByIndex(long index);
+    Optional<Article> findBySequence(long sequence);
 
     List<Article> findAll();
 }

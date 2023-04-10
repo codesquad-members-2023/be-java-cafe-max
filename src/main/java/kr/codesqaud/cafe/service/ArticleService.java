@@ -41,7 +41,7 @@ public class ArticleService {
      * @return 게시글
      */
     public Optional<Article> findOne(long index) {
-        return articleRepository.findByIndex(index);
+        return articleRepository.findBySequence(index);
     }
 
 }

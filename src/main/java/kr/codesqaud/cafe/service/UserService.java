@@ -2,7 +2,9 @@ package kr.codesqaud.cafe.service;
 
 import java.util.List;
 import java.util.Optional;
+import kr.codesqaud.cafe.DTO.UserDTO;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.exception.signUpException.InvalidUserIdException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +23,16 @@ public class UserService {
 
     /**
      * 회원 가입
-     * @param user 회원 정보
      */
-    public void join(User user) {
-        validaDuplicateUserId(user); // 중복 ID 검증
+    public void join(UserDTO userDTO) {
+        validaUserIdUniqueness(userDTO);
+        User user = userDTO.toEntity();
         userRepository.save(user);
     }
 
-    private void validaDuplicateUserId(User user) {
-        userRepository.findByID(user.getUserId())
-                .ifPresent(presentId -> {
-                    throw new IllegalArgumentException("ID가 이미 존재합나다.");
+    private void validaUserIdUniqueness(UserDTO userDTO) {
+        findOne(userDTO.getUserId()).ifPresent(user -> {
+                    throw new InvalidUserIdException();
                 });
     }
 
@@ -49,6 +50,6 @@ public class UserService {
      * @return 회원 정보
      */
     public Optional<User> findOne(String userId) {
-        return userRepository.findByID(userId);
+        return userRepository.findById(userId);
     }
 }
