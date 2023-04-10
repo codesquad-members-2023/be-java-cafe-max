@@ -14,8 +14,9 @@ public class MemoryUserRepository implements UserRepository {
     private final Map<String, User> STORE = new ConcurrentHashMap<>();
 
     @Override
-    public void save(User user) {
+    public String save(final User user) {
         STORE.put(user.getUserId(), user);
+        return user.getUserId();
     }
 
     @Override
@@ -34,7 +35,8 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public void update(User user) {
+    public int update(final User user) {
         STORE.put(user.getUserId(), user);
+        return 1;
     }
 }

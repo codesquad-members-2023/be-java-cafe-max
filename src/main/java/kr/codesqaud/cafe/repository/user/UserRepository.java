@@ -5,9 +5,9 @@ import kr.codesqaud.cafe.domain.User;
 import java.util.List;
 
 public interface UserRepository {
-    void save(User user);
+    String save(User user);
     User findByUserId(String userId);
     List<User> findAll();
     boolean exist(String userId);
-    void update(User user);
+    int update(User user);
 }

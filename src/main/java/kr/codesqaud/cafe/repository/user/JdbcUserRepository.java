@@ -19,9 +19,10 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public void save(final User user) {
+    public String save(final User user) {
         final String sql = "INSERT INTO users (userId, password, name, email) VALUES (:userId, :password, :name, :email)";
         jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(user));
+        return user.getUserId();
     }
 
     @Override
@@ -48,13 +49,13 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public void update(final User user) {
+    public int update(final User user) {
         final String sql = "UPDATE users SET name = :name, email = :email, password = :password WHERE userId = :userId";
         Map<String, Object> parameter = Map.of(
                 "name", user.getName(),
                 "email", user.getEmail(),
                 "password", user.getPassword(),
                 "userId", user.getUserId());
-        jdbcTemplate.update(sql, parameter);
+        return jdbcTemplate.update(sql, parameter);
     }
 }

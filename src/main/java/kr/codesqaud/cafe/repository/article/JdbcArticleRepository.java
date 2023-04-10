@@ -5,10 +5,12 @@ import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
@@ -20,9 +22,11 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void save(final Article article) {
+    public Long save(final Article article) {
         final String sql = "INSERT INTO articles (title, writer, contents, createdAt) VALUES (:title, :writer, :contents, :createdAt)";
-        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article));
+        final GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder);
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
     @Override
