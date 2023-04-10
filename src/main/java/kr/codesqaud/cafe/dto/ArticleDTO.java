@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.DTO;
+package kr.codesqaud.cafe.dto;
 
 /**
  * 게시글 DTO 객체

@@ -2,8 +2,8 @@ package kr.codesqaud.cafe.service;
 
 import java.util.List;
 import java.util.Optional;
-import kr.codesqaud.cafe.DTO.UserDTO;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.UserDTO;
 import kr.codesqaud.cafe.exception.signUpException.InvalidUserIdException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;

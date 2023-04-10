@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.DTO;
+package kr.codesqaud.cafe.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
