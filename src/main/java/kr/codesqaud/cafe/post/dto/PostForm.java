@@ -9,17 +9,29 @@ import java.time.LocalDateTime;
 public class PostForm {
     @NotEmpty
     @Size(max = 64, min = 2, message = "{error.nickname.size}")
-    private final String nickname;
+    private String nickname;
     @NotEmpty
     @Size(max = 64, min = 2, message = "{error.title.size}")
-    private final String title;
+    private String title;
     @NotEmpty
     @Size(max = 1000, min = 3, message = "{error.textContent.size}")
-    private final String textContent;
+    private String textContent;
 
     public PostForm(String nickname, String title, String textContent) {
         this.nickname = nickname;
         this.title = title;
+        this.textContent = textContent;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setTextContent(String textContent) {
         this.textContent = textContent;
     }
 

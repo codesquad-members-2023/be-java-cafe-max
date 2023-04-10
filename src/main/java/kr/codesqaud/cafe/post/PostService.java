@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.post.dto.SimplePostForm;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,18 +17,18 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public long save(PostForm postForm) {
+    public Post save(PostForm postForm) {
         Post post = postForm.toPost();
         return postRepository.save(post);
     }
 
 
-    public Post findById(int postId) {
-        return postRepository.findById(postId);
+    public Optional<Post> findById(int postId) {
+        return postRepository.findById(Long.valueOf(postId));
     }
 
     public List<SimplePostForm> getAllPosts() {
-        return postRepository.getAllPosts().stream()
+        return postRepository.findAll().stream()
                 .map(SimplePostForm::from)
                 .collect(Collectors.toList());
     }
