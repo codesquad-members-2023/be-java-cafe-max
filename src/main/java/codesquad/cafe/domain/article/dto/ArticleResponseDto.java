@@ -8,12 +8,12 @@ public class ArticleResponseDto {
     private String contents;
     private String date;
 
-    public ArticleResponseDto(final Long id, final String writer, final String title, final String contents, final String localDateTime) {
+    public ArticleResponseDto(final Long id, final String writer, final String title, final String contents, final String date) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.date = localDateTime;
+        this.date = date;
     }
 
     public Long getId() {

@@ -22,11 +22,11 @@ public class Article {
         this.date = date;
     }
 
-    public Article(final String writer, final String title, final String contents, final LocalDateTime date) {
+    public Article(final String writer, final String title, final String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.date = date;
+        this.date = LocalDateTime.now();
     }
 
     public String getWriter() {
