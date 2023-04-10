@@ -27,7 +27,7 @@ public class JdbcUserRepository implements UserRepository{
     @Override
     public User save(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("users").usingGeneratedKeyColumns("customerId");
+        jdbcInsert.withTableName("users_squad").usingGeneratedKeyColumns("customerId");
 
         Map<String, Object> parameters = new ConcurrentHashMap<>();
         parameters.put("userId", user.getUserId());
@@ -43,24 +43,24 @@ public class JdbcUserRepository implements UserRepository{
     @Override
     public Optional<User> findByUserId(String userId) {
         // 디자인 패턴 중, 템플릿 메서드 패턴의 요소가 많이 반영되어있기 때문이다.
-        List<User> result = jdbcTemplate.query("select * from users where userId = ?", userRowMapper(), userId);
+        List<User> result = jdbcTemplate.query("select * from users_squad where userId = ?", userRowMapper(), userId);
         return result.stream().findAny();
     }
 
     @Override
     public Optional<User> findByName(String name) {
-        List<User> result = jdbcTemplate.query("select * from users where name = ?", userRowMapper(), name);
+        List<User> result = jdbcTemplate.query("select * from users_squad where name = ?", userRowMapper(), name);
         return result.stream().findAny();
     }
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from users", userRowMapper());
+        return jdbcTemplate.query("select * from users_squad", userRowMapper());
     }
 
     @Override
     public void clearStore() {
-        jdbcTemplate.update("delete from users");
+        jdbcTemplate.update("delete from users_squad");
     }
 
     private RowMapper<User> userRowMapper(){
