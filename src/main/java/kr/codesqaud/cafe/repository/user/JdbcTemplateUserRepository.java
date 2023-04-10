@@ -71,6 +71,12 @@ public class JdbcTemplateUserRepository implements UserRepository {
         return template.query(sql, userRowMapper);
     }
 
+    public Optional<User> findByLoginId(String loginId) {
+        return findAll().stream()
+                .filter(u -> u.getUserId().equals(loginId))
+                .findFirst();
+    }
+
     @Override
     public void update(Long id, User updateUser) {
         String sql = "update USERS " +
