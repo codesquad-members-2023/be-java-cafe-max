@@ -50,7 +50,7 @@ public class UserController {
             return "redirect:/login?error";
         }
 
-        session.setAttribute("user", user);
+        session.setAttribute("sessionUser", user);
         return "redirect:/";
     }
 
