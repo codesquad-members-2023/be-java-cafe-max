@@ -22,22 +22,22 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void saveUser(UserSaveRequest userSaveRequest) throws AlreadyUserExistenceException {
+    public String saveUser(final UserSaveRequest userSaveRequest) {
         if (userRepository.exist(userSaveRequest.getUserId())) {
             throw new AlreadyUserExistenceException(userSaveRequest);
         }
-        userRepository.save(userSaveRequest.toUser());
+        return userRepository.save(userSaveRequest.toUser());
     }
 
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream().map(UserResponse::from).collect(Collectors.toUnmodifiableList());
     }
 
-    public void updateUser(UserUpdateRequest userUpdateRequest) {
+    public int updateUser(UserUpdateRequest userUpdateRequest) {
         if (!userRepository.findByUserId(userUpdateRequest.getUserId()).isPasswordMatched(userUpdateRequest.getCurrentPassword())) {
             throw new MismatchedPasswordException(userUpdateRequest);
         }
-        userRepository.update(userUpdateRequest.toUser());
+        return userRepository.update(userUpdateRequest.toUser());
     }
 
     public UserResponse findByUserId(String userId) {

@@ -19,8 +19,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void saveArticle(ArticleSaveRequest articleSaveRequest) {
-        articleRepository.save(articleSaveRequest.toArticle());
+    public Long saveArticle(final ArticleSaveRequest articleSaveRequest) {
+        return articleRepository.save(articleSaveRequest.toArticle());
     }
 
     public List<ArticleResponse> getAllArticles() {
