@@ -8,11 +8,14 @@ public class User {
     private final String email;
     private final String password;
 
+    private final Role role;
+
     private User(Builder builder) {
         this.id = builder.id;
         this.email = builder.email;
         this.password = builder.password;
         this.nickname = builder.nickname;
+        this.role = builder.role;
     }
 
     public Long getId() {
@@ -31,6 +34,10 @@ public class User {
         return password;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
     public boolean isSamePassword(String targetPassword) {
         return targetPassword.equals(password);
     }
@@ -44,11 +51,18 @@ public class User {
         private String nickname = BLANK;
         private String email = BLANK;
         private String password = BLANK;
+        private Role role = Role.USER;
 
         public Builder id(Long id) {
             this.id = id;
             return this;
         }
+
+        public Builder role(Role role) {
+            this.role = role;
+            return this;
+        }
+
 
         public Builder nickname(String nickname) {
             this.nickname = nickname;

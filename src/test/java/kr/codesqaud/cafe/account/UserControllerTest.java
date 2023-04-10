@@ -138,7 +138,14 @@ class UserControllerTest {
         int userId = saveAndGetUserJack();
         MockHttpSession session = new MockHttpSession();
         User user = userRepository.findById((long) userId);
-        session.setAttribute("user", user);
+        User target = new User.Builder()
+                .id(user.getId())
+                .role(Role.MANAGER)
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .password(user.getPassword())
+                .build();
+        session.setAttribute("user", target);
         mockMvc.perform(get("/users").session(session))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("users"))

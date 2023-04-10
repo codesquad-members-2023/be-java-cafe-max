@@ -93,6 +93,11 @@ public class UserController {
         if (sessionAttribute == null) {
             return "redirect:/users/login";
         }
+        User user = (User) sessionAttribute;
+        if (!user.getRole().equals(Role.MANAGER)) {
+            throw new RuntimeException("접근 할 수 없습니다.");
+        }
+
         List<UserForm> allUserForm = userService.getAllUsersForm();
         model.addAttribute(USERS, allUserForm);
         return "account/users";
