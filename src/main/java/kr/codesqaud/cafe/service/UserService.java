@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.domain.user.repository.UserRepository;
+import kr.codesqaud.cafe.dto.LoginSessionDto;
 import kr.codesqaud.cafe.dto.SignUpFormDto;
 import kr.codesqaud.cafe.dto.UpdateFormDto;
 import kr.codesqaud.cafe.exception.DeniedAccessException;
@@ -41,8 +42,8 @@ public class UserService {
 
     }
 
-    public boolean login(String id,String password){
-        User loginUser = userRepository.findById(id);
+    public boolean login(User loginUser,String password){
+
         if(!loginUser.checkPassword(password)){
             throw new LoginFailedException("로그인 실패");
         }
@@ -50,7 +51,8 @@ public class UserService {
     }
 
     public boolean updateAccess(String id , HttpSession session){
-        if(!id.equals(session.getAttribute("sessionID"))){
+        LoginSessionDto userSession = (LoginSessionDto) session.getAttribute("sessionId");
+        if(!id.equals(userSession.getId())){
             throw new DeniedAccessException("돌아가라");
         }
         return true;
