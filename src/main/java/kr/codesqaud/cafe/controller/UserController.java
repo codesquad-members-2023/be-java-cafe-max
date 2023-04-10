@@ -1,7 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.UserForm;
+import kr.codesqaud.cafe.dto.UserJoinForm;
+import kr.codesqaud.cafe.dto.UserLoginForm;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,16 +21,21 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("user/form")
+    public String joinForm() {
+        return "user/form";
+    }
+
     @PostMapping("user/create")
-    public String create(UserForm form) {
+    public String create(UserJoinForm form) {
         User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
 
-        boolean result = userService.join(user);
+        boolean isSignUpSuccess = userService.join(user);
 
-        if (result) {            // 회원가입 성공시
+        if (isSignUpSuccess) {
             return "redirect:/users";
         }
-        return "redirect:/user/form";    // 회원가입 실패시
+        return "redirect:/user/form";
 
     }
 
@@ -46,4 +52,17 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("user/login")
+    public String loginForm() {
+        return "user/login";
+    }
+
+    @PostMapping("user/login")
+    public String login(UserLoginForm form) {
+        boolean isLoginSuccess = userService.login(form.getUserId(), form.getPassword());
+        if (isLoginSuccess) {
+            return "redirect:/";
+        }
+        return "redirect:/user/login";
+    }
 }

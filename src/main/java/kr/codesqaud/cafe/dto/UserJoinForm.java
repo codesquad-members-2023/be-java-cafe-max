@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.dto;
 
-public class UserForm {
+public class UserJoinForm {
 
     private String userId;
     private String password;

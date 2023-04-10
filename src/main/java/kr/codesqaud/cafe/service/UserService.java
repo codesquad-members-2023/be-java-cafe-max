@@ -24,6 +24,13 @@ public class UserService {
        return true;
     }
 
+    public boolean login(String userId, String password) {
+        if (findOne(userId).get().getPassword().equals(password)) {
+            return true;
+        }
+        return false;
+    }
+
     public List<User> findUsers() {
         return userRepository.findAll();
     }
