@@ -1,44 +1,42 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.ArticleDto;
-import kr.codesqaud.cafe.repository.ArticleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Collections;
-import java.util.List;
+import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.ArticleDto;
+import kr.codesqaud.cafe.service.ArticleService;
 
 @Controller
 public class ArticleController {
-    private final ArticleRepository articleRepository;
+	private final ArticleService articleService;
 
-    @Autowired
-    public ArticleController(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
+	public ArticleController(ArticleService articleService) {
+		this.articleService = articleService;
+	}
 
-    @PostMapping("/qna/write")
-    public String writeArticle(ArticleDto articleDto) {
-        articleRepository.saveArticle(articleDto);
-        return "redirect:/";
-    }
+	@PostMapping("/qna/write")
+	public String writeArticle(ArticleDto articleDto) {
+		articleService.saveArticle(articleDto);
+		return "redirect:/";
+	}
 
-    @GetMapping("/")
-    public String articleList(Model model) {
-        List<Article> articles = articleRepository.findAll();
-        model.addAttribute("articles", articles);
-        return "index";
-    }
+	@GetMapping("/articles")
+	public String articleList(Model model) {
+		List<Article> articles = articleService.findArticles();
+		model.addAttribute("articles", articles);
+		return "index";
+	}
 
-    @GetMapping("/articles/{index}")
-    public String showArticle(@PathVariable("index") Long index, Model model) {
-        model.addAttribute("article", articleRepository.findByIndex(index).get());
-        return "/qna/detail";
-    }
+	@GetMapping("/articles/{index}")
+	public String showArticle(@PathVariable Long index, Model model) {
+		articleService.increaseHits(index);
+		model.addAttribute("article", articleService.findByIndex(index).get());
+		return "qna/detail";
+	}
 }

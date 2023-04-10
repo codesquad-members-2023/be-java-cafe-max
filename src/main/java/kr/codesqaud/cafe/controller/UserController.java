@@ -1,61 +1,54 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.UserDto;
-import kr.codesqaud.cafe.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
-import java.util.List;
+import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.UserDto;
+import kr.codesqaud.cafe.service.UserService;
 
 @Controller
 public class UserController {
-    private final UserRepository userRepository;
+	private final UserService userService;
 
-    @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
 
-    @GetMapping("/user/list")
-    public String userList(Model model) {
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        return "/user/list";
-    }
+	@GetMapping("/users")
+	public String userList(Model model) {
+		List<User> users = userService.findUsers();
+		model.addAttribute("users", users);
+		return "user/list";
+	}
 
-    @PostMapping("/user/create")
-    public String create(UserDto userDto) {
-        userRepository.save(userDto);
-        return "redirect:/users";
-    }
+	@PostMapping("/user/create")
+	public String create(UserDto userDto) {
+		userService.join(userDto);
+		return "redirect:/users";
+	}
 
-    @GetMapping("/users")
-    public String list(Model model) {
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
-        return "/user/list";
-    }
+	@GetMapping("/users/{userID}")
+	public String profile(@PathVariable String userID, Model model) {
+		model.addAttribute("user", userService.findOne(userID).get());
+		return "user/profile";
+	}
 
-    @GetMapping("/users/{userID}")
-    public String profile(@PathVariable("userID") String userID, Model model) {
-        model.addAttribute("user", userRepository.findByUserID(userID).get());
-        return "/user/profile";
-    }
+	@GetMapping("/users/{userID}/form")
+	public String updateForm(@PathVariable String userID, Model model) {
+		model.addAttribute("user", userService.findOne(userID).get());
+		return "user/updateForm";
+	}
 
-    @GetMapping("/users/{userID}/form")
-    public String updateForm(@PathVariable String userID, Model model) {
-        model.addAttribute("user", userRepository.findByUserID(userID).get());
-        return "/user/updateForm";
-    }
-
-    @PostMapping("/user/{userID}/update")
-    public String updateUserInfo(@PathVariable String userID, UserDto userDto) {
-        userRepository.update(userID, userDto);
-        return "redirect:/users";
-    }
+	@PutMapping("/user/{userID}/update")
+	public String updateUserInfo(UserDto userDto) {
+		userService.update(userDto);
+		return "redirect:/users";
+	}
 }

@@ -1,46 +1,55 @@
 package kr.codesqaud.cafe.domain;
 
 public class Article {
-    private Long index;
-    private String title;
-    private String writer;
-    private String contents;
-    private String writeDate;
-    private Long hits = 0L;
+	private Long index;
+	private String title;
+	private String writer;
+	private String contents;
+	private String writeDate;
+	private long hits;
 
-    public Article(Long index, String title, String writer, String contents, String writeDate) {
-        this.index = index;
-        this.title = title;
-        this.writer = writer;
-        this.contents = contents;
-        this.writeDate = writeDate;
-    }
+	public Article(Long index, String title, String writer, String contents, String writeDate, Long hits) {
+		this.index = index;
+		this.title = title;
+		this.writer = writer;
+		this.contents = contents;
+		this.writeDate = writeDate;
+		this.hits = hits;
+	}
 
-    public Long getIndex() {
-        return index;
-    }
+	public Article(String title, String writer, String contents, String writeDate, Long hits) {
+		this.title = title;
+		this.writer = writer;
+		this.contents = contents;
+		this.writeDate = writeDate;
+		this.hits = hits;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public Long getIndex() {
+		return index;
+	}
 
-    public String getWriter() {
-        return writer;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public String getContents() {
-        return contents;
-    }
+	public String getWriter() {
+		return writer;
+	}
 
-    public String getWriteDate() {
-        return writeDate;
-    }
+	public String getContents() {
+		return contents;
+	}
 
-    public Long getHits() {
-        return hits;
-    }
+	public String getWriteDate() {
+		return writeDate;
+	}
 
-    public void setHits(Long hits) {
-        this.hits = hits;
-    }
+	public long getHits() {
+		return hits;
+	}
+
+	public void setHits(long hits) {
+		this.hits = hits;
+	}
 }
