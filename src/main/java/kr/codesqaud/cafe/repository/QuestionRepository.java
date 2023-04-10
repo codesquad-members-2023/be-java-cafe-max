@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.Question;
-import kr.codesqaud.cafe.dto.QuestionDetailsDTO;
+import kr.codesqaud.cafe.dto.QuestionDetailDTO;
 import kr.codesqaud.cafe.dto.QuestionTitleDTO;
 import kr.codesqaud.cafe.dto.QuestionWriteDTO;
 import kr.codesqaud.cafe.dummy.CollectionFrameworkRepositoryDummyData;
@@ -40,7 +40,7 @@ public class QuestionRepository {
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public QuestionDetailsDTO selectByIdx(int idx) throws NoSuchElementException {
+	public QuestionDetailDTO selectByIdx(int idx) throws NoSuchElementException {
 		for (Question question : questionTable.select()) {
 			if (question.getIdx() == idx) {
 				return question.toDetailsDto();

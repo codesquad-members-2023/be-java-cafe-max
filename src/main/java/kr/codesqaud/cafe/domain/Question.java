@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDateTime;
 
-import kr.codesqaud.cafe.dto.QuestionDetailsDTO;
+import kr.codesqaud.cafe.dto.QuestionDetailDTO;
 import kr.codesqaud.cafe.dto.QuestionTitleDTO;
 
 public class Question {
@@ -10,14 +10,14 @@ public class Question {
 	private String writer;
 	private String title;
 	private String contents;
-	private LocalDateTime registrationDate;
+	private LocalDateTime registrationDateTime;
 
-	public Question(int idx, String writer, String title, String contents, LocalDateTime registrationDate) {
+	public Question(int idx, String writer, String title, String contents, LocalDateTime registrationDateTime) {
 		this.idx = idx;
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
-		this.registrationDate = registrationDate;
+		this.registrationDateTime = registrationDateTime;
 	}
 
 	public int getIdx() {
@@ -36,15 +36,15 @@ public class Question {
 		return contents;
 	}
 
-	public LocalDateTime getRegistrationDate() {
-		return registrationDate;
+	public LocalDateTime getRegistrationDateTime() {
+		return registrationDateTime;
 	}
 
-	public QuestionDetailsDTO toDetailsDto() {
-		return new QuestionDetailsDTO(idx, writer, title, contents, registrationDate);
+	public QuestionDetailDTO toDetailsDto() {
+		return new QuestionDetailDTO(idx, writer, title, contents, registrationDateTime);
 	}
 
 	public QuestionTitleDTO toTitleDto() {
-		return new QuestionTitleDTO(idx, writer, title, registrationDate);
+		return new QuestionTitleDTO(idx, writer, title, registrationDateTime);
 	}
 }

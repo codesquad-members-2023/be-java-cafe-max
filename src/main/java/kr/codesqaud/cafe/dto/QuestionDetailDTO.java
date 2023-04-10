@@ -5,19 +5,20 @@ import java.time.LocalDateTime;
 /**
  * Q&A 게시판 글 하나의 디테일한 정보를 저장할 DTO
  */
-public class QuestionDetailsDTO {
+public class QuestionDetailDTO {
 	private final int idx;
 	private final String writer;
 	private final String title;
 	private final String contents;
-	private final LocalDateTime registrationDate;
+	private final LocalDateTime registrationDateTime;
 
-	public QuestionDetailsDTO(int idx, String writer, String title, String contents, LocalDateTime registrationDate) {
+	public QuestionDetailDTO(int idx, String writer, String title, String contents,
+		LocalDateTime registrationDateTime) {
 		this.idx = idx;
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
-		this.registrationDate = registrationDate;
+		this.registrationDateTime = registrationDateTime;
 	}
 
 	public int getIdx() {
@@ -36,7 +37,7 @@ public class QuestionDetailsDTO {
 		return contents;
 	}
 
-	public LocalDateTime getRegistrationDate() {
-		return registrationDate;
+	public LocalDateTime getRegistrationDateTime() {
+		return registrationDateTime;
 	}
 }

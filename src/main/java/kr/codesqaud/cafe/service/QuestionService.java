@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.domain.PageHandler;
 import kr.codesqaud.cafe.dto.QuestionBoardDTO;
-import kr.codesqaud.cafe.dto.QuestionDetailsDTO;
+import kr.codesqaud.cafe.dto.QuestionDetailDTO;
 import kr.codesqaud.cafe.dto.QuestionTitleDTO;
 import kr.codesqaud.cafe.dto.QuestionWriteDTO;
 import kr.codesqaud.cafe.repository.QuestionRepository;
@@ -47,7 +47,7 @@ public class QuestionService {
 	 * @return Q&A 게시글 상세정보
 	 * @throws NoSuchElementException 없는 게시글의 idx를 조회한 경우 Exception 발생
 	 */
-	public QuestionDetailsDTO findQuestion(int idx) throws NoSuchElementException {
+	public QuestionDetailDTO findQuestion(int idx) throws NoSuchElementException {
 		return repository.selectByIdx(idx);
 	}
 }
