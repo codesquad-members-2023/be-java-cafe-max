@@ -82,9 +82,9 @@ public class UserController {
             loggingError(bindingResult);
             return "account/join";
         }
-        int userId = userService.save(joinForm);
-        session.setAttribute("user", userService.findById((long) userId));
-        return "redirect:/users/" + userId + "/profile";
+        User user = userService.save(joinForm);
+        session.setAttribute("user", user);
+        return "redirect:/users/" + user.getId() + "/profile";
     }
 
     @GetMapping("/users")
@@ -153,7 +153,7 @@ public class UserController {
         if (!Objects.equals(user.getId(), userId)) {
             throw new RuntimeException("접근 할 수 없습니다.");
         }
-        if (!user.isSameEmail(profileEditForm.getEmail()) && userService.isDuplicateEmail(profileEditForm.getEmail())) {
+        if (!user.isSameEmail(profileEditForm.getEmail()) && userService.containsEmail(profileEditForm.getEmail())) {
             bindingResult.rejectValue(EMAIL, "error.email.duplicate");
             loggingError(bindingResult);
             return "account/profileEditForm";
@@ -163,10 +163,8 @@ public class UserController {
             loggingError(bindingResult);
             return "account/profileEditForm";
         }
-        userService.update(user, profileEditForm);
-        if (bindingResult.hasErrors()) {
-            return "account/profileEditForm";
-        }
+        User update = userService.update(user, profileEditForm);
+        httpSession.setAttribute("user", update);
         return "redirect:/users/{userId}/profile";
     }
 }

@@ -19,19 +19,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public int save(JoinForm joinForm) {
+    public User save(JoinForm joinForm) {
         User user = joinForm.toUser();
         return userRepository.save(user);
     }
 
     public List<UserForm> getAllUsersForm() {
-        return userRepository.getAllUsers().stream()
+        return userRepository.findAll().stream()
                 .map(UserForm::from)
                 .collect(Collectors.toList());
     }
 
-    public void update(User user, ProfileEditForm profileEditForm) {
-        userRepository.update(profileEditForm.setUser(user));
+    public User update(User user, ProfileEditForm profileEditForm) {
+        User entity = profileEditForm.setUser(user);
+        return userRepository.save(entity);
     }
 
     public boolean isSamePassword(User user, String targetPassword) {
@@ -43,15 +44,11 @@ public class UserService {
     }
 
     public boolean containsEmail(String email) {
-        return userRepository.containsEmail(email);
+        return userRepository.existsByEmail(email);
     }
 
-    public User findById(Long userId) {
+    public Optional<User> findById(Long userId) {
         return userRepository.findById(userId);
-    }
-
-    public boolean isDuplicateEmail(String targetEmail) {
-        return userRepository.findByEmail(targetEmail).isPresent();
     }
 
 }
