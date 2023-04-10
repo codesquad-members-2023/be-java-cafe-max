@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -20,28 +21,28 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void save(final Article article) {
-        final String SQL = "INSERT INTO articles (title, writer, contents, createdAt) VALUES (:title, :writer, :contents, :createdAt)";
-        jdbcTemplate.update(SQL, new BeanPropertySqlParameterSource(article));
+        final String sql = "INSERT INTO articles (title, writer, contents, createdAt) VALUES (:title, :writer, :contents, :createdAt)";
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article));
     }
 
     @Override
     public Article findById(final Long id) {
-        final String SQL = "SELECT id, title, writer, contents, createdAt FROM articles WHERE id = :id LIMIT 1";
-        return jdbcTemplate.queryForObject(SQL,
-                Map.of("id", id),
-                BeanPropertyRowMapper.newInstance(Article.class));
+        final String sql = "SELECT id, title, writer, contents, createdAt FROM articles WHERE id = :id LIMIT 1";
+        return jdbcTemplate.queryForStream(sql, Map.of("id", id), BeanPropertyRowMapper.newInstance(Article.class))
+                .findFirst()
+                .orElseThrow(ArticleNotFoundException::new);
     }
 
     @Override
     public List<Article> findAll() {
-        final String SQL = "SELECT id, title, writer, contents, createdAt FROM articles";
-        return jdbcTemplate.query(SQL, BeanPropertyRowMapper.newInstance(Article.class));
+        final String sql = "SELECT id, title, writer, contents, createdAt FROM articles";
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Article.class));
     }
 
     @Override
     public boolean exists(final Long id) {
-        final String SQL = "SELECT id FROM articles WHERE id = :id LIMIT 1";
-        final Integer count = jdbcTemplate.queryForObject(SQL,
+        final String sql = "SELECT count(id) FROM articles WHERE id = :id LIMIT 1";
+        final Integer count = jdbcTemplate.queryForObject(sql,
                 Map.of("id", id),
                 Integer.class);
         return count > 0;

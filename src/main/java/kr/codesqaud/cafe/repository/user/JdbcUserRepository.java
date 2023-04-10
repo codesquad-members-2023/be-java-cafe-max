@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.user;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -26,9 +27,9 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User findByUserId(final String userId) {
         final String sql = "SELECT userId, password, name, email FROM users WHERE userId = :userId LIMIT 1";
-        return jdbcTemplate.queryForObject(sql,
-                Map.of("userId", userId),
-                BeanPropertyRowMapper.newInstance(User.class));
+        return jdbcTemplate.queryForStream(sql, Map.of("userId", userId), BeanPropertyRowMapper.newInstance(User.class))
+                .findFirst()
+                .orElseThrow(UserNotFoundException::new);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public boolean exist(final String userId) {
-        final String sql = "SELECT userId FROM users WHERE userId = :userId LIMIT 1";
+        final String sql = "SELECT count(userId) FROM users WHERE userId = :userId LIMIT 1";
         final Integer count = jdbcTemplate.queryForObject(sql,
                 Map.of("userId", userId),
                 Integer.class);
