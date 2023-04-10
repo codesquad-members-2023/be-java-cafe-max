@@ -11,7 +11,7 @@ public class LoginForm {
     private final String email;
     @NotEmpty
     @Size(max = 32, min = 8, message = "{error.password.size}")
-    @Pattern(regexp = "^(.*[a-z]+.*[1-9]+가.*)|(.*[1-9]+.*[a-z]+.*)$", message = "{error.password.pattern}")
+    @Pattern(regexp = "^(.*[a-z]+.*[1-9]+)|(.*[1-9]+.*[a-z]+.*)$", message = "{error.password.pattern}")
     private final String password;
 
     public LoginForm(String email, String password) {
