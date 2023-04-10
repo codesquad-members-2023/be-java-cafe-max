@@ -34,7 +34,7 @@
         @Service -> 비지니스 로직(무슨 뜻인지 아직 잘 모름)<br> 
         @Repository -> 저장소<br>
         @AutoWired -> (뭔지 아직 모름)<br>
-        @RequestBody -> POST API인데 Json일때 필요
+        @RequestBody -> POST API인데 Json일때 필요(아직 잘 모름)
 
 
 - 기존에 가입했던 회원들 목록이 조회 화면에서 정렬되서 보여져야 될 텐데(자동으로 되는지 아직 모름)<br>
@@ -50,4 +50,16 @@
 - @Service: Service 클래스(@Component)
 - Service 클래스 하는 역할: ??
 - Model: .addAttribute로 컨트롤러에서 데이터를 받아서 view(mustache)에 전달(ui 구성 역할)
-- redirect: F5
+
+# 4월 10일 학습계획
+- [!!] bean과 di에 대해 알아보기
+- [] 리뷰 코멘트 받은 부분들 매우 확인
+
+### 이번 주 학습계획
+- 수단과 방법을 가리지 말고 진도 따라잡기....!!!!!!  :fire:
+> [] 1단계-1 (성공 직전....!!..(일지도?))<br>
+> [] 1단계-2<br>
+> [] 1단계-3<br>
+> [] 2단계<br>
+> [] 3단계<br>
+> [] 3단계 배포<br>
