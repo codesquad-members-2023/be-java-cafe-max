@@ -32,8 +32,8 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{postId}")
-    public String showDetailPost(@PathVariable Long id, Model model) {
-        ArticleResponseDto post = articleService.findPost(id);
+    public String showDetailPost(@PathVariable Long postId, Model model) {
+        ArticleResponseDto post = articleService.findPost(postId);
         model.addAttribute("post", post);
         return "qna/show";
     }

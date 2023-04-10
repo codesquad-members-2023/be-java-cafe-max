@@ -15,18 +15,16 @@ import java.util.List;
 public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final SimpleJdbcInsert insertAction;
 
     public JdbcTemplateArticleRepository(final DataSource dataSource) {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        this.insertAction = new SimpleJdbcInsert(dataSource)
-                .withTableName("article");
     }
 
     @Override
     public void save(final Article article) {
+        String sql = "insert into article(writer, title, contents, createdAt) values (:writer, :title, :contents, :createdAt) ";
         SqlParameterSource params = new BeanPropertySqlParameterSource(article);
-        insertAction.execute(params);
+        namedParameterJdbcTemplate.update(sql, params);
     }
 
     @Override

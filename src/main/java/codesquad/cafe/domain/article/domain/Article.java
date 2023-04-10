@@ -37,6 +37,14 @@ public class Article {
         return title;
     }
 
+    public String getContents() {
+        return contents;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public Article createdWith(final long id) {
         this.id = id;
         return this;
