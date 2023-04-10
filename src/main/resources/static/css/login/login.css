@@ -1,0 +1,172 @@
+.col-md-12 {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.navbar-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.active {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+}
+
+li {
+    margin: 3px;
+}
+
+.black-component {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+    background-color: black;
+    color: white;
+}
+
+.black-component:hover {
+    background-color: #ffcd00;
+    color: black;
+}
+
+.navbar-right {
+    display: flex;
+}
+
+.container {
+    margin-left: 10%;
+    width: 80%;
+}
+
+.title {
+    font-size: 32px;
+    text-align: center;
+    font-weight: 500;
+    margin-top: 100px;
+    margin-bottom: 60px;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    width: 40%;
+    height: 30px;
+    font-size: 14px;
+    background-color: black;
+    color: white;
+    margin: 20px;
+}
+
+.post-btn-container {
+    display: flex;
+    justify-content: end;
+}
+
+.btn:hover {
+    background-color: #ffcd00;
+    color: black;
+}
+
+.form-group {
+    padding: 20px;
+    display: flex;
+    border: 1px solid lightgray;
+    margin: 20px;
+    width: 40%;
+}
+
+.form-control {
+    border:none;
+}
+
+.form-control:focus {
+    outline: none;
+}
+
+label {
+    width: 25%;
+}
+
+/* 비밀번호 찾기, 아이디 찾기, 회원가입 CSS */
+
+.find_wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.find_text {
+    color: #03c75a;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.find_text:hover {
+    text-decoration: underline;
+}
+
+#find_wrap ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
+
+#find_wrap li {
+    display: block;
+    padding: 0;
+}
+
+#find_wrap li a {
+    display: block;
+    padding: 0 3px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+
+#find_wrap li a:hover {
+    background-color: #f8f8f8;
+}
+
+#find_wrap:before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    right: 18px;
+    border: 12px solid transparent;
+    border-bottom-color: #ebebeb;
+}
+
+#find_wrap:after {
+    content: "";
+    position: absolute;
+    top: -11px;
+    right: 18px;
+    border: 11px solid transparent;
+    border-bottom-color: #fff;
+}
