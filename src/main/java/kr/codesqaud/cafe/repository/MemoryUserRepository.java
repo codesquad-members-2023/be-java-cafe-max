@@ -38,6 +38,7 @@ public class MemoryUserRepository implements UserRepository {
         return store.values().stream().collect(Collectors.toUnmodifiableList());
     }
 
+    @Override
     public void clearStore(){
         store.clear();
     }
