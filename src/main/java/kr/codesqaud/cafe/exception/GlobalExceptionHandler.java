@@ -31,6 +31,12 @@ public class GlobalExceptionHandler {
 		return "user/login";
 	}
 
+	@ExceptionHandler(NoAuthorizationException.class)
+	public String handleNoAuthorization(final NoAuthorizationException e, final Model model) {
+		model.addAttribute("error", e.getMessage());
+		return "error";
+	}
+
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(final Exception e, final Model model) {
 		model.addAttribute("error", "죄송합니다. 서버 에러가 발생했습니다.");
