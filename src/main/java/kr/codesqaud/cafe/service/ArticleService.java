@@ -3,8 +3,11 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.article.repository.ArticleRepository;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
+import kr.codesqaud.cafe.dto.LoginSessionDto;
+import kr.codesqaud.cafe.exception.DeniedAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -16,13 +19,21 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public boolean writeArticle(ArticleFormDto dto){
+    public boolean writeArticle(ArticleFormDto dto,HttpSession session){
+        LoginSessionDto loginSessionDto = (LoginSessionDto) session.getAttribute("sessionId");
         Article article = new Article.Builder()
                 .title( dto.getTitle())
-                .writer( dto.getWriter())
+                .writer( loginSessionDto.getName())
                 .contents(dto.getContents())
                 .build();
         articleRepository.save(article);
+        return true;
+    }
+
+    public boolean checkLogin(HttpSession session){
+        if(session.getAttribute("sessionId") == null) {
+            throw new DeniedAccessException("로그인 한 유저만 접근가능.");
+        }
         return true;
     }
 
