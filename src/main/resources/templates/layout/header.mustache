@@ -17,9 +17,22 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/articles/list">게시판</a>
                 </li>
+                {{^session.user}}
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/login">로그인/회원가입</a>
+                    <a class="nav-link" href="/user/login">로그인</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/sign-up-form">회원가입</a>
+                </li>
+                {{/session.user}}
+                {{#session.user}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/session-logout">로그아웃</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/modify">개인정보수정</a>
+                </li>
+                {{/session.user}}
                 <li class="nav-item">
                     <a class="nav-link" href="#">후원</a>
                 </li>
