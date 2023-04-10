@@ -28,7 +28,7 @@ public class UserService {
 
     //중복 확인(중복이 들어오면 에러 페이지로 감)
     private void validateDuplicateMember(User user) {
-        userRepository.findByID(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
@@ -48,7 +48,15 @@ public class UserService {
 
     //특정 회원 조회(+DTO 필터)
     public UserProfileDto getUserProfile(String userId) {
-        User user = userRepository.findByID(userId).get();
+        User user = userRepository.findById(userId).orElse(null);
         return new UserProfileDto(user.getName(), user.getEmail());
+    }
+
+    public User findAndAuthenticate(String userId, String password) {
+        User user = userRepository.findById(userId).orElse(null);
+        if(user != null){
+            return user.getPassword().equals(password) ? user : null;
+        }
+        return null;
     }
 }
