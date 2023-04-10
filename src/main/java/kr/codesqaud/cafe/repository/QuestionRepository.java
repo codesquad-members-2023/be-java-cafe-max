@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.repository;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -13,28 +12,28 @@ import kr.codesqaud.cafe.dto.QuestionDetailsDTO;
 import kr.codesqaud.cafe.dto.QuestionTitleDTO;
 import kr.codesqaud.cafe.dto.QuestionWriteDTO;
 import kr.codesqaud.cafe.dummy.CollectionFrameworkRepositoryDummyData;
+import kr.codesqaud.cafe.repository.temp_memory_db.TempQuestionTable;
 
 @Repository
 public class QuestionRepository {
-	private final List<Question> questions;
-	private int questionIdx = 1;
+	private final TempQuestionTable questionTable;
 
 	public QuestionRepository() {
-		this.questions = new ArrayList<>();
+		questionTable = new TempQuestionTable();
 		CollectionFrameworkRepositoryDummyData dummyData = new CollectionFrameworkRepositoryDummyData();
-		questionIdx = dummyData.insertQuestionsDummyData(this.questions, this.questionIdx);
+		dummyData.insertQuestionsDummyData(questionTable);
 	}
 
 	public synchronized void insert(QuestionWriteDTO dto) {
-		questions.add(dto.toEntity(questionIdx++));
+		questionTable.insert(dto);
 	}
 
 	public int countAll() {
-		return questions.size();
+		return questionTable.countAll();
 	}
 
 	public List<QuestionTitleDTO> selectQuestionTitlesByOffset(int postOffset, int pageSize) {
-		return questions.stream()
+		return questionTable.select().stream()
 			.sorted(Comparator.comparing(Question::getIdx).reversed())
 			.skip(postOffset).limit(pageSize)
 			.map(Question::toTitleDto)
@@ -42,7 +41,7 @@ public class QuestionRepository {
 	}
 
 	public QuestionDetailsDTO selectByIdx(int idx) throws NoSuchElementException {
-		for (Question question : questions) {
+		for (Question question : questionTable.select()) {
 			if (question.getIdx() == idx) {
 				return question.toDetailsDto();
 			}
