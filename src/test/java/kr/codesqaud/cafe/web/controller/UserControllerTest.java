@@ -41,8 +41,9 @@ class UserControllerTest {
     private MockHttpSession session;
 
     @BeforeEach
-    public void session() {
+    public void beforeEach() throws Exception {
         session = new MockHttpSession();
+        createSampleUser("yonghwan1107", "yonghwan1107", "김용환", "yonghwan1107@naver.com");
     }
 
     @AfterEach
@@ -55,9 +56,9 @@ class UserControllerTest {
     public void save_success() throws Exception {
         //given
         String userId = "user1";
-        String password = "user1user1@";
-        String name = "홍길동";
-        String email = "user1@gmail.com";
+        String password = "user1user1";
+        String name = "김용일";
+        String email = "user1@naver.com";
         String url = "/users";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
         //when
@@ -66,7 +67,7 @@ class UserControllerTest {
                 .content(toJSON(dto)))
             .andExpect(status().isOk());
         //then
-        User user = userRepository.findAll().get(0);
+        User user = userRepository.findByUserId(userId).orElseThrow();
         Assertions.assertThat(user.getUserId()).isEqualTo(userId);
         Assertions.assertThat(user.getPassword()).isEqualTo(password);
         Assertions.assertThat(user.getName()).isEqualTo(name);
@@ -77,17 +78,12 @@ class UserControllerTest {
     @DisplayName("회원가입 아이디 중복 테스트")
     public void save_fail1() throws Exception {
         //given
-        String userId = "user1";
-        String password = "user1user1@";
-        String name = "홍길동";
-        String email = "user1@gmail.com";
+        String userId = "yonghwan1107";
+        String password = "yonghwan1107";
+        String name = "김용환";
+        String email = "yonghwan1107@naver.com";
         String url = "/users";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
-        mockMvc.perform(post(url)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(toJSON(dto)));
-
-        dto = new UserSavedRequestDto(userId, password, name, email);
         //when
         MockHttpServletResponse response =
             mockMvc.perform(post(url)
@@ -96,8 +92,8 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         //then
-        Map map = new ObjectMapper().readValue(response.getContentAsString(StandardCharsets.UTF_8),
-            Map.class);
+        Map map = new ObjectMapper()
+            .readValue(response.getContentAsString(StandardCharsets.UTF_8), Map.class);
         Assertions.assertThat(map.get("errorCode")).isEqualTo(600);
         Assertions.assertThat(map.get("httpStatus")).isEqualTo("OK");
         Assertions.assertThat(map.get("errorMessage")).isEqualTo("이미 존재하는 아이디입니다.");
@@ -107,17 +103,12 @@ class UserControllerTest {
     @DisplayName("회원가입 이메일 중복 테스트")
     public void save_fail2() throws Exception {
         //given
-        String userId = "user1";
-        String password = "user1user1@";
-        String name = "홍길동";
-        String email = "user1@gmail.com";
+        String userId = "kimyonghwan1107";
+        String password = "yonghwan1107";
+        String name = "김용환";
+        String duplicatedEmail = "yonghwan1107@naver.com";
         String url = "/users";
-        UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
-        mockMvc.perform(post(url)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(toJSON(dto)));
-
-        dto = new UserSavedRequestDto("user2", password, name, email);
+        UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, duplicatedEmail);
         //when
         MockHttpServletResponse response =
             mockMvc.perform(post(url)
@@ -139,7 +130,7 @@ class UserControllerTest {
         //given
         String userId = "a";
         String password = "u";
-        String name = "김용환!@#$";
+        String name = "김용일!@#$";
         String email = "user1";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
         String url = "/users";
@@ -178,33 +169,25 @@ class UserControllerTest {
     @DisplayName("특정 회원의 프로필이 검색되는지 테스트")
     public void profile() throws Exception {
         //given
-        String userId = "user1";
-        String password = "user1user1";
-        String name = "김용환";
-        String email = "user1@naver.com";
-        UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
-        String url = "/users";
-        mockMvc.perform(post(url)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(toJSON(dto)));
+        Long id = userRepository.findByUserId("yonghwan1107").orElseThrow().getId();
+        String url = "/users/" + id;
         //when
-        url = "/users/1";
         ModelMap modelMap = mockMvc.perform(get(url))
             .andExpect(status().isOk())
             .andReturn().getModelAndView().getModelMap();
         //then
         UserResponseDto profile = (UserResponseDto) modelMap.getAttribute("user");
-        Assertions.assertThat(profile.getId()).isEqualTo(1L);
-        Assertions.assertThat(profile.getUserId()).isEqualTo("user1");
+        Assertions.assertThat(profile.getId()).isEqualTo(id);
+        Assertions.assertThat(profile.getUserId()).isEqualTo("yonghwan1107");
         Assertions.assertThat(profile.getName()).isEqualTo("김용환");
-        Assertions.assertThat(profile.getEmail()).isEqualTo("user1@naver.com");
+        Assertions.assertThat(profile.getEmail()).isEqualTo("yonghwan1107@naver.com");
     }
 
     @Test
     @DisplayName("브라우저 URI에 DB에 없는 회원 아이디로 프로필을 보고자 할때 전체 회원 목록조회로 이동되는지 테스트")
     public void profile_fail() throws Exception {
         //given
-        String url = "/users/1";
+        String url = "/users/10";
         //when
         mockMvc.perform(get(url)).andExpect(status().is3xxRedirection());
         //then
@@ -214,9 +197,8 @@ class UserControllerTest {
     @DisplayName("로그인 성공 테스트")
     public void login_success() throws Exception {
         //given
-        createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
-        String userId = "user1";
-        String password = "user1user1@";
+        String userId = "yonghwan1107";
+        String password = "yonghwan1107";
         String url = "/users/login";
         UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
 
@@ -230,15 +212,14 @@ class UserControllerTest {
         UserResponseDto user = (UserResponseDto) session.getAttribute("user");
         Assertions.assertThat(user.getUserId()).isEqualTo(userId);
         Assertions.assertThat(user.getName()).isEqualTo("김용환");
-        Assertions.assertThat(user.getEmail()).isEqualTo("user1@gmail.com");
+        Assertions.assertThat(user.getEmail()).isEqualTo("yonghwan1107@naver.com");
     }
 
     @Test
     @DisplayName("로그인 비밀번호 불일치 테스트")
     public void login_fail1() throws Exception {
         //given
-        createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
-        String userId = "user1";
+        String userId = "yonghwan1107";
         String password = "useaweiofjaw";
         String url = "/users/login";
         UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
@@ -261,7 +242,6 @@ class UserControllerTest {
     @DisplayName("로그인 부적절한 입력 형식 테스트")
     public void login_fail2() throws Exception {
         //given
-        createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
         String userId = "";
         String password = "";
         String url = "/users/login";
@@ -293,9 +273,8 @@ class UserControllerTest {
     @DisplayName("로그인 회원이 없는 경우 테스트")
     public void login_fail3() throws Exception {
         //given
-        createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
-        String userId = "user2";
-        String password = "user2user2";
+        String userId = "user10";
+        String password = "user10user10";
         String url = "/users/login";
         UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
         //when
@@ -317,12 +296,12 @@ class UserControllerTest {
     @DisplayName("회원 수정 성공 테스트")
     public void update_success() throws Exception {
         //given
-        createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
-        String userId = "user1";
-        String modifiedPassword = "user2user2@";
-        String modifiedName = "김용환";
-        String modifiedEmail = "user1@gmail.com";
-        String url = "/users/1/update";
+        String userId = "yonghwan1107";
+        String modifiedPassword = "yonghwan1234";
+        String modifiedName = "홍길동";
+        String modifiedEmail = "yonghwan1234@naver.com";
+        Long id = userRepository.findByUserId(userId).orElseThrow().getId();
+        String url = "/users/" + id + "/update";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, modifiedPassword, modifiedName,
             modifiedEmail);
         //when
@@ -331,23 +310,23 @@ class UserControllerTest {
                 .content(toJSON(dto)))
             .andExpect(status().is3xxRedirection());
         //then
-        User actual = userRepository.findByUserId("user1").orElseThrow();
+        User actual = userRepository.findByUserId(userId).orElseThrow();
         Assertions.assertThat(actual.getName()).isEqualTo(modifiedName);
         Assertions.assertThat(actual.getPassword()).isEqualTo(modifiedPassword);
+        Assertions.assertThat(actual.getEmail()).isEqualTo(modifiedEmail);
     }
 
     @Test
     @DisplayName("회원 수정 이메일 중복으로 인한 테스트")
     public void update_fail() throws Exception {
         //given
-        createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
-        createSampleUser("user2", "user2user2@", "홍길동", "user2@gmail.com");
-
-        String userId = "user1";
-        String modifiedPassword = "user1user1@";
+        createSampleUser("user1", "user1user1", "홍길동", "user1@naver.com");
+        String userId = "yonghwan1107";
+        String modifiedPassword = "yonghwan1107";
         String modifiedName = "김용환";
-        String modifiedEmail = "user2@gmail.com";
-        String url = "/users/1/update";
+        String modifiedEmail = "user1@naver.com";
+        Long id = userRepository.findByUserId(userId).orElseThrow().getId();
+        String url = "/users/" + id + "/update";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, modifiedPassword, modifiedName,
             modifiedEmail);
         //when
@@ -365,30 +344,20 @@ class UserControllerTest {
         Assertions.assertThat(map.get("errorMessage")).isEqualTo("이미 존재하는 이메일입니다.");
     }
 
-    private void createSampleUser(String userId, String password, String name, String email)
-        throws Exception {
-        String url = "/users";
-        UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
-        mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJSON(dto)))
-            .andExpect(status().isOk());
-    }
-
     @Test
     @DisplayName("비밀번호가 맞는지 테스트")
     public void password_success() throws Exception {
         //given
-        createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
-        String url = "/users/password/1";
-        String password = "user1user1@";
+        Long id = userRepository.findByUserId("yonghwan1107").orElseThrow().getId();
+        String url = "/users/password/" + id;
+        String password = "yonghwan1107";
         UserSavedRequestDto dto = new UserSavedRequestDto(null, password, null, null);
         //when
         mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/user/form/1"));
+            .andExpect(redirectedUrl("/user/form/" + id));
         //then
     }
 
@@ -396,9 +365,9 @@ class UserControllerTest {
     @DisplayName("비밀번호가 틀려서 에러 메시지를 응답 받는지 테스트")
     public void password_fail() throws Exception {
         //given
-        createSampleUser("user1", "user1user1@", "김용환", "user1@gmail.com");
-        String url = "/users/password/1";
-        String password = "user1aowei";
+        Long id = userRepository.findByUserId("yonghwan1107").orElseThrow().getId();
+        String url = "/users/password/" + id;
+        String password = "awioefjoawiefj";
         UserSavedRequestDto dto = new UserSavedRequestDto(null, password, null, null);
         //when
         MockHttpServletResponse response = mockMvc.perform(post(url)
@@ -413,6 +382,17 @@ class UserControllerTest {
         Assertions.assertThat(map.get("httpStatus")).isEqualTo("OK");
         Assertions.assertThat(map.get("errorMessage")).isEqualTo("비밀번호가 일치하지 않습니다.");
     }
+
+    private void createSampleUser(String userId, String password, String name, String email)
+        throws Exception {
+        String url = "/users";
+        UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
+        mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJSON(dto)))
+            .andExpect(status().isOk());
+    }
+
 
     private <T> String toJSON(T data) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(data);
