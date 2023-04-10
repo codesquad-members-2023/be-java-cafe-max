@@ -1,14 +1,61 @@
 package kr.codesqaud.cafe.account;
 
+
+import kr.codesqaud.cafe.post.Post;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "ACCOUNT")
 public class User {
 
-    public static final String BLANK = "";
-    private final Long id;
-    private final String nickname;
-    private final String email;
-    private final String password;
+    private static final String BLANK = "";
+    @Id
+    @GeneratedValue
+    @Column(name = "user_id")
+    private Long id;
+    private String nickname;
+    @Column(unique = true)
+    private String email;
+    private String password;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
-    private final Role role;
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts = new ArrayList<>();
+
+    public User() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
 
     private User(Builder builder) {
         this.id = builder.id;

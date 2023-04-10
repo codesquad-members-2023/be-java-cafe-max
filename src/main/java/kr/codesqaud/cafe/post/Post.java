@@ -1,17 +1,59 @@
 package kr.codesqaud.cafe.post;
 
+import kr.codesqaud.cafe.account.User;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 public class Post {
-    private final Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    private final String nickname;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID",insertable = false,updatable = false)
+    private User user;
 
-    private final String title;
+    private String nickname;
 
-    private final String textContent;
+    private String title;
 
-    private final LocalDateTime createdDateTime;
+    private String textContent;
+
+    private LocalDateTime createdDateTime;
+
+
+    public Post() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
+
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
 
     private Post(Builder builder) {
         this.id = builder.id;
