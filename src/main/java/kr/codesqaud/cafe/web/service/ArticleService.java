@@ -25,9 +25,8 @@ public class ArticleService {
     }
 
     public ArticleResponseDto write(ArticleSavedRequestDto requestDto) {
-        Long nextId = repository.nextId();
         User user = userService.findUser(requestDto.getUserId());
-        Article save = repository.save(requestDto.toEntity(nextId, user.getId()));
+        Article save = repository.save(requestDto.toEntity(user));
         return new ArticleResponseDto(save);
     }
 
