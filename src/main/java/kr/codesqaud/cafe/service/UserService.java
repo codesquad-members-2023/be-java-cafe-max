@@ -30,12 +30,20 @@ public class UserService {
 
     public boolean update(User user, UpdateFormDto dto) {
         User current = user;
-        if (current.checkPassword(dto)) {
+        if (current.checkPassword(dto.getPassword())) {
             userRepository.update(new User(user.getUserId(), dto.getNewPassword(), dto.getName(), dto.getEmail()));
             return true;
         }
         return false;
 
+    }
+
+    public boolean login(String id,String password){
+        User loginUser = userRepository.findById(id);
+        if(!loginUser.checkPassword(password)){
+            throw new IllegalArgumentException("로그인 실패");
+        }
+        return true;
     }
 
 

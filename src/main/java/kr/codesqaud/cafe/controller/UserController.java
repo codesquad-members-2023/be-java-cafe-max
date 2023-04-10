@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -52,6 +53,14 @@ public class UserController {
     public String putUpdate(@PathVariable String id, UpdateFormDto updateFormDto) {
         userService.update(userService.findById(id), updateFormDto);
         return "redirect:/user";
+    }
+
+    @PostMapping("/signIn")
+    public String signIn (@RequestParam("userId")String id, @RequestParam("password")String password,
+                          HttpSession session){
+        userService.login(id,password);
+        session.setAttribute("sessionID",id);
+        return "redirect:/";
     }
 
 

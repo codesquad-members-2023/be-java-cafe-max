@@ -22,8 +22,8 @@ public class User {
         this(0,userId,password,name,email);
     }
 
-    public boolean checkPassword(UpdateFormDto updateFormDto) {
-        return password.equals(updateFormDto.getPassword());
+    public boolean checkPassword(String FormPassword) {
+        return password.equals(FormPassword);
     }
 
     public int getIndex() {
