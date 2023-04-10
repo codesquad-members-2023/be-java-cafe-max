@@ -27,4 +27,12 @@ public class ArticleResponseDto {
     public String getTitle() {
         return title;
     }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
 }
