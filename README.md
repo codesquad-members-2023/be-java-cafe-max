@@ -127,15 +127,19 @@
   - [ ] 로그인 상태 시 상단 메뉴에서 “로그아웃”, “개인정보수정”을 표시하는 기능
 
 ## 📌 URL 및 메서드 컨벤션
-| 기능           | URI               | templates          | HTTP 메서드  |
-|:-------------|:------------------|:-------------------|:----------|
-| 회원 가입        | /user/create      | /user/form.html    | `POST`    |
-| 회원 목록 조회     | /users            | /user/list.html    | `GET`     |
-| 특정 회원 프로필 조회 | /users/{userId}   | /user/profile.html | `GET`     |
-| 게시글 쓰기       | /article/write    | /qna/form.html     | `POST`    |
-| 게시글 목록 조회    | /articles         | /index.html        | `GET`     |
-| 게시글 상세 보기    | /articles/{index} | /qna/show.html     | `GET`     |
-| 에러 페이지       | /error            | /error.html        | `GET`     |
+| 기능            | URI               | templates          | HTTP 메서드 |
+|:--------------|:------------------|:-------------------|:---------|
+| 회원 가입 페이지 조회  | /users/new        | /user/form.html    | `GET`    |
+| 회원 가입 폼 제출    | /users            | /user/form.html    | `POST`   |
+| 회원 목록 조회      | /users            | /user/list.html    | `GET`    |
+| 특정 회원 프로필 조회  | /users/{userId}   | /user/profile.html | `GET`    |
+| 게시글 쓰기 페이지 조회 | /articles/new     | /qna/form.html     | `GET`    |
+| 게시글 폼 제출      | /articles         | /qna/form.html     | `POST`   |
+| 게시글 목록 조회     | /articles         | /index.html        | `GET`    |
+| 게시글 상세 보기     | /articles/{index} | /qna/show.html     | `GET`    |
+| 에러 페이지        | /error            | /error.html        | `GET`    |
+| 로그인 페이지 조회    | /login            | /user/login.html   | `GET`    |
+| 로그인 폼 제출      | /login            | /user/login.html   | `POST`   |
 
 ## ⚡️ 개선 필요 사항
 - [X] html 중복 코드 분리
