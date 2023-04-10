@@ -17,7 +17,7 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        article.setIdUsingSequence(sequence.incrementAndGet());
+        article.setId(sequence.incrementAndGet());
         STORE.put(article.getId(), article);
     }
 
