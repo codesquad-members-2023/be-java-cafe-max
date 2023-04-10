@@ -43,7 +43,8 @@ public class UserController {
     }
 
     @GetMapping("/update/{id}")
-    public String getUpdateForm(@PathVariable String id, Model model) {
+    public String getUpdateForm(@PathVariable String id, Model model, HttpSession session) {
+        userService.updateAccess(id,session);
         User user = userService.findById(id);
         model.addAttribute("user", user);
         return "user/update_form";
@@ -60,6 +61,12 @@ public class UserController {
                           HttpSession session){
         userService.login(id,password);
         session.setAttribute("sessionID",id);
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logOut(HttpSession session){
+        session.invalidate();
         return "redirect:/";
     }
 
