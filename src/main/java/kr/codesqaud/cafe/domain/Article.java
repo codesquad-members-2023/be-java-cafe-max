@@ -19,6 +19,12 @@ public class Article {
         this.createdTime = LocalDateTime.now();
     }
 
+    public Article(String writer, String title, String contents, LocalDateTime createdTime) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.createdTime = createdTime;
+    }
 
     public String getWriter() {
         return writer;

@@ -52,9 +52,9 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
             Article article = new Article(
                     rs.getString("writer"),
                     rs.getString("title"),
-                    rs.getString("contents"));
+                    rs.getString("contents"),
+                    rs.getTimestamp("createdTime").toLocalDateTime());
             article.setId(rs.getLong("id"));
-            article.setCreatedTime(rs.getTimestamp("createdTime").toLocalDateTime());
             return article;
         };
     }

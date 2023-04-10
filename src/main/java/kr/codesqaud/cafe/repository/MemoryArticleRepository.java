@@ -7,17 +7,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class MemoryArticleRepository implements ArticleRepository {
 
     private Map<Long, Article> articleStore = new ConcurrentHashMap<>(); // { id : Article } 저장
 
-    private static  long sequence = 0L;
+    private static AtomicLong sequence = new AtomicLong(0L);
 
     @Override
     public Article save(Article article) {
-        article.setId(++sequence);
-        articleStore.put(article.getId(), article);
+        long id = sequence.incrementAndGet();
+        article.setId(id);
+        articleStore.put(id, article);
         return article;
     }
 
