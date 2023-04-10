@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private final Map<String, User> STORE = new ConcurrentHashMap<>(); // 동시성 문제
+    private final Map<String, User> STORE = new ConcurrentHashMap<>();
 
     @Override
     public void save(User user) {

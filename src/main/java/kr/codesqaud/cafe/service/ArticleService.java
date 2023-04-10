@@ -19,16 +19,16 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void saveArticle(ArticleSaveRequest articleSaveRequest) { // 새로운 게시글 저장하기
+    public void saveArticle(ArticleSaveRequest articleSaveRequest) {
         articleRepository.save(articleSaveRequest.toArticle());
     }
 
-    public List<ArticleResponse> getAllArticles() { // 모든 게시글 가져오기
+    public List<ArticleResponse> getAllArticles() {
         return articleRepository.findAll().stream().map(ArticleResponse::from).collect(Collectors.toUnmodifiableList());
     }
 
     public ArticleResponse findById(Long id) {
-        if (!articleRepository.exists(id)) { // 게시글 존재 여부 검사
+        if (!articleRepository.exists(id)) {
             throw new ArticleNotFoundException();
         }
 

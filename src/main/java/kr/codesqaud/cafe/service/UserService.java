@@ -22,25 +22,25 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void saveUser(UserSaveRequest userSaveRequest) throws AlreadyUserExistenceException { // 새로운 회원 저장하기
-        if (userRepository.exist(userSaveRequest.getUserId())) { // userId 중복 여부 검사
+    public void saveUser(UserSaveRequest userSaveRequest) throws AlreadyUserExistenceException {
+        if (userRepository.exist(userSaveRequest.getUserId())) {
             throw new AlreadyUserExistenceException(userSaveRequest);
         }
         userRepository.save(userSaveRequest.toUser());
     }
 
-    public List<UserResponse> getAllUsers() { // 모든 회원 가져오기
+    public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream().map(UserResponse::from).collect(Collectors.toUnmodifiableList());
     }
 
-    public void updateUser(UserUpdateRequest userUpdateRequest) { // 기존 회원의 정보를 수정하기
-        if (!userRepository.findByUserId(userUpdateRequest.getUserId()).isPasswordMatched(userUpdateRequest.getCurrentPassword())) { // 현재 비밀번호 일치 여부 검사
+    public void updateUser(UserUpdateRequest userUpdateRequest) {
+        if (!userRepository.findByUserId(userUpdateRequest.getUserId()).isPasswordMatched(userUpdateRequest.getCurrentPassword())) {
             throw new MismatchedPasswordException(userUpdateRequest);
         }
         userRepository.update(userUpdateRequest.toUser());
     }
 
-    public UserResponse findByUserId(String userId) { // DTO 변환은 service 역할 vs controller 역할
+    public UserResponse findByUserId(String userId) {
         if (!userRepository.exist(userId)) {
             throw new UserNotFoundException();
         }
@@ -48,7 +48,7 @@ public class UserService {
         return UserResponse.from(userRepository.findByUserId(userId));
     }
 
-    public UserUpdateRequest makeUserUpdateRequestByUserId(String userId) { // service 역할이 맞을까
+    public UserUpdateRequest makeUserUpdateRequestByUserId(String userId) {
         if (!userRepository.exist(userId)) {
             throw new UserNotFoundException();
         }

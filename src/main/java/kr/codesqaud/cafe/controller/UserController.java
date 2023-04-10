@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String signUp(@ModelAttribute UserSaveRequest userSaveRequest) { // ModelAttribute 이름 미지정 시 클래스 'UserSaveRequest'의 첫 글자를 소문자로 바꾼 'userSaveRequest'로 자동 설정된다.
+    public String signUp(@ModelAttribute UserSaveRequest userSaveRequest) {
         userService.saveUser(userSaveRequest);
         return "redirect:/users";
     }
@@ -50,7 +50,7 @@ public class UserController {
 
     @GetMapping("/{userId}/update")
     public String updateUser(@PathVariable String userId, Model model) {
-        UserUpdateRequest userUpdateRequest = userService.makeUserUpdateRequestByUserId(userId); // UserUpdateRequest를 받아야지만 정상적으로 작동하는데 정확한 이유를 찾지 못했다.
+        UserUpdateRequest userUpdateRequest = userService.makeUserUpdateRequestByUserId(userId);
         model.addAttribute("user", userUpdateRequest);
 
         return "user/update";
