@@ -25,6 +25,12 @@ public class GlobalExceptionHandler {
 		return "user/edit_form";
 	}
 
+	@ExceptionHandler(InvalidLoginInfoException.class)
+	public String handleInvalidLoginInfo(final InvalidLoginInfoException e, final Model model) {
+		model.addAttribute("error", e.getMessage());
+		return "user/login";
+	}
+
 	@ExceptionHandler(Exception.class)
 	public String handleAllException(final Exception e, final Model model) {
 		model.addAttribute("error", "죄송합니다. 서버 에러가 발생했습니다.");
