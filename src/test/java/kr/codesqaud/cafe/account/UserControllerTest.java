@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.account;
 
 import kr.codesqaud.cafe.account.dto.JoinForm;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -46,6 +47,17 @@ class UserControllerTest {
     @Autowired
     UserRepository userRepository;
 
+    private MockHttpSession session;
+    private User jack;
+
+    @BeforeEach
+    void setSession() {
+        JoinForm joinForm = new JoinForm(JACK, JACK_EMAIL, JACK_PASSWORD);
+        jack = userService.save(joinForm);
+        session = new MockHttpSession();
+        session.setAttribute("user", jack);
+    }
+
 
     @DisplayName("로그인 페이지 테스트")
     @Nested
@@ -60,21 +72,19 @@ class UserControllerTest {
         @DisplayName("성공")
         @Test
         void loginSuccess() throws Exception {
-            User user = saveAndGetUserJack();
             mockMvc.perform(post("/users/login")
                             .param(EMAIL, JACK_EMAIL)
                             .param(PASSWORD, JACK_PASSWORD))
                     .andExpect(status().is3xxRedirection())
-                    .andExpect(redirectedUrl("/users/" + user.getId() + "/profile"));
+                    .andExpect(redirectedUrl("/users/" + jack.getId() + "/profile"));
         }
 
         @DisplayName("비밀번호 실패")
         @Test
         void loginFailedByPassword() throws Exception {
-            saveAndGetUserJack();
             mockMvc.perform(post("/users/login")
                             .param(EMAIL, JACK_EMAIL)
-                            .param(PASSWORD, "12345678"))
+                            .param(PASSWORD, "12345678").session(session))
                     .andExpect(status().isOk())
                     .andExpect(model().hasErrors())
                     .andExpect(view().name("account/login"))
@@ -84,10 +94,9 @@ class UserControllerTest {
         @DisplayName("이메일 주소 실패")
         @Test
         void loginFailedByEmail() throws Exception {
-            saveAndGetUserJack();
             mockMvc.perform(post("/users/login")
                             .param(EMAIL, "jack1@email.com")
-                            .param(PASSWORD, "12345ddd"))
+                            .param(PASSWORD, "12345ddd").session(session))
                     .andExpect(status().isOk())
                     .andExpect(model().hasErrors())
                     .andExpect(view().name("account/login"));
@@ -138,14 +147,12 @@ class UserControllerTest {
     @DisplayName("맴버 리스트 페이지 열람 테스트")
     @Test
     void showUsers() throws Exception {
-        User user = saveAndGetUserJack();
-        MockHttpSession session = new MockHttpSession();
         User target = new User.Builder()
-                .id(user.getId())
+                .id(jack.getId())
                 .role(Role.MANAGER)
-                .email(user.getEmail())
-                .nickname(user.getNickname())
-                .password(user.getPassword())
+                .email(jack.getEmail())
+                .nickname(jack.getNickname())
+                .password(jack.getPassword())
                 .build();
         session.setAttribute("user", target);
         mockMvc.perform(get("/users").session(session))
@@ -160,10 +167,7 @@ class UserControllerTest {
         @DisplayName("열람 성공")
         @Test
         void showUserSuccess() throws Exception {
-            User user = saveAndGetUserJack();
-            MockHttpSession session = new MockHttpSession();
-            session.setAttribute("user", user);
-            mockMvc.perform(get("/users/" + user.getId() + "/profile").session(session))
+            mockMvc.perform(get("/users/" + jack.getId() + "/profile").session(session))
                     .andExpect(status().isOk())
                     .andExpect(model().attributeExists(USER_ID, PROFILE_FORM))
                     .andExpect(view().name("account/profile"));
@@ -187,10 +191,8 @@ class UserControllerTest {
             @DisplayName("성공")
             @Test
             void showUserProfileSuccess() throws Exception {
-                User user = saveAndGetUserJack();
-                MockHttpSession session = new MockHttpSession();
-                session.setAttribute("user", user);
-                mockMvc.perform(get("/users/" + user.getId() + "/profile/edit").session(session))
+                session.setAttribute("user", jack);
+                mockMvc.perform(get("/users/" + jack.getId() + "/profile/edit").session(session))
                         .andExpect(status().isOk())
                         .andExpect(model().attributeExists(USER_ID, PROFILE_EDIT_FORM))
                         .andExpect(view().name("account/profileEditForm"));
@@ -199,10 +201,7 @@ class UserControllerTest {
             @DisplayName("실패")
             @Test
             void showUserProfileFailed() throws Exception {
-                User user = saveAndGetUserJack();
-                MockHttpSession session = new MockHttpSession();
-                session.setAttribute("user", user);
-                mockMvc.perform(get("/users/" + (user.getId() + 1) + "/profile/edit").session(session))
+                mockMvc.perform(get("/users/" + (jack.getId() + 1) + "/profile/edit").session(session))
                         .andExpect(status().is4xxClientError())
                         .andExpect(view().name("error/4xx"));
             }
@@ -214,16 +213,15 @@ class UserControllerTest {
             @DisplayName("성공")
             @Test
             void setUserProfileSuccess() throws Exception {
-                User user = saveAndGetUserJack();
                 MockHttpSession session = new MockHttpSession();
-                session.setAttribute("user", user);
-                mockMvc.perform(put("/users/" + user.getId() + "/profile")
+                session.setAttribute("user", jack);
+                mockMvc.perform(put("/users/" + jack.getId() + "/profile")
                                 .param(PASSWORD, JACK_PASSWORD)
                                 .param(EMAIL, JERRY_EMAIL)
                                 .param(NICKNAME, JERRY).session(session))
                         .andExpect(status().is3xxRedirection());
 
-                User changedUser = userService.findById(user.getId()).orElseThrow();
+                User changedUser = userService.findById(jack.getId()).orElseThrow();
                 assertThat(changedUser.getEmail()).isEqualTo(JERRY_EMAIL);
                 assertThat(changedUser.getNickname()).isEqualTo(JERRY);
             }
@@ -231,10 +229,7 @@ class UserControllerTest {
             @DisplayName("실패(비밀번호 불 일치)")
             @Test
             void setUserProfileFailedByPassword() throws Exception {
-                User user = saveAndGetUserJack();
-                MockHttpSession session = new MockHttpSession();
-                session.setAttribute("user", user);
-                mockMvc.perform(put("/users/" + user.getId() + "/profile")
+                mockMvc.perform(put("/users/" + jack.getId() + "/profile")
                                 .param(PASSWORD, "987654123a")
                                 .param(EMAIL, JERRY_EMAIL)
                                 .param(NICKNAME, JERRY)
@@ -247,10 +242,7 @@ class UserControllerTest {
             @DisplayName("실패(유저 아이디)")
             @Test
             void setUserProfileFailedByUserId() throws Exception {
-                User user = saveAndGetUserJack();
-                MockHttpSession session = new MockHttpSession();
-                session.setAttribute("user", user);
-                mockMvc.perform(put("/users/" + (user.getId() + 1) + "/profile")
+                mockMvc.perform(put("/users/" + (jack.getId() + 1) + "/profile")
                                 .param(PASSWORD, JACK_PASSWORD)
                                 .param(EMAIL, JERRY_EMAIL)
                                 .param(NICKNAME, JERRY)
@@ -263,10 +255,7 @@ class UserControllerTest {
             @ParameterizedTest
             @CsvSource({JERRY_EMAIL + ",j", JERRY + ",jerry"})
             void setUserProfileFailedByType(String email, String nickname) throws Exception {
-                User user = saveAndGetUserJack();
-                MockHttpSession session = new MockHttpSession();
-                session.setAttribute("user", user);
-                mockMvc.perform(put("/users/" + user.getId() + "/profile")
+                mockMvc.perform(put("/users/" + jack.getId() + "/profile")
                                 .param(PASSWORD, JACK_PASSWORD)
                                 .param(EMAIL, email)
                                 .param(NICKNAME, nickname)
@@ -278,9 +267,5 @@ class UserControllerTest {
         }
     }
 
-    private User saveAndGetUserJack() {
-        JoinForm joinForm = new JoinForm(JACK, JACK_EMAIL, JACK_PASSWORD);
-        return userService.save(joinForm);
-    }
 
 }
