@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.user.dto;
 
+import kr.codesqaud.cafe.user.domain.User;
+
 public class UserResponse {
     private String userId;
     private String userName;
@@ -9,6 +11,10 @@ public class UserResponse {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
+    }
+
+    public static UserResponse fromUser(User user) {
+        return new UserResponse(user.getUserId(), user.getUserName(), user.getEmail());
     }
 
     public String getUserId() {

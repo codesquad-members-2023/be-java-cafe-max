@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.user.domain;
 
-import kr.codesqaud.cafe.user.dto.UserResponse;
-
 public class User {
     private String userId;
     private String password;
@@ -16,10 +14,6 @@ public class User {
         this.password = password;
         this.userName = userName;
         this.email = email;
-    }
-
-    public UserResponse toUserResponse() {
-        return new UserResponse(this.userId, this.userName, this.email);
     }
 
     public String getUserId() {

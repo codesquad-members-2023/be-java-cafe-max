@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.user.service;
 
 import kr.codesqaud.cafe.exception.DuplicateKeyException;
-import kr.codesqaud.cafe.user.domain.User;
 import kr.codesqaud.cafe.user.dto.UserAddForm;
 import kr.codesqaud.cafe.user.dto.UserResponse;
 import kr.codesqaud.cafe.user.repository.UserJdbcRepository;
@@ -26,10 +25,10 @@ public class UserService {
     }
 
     public UserResponse getUser(String userId) {
-        return userJdbcRepository.findByUserId(userId).toUserResponse();
+        return UserResponse.fromUser(userJdbcRepository.findByUserId(userId));
     }
 
     public List<UserResponse> getUserList() {
-        return userJdbcRepository.findAll().stream().map(User::toUserResponse).collect(Collectors.toList());
+        return userJdbcRepository.findAll().stream().map(UserResponse::fromUser).collect(Collectors.toList());
     }
 }

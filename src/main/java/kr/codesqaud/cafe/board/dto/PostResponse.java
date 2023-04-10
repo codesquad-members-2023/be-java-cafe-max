@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.board.dto;
 
+import kr.codesqaud.cafe.board.domain.BoardPost;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -16,6 +18,10 @@ public class PostResponse {
         this.title = title;
         this.contents = contents;
         this.writeDateTime = writeDateTime;
+    }
+
+    public static PostResponse fromBoardPost(BoardPost boardPost) {
+        return new PostResponse(boardPost.getPostId(), boardPost.getWriter(), boardPost.getTitle(), boardPost.getContents(), boardPost.getWriteDateTime());
     }
 
     public Long getPostId() {
