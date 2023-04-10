@@ -14,7 +14,6 @@ public class AppStartupRunner implements CommandLineRunner {
     @Autowired
     UserRepository userRepository;
 
-
     @Override
     public void run(String... args) {
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
@@ -23,7 +22,7 @@ public class AppStartupRunner implements CommandLineRunner {
 
         User build = new User.Builder()
                 .password(encryptor.decrypt("W5p8Dbc3f7sOjqaRc7WVp8inlukLB3LJ"))
-                .email(encryptor.decrypt("1NEk4/TDdkrrpnzYPyLQ+48Cc4uRcTHz"))
+                .email(encryptor.decrypt("R9gvxFpZK6xYikAdPrdy1mDtd3O+ag2L"))
                 .nickname("admin")
                 .role(Role.MANAGER).build();
         userRepository.save(build);
