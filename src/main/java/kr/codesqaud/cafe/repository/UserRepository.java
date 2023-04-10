@@ -1,10 +1,14 @@
-package kr.codesqaud.cafe.user;
+package kr.codesqaud.cafe.repository;
+
+import kr.codesqaud.cafe.domain.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class UserRepository {
     private Map<String, User> repository = new HashMap<>();
 
@@ -12,11 +16,11 @@ public class UserRepository {
         repository.put(user.getUserId(), user);
     }
 
-    public List<User> getRepository() {
+    public List<User> getAllUsers() {
         return new ArrayList<>(repository.values());
     }
 
-    public User fineByUserId(String userId) {
+    public User getSpecificUser(String userId) {
         return repository.get(userId);
     }
 }
