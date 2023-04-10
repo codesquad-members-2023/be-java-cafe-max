@@ -19,7 +19,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(@Qualifier("memoryRepository")UserRepository userRepository) {
+    public UserService(@Qualifier("jdbcRepository")UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

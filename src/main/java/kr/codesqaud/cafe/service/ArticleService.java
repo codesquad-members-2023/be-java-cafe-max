@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class ArticleService {
     private final ArticleRepository ArticleRepository;
 
-    public ArticleService(@Qualifier("memoryRepository")ArticleRepository articleRepository) {
+    public ArticleService(@Qualifier("jdbcRepository")ArticleRepository articleRepository) {
         this.ArticleRepository = articleRepository;
     }
 

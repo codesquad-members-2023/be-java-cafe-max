@@ -9,10 +9,10 @@ import static kr.codesqaud.cafe.util.DateUtil.getCurrentDate;
 
 
 public class Article {
-    private final String title;
-    private final String content;
-    private int id;
-    private final String date;
+    private String title;
+    private String content;
+    private Long id;
+    private  String date;
 
     public Article(String title,String content){
         this.title = title;
@@ -23,7 +23,7 @@ public class Article {
     public Article(ResultSet rs) throws SQLException{
         this.title = rs.getString("title");
         this.content = rs.getString("content");
-        this.id = rs.getInt("id");
+        this.id = rs.getLong("id");
         this.date = rs.getString("date");
     }
 
@@ -39,11 +39,11 @@ public class Article {
         return content;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public ArticleDTO toDTO(){

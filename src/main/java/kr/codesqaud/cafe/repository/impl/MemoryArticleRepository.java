@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.repository.impl;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedHashMap;
@@ -16,8 +15,8 @@ import java.util.stream.Collectors;
 @Repository
 @Qualifier("memoryRepository")
 public class MemoryArticleRepository implements ArticleRepository {
-    private final Map<Integer,Article> articleRepository;
-    private int sequence = 1;
+    private final Map<Long,Article> articleRepository;
+    private Long sequence = 1L;
     public MemoryArticleRepository() {
         this.articleRepository = new LinkedHashMap();
     }
