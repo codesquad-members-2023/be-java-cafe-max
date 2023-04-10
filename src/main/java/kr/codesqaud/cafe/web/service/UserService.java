@@ -9,6 +9,9 @@ import kr.codesqaud.cafe.web.dto.user.UserLoginRequestDto;
 import kr.codesqaud.cafe.web.dto.user.UserResponseDto;
 import kr.codesqaud.cafe.web.dto.user.UserSavedRequestDto;
 import kr.codesqaud.cafe.web.dto.user.UserUpdatedResponseDto;
+import kr.codesqaud.cafe.web.exception.user.UserExceptionType;
+import kr.codesqaud.cafe.web.exception.user.UserNotFoundException;
+import kr.codesqaud.cafe.web.exception.user.UserNotLoginMatchingException;
 import kr.codesqaud.cafe.web.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,19 +39,22 @@ public class UserService {
     public UserResponseDto signUp(UserSavedRequestDto requestDto) {
         validator.validateDuplicatedUserId(requestDto.toEntity());
         validator.validateDuplicatedUserEmail(requestDto.toEntity());
-        Long nextId = userRepository.nextId();
-        User saveUser = userRepository.save(requestDto.toEntity(nextId));
+        User saveUser = userRepository.save(requestDto.toEntity());
         return new UserResponseDto(saveUser);
     }
 
     // 특정 회원 조회
     public User findUser(Long id) {
-        return validator.validateExistUser(id);
+        return userRepository.findById(id).orElseThrow(() -> {
+            throw new UserNotFoundException(UserExceptionType.NOT_FOUND_USER);
+        });
     }
 
     // 특정 회원 조회
     public User findUser(String userId) {
-        return validator.validateExistUser(userId);
+        return userRepository.findByUserId(userId).orElseThrow(() -> {
+            throw new UserNotFoundException(UserExceptionType.NOT_FOUND_USER);
+        });
     }
 
     // 특정 회원 조회 (비밀번호 포함)
@@ -58,17 +64,23 @@ public class UserService {
 
     // 로그인
     public void login(UserLoginRequestDto requestDto, HttpSession session) {
-        User user = validator.validateLogin(requestDto.toEntity());
+        User loginUser = requestDto.toEntity();
+        User user = userRepository.findByUserId(loginUser.getUserId()).orElseThrow(() -> {
+            throw new UserNotLoginMatchingException(UserExceptionType.NOT_MATCH_LOGIN);
+        });
+        validator.validateLogin(loginUser, user);
         session.setAttribute("user", new UserResponseDto(user));
     }
 
+    // 회원 정보 수정
     public void modifyUser(Long id, UserSavedRequestDto requestDto) {
         User requestUser = requestDto.toEntity(id);
         User currentUser = findUser(id);
         validator.validateModifiedUserEmail(requestUser, currentUser);
-        userRepository.save(requestUser);
+        userRepository.modify(requestUser);
     }
 
+    // 비밀번호 확인
     public void confirmPassword(Long id, UserSavedRequestDto requestDto) {
         User requestUser = requestDto.toEntity();
         User currentUser = findUser(id);
