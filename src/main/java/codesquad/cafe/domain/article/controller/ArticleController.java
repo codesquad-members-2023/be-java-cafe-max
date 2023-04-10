@@ -18,7 +18,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String showHome(Model model) {
         List<ArticleResponseDto> posts = articleService.findPosts();
         model.addAttribute("posts", posts);
@@ -32,7 +32,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{postId}")
-    public String showDetailPost(@PathVariable("postId") Long id, Model model) {
+    public String showDetailPost(@PathVariable Long id, Model model) {
         ArticleResponseDto post = articleService.findPost(id);
         model.addAttribute("post", post);
         return "qna/show";
