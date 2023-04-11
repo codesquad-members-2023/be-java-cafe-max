@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.user.service;
 import kr.codesqaud.cafe.user.domain.User;
 import kr.codesqaud.cafe.user.dto.UserListDto;
 import kr.codesqaud.cafe.user.dto.UserProfileDto;
+import kr.codesqaud.cafe.user.mapper.UserDtoMapper;
 import kr.codesqaud.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final UserDtoMapper userDtoMapper;
+
+    public UserService(UserRepository userRepository, UserDtoMapper userDtoMapper) {
         this.userRepository = userRepository;
+        this.userDtoMapper = userDtoMapper;
     }
 
     //ID 중복 확인 후 회원가입
@@ -40,7 +44,7 @@ public class UserService {
         List<User> users = userRepository.findAll();
         List<UserListDto> userListDtos = new ArrayList<>();
         for (User user : users) {
-            userListDtos.add(new UserListDto(user.getUserId(), user.getName(), user.getEmail()));
+            userListDtos.add(UserDtoMapper.INSTANCE.toUserListDto(user));
         }
         return userListDtos;
     }
@@ -49,7 +53,7 @@ public class UserService {
     //특정 회원 조회(+DTO 필터)
     public UserProfileDto getUserProfile(String userId) {
         User user = userRepository.findById(userId).orElse(null);
-        return new UserProfileDto(user.getName(), user.getEmail());
+        return UserDtoMapper.INSTANCE.toProfileDto(user);
     }
 
     public User findAndAuthenticate(String userId, String password) {
