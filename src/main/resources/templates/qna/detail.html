@@ -32,7 +32,14 @@
                 <a class="button next-writing" href="/articles/{{index}}">다음 글</a>
             </div>
         </div>
-        <div>
+        <div class="post-bottom-list">
+            {{#equal}}
+            <a href="/qna/update/{{index}}" class="button next-writing">수정</a>
+            <form name="question" method="post" action="/qna/delete/{{index}}">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <button class="button next-writing" type="submit" style="border: none;">삭제</button>
+            </form>
+            {{/equal}}
             <a class="button next-writing" href="/">목록으로</a>
         </div>
     </div>

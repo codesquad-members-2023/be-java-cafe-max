@@ -39,8 +39,13 @@ public class ArticleService {
 		return articleRepository.findAll();
 	}
 
-	public boolean increaseHits(long index) {
+	public boolean increaseHits(Long index) {
 		articleRepository.increaseHits(index);
+		return true;
+	}
+
+	public boolean deleteArticle(Long index) {
+		articleRepository.delete(index);
 		return true;
 	}
 }

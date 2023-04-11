@@ -13,4 +13,6 @@ public interface ArticleRepository {
 	List<Article> findAll();
 
 	boolean increaseHits(Long index);
+
+	boolean delete(Long index);
 }

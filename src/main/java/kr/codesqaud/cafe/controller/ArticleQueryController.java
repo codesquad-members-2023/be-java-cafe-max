@@ -39,15 +39,21 @@ public class ArticleQueryController {
 		return "qna/form";
 	}
 
-	@GetMapping("/articles/{index}")
-	public String showArticle(@PathVariable long index, HttpSession session, Model model) {
+	@GetMapping("/articles/{index}/{writer}")
+	public String showArticle(@PathVariable long index, @PathVariable String writer, HttpSession session, Model model) {
+		String equal = null;
 		Object value = session.getAttribute("sessionUser");
 		if (value == null) {
 			return "redirect:/user/login";
 		}
+		User user = (User)value;
+		if (user.getNickname().equals(writer)) {
+			equal = "true";
+		}
 		articleService.increaseHits(index);
 		Article article = articleService.findByIndex(index);
 		model.addAttribute("article", article);
+		model.addAttribute("equal", equal);
 		return "qna/detail";
 	}
 }

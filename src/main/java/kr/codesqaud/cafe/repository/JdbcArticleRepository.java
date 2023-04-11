@@ -56,6 +56,13 @@ public class JdbcArticleRepository implements ArticleRepository {
 		return true;
 	}
 
+	@Override
+	public boolean delete(Long index) {
+		SqlParameterSource param = new MapSqlParameterSource("index", index);
+		namedParameterJdbcTemplate.update(DELETE, param);
+		return true;
+	}
+
 	private RowMapper<Article> articleRowMapper() {
 		return (rs, rowNum) -> new Article(rs.getLong("index"), rs.getString("title"), rs.getString("writer"),
 			rs.getString("contents"), rs.getString("writeDate"), rs.getLong("hits"));
