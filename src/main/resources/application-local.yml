@@ -13,4 +13,8 @@ spring:
   sql:
     initialization-mode: always
     schema:
-      - classpath:schema-local.sql
+      - classpath:schema.sql
+server:
+  servlet:
+    session:
+      tracking-modes: cookie

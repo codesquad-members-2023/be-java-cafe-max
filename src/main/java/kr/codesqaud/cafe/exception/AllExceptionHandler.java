@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.exception;
 
 import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
 import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
+import kr.codesqaud.cafe.exception.user.LoginFailedException;
 import kr.codesqaud.cafe.exception.user.MismatchedPasswordException;
 import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -39,5 +40,11 @@ public class AllExceptionHandler {
     public String handelArticleNotFoundException(ArticleNotFoundException exception, Model model) {
         model.addAttribute("failMessage", exception.getMessage());
         return "exception/fail";
+    }
+
+    @ExceptionHandler(LoginFailedException.class)
+    public String handelLoginFailedException(LoginFailedException exception, Model model) {
+        model.addAttribute("loginFailedMessage", exception.getMessage());
+        return "user/login";
     }
 }

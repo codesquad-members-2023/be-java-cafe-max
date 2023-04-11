@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -60,5 +62,16 @@ public class UserController {
     public String updateUser(@ModelAttribute UserUpdateRequest userUpdateRequest) {
         userService.updateUser(userUpdateRequest);
         return "redirect:/users";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "user/login";
+    }
+
+    @PostMapping("/login")
+    public String login(String userId, String password, HttpSession httpSession) {
+        httpSession.setAttribute("user", userService.login(userId, password));
+        return "redirect:/";
     }
 }

@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.dto.user.UserResponse;
 import kr.codesqaud.cafe.dto.user.UserSaveRequest;
 import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
 import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
+import kr.codesqaud.cafe.exception.user.LoginFailedException;
 import kr.codesqaud.cafe.exception.user.MismatchedPasswordException;
 import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.repository.user.UserRepository;
@@ -54,5 +55,17 @@ public class UserService {
         }
 
         return UserUpdateRequest.from(userRepository.findByUserId(userId));
+    }
+
+    public UserResponse login(String userId, String password) {
+        if (!userRepository.exist(userId)) {
+            throw new LoginFailedException();
+        }
+
+        if (!userRepository.findByUserId(userId).isPasswordMatched(password)) {
+            throw new LoginFailedException();
+        }
+
+        return UserResponse.from(userRepository.findByUserId(userId));
     }
 }

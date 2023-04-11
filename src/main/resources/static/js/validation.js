@@ -147,3 +147,16 @@ function checkNewPassword() {
     message.classList.add('hide');
     return true;
 }
+
+/* 로그인 */
+function validateLogin() {
+    const password = checkPassword();
+    const userId = checkUserId();
+
+    if (password && userId) {
+        return true;
+    }
+
+    return false;
+}
+
