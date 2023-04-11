@@ -69,6 +69,10 @@ public class Article {
         return contents;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
     public String getUserId() {
         return userId;
     }

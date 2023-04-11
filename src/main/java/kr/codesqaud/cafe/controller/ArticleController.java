@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
 
@@ -47,11 +48,19 @@ public class ArticleController {
     }
 
     @GetMapping("/article/update/{index}")
-    public String getUpdatePage(@PathVariable int index,Model model){
+    public String getUpdatePage(@PathVariable int index,Model model ,HttpSession session){
         Article article = articleService.findByIdx(index);
+        articleService.checkLoginAuth(article.getUserId(),session);
         model.addAttribute("title",article.getTitle());
         model.addAttribute("contents",article.getContents());
+        model.addAttribute("index",index);
         return "qna/update_form";
+    }
+
+    @PutMapping("/article/update/{index}")
+    public String putUpdate(@PathVariable int index,ArticleFormDto dto){
+        articleService.update(index, dto);
+        return "redirect:/article/show/"+index;
     }
 
 }

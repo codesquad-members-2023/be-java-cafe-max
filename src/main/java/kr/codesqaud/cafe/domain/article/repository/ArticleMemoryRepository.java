@@ -23,4 +23,7 @@ public class ArticleMemoryRepository implements ArticleRepository {
     public Article findByIdx(int idx) {
         return null;
     }
+
+    @Override
+    public void update(Article article) {}
 }

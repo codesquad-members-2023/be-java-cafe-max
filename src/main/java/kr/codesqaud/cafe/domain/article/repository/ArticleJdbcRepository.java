@@ -43,4 +43,12 @@ public class ArticleJdbcRepository implements ArticleRepository {
                 "SELECT IDX , ID , WRITER , TITLE , CONTENTS , DATE FROM ARTICLES WHERE IDX = ?", rowMapper(), idx
         );
     }
+
+    @Override
+    public void update(Article article) {
+        jdbcTemplate.update(
+                "UPDATE ARTICLES SET TITLE = ? ,CONTENTS = ? WHERE IDX = ?"
+                ,article.getTitle(),article.getContents(),article.getIndex()
+        );
+    }
 }

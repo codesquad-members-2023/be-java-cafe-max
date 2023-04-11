@@ -43,6 +43,13 @@ public class ArticleService {
         return dto.getId().equals(id);
     }
 
+    public boolean checkLoginAuth(String id ,HttpSession session){
+        if(!checkAuth(id,session)){
+            throw new DeniedAccessException("잘못된 접근입니다.");
+        }
+        return true;
+    }
+
     public List<Article> getAricleList(){
         return articleRepository.findAll();
     }
@@ -51,4 +58,13 @@ public class ArticleService {
         return articleRepository.findByIdx(idx);
     }
 
+    public boolean update(int index, ArticleFormDto dto) {
+        Article article = new Article.Builder()
+                                    .index(index)
+                                    .title(dto.getTitle())
+                                    .contents(dto.getContents())
+                                    .build();
+        articleRepository.update(article);
+        return false;
+    }
 }
