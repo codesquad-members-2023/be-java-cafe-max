@@ -1,9 +1,14 @@
 package kr.codesqaud.cafe.controller;
 
+import java.util.Objects;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserDto;
 import kr.codesqaud.cafe.service.UserService;
 
@@ -25,5 +30,18 @@ public class UserCommandController {
 	public String updateUser(UserDto userDto) {
 		userService.update(userDto);
 		return "redirect:/users";
+	}
+
+	@PostMapping("/login")
+	public String login(String userID, String password, HttpSession session) {
+		User user = userService.findOne(userID);
+		if(user == null) {
+			return "redirect:/user/login";
+		}
+		if(!Objects.equals(user.getPassword(), password)) {
+			return "redirect:/user/login";
+		}
+		session.setAttribute("sessionUser", user);
+		return "redirect:/";
 	}
 }

@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,12 @@ public class UserQueryController {
 	@GetMapping("user/login")
 	public String login() {
 		return "/user/login";
+	}
+
+	@GetMapping("user/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("sessionUser");
+		return "/";
 	}
 
 	@GetMapping("/users")
