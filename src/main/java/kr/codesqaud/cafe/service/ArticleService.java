@@ -17,8 +17,7 @@ public class ArticleService {
     }
 
     public Long post(Article article){
-        articleRepository.save(article);
-        return article.getId();
+        return articleRepository.save(article).getId();
     }
 
     public List<Article> findArticles(){

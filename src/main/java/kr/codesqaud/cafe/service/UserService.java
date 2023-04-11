@@ -21,8 +21,7 @@ public class UserService {
         validateDuplicateUserName(user);
         validateDuplicateUserId(user);
 
-        userRepository.save(user);
-        return user.getUserId();
+        return userRepository.save(user).getUserId();
     }
 
     // 중복 이름 예외
