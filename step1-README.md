@@ -1,7 +1,5 @@
-마스터즈 2023 스프링 카페
+스프링 카페 1단계 - 회원 가입 및 회원 목록 조회 기능
 =
-
-# 미션 1단계 - 회원 가입 및 회원 목록 조회 기능
 
 ## 1. 회원 가입 기능
 - [x] 가입하기 페이지에서 회원 가입 폼 출력
@@ -9,18 +7,22 @@
 
 
 ### 가입하기
+
+![image](https://user-images.githubusercontent.com/118447769/230552391-cf459010-3a5d-4812-a6de-b13c4ab861e5.png)  
+
 - 가입하기 버튼을 누르면 create-user-form url 로 이동하여 form.html 출력한다.
 - 가입 정보 입력 후 submit 을 하면 PostMapping 을 통해 UserController 의 join 메서드가 실행된다.
 - 가입 정보를 JoinRequest DTO 에 담아서 UserService 의 join 메서드를 통해 레파지토리에 전달된다.
 - UserRepository 는 JCF 중 Map 을 사용했으며 유저의 아이디를 키값으로 가진 상태로 유저 정보를 save 한다.
 
-![image](https://user-images.githubusercontent.com/118447769/230552391-cf459010-3a5d-4812-a6de-b13c4ab861e5.png)  
 
 
 ### 회원 목록 조회 페이지로 이동
-- 가입이 끝나면 회원 목록 페이지를 redirect 한다.
 
 ![image](https://user-images.githubusercontent.com/118447769/230552483-a643d161-a07e-48dd-a5e7-68db4045cb64.png)  
+
+- 가입이 끝나면 회원 목록 페이지를 redirect 한다.
+
 
 
 ## 2. 회원 목록 조회 기능
@@ -36,17 +38,17 @@
 ## 3. 회원 프로필 조회 기능 구현
 - [x] 개별 회원의 프로필 정보를 출력
 
+![image](https://user-images.githubusercontent.com/118447769/230552656-1a2f2c1c-1b4d-4456-8a84-2bc0db6f9d84.png)
 
 - 회원 리스트에서 회원의 아이디를 클릭하면 /users/{userId} 로 이동한다.
 - UserRepository 의 키값이 아이디이기에 아이디를 통해 유저 정보를 찾을 수 있다.
 - 찾은 UserDto 를 user/profile 로 넘겨 화면에 출력한다.
 
-![image](https://user-images.githubusercontent.com/118447769/230552656-1a2f2c1c-1b4d-4456-8a84-2bc0db6f9d84.png)  
 
 
 ---
 
-# 리뷰내용
+# Mission 1 리뷰내용
 
 ## 1. 버전관리 대상 (gitignore)
 
