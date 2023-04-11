@@ -24,6 +24,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
         return (rs, rowNum) ->
                 new Article.Builder()
                         .index(rs.getInt("IDX"))
+                        .userId(rs.getString("ID"))
                         .writer(rs.getString("WRITER"))
                         .title(rs.getString("TITLE"))
                         .contents(rs.getString("CONTENTS"))
@@ -33,13 +34,13 @@ public class ArticleJdbcRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query(
-                "SELECT IDX , WRITER , TITLE , CONTENTS , DATE  FROM ARTICLES ORDER BY IDX DESC ",rowMapper());
+                "SELECT IDX , ID , WRITER , TITLE , CONTENTS , DATE  FROM ARTICLES ORDER BY IDX DESC ",rowMapper());
     }
 
     @Override
     public Article findByIdx(int idx) {
         return jdbcTemplate.queryForObject(
-                "SELECT IDX , WRITER , TITLE , CONTENTS , DATE FROM ARTICLES WHERE IDX = ?", rowMapper(), idx
+                "SELECT IDX , ID , WRITER , TITLE , CONTENTS , DATE FROM ARTICLES WHERE IDX = ?", rowMapper(), idx
         );
     }
 }

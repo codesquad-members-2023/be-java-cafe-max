@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.domain.article;
 
 public class Article {
     private int index;
+    private String userId;
     private String writer;
     private String title;
     private String contents;
@@ -10,7 +11,7 @@ public class Article {
 
     public static class Builder {
         private int index ;
-
+        private String userId;
         private String writer;
         private String title;
         private String contents;
@@ -25,8 +26,9 @@ public class Article {
             date = val;
             return this;
         }
-        public Article build() {
-            return new Article(this);
+        public Builder userId(String val) {
+            userId = val;
+            return this;
         }
 
         public Builder writer(String val) {
@@ -41,10 +43,14 @@ public class Article {
             contents = val;
             return this;
         }
+        public Article build() {
+            return new Article(this);
+        }
     }
 
     private Article(Builder builder) {
         index = builder.index;
+        userId = builder.userId;
         writer = builder.writer;
         title = builder.title;
         contents = builder.contents;
@@ -63,4 +69,7 @@ public class Article {
         return contents;
     }
 
+    public String getUserId() {
+        return userId;
+    }
 }
