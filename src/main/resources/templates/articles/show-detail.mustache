@@ -5,12 +5,12 @@
     <div class="container d-flex justify-content-between align-items-center">
 
         <h2 class="mt-5">{{title}}</h2>
-        <a href="#"><button id="edit-post-button" class="btn btn-primary mt-5">글 수정</button></a>
+        <a href="/articles/{{id}}/modify"><button id="edit-post-button" class="btn btn-primary mt-5">글 수정</button></a>
     </div>
     <hr>
     <div class="article-details">
         <p>글쓴이: {{author}}</p>
-        <p>작성일: 넣어야 함</p>
+        <p>작성일: {{time}}</p>
         <hr>
         <div class="article-content">
             {{contents}}
