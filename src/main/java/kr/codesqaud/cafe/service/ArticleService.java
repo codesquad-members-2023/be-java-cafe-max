@@ -38,6 +38,11 @@ public class ArticleService {
         return true;
     }
 
+    public boolean checkAuth(String id ,HttpSession session){
+        LoginSessionDto dto = (LoginSessionDto) session.getAttribute("sessionId");
+        return dto.getId().equals(id);
+    }
+
     public List<Article> getAricleList(){
         return articleRepository.findAll();
     }
