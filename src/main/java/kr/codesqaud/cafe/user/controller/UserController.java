@@ -43,8 +43,9 @@ public class UserController {
     }
 
     @PostMapping("/session-login")
-    public String logIn(@RequestParam String userId,@RequestParam String password, HttpSession session){
+    public String logIn( String userId, String password, HttpSession session){
         User user = userService.findAndAuthenticate(userId, password);
+
         if (user == null) {
             // Return error message
             return "redirect:/login?error";
@@ -54,5 +55,10 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("/session-logout")
+    public String logOut(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+    }
 
 }
