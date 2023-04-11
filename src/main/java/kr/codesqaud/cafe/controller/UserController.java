@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+
 
 @Controller
 public class UserController {
@@ -93,23 +95,24 @@ public class UserController {
     }
 
     @GetMapping("user/update")
-    public String updateForm(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser) {
+    public String updateForm(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser, Model model) {
 
         if (loginUser == null) {
             return "user/login";
         }
+        model.addAttribute("user", loginUser);
         return "user/update";
     }
 
     @PostMapping("user/update")
     public String update(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                             User loginUser, UserUpdateForm form) {
+                             User loginUser, UserUpdateForm form, RedirectAttributes redirectAttributes) {
 
         if (!loginUser.getPassword().equals(form.getPassword())) {
             return "redirect:/user/update";
         }
         userService.update(loginUser, form.getName(), form.getEmail());
-
-        return "redirect:/";
+        redirectAttributes.addAttribute("userId", loginUser.getUserId());
+        return "redirect:/users/{userId}";
     }
 }

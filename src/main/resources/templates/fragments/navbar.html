@@ -53,14 +53,10 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/index">Posts</a></li>
-            <span th:if="${loginUser == null}">
-                <li><a href="/user/login" role="button">로그인</a></li>
-                <li><a href="/user/form" role="button">회원가입</a></li>
-            </span>
-            <span th:if="${loginUser != null}">
-                <li><a href="/user/logout" role="button">로그아웃</a></li>
-                <li><a href="/user/update" role="button">개인정보수정</a></li>
-            </span>
+                <li th:if="${loginUser == null}"><a href="/user/login" role="button">로그인</a></li>
+                <li th:if="${loginUser == null}"><a href="/user/form" role="button">회원가입</a></li>
+                <li th:if="${loginUser != null}"><a href="/user/logout" role="button">로그아웃</a></li>
+                <li th:if="${loginUser != null}"><a href="/user/update" role="button">개인정보수정</a></li>
             </ul>
         </div>
     </div>
