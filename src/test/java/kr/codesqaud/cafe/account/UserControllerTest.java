@@ -50,7 +50,7 @@ class UserControllerTest {
 
     @BeforeEach
     void setSession() {
-        JoinForm joinForm = new JoinForm(JACK, JACK_EMAIL, TEST_PASSWORD);
+        JoinForm joinForm = new JoinForm(JACK, JACK_EMAIL, TEST_PASSWORD, TEST_PASSWORD);
         jack = userService.save(joinForm);
         session = new MockHttpSession();
         session.setAttribute("user", jack);

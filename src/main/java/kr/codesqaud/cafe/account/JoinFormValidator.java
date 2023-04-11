@@ -25,6 +25,10 @@ public class JoinFormValidator implements Validator {
         JoinForm joinForm = (JoinForm) target;
         if (userService.containsEmail(joinForm.getEmail())) {
             errors.rejectValue(EMAIL, "error.email.duplicate");
+            return;
+        }
+        if (!joinForm.getPassword().equals(joinForm.getReconfirmPassword())) {
+            errors.rejectValue("reconfirmPassword", "error.password.missMatch");
         }
     }
 }
