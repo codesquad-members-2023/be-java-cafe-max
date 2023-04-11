@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.user.controller;
 import kr.codesqaud.cafe.user.domain.User;
 import kr.codesqaud.cafe.user.dto.UserFormDto;
 import kr.codesqaud.cafe.user.service.UserService;
+import kr.codesqaud.cafe.utils.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,7 @@ public class UserController {
             return "redirect:/login?error";
         }
 
-        session.setAttribute("sessionUser", user);
+        Session.logIn(session, user);
         return "redirect:/";
     }
 
