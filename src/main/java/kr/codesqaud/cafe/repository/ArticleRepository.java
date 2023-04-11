@@ -1,24 +1,13 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
-import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Repository
-public class ArticleRepository {
-    List<Article> repository = new ArrayList<>();
+public interface ArticleRepository {
+    public void save(Article article);
 
-    public void save(Article article) {
-        repository.add(0, article);
-    }
+    public List<Article> getAllArticle();
 
-    public List<Article> getAllArticle() {
-        return repository;
-    }
-
-    public Article getArticleIndexOf(int index) {
-        return repository.get(index);
-    }
+    public Article getArticleIndexOf(int index);
 }
