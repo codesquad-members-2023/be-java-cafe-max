@@ -18,7 +18,7 @@ public class UserService {
     }
 
     public String addUser(UserAddForm userAddForm) {
-        if (userJdbcRepository.containsUserId(userAddForm.getUserId()) > 0) {
+        if (!userJdbcRepository.containsUserId(userAddForm.getUserId())) {
             throw new DuplicateKeyException("중복된 아이디가 이미 존재합니다.");
         }
         return userJdbcRepository.save(userAddForm.toUser());

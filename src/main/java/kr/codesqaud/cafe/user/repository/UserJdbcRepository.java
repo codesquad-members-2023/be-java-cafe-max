@@ -28,11 +28,11 @@ public class UserJdbcRepository {
         return user.getUserId();
     }
 
-    public int containsUserId(String userId) {
+    public boolean containsUserId(String userId) {
         Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
         Optional<Integer> countOfUser = Optional.ofNullable(jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM users WHERE user_id = :user_id", namedParameters, Integer.class));
-        return countOfUser.orElse(0);
+        return countOfUser.orElse(0) > 0;
     }
 
     public User findByUserId(String userId) {
@@ -42,7 +42,7 @@ public class UserJdbcRepository {
     }
 
     public List<User> findAll() {
-        return jdbcTemplate.query("SELECT * FROM users", userRowMapper);
+        return jdbcTemplate.query("SELECT user_id, password, user_name, email FROM users", userRowMapper);
     }
 
 }
