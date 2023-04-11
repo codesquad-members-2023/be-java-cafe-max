@@ -51,4 +51,8 @@ public class ArticleService {
     public void update(long id, ArticleFormDto articleFormDto) {
         articleRepository.modify(id, articleFormDto);
     }
+
+    public void delete(long id) {
+        articleRepository.delete(id);
+    }
 }

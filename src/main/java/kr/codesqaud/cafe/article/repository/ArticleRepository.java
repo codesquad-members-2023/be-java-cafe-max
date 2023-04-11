@@ -16,4 +16,6 @@ public interface ArticleRepository {
     Article findByID(Long index);
 
     Long modify(long id, ArticleFormDto articleFormDto);
+
+    void delete(long id);
 }

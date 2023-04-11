@@ -68,5 +68,18 @@ public class ArticleController {
         return "redirect:/articles/" + id;
     }
 
+    @DeleteMapping("/delete")
+    public String deleteArticle(long id, HttpSession session){
+        ArticleDetailDto articleDetailDto = articleService.getArticleDetail(id);
+        if (!Session.getUserId(session).equals(articleDetailDto.getAuthor())) {
+            return "articles/forbidden";
+        }
+
+        articleService.delete(id);
+
+        return "redirect:/articles/list";
+
+    }
+
 
 }

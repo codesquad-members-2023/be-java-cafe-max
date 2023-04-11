@@ -60,6 +60,12 @@ public class JdbcArticleRepository implements ArticleRepository {
         return id;
     }
 
+    @Override
+    public void delete(long id) {
+        String sql = "DELETE FROM articles WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
             Article article = new Article();
