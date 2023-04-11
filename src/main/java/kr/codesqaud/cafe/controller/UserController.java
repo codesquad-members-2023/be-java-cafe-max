@@ -38,15 +38,8 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/profile/{id}/form")
-    public String userUpdateForm(@PathVariable String id,Model model){
-        model.addAttribute("id",id);
-        return "user/updateForm";
-    }
-
     @PutMapping("/profile/{id}")
-    public String updateUserData(@PathVariable String id,Model model,@ModelAttribute @Valid ProfileEditDTO profileEditDto){
-        model.addAttribute("id",id);
+    public String updateUserData(@ModelAttribute @Valid ProfileEditDTO profileEditDto){
         userService.updateUserById(profileEditDto);
         return "redirect:/user/list";
     }

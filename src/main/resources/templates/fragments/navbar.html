@@ -11,14 +11,14 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/user/list">멤버 리스트</a></li>
-                {{#loginUserId}}
+                {{#loginUser}}
                 <li><a class="black-component" href="/user/sign-in" role="button">로그아웃</a></li>
-                <li><a class="black-component" href="/user/profile/{{loginUserId}}/form" role="button">개인정보수정</a></li>
-                {{/loginUserId}}
-                {{^loginUserId}}
+                <li><a class="black-component" href="/user/profile/{{loginUser}}/form" role="button">개인정보수정</a></li>
+                {{/loginUser}}
+                {{^loginUser}}
                 <li><a class="black-component" href="/user/sign-in" role="button">로그인</a></li>
                 <li><a class="black-component" href="/user/sign-up-form" role="button">회원가입</a></li>
-                {{/loginUserId}}
+                {{/loginUser}}
             </ul>
         </div>
     </nav>
