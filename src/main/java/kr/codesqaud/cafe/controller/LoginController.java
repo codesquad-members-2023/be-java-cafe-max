@@ -44,4 +44,13 @@ public class LoginController {
         return "redirect:/";
     }
 
+    @GetMapping("/logout") // TODO: Post로 구현해야 할 것 같은데, post로 하면 405에러 발생함
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        return "redirect:/";
+    }
+
 }
