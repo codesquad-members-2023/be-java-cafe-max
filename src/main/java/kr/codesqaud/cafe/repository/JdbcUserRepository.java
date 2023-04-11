@@ -30,9 +30,9 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     @Override
-    public Optional<User> getSpecificUser(String userId) {
+    public User getSpecificUser(String userId) {
         List<User> result = jdbcTemplate.query("select * from userTable where userId = ?", userRowMapper(), userId);
-        return result.stream().findAny();
+        return result.stream().findAny().get();
     }
 
     private RowMapper<User> userRowMapper() {

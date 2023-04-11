@@ -20,7 +20,7 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public Optional<User> getSpecificUser(String userId) {
-        return Optional.ofNullable(repository.get(userId));
+    public User getSpecificUser(String userId) {
+        return repository.get(userId);
     }
 }

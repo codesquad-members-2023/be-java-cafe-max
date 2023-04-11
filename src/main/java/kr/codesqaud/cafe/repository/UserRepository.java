@@ -10,5 +10,5 @@ public interface UserRepository {
 
     List<User> getAllUsers();
 
-    Optional<User> getSpecificUser(String userId);
+    User getSpecificUser(String userId);
 }
