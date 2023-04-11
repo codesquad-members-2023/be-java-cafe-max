@@ -26,22 +26,33 @@ public class UserCommandController {
 		return "redirect:/users";
 	}
 
-	@PatchMapping("/user/{userID}")
-	public String updateUser(UserDto userDto) {
+	@PatchMapping("/user/update")
+	public String updateUser(UserDto userDto, HttpSession httpSession) {
 		userService.update(userDto);
+		User user = userService.findOne(userDto.getUserID());
+		httpSession.setAttribute("sessionUser", user);
 		return "redirect:/users";
 	}
 
 	@PostMapping("/login")
 	public String login(String userID, String password, HttpSession session) {
 		User user = userService.findOne(userID);
-		if(user == null) {
+		if (user == null) {
 			return "redirect:/user/login";
 		}
-		if(!Objects.equals(user.getPassword(), password)) {
+		if (!Objects.equals(user.getPassword(), password)) {
 			return "redirect:/user/login";
 		}
 		session.setAttribute("sessionUser", user);
 		return "redirect:/";
+	}
+
+	@PostMapping("/user/form")
+	public String getUpdateForm(String password, HttpSession session) {
+		User user = (User)session.getAttribute("sessionUser");
+		if (!password.equals(user.getPassword())) {
+			return "redirect:/checkForUpdate";
+		}
+		return "redirect:/user/updateForm";
 	}
 }

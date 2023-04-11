@@ -20,17 +20,35 @@ public class UserQueryController {
 		this.userService = userService;
 	}
 
-	@GetMapping("user/form")
+	@GetMapping("/user/form")
 	public String getSignUpForm() {
-		return "/user/form";
+		return "user/form";
 	}
 
-	@GetMapping("user/login")
+	@GetMapping("/user/login")
 	public String login() {
-		return "/user/login";
+		return "user/login";
 	}
 
-	@GetMapping("user/logout")
+	@GetMapping("/checkForUpdate")
+	public String checkForUpdate() {
+		return "user/checkForUpdate";
+	}
+
+	@GetMapping("/check/{userID}")
+	public String checkUserID(@PathVariable String userID, HttpSession session) {
+		Object value = session.getAttribute("sessionUser");
+		if (value == null) {
+			return "redirect:/user/login";
+		}
+		User user = (User)value;
+		if (!user.getUserID().equals(userID)) {
+			throw new IllegalStateException("다른 사용자의 정보는 수정할 수 없습니다.");
+		}
+		return "user/checkForUpdate";
+	}
+
+	@GetMapping("/user/logout")
 	public String logout(HttpSession session) {
 		session.removeAttribute("sessionUser");
 		return "/";
@@ -50,9 +68,9 @@ public class UserQueryController {
 		return "user/profile";
 	}
 
-	@GetMapping("/users/{userID}/form")
-	public String updateForm(@PathVariable String userID, Model model) {
-		User user = userService.findOne(userID);
+	@GetMapping("/user/updateForm")
+	public String updateForm(HttpSession session, Model model) {
+		User user = (User)session.getAttribute("sessionUser");
 		model.addAttribute("user", user);
 		return "user/updateForm";
 	}
