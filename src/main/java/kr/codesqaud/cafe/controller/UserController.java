@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping("/profile/{id}")
-    public String updateUserData(@PathVariable String id,@ModelAttribute @Valid ProfileEditDTO profileEditDto,Model model){
+    public String updateUserData(@PathVariable String id,Model model,@ModelAttribute @Valid ProfileEditDTO profileEditDto){
         model.addAttribute("id",id);
         userService.updateUserById(profileEditDto);
         return "redirect:/user/list";

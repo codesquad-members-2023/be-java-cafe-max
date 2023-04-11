@@ -10,71 +10,68 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private ModelAndView createErrorResponseModelAndView(String viewName, Exception e, boolean includeMessage) {
+    private ModelAndView createErrorResponseModelAndView(String viewName, Exception e) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         ModelAndView mav = new ModelAndView(viewName);
-        if (includeMessage) {
-            mav.addObject("error", errorResponse);
-        }
+        mav.addObject("error", errorResponse);
         return mav;
     }
 
+    private String handleExceptionWithRedirect(Exception e, String redirectUri, String attributeName, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute(attributeName, e.getMessage());
+        return "redirect:" + redirectUri;
+    }
+
     /**
-     * sign-up 또는 post시 발생할수있는 BindException 처리
+     * @Valid에 의해 발생할수있는 3가지 BindException 경우에대한 예외처리 메서드입니다.
      * @param e
      * @param request
-     * @return ModelAndView
+     * @param redirectAttributes
+     * @return String
      */
     @ExceptionHandler(BindException.class)
-    public ModelAndView handleBindException(BindException e, HttpServletRequest request) {
+    public String handleBindException(BindException e, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         String requestUri = request.getRequestURI();
         if (requestUri.contains("/sign-up")) {
-            return createErrorResponseModelAndView("user/form", e, false);
+            return "redirect:/user/sign-up-form";
+        } else if (requestUri.contains("/profile")) {
+            redirectAttributes.addAttribute("id", e.getFieldValue("id"));
+            return "redirect:/user/profile/{id}/form";
         }
-        else if(requestUri.contains("/profile")){
-            return createErrorResponseModelAndView("user/updateForm",e,false);
-        }
-        return createErrorResponseModelAndView("post/form", e, false);
+        return "redirect:/article";
     }
 
     @ExceptionHandler(AlreadyUserExistenceException.class)
-    public ModelAndView handleAlreadyUserExistenceException(AlreadyUserExistenceException e) {
-        return createErrorResponseModelAndView("user/form", e, true);
+    public ModelAndView handleAlreadyUserExistenceException(AlreadyUserExistenceException e, RedirectAttributes redirectAttributes) {
+        return new ModelAndView(handleExceptionWithRedirect(e, "/user/sign-up-form", "id-error", redirectAttributes));
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ModelAndView handleUserNotFoundException(UserNotFoundException e,HttpServletRequest request) {
+    public ModelAndView handleUserNotFoundException(UserNotFoundException e, HttpServletRequest request, RedirectAttributes redirectAttributes) {
         String requestUri = request.getRequestURI();
-        if(requestUri.contains("/profile")){
-            return createErrorResponseModelAndView("error/error", e, true);
+        if (requestUri.contains("/profile")) {
+            return createErrorResponseModelAndView("error/error", e);
         }
-        return createErrorResponseModelAndView("user/login",e,true);
+        return new ModelAndView(handleExceptionWithRedirect(e, "/user/sign-in", "id-error", redirectAttributes));
     }
 
     @ExceptionHandler(UserUpdateInvalidPasswordException.class)
-    public ModelAndView handleInvalidPasswordException(UserUpdateInvalidPasswordException e) {
-        ModelAndView mav = createErrorResponseModelAndView("user/updateForm", e, true);
+    public ModelAndView handleUserUpdateInvalidPasswordException(UserUpdateInvalidPasswordException e, RedirectAttributes redirectAttributes) {
+        ModelAndView mav = new ModelAndView(handleExceptionWithRedirect(e, "/user/profile/" + e.getId() + "/form", "password-error", redirectAttributes));
         mav.addObject("id", e.getId());
         return mav;
     }
 
-    /**
-     * 로그인시 비밀번호가 틀리면 발생되는 예외다. login-form에서 존재하지 않는 id가 입력될시 error라는 메세지를 사용하고있기때문에
-     * 비밀번호는 가 틀렸을땐 password-error 를 통해 login-form 에 error-message를 넘긴다.
-     * @param e
-     * @return
-     */
     @ExceptionHandler(LoginInvalidPasswordException.class)
-    public ModelAndView handleLoginInvalidPasswordException(LoginInvalidPasswordException e) {
-        ModelAndView mav = createErrorResponseModelAndView("user/login", e, false);
-        mav.addObject("password-error",e.getMessage());
-        return mav;
+    public ModelAndView handleLoginInvalidPasswordException(LoginInvalidPasswordException e, RedirectAttributes redirectAttributes) {
+        return new ModelAndView(handleExceptionWithRedirect(e, "/user/sign-in", "password-error", redirectAttributes));
     }
 
 }
