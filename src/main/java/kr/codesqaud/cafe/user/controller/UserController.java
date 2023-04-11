@@ -19,12 +19,12 @@ public class UserController {
 
     @PostMapping
     public String addUser(@ModelAttribute UserAddForm userAddForm) {
-        String userId = userService.add(userAddForm);
+        String userId = userService.addUser(userAddForm);
         return "redirect:/user/list";
     }
 
     @GetMapping("/list")
-    public String list(Model model) {
+    public String getUserList(Model model) {
         model.addAttribute("users", userService.getUserList());
         return "user/list";
     }

@@ -23,7 +23,7 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    public String list(Model model) {
+    public String getPostList(Model model) {
         model.addAttribute("postList", boardService.getPostList());
         return "index";
     }
