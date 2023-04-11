@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -53,5 +51,12 @@ public class ArticleController {
     public String showArticle(Model model, @PathVariable Long id) {
         model.addAttribute("article", articleService.findOne(id));
         return "qna/show";
+    }
+
+    @GetMapping("qna/form")
+    public String makeQna(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                          User loginUser, Model model) {
+        model.addAttribute("loginUser", loginUser);
+        return "qna/form";
     }
 }

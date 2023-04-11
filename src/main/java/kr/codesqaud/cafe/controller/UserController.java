@@ -8,10 +8,7 @@ import kr.codesqaud.cafe.dto.UserUpdateForm;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("user/create")
-    public String create(UserJoinForm form) {
+    public String join(UserJoinForm form) {
         User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
 
         boolean isSignUpSuccess = userService.join(user);
@@ -47,15 +44,17 @@ public class UserController {
     }
 
     @GetMapping("users")
-    public String list(Model model) {
+    public String list(Model model, @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
+        model.addAttribute("loginUser", loginUser);
         return "user/list";
     }
 
     @GetMapping("users/{userId}")
-    public String profile(Model model, @PathVariable String userId) {
+    public String profile(Model model, @PathVariable String userId, @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser) {
         model.addAttribute("user", userService.findOne(userId));
+        model.addAttribute("loginUser", loginUser);
         return "user/profile";
     }
 
@@ -95,12 +94,13 @@ public class UserController {
     }
 
     @GetMapping("user/update")
-    public String updateForm(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser, Model model) {
+    public String updateForm(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser, Model model, @ModelAttribute("passwordIncorrect")String passwordIncorrect) {
 
         if (loginUser == null) {
             return "user/login";
         }
-        model.addAttribute("user", loginUser);
+        model.addAttribute("passwordIncorrect", passwordIncorrect);
+        model.addAttribute("loginUser", loginUser);
         return "user/update";
     }
 
@@ -109,6 +109,7 @@ public class UserController {
                              User loginUser, UserUpdateForm form, RedirectAttributes redirectAttributes) {
 
         if (!loginUser.getPassword().equals(form.getPassword())) {
+            redirectAttributes.addFlashAttribute("passwordIncorrect", "비밀번호가 틀립니다. 다시 시도해주세요.");
             return "redirect:/user/update";
         }
         userService.update(loginUser, form.getName(), form.getEmail());
