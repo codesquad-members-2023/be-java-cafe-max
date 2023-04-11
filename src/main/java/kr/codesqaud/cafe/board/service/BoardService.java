@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.board.service;
 import kr.codesqaud.cafe.board.dto.PostResponse;
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
 import kr.codesqaud.cafe.board.repository.BoardJdbcRepository;
+import kr.codesqaud.cafe.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public class BoardService {
     }
 
     public PostResponse getPost(Long postId) {
+        if (!boardJdbcRepository.containsPostId(postId)) {
+            throw new ResourceNotFoundException("요청한 데이터가 존재하지 않습니다.");
+        }
         return PostResponse.fromBoardPost(boardJdbcRepository.findByPostId(postId));
     }
 

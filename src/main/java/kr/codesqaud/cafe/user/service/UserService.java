@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.user.service;
 
 import kr.codesqaud.cafe.exception.DuplicateKeyException;
+import kr.codesqaud.cafe.exception.ResourceNotFoundException;
 import kr.codesqaud.cafe.user.dto.UserAddForm;
 import kr.codesqaud.cafe.user.dto.UserResponse;
 import kr.codesqaud.cafe.user.repository.UserJdbcRepository;
@@ -18,13 +19,16 @@ public class UserService {
     }
 
     public String addUser(UserAddForm userAddForm) {
-        if (!userJdbcRepository.containsUserId(userAddForm.getUserId())) {
+        if (userJdbcRepository.containsUserId(userAddForm.getUserId())) {
             throw new DuplicateKeyException("중복된 아이디가 이미 존재합니다.");
         }
         return userJdbcRepository.save(userAddForm.toUser());
     }
 
     public UserResponse getUser(String userId) {
+        if (!userJdbcRepository.containsUserId(userId)) {
+            throw new ResourceNotFoundException("요청한 데이터가 존재하지 않습니다.");
+        }
         return UserResponse.fromUser(userJdbcRepository.findByUserId(userId));
     }
 

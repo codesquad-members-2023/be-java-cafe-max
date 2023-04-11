@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class BoardJdbcRepository {
@@ -27,6 +28,13 @@ public class BoardJdbcRepository {
         jdbcTemplate.update(
                 "INSERT INTO post (writer, title, contents) VALUES (:writer, :title, :contents)",
                 new BeanPropertySqlParameterSource(boardPost));
+    }
+
+    public boolean containsPostId(Long postId) {
+        Map<String, Long> namedParameters = Collections.singletonMap("post_id", postId);
+        Optional<Integer> countOfPost = Optional.ofNullable(jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM post WHERE post_id = :post_id", namedParameters, Integer.class));
+        return countOfPost.orElse(0) > 0;
     }
 
     public BoardPost findByPostId(Long postId) {
