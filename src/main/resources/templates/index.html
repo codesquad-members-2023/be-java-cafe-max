@@ -9,56 +9,42 @@
             전체 글 <span th:text="${simpleForms.size()}"></span>개
         </div>
         <div class="row col-10">
-            <ol class="justify-content-center" id="bookList">
-                <li class="row text-center" th:each="post,iterStat : ${simpleForms}">
-                    <div class="card" style="width: 18rem;">
+            <ol class="d-flex flex-wrap justify-content-start" id="bookList">
+                <li class="text-center mt-1 list-unstyled p-1" th:each="post : ${simpleForms}">
+                    <div class="card p-1 m-1" style="width: 18rem;height: 30rem">
                         <div class="card-body">
-                            <p class="card-title text-primary fw-bold fs-2" th:text="${post.title}">Card title</p>
+                            <p class="card-title text-primary fw-bold fs-5" th:text="${post.title}">Card title</p>
                             <p class="card-text" th:text="${post.textContent}">Some quick example text to build on the
                                 card title and make up the bulk of the card's content.</p>
                         </div>
-                        <ul class="list-group list-group-flush">
-                            <button type="button" class="list-group-item btn btn-warning">NickName:
+                        <ol class="list-group">
+                            <button type="button" class="list-group-item btn btn-warning p-1 mb-1">NickName:
                                 <span th:text="${post.nickname}"></span>
                             </button>
-                            <button class="list-group-item btn btn-success">
-                                CreateTime:
-                                <span th:text="${#temporals.format(post.createdDateTime,'yyyy-MM-dd HH:mm')}"></span>
-                            </button>
-                            <button class="list-group-item btn btn-info">
+                            <button class="list-group-item btn btn-info p-1 mb-1">
                                 Views:
                                 <span>20</span>
                             </button>
-                        </ul>
+                            <button class="list-group-item btn btn-info p-1 mb-1">
+                                태그:
+                                <span>20</span>
+                            </button>
+                            <button class="list-group-item btn btn-success p-1 mb-1">
+                                CreateTime:
+                                <span th:text="${#temporals.format(post.createdDateTime,'yyyy-MM-dd HH:mm')}"></span>
+                            </button>
+                        </ol>
                         <a th:href="@{/posts/{id}(id = ${post.id})}" class="btn btn-primary mb-2">자세히 보기</a>
                     </div>
                 </li>
             </ol>
         </div>
 
-        <div class="col-10 row justify-content-between">
-            <div class="col">
-                <ul class="pagination col-5">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col row justify-content-end">
-                <div class="col-2">
-                    <a class="btn btn-primary" th:if="${session.user != null}" th:href="@{/posts/form}" type="submit">글쓰기</a>
-                </div>
-            </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-primary" th:if="${session.user != null}"
+                    th:onclick="|location.href='@{/posts/form}'|"
+                    type="submit">글쓰기
+            </button>
         </div>
     </div>
 </div>
