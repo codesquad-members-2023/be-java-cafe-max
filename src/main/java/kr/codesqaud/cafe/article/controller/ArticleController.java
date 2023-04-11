@@ -31,8 +31,8 @@ public class ArticleController {
 
     //글 작성 클릭 시 매핑하고 글 저장
     @PostMapping("/create")
-    public String createUser(ArticleFormDto articleFormDto) {
-        articleService.save(new Article(articleFormDto.getAuthor(), articleFormDto.getTitle(), articleFormDto.getContents()));
+    public String createUser(ArticleFormDto articleFormDto, HttpSession session) {
+        articleService.save(new Article(Session.getUserName(session), articleFormDto.getTitle(), articleFormDto.getContents()));
         return "redirect:/articles/list";
     }
 

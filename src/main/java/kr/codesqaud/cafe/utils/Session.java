@@ -18,4 +18,8 @@ public class Session {
     }
 
 
+    public static String getUserName(HttpSession session) {
+        User user = (User) session.getAttribute(sessionName);
+        return user.getName();
+    }
 }
