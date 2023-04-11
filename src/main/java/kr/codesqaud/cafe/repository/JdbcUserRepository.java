@@ -20,13 +20,18 @@ public class JdbcUserRepository implements UserRepository {
 
 	@Override
 	public void save(User user) {
-		findUserProfile(user.getUserId()).ifPresent(u -> {
+		if (isExistsUserId(user.getUserId())) {
 			throw new DuplicatedUserIdException();
-		});
+		}
 		jdbcTemplate.update("INSERT INTO user_account(user_id, name, email) values (?, ?, ?)",
 			user.getUserId(),
 			user.getName(),
 			user.getEmail());
+	}
+
+	private boolean isExistsUserId(String userId) {
+		return jdbcTemplate.queryForObject("SELECT EXISTS(SELECT * FROM user_account WHERE user_id = ?)",
+			Boolean.class, userId);
 	}
 
 	@Override
