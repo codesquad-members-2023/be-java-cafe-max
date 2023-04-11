@@ -21,11 +21,17 @@
         <div th:fragment="navbar-collapse2" class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/">Posts</a></li>
-                <li><a href="/questions/add" role="button">질문하기</a></li>
-                <li><a href="/login" role="button">로그인</a></li>
-                <li><a href="/user/join" role="button">회원가입</a></li>
-                <li><a href="/logout" role="button">로그아웃</a></li>
-                <li><a href="#" role="button">개인정보수정</a></li>
+
+                <th:block th:if="${session.loginUser == null}">
+                    <li><a href="/login" role="button">로그인</a></li>
+                    <li><a href="/user/join" role="button">회원가입</a></li>
+                </th:block>
+
+                <th:block th:if="${session.loginUser != null}">
+                    <li><a href="/questions/add" role="button">질문하기</a></li>
+                    <li><a href="/logout" role="button">로그아웃</a></li>
+                    <li><a href="#" role="button">개인정보수정</a></li>
+                </th:block>
             </ul>
         </div>
     </div>
