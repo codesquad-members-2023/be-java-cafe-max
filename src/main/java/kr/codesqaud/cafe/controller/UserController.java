@@ -94,12 +94,11 @@ public class UserController {
     }
 
     @GetMapping("user/update")
-    public String updateForm(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser, Model model, @ModelAttribute("passwordIncorrect")String passwordIncorrect) {
+    public String updateForm(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser, Model model) {
 
         if (loginUser == null) {
             return "user/login";
         }
-        model.addAttribute("passwordIncorrect", passwordIncorrect);
         model.addAttribute("loginUser", loginUser);
         return "user/update";
     }
@@ -109,7 +108,7 @@ public class UserController {
                              User loginUser, UserUpdateForm form, RedirectAttributes redirectAttributes) {
 
         if (!loginUser.getPassword().equals(form.getPassword())) {
-            redirectAttributes.addFlashAttribute("passwordIncorrect", "비밀번호가 틀립니다. 다시 시도해주세요.");
+            redirectAttributes.addFlashAttribute("passwordIncorrect", true);
             return "redirect:/user/update";
         }
         userService.update(loginUser, form.getName(), form.getEmail());

@@ -15,9 +15,7 @@
     <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
         <form name="question" method="post" action="/user/update">
-          <div th:if="${passwordIncorrect}">
-          <div class="alert alert-danger" role="alert">[[${passwordIncorrect}]]</div>
-          </div>
+          <div th:if="${passwordIncorrect}" class="alert alert-danger" role="alert">비밀번호가 틀립니다. 다시 시도해주세요.</div>
           <div class="form-group">
             <label for="name">이름</label>
             <input class="form-control" id="name" name="name" th:value="${loginUser.name}">
