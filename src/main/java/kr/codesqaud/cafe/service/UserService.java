@@ -13,8 +13,8 @@ import java.util.List;
 public class UserService {
     private UserRepository userRepository;
 
-    public UserService(MemoryUserRepository memoryUserRepository) {
-        this.userRepository = memoryUserRepository;
+    public UserService(JdbcUserRepository jdbcUserRepository) {
+        this.userRepository = jdbcUserRepository;
     }
 
     public void saveUser(UserForm userForm) {
