@@ -15,10 +15,10 @@ import kr.codesqaud.cafe.dummy.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.repository.temp_memory_db.TempQuestionTable;
 
 @Repository
-public class QuestionRepository {
+public class CollectionFrameWorkQuestionRepository {
 	private final TempQuestionTable questionTable;
 
-	public QuestionRepository() {
+	public CollectionFrameWorkQuestionRepository() {
 		questionTable = new TempQuestionTable();
 		CollectionFrameworkRepositoryDummyData dummyData = new CollectionFrameworkRepositoryDummyData();
 		dummyData.insertQuestionsDummyData(questionTable);
