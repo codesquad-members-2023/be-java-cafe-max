@@ -1,60 +1,73 @@
 package kr.codesqaud.cafe.repository;
 
+import static kr.codesqaud.cafe.repository.UserSql.*;
+
 import java.util.List;
 import java.util.Optional;
 
-import javax.sql.DataSource;
-
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserDto;
 
+@Repository
 public class JdbcUserRepository implements UserRepository {
-	private final JdbcTemplate jdbcTemplate;
+	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	public JdbcUserRepository(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	public JdbcUserRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 	}
 
 	@Override
-	public User save(User user) {
-		String sql = "INSERT INTO USER_INFO(userID, email, nickname, password, signUpDate) VALUES (?, ?, ?, ?, ?)";
-		jdbcTemplate.update(sql, user.getUserID(), user.getEmail(), user.getNickname(),
-			user.getPassword(), user.getSignUpDate());
+	public User create(User user) {
+		SqlParameterSource params = new BeanPropertySqlParameterSource(user);
+		namedParameterJdbcTemplate.update(CREATE, params);
 		return user;
 	}
 
 	@Override
 	public boolean update(UserDto userDto) {
-		String sql = "UPDATE USER_INFO SET email = ?, nickname = ?, password = ? WHERE userID = ?";
-		jdbcTemplate.update(sql, userDto.getEmail(), userDto.getNickname(), userDto.getPassword(), userDto.getUserID());
+		SqlParameterSource params = new BeanPropertySqlParameterSource(userDto);
+		namedParameterJdbcTemplate.update(UPDATE, params);
 		return true;
 	}
 
 	@Override
 	public Optional<User> findByUserID(String userID) {
-		String sql = "SELECT * FROM USER_INFO WHERE userID = ?";
-		return jdbcTemplate.query(sql, userRowMapper(), userID).stream().findAny();
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("userID", userID);
+		List<User> users = namedParameterJdbcTemplate.query(FIND_BY_USERID, param, userRowMapper());
+		return OptionalTo(users);
 	}
 
 	@Override
 	public Optional<User> findByEmail(String email) {
-		String sql = "SELECT * FROM USER_INFO WHERE email = ?";
-		return jdbcTemplate.query(sql, userRowMapper(), email).stream().findAny();
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("email", email);
+		List<User> users = namedParameterJdbcTemplate.query(FIND_BY_EMAIL, param, userRowMapper());
+		return OptionalTo(users);
 	}
 
 	@Override
 	public Optional<User> findByNickname(String nickname) {
-		String sql = "SELECT * FROM USER_INFO WHERE nickname = ?";
-		return jdbcTemplate.query(sql, userRowMapper(), nickname).stream().findAny();
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("nickname", nickname);
+		List<User> users = namedParameterJdbcTemplate.query(FIND_BY_NICKNAME, param, userRowMapper());
+		return OptionalTo(users);
+	}
+
+	private Optional<User> OptionalTo(List<User> users) {
+		return users.stream().findAny();
 	}
 
 	@Override
 	public List<User> findAll() {
-		String sql = "SELECT * FROM USER_INFO";
-		return jdbcTemplate.query(sql, userRowMapper());
+		return namedParameterJdbcTemplate.query(SELECT_ALL_FOR_USER_LIST, userRowMapper());
 	}
 
 	private RowMapper<User> userRowMapper() {

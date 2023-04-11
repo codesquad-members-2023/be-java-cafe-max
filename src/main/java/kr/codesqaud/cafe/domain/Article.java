@@ -49,7 +49,8 @@ public class Article {
 		return hits;
 	}
 
-	public void setHits(long hits) {
+	public boolean setHits(long hits) {
 		this.hits = hits;
+		return true;
 	}
 }

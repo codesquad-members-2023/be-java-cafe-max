@@ -7,7 +7,7 @@ import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserDto;
 
 public interface UserRepository {
-	User save(User user);
+	User create(User user);
 
 	boolean update(UserDto userDto);
 

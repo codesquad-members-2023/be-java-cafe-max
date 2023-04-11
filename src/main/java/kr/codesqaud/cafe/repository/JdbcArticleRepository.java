@@ -1,59 +1,58 @@
 package kr.codesqaud.cafe.repository;
 
+import static kr.codesqaud.cafe.repository.ArticleSql.*;
+
 import java.util.List;
 import java.util.Optional;
 
-import javax.sql.DataSource;
-
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.Article;
 
+@Repository
 public class JdbcArticleRepository implements ArticleRepository {
-	private final JdbcTemplate jdbcTemplate;
+	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	public JdbcArticleRepository(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate(dataSource);
+	public JdbcArticleRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 	}
 
 	@Override
-	public Article save(Article article) {
-		String sql = "INSERT INTO WRITE_INFO(title, writer, contents, writeDate, hits) VALUES (?, ?, ?, ?, ?)";
-		jdbcTemplate.update(sql, article.getTitle(), article.getWriter(), article.getContents(),
-			article.getWriteDate(), article.getHits());
+	public Article create(Article article) {
+		SqlParameterSource params = new BeanPropertySqlParameterSource(article);
+		namedParameterJdbcTemplate.update(CREATE, params);
 		return article;
 	}
 
 	@Override
 	public Optional<Article> findByIndex(Long index) {
-		String sql = "SELECT * FROM WRITE_INFO WHERE index = ?";
-		return jdbcTemplate.query(sql, articleRowMapper(), index).stream().findAny();
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("index", index);
+		List<Article> articles = namedParameterJdbcTemplate.query(FIND_BY_INDEX, param, articleRowMapper());
+		return OptionalTo(articles);
 	}
 
-	@Override
-	public Optional<Article> findByTitle(String title) {
-		String sql = "SELECT * FROM WRITE_INFO WHERE title = ?";
-		return jdbcTemplate.query(sql, articleRowMapper(), title).stream().findAny();
-	}
-
-	@Override
-	public Optional<Article> findByContents(String contents) {
-		String sql = "SELECT * FROM WRITE_INFO WHERE contents = ?";
-		return jdbcTemplate.query(sql, articleRowMapper(), contents).stream().findAny();
+	private Optional<Article> OptionalTo(List<Article> articles) {
+		return articles.stream().findAny();
 	}
 
 	@Override
 	public List<Article> findAll() {
-		String sql = "SELECT * FROM WRITE_INFO";
-		return jdbcTemplate.query(sql, articleRowMapper());
+		return namedParameterJdbcTemplate.query(SELECT_ALL_FOR_WRITE_LIST, articleRowMapper());
 	}
 
 	@Override
-	public boolean increaseHits(long index) {
-		long newIndex = findByIndex(index).get().getHits();
-		String sql = "UPDATE WRITE_INFO SET hits = ? WHERE index = ?";
-		jdbcTemplate.update(sql, ++newIndex, index);
+	public boolean increaseHits(Long index) {
+		long newHits = findByIndex(index).get().getHits();
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("index", index)
+			.addValue("hits", ++newHits);
+		namedParameterJdbcTemplate.update(INCREASE_HITS, param);
 		return true;
 	}
 

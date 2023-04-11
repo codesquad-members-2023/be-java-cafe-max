@@ -6,37 +6,35 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.dto.ArticleDto;
 import kr.codesqaud.cafe.service.ArticleService;
 
 @Controller
-public class ArticleController {
+public class ArticleQueryController {
 	private final ArticleService articleService;
 
-	public ArticleController(ArticleService articleService) {
+	public ArticleQueryController(ArticleService articleService) {
 		this.articleService = articleService;
 	}
 
-	@PostMapping("/qna/write")
-	public String writeArticle(ArticleDto articleDto) {
-		articleService.saveArticle(articleDto);
-		return "redirect:/";
-	}
-
-	@GetMapping("/articles")
-	public String articleList(Model model) {
+	@GetMapping("/")
+	public String getArticleList(Model model) {
 		List<Article> articles = articleService.findArticles();
 		model.addAttribute("articles", articles);
 		return "index";
 	}
 
+	@GetMapping("/questions/form")
+	public String getArticleForm() {
+		return "qna/form";
+	}
+
 	@GetMapping("/articles/{index}")
-	public String showArticle(@PathVariable Long index, Model model) {
+	public String showArticle(@PathVariable long index, Model model) {
 		articleService.increaseHits(index);
-		model.addAttribute("article", articleService.findByIndex(index).get());
+		Article article = articleService.findByIndex(index);
+		model.addAttribute("article", article);
 		return "qna/detail";
 	}
 }

@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.domain;
 import java.time.LocalDate;
 
 public class User {
-	private long index;
+	private Long index;
 	private String userID;
 	private String email;
 	private String nickname;

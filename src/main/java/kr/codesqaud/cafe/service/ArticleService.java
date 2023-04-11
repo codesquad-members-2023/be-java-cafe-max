@@ -3,12 +3,14 @@ package kr.codesqaud.cafe.service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.ArticleDto;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 
+@Service
 public class ArticleService {
 	private final ArticleRepository articleRepository;
 	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -17,10 +19,10 @@ public class ArticleService {
 		this.articleRepository = articleRepository;
 	}
 
-	public boolean saveArticle(ArticleDto articleDto) {
+	public boolean createArticle(ArticleDto articleDto) {
 		Article article = new Article(articleDto.getTitle(), articleDto.getWriter(),
 			articleDto.getContents(), writeDate(), 0L);
-		articleRepository.save(article);
+		articleRepository.create(article);
 		return true;
 	}
 
@@ -29,16 +31,8 @@ public class ArticleService {
 		return now.format(DATE_FORMATTER);
 	}
 
-	public Optional<Article> findByIndex(Long index) {
-		return articleRepository.findByIndex(index);
-	}
-
-	public Optional<Article> findByTitle(String title) {
-		return articleRepository.findByTitle(title);
-	}
-
-	public Optional<Article> findByContents(String contents) {
-		return articleRepository.findByContents(contents);
+	public Article findByIndex(Long index) {
+		return articleRepository.findByIndex(index).get();
 	}
 
 	public List<Article> findArticles() {
