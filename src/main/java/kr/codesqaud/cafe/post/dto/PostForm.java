@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.post.dto;
 
+import kr.codesqaud.cafe.account.User;
 import kr.codesqaud.cafe.post.Post;
 
 import javax.validation.constraints.NotEmpty;
@@ -8,24 +9,17 @@ import java.time.LocalDateTime;
 
 public class PostForm {
     @NotEmpty
-    @Size(max = 64, min = 2, message = "{error.nickname.size}")
-    private String nickname;
-    @NotEmpty
     @Size(max = 64, min = 2, message = "{error.title.size}")
     private String title;
     @NotEmpty
     @Size(max = 1000, min = 3, message = "{error.textContent.size}")
     private String textContent;
 
-    public PostForm(String nickname, String title, String textContent) {
-        this.nickname = nickname;
+    public PostForm(String title, String textContent) {
         this.title = title;
         this.textContent = textContent;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
 
     public void setTitle(String title) {
         this.title = title;
@@ -35,9 +29,6 @@ public class PostForm {
         this.textContent = textContent;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
 
     public String getTitle() {
         return title;
@@ -47,13 +38,13 @@ public class PostForm {
         return textContent;
     }
 
-    public Post toPost() {
+    public Post toPost(User user) {
         return new Post.Builder()
-                .nickname(nickname)
                 .title(title)
+                .nickname(user.getNickname())
+                .User(user)
                 .textContent(textContent)
                 .createdDateTime(LocalDateTime.now())
                 .build();
     }
-
 }

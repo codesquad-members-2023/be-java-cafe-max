@@ -41,8 +41,7 @@ public class PostController {
         if (user == null) {
             return "redirect:/users/login";
         }
-        postForm.setNickname(user.getNickname());
-        Post post = postService.save(postForm);
+        Post post = postService.save(postForm, user);
         return "redirect:/posts/" + post.getId();
     }
 

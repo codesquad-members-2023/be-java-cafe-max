@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.post;
 
+import kr.codesqaud.cafe.account.User;
 import kr.codesqaud.cafe.post.dto.PostForm;
 import kr.codesqaud.cafe.post.dto.SimplePostForm;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,8 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public Post save(PostForm postForm) {
-        Post post = postForm.toPost();
+    public Post save(PostForm postForm, User user) {
+        Post post = postForm.toPost(user);
         return postRepository.save(post);
     }
 
