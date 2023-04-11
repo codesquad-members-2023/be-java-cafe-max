@@ -1,17 +1,12 @@
 package kr.codesqaud.cafe.account.dto;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import kr.codesqaud.cafe.account.annotation.ValidEmail;
+import kr.codesqaud.cafe.account.annotation.ValidPassword;
 
 public class LoginForm {
-    @NotEmpty
-    @Email
+    @ValidEmail
     private final String email;
-    @NotEmpty
-    @Size(max = 32, min = 8, message = "{error.password.size}")
-    @Pattern(regexp = "^(.*[a-z]+.*[1-9]+)|(.*[1-9]+.*[a-z]+.*)$", message = "{error.password.pattern}")
+    @ValidPassword
     private final String password;
 
     public LoginForm(String email, String password) {
