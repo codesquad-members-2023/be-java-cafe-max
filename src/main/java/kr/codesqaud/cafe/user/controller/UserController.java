@@ -38,6 +38,12 @@ public class UserController {
         return "redirect:/board/list";
     }
 
+    @GetMapping("/logout")
+    public String logoutUser(HttpSession session) {
+        session.removeAttribute("sessionUser");
+        return "user/login";
+    }
+
     @GetMapping("/list")
     public String getUserList(Model model) {
         model.addAttribute("users", userService.getUserList());
