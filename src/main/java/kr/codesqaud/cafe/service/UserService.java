@@ -54,7 +54,7 @@ public class UserService {
         UserDTO userDto = getUserById(profileEditDto.getId());
 
         if (!matchPassword(profileEditDto, userDto)){
-            throw new UserUpdateInvalidPasswordException(profileEditDto.getId());
+            throw new UserUpdateInvalidPasswordException();
         }
 
         userRepository.updateUser(userMapper.toUser(profileEditDto));

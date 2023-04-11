@@ -31,18 +31,17 @@ public class GlobalExceptionHandler {
 
     /**
      * @Valid에 의해 발생할수있는 3가지 BindException 경우에대한 예외처리 메서드입니다.
-     * @param e
      * @param request
      * @param redirectAttributes
      * @return String
      */
     @ExceptionHandler(BindException.class)
-    public String handleBindException(BindException e, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String handleBindException(HttpServletRequest request, RedirectAttributes redirectAttributes) {
         String requestUri = request.getRequestURI();
         if (requestUri.contains("/sign-up")) {
             return "redirect:/user/sign-up-form";
         } else if (requestUri.contains("/profile")) {
-            redirectAttributes.addAttribute("id", e.getFieldValue("id"));
+            redirectAttributes.addAttribute("id", request.getParameter("id"));
             return "redirect:/user/profile/{id}/form";
         }
         return "redirect:/article";
@@ -63,9 +62,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserUpdateInvalidPasswordException.class)
-    public ModelAndView handleUserUpdateInvalidPasswordException(UserUpdateInvalidPasswordException e, RedirectAttributes redirectAttributes) {
-        ModelAndView mav = new ModelAndView(handleExceptionWithRedirect(e, "/user/profile/" + e.getId() + "/form", "password-error", redirectAttributes));
-        mav.addObject("id", e.getId());
+    public ModelAndView handleUserUpdateInvalidPasswordException(UserUpdateInvalidPasswordException e, RedirectAttributes redirectAttributes,HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView(handleExceptionWithRedirect(e, "/user/profile/" + request.getParameter("id") + "/form", "password-error", redirectAttributes));
         return mav;
     }
 
