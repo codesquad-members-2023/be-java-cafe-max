@@ -10,11 +10,11 @@ import java.util.List;
  */
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
-    private List<Article> articles = new ArrayList<>();
+    private List<Article> articles;
 
-//    public MemoryArticleRepository(List<Article> articles) {
-//        this.articles = articles;
-//    }
+    public MemoryArticleRepository(List<Article> articles) {
+        this.articles = articles;
+    }
 
     @Override
     public void save(Article article) {

@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.config;
 
 import kr.codesqaud.cafe.article.ArticleRepository;
-import kr.codesqaud.cafe.article.MemoryArticleRepository;
-import kr.codesqaud.cafe.user.MemoryUserRepository;
+import kr.codesqaud.cafe.article.H2ArticleRepository;
+import kr.codesqaud.cafe.user.H2UserRepository;
 import kr.codesqaud.cafe.user.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +10,8 @@ import org.springframework.core.Ordered;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
@@ -25,17 +27,16 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Bean
     public HiddenHttpMethodFilter httpMethodFilter() {
-        HiddenHttpMethodFilter hiddenHttpMethodFilter = new HiddenHttpMethodFilter();
-        return hiddenHttpMethodFilter;
+        return new HiddenHttpMethodFilter();
     }
 
     @Bean
-    public UserRepository userRepository() {
-        return new MemoryUserRepository();
+    public UserRepository userRepository(DataSource dataSource) {
+        return new H2UserRepository(dataSource);
     }
 
     @Bean
-    public ArticleRepository articleRepository() {
-        return new MemoryArticleRepository();
+    public ArticleRepository articleRepository(DataSource dataSource) {
+        return new H2ArticleRepository(dataSource);
     }
 }

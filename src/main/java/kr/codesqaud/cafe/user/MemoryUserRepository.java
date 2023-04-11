@@ -8,11 +8,11 @@ import java.util.*;
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private List<User> users = new ArrayList<>();
+    private List<User> users;
 
-//    public MemoryUserRepository(List<User> users) {
-//        this.users = users;
-//    }
+    public MemoryUserRepository(List<User> users) {
+        this.users = users;
+    }
 
     @Override
     public void save(User user) {
