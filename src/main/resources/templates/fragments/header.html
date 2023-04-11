@@ -8,8 +8,14 @@
             <div class="container-fluid">
                 <a class="navbar-brand" th:href="@{/}" id="logo">CodeSquad</a>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                        <a class="nav-link" th:href="@{/users}">Members</a>
+                    <div class="navbar-nav login-only" th:unless="${session.loginUserId == null}">
+                        <div style="display: flex;">
+                            <a class="nav-link" th:href="@{/}">Community</a>
+                            <a class="nav-link" th:href="@{/users}">Members</a>
+                        </div>
+                        <a class="nav-link" th:href="@{/users/logout}">로그아웃</a>
+                    </div>
+                    <div class="navbar-nav login-request" th:if="${session.loginUserId == null}">
                         <a class="nav-link" th:href="@{/users/sign-up}">회원가입</a>
                         <a class="nav-link" th:href="@{/users/login}">로그인</a>
                     </div>

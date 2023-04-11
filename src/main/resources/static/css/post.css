@@ -156,6 +156,7 @@ textarea:focus {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 
     width: 100%;
 }
@@ -185,6 +186,10 @@ textarea:focus {
 .buttons > a {
     width: 100px;
     height: 32px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .buttons > a:hover, .buttons > div > a:hover {

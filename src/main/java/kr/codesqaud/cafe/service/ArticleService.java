@@ -28,7 +28,7 @@ public class ArticleService {
     }
 
     public ArticleResponse findById(Long id) {
-        if (!articleRepository.exists(id)) {
+        if (!articleRepository.exist(id)) {
             throw new ArticleNotFoundException();
         }
 

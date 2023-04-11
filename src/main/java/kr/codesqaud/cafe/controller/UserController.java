@@ -1,8 +1,10 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.config.SessionAttributeNames;
 import kr.codesqaud.cafe.dto.user.UserResponse;
 import kr.codesqaud.cafe.dto.user.UserSaveRequest;
 import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
+import kr.codesqaud.cafe.exception.user.AccessDeniedException;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,7 +53,11 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/update")
-    public String updateUser(@PathVariable String userId, Model model) {
+    public String updateUser(@PathVariable String userId, Model model, HttpSession httpSession) {
+        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_ID).equals(userId)) {
+            throw new AccessDeniedException();
+        }
+
         UserUpdateRequest userUpdateRequest = userService.makeUserUpdateRequestByUserId(userId);
         model.addAttribute("user", userUpdateRequest);
 
@@ -59,7 +65,11 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/update")
-    public String updateUser(@ModelAttribute UserUpdateRequest userUpdateRequest) {
+    public String updateUser(@ModelAttribute UserUpdateRequest userUpdateRequest, HttpSession httpSession) {
+        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_ID).equals(userUpdateRequest.getUserId())) {
+            throw new AccessDeniedException();
+        }
+
         userService.updateUser(userUpdateRequest);
         return "redirect:/users";
     }
@@ -71,7 +81,17 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession httpSession) {
-        httpSession.setAttribute("user", userService.login(userId, password));
+        final UserResponse loginUser = userService.login(userId, password);
+        httpSession.setAttribute(SessionAttributeNames.LOGIN_USER_ID, loginUser.getUserId());
+        httpSession.setAttribute(SessionAttributeNames.LOGIN_USER_NAME, loginUser.getName());
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        if (httpSession != null) {
+            httpSession.invalidate();
+        }
         return "redirect:/";
     }
 }

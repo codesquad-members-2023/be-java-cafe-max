@@ -34,7 +34,7 @@
                                                 th:text="${user.userId}"></a></td>
                     <td th:text="${user.name}"></td>
                     <td th:text="${user.email}"></td>
-                    <td><a class="toEdit" th:href="@{/users/{userId}/update(userId=${user.userId})}"
+                    <td><a th:if="${session.loginUserId == user.userId}" class="toEdit" th:href="@{/users/{userId}/update(userId=${user.userId})}"
                            role="button">수정</a></td>
                 </tr>
                 </tbody>
