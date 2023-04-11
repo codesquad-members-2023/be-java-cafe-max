@@ -96,9 +96,9 @@ class JdbcArticleRepositoryTest {
         Long savedArticle2 = articleRepository.save(article2);
 
         // when
-        boolean exists1 = articleRepository.exists(savedArticle1);
-        boolean exists2 = articleRepository.exists(savedArticle2);
-        boolean exists3 = articleRepository.exists(3L);
+        boolean exists1 = articleRepository.exist(savedArticle1);
+        boolean exists2 = articleRepository.exist(savedArticle2);
+        boolean exists3 = articleRepository.exist(3L);
 
         // then
         assertThat(exists1).isEqualTo(true);

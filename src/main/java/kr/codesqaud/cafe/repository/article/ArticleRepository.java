@@ -8,5 +8,5 @@ public interface ArticleRepository {
     Long save(Article article);
     Article findById(Long id);
     List<Article> findAll();
-    boolean exists(Long id);
+    boolean exist(Long id);
 }
