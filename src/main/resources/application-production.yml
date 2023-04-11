@@ -11,8 +11,6 @@ spring:
       enabled: true
       path: /h2-console
   sql:
-    init:
-      mode: always
     initialization-mode: always
     schema:
       - classpath:schema.sql
