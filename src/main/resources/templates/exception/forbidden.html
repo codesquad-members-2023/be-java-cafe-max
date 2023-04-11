@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <th:block th:include="fragments/config::config"/>
+    <title>Forbidden</title>
+</head>
+
+<body>
+
+<div layout:fragment="content">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <img src="/images/forbidden.png" width="400px"
+             style="padding: 40px 0px 30px;">
+        <span style="font-weight: 500; font-size: 20px; padding: 10px 0px 10px;">Access denied</span>
+        <span th:text="${accessDeniedMessage}" style="font-weight: 500; font-size: 20px;">접근 권한이 없습니다.</span>
+    </div>
+</div>
+
+</body>
+</html>

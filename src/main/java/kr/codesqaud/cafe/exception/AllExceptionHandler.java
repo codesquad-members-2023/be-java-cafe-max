@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.exception;
 
 import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
+import kr.codesqaud.cafe.exception.user.AccessDeniedException;
 import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.exception.user.LoginFailedException;
 import kr.codesqaud.cafe.exception.user.MismatchedPasswordException;
@@ -43,8 +44,15 @@ public class AllExceptionHandler {
     }
 
     @ExceptionHandler(LoginFailedException.class)
-    public String handelLoginFailedException(LoginFailedException exception, Model model) {
+    public String handleLoginFailedException(LoginFailedException exception, Model model) {
         model.addAttribute("loginFailedMessage", exception.getMessage());
         return "user/login";
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedException.class)
+    public String handleAccessDeniedException(AccessDeniedException exception, Model model) {
+        model.addAttribute("accessDeniedMessage", exception.getMessage());
+        return "exception/forbidden";
     }
 }
