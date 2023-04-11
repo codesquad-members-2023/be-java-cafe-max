@@ -23,4 +23,10 @@ public class AuthController {
 		session.setAttribute("sessionedUser", authService.login(request));
 		return "redirect:/";
 	}
+
+	@PostMapping("/logout")
+	public String logout(final HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
+	}
 }

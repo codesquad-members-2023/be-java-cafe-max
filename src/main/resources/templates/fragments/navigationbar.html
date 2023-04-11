@@ -60,7 +60,7 @@
                 <li><a href="/user/form" role="button">회원가입</a></li>
                 {{/sessionedUser}}
                 {{#sessionedUser}}
-                <li><a href="#" role="button">로그아웃</a></li>
+                <li><a href="#" role="button" id="logoutBtn">로그아웃</a></li>
                 {{/sessionedUser}}
                 {{#sessionedUser}}
                 <li><a href="/users/{{&sessionedUser}}/form" role="button">개인정보수정</a></li>
