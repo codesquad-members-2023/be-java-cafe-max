@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.article.repository;
 
 import kr.codesqaud.cafe.article.domain.Article;
-import org.springframework.beans.factory.annotation.Autowired;
+import kr.codesqaud.cafe.article.dto.ArticleFormDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -43,6 +44,20 @@ public class JdbcArticleRepository implements ArticleRepository {
     public Article findByID(Long index) {
         String sql = "SELECT * FROM articles WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, articleRowMapper(), index);
+    }
+
+    @Override
+    public Long modify(long id, ArticleFormDto articleFormDto) {
+        String sql = "UPDATE articles SET title=?, contents=?, time=? WHERE id=?";
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, articleFormDto.getTitle());
+            ps.setString(2, articleFormDto.getContents());
+            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setLong(4, id);
+            return ps;
+        });
+        return id;
     }
 
     private RowMapper<Article> articleRowMapper() {

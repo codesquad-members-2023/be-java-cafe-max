@@ -22,4 +22,9 @@ public class Session {
         User user = (User) session.getAttribute(sessionName);
         return user.getName();
     }
+
+    public static String getUserId(HttpSession session) {
+        User user = (User) session.getAttribute(sessionName);
+        return user.getUserId();
+    }
 }

@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.article.service;
 
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticleDetailDto;
+import kr.codesqaud.cafe.article.dto.ArticleFormDto;
 import kr.codesqaud.cafe.article.dto.ArticleListDto;
 import kr.codesqaud.cafe.article.mapper.ArticleDtoMapper;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
@@ -45,5 +46,9 @@ public class ArticleService {
     public ArticleDetailDto getArticleDetail(Long index) {
         Article article = articleRepository.findByID(index);
         return ArticleDtoMapper.INSTANCE.toDetailDto(article);
+    }
+
+    public void update(long id, ArticleFormDto articleFormDto) {
+        articleRepository.modify(id, articleFormDto);
     }
 }

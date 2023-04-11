@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.article.repository;
 
 import kr.codesqaud.cafe.article.domain.Article;
+import kr.codesqaud.cafe.article.dto.ArticleFormDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,5 +13,7 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
-    public Article findByID(Long index);
+    Article findByID(Long index);
+
+    Long modify(long id, ArticleFormDto articleFormDto);
 }
