@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.board.repository;
 
 import kr.codesqaud.cafe.board.domain.BoardPost;
+import kr.codesqaud.cafe.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -39,10 +41,13 @@ public class BoardJdbcRepository {
 
     public BoardPost findByPostId(Long postId) {
         Map<String, Long> namedParameters = Collections.singletonMap("postId", postId);
-        return jdbcTemplate.queryForObject(
-                "SELECT post_id, writer, title, contents, write_date_time FROM post WHERE post_id = :postId",
-                namedParameters,
-                postRowMapper);
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT post_id, writer, title, contents, write_date_time FROM post WHERE post_id = :postId",
+                    namedParameters, postRowMapper);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("요청한 데이터가 존재하지 않습니다.");
+        }
     }
 
     public List<BoardPost> findAll() {
