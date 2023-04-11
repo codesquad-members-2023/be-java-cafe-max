@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header.html :: header"></head>
 <body>
-<nav th:replace="fragments/navbar.html :: user">
+<nav th:replace="fragments/navbar.html :: common">
 </nav>
 <form class="container" id="postingForm" th:action="@{/users/{userId}/profile/edit(userId = ${userId})}" novalidate>
     <div class="row justify-content-center mt-5">
