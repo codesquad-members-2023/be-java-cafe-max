@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.article;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,11 +10,11 @@ import java.util.List;
  */
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
-    private List<Article> articles;
+    private List<Article> articles = new ArrayList<>();
 
-    public MemoryArticleRepository(List<Article> articles) {
-        this.articles = articles;
-    }
+//    public MemoryArticleRepository(List<Article> articles) {
+//        this.articles = articles;
+//    }
 
     @Override
     public void save(Article article) {
