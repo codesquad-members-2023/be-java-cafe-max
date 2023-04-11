@@ -28,15 +28,15 @@ public class UserController {
 
     @GetMapping("")
     public String list(Model model){
-        List<User> users = userService.findUsers();
+        List<UserResponse> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String profile(@PathVariable String userId, Model model){
-        User user = userService.findOne(userId).get();
-        model.addAttribute("user", user);
+        UserResponse userResponse = userService.findByUserId(userId).get();
+        model.addAttribute("user", userResponse);
         return "user/profile";
     }
 

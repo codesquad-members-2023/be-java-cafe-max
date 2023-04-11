@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.user.UserResponse;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.user.MemoryUserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -35,7 +36,7 @@ class UserServiceTest {
         String saveUserId = userService.join(user);
 
         // then
-        User findUser = userService.findOne(saveUserId).get();
+        UserResponse findUser = userService.findByUserId(saveUserId).get();
         assertThat(user.getName()).isEqualTo(findUser.getName());
     }
 

@@ -1,11 +1,13 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.user.UserResponse;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -42,11 +44,21 @@ public class UserService {
     }
 
     // 전체 회원 조회
-    public List<User> findUsers(){
-        return userRepository.findAll();
+    public List<UserResponse> findUsers(){
+        return userRepository.findAll().stream()
+                .map(user -> new UserResponse(user.getUserId(), user.getName(), user.getEmail()))
+                .collect(Collectors.toList());
     }
 
-    public Optional<User> findOne(String userId) {
-        return userRepository.findByUserId(userId);
+    public Optional<UserResponse> findByUserId(String userId) {
+        User user = userRepository.findByUserId(userId).get();
+        UserResponse userResponse = new UserResponse(user.getUserId(), user.getName(), user.getEmail());
+        return Optional.ofNullable(userResponse);
+    }
+
+    public Optional<UserResponse> findByName(String name){
+        User user = userRepository.findByName(name).get();
+        UserResponse userResponse = new UserResponse(user.getUserId(), user.getName(), user.getEmail());
+        return Optional.ofNullable(userResponse);
     }
 }
