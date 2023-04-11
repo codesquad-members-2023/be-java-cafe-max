@@ -23,11 +23,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/register")
-    public String register() {
-        return "users/register";
-    }
-
     @PostMapping("")
     public String register(UserRegisterRequest userRegisterRequest) {
         userService.register(userRegisterRequest.toUser());
