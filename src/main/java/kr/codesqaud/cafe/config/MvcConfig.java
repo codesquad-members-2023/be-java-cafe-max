@@ -14,7 +14,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
         //로직이 없는 매핑이기 때문에 미션에서 추천해준 방식대로 매핑을 적용해 보았습니다.
         registry.addViewController("/user/sign-up-form").setViewName("user/sign-up-form");
-        registry.addViewController("/articles/write-form").setViewName("articles/write-form");
         registry.addViewController("/user/login").setViewName("user/login");
         registry.addViewController("/index").setViewName("index");
 

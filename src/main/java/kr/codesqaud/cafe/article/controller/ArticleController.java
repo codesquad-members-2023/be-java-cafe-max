@@ -23,6 +23,12 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+
+    @GetMapping("/write-form")
+    public String writeForm(HttpSession session){
+        return Session.isLoggedIn(session) ? "articles/write-form" : "redirect:/user/login" ;
+    }
+
     //글 작성 클릭 시 매핑하고 글 저장
     @PostMapping("/create")
     public String createUser(ArticleFormDto articleFormDto) {
