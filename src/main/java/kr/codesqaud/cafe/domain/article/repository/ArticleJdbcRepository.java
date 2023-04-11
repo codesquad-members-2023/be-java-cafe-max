@@ -51,4 +51,12 @@ public class ArticleJdbcRepository implements ArticleRepository {
                 ,article.getTitle(),article.getContents(),article.getIndex()
         );
     }
+
+    @Override
+    public void delete(int index) {
+        jdbcTemplate.update(
+                "DELETE FROM ARTICLES WHERE IDX = ?"
+                ,index
+        );
+    }
 }

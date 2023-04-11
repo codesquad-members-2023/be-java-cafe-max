@@ -12,4 +12,6 @@ public interface ArticleRepository {
     Article findByIdx(int idx);
 
     void update(Article article);
+
+    void delete(int index);
 }

@@ -67,4 +67,9 @@ public class ArticleService {
         articleRepository.update(article);
         return false;
     }
+
+    public boolean delete(int index) {
+        articleRepository.delete(index);
+        return true;
+    }
 }
