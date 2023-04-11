@@ -12,7 +12,10 @@ spring:
     suffix: .html
     servlet:
       cache: false
+      expose-session-attributes: true
 server:
   servlet:
+    session:
+      tracking-modes: cookie
     encoding:
       force: true
