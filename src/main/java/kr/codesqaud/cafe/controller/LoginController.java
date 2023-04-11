@@ -20,9 +20,7 @@ public class LoginController {
 
     @PostMapping("/user/login-success")
     public String userLogin(@ModelAttribute LoginDTO loginDto,HttpServletRequest request){
-        if(!userService.matchPassword(loginDto)){
-            return "user/login";
-        }
+        userService.matchPassword(loginDto);
         HttpSession session = request.getSession();
         session.setAttribute(Session.LOGIN_MEMBER,loginDto.getUserId());
         return "user/login_success";

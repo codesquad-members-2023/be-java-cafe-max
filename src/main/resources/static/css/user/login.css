@@ -188,3 +188,7 @@ label {
     color: red;
     font-size: 8px;
 }
+#password-error-message{
+    color: red;
+    font-size: 8px;
+}

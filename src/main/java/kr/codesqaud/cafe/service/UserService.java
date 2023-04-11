@@ -6,7 +6,8 @@ import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.controller.dto.UserListDTO;
 import kr.codesqaud.cafe.domain.mapper.UserMapper;
 import kr.codesqaud.cafe.exception.AlreadyUserExistenceException;
-import kr.codesqaud.cafe.exception.InvalidPasswordException;
+import kr.codesqaud.cafe.exception.LoginInvalidPasswordException;
+import kr.codesqaud.cafe.exception.UserUpdateInvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -53,7 +54,7 @@ public class UserService {
         UserDTO userDto = getUserById(profileEditDto.getId());
 
         if (!matchPassword(profileEditDto, userDto)){
-            throw new InvalidPasswordException(profileEditDto.getId());
+            throw new UserUpdateInvalidPasswordException(profileEditDto.getId());
         }
 
         userRepository.updateUser(userMapper.toUser(profileEditDto));
@@ -63,9 +64,11 @@ public class UserService {
         return userDto.getPassword().equals(profileEditDto.getOriPassword());
     }
 
-    public boolean matchPassword(LoginDTO loginDto){
+    public void matchPassword(LoginDTO loginDto){
         UserDTO userdto = getUserById(loginDto.getUserId());
-        return loginDto.getPassword().equals(userdto.getPassword());
+        if(!loginDto.getPassword().equals(userdto.getPassword())){
+            throw new LoginInvalidPasswordException();
+        }
     }
 
 }

@@ -2,7 +2,8 @@ package kr.codesqaud.cafe.global;
 
 
 import kr.codesqaud.cafe.exception.AlreadyUserExistenceException;
-import kr.codesqaud.cafe.exception.InvalidPasswordException;
+import kr.codesqaud.cafe.exception.LoginInvalidPasswordException;
+import kr.codesqaud.cafe.exception.UserUpdateInvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -25,8 +26,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 여러군데에서 발생할수 있는 BindException 처리
-     *
+     * sign-up 또는 post시 발생할수있는 BindException 처리
      * @param e
      * @param request
      * @return ModelAndView
@@ -55,10 +55,23 @@ public class GlobalExceptionHandler {
         return createErrorResponseModelAndView("user/login",e,true);
     }
 
-    @ExceptionHandler(InvalidPasswordException.class)
-    public ModelAndView handleInvalidPasswordException(InvalidPasswordException e) {
+    @ExceptionHandler(UserUpdateInvalidPasswordException.class)
+    public ModelAndView handleInvalidPasswordException(UserUpdateInvalidPasswordException e) {
         ModelAndView mav = createErrorResponseModelAndView("user/updateForm", e, true);
         mav.addObject("id", e.getId());
+        return mav;
+    }
+
+    /**
+     * 로그인시 비밀번호가 틀리면 발생되는 error이다. login-form에서 존재하지 않는 id가 입력될시 error라는 메세지를 사용하고있기때문에
+     * 비밀번호는 password-error를 통해 login-form에 error-message를 넘긴다.
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(LoginInvalidPasswordException.class)
+    public ModelAndView handleLoginInvalidPasswordException(LoginInvalidPasswordException e) {
+        ModelAndView mav = createErrorResponseModelAndView("user/login", e, false);
+        mav.addObject("password-error",e.getMessage());
         return mav;
     }
 
