@@ -12,22 +12,23 @@ public class UserRepositoryTest {
     UserRepository repository = new MemoryUserRepository();
 
     // 테스트 순서는 보장될 수 없기 때문에 테스트 코드 함수의 실행 순서에 의존하면 안된다.
-    @AfterEach // 함수가 끝날 때마다 afterEach가 호출된다.
+    @AfterEach
     public void afterEach() {
         repository.clearStore();
     }
 
     @Test
     void save(){
+        // given
         User user = new User();
         user.setName("springName");
         user.setUserId("springId");
 
+        // when
         repository.save(user);
-
-        // optinal은 get()으로 꺼낼 수 있지만, 원래는 바로 꺼내면 안된다.
         User result = repository.findByUserId(user.getUserId()).get();
 
+        //then
         assertThat(user).isEqualTo(result);
     }
 
