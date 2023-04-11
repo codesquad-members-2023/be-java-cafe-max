@@ -51,4 +51,16 @@ public class JdbcArticleRepository implements ArticleRepository {
                 Integer.class);
         return count > 0;
     }
+
+    @Override
+    public Article findWithSurroundingArticles(Long id) {
+        final String sql = "SELECT id, title, writer, contents, createdAt, previousId, nextId "
+                + " FROM (SELECT id, title, writer, contents, createdAt, "
+                + " LAG(id, 1, 0) OVER(ORDER BY id ASC) AS previousId, "
+                + " LEAD(id, 1, 0) OVER(ORDER BY id ASC) AS nextId "
+                + " FROM articles) WHERE id = :id";
+        return jdbcTemplate.queryForStream(sql, Map.of("id", id), BeanPropertyRowMapper.newInstance(Article.class))
+                .findFirst()
+                .orElseThrow(ArticleNotFoundException::new);
+    }
 }

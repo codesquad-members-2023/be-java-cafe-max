@@ -8,5 +8,6 @@ public interface ArticleRepository {
     Long save(Article article);
     Article findById(Long id);
     List<Article> findAll();
+    Article findWithSurroundingArticles(Long id);
     boolean exist(Long id);
 }

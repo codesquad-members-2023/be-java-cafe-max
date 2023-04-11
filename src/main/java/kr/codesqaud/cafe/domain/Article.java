@@ -8,6 +8,8 @@ public class Article {
     private String writer;
     private String contents;
     private LocalDateTime createdAt;
+    private Long previousId;
+    private Long nextId;
 
     public Article() {
 
@@ -27,10 +29,22 @@ public class Article {
     public String getWriter() { return writer; }
     public String getContents() { return contents; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public Long getPreviousId() {
+        return previousId;
+    }
+    public Long getNextId() {
+        return nextId;
+    }
 
     public void setId(Long id) { this.id = id; }
     public void setTitle(String title) { this.title = title; }
     public void setWriter(String writer) { this.writer = writer; }
     public void setContents(String contents) { this.contents = contents; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public void setPreviousId(final Long previousId) {
+        this.previousId = previousId;
+    }
+    public void setNextId(final Long nextId) {
+        this.nextId = nextId;
+    }
 }

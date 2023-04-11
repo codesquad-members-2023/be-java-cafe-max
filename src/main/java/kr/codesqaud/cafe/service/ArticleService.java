@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.dto.article.ArticleResponse;
 import kr.codesqaud.cafe.dto.article.ArticleSaveRequest;
+import kr.codesqaud.cafe.dto.article.ArticleWithSurroundingResponse;
 import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,5 +34,9 @@ public class ArticleService {
         }
 
         return ArticleResponse.from(articleRepository.findById(id));
+    }
+
+    public ArticleWithSurroundingResponse getArticleWithSurrounding(Long id) {
+        return ArticleWithSurroundingResponse.from(articleRepository.findWithSurroundingArticles(id));
     }
 }

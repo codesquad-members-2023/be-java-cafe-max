@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,4 +35,14 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public boolean exist(Long id) { return STORE.containsKey(id); }
+
+    @Override
+    public Article findWithSurroundingArticles(Long id) {
+        final Long previousId = STORE.keySet().stream().filter(key -> key > id).max(Comparator.naturalOrder()).orElse(0L);
+        final Long nextId = STORE.keySet().stream().filter(key -> key < id).min(Comparator.naturalOrder()).orElse(0L);
+        Article article = STORE.get(id);
+        article.setPreviousId(previousId);
+        article.setNextId(nextId);
+        return article;
+    }
 }
