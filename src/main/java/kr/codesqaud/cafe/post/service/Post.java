@@ -1,19 +1,29 @@
-package kr.codesqaud.cafe.dto;
+package kr.codesqaud.cafe.post.service;
 
 import java.time.LocalDateTime;
 
-public class PostDetailResponse {
+public class Post {
 
+    private final Long id;
     private final String writer;
     private final String title;
     private final String contents;
     private final LocalDateTime writingTime;
 
-    public PostDetailResponse(String writer, String title, String contents, LocalDateTime writingTime) {
+    public Post(Long id, String writer, String title, String contents, LocalDateTime writingTime) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.writingTime = writingTime;
+    }
+
+    public Post createPost(long id) {
+        return new Post(id, this.writer, this.title, this.contents, this.writingTime);
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getWriter() {

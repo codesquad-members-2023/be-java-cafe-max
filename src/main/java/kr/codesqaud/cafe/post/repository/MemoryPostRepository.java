@@ -1,7 +1,6 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.post.repository;
 
-import kr.codesqaud.cafe.domain.Post;
-import kr.codesqaud.cafe.dto.PostWriteRequest;
+import kr.codesqaud.cafe.post.service.Post;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +14,8 @@ public class MemoryPostRepository implements PostRepository {
     private static long sequence = 0L;
 
     @Override
-    public Post save(PostWriteRequest postWriteRequest) {
-        Post post = postWriteRequest.toEntity(++sequence);
-        posts.put(sequence, post);
+    public Post save(Post post) {
+        posts.put(++sequence, post.createPost(sequence));
         return post;
     }
 
