@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDTO;
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.mapper.ArticleMapper;
 import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.impl.MemoryArticleRepository;
@@ -17,6 +18,7 @@ class ArticleServiceTest {
     private ArticleService articleService;
 
 
+
     @BeforeEach
     void initArticleService(){
         ArticleRepository articleRepository = new MemoryArticleRepository();
@@ -26,11 +28,13 @@ class ArticleServiceTest {
     @Test
     @DisplayName("article post 성공 테스트")
     void post_test(){
+        ArticleMapper articleMapper = new ArticleMapper();
+
         //given
         Article article = new Article("title","content");
 
         //when & then
-        assertThatCode(() -> articleService.post(article.toDTO())).doesNotThrowAnyException();
+        assertThatCode(() -> articleService.post(articleMapper.toArticleDTO(article))).doesNotThrowAnyException();
     }
 
     @Test

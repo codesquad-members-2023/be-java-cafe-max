@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.mapper.UserMapper;
 import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
@@ -26,11 +27,13 @@ class UserServiceTest {
     @Test
     @DisplayName("user 추가 성공 테스트")
     void addUser() {
+        UserMapper userMapper = new UserMapper();
+
         // given
         User user = new User("charlie","aaa@naver.com","password","testId");
 
         // when & then
-        assertThatCode(() ->userService.addUser(user.toUserDTO())).doesNotThrowAnyException();
+        assertThatCode(() ->userService.addUser(userMapper.toUserDTO(user))).doesNotThrowAnyException();
     }
 
     @Test

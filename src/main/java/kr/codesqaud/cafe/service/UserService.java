@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.controller.dto.UserListDTO;
-import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.mapper.UserMapper;
 import kr.codesqaud.cafe.exception.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
@@ -18,14 +18,16 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     public UserService(@Qualifier("jdbcRepository")UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.userMapper = new UserMapper();
     }
 
     public void addUser(UserDTO userDTO) {
         validateId(userDTO.getId());
-        userRepository.save(userDTO.toUser());
+        userRepository.save(userMapper.toUser(userDTO));
     }
 
     private void validateId(String id) {
@@ -36,13 +38,13 @@ public class UserService {
 
     public List<UserListDTO> getUserList() {
         return userRepository.findAll().stream()
-                .map(User::toUserListDTO)
+                .map(user -> userMapper.toUserListDTO(user))
                 .collect(Collectors.toUnmodifiableList());
     }
 
     public UserDTO getUserById(String id) {
         return userRepository.findUserById(id)
-                .map(User::toUserDTO)
+                .map(user -> userMapper.toUserDTO(user))
                 .orElseThrow(UserNotFoundException::new);
     }
 
@@ -53,7 +55,7 @@ public class UserService {
             throw new InvalidPasswordException(profileEditDto.getId());
         }
 
-        userRepository.updateUser(profileEditDto.toUser());
+        userRepository.updateUser(userMapper.toUser(profileEditDto));
     }
 
     private boolean matchPassword(ProfileEditDTO profileEditDto, UserDTO userDto) {

@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.controller.dto;
 
-import kr.codesqaud.cafe.domain.Article;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -18,13 +16,26 @@ public class ArticleDTO {
 
     private final String date;
 
-    public ArticleDTO(String title, String content,Long id,String date) {
+    public ArticleDTO(String title, String content, Long id, String date) {
         this.title = title;
         this.content = content;
         this.id = id;
         this.date = date;
     }
-    public Article toArticle(){
-        return new Article(title,content);
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getDate() {
+        return date;
     }
 }

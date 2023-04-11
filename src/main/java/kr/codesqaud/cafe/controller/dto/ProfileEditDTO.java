@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller.dto;
 
-import kr.codesqaud.cafe.domain.User;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -53,7 +52,4 @@ public class ProfileEditDTO {
         return oriPassword;
     }
 
-    public User toUser(){
-        return new User(nickName,email,newPassword,id);
-    }
 }

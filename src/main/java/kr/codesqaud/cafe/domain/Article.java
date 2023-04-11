@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -45,8 +43,5 @@ public class Article {
 
     public void setId(Long id) {
         this.id = id;
-    }
-    public ArticleDTO toDTO(){
-        return new ArticleDTO(title,content,id,date);
     }
 }
