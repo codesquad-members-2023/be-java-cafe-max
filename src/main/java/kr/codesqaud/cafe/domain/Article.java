@@ -13,14 +13,14 @@ public class Article {
     private Long points;
 
     public Article(){}
-    public Article(ArticleForm form){
-        this.writer = form.getWriter();
-        this.title = form.getTitle();
-        this.contents = form.getContents();
+
+    public Article(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
         this.createdAt = LocalDateTime.now();
         this.points = 1L;
     }
-
 
     public Long getId() {
         return id;
