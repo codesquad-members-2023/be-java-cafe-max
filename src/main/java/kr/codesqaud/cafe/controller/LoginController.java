@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.SessionConst;
 import kr.codesqaud.cafe.controller.dto.user.UserLoginForm;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.LoginService;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
