@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.Repository.MemoryUserRepository;
+import kr.codesqaud.cafe.Repository.user.MemoryUserRepository;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Service;
 

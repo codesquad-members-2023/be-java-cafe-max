@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.dto.ArticleResponseDto;
+import kr.codesqaud.cafe.dto.article.ArticleResponseDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

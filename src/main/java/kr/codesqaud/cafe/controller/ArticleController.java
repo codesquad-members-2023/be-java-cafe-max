@@ -1,10 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.dto.ArticleRequestDto;
-import kr.codesqaud.cafe.dto.ArticleResponseDto;
+import kr.codesqaud.cafe.dto.article.ArticleRequestDto;
+import kr.codesqaud.cafe.dto.article.ArticleResponseDto;
 import kr.codesqaud.cafe.service.ArticleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

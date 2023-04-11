@@ -1,10 +1,9 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.Repository.ArticleRepository;
-import kr.codesqaud.cafe.Repository.MemoryArticleRepository;
+import kr.codesqaud.cafe.Repository.article.ArticleRepository;
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.dto.ArticleRequestDto;
-import kr.codesqaud.cafe.dto.ArticleResponseDto;
+import kr.codesqaud.cafe.dto.article.ArticleRequestDto;
+import kr.codesqaud.cafe.dto.article.ArticleResponseDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

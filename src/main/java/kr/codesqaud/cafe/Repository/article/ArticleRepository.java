@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.Repository;
+package kr.codesqaud.cafe.Repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
 
