@@ -1,9 +1,12 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.dto.ArticleResponseDto;
+
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Article {
-    private Integer id;
+    private Long id;
     private String writer;
     private String title;
     private String contents;
@@ -16,7 +19,7 @@ public class Article {
         this.writeTime = writeTime;
     }
 
-    public Article(final Integer id, final String writer, final String title, final String contents, final LocalDateTime writeTime) {
+    public Article(final Long id, final String writer, final String title, final String contents, final LocalDateTime writeTime) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -24,11 +27,11 @@ public class Article {
         this.writeTime = writeTime;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -46,5 +49,10 @@ public class Article {
 
     public String getContents() {
         return contents;
+    }
+
+    public ArticleResponseDto toDto() {
+        return new ArticleResponseDto(id, writer, title, contents, writeTime.format(DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm")));
+
     }
 }

@@ -10,11 +10,11 @@ public class ArticleRequestDto {
     private String contents;
     private LocalDateTime writeTime;
 
-    public ArticleRequestDto(final String writer, final String title, final String contents, final LocalDateTime writeTime) {
+    public ArticleRequestDto(final String writer, final String title, final String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.writeTime = writeTime;
+        this.writeTime = LocalDateTime.now();
     }
 
     public Article toEntity() {

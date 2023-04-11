@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.ArticleRequestDto;
+import kr.codesqaud.cafe.dto.ArticleResponseDto;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,22 +22,22 @@ public class ArticleController {
     }
 
     @PostMapping("/qna")
-    public String writeArticle(final Article article) {
-        articleService.saveArticle(article);
+    public String writeArticle(final ArticleRequestDto articleRequestDto) {
+        articleService.saveArticle(articleRequestDto);
         return "redirect:/";
     }
 
     @GetMapping
     public String showArticleList(final Model model) {
-        List<Article> articles = articleService.findArticles();
+        List<ArticleResponseDto> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         return "index";
     }
 
     @GetMapping("articles/{index}")
     public String findArticleById(@PathVariable Integer index, final Model model) {
-        Article article = articleService.findArticleBySequence(index);
-        model.addAttribute("article", article);
+        ArticleResponseDto articleResponseDto = articleService.findArticleBySequence(index);
+        model.addAttribute("article", articleResponseDto);
         return "qna/show";
     }
 

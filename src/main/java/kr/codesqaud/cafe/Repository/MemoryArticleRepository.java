@@ -4,16 +4,17 @@ import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
     private final List<Article> articleRepository = new ArrayList<>();
     //    private final Map<Integer, Article> articleRepository = new HashMap<>();
-    private Integer sequence = 1;
+    private AtomicLong sequence = new AtomicLong();
 
     public void saveArticle(final Article article) {
         articleRepository.add(article);
-        article.setId(sequence++);
+        article.setId(sequence.getAndIncrement());
     }
 
     public List<Article> findAllArticle() {
@@ -21,7 +22,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     public Optional<Article> findArticleById(final int articleId) {
-        return Optional.ofNullable(articleRepository.get(articleId - 1));
+        return Optional.ofNullable(articleRepository.get(articleId ));
     }
 
 

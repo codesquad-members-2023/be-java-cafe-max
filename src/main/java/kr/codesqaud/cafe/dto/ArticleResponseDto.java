@@ -3,13 +3,13 @@ package kr.codesqaud.cafe.dto;
 import java.time.LocalDateTime;
 
 public class ArticleResponseDto {
-    private Integer id;
+    private Long id;
     private String writer;
     private String title;
     private String contents;
-    private LocalDateTime writeTime;
+    private String writeTime;
 
-    public ArticleResponseDto(final Integer id, final String writer, final String title, final String contents, final LocalDateTime writeTime) {
+    public ArticleResponseDto(final Long id, final String writer, final String title, final String contents, final String writeTime) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -17,7 +17,7 @@ public class ArticleResponseDto {
         this.writeTime = writeTime;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -33,7 +33,7 @@ public class ArticleResponseDto {
         return contents;
     }
 
-    public LocalDateTime getWriteTime() {
+    public String getWriteTime() {
         return writeTime;
     }
 }
