@@ -1,8 +1,8 @@
 {{> fragments/header}}
 <div class="keyword"><strong>개인정보 수정</strong></div>
 <div class="form-box">
-    <form name="question" id="update-form" method="post" action="/user/{{userID}}/update">
-        <input type="hidden" name="_method" value="PUT"/>
+    <form name="question" id="update-form" method="post" action="/user/{{userID}}">
+        <input type="hidden" name="_method" value="PATCH"/>
         <div class="box">
             <label for="userID">아이디</label>
             <input type="text" id="userID" name="userID" value="{{user.userID}}" readonly/>
