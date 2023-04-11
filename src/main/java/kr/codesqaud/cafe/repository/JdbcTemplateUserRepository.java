@@ -53,10 +53,11 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public void update(User updateUser) {
-        String sql = "UPDATE USER_TB SET NAME = :NAME, EMAIL = :EMAIL WHERE ID = :ID";
+        String sql = "UPDATE USER_TB SET NAME = :NAME, PASSWORD = :PASSWORD, EMAIL = :EMAIL WHERE ID = :ID";
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("NAME", updateUser.getName())
+                .addValue("PASSWORD", updateUser.getPassword())
                 .addValue("EMAIL", updateUser.getEmail())
                 .addValue("ID", updateUser.getId());
 

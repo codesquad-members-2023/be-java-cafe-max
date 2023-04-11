@@ -1,24 +1,23 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.UserJoinDTO;
-
 public class User {
-    private long id;
+    private Long id;
     private String userId;
     private String name;
     private String password;
     private String email;
 
-    public static User toUser(final UserJoinDTO userJoinDTO) {
-        User user = new User();
-        user.setUserId(userJoinDTO.getUserId());
-        user.setName(userJoinDTO.getName());
-        user.setPassword(userJoinDTO.getPassword());
-        user.setEmail(userJoinDTO.getEmail());
-        return user;
+    //todo : 기본생성자 vs JoinDTD id 어떤 걸로 할까...
+    public User() {}
+
+    public User(String userId, String name, String password, String email) {
+        this.userId = userId;
+        this.name = name;
+        this.password = password;
+        this.email = email;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

@@ -34,13 +34,13 @@ public class ArticleService {
         List<Article> postList = articleRepository.gatherAll();
         List<ArticleDTO> postDTOList = new ArrayList<>();
         for(Article article : postList) {
-            postDTOList.add(ArticleDTO.toArticleDTO(article));
+            postDTOList.add(ArticleDTO.from(article));
         }
         return postDTOList;
     }
 
     public ArticleDTO clickOne(final long id) {
         Optional<Article> wantedPost = articleRepository.findById(id);
-        return wantedPost.map(ArticleDTO::toArticleDTO).orElse(null);
+        return wantedPost.map(ArticleDTO::from).orElse(null);
     }
 }

@@ -10,6 +10,7 @@
     <script src="https://github.com/aFarkas/html5shiv/blob/master/dist/html5shiv.min.js"></script>
     <![endif]-->
     <link href="/css/user/form.css" rel="stylesheet">
+    <link href="/css/popup.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -39,25 +40,23 @@
             <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
         </form>
         <!-- id 중복시 레이어 팝업창 -->
-        <div id="duplicate-popup" th:if="${duplicate}">
+        <div id="popup" th:if="${duplicate}">
             <h2>이미 사용중인 아이디입니다.</h2>
             <button id="close-btn">닫기</button>
         </div>
-
         <!-- JavaScript 코드 -->
         <script type="text/javascript">
             // id 중복시 레이어 팝업창 표시
             let isDuplicate = [[${duplicate}]];
             if (isDuplicate) {
-                document.getElementById('duplicate-popup').style.display = 'block';
+                document.getElementById('popup').style.display = 'block';
             }
 
             // 팝업창 닫기 버튼
             document.getElementById('close-btn').addEventListener('click', function () {
-                document.getElementById('duplicate-popup').style.display = 'none';
+                document.getElementById('popup').style.display = 'none';
             });
         </script>
-
     </div>
 </div>
 </body>

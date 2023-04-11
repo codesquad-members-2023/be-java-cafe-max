@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.controller.dto.UserJoinDTO;
-import kr.codesqaud.cafe.controller.dto.UserReadDTO;
+import kr.codesqaud.cafe.controller.dto.JoinDTO;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -19,8 +18,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void signUp(final UserJoinDTO userJoinDTO) {
-        User user = User.toUser(userJoinDTO);
+    //수정 : User.toUser -> joinDTO.toEntity
+    public void signUp(final JoinDTO joinDTO) {
+        User user = joinDTO.toEntity();
         userRepository.join(user);
     }
 
@@ -28,25 +28,28 @@ public class UserService {
         return userRepository.findByUserId(userId).isPresent();
     }
 
-    public void modify(final long id, final UserReadDTO userReadDTO) {
+
+
+    public void modify(final long id, final JoinDTO joinDTO) {
         User originUser = userRepository.findById(id).orElse(null);
-        originUser.setName(userReadDTO.getName());
-        originUser.setEmail(userReadDTO.getEmail());
+        originUser.setName(joinDTO.getName());
+        originUser.setPassword(joinDTO.getPassword());
+        originUser.setEmail(joinDTO.getEmail());
         userRepository.update(originUser);
     }
 
-    public UserReadDTO findOne(final long id) {
+    public JoinDTO findOne(final long id) {
         Optional<User> wantedUser = userRepository.findById(id);
-        return wantedUser.map(UserReadDTO::toUserReadDTO).orElse(null);
+        return wantedUser.map(JoinDTO::from).orElse(null);
     }
 
-    public List<UserReadDTO> findUsers() {
+    public List<JoinDTO> findUsers() {
         List<User> userList = userRepository.findAll();
-        List<UserReadDTO> userReadDTOList = new ArrayList<>();
+        List<JoinDTO> joinDTOList = new ArrayList<>();
         for (User user : userList) {
-            userReadDTOList.add(UserReadDTO.toUserReadDTO(user));
+            joinDTOList.add(JoinDTO.from(user));
         }
-        return userReadDTOList;
+        return joinDTOList;
     }
 }
 

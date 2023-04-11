@@ -24,23 +24,27 @@
     <div class="container" id="main">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <form method="post" th:action="@{/users/modify/{id}(id=${userReadDTO.id})}">
+                <form method="post" th:action="@{/users/modify/{id}(id=${joinDTO.id})}">
                     <table class="table table-hover">
                         <thead>
                         <tr>
                             <th>아이디</th>
+                            <th>패스워드</th>
                             <th>이름</th>
                             <th>이메일</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td th:text="${userReadDTO.userId}"></td>
+                            <td th:text="${joinDTO.userId}"></td>
                             <td><label>
-                                <input type="text" name="name" value="" th:value="${userReadDTO.name}">
+                                <input type="password" name="password" value="${joinDTO.password}" th:value="${joinDTO.password}">
                             </label></td>
                             <td><label>
-                                <input type="text" name="email" value="" th:value="${userReadDTO.email}">
+                                <input type="text" name="name" value="${joinDTO.name}" th:value="${joinDTO.name}">
+                            </label></td>
+                            <td><label>
+                                <input type="text" name="email" value="${joinDTO.email}" th:value="${joinDTO.email}">
                             </label></td>
                         </tr>
                         </tbody>
