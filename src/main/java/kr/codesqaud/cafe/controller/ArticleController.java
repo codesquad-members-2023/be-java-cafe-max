@@ -15,7 +15,6 @@ import java.util.List;
 public class ArticleController {
     private final ArticleService articleService;
 
-    @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
@@ -26,7 +25,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String showArticleList(Model model) {
         List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);

@@ -18,23 +18,22 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/form")
-    public String loginPage() {
-        return "user/form";
-    }
+//    @GetMapping("/form")
+//    public String loginPage() {
+//        return "user/form";
+//    }
 
-    @PostMapping("/form")
+    @PostMapping("/register")
     public String register(User user) {
         userService.join(user);
         return "redirect:/users";
     }
 
-    @GetMapping("")
+    @GetMapping
     public String getUserList(Model model) {
         List<User> users = userService.showAllUser();
         model.addAttribute("users", users);
