@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.controller.user;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
@@ -19,14 +19,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/create")
-    public String createForm(){
-        return "user/form";
-    }
-
     @PostMapping("/create")
     public String create(UserForm form){
-        User user = new User(form);
+        User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
         userService.join(user);
         return "redirect:/users";
     }
