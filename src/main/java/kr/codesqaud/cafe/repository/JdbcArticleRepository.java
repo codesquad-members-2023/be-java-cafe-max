@@ -24,7 +24,7 @@ public class JdbcArticleRepository implements ArticleRepository{
     @Override
     public Article save(Article article) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("articles_squad").usingGeneratedKeyColumns("id");
+        jdbcInsert.withTableName("articles").usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new ConcurrentHashMap<>();
         parameters.put("writer", article.getWriter());
@@ -40,18 +40,18 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public Optional<Article> findById(Long id) {
-        List<Article> result = jdbcTemplate.query("select * from articles_squad where id = ?", articleRowMapper(), id);
+        List<Article> result = jdbcTemplate.query("select * from articles where id = ?", articleRowMapper(), id);
         return result.stream().findAny();
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from articles_squad", articleRowMapper());
+        return jdbcTemplate.query("select * from articles", articleRowMapper());
     }
 
     @Override
     public void clearStore() {
-        jdbcTemplate.update("delete from articles_squad");
+        jdbcTemplate.update("delete from articles");
     }
 
     private RowMapper<Article> articleRowMapper(){
