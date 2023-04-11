@@ -41,7 +41,7 @@ public class UserController {
     @PostMapping
     public String signUp(@ModelAttribute UserSaveRequest userSaveRequest) {
         userService.saveUser(userSaveRequest);
-        return "redirect:/users";
+        return "redirect:/users/login";
     }
 
     @GetMapping("/{userId}")
