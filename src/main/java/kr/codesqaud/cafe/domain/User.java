@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.UserForm;
+import kr.codesqaud.cafe.controller.user.UserForm;
 
 public class User {
 

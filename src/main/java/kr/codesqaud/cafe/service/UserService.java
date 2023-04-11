@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.repository.user.MemoryUserRepository;
+import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
