@@ -25,7 +25,7 @@ public class MemoryUserRepository implements UserRepository {
 
     //userID로 찾아서 반환
     @Override
-    public Optional<User> findByID(String userId) {
+    public Optional<User> findById(String userId) {
         return storage.values().stream()
                 .filter(user -> user.getUserId().equals(userId))
                 .findAny();
