@@ -1,10 +1,9 @@
 package kr.codesqaud.cafe.common.exception;
 
+import kr.codesqaud.cafe.common.exception.user.UserJoinException;
 import kr.codesqaud.cafe.controller.dto.ErrorDto;
 import kr.codesqaud.cafe.common.exception.user.UserExceptionType;
-import kr.codesqaud.cafe.common.exception.user.UserFormInputException;
-import kr.codesqaud.cafe.controller.dto.user.UserFormDto;
-import kr.codesqaud.cafe.controller.dto.user.UserUpdateDto;
+import kr.codesqaud.cafe.common.exception.user.UserUpdateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,18 +20,23 @@ public class ExceptionControllerAdvice {
         return "error/error_page";
     }
 
-    @ExceptionHandler(UserFormInputException.class)
-    public String userJoinDuplicatedExceptionHandler(UserFormInputException ex, Model model) {
-        final UserExceptionType exceptionType = ex.getUserExceptionType();
-        final UserFormDto userFormDto = ex.getUserFormDto();
+    @ExceptionHandler(UserJoinException.class)
+    public String userJoinExceptionHandler(UserJoinException ex, Model model) {
+        final UserExceptionType type = ex.getUserExceptionType();
 
-        model.addAttribute("user", userFormDto);
-        model.addAttribute(exceptionType.getCategory(), exceptionType.getMessage());
-
-        if (userFormDto instanceof UserUpdateDto) {
-            return "user/update";
-        }
+        model.addAttribute("user", ex.getUserJoinDto());
+        model.addAttribute(type.getCategory(), type.getMessage());
 
         return "user/form";
+    }
+
+    @ExceptionHandler(UserUpdateException.class)
+    public String userJoinDuplicatedExceptionHandler(UserUpdateException ex, Model model) {
+        final UserExceptionType type = ex.getUserExceptionType();
+
+        model.addAttribute("user", ex.getUserUpdateDto());
+        model.addAttribute(type.getCategory(), type.getMessage());
+
+        return "user/update";
     }
 }
