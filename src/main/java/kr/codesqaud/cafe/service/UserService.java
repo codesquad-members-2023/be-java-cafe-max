@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.Repository.MemberUserRepository;
+import kr.codesqaud.cafe.Repository.MemoryUserRepository;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Service;
 
@@ -8,9 +8,9 @@ import java.util.List;
 
 @Service
 public class UserService {
-    private final MemberUserRepository memberUserRepository;
+    private final MemoryUserRepository memberUserRepository;
 
-    public UserService(MemberUserRepository memberUserRepository) {
+    public UserService(MemoryUserRepository memberUserRepository) {
         this.memberUserRepository = memberUserRepository;
     }
 
