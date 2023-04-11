@@ -2,10 +2,8 @@ package kr.codesqaud.cafe.post.service;
 
 import kr.codesqaud.cafe.post.controller.response.PostDetailResponse;
 import kr.codesqaud.cafe.post.controller.response.PostListResponse;
-import kr.codesqaud.cafe.post.controller.request.PostWriteRequest;
 import kr.codesqaud.cafe.post.repository.PostRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,23 +17,17 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public void writePost(PostWriteRequest postWriteRequest) {
-        postRepository.save(postWriteRequest);
+    public void writePost(Post post) {
+        postRepository.save(post);
     }
 
-    public void showPostList(Model model) {
-        List<PostListResponse> posts = postRepository.findAll().stream()
-                .map(Post::toListResponse)
-                .collect(Collectors.toList());
-        model.addAttribute("posts", posts);
+    public List<PostListResponse> getPostList() {
+        return postRepository.findAll().stream()
+                .map(PostListResponse::from)
+                .collect(Collectors.toUnmodifiableList());
     }
 
-    public void showPost(long id, Model model) {
-        PostDetailResponse post = postRepository.findById(id)
-                .orElseThrow().toDetailResponse();
-        model.addAttribute("title", post.getTitle());
-        model.addAttribute("writer", post.getWriter());
-        model.addAttribute("writingTime", post.getWritingTime());
-        model.addAttribute("contents", post.getContents());
+    public PostDetailResponse getPostById(long id) {
+        return PostDetailResponse.from(postRepository.findById(id).orElseThrow());
     }
 }

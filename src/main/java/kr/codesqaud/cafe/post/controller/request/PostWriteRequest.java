@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.post.controller.request;
 
 import kr.codesqaud.cafe.post.service.Post;
 
+import java.time.LocalDateTime;
+
 public class PostWriteRequest {
 
     private final String writer;
@@ -14,7 +16,7 @@ public class PostWriteRequest {
         this.contents = contents;
     }
 
-    public Post toEntity(long id) {
-        return new Post(id, writer, title, contents);
+    public Post toPost() {
+        return new Post(null, writer, title, contents, LocalDateTime.now());
     }
 }

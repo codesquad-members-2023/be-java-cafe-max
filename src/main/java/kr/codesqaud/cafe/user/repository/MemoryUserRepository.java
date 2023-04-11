@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.user.repository;
 
 import kr.codesqaud.cafe.user.service.User;
-import kr.codesqaud.cafe.user.controller.request.UserRegisterRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,18 +10,20 @@ import java.util.Optional;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private final Map<String, User> users = new HashMap<>();
+    private final Map<Long, User> users = new HashMap<>();
+    private static long sequence = 0L;
 
     @Override
-    public User save(UserRegisterRequest userRegisterRequest) {
-        User user = userRegisterRequest.toEntity();
-        users.put(userRegisterRequest.getUserId(), user);
+    public User save(User user) {
+        users.put(++sequence, user.create(sequence));
         return user;
     }
 
     @Override
-    public Optional<User> findById(String id) {
-        return Optional.ofNullable(users.get(id));
+    public Optional<User> findByUserId(String userId) {
+        return users.values().stream()
+                .filter(user -> userId.equals(user.getUserId()))
+                .findFirst();
     }
 
     @Override

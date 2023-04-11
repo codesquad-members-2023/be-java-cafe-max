@@ -1,27 +1,38 @@
 package kr.codesqaud.cafe.user.service;
 
-import kr.codesqaud.cafe.user.controller.response.UserListResponse;
-import kr.codesqaud.cafe.user.controller.response.UserProfileResponse;
-
 public class User {
 
+    private final Long id;
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    public User(String userId, String password, String name, String email) {
+    public User(Long id, String userId, String password, String name, String email) {
+        this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    public UserListResponse toListResponse(long index) {
-        return new UserListResponse(index, userId, name, email);
+    public User create(long id) {
+        return new User(id, this.userId, this.password, this.name, this.email);
     }
 
-    public UserProfileResponse toProfileResponse() {
-        return new UserProfileResponse(name, email);
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
