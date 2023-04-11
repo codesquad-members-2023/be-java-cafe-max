@@ -3,14 +3,22 @@
 <nav th:fragment="anonymous" class="navbar navbar-expand bg-body-tertiary justify-content-center row-cols-auto">
     <div class="col-10 row row-cols-auto justify-content-between">
         <div class="nav align-self-center ms-3">
-            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/}">HELLO JAVA!</a>
+            <a th:href="@{/}">
+                <img src="/favicon.ico">
+            </a>
         </div>
         <div class="container  row row-cols-auto">
-            <div class="nav" id="navLogin">
-                <a th:if="${session.user == null}" class="btn btn-primary" th:href="@{/users/login}" type="submit" role="button">로그인</a>
+            <div class="nav align-content-center" id="navLogin">
+                <a th:if="${session.user == null && #httpServletRequest.requestURI != '/users/login'}"
+                   class="btn btn-primary" th:href="@{/users/login}" type="submit" role="button">로그인</a>
             </div>
-            <div class="nav" id="navLogout">
-                <a th:if="${session.user != null}" class="btn btn-primary" th:href="@{/users/logout}" type="submit" role="button">로그아웃</a>
+            <div th:if="${session.user == null && #httpServletRequest.requestURI != '/users/join'}"
+                 class="nav align-content-center" id="navJoin">
+                <a class="btn btn-primary" th:href="@{/users/join}" type="submit" role="button">회원가입</a>
+            </div>
+            <div th:if="${session.user != null}" class="nav align-content-center"
+                 id="navLogout">
+                <a th:href="@{/users/logout}" type="submit" class="btn btn-primary" role="button">로그아웃</a>
             </div>
         </div>
     </div>
@@ -18,11 +26,14 @@
 
 <nav th:fragment="user" class="navbar navbar-expand bg-body-tertiary justify-content-center row-cols-auto">
     <div class="col-10 row row-cols-auto justify-content-between">
-        <div class="nav align-self-center ms-3 ">
-            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/}">HELLO JAVA!</a>
+        <div class="nav align-self-center ms-3">
+            <a th:href="@{/}">
+                <img src="/favicon.ico">
+            </a>
         </div>
         <div class="container  row row-cols-auto">
-            <div th:if="${session.user.role == T(kr.codesqaud.cafe.account.Role).MANAGER}"  class="nav" id="membersButton">
+            <div th:if="${session.user.role == T(kr.codesqaud.cafe.account.Role).MANAGER}" class="nav"
+                 id="membersButton">
                 <a class="btn btn-primary" th:href="@{/users}" type="submit" role="button">맴버리스트</a>
             </div>
             <div class="nav" id="navLogout">
