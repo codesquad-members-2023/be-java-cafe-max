@@ -1,19 +1,18 @@
 package kr.codesqaud.cafe.article.dto;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class ArticleDetailDto {
     //세부적인 글 내용 DTO
-    private final String author;
+    private String author;
 
-    private final String title;
+    private String title;
 
-    private final String contents;
+    private String contents;
 
-    public ArticleDetailDto(String author, String title, String contents) {
-        this.author = author;
-        this.title = title;
-        this.contents = contents;
-    }
+    private String time;
 
     public String getAuthor() {
         return author;
@@ -25,6 +24,27 @@ public class ArticleDetailDto {
 
     public String getContents() {
         return contents;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 
 

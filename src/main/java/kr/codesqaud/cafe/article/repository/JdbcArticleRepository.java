@@ -47,7 +47,11 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
-            Article article = new Article(rs.getString("author"),rs.getString("title"), rs.getString("contents"));
+            Article article = new Article();
+            article.setAuthor(rs.getString("author"));
+            article.setTime(rs.getTimestamp("time"));
+            article.setTitle(rs.getString("title"));
+            article.setContents(rs.getString("contents"));
             article.setId(rs.getLong("id"));
             return article;
         };

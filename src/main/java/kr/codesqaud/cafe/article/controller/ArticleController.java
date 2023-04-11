@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.article.controller;
 
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticleFormDto;
+import kr.codesqaud.cafe.article.mapper.ArticleDtoMapper;
 import kr.codesqaud.cafe.article.service.ArticleService;
 import kr.codesqaud.cafe.utils.Session;
 import org.springframework.stereotype.Controller;
@@ -19,8 +20,11 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    public ArticleController(ArticleService articleService) {
+    private final ArticleDtoMapper articleDtoMapper;
+
+    public ArticleController(ArticleService articleService, ArticleDtoMapper articleDtoMapper) {
         this.articleService = articleService;
+        this.articleDtoMapper = articleDtoMapper;
     }
 
 
@@ -32,7 +36,7 @@ public class ArticleController {
     //글 작성 클릭 시 매핑하고 글 저장
     @PostMapping("/create")
     public String createUser(ArticleFormDto articleFormDto, HttpSession session) {
-        articleService.save(new Article(Session.getUserName(session), articleFormDto.getTitle(), articleFormDto.getContents()));
+        articleService.save(ArticleDtoMapper.INSTANCE.toArticle(articleFormDto, Session.getUserName(session)));
         return "redirect:/articles/list";
     }
 

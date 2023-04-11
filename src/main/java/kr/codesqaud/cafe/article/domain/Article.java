@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.article.domain;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 
@@ -11,15 +12,15 @@ public class Article {
 
     private String contents;
 
-    private LocalDateTime time;
+    private LocalDateTime time = LocalDateTime.now();
 
     private long id;
 
-    public Article(String author, String title, String contents) {
-        this.author = author;
-        this.title = title;
-        this.contents = contents;
-        this.time = LocalDateTime.now();
+    public Article() {
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time.toLocalDateTime();
     }
 
     public LocalDateTime getTime() {
@@ -45,5 +46,17 @@ public class Article {
 
     public String getContents() {
         return contents;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 }

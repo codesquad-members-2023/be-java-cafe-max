@@ -4,6 +4,7 @@ package kr.codesqaud.cafe.article.service;
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticleDetailDto;
 import kr.codesqaud.cafe.article.dto.ArticleListDto;
+import kr.codesqaud.cafe.article.mapper.ArticleDtoMapper;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +16,12 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
+    private final ArticleDtoMapper articleDtoMapper;
 
-    public ArticleService(ArticleRepository articleRepository) {
+
+    public ArticleService(ArticleRepository articleRepository, ArticleDtoMapper articleDtoMapper) {
         this.articleRepository = articleRepository;
+        this.articleDtoMapper = articleDtoMapper;
     }
 
     //글 저장
@@ -30,7 +34,7 @@ public class ArticleService {
         List<Article> articles = articleRepository.findAll();
         List<ArticleListDto> articleListDtos = new ArrayList<>();
         for (Article article : articles) {
-            articleListDtos.add(new ArticleListDto(article.getAuthor(), article.getTitle(), article.getTime(), article.getId()));
+            articleListDtos.add(ArticleDtoMapper.INSTANCE.toListDto(article));
         }
 
         return articleListDtos;
@@ -40,6 +44,6 @@ public class ArticleService {
     //ID로 글을 찾아 DTO로 필터링 후 반환
     public ArticleDetailDto getArticleDetail(Long index) {
         Article article = articleRepository.findByID(index);
-        return new ArticleDetailDto(article.getAuthor(), article.getTitle(), article.getContents());
+        return ArticleDtoMapper.INSTANCE.toDetailDto(article);
     }
 }
