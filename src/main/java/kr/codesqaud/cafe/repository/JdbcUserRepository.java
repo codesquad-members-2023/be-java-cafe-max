@@ -23,8 +23,9 @@ public class JdbcUserRepository implements UserRepository {
 		if (isExistsUserId(user.getUserId())) {
 			throw new DuplicatedUserIdException();
 		}
-		jdbcTemplate.update("INSERT INTO user_account(user_id, name, email) values (?, ?, ?)",
+		jdbcTemplate.update("INSERT INTO user_account(user_id, password, name, email) values (?, ?, ?, ?)",
 			user.getUserId(),
+			user.getPassword(),
 			user.getName(),
 			user.getEmail());
 	}
@@ -51,5 +52,16 @@ public class JdbcUserRepository implements UserRepository {
 				rs.getString("name"),
 				rs.getString("email")
 			), id));
+	}
+
+	@Override
+	public User findUser(String userId) {
+		if (!isExistsUserId(userId)) {
+			throw new DuplicatedUserIdException(); // 예외 변경하기 -> "등록된 id가 없습니다" 정도?
+		}
+		return jdbcTemplate.queryForObject("SELECT * FROM user_account WHERE user_id = ?", (rs, rowNum) -> new User(
+			rs.getString("user_id"),
+			rs.getString("password")
+		), userId);
 	}
 }
