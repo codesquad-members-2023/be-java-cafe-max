@@ -3,6 +3,8 @@ server:
   servlet:
     encoding:
       force-response: true
+    session:
+      tracking-modes: cookie
 spring:
   # console log color
   output:
@@ -15,6 +17,7 @@ spring:
   # mustache
   mustache:
     cache: false
+    expose-session-attributes: true
   # h2 DB setting
   h2:
     datasource:
@@ -31,5 +34,3 @@ spring:
   sql:
     init:
       mode: always
-#      schema-locations: classpath:schema.sql
-#      data-locations: classpath:data.sql
