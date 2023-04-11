@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.user.UserRequestDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,8 +25,8 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public String register(final User user) {
-        userService.join(user);
+    public String register(final UserRequestDto userRequestDto) {
+        userService.join(userRequestDto);
         return "redirect:/users";
     }
 
