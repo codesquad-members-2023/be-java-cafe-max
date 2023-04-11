@@ -7,25 +7,34 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <form th:if="${session.user != null}" class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success me-2" type="submit">Search</button>
+                <input class="form-control me-2 nav-item" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success me-2 nav-item" type="submit">Search</button>
             </form>
-            <button th:if="${session.user != null && session.user.role == T(kr.codesqaud.cafe.account.Role).MANAGER}"
-                    th:onclick="|location.href='@{/users}'|"
-                    class="d-flex btn btn-outline-success me-2">맴버리스트
-            </button>
             <button th:if="${session.user == null && #httpServletRequest.requestURI != '/users/login'}"
                     th:onclick="|location.href='@{/users/login}'|"
-                    class="d-flex btn btn-outline-success me-2">로그인
+                    class="d-flex btn btn-outline-success me-2 nav-item">로그인
             </button>
             <button th:if="${session.user == null && #httpServletRequest.requestURI != '/users/join'}"
                     th:onclick="|location.href='@{/users/join}'|"
-                    class="d-flex btn btn-outline-success me-2">회원가입
+                    class="d-flex btn btn-outline-success me-2 nav-item">회원가입
             </button>
-            <button th:if="${session.user != null}"
-                    th:onclick="|location.href='@{/users/logout}'|"
-                    class="d-flex btn btn-outline-success me-2">로그아웃
+            <button th:if="${session.user != null}" class="btn btn-secondary dropdown-toggle" type="button"
+                    aria-expanded="false"
+                    data-bs-toggle="dropdown">
+                Menu
             </button>
+            <ul class="dropdown-menu dropdown-menu-end" th:if="${session.user != null}">
+                <li th:if="${session.user.role == T(kr.codesqaud.cafe.account.Role).MANAGER}">
+                    <a class="dropdown-item" th:href="@{/users}">맴버리스트
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" th:href="@{/users/{id}/profile(id = ${session.user.id})}">개인정보수정</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" th:href="@{/users/logout}">로그아웃</a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
