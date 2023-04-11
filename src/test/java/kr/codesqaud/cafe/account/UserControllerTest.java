@@ -14,8 +14,6 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -26,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class UserControllerTest {
     private static final String JACK_EMAIL = "jack@email.com";
-    private static final String JACK_PASSWORD = "123456789a";
+    private static final String TEST_PASSWORD = "123456789a";
     private static final String JACK = "jack";
     private static final String JERRY_EMAIL = "jerry@email.com";
     private static final String JERRY = "jerry";
@@ -52,7 +50,7 @@ class UserControllerTest {
 
     @BeforeEach
     void setSession() {
-        JoinForm joinForm = new JoinForm(JACK, JACK_EMAIL, JACK_PASSWORD);
+        JoinForm joinForm = new JoinForm(JACK, JACK_EMAIL, TEST_PASSWORD);
         jack = userService.save(joinForm);
         session = new MockHttpSession();
         session.setAttribute("user", jack);
@@ -74,7 +72,7 @@ class UserControllerTest {
         void loginSuccess() throws Exception {
             mockMvc.perform(post("/users/login")
                             .param(EMAIL, JACK_EMAIL)
-                            .param(PASSWORD, JACK_PASSWORD))
+                            .param(PASSWORD, TEST_PASSWORD))
                     .andExpect(status().is3xxRedirection())
                     .andExpect(redirectedUrl("/users/" + jack.getId() + "/profile"));
         }
@@ -119,15 +117,12 @@ class UserControllerTest {
         @Test
         void addUserSuccess() throws Exception {
             mockMvc.perform(post("/users")
-                            .param(EMAIL, JACK_EMAIL)
-                            .param(NICKNAME, JACK)
-                            .param(PASSWORD, JACK_PASSWORD))
+                            .param(EMAIL, JERRY_EMAIL)
+                            .param(NICKNAME, JERRY)
+                            .param(PASSWORD, TEST_PASSWORD))
                     .andExpect(status().is3xxRedirection())
                     .andDo(print());
-
-            List<User> allMembers = userRepository.findAll();
-            System.out.println(allMembers);
-            assertThat(userService.findByEmail(JACK_EMAIL)).isPresent();
+            assertThat(userService.findByEmail(JERRY_EMAIL)).isPresent();
         }
 
         @DisplayName("유저 추가 실패")
@@ -216,7 +211,7 @@ class UserControllerTest {
                 MockHttpSession session = new MockHttpSession();
                 session.setAttribute("user", jack);
                 mockMvc.perform(put("/users/" + jack.getId() + "/profile")
-                                .param(PASSWORD, JACK_PASSWORD)
+                                .param(PASSWORD, TEST_PASSWORD)
                                 .param(EMAIL, JERRY_EMAIL)
                                 .param(NICKNAME, JERRY).session(session))
                         .andExpect(status().is3xxRedirection());
@@ -243,7 +238,7 @@ class UserControllerTest {
             @Test
             void setUserProfileFailedByUserId() throws Exception {
                 mockMvc.perform(put("/users/" + (jack.getId() + 1) + "/profile")
-                                .param(PASSWORD, JACK_PASSWORD)
+                                .param(PASSWORD, TEST_PASSWORD)
                                 .param(EMAIL, JERRY_EMAIL)
                                 .param(NICKNAME, JERRY)
                                 .session(session))
@@ -256,7 +251,7 @@ class UserControllerTest {
             @CsvSource({JERRY_EMAIL + ",j", JERRY + ",jerry"})
             void setUserProfileFailedByType(String email, String nickname) throws Exception {
                 mockMvc.perform(put("/users/" + jack.getId() + "/profile")
-                                .param(PASSWORD, JACK_PASSWORD)
+                                .param(PASSWORD, TEST_PASSWORD)
                                 .param(EMAIL, email)
                                 .param(NICKNAME, nickname)
                                 .session(session))

@@ -167,4 +167,5 @@ public class UserController {
         httpSession.setAttribute("user", update);
         return "redirect:/users/{userId}/profile";
     }
+
 }

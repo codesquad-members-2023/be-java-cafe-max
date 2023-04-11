@@ -25,12 +25,6 @@ public class ProfileEditForm {
         this.password = password;
     }
 
-    private ProfileEditForm(Builder builder) {
-        this.email = builder.email;
-        this.nickname = builder.nickname;
-        this.password = builder.password;
-    }
-
     public static ProfileEditForm from(User user) {
         return new Builder()
                 .password(user.getPassword())
@@ -81,7 +75,7 @@ public class ProfileEditForm {
         }
 
         public ProfileEditForm build() {
-            return new ProfileEditForm(this);
+            return new ProfileEditForm(nickname, email, password);
         }
     }
 }
