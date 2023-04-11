@@ -31,6 +31,12 @@ public class GlobalExceptionHandler {
 		return "user/login";
 	}
 
+	@ExceptionHandler(InvalidSessionException.class)
+	public String handleInvalidSession(final InvalidSessionException e, final Model model) {
+		model.addAttribute("error", e.getMessage());
+		return "error";
+	}
+
 	@ExceptionHandler(NoAuthorizationException.class)
 	public String handleNoAuthorization(final NoAuthorizationException e, final Model model) {
 		model.addAttribute("error", e.getMessage());

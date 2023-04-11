@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,20 +8,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import kr.codesqaud.cafe.common.resolver.Login;
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
 import kr.codesqaud.cafe.controller.dto.req.ProfileEditRequest;
-import kr.codesqaud.cafe.service.AuthService;
 import kr.codesqaud.cafe.service.UserService;
 
 @Controller
 public class UserController {
 
 	private final UserService userService;
-	private final AuthService authService;
 
-	public UserController(UserService userService, AuthService authService) {
+	public UserController(UserService userService) {
 		this.userService = userService;
-		this.authService = authService;
 	}
 
 	@PostMapping("/user/create")
@@ -45,8 +41,10 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{userId}/form")
-	public String showProfileEditPage(@PathVariable final String userId, final HttpSession session, final Model model) {
-		authService.validateSession(session, userId);
+	public String showProfileEditPage(@PathVariable final String userId,
+		@Login final String sessionUserId,
+		final Model model) {
+		userService.validateHasAuthorization(sessionUserId, userId);
 		model.addAttribute("userId", userId);
 		return "user/edit_form";
 	}
