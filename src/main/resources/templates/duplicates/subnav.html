@@ -30,7 +30,8 @@
                 <th:block th:if="${session.loginUser != null}">
                     <li><a href="/questions/add" role="button">질문하기</a></li>
                     <li><a href="/logout" role="button">로그아웃</a></li>
-                    <li><a href="#" role="button">개인정보수정</a></li>
+                    <li><a href="#" role="button"
+                           th:href="@{/users/{id}/updateForm(id=${session.loginUser.id})}">개인정보수정</a></li>
                 </th:block>
             </ul>
         </div>
