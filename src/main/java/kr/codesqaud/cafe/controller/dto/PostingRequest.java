@@ -26,6 +26,6 @@ public class PostingRequest {
 	}
 
 	public Article getArticleEntity() {
-		return new Article(getWriter(), getTitle(), getContents());
+		return new Article(writer, title, contents);
 	}
 }
