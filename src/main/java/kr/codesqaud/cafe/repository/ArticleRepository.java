@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.ArticleDto;
 
 public interface ArticleRepository {
 	Article create(Article article);
@@ -15,4 +16,6 @@ public interface ArticleRepository {
 	boolean increaseHits(Long index);
 
 	boolean delete(Long index);
+
+	boolean update(Long index, ArticleDto articleDto);
 }

@@ -18,4 +18,8 @@ public class ArticleSql {
 
 	public static final String DELETE
 		= "DELETE FROM WRITE_INFO WHERE index = :index";
+
+	public static final String UPDATE
+		= "UPDATE WRITE_INFO SET title = :title, contents = :contents, writer = :writer "
+		+ "WHERE index = :index";
 }

@@ -48,4 +48,9 @@ public class ArticleService {
 		articleRepository.delete(index);
 		return true;
 	}
+
+	public boolean updateArticle(Long index, ArticleDto articleDto) {
+		articleRepository.update(index, articleDto);
+		return true;
+	}
 }

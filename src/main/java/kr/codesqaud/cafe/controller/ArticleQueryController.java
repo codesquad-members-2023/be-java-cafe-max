@@ -56,4 +56,11 @@ public class ArticleQueryController {
 		model.addAttribute("equal", equal);
 		return "qna/detail";
 	}
+
+	@GetMapping("/qna/update/{index}")
+	public String getUpdateForm(@PathVariable Long index, Model model) {
+		Article article = articleService.findByIndex(index);
+		model.addAttribute("article", article);
+		return "qna/updateDetail";
+	}
 }

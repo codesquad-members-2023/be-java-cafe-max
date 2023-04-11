@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.ArticleDto;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
@@ -60,6 +61,16 @@ public class JdbcArticleRepository implements ArticleRepository {
 	public boolean delete(Long index) {
 		SqlParameterSource param = new MapSqlParameterSource("index", index);
 		namedParameterJdbcTemplate.update(DELETE, param);
+		return true;
+	}
+
+	@Override
+	public boolean update(Long index, ArticleDto articleDto) {
+		SqlParameterSource params = new MapSqlParameterSource("index", index)
+			.addValue("title", articleDto.getTitle())
+			.addValue("writer", articleDto.getWriter())
+			.addValue("contents", articleDto.getContents());
+		namedParameterJdbcTemplate.update(UPDATE, params);
 		return true;
 	}
 
