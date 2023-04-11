@@ -25,10 +25,21 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @PostMapping("qna/form")
-    public String write(ArticleForm form) {
+    @GetMapping("qna/form")
+    public String makeQna(HttpSession session, Model model) {
+        User user = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        if (user == null ) {
+            return "redirect:/user/login";
+        }
+        model.addAttribute("loginUser", user);
+        return "qna/form";
+    }
 
-        Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
+    @PostMapping("qna/form")
+    public String write(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                            User loginUser, ArticleForm form) {
+
+        Article article = new Article(loginUser.getName(), form.getTitle(), form.getContents());
         articleService.write(article);
 
         return "redirect:/";
@@ -49,18 +60,14 @@ public class ArticleController {
     }
 
     @GetMapping("articles/{id}")
-    public String showArticle(Model model, @PathVariable Long id) {
-        model.addAttribute("article", articleService.findOne(id));
-        return "qna/show";
-    }
+    public String showArticle(HttpSession session, Model model, @PathVariable Long id) {
 
-    @GetMapping("qna/form")
-    public String makeQna(HttpSession session, Model model) {
         User user = (User) session.getAttribute(SessionConst.LOGIN_MEMBER);
         if (user == null ) {
             return "redirect:/user/login";
         }
         model.addAttribute("loginUser", user);
-        return "qna/form";
+        model.addAttribute("article", articleService.findOne(id));
+        return "qna/show";
     }
 }
