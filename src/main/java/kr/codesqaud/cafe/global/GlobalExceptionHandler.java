@@ -47,8 +47,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ModelAndView handleUserNotFoundException(UserNotFoundException e) {
-        return createErrorResponseModelAndView("error/error", e, true);
+    public ModelAndView handleUserNotFoundException(UserNotFoundException e,HttpServletRequest request) {
+        String requestUri = request.getRequestURI();
+        if(requestUri.contains("/profile")){
+            return createErrorResponseModelAndView("error/error", e, true);
+        }
+        return createErrorResponseModelAndView("user/login",e,true);
     }
 
     @ExceptionHandler(InvalidPasswordException.class)

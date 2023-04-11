@@ -183,3 +183,8 @@ li {
 label {
     width: 25%;
 }
+
+#error-message{
+    color: red;
+    font-size: 8px;
+}
