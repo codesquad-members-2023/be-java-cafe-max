@@ -4,60 +4,39 @@
 <body>
 <nav th:replace="fragments/navbar.html :: common">
 </nav>
-<div class="container-fluid row-gap-3 mt-5 mb-5">
-    <div class="row justify-content-center">
-        <div class="bg-primary col-10 card">
-            <div class=" text-white mt-5 ms-4">
-                코드스쿼드 백엔드 교육용 페이지
-            </div>
-            <div class="fs-4 text-white mb-5 ms-4">
-                HELLO JAVA! 입니다.
-            </div>
-        </div>
-    </div>
-</div>
 <div class="container-fluid">
     <div class="row justify-content-center text-light-emphasis">
-        <div class="col-10 row ">
-            전체 글 60개
-        </div>
-        <div class="text-success col-10 row mt-1">
-            <hr>
-        </div>
-        <div class="row col-10 text-center">
-            <div class=" col-2">
-                N0.
-            </div>
-            <div class=" col-2">
-                제목
-            </div>
-            <div class=" col-4">
-                내용
-            </div>
-            <div class=" col-2">
-                작성자
-            </div>
-            <div class=" col-2">
-                작성일자
-            </div>
-        </div>
-        <div class="text-success col-10 row mt-3">
-            <hr>
+        <div class="col-10">
+            전체 글 <span th:text="${simpleForms.size()}"></span>개
         </div>
         <div class="row col-10">
             <ol class="justify-content-center" id="bookList">
                 <li class="row text-center" th:each="post,iterStat : ${simpleForms}">
-                    <div class="col-2"><a th:href="@{/posts/{id}(id = ${post.id})}" th:text="${iterStat.count}"></a></div>
-                    <div class="col-2 text-break" th:text="${post.title}"></div>
-                    <div class="col-4 text-break" th:text="${post.textContent}"></div>
-                    <div class="col-2 text-break" th:text="${post.nickname}"></div>
-                    <div class="col-2 text-break" th:text="${#temporals.format(post.createdDateTime,'yyyy-MM-dd HH:mm')}"></div>
-                    <div class="text-success row mt-3">
-                        <hr>
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <p class="card-title text-primary fw-bold fs-2" th:text="${post.title}">Card title</p>
+                            <p class="card-text" th:text="${post.textContent}">Some quick example text to build on the
+                                card title and make up the bulk of the card's content.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <button type="button" class="list-group-item btn btn-warning">NickName:
+                                <span th:text="${post.nickname}"></span>
+                            </button>
+                            <button class="list-group-item btn btn-success">
+                                CreateTime:
+                                <span th:text="${#temporals.format(post.createdDateTime,'yyyy-MM-dd HH:mm')}"></span>
+                            </button>
+                            <button class="list-group-item btn btn-info">
+                                Views:
+                                <span>20</span>
+                            </button>
+                        </ul>
+                        <a th:href="@{/posts/{id}(id = ${post.id})}" class="btn btn-primary mb-2">자세히 보기</a>
                     </div>
                 </li>
             </ol>
         </div>
+
         <div class="col-10 row justify-content-between">
             <div class="col">
                 <ul class="pagination col-5">
@@ -77,16 +56,8 @@
                 </ul>
             </div>
             <div class="col row justify-content-end">
-                <div class="col-5">
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="검색어를 입력하세요" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </form>
-                </div>
                 <div class="col-2">
-                    <a class="btn btn-primary" th:href="@{/posts/form}" type="submit">글쓰기</a>
+                    <a class="btn btn-primary" th:if="${session.user != null}" th:href="@{/posts/form}" type="submit">글쓰기</a>
                 </div>
             </div>
         </div>
