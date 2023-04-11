@@ -124,7 +124,6 @@ li {
 }
 
 .btn {
-    margin-top: 20px;
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -182,35 +181,4 @@ li {
 
 label {
     width: 25%;
-}
-
-/* 팝업창 스타일 */
-#duplicate-popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    height: 150px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px #999;
-    padding: 20px;
-}
-
-#duplicate-popup h2 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-#duplicate-popup button {
-    background-color: #333;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    float: right;
-    margin-top: 10px;
 }
