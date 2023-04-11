@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.exception.DuplicatedUserIdException;
+import kr.codesqaud.cafe.exception.NoSuchUserIdException;
 
 @Repository
 public class JdbcUserRepository implements UserRepository {
@@ -57,7 +58,7 @@ public class JdbcUserRepository implements UserRepository {
 	@Override
 	public User findUser(String userId) {
 		if (!isExistsUserId(userId)) {
-			throw new DuplicatedUserIdException(); // 예외 변경하기 -> "등록된 id가 없습니다" 정도?
+			throw new NoSuchUserIdException();
 		}
 		return jdbcTemplate.queryForObject("SELECT * FROM user_account WHERE user_id = ?", (rs, rowNum) -> new User(
 			rs.getString("user_id"),
