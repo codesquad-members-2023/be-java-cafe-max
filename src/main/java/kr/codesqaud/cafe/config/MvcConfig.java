@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe;
+package kr.codesqaud.cafe.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -14,7 +14,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
         //user
         registry.addViewController("/user/sign-up-form").setViewName("user/form");
-        registry.addViewController("/user/login").setViewName("user/login");
-        registry.addViewController("/user/login-success").setViewName("user/login_success");
+        registry.addViewController("/user/sign-in").setViewName("user/login");
+        registry.addViewController("/user/sign-in-success").setViewName("user/login_success");
     }
 }

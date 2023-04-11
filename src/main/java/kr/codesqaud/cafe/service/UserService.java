@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.dto.LoginDTO;
 import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
 import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.controller.dto.UserListDTO;
@@ -61,4 +62,10 @@ public class UserService {
     private boolean matchPassword(ProfileEditDTO profileEditDto, UserDTO userDto) {
         return userDto.getPassword().equals(profileEditDto.getOriPassword());
     }
+
+    public boolean matchPassword(LoginDTO loginDto){
+        UserDTO userdto = getUserById(loginDto.getUserId());
+        return loginDto.getPassword().equals(userdto.getPassword());
+    }
+
 }
