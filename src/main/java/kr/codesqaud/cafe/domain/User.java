@@ -4,7 +4,7 @@ import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
 
 public class User {
     private Long id;
-    private String userId;
+    private final String userId;
     private String password;
     private String userName;
     private String userEmail;
