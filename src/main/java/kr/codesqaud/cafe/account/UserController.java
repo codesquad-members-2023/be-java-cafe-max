@@ -71,6 +71,12 @@ public class UserController {
         return "redirect:/users/" + user.getId() + "/profile";
     }
 
+    @GetMapping("/users/logout")
+    public String logout(@ModelAttribute LoginForm loginForm, HttpSession session) {
+        session.removeAttribute("user");
+        return "account/login";
+    }
+
     @GetMapping("/users/join")
     public String viewJoinForm(@ModelAttribute JoinForm joinForm) {
         return "account/join";

@@ -6,8 +6,11 @@
             <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/}">HELLO JAVA!</a>
         </div>
         <div class="container  row row-cols-auto">
-            <div class="nav" id="logout">
-                <a class="btn btn-primary" th:href="@{/users/login}" type="submit" role="button">로그인</a>
+            <div class="nav" id="navLogin">
+                <a th:if="${session.user == null}" class="btn btn-primary" th:href="@{/users/login}" type="submit" role="button">로그인</a>
+            </div>
+            <div class="nav" id="navLogout">
+                <a th:if="${session.user != null}" class="btn btn-primary" th:href="@{/users/logout}" type="submit" role="button">로그아웃</a>
             </div>
         </div>
     </div>
@@ -19,11 +22,11 @@
             <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/}">HELLO JAVA!</a>
         </div>
         <div class="container  row row-cols-auto">
-            <div class="nav" id="membersButton">
+            <div th:if="${session.user.role == T(kr.codesqaud.cafe.account.Role).MANAGER}"  class="nav" id="membersButton">
                 <a class="btn btn-primary" th:href="@{/users}" type="submit" role="button">맴버리스트</a>
             </div>
-            <div class="nav" id="logout">
-                <a class="btn btn-primary" th:href="@{/}" type="submit" role="button">로그아웃</a>
+            <div class="nav" id="navLogout">
+                <a class="btn btn-primary" th:href="@{/users/logout}" type="submit" role="button">로그아웃</a>
             </div>
         </div>
     </div>
