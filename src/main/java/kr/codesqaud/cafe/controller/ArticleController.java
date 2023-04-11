@@ -16,10 +16,6 @@ public class ArticleController {
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
-    @GetMapping("/questions")
-    public String createForm(){
-        return "qna/form";
-    }
 
     @PostMapping("/questions")
     public String create(ArticleForm form){
@@ -32,7 +28,7 @@ public class ArticleController {
     public String list(Model model){
         List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/articles/{id}")
