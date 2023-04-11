@@ -40,12 +40,18 @@ public class ArticleController {
         model.addAttribute("auth",articleService.checkAuth(article.getUserId(),session));
         return "qna/show";
     }
-
-
     @GetMapping("/")
     public String getIndex(Model model) {
         model.addAttribute("articleList", articleService.getAricleList());
         return "index";
+    }
+
+    @GetMapping("/article/update/{index}")
+    public String getUpdatePage(@PathVariable int index,Model model){
+        Article article = articleService.findByIdx(index);
+        model.addAttribute("title",article.getTitle());
+        model.addAttribute("contents",article.getContents());
+        return "qna/update_form";
     }
 
 }
