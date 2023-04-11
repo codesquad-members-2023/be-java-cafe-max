@@ -55,6 +55,18 @@ public class JdbcTemplateUserRepository implements UserRepository {
         return jdbcTemplate.query("select * from users", userRowMapper());
     }
 
+    @Override
+    public Optional<User> updateUserName(String userId, String updateName) {
+        jdbcTemplate.update("update users set name = ? where userId = ?", updateName, userId);
+        return findById(userId);
+    }
+
+    @Override
+    public Optional<User> updateUserEmail(String userId, String updateEmail) {
+        jdbcTemplate.update("update users set email = ? where userId = ?", updateEmail, userId);
+        return findById(userId);
+    }
+
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
             User user = new User(rs.getString("userId"),

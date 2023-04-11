@@ -36,6 +36,11 @@ public class UserService {
         return false;
     }
 
+    public void update(User user, String updateName, String updateEmail) {
+        userRepository.updateUserName(user.getUserId(), updateName);
+        userRepository.updateUserEmail(user.getUserId(), updateEmail);
+    }
+
     public List<User> findUsers() {
         return userRepository.findAll();
     }

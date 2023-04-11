@@ -20,8 +20,8 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(String id) {
-        return Optional.ofNullable(store.get(id));
+    public Optional<User> findById(String userId) {
+        return Optional.ofNullable(store.get(userId));
     }
 
     @Override
@@ -34,6 +34,22 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return new ArrayList<>(store.values());
+    }
+
+    @Override
+    public Optional<User> updateUserName(String userId, String updateName) {
+        User user = store.get(userId);
+        user.setName(updateName);
+        store.put(userId, user);
+        return Optional.ofNullable(store.get(userId));
+    }
+
+    @Override
+    public Optional<User> updateUserEmail(String userId, String updateEmail) {
+        User user = store.get(userId);
+        user.setEmail(updateEmail);
+        store.put(userId, user);
+        return Optional.ofNullable(store.get(userId));
     }
 
     public void clearStore() {
