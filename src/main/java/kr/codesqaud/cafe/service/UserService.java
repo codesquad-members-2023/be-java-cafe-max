@@ -25,7 +25,12 @@ public class UserService {
     }
 
     public boolean login(String userId, String password) {
-        if (findOne(userId).get().getPassword().equals(password)) {
+        Optional<User> user = findOne(userId);
+
+        if (!user.isPresent()) {
+            return false;
+        }
+        if (user.get().getPassword().equals(password)) {
             return true;
         }
         return false;
