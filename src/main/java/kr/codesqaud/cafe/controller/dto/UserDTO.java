@@ -20,7 +20,6 @@ public class UserDTO {
 
     @NotBlank
     @Length(min = 2,max = 12)
-
     private final String id;
 
     public UserDTO(String nickName, String email, String password, String id) {
