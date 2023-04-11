@@ -4,14 +4,14 @@ public class ProfileEditRequest {
 
     private final String originalPassword;
     private final String newPassword;
-    private final String userName;
-    private final String userEmail;
+    private final String newUserName;
+    private final String newUserEmail;
 
-    public ProfileEditRequest(String originalPassword, String newPassword, String userName, String userEmail) {
+    public ProfileEditRequest(String originalPassword, String newPassword, String newUserName, String newUserEmail) {
         this.originalPassword = originalPassword;
         this.newPassword = newPassword;
-        this.userName = userName;
-        this.userEmail = userEmail;
+        this.newUserName = newUserName;
+        this.newUserEmail = newUserEmail;
     }
 
     public String getOriginalPassword() {
@@ -22,11 +22,11 @@ public class ProfileEditRequest {
         return newPassword;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getNewUserName() {
+        return newUserName;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getNewUserEmail() {
+        return newUserEmail;
     }
 }
