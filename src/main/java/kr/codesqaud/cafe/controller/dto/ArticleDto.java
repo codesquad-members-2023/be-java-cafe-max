@@ -23,6 +23,16 @@ public class ArticleDto {
 		this.createdAt = DATE_TIME_FORMATTER.format(createdAt);
 	}
 
+	public Article toEntity() {
+		return new Article(
+			id,
+			writer,
+			title,
+			content,
+			LocalDateTime.parse(createdAt, DATE_TIME_FORMATTER)
+		);
+	}
+
 	public static ArticleDto from(final Article article) {
 		return new ArticleDto(article.getId(), article.getWriter(), article.getTitle(), article.getContent(),
 			article.getCreatedAt());
