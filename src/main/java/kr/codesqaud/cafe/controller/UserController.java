@@ -22,10 +22,6 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @GetMapping("/form")
-//    public String loginPage() {
-//        return "user/form";
-//    }
 
     @PostMapping("/register")
     public String register(User user) {
