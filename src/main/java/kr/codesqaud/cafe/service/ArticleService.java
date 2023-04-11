@@ -22,6 +22,7 @@ public class ArticleService {
     public boolean writeArticle(ArticleFormDto dto,HttpSession session){
         LoginSessionDto loginSessionDto = (LoginSessionDto) session.getAttribute("sessionId");
         Article article = new Article.Builder()
+                .userId(loginSessionDto.getId())
                 .title( dto.getTitle())
                 .writer( loginSessionDto.getName())
                 .contents(dto.getContents())

@@ -17,8 +17,8 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        jdbcTemplate.update("INSERT INTO ARTICLES(WRITER,TITLE,CONTENTS) VALUES (?, ?, ?)",
-                article.getWriter(),article.getTitle(),article.getContents());
+        jdbcTemplate.update("INSERT INTO ARTICLES(ID,WRITER,TITLE,CONTENTS) VALUES (?,?, ?, ?)",
+                article.getUserId(),article.getWriter(),article.getTitle(),article.getContents());
     }
     private RowMapper<Article> rowMapper () {
         return (rs, rowNum) ->
