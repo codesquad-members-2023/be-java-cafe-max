@@ -1,0 +1,24 @@
+package kr.codesqaud.cafe.dto;
+
+import kr.codesqaud.cafe.domain.Article;
+
+import java.time.LocalDateTime;
+
+public class ArticleRequestDto {
+    private String writer;
+    private String title;
+    private String contents;
+    private LocalDateTime writeTime;
+
+    public ArticleRequestDto(final String writer, final String title, final String contents, final LocalDateTime writeTime) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.writeTime = writeTime;
+    }
+
+    public Article toEntity() {
+        return new Article(writer, title, contents, writeTime);
+
+    }
+}
