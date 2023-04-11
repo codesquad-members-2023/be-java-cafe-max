@@ -7,6 +7,8 @@ import kr.codesqaud.cafe.domain.article.Article;
 
 public class ArticleDto {
 
+	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
 	private final Long id;
 	private final String writer;
 	private final String title;
@@ -18,7 +20,7 @@ public class ArticleDto {
 		this.writer = writer;
 		this.title = title;
 		this.content = content;
-		this.createdAt = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm").format(createdAt);
+		this.createdAt = DATE_TIME_FORMATTER.format(createdAt);
 	}
 
 	public static ArticleDto from(final Article article) {
