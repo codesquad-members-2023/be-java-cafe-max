@@ -11,7 +11,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     //    private final Map<Integer, Article> articleRepository = new HashMap<>();
     private Integer sequence = 1;
 
-    public void saveArticle(Article article) {
+    public void saveArticle(final Article article) {
         articleRepository.add(article);
         article.setId(sequence++);
     }
@@ -20,7 +20,7 @@ public class MemoryArticleRepository implements ArticleRepository {
         return Collections.unmodifiableList(new ArrayList<>(articleRepository));
     }
 
-    public Optional<Article> findArticleById(int articleId) {
+    public Optional<Article> findArticleById(final int articleId) {
         return Optional.ofNullable(articleRepository.get(articleId - 1));
     }
 

@@ -9,15 +9,15 @@ import java.util.*;
 public class MemberUserRepository implements MemberRepository{
     private final Map<String, User> store = new HashMap<>();
 
-    public void save(User user) {
+    public void save(final User user) {
         store.put(user.getId(), user);
     }
 
-    public Optional<User> findById(String id) {
+    public Optional<User> findById(final String id) {
         return Optional.ofNullable(store.get(id));
     }
 
-    public Optional<User> findByEmail(String email) {
+    public Optional<User> findByEmail(final String email) {
         return store.values().stream().filter(user -> user.getEmail().equals(email)).findAny();
     }
 

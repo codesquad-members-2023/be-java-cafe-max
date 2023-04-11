@@ -24,20 +24,20 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public String register(User user) {
+    public String register(final User user) {
         userService.join(user);
         return "redirect:/users";
     }
 
     @GetMapping
-    public String getUserList(Model model) {
+    public String getUserList(final Model model) {
         List<User> users = userService.showAllUser();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{id}")
-    public String readUserProfile(@PathVariable String id, Model model) {
+    public String readUserProfile(@PathVariable String id, final Model model) {
         model.addAttribute("user", userService.findUserById(id));
         return "user/profile";
     }

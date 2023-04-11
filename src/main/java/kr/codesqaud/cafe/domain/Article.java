@@ -9,7 +9,7 @@ public class Article {
     private String contents;
     private LocalDateTime writeTime;
 
-    public Article(Integer id, String writer, String title, String contents,LocalDateTime writeTime) {
+    public Article(final Integer id, final String writer, final String title, final String contents,final LocalDateTime writeTime) {
         this.id = id;
         this.writer = writer;
         this.title = title;

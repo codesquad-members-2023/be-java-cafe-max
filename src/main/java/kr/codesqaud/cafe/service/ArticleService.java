@@ -14,7 +14,7 @@ public class ArticleService {
         this.memoryArticleRepository = new MemoryArticleRepository();
     }
 
-    public Article saveArticle(Article article) {
+    public Article saveArticle(final Article article) {
         memoryArticleRepository.saveArticle(article);
         return article;
     }
@@ -23,7 +23,7 @@ public class ArticleService {
         return memoryArticleRepository.findAllArticle();
     }
 
-    public Article findArticleBySequence(int articleId) {
+    public Article findArticleBySequence(final int articleId) {
         Article article = memoryArticleRepository.findArticleById(articleId).orElseThrow(
                 () -> new IllegalArgumentException("해당하는 게시글이 없습니다."));
         return article;

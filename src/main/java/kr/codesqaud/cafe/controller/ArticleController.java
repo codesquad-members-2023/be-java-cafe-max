@@ -20,20 +20,20 @@ public class ArticleController {
     }
 
     @PostMapping("/qna")
-    public String writeArticle(Article article) {
+    public String writeArticle(final Article article) {
         articleService.saveArticle(article);
         return "redirect:/";
     }
 
     @GetMapping
-    public String showArticleList(Model model) {
+    public String showArticleList(final Model model) {
         List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         return "index";
     }
 
     @GetMapping("articles/{index}")
-    public String findArticleById(@PathVariable Integer index, Model model) {
+    public String findArticleById(@PathVariable Integer index, final Model model) {
         Article article = articleService.findArticleBySequence(index);
         model.addAttribute("article", article);
         return "qna/show";
