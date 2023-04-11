@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/board")
 public class BoardController {
@@ -14,6 +16,14 @@ public class BoardController {
 
     public BoardController(BoardService boardService) {
         this.boardService = boardService;
+    }
+
+    @GetMapping("/form")
+    public String writeForm(HttpSession session) {
+        if (session.getAttribute("sessionUser") == null) {
+            return "user/login";
+        }
+        return "board/write";
     }
 
     @PostMapping
