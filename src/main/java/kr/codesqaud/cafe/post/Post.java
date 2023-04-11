@@ -18,7 +18,7 @@ public class Post {
     private String nickname;
 
     private String title;
-
+    @Lob
     private String textContent;
 
     private LocalDateTime createdDateTime;
@@ -61,6 +61,7 @@ public class Post {
         this.createdDateTime = builder.createdDateTime;
         this.title = builder.title;
         this.textContent = builder.textContent;
+        this.user = builder.user;
     }
 
     public Long getId() {
@@ -93,6 +94,7 @@ public class Post {
         private String textContent;
 
         private LocalDateTime createdDateTime;
+        private User user;
 
         public Builder() {
 
@@ -120,6 +122,11 @@ public class Post {
 
         public Builder createdDateTime(LocalDateTime createdDateTime) {
             this.createdDateTime = createdDateTime;
+            return this;
+        }
+
+        public Builder User(User user) {
+            this.user = user;
             return this;
         }
 
