@@ -63,12 +63,12 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchElementException("이 아이디를 찾을 수 없어: " + id));
     }
 
-    public void updateUser(Long id, UserUpdateForm updateUser) {
+    public void updateUser(Long id, UserUpdateForm updateUser, String existingPassword) {
         // updateUser의 정보들을 User에 덮어씌우기
         User originUser = findUser(id);
         originUser.setPassword(updateUser.getPassword());
         originUser.setName(updateUser.getName());
         originUser.setEmail(updateUser.getEmail());
-        userRepository.update(id, originUser);
+        userRepository.update(id, originUser, existingPassword);
     }
 }

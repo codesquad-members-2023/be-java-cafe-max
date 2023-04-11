@@ -78,7 +78,11 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public void update(Long id, User updateUser) {
+    public void update(Long id, User updateUser, String existingPassword) {
+        if (!updateUser.getPassword().equals(existingPassword)) {
+            throw new IllegalStateException("비밀번호가 같지 않습니다.");
+        }
+
         String sql = "update USERS " +
                 "set PASSWORD=:password, NAME=:name, EMAIL=:email " +
                 "where ID=:id";
