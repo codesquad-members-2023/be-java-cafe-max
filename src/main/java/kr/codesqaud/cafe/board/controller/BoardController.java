@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.board.controller;
 
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
 import kr.codesqaud.cafe.board.service.BoardService;
+import kr.codesqaud.cafe.user.dto.UserResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +20,12 @@ public class BoardController {
     }
 
     @GetMapping("/form")
-    public String writeForm(HttpSession session) {
-        if (session.getAttribute("sessionUser") == null) {
+    public String writeForm(HttpSession session, Model model) {
+        UserResponse user = (UserResponse) session.getAttribute("sessionUser");
+        if (user == null) {
             return "user/login";
         }
+        model.addAttribute("user", user);
         return "board/write";
     }
 
