@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class JdbcUserRepository implements UserRepository{
@@ -29,8 +30,9 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     @Override
-    public User getSpecificUser(String userId) {
-        return null;
+    public Optional<User> getSpecificUser(String userId) {
+        List<User> result = jdbcTemplate.query("select * from userTable where userId = ?", userRowMapper(), userId);
+        return result.stream().findAny();
     }
 
     private RowMapper<User> userRowMapper() {
