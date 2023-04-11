@@ -26,7 +26,7 @@ public class LoginController {
         String userId = loginDto.getUserId();
         userService.matchPassword(loginDto);
         HttpSession session = request.getSession();
-        session.setAttribute(Session.LOGIN_MEMBER,userId);
+        session.setAttribute(Session.LOGIN_USER,userId);
         return "redirect:/user/login-success/"+userId;
     }
 
