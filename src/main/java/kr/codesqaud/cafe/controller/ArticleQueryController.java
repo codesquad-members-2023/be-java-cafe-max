@@ -2,12 +2,15 @@ package kr.codesqaud.cafe.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ArticleService;
 
 @Controller
@@ -26,12 +29,22 @@ public class ArticleQueryController {
 	}
 
 	@GetMapping("/questions/form")
-	public String getArticleForm() {
+	public String getArticleForm(HttpSession session, Model model) {
+		Object value = session.getAttribute("sessionUser");
+		if (value == null) {
+			return "redirect:/user/login";
+		}
+		User user = (User)value;
+		model.addAttribute("writer", user.getNickname());
 		return "qna/form";
 	}
 
 	@GetMapping("/articles/{index}")
-	public String showArticle(@PathVariable long index, Model model) {
+	public String showArticle(@PathVariable long index, HttpSession session, Model model) {
+		Object value = session.getAttribute("sessionUser");
+		if (value == null) {
+			return "redirect:/user/login";
+		}
 		articleService.increaseHits(index);
 		Article article = articleService.findByIndex(index);
 		model.addAttribute("article", article);
