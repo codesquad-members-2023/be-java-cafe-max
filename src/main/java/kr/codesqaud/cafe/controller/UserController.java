@@ -40,13 +40,14 @@ public class UserController {
 
     @GetMapping("/profile/{id}/form")
     public String userUpdateForm(@PathVariable String id,Model model){
-        model.addAttribute("user",userService.getUserById(id));
+        model.addAttribute("id",id);
         return "user/updateForm";
     }
 
     @PutMapping("/profile/{id}")
-    public String updateUserData(@Valid ProfileEditDTO profileEditDto){
+    public String updateUserData(@PathVariable String id,@ModelAttribute @Valid ProfileEditDTO profileEditDto,Model model){
+        model.addAttribute("id",id);
         userService.updateUserById(profileEditDto);
-        return "redirect:/users";
+        return "redirect:/user/list";
     }
 }

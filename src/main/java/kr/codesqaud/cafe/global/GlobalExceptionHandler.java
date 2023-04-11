@@ -3,8 +3,8 @@ package kr.codesqaud.cafe.global;
 
 import kr.codesqaud.cafe.exception.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.exception.LoginInvalidPasswordException;
-import kr.codesqaud.cafe.exception.UserUpdateInvalidPasswordException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
+import kr.codesqaud.cafe.exception.UserUpdateInvalidPasswordException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -37,8 +37,10 @@ public class GlobalExceptionHandler {
         if (requestUri.contains("/sign-up")) {
             return createErrorResponseModelAndView("user/form", e, false);
         }
+        else if(requestUri.contains("/profile")){
+            return createErrorResponseModelAndView("user/updateForm",e,false);
+        }
         return createErrorResponseModelAndView("post/form", e, false);
-
     }
 
     @ExceptionHandler(AlreadyUserExistenceException.class)
@@ -63,8 +65,8 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 로그인시 비밀번호가 틀리면 발생되는 error이다. login-form에서 존재하지 않는 id가 입력될시 error라는 메세지를 사용하고있기때문에
-     * 비밀번호는 password-error를 통해 login-form에 error-message를 넘긴다.
+     * 로그인시 비밀번호가 틀리면 발생되는 예외다. login-form에서 존재하지 않는 id가 입력될시 error라는 메세지를 사용하고있기때문에
+     * 비밀번호는 가 틀렸을땐 password-error 를 통해 login-form 에 error-message를 넘긴다.
      * @param e
      * @return
      */

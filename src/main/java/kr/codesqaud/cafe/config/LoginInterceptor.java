@@ -14,7 +14,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         Object loginUser = session.getAttribute("loginUser");
 
         if (loginUser != null && modelAndView != null) {
-            modelAndView.addObject("loginUser", loginUser);
+            modelAndView.addObject("loginUserId", loginUser);
         }
     }
 }
