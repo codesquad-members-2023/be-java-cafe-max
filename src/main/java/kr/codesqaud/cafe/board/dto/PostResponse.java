@@ -28,10 +28,6 @@ public class PostResponse {
         return postId;
     }
 
-    public void setPostId(Long postId) {
-        this.postId = postId;
-    }
-
     public String getWriter() {
         return writer;
     }
