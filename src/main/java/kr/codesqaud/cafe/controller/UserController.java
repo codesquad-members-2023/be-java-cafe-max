@@ -19,11 +19,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/create")
-    public String createForm(){
-        return "user/form";
-    }
-
     @PostMapping("/create")
     public String create(UserForm form){
         User user = new User(form);
@@ -31,7 +26,7 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("")
+    @GetMapping // TODO: 질문!!!!!!!!!!!!!
     public String list(Model model){
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
