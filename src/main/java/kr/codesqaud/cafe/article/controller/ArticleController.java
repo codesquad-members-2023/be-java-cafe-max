@@ -3,12 +3,15 @@ package kr.codesqaud.cafe.article.controller;
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticleFormDto;
 import kr.codesqaud.cafe.article.service.ArticleService;
+import kr.codesqaud.cafe.utils.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/articles")
@@ -36,9 +39,9 @@ public class ArticleController {
 
     //글 목록에서 제목 클릭시, 상세 글을 보여줌
     @GetMapping("/{index}")
-    public String showArticleDetail(Model model, @PathVariable Long index) {
+    public String showArticleDetail(Model model, @PathVariable Long index, HttpSession session) {
         model.addAttribute("articleDetail", articleService.getArticleDetail(index));
-        return "articles/show-detail";
+        return Session.isLoggedIn(session) ? "articles/show-detail" : "redirect:/user/login" ;
     }
 
 
