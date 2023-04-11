@@ -10,11 +10,13 @@
 
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">가입이 완료되었습니다!</p>
+            <p class="title">로그인 성공!</p>
         </header>
-        <p class="user-info"> 이메일: sam@codesquad.kr</p>
-        <p class="user-info"> 닉네임: 멋진삼</p>
+        {{#user}}
+        <p class="user-info"> 아이디: {{id}}</p>
+        <p class="user-info"> 닉네임: {{nickName}}</p>
         <a href="/" class="btn">홈으로</a>
+        {{/user}}
     </div>
 </div>
 </body>
