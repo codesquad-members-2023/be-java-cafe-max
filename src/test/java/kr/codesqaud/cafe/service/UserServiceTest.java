@@ -50,13 +50,12 @@ class UserServiceTest {
         user2.setName("springName1");
         user2.setUserId("springId2");
 
-
-        // when
         userService.join(user1);
-        IllegalStateException e = assertThrows(IllegalStateException.class, () -> userService.join(user2));
 
-        // then
-        assertThat(e.getMessage()).isEqualTo("이미 존재하는 이름입니다.");
+        // when, then
+        assertThatThrownBy(()-> {
+            userService.join(user2);
+        }).isInstanceOf(IllegalStateException.class).hasMessage("이미 존재하는 이름입니다.");
     }
 
     @Test
