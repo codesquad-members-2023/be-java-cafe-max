@@ -1,13 +1,14 @@
 package kr.codesqaud.cafe.user.controller;
 
-import kr.codesqaud.cafe.user.domain.User;
 import kr.codesqaud.cafe.user.dto.UserAddForm;
 import kr.codesqaud.cafe.user.dto.UserLoginForm;
+import kr.codesqaud.cafe.user.dto.UserResponse;
 import kr.codesqaud.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 
@@ -28,11 +29,12 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@ModelAttribute UserLoginForm userLoginForm) {
-        Optional<User> loginResult = userService.loginCheck(userLoginForm);
+    public String loginUser(@ModelAttribute UserLoginForm userLoginForm, HttpSession session) {
+        Optional<UserResponse> loginResult = userService.loginCheck(userLoginForm);
         if (!loginResult.isPresent()) {
             return "user/login_failed";
         }
+        session.setAttribute("sessionUser", loginResult.get());
         return "redirect:/board/list";
     }
 

@@ -27,7 +27,7 @@ public class UserService {
         return userRepository.save(userAddForm.toUser());
     }
 
-    public Optional<User> loginCheck(UserLoginForm userLoginForm) {
+    public Optional<UserResponse> loginCheck(UserLoginForm userLoginForm) {
         if (!userRepository.containsUserId(userLoginForm.getUserId())) {
             return Optional.empty();
         }
@@ -35,7 +35,7 @@ public class UserService {
         if (!userLoginForm.getPassword().equals(user.getPassword())) {
             return Optional.empty();
         }
-        return Optional.ofNullable(user);
+        return Optional.ofNullable(UserResponse.fromUser(user));
     }
 
     public UserResponse getUser(String userId) {
