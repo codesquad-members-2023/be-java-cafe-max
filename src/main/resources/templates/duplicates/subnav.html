@@ -5,10 +5,10 @@
                data-toggle="dropdown"><i class="glyphicon glyphicon-home" style="color:#dd1111;"></i> Home <small><i
                     class="glyphicon glyphicon-chevron-down"></i></small></a>
             <ul class="nav dropdown-menu">
-                <th:block th:if="${session.loginId != null}">
                     <li><a href="/user/profile" th:href="@{/users/{userId}(userId=${session.loginUserId})}"><i
                             class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a>
                     </li>
+                <th:block th:if="${session.loginId != null}">
                     <li class="nav-divider"></li>
                     <li><a href="#" th:href="@{/users/{id}/updateForm(id=${session.loginId})}"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>
                 </th:block>

@@ -21,7 +21,7 @@
                         <div class="media-body">
                             <h4 class="media-heading" th:text="${profile.name}">자바지기</h4>
                             <p>
-                                <a class="btn btn-xs btn-default" th:href="@{/users/{name}(name=${profile.name})}" th:text="${profile.email}">
+                                <a class="btn btn-xs btn-default" th:href="@{/users/{userId}(userId=${userId})}" th:text="${profile.email}">
                                     <span class="glyphicon glyphicon-envelope"></span>
                                     &nbsp;javajigi@slipp.net
                                 </a>
