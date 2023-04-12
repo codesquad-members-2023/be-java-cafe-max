@@ -20,30 +20,38 @@ class UserServiceTest {
     @Autowired UserRepository userRepository;
 
     @Test
-    void 회원가입() {
-        // given
-        User user = new User();
-        user.setName("springName");
-        user.setUserId("springId");
-
-        // when
-        String saveUserId = userService.join(user);
-
-        // then
-        UserResponse findUser = userService.findByUserId(saveUserId).get();
-        assertThat(user.getName()).isEqualTo(findUser.getName());
-    }
-
-    @Test
-    void 중복_회원_이름_예외() {
+    @DisplayName("회원 가입 성공")
+    void join() {
         // given
         User user1 = new User();
         user1.setName("springName1");
         user1.setUserId("springId1");
+        user1.setPassword("1234");
+        user1.setEmail("jian@gmail.com");
+
+        // when
+        String saveUserId = userService.join(user1);
+
+        // then
+        UserResponse findUser = userService.findByUserId(saveUserId).get();
+        assertThat(user1.getName()).isEqualTo(findUser.getName());
+    }
+
+    @Test
+    @DisplayName("중복 회원 이름 예외")
+    void userName() {
+        // given
+        User user1 = new User();
+        user1.setName("springName1");
+        user1.setUserId("springId1");
+        user1.setPassword("1234");
+        user1.setEmail("jian@gmail.com");
 
         User user2 = new User();
         user2.setName("springName1");
         user2.setUserId("springId2");
+        user2.setPassword("1234");
+        user2.setEmail("jian@gmail.com");
 
         userService.join(user1);
 
@@ -54,15 +62,20 @@ class UserServiceTest {
     }
 
     @Test
-    void 중복_회원_아이디_예외() {
+    @DisplayName("중복 회원 아이디 예외")
+    void userId() {
         // given
         User user1 = new User();
         user1.setName("springName1");
         user1.setUserId("springId1");
+        user1.setPassword("1234");
+        user1.setEmail("jian@gmail.com");
 
         User user2 = new User();
         user2.setName("springName2");
         user2.setUserId("springId1");
+        user2.setPassword("1234");
+        user2.setEmail("jian@gmail.com");
 
 
         // when
