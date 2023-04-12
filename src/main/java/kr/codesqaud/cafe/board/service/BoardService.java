@@ -20,6 +20,10 @@ public class BoardService {
         boardJdbcRepository.save(postWriteForm.toBoardPost());
     }
 
+    public void update(PostResponse postResponse) {
+        boardJdbcRepository.update(postResponse.toBoardPost());
+    }
+
     public PostResponse getPost(Long postId) {
         return PostResponse.fromBoardPost(boardJdbcRepository.findByPostId(postId));
     }

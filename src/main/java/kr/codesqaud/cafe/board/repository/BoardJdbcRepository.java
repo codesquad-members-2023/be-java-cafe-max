@@ -32,6 +32,12 @@ public class BoardJdbcRepository {
                 new BeanPropertySqlParameterSource(boardPost));
     }
 
+    public void update(BoardPost boardPost) {
+        jdbcTemplate.update(
+                "UPDATE post SET title = :title, contents = :contents WHERE post_id = :postId",
+                new BeanPropertySqlParameterSource(boardPost));
+    }
+
     public boolean containsPostId(Long postId) {
         Map<String, Long> namedParameters = Collections.singletonMap("post_id", postId);
         Optional<Integer> countOfPost = Optional.ofNullable(jdbcTemplate.queryForObject(

@@ -20,6 +20,10 @@ public class PostResponse {
         this.writeDateTime = writeDateTime;
     }
 
+    public BoardPost toBoardPost() {
+        return new BoardPost(writer, title, contents, postId);
+    }
+
     public static PostResponse fromBoardPost(BoardPost boardPost) {
         return new PostResponse(boardPost.getPostId(), boardPost.getWriter(), boardPost.getTitle(), boardPost.getContents(), boardPost.getWriteDateTime());
     }
