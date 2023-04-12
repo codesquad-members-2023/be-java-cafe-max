@@ -6,10 +6,7 @@ import kr.codesqaud.cafe.domain.dto.article.ArticleUpdateForm;
 import kr.codesqaud.cafe.service.article.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -55,6 +52,12 @@ public class ArticleController {
     @PutMapping("/questions/{id}")
     public String putUpdateArticle(@PathVariable Long id, @Valid ArticleUpdateForm updateArticle) {
         articleService.updateArticle(id, updateArticle);
+        return "redirect:/";
+    }
+
+    @DeleteMapping("/questions/{id}")
+    public String deleteArticle(@PathVariable Long id) {
+        articleService.delete(id);
         return "redirect:/";
     }
 }

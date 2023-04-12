@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -45,8 +44,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
         try {
             Map<String, Object> param = Map.of("id", id);
             Article article = template.queryForObject(sql, param, articleRowMapper);
-            assert article != null;
-            return Optional.of(article);
+            return Optional.ofNullable(article);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -69,6 +67,14 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                 .addValue("contents", article.getContents())
                 .addValue("id", id);
 
+        template.update(sql, param);
+    }
+
+    @Override
+    public void deleteArticle(Long id) {
+        String sql = "delete from articles where id=:id";
+
+        Map<String, Object> param = Map.of("id", id);
         template.update(sql, param);
     }
 }

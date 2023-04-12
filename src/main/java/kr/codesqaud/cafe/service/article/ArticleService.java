@@ -60,4 +60,8 @@ public class ArticleService {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("이 아이디를 찾을 수 없어: " + id));
     }
+
+    public void delete(Long id) {
+        articleRepository.deleteArticle(id);
+    }
 }
