@@ -49,19 +49,19 @@ public class UserService {
     // 전체 회원 조회
     public List<UserResponse> findUsers(){
         return userRepository.findAll().stream()
-                .map(user -> new UserResponse(user.getUserId(), user.getName(), user.getEmail()))
-                .collect(Collectors.toList());
+                .map(user -> new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail()))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public Optional<UserResponse> findByUserId(String userId) {
         User user = userRepository.findByUserId(userId).get();
-        UserResponse userResponse = new UserResponse(user.getUserId(), user.getName(), user.getEmail());
+        UserResponse userResponse = new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail());
         return Optional.ofNullable(userResponse);
     }
 
     public Optional<UserResponse> findByName(String name){
         User user = userRepository.findByName(name).get();
-        UserResponse userResponse = new UserResponse(user.getUserId(), user.getName(), user.getEmail());
+        UserResponse userResponse = new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail());
         return Optional.ofNullable(userResponse);
     }
 }
