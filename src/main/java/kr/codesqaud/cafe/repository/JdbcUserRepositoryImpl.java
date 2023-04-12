@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -95,7 +94,15 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     }
 
     private RowMapper<User> userRowMapper() {
-        return BeanPropertyRowMapper.newInstance(User.class);
+        return ((rs, rowNum) -> new User(
+                rs.getLong("id"),
+                rs.getString("user_id"),
+                rs.getString("name"),
+                rs.getString("password"),
+                rs.getString("email"),
+                rs.getTimestamp("created_at").toLocalDateTime(),
+                rs.getTimestamp("updated_at").toLocalDateTime()
+        ));
     }
 
 }

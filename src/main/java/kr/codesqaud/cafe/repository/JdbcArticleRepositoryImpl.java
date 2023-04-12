@@ -2,8 +2,10 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -57,7 +59,14 @@ public class JdbcArticleRepositoryImpl implements ArticleRepository {
         return template.query(sql, articleRowMapper());
     }
 
-    private BeanPropertyRowMapper<Article> articleRowMapper() {
-        return BeanPropertyRowMapper.newInstance(Article.class);
+    private RowMapper<Article> articleRowMapper() {
+        return (rs, rowNum) -> new Article(
+                rs.getLong("id"),
+                rs.getString("title"),
+                rs.getString("writer"),
+                rs.getString("contents"),
+                rs.getTimestamp("created_at").toLocalDateTime(),
+                rs.getTimestamp("updated_at").toLocalDateTime()
+        );
     }
 }
