@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
+import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 
@@ -36,5 +37,11 @@ public class ArticleService {
 		return articleRepository.findById(id)
 			.map(ArticleDto::from)
 			.orElseThrow(() -> new NotFoundException(String.format("%d번 게시글을 찾을 수 없습니다.", id)));
+	}
+
+	public void validateHasAuthorization(final Long articleId, final String userId) {
+		articleRepository.findById(articleId)
+			.filter(article -> article.getWriter().equals(userId))
+			.orElseThrow(NoAuthorizationException::new);
 	}
 }

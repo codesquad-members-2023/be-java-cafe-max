@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import kr.codesqaud.cafe.common.resolver.Login;
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.service.ArticleService;
@@ -36,5 +37,13 @@ public class ArticleController {
 	public String showArticleDetails(@PathVariable final Long articleId, final Model model) {
 		model.addAttribute("article", articleService.findById(articleId));
 		return "qna/show";
+	}
+
+	@GetMapping("/articles/{articleId}/form")
+	public String showProfileEditPage(@PathVariable final Long articleId,
+		@Login final String userId, final Model model) {
+		articleService.validateHasAuthorization(articleId, userId);
+		model.addAttribute("articleId", articleId);
+		return "qna/edit_form";
 	}
 }
