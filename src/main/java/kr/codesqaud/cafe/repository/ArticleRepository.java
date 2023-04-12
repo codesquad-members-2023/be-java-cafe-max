@@ -11,4 +11,6 @@ public interface ArticleRepository {
     Optional<Article> findByWriter(String writer);
     Optional<Article> findById(Long id);
     List<Article> findAll();
+
+    void updateWriter(String name, String updateName);
 }

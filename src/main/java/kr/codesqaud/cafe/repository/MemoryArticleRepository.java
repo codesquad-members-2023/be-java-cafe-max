@@ -40,6 +40,11 @@ public class MemoryArticleRepository implements ArticleRepository {
         return new ArrayList<>(articleStore.values());
     }
 
+    @Override
+    public void updateWriter(String name, String updateName) {
+        // 작성자 이름 변경
+    }
+
     public void clearStore() {
         articleStore.clear();
     }

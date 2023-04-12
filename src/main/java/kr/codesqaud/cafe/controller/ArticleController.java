@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.SessionConst;
+import kr.codesqaud.cafe.constant.SessionConst;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.service.ArticleService;
@@ -70,12 +70,4 @@ public class ArticleController {
         model.addAttribute("article", articleService.findOne(id));
         return "qna/show";
     }
-
-//    @GetMapping("articles/updateName")
-//    public String updateArticle(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-//                                    User loginUser, Model model) {
-//
-//
-//        return "users/{userId}";
-//    }
 }

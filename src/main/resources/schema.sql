@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS users
+CREATE TABLE  IF NOT EXISTS users
 (
     userId       varchar(50),
     password     varchar(50) not null,
@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users
     primary key (userId)
 );
 
-CREATE TABLE IF NOT EXISTS article
+CREATE TABLE  IF NOT EXISTS article
 (
     id           bigint auto_increment,
     writer       varchar(50) not null,
@@ -16,3 +16,4 @@ CREATE TABLE IF NOT EXISTS article
     createdTime  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     primary key (id)
 );
+

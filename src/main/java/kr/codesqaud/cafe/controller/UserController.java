@@ -1,10 +1,11 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.SessionConst;
+import kr.codesqaud.cafe.constant.SessionConst;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserJoinForm;
 import kr.codesqaud.cafe.dto.UserLoginForm;
 import kr.codesqaud.cafe.dto.UserUpdateForm;
+import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
 
     public UserController(UserService userService) {
         this.userService = userService;

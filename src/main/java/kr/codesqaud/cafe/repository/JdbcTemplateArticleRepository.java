@@ -47,6 +47,10 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
         return jdbcTemplate.query("select * from article", articleRowMapper());
     }
 
+    @Override
+    public void updateWriter(String name, String updateName) {
+        jdbcTemplate.update("update article set writer = ? where writer = ?", updateName, name);
+    }
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
             Article article = new Article(

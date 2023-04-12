@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +13,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final ArticleRepository articleRepository;
+
+    public UserService(UserRepository userRepository, ArticleRepository articleRepository) {
         this.userRepository = userRepository;
+        this.articleRepository = articleRepository;
     }
 
     public boolean join(User user) {
@@ -39,6 +43,7 @@ public class UserService {
     public void update(User user, String updateName, String updateEmail) {
         userRepository.updateUserName(user.getUserId(), updateName);
         userRepository.updateUserEmail(user.getUserId(), updateEmail);
+        articleRepository.updateWriter(user.getName(), updateName);
     }
 
     public List<User> findUsers() {
