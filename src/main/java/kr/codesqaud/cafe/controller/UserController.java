@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.user.MemoryUserRepository;
 import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -12,17 +12,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class UserController {
 
-    private final MemoryUserRepository memoryUserRepository;
+    private final UserRepository userRepository;
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    public UserController(MemoryUserRepository memoryUserRepository) {
-        this.memoryUserRepository = memoryUserRepository;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/user/form")
     public String saveUser(User user) {
 
-        memoryUserRepository.save(user);
+        userRepository.save(user);
         logger.info(user.toString());
 
         return "redirect:/users";
@@ -31,7 +31,7 @@ public class UserController {
     @GetMapping("/users")
     public String showUsers(Model model) {
 
-        model.addAttribute("users", memoryUserRepository.findAll());
+        model.addAttribute("users", userRepository.findAll());
 
         return "user/list";
     }
@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String showProfile(@PathVariable("userId") String userId, Model model) {
 
-        User user = memoryUserRepository.findById(userId);
+        User user = userRepository.findById(userId);
         model.addAttribute("user", user);
 
         return "user/profile";
@@ -48,7 +48,7 @@ public class UserController {
     @GetMapping("/users/{userId}/check")
     public String showCheckPasswordForm(@PathVariable String userId, Model model) {
 
-        User user = memoryUserRepository.findById(userId);
+        User user = userRepository.findById(userId);
         model.addAttribute("user", user);
 
         return "user/checkPassword";
@@ -57,7 +57,7 @@ public class UserController {
     @PutMapping("/users/{userId}/check")
     public String checkPassword(@PathVariable String userId, String password, Model model, RedirectAttributes redirectAttributes) {
 
-        User user = memoryUserRepository.findById(userId);
+        User user = userRepository.findById(userId);
         model.addAttribute("user", user);
 
         if (!user.getPassword().equals(password)) {
@@ -74,7 +74,7 @@ public class UserController {
     @GetMapping("/users/{userId}/form")
     public String showUpdateForm(@PathVariable String userId, Model model) {
 
-        User user = memoryUserRepository.findById(userId);
+        User user = userRepository.findById(userId);
         model.addAttribute("user", user);
 
         return "user/updateForm";
@@ -83,7 +83,7 @@ public class UserController {
     @PutMapping("/users/{userId}/update")
     public String update(@ModelAttribute User user) {
 
-        memoryUserRepository.update(user);
+        userRepository.update(user);
         logger.info(user.toString());
 
         return "redirect:/users";

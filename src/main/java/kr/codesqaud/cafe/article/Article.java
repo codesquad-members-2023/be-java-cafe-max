@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.article;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -12,14 +13,16 @@ public class Article {
     private final String writer;
     private final String title;
     private final String contents;
-    private final String createdAt;
+    private final Timestamp createdAt;
 
-    public Article(String writer, String title, String contents) {
+
+
+    public Article(String writer, String title, String contents, Timestamp createdAt) {
         this.articleId = ++idCount;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 
     public int getArticleId() {
@@ -38,7 +41,7 @@ public class Article {
         return contents;
     }
 
-    public String getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
