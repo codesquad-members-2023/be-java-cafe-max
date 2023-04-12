@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class ArticleController {
 
     private final ArticleRepository articleRepository;
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     public ArticleController(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;

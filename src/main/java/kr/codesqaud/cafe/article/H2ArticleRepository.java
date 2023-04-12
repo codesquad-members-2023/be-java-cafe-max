@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.article;
 
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -21,7 +22,8 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return null;
+        final String SQL = "SELECT * FROM Articles";
+        return jdbcTemplate.query(SQL, BeanPropertyRowMapper.newInstance(Article.class));
     }
 
     @Override
