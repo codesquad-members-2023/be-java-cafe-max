@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.config.Session;
 import kr.codesqaud.cafe.controller.dto.LoginDTO;
+import kr.codesqaud.cafe.controller.dto.UserDTO;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 public class SignInController {
@@ -23,11 +23,14 @@ public class SignInController {
 
     @PostMapping("/user/sign-in-success")
     public String userLogin(@ModelAttribute LoginDTO loginDto,HttpServletRequest request){
-        String userId = loginDto.getUserId();
+        String id = loginDto.getUserId();
         userService.matchPassword(loginDto);
-        HttpSession session = request.getSession();
-        session.setAttribute(Session.LOGIN_USER,userId);
-        return "redirect:/user/sign-in-success/"+userId;
+
+        UserDTO userDto = userService.getUserById(id);
+        Session session = new Session(userDto.getId(),userDto.getNickName());
+
+        request.getSession().setAttribute(Session.LOGIN_USER,session);
+        return "redirect:/user/sign-in-success/"+id;
     }
 
     @GetMapping("/user/sign-in-success/{userId}")
