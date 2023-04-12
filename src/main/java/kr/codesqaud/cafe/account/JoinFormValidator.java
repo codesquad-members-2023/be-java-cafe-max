@@ -23,6 +23,9 @@ public class JoinFormValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         JoinForm joinForm = (JoinForm) target;
+        if (errors.hasErrors()) {
+            return;
+        }
         if (userService.containsEmail(joinForm.getEmail())) {
             errors.rejectValue(EMAIL, "error.email.duplicate");
             return;
