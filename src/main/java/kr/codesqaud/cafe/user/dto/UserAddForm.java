@@ -19,6 +19,10 @@ public class UserAddForm {
         return new User(userId, password, userName, email);
     }
 
+    public UserResponse toUserResponse() {
+        return new UserResponse(userId, userName, email);
+    }
+
     public String getUserId() {
         return userId;
     }
