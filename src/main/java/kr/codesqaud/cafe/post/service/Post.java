@@ -18,7 +18,7 @@ public class Post {
         this.writingTime = writingTime;
     }
 
-    public Post createPost(long id) {
+    public Post create(long id) {
         return new Post(id, this.writer, this.title, this.contents, this.writingTime);
     }
 

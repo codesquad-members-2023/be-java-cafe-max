@@ -15,7 +15,7 @@ public class MemoryPostRepository implements PostRepository {
 
     @Override
     public Post save(Post post) {
-        posts.put(++sequence, post.createPost(sequence));
+        posts.put(++sequence, post.create(sequence));
         return post;
     }
 
