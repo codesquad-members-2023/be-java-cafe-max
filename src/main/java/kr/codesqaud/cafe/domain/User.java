@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe;
+package kr.codesqaud.cafe.domain;
 
 public class User {
     private static int userNumFactory = 0;

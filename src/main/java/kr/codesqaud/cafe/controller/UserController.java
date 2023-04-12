@@ -1,5 +1,7 @@
-package kr.codesqaud.cafe;
+package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +19,7 @@ public class UserController {
 
     @GetMapping("/join")
     public String getUserForm() {
-        return "user/form";             // 회원가입 페이지
+        return "/user/form";             // 회원가입 페이지
     }
 
     @PostMapping("/users")
@@ -29,6 +31,6 @@ public class UserController {
     public String getUserList(Model model) {
         List<User> users = userService.getUserList;
         model.addAttribute("users", users);
-        return "list";
+        return "/user/list";
     }
 }
