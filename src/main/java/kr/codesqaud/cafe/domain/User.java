@@ -1,8 +1,5 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.UserDTO;
-import kr.codesqaud.cafe.controller.dto.UserListDTO;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -47,16 +44,8 @@ public class User {
     public String getId() {
         return id;
     }
+
     public String getPassword() {
         return password;
     }
-
-    public UserDTO toUserDTO(){
-        return new UserDTO(nickName,email,password,id);
-    }
-
-    public UserListDTO toUserListDTO() {
-        return new UserListDTO(nickName,email,id,date);
-    }
-
 }
