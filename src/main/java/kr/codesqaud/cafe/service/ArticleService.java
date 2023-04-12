@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.SessionConst;
 import kr.codesqaud.cafe.controller.dto.article.ArticleForm;
 import kr.codesqaud.cafe.controller.dto.article.ArticleTimeForm;
+import kr.codesqaud.cafe.controller.dto.article.ArticleUpdateForm;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -40,5 +41,15 @@ public class ArticleService {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("이 아이디를 찾을 수 없어: " + id));
         return ArticleTimeForm.from(article);
+    }
+
+    public ArticleUpdateForm findUpdate(Long id) {
+        Article article = findArticle(id);
+        return ArticleUpdateForm.from(article);
+    }
+
+    private Article findArticle(Long id) {
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("이 아이디를 찾을 수 없어: " + id));
     }
 }

@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.article.ArticleForm;
 import kr.codesqaud.cafe.controller.dto.article.ArticleTimeForm;
+import kr.codesqaud.cafe.controller.dto.article.ArticleUpdateForm;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,5 +42,12 @@ public class ArticleController {
         ArticleTimeForm article = articleService.findArticleId(id);
         model.addAttribute("article", article);
         return "qna/show";
+    }
+
+    @GetMapping("/questions/{id}/updateForm")
+    public String getUpdateArticle(@PathVariable Long id, Model model) {
+        ArticleUpdateForm article = articleService.findUpdate(id);
+        model.addAttribute("articleUpdated", article);
+        return "qna/updateForm";
     }
 }
