@@ -17,6 +17,10 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    @GetMapping("/questions")
+    public String create(){
+        return "qna/form";
+    }
     @PostMapping("/questions")
     public String create(ArticleForm form){
         Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
