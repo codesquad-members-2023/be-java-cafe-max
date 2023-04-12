@@ -81,13 +81,8 @@ public class UserController {
         return "redirect:/users/" + user.getId() + "/profile";
     }
 
-    @GetMapping("/users")
-    public String viewUsers(Model model, HttpSession session) {
-        Object sessionAttribute = session.getAttribute("user");
-        if (sessionAttribute == null) {
-            return "redirect:/users/login";
-        }
-        User user = (User) sessionAttribute;
+    @GetMapping("/users/")
+    public String viewUsers(Model model, @SessionAttribute User user) {
         if (!user.getRole().equals(Role.MANAGER)) {
             throw new RuntimeException("접근 할 수 없습니다.");
         }
@@ -98,12 +93,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/profile")
-    public String viewUser(Model model, @PathVariable Long userId, HttpSession httpSession) {
-        Object sessionAttribute = httpSession.getAttribute("user");
-        if (sessionAttribute == null) {
-            return "redirect:/users/login";
-        }
-        User user = (User) sessionAttribute;
+    public String viewUser(Model model, @PathVariable Long userId, @SessionAttribute User user) {
         if (!Objects.equals(user.getId(), userId)) {
             throw new RuntimeException("접근 할 수 없습니다.");
         }
@@ -116,12 +106,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/profile/edit")
-    public String viewUserProfileEditForm(Model model, @PathVariable Long userId, HttpSession httpSession) {
-        Object sessionAttribute = httpSession.getAttribute("user");
-        if (sessionAttribute == null) {
-            return "redirect:/users/login";
-        }
-        User user = (User) sessionAttribute;
+    public String viewUserProfileEditForm(Model model, @PathVariable Long userId, @SessionAttribute User user) {
         if (!Objects.equals(user.getId(), userId)) {
             throw new RuntimeException("접근 할 수 없습니다.");
         }
@@ -133,16 +118,11 @@ public class UserController {
 
     @PutMapping("/users/{userId}/profile")
     public String updateUserProfile(@Valid ProfileEditForm profileEditForm, BindingResult bindingResult,
-                                    @PathVariable Long userId, HttpSession httpSession) {
-        Object sessionAttribute = httpSession.getAttribute("user");
-        if (sessionAttribute == null) {
-            return "redirect:/users/login";
-        }
+                                    @PathVariable Long userId, @SessionAttribute User user, HttpSession httpSession) {
 
         if (bindingResult.hasErrors()) {
             return "account/profileEditForm";
         }
-        User user = (User) sessionAttribute;
         if (!Objects.equals(user.getId(), userId)) {
             throw new RuntimeException("접근 할 수 없습니다.");
         }
