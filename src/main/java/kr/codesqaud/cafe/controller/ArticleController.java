@@ -70,4 +70,12 @@ public class ArticleController {
         model.addAttribute("article", articleService.findOne(id));
         return "qna/show";
     }
+
+//    @GetMapping("articles/updateName")
+//    public String updateArticle(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+//                                    User loginUser, Model model) {
+//
+//
+//        return "users/{userId}";
+//    }
 }

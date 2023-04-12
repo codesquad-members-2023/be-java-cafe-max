@@ -17,7 +17,7 @@ public class UserService {
     }
 
     public boolean join(User user) {
-       if (findOne(user.getUserId()).isPresent()) {
+       if (findById(user.getUserId()).isPresent()) {
            return false;
        }
        userRepository.save(user);
@@ -25,7 +25,7 @@ public class UserService {
     }
 
     public boolean login(String userId, String password) {
-        Optional<User> user = findOne(userId);
+        Optional<User> user = findById(userId);
 
         if (!user.isPresent()) {
             return false;
@@ -45,7 +45,11 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findOne(String userId) {
+    public Optional<User> findById(String userId) {
         return userRepository.findById(userId);
+    }
+
+    public Optional<User> findByName(String name) {
+        return userRepository.findByName(name);
     }
 }

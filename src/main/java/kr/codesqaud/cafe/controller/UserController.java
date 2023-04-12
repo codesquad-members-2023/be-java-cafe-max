@@ -53,7 +53,7 @@ public class UserController {
 
     @GetMapping("users/{userId}")
     public String profile(Model model, @PathVariable String userId, @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser) {
-        model.addAttribute("user", userService.findOne(userId));
+        model.addAttribute("user", userService.findById(userId));
         model.addAttribute("loginUser", loginUser);
         return "user/profile";
     }
@@ -71,7 +71,7 @@ public class UserController {
         if (isLoginSuccess) {
 
             HttpSession session = request.getSession();
-            session.setAttribute(SessionConst.LOGIN_MEMBER, userService.findOne(form.getUserId()).get());
+            session.setAttribute(SessionConst.LOGIN_MEMBER, userService.findById(form.getUserId()).get());
             return "redirect:/";
         }
         return "redirect:/user/login_failed";
