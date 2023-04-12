@@ -23,8 +23,9 @@ public class UserController {
     }
 
     @PostMapping
-    public String addUser(@ModelAttribute UserAddForm userAddForm) {
+    public String addUser(@ModelAttribute UserAddForm userAddForm, HttpSession session) {
         String userId = userService.addUser(userAddForm);
+        session.setAttribute("sessionUser", userAddForm);
         return "redirect:/user/list";
     }
 
