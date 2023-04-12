@@ -33,4 +33,9 @@ public class ArticleMemoryRepository implements ArticleRepository {
 	public Optional<Article> findById(final Long id) {
 		return Optional.ofNullable(articleRepository.get(id));
 	}
+
+	@Override
+	public void update(final Article article) {
+		articleRepository.put(article.getId(), article);
+	}
 }

@@ -52,4 +52,10 @@ public class ArticleJdbcRepository implements ArticleRepository {
 			return Optional.empty();
 		}
 	}
+
+	@Override
+	public void update(final Article article) {
+		jdbcTemplate.update("UPDATE article SET title = ?, content = ? WHERE id = ?",
+			article.getTitle(), article.getContent(), article.getId());
+	}
 }

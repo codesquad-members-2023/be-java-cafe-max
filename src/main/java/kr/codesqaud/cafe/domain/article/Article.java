@@ -41,4 +41,9 @@ public class Article {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public void editArticle(final String title, final String content) {
+		this.title = title;
+		this.content = content;
+	}
 }
