@@ -19,7 +19,7 @@ CREATE TABLE users (
 
 INSERT INTO users (userid, password, name, email) VALUES ('test', 'Qwer1234', 'testuser', 'test@test.com');
 
-INSERT INTO articles (id, author, title, contents, time)
+INSERT INTO articles (author, title, contents, time)
 VALUES
-    (1, 'John Doe', 'My First Article', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', '2023-04-12 09:30:00'),
-    (2, 'Jane Doe', 'My Second Article', 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', '2023-04-12 10:45:00');
+    ('John', 'My First Article', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', '2023-04-12 09:30:00'),
+    ('Jane', 'My Second Article', 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', '2023-04-12 10:45:00');
