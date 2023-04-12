@@ -9,13 +9,13 @@ public class QuestionTitleDTO {
 	private final int idx;
 	private final String writer;
 	private final String title;
-	private final LocalDateTime registrationDate;
+	private final LocalDateTime registrationDateTime;
 
-	public QuestionTitleDTO(int idx, String writer, String title, LocalDateTime registrationDate) {
+	public QuestionTitleDTO(int idx, String writer, String title, LocalDateTime registrationDateTime) {
 		this.idx = idx;
 		this.writer = writer;
 		this.title = title;
-		this.registrationDate = registrationDate;
+		this.registrationDateTime = registrationDateTime;
 	}
 
 	public int getIdx() {
@@ -30,7 +30,7 @@ public class QuestionTitleDTO {
 		return title;
 	}
 
-	public LocalDateTime getRegistrationDate() {
-		return registrationDate;
+	public LocalDateTime getRegistrationDateTime() {
+		return registrationDateTime;
 	}
 }

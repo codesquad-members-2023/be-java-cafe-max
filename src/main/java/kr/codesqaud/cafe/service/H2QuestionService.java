@@ -1,12 +1,15 @@
 package kr.codesqaud.cafe.service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import kr.codesqaud.cafe.domain.PageHandler;
 import kr.codesqaud.cafe.dto.QuestionBoardDTO;
 import kr.codesqaud.cafe.dto.QuestionDetailDTO;
+import kr.codesqaud.cafe.dto.QuestionTitleDTO;
 import kr.codesqaud.cafe.dto.QuestionWriteDTO;
 import kr.codesqaud.cafe.repository.H2QuestionReposotory;
 
@@ -26,7 +29,10 @@ public class H2QuestionService implements QuestionService {
 
 	@Override
 	public QuestionBoardDTO makeQuestionBoard(int page) {
-		return null;
+		PageHandler handler = new PageHandler(repository.countAll(), page);
+		List<QuestionTitleDTO> dto = repository.selectQuestionTitlesByOffset(handler.getPostOffset(),
+			handler.getPageSize());
+		return new QuestionBoardDTO(handler, dto);
 	}
 
 	@Override
