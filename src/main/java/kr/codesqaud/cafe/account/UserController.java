@@ -1,8 +1,6 @@
 package kr.codesqaud.cafe.account;
 
 import kr.codesqaud.cafe.account.dto.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,7 +22,6 @@ public class UserController {
     private static final String USERS = "users";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final JoinFormValidator joinFormValidator;
 
@@ -33,11 +30,6 @@ public class UserController {
         this.joinFormValidator = joinFormValidator;
     }
 
-    private static void loggingError(BindingResult bindingResult) {
-        bindingResult.getAllErrors()
-                .forEach(error -> logger.error("[ Name = {} ][ Message = {} ]", error.getObjectName(),
-                        error.getDefaultMessage()));
-    }
 
     @InitBinder(value = "joinForm")
     public void joinFormInitBinder(WebDataBinder webDataBinder) {
@@ -52,18 +44,15 @@ public class UserController {
     @PostMapping("/users/login")
     public String login(@Valid LoginForm loginForm, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
-            loggingError(bindingResult);
             return "account/login";
         }
         Optional<User> userOptional = userService.findByEmail(loginForm.getEmail());
         if (userOptional.isEmpty()) {
-            loggingError(bindingResult);
             bindingResult.rejectValue(EMAIL, "error.email.notExist");
             return "account/login";
         }
         User user = userOptional.get();
         if (!userService.isSamePassword(user, loginForm.getPassword())) {
-            loggingError(bindingResult);
             bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
             return "account/login";
         }
@@ -85,7 +74,6 @@ public class UserController {
     @PostMapping("/users")
     public String saveUser(@Valid JoinForm joinForm, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
-            loggingError(bindingResult);
             return "account/join";
         }
         User user = userService.save(joinForm);
@@ -152,7 +140,6 @@ public class UserController {
         }
 
         if (bindingResult.hasErrors()) {
-            loggingError(bindingResult);
             return "account/profileEditForm";
         }
         User user = (User) sessionAttribute;
@@ -161,12 +148,10 @@ public class UserController {
         }
         if (!user.isSameEmail(profileEditForm.getEmail()) && userService.containsEmail(profileEditForm.getEmail())) {
             bindingResult.rejectValue(EMAIL, "error.email.duplicate");
-            loggingError(bindingResult);
             return "account/profileEditForm";
         }
         if (!user.isSamePassword(profileEditForm.getPassword())) {
             bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
-            loggingError(bindingResult);
             return "account/profileEditForm";
         }
         User update = userService.update(user, profileEditForm);
