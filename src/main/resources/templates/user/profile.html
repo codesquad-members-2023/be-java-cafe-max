@@ -34,15 +34,15 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td th:text="${wantedUser.userId}"></td>
-                        <td th:text="${wantedUser.name}"></td>
-                        <td th:text="${wantedUser.email}"></td>
+                        <td th:text="${profileDTO.userId}"></td>
+                        <td th:text="${profileDTO.name}"></td>
+                        <td th:text="${profileDTO.email}"></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div class="text-center">
-                <a th:href="@{/users/modify/{id}(id=${wantedUser.id})}" class="btn btn-primary">수정하기</a>
+                <a th:href="@{/users/{id}/modify(id=${profileDTO.id})}" class="btn btn-primary">수정하기</a>
             </div>
         </div>
     </div>

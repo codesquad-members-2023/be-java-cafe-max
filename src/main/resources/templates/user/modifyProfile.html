@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="kr">
+
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -10,7 +11,9 @@
     <script src="https://github.com/aFarkas/html5shiv/blob/master/dist/html5shiv.min.js"></script>
     <![endif]-->
     <link href="/css/user/list.css" rel="stylesheet">
+    <link href="/css/popup.css" rel="stylesheet">
 </head>
+
 <body>
 <div class="background">
     <nav th:replace="layout/nav.html"></nav>
@@ -24,28 +27,46 @@
     <div class="container" id="main">
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-default">
-                <form method="post" th:action="@{/users/modify/{id}(id=${joinDTO.id})}">
+                <form method="post" th:action="@{/users/{id}/modify(id=${profileDTO.id})}">
+                    <!-- put 메서드 사용을 위해 hidden input 요소 추가 -->
+                    <input type="hidden" name="_method" value="PUT" />
                     <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>아이디</th>
-                            <th>패스워드</th>
-                            <th>이름</th>
-                            <th>이메일</th>
-                        </tr>
-                        </thead>
                         <tbody>
                         <tr>
-                            <td th:text="${joinDTO.userId}"></td>
-                            <td><label>
-                                <input type="password" name="password" value="${joinDTO.password}" th:value="${joinDTO.password}">
-                            </label></td>
-                            <td><label>
-                                <input type="text" name="name" value="${joinDTO.name}" th:value="${joinDTO.name}">
-                            </label></td>
-                            <td><label>
-                                <input type="text" name="email" value="${joinDTO.email}" th:value="${joinDTO.email}">
-                            </label></td>
+                            <th>아이디</th>
+                            <td th:text="${profileDTO.userId}"></td>
+                        </tr>
+                        <tr>
+                            <th>현재 비밀번호</th>
+                            <td>
+                                <label>
+                                    <input type="password" name="originPassword" placeholder="현재 비밀번호를 입력하세요">
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>새로운 비밀번호</th>
+                            <td>
+                                <label>
+                                    <input type="password" name="newPassword" placeholder="새로운 비밀번호를 입력하세요">
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>이름</th>
+                            <td>
+                                <label>
+                                    <input type="text" name="name" th:value="${profileDTO.name}">
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>이메일</th>
+                            <td>
+                                <label>
+                                    <input type="text" name="email" th:value="${profileDTO.email}">
+                                </label>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -56,6 +77,27 @@
             </div>
         </div>
     </div>
+
+    <!-- 회원 정보 틀릴 시 레이어 팝업창 -->
+    <div id="popup" th:if="${passwordMismatch}">
+        <h2>현재 비밀번호가 일치하지 않습니다.</h2>
+        <button id="close-btn">닫기</button>
+    </div>
+
+    <!-- JavaScript 코드 -->
+    <script type="text/javascript">
+        // 비밀번호 불일치 시 레이어 팝업창 표시
+        let passwordMismatch = [[${passwordMismatch}]];
+        if (passwordMismatch) {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        // 팝업창 닫기 버튼
+        document.getElementById('close-btn').addEventListener('click', function () {
+            document.getElementById('popup').style.display = 'none';
+        });
+    </script>
+
 </div>
 </body>
 </html>
