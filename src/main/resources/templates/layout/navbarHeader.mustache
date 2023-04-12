@@ -22,7 +22,7 @@
                 <li class="active"><a href="/board/form">글쓰기</a></li>
                 {{#sessionUser}}
                     <li><a href="/user/logout" role="button">로그아웃</a></li>
-                    <li><a href="#" role="button">개인정보수정</a></li>
+                    <li><a href="/user/update" role="button">개인정보수정</a></li>
                 {{/sessionUser}}
                 {{^sessionUser}}
                     <li><a href="/user/loginForm" role="button">로그인</a></li>

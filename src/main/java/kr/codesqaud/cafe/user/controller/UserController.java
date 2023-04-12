@@ -57,4 +57,11 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("/update")
+    public String updateUser(HttpSession session, Model model) {
+        UserResponse user = (UserResponse) session.getAttribute("sessionUser");
+        model.addAttribute("user", user);
+        return "user/update";
+    }
+
 }
