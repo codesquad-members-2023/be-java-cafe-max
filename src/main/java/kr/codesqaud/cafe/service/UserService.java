@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.controller.user.UserResponse;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
     // 회원 가입
+
+    @Transactional(rollbackFor = {IllegalStateException.class})
     public String join(User user){
         // 같은 이름, 같은 아이디가 있는 중복 회원X
         validateDuplicateUserName(user);
