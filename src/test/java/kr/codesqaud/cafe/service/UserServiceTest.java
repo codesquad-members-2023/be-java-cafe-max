@@ -15,9 +15,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 // TODO: DB에 테스트했던 애들이 남지는 않으나, customerId가 올라간 채로 있는 것을 볼 수 있다. 왜 그런지 확인하자.
+// TODO: 배포 시, UserServiceTest의 테스트 코드가 전부 실패하는 현상이 있었다. 이유가 무엇일까?
 class UserServiceTest {
-    @Autowired UserService userService;
-    @Autowired UserRepository userRepository;
+    @Autowired
+    UserService userService;
+    @Autowired
+    UserRepository userRepository;
 
     @Test
     @DisplayName("회원 가입 성공")
@@ -56,7 +59,7 @@ class UserServiceTest {
         userService.join(user1);
 
         // when, then
-        assertThatThrownBy(()-> {
+        assertThatThrownBy(() -> {
             userService.join(user2);
         }).isInstanceOf(IllegalStateException.class).hasMessage("이미 존재하는 이름입니다.");
     }
@@ -88,7 +91,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("Transaction 테스트: join()을 실패 하면 AtomicLong()이 올라가지 않는다.")
-    void join_transaction(){
+    void join_transaction() {
         // given
         User user1 = new User();
         user1.setName("springName1");
@@ -116,6 +119,6 @@ class UserServiceTest {
         userService.join(user3);
 
         // then
-        assertThat(user3.getCustomerId()).isEqualTo(user1.getCustomerId()+1L);
+        assertThat(user3.getCustomerId()).isEqualTo(user1.getCustomerId() + 1L);
     }
 }
