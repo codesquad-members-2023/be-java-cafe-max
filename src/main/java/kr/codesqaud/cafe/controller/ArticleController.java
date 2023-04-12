@@ -17,8 +17,9 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @PostMapping("/article/submit")
-    public String postArticle(@ModelAttribute @Valid ArticleDTO articleDto) {
+    @PostMapping("/article/submit/{loginUserId}")
+    public String postArticle(@ModelAttribute @Valid ArticleDTO articleDto,@PathVariable String loginUserId) {
+        articleDto.setId(loginUserId);
         articleService.post(articleDto);
         return "redirect:/";
     }

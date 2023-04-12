@@ -28,7 +28,7 @@ public class ArticleService {
 
     public List<ArticleDTO> getArticleList(){
         return ArticleRepository.findAll().stream()
-                .sorted(Comparator.comparing(Article::getId).reversed()) 
+                .sorted(Comparator.comparing(Article::getIdx).reversed())
                 .map(article -> articleMapper.toArticleDTO(article))
                 .collect(Collectors.toUnmodifiableList());
     }

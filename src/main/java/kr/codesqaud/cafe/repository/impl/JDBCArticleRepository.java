@@ -21,8 +21,8 @@ public class JDBCArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        jdbcTemplate.update("INSERT INTO ARTICLE (title, content, date) VALUES (?, ?, ?)",
-                article.getTitle(),article.getContent(),article.getDate());
+        jdbcTemplate.update("INSERT INTO ARTICLE (title, content, date,id) VALUES (?, ?, ?,?)",
+                article.getTitle(),article.getContent(),article.getDate(),article.getId());
     }
 
     @Override
@@ -31,8 +31,8 @@ public class JDBCArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findArticleById(int id) {
-        Article article = jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE id = ?",new Object[]{id},(rs,rn) -> new Article(rs));
+    public Optional<Article> findArticleById(int idx) {
+        Article article = jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE idx = ?",new Object[]{idx},(rs,rn) -> new Article(rs));
         return Optional.ofNullable(article);
     }
 }
