@@ -48,4 +48,14 @@ public class UserController {
 		}
 		return "user/login_failed";
 	}
+
+	@GetMapping("/users/{userId}/form")
+	public String showModifyUserForm(Model model, @PathVariable String userId, HttpSession session) {
+		Object value = session.getAttribute("sessionedUser");
+		if (value != null && value.equals(userId)) {
+			model.addAttribute("userId", userId);
+			return "user/modify";
+		}
+		return "user/error";
+	}
 }
