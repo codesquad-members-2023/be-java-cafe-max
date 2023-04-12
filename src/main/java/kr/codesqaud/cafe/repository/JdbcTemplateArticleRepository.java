@@ -20,8 +20,9 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        String sql = "insert into article (writer, title, contents) values (?, ?, ?)";
+        String sql = "insert into article (userId, writer, title, contents) values (?, ?, ?, ?)";
         jdbcTemplate.update(sql,
+                article.getUserId(),
                 article.getWriter(),
                 article.getTitle(),
                 article.getContents());
@@ -51,9 +52,31 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     public void updateWriter(String name, String updateName) {
         jdbcTemplate.update("update article set writer = ? where writer = ?", updateName, name);
     }
+
+    @Override
+    public boolean isCreatedBy(String userId, Long id) {
+        Article article = jdbcTemplate.query("select * from article where id = ?", articleRowMapper(), id)
+                .stream().findAny().get();
+        if (article.getUserId().equals(userId)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void updateTitle(Long id, String updateTitle) {
+        jdbcTemplate.update("update article set title = ? where id = ?", updateTitle, id);
+    }
+
+    @Override
+    public void updateContents(Long id, String updateContents) {
+        jdbcTemplate.update("update article set contents = ? where id = ?", updateContents, id);
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
             Article article = new Article(
+                    rs.getString("userId"),
                     rs.getString("writer"),
                     rs.getString("title"),
                     rs.getString("contents"),

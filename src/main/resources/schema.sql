@@ -1,4 +1,5 @@
-CREATE TABLE  IF NOT EXISTS users
+DROP TABLE IF EXISTS users;
+CREATE TABLE users
 (
     userId       varchar(50),
     password     varchar(50) not null,
@@ -7,9 +8,11 @@ CREATE TABLE  IF NOT EXISTS users
     primary key (userId)
 );
 
+DROP TABLE IF EXISTS article;
 CREATE TABLE  IF NOT EXISTS article
 (
     id           bigint auto_increment,
+    userId       varchar(50),
     writer       varchar(50) not null,
     title        varchar(255) not null,
     contents     varchar(255) not null,

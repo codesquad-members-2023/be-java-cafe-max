@@ -1,11 +1,10 @@
 package kr.codesqaud.cafe.dto;
 
-public class ArticleForm {
+public class ArticleUpdateForm {
 
     private String title;
 
     private String contents;
-
 
     public String getTitle() {
         return title;

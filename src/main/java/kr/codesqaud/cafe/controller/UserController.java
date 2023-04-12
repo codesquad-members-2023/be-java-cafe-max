@@ -5,7 +5,6 @@ import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserJoinForm;
 import kr.codesqaud.cafe.dto.UserLoginForm;
 import kr.codesqaud.cafe.dto.UserUpdateForm;
-import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,14 +32,16 @@ public class UserController {
     }
 
     @PostMapping("user/create")
-    public String join(UserJoinForm form) {
+    public String join(UserJoinForm form, RedirectAttributes redirectAttributes) {
         User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
 
         boolean isSignUpSuccess = userService.join(user);
 
         if (isSignUpSuccess) {
-            return "redirect:/users";
+            redirectAttributes.addFlashAttribute("firstLogin", true);
+            return "redirect:/user/login";
         }
+        redirectAttributes.addFlashAttribute("duplicateUserId",true);
         return "redirect:/user/form";
 
     }

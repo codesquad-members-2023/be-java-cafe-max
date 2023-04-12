@@ -56,15 +56,13 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> updateUserName(String userId, String updateName) {
+    public void updateUserName(String userId, String updateName) {
         jdbcTemplate.update("update users set name = ? where userId = ?", updateName, userId);
-        return findById(userId);
     }
 
     @Override
-    public Optional<User> updateUserEmail(String userId, String updateEmail) {
+    public void updateUserEmail(String userId, String updateEmail) {
         jdbcTemplate.update("update users set email = ? where userId = ?", updateEmail, userId);
-        return findById(userId);
     }
 
     private RowMapper<User> userRowMapper() {

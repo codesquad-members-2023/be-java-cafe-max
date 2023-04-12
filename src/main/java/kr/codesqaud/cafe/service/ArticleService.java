@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,14 @@ public class ArticleService {
 
     public Optional<Article> findOne(Long id) {
         return articleRepository.findById(id);
+    }
+
+    public boolean isAuthorized(User user, Long id) {
+        return articleRepository.isCreatedBy(user.getUserId(), id);
+    }
+
+    public void update(Long id, String updateTitle, String updateContents) {
+        articleRepository.updateTitle(id, updateTitle);
+        articleRepository.updateContents(id, updateContents);
     }
 }

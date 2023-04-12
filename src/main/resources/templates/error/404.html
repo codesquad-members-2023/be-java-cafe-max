@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="kr"
+      layout:decorate="layout/default_layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>SLiPP Java Web Programming</title>
+
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <div class="container" id="main">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default content-main">
+                <div class="alert alert-danger" role="alert">글을 수정할 수 있는 권한이 없습니다.</div>
+            </div>
+        </div>
+    </div>
+
+</th:block>
+</body>
+</html>
