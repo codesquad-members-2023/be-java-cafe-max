@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.account.User;
 import kr.codesqaud.cafe.post.dto.PostForm;
 import kr.codesqaud.cafe.post.dto.SimplePostForm;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,5 +32,12 @@ public class PostService {
         return postRepository.findAll().stream()
                 .map(SimplePostForm::from)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Post editPost(Post target, PostForm postForm) {
+        Post post = postRepository.findById(target.getId()).orElseThrow(() -> new RuntimeException());
+        postForm.editPost(post);
+        return postRepository.save(post);
     }
 }

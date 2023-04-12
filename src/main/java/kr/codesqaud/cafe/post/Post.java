@@ -12,7 +12,7 @@ public class Post {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "USER_ID", updatable = false)
     private User user;
 
     private String nickname;

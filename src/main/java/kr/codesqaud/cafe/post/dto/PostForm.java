@@ -38,6 +38,10 @@ public class PostForm {
         return textContent;
     }
 
+    public static PostForm from(Post post) {
+        return new PostForm(post.getTitle(), post.getTextContent());
+    }
+
     public Post toPost(User user) {
         return new Post.Builder()
                 .title(title)
@@ -46,5 +50,10 @@ public class PostForm {
                 .textContent(textContent)
                 .createdDateTime(LocalDateTime.now())
                 .build();
+    }
+
+    public void editPost(Post post) {
+        post.setTitle(this.title);
+        post.setTextContent(this.textContent);
     }
 }

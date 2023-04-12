@@ -34,12 +34,43 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public String viewPost(Model model, @PathVariable int postId) {
+    public String viewPost(@PathVariable int postId, Model model) {
         Optional<Post> postOptional = postService.findById(postId);
         if (postOptional.isEmpty()) {
             throw new RuntimeException();
         }
         model.addAttribute(postOptional.get());
+        return "/post/detail";
+    }
+
+    @GetMapping("/posts/{postId}/edit")
+    public String viewEditPost(@PathVariable int postId, @SessionAttribute User user, Model model) {
+
+        Optional<Post> postOptional = postService.findById(postId);
+        if (postOptional.isEmpty()) {
+            throw new RuntimeException();
+        }
+        Post post = postOptional.get();
+        if (!post.getUser().isSameId(user.getId())) {
+            throw new RuntimeException();
+        }
+        model.addAttribute(PostForm.from(post));
+        model.addAttribute(postId);
+        return "/post/editForm";
+    }
+
+    @PutMapping("/posts/{postId}")
+    public String editPost(@Valid PostForm postForm,@PathVariable int postId, @SessionAttribute User user, Model model) {
+        Optional<Post> postOptional = postService.findById(postId);
+        if (postOptional.isEmpty()) {
+            throw new RuntimeException();
+        }
+        Post post = postOptional.get();
+        if (!post.getUser().isSameId(user.getId())) {
+            throw new RuntimeException();
+        }
+        Post editPost = postService.editPost(post, postForm);
+        model.addAttribute(editPost);
         return "/post/detail";
     }
 }
