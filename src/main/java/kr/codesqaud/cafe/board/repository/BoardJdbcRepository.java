@@ -38,6 +38,10 @@ public class BoardJdbcRepository {
                 new BeanPropertySqlParameterSource(boardPost));
     }
 
+    public void delete(Long postId) {
+        jdbcTemplate.update("DELETE FROM post WHERE post_id = :postId", Collections.singletonMap("postId", postId));
+    }
+
     public boolean containsPostId(Long postId) {
         Map<String, Long> namedParameters = Collections.singletonMap("post_id", postId);
         Optional<Integer> countOfPost = Optional.ofNullable(jdbcTemplate.queryForObject(

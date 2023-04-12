@@ -24,6 +24,10 @@ public class BoardService {
         boardJdbcRepository.update(postResponse.toBoardPost());
     }
 
+    public void delete(Long postId) {
+        boardJdbcRepository.delete(postId);
+    }
+
     public PostResponse getPost(Long postId) {
         return PostResponse.fromBoardPost(boardJdbcRepository.findByPostId(postId));
     }

@@ -66,9 +66,15 @@ public class BoardController {
     }
 
     @PutMapping
-    public String updatePost(@ModelAttribute PostResponse postResponse, Model model) {
+    public String updatePost(@ModelAttribute PostResponse postResponse) {
         boardService.update(postResponse);
         return "redirect:/board/" + postResponse.getPostId();
+    }
+
+    @DeleteMapping("/{postId}")
+    public String deletePost(@PathVariable Long postId) {
+        boardService.delete(postId);
+        return "redirect:/board/list";
     }
 
 }
