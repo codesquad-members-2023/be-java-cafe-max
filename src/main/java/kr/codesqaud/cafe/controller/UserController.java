@@ -1,13 +1,12 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.JoinDTO;
+import kr.codesqaud.cafe.controller.dto.ModifiedUserDTO;
+import kr.codesqaud.cafe.controller.dto.ProfileDTO;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,28 +37,35 @@ public class UserController {
 
     @GetMapping("/users/list")
     public String list(final Model model) {
-        List<JoinDTO> users = userService.findUsers();
-        model.addAttribute("users", users);
+        List<ProfileDTO> users = userService.findUsers();
+        model.addAttribute("profileDTO", users);
         return "user/list";
     }
 
     @GetMapping("/users/{id}")
     public String profileForm(@PathVariable final long id, final Model model) {
-        JoinDTO wantedUser = userService.findOne(id);
-        model.addAttribute("wantedUser", wantedUser);
+        ProfileDTO wantedUser = userService.findOne(id);
+        model.addAttribute("profileDTO", wantedUser);
         return "user/profile";
     }
 
-    @GetMapping("/users/modify/{id}")
+    //todo : profile 상세보기와 modify 따로 했어야 했는데...
+    @GetMapping("/users/{id}/modify")
     public String modifyProfileForm(@PathVariable final long id, final Model model) {
-        JoinDTO wantedUser = userService.findOne(id);
-        model.addAttribute("joinDTO", wantedUser);
+        ProfileDTO wantedUser = userService.findOne(id);
+        model.addAttribute("profileDTO", wantedUser);
         return "user/modifyProfile";
     }
 
-    @PostMapping("/users/modify/{id}")
-    public String modifyProfile(@PathVariable final long id, final JoinDTO joinDTO) {
-        userService.modify(id, joinDTO);
+    @PutMapping("/users/{id}/modify")
+    public String modifyProfile(@PathVariable final long id, final ModifiedUserDTO modifiedUserDTO, final Model model) {
+        boolean isPasswordWrong = !userService.isPasswordRight(id, modifiedUserDTO);
+        if(isPasswordWrong) {
+            model.addAttribute("passwordMismatch", true);
+            model.addAttribute("profileDTO", userService.findOne(id));
+            return "user/modifyProfile";
+        }
+        userService.modify(id, modifiedUserDTO);
         return "redirect:/users/" + id;
     }
 }

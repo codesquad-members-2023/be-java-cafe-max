@@ -17,11 +17,6 @@ import java.util.*;
 @Repository
 public class JdbcTemplateUserRepository implements UserRepository {
 
-//    private final JdbcTemplate jdbcTemplate;
-//    public JdbcTemplateUserRepository(DataSource dataSource) {
-//        jdbcTemplate = new JdbcTemplate(dataSource);
-//    }
-
     private final NamedParameterJdbcTemplate template;
     private final SimpleJdbcInsert simpleJdbcInsert;
 
@@ -38,18 +33,6 @@ public class JdbcTemplateUserRepository implements UserRepository {
         Number key = simpleJdbcInsert.executeAndReturnKey(param);
         user.setId(key.longValue());
     }
-//        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-//        jdbcInsert.withTableName("USER_TB").usingGeneratedKeyColumns("ID");
-//
-//        Map<String, Object> userParameters = new HashMap<>();
-//        userParameters.put("USERID", user.getUserId());
-//        userParameters.put("PASSWORD", user.getPassword());
-//        userParameters.put("NAME", user.getName());
-//        userParameters.put("EMAIL", user.getEmail());
-//
-//        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(userParameters));
-//        user.setId(key.longValue());
-
 
     @Override
     public void update(User updateUser) {
@@ -63,9 +46,6 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
         template.update(sql, param);
     }
-//        String sql = "UPDATE USER_TB SET NAME =?, EMAIL =? WHERE ID =?";
-//        jdbcTemplate.update(sql, updateUser.getName(), updateUser.getEmail(), updateUser.getId());
-
     @Override
     public Optional<User> findById(long id) {
         String sql = "SELECT * FROM USER_TB WHERE ID = :ID";
@@ -78,9 +58,6 @@ public class JdbcTemplateUserRepository implements UserRepository {
             return Optional.empty();
         }
     }
-
-    //        List<User> wantedUser = jdbcTemplate.query("SELECT * FROM USER_TB WHERE ID = ?", userRowMapper(), id);
-    //        return wantedUser.stream().findAny();
 
     @Override
     public Optional<User> findByUserId(String userId) {
@@ -100,18 +77,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
         String sql = "SELECT * FROM USER_TB";
         return template.query(sql, userRowMapper());
     }
-//        return jdbcTemplate.query("SELECT * FROM USER_TB", userRowMapper());
 
     public RowMapper<User> userRowMapper() {
         return BeanPropertyRowMapper.newInstance(User.class);
     }
-//        return (rs, rowNum) -> {
-//            User user = new User();
-//            user.setId(rs.getLong("ID"));
-//            user.setUserId(rs.getString("NAME"));
-//            user.setPassword(rs.getString("PASSWORD"));
-//            user.setEmail(rs.getString("EMAIL"));
-//            return user;
-//        };
-//    }
 }

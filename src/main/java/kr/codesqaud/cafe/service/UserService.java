@@ -1,13 +1,15 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.JoinDTO;
+import kr.codesqaud.cafe.controller.dto.ModifiedUserDTO;
+import kr.codesqaud.cafe.controller.dto.ProfileDTO;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -28,28 +30,28 @@ public class UserService {
         return userRepository.findByUserId(userId).isPresent();
     }
 
-
-
-    public void modify(final long id, final JoinDTO joinDTO) {
+    public void modify(final long id, final ModifiedUserDTO modifiedUserDTO) {
         User originUser = userRepository.findById(id).orElse(null);
-        originUser.setName(joinDTO.getName());
-        originUser.setPassword(joinDTO.getPassword());
-        originUser.setEmail(joinDTO.getEmail());
+        originUser.setName(modifiedUserDTO.getName());
+        originUser.setPassword(modifiedUserDTO.getNewPassword());
+        originUser.setEmail(modifiedUserDTO.getEmail());
         userRepository.update(originUser);
     }
 
-    public JoinDTO findOne(final long id) {
-        Optional<User> wantedUser = userRepository.findById(id);
-        return wantedUser.map(JoinDTO::from).orElse(null);
+    public boolean isPasswordRight(long id, ModifiedUserDTO modifiedUserDTO) {
+        User originUser = userRepository.findById(id).orElse(null);
+        return originUser.getPassword().equals(modifiedUserDTO.getOriginPassword());
     }
 
-    public List<JoinDTO> findUsers() {
-        List<User> userList = userRepository.findAll();
-        List<JoinDTO> joinDTOList = new ArrayList<>();
-        for (User user : userList) {
-            joinDTOList.add(JoinDTO.from(user));
-        }
-        return joinDTOList;
+    public ProfileDTO findOne(final long id) {
+        Optional<User> wantedUser = userRepository.findById(id);
+        return wantedUser.map(ProfileDTO::from).orElse(null);
+    }
+
+    public List<ProfileDTO> findUsers() {
+        return userRepository.findAll().stream()
+                .map(ProfileDTO::from)
+                .collect(Collectors.toList());
     }
 }
 

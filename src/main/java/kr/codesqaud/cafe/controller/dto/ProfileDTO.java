@@ -16,10 +16,10 @@ public class ProfileDTO { //프로필용
         this.email = email;
     }
 
-    //Entity -> DTO
-//    public static ProfileDTO from(final User user) {
-//        return new ProfileDTO(user.getId(), user.getUserId(), user.getName(), user.getEmail());
-//    }
+//    Entity -> DTO
+    public static ProfileDTO from(final User user) {
+        return new ProfileDTO(user.getId(), user.getUserId(), user.getName(), user.getEmail());
+    }
 
     public Long getId() {
         return id;
