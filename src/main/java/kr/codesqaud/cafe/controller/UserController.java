@@ -11,7 +11,6 @@ import javax.validation.Valid;
 
 
 @Controller
-@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -20,25 +19,25 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/sign-up")
+    @PostMapping("/user/sign-up")
     public String signUp(@ModelAttribute @Valid UserDTO userDto) {
         userService.addUser(userDto);
         return "redirect:/user/list";
     }
 
-    @GetMapping("/list")
+    @GetMapping("/user/list")
     public String showUserList(Model model) {
         model.addAttribute("users", userService.getUserList());
         return "user/list";
     }
 
-    @GetMapping("/profile/{id}")
+    @GetMapping("/user/profile/{id}")
     public String showUserProfile(@PathVariable String id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
         return "user/profile";
     }
 
-    @PutMapping("/profile/{id}")
+    @PutMapping("/user/profile/{id}")
     public String updateUserData(@ModelAttribute @Valid ProfileEditDTO profileEditDto){
         userService.updateUserById(profileEditDto);
         return "redirect:/user/list";
