@@ -13,7 +13,6 @@ import static org.assertj.core.api.Assertions.*;
 public class UserRepositoryTest {
     UserRepository repository = new MemoryUserRepository();
 
-    // 테스트 순서는 보장될 수 없기 때문에 테스트 코드 함수의 실행 순서에 의존하면 안된다.
     @AfterEach
     public void afterEach() {
         repository.clearStore();

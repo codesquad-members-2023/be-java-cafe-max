@@ -17,9 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class JdbcUserRepository implements UserRepository{
     private final JdbcTemplate jdbcTemplate;
-//    public JdbcUserRepository(JdbcTemplate jdbcTemplate){
-//        this.jdbcTemplate = jdbcTemplate;
-//    }
+
     public JdbcUserRepository(DataSource dataSource){
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
@@ -74,9 +72,4 @@ public class JdbcUserRepository implements UserRepository{
             return user;
         };
     }
-
-//    public RowMapper<User> userRowMapper() {
-//        return BeanPropertyRowMapper.newInstance(User.class);
-//    }
-
 }

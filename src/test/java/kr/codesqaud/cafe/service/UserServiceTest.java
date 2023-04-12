@@ -4,7 +4,6 @@ import kr.codesqaud.cafe.controller.user.UserResponse;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.user.MemoryUserRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
@@ -13,17 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserServiceTest {
     UserService userService;
     MemoryUserRepository userRepository;
-
-    @BeforeEach
-    void beforeEach() {
-        userRepository = new MemoryUserRepository();
-        userService = new UserService(userRepository);
-    }
-
-    @AfterEach
-    void afterEach() {
-        userRepository.clearStore();
-    }
 
     @Test
     void 회원가입() {
