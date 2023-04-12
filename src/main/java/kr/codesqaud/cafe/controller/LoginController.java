@@ -43,7 +43,9 @@ public class LoginController {
 
         // 로그인 성공 처리
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
+        session.setAttribute(SessionConst.LOGIN_ID, loginUser.getId());
+        session.setAttribute(SessionConst.LOGIN_USER_ID, loginUser.getUserId());
+        session.setAttribute(SessionConst.LOGIN_NAME, loginUser.getName());
 
         return "redirect:/";
     }

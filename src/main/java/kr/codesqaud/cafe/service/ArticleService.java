@@ -7,6 +7,7 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -19,8 +20,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Article add(ArticleForm form) {
-        Article article = new Article(SessionConst.LOGIN_USER, form.getTitle(), form.getContents());
+    public Article add(ArticleForm form, HttpSession session) {
+        Article article = new Article((String) session.getAttribute(SessionConst.LOGIN_NAME), form.getTitle(), form.getContents());
         return articleRepository.save(article);
     }
 

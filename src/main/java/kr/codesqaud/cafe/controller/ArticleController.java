@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -21,9 +22,9 @@ public class ArticleController {
     }
 
     @PostMapping("/questions/post")
-    public String addArticle(@Valid ArticleForm form) {
+    public String addArticle(@Valid ArticleForm form, HttpSession session) {
         // 서비스에서 DTO 사용으로 User에 넣어줄 필요가 없어짐
-        articleService.add(form);
+        articleService.add(form, session);
         return "redirect:/";
     }
 
