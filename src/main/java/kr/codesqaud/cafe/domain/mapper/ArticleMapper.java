@@ -5,10 +5,12 @@ import kr.codesqaud.cafe.domain.Article;
 
 public class ArticleMapper {
     public Article toArticle(ArticleDTO articleDTO) {
-        return new Article(articleDTO.getTitle(), articleDTO.getContent(), articleDTO.getId());
+        return new Article(articleDTO.getTitle(), articleDTO.getContent(), articleDTO.getId(),articleDTO.getNickName());
     }
 
     public ArticleDTO toArticleDTO(Article article) {
-        return new ArticleDTO(article.getTitle(), article.getContent(), article.getIdx(), article.getDate());
+        ArticleDTO articleDto = new ArticleDTO(article.getTitle(), article.getContent(), article.getIdx(), article.getDate());
+        articleDto.setNickName(article.getNickName());
+        return articleDto;
     }
 }

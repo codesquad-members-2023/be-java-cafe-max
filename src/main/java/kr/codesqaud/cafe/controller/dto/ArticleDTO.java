@@ -18,6 +18,8 @@ public class ArticleDTO {
 
     private String Id;
 
+    private String nickName;
+
     public ArticleDTO(String title, String content, Long idx, String date) {
         this.title = title;
         this.content = content;
@@ -33,11 +35,19 @@ public class ArticleDTO {
         return content;
     }
 
+    public String getId() {
+        return Id;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
     public void setId(String id) {
         Id = id;
     }
 
-    public String getId() {
-        return Id;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

@@ -12,12 +12,14 @@ public class Article {
     private Long idx;
     private String date;
     private String id;
+    private String nickName;
 
-    public Article(String title,String content,String id){
+    public Article(String title,String content,String id,String nickName){
         this.title = title;
         this.content = content;
         this.date = getCurrentDate();
         this.id = id;
+        this.nickName = nickName;
     }
 
     public Article(ResultSet rs) throws SQLException{
@@ -26,6 +28,7 @@ public class Article {
         this.idx = rs.getLong("idx");
         this.date = rs.getString("date");
         this.id = rs.getString("id");
+        this.nickName = rs.getString("nickName");
     }
 
     public String getDate() {
@@ -46,5 +49,9 @@ public class Article {
 
     public String getId() {
         return id;
+    }
+
+    public String getNickName() {
+        return nickName;
     }
 }
