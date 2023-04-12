@@ -61,6 +61,11 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     }
 
+    @Override
+    public void delete(Long id) {
+
+    }
+
     public void clearStore() {
         articleStore.clear();
     }

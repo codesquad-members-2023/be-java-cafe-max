@@ -22,4 +22,6 @@ public interface ArticleRepository {
     void updateTitle(Long id, String updateTitle);
 
     void updateContents(Long id, String updateContents);
+
+    void delete(Long id);
 }

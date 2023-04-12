@@ -90,4 +90,15 @@ public class ArticleController {
 
         return "redirect:/articles/{id}";
     }
+
+    @DeleteMapping("articles/delete/{id}")
+    public String delete(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                             User loginUser, @PathVariable Long id) {
+
+        if (articleService.isAuthorized(loginUser, id)) {
+            articleService.delete(id);
+            return "redirect:/";
+        }
+        return "error/404";
+    }
 }

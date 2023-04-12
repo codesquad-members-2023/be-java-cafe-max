@@ -16,6 +16,7 @@ public class ArticleService {
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
+
     public Long write(Article article) {
         articleRepository.save(article);
         return article.getId();
@@ -37,5 +38,10 @@ public class ArticleService {
     public void update(Long id, String updateTitle, String updateContents) {
         articleRepository.updateTitle(id, updateTitle);
         articleRepository.updateContents(id, updateContents);
+    }
+
+    public void delete(Long id) {
+
+        articleRepository.delete(id);
     }
 }
