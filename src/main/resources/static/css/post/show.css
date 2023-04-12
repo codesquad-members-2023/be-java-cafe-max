@@ -1,3 +1,6 @@
+.panel{
+    width: 100%;
+}
 .col-md-12 {
     display: flex;
     width: 100%;
