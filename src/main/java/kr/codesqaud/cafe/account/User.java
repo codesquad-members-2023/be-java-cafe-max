@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.post.Post;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "ACCOUNT")
@@ -91,6 +92,14 @@ public class User {
 
     public boolean isSameEmail(String email) {
         return this.email.equals(email);
+    }
+
+    public boolean isSameId(Long userId) {
+        return Objects.equals(id, userId);
+    }
+
+    public boolean isManager() {
+        return role.equals(Role.MANAGER);
     }
 
     public static class Builder {
