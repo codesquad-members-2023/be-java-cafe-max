@@ -28,7 +28,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 .order(Ordered.HIGHEST_PRECEDENCE)
                 // 인터셉터 적용
-                .addPathPatterns("/questions/post", "/users/*")
+                .addPathPatterns("/questions/*", "/users/*")
                 // 인터셉터 제외 패턴 지정
                 .excludePathPatterns("/users/form", "/css/**", "/*.ico", "/fonts/**", "/images/**", "/js/**");
 
