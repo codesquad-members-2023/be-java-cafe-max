@@ -19,6 +19,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/create")
+    public String create(){
+        return "user/form";
+    }
+
     @PostMapping("/create")
     public String create(UserForm form){
         User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
