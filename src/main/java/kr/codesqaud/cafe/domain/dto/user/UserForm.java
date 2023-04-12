@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto.user;
+package kr.codesqaud.cafe.domain.dto.user;
 
 import javax.validation.constraints.NotBlank;
 

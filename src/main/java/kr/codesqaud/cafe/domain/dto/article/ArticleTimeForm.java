@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto.article;
+package kr.codesqaud.cafe.domain.dto.article;
 
 import kr.codesqaud.cafe.domain.Article;
 

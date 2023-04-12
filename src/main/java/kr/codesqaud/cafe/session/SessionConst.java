@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe;
+package kr.codesqaud.cafe.session;
 
 public class SessionConst {
     public static final String LOGIN_ID = "loginId";

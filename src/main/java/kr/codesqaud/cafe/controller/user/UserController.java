@@ -1,10 +1,10 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.controller.user;
 
-import kr.codesqaud.cafe.controller.dto.user.UserForm;
-import kr.codesqaud.cafe.controller.dto.user.UserListForm;
-import kr.codesqaud.cafe.controller.dto.user.UserProfileForm;
-import kr.codesqaud.cafe.controller.dto.user.UserUpdateForm;
-import kr.codesqaud.cafe.service.UserService;
+import kr.codesqaud.cafe.domain.dto.user.UserForm;
+import kr.codesqaud.cafe.domain.dto.user.UserListForm;
+import kr.codesqaud.cafe.domain.dto.user.UserProfileForm;
+import kr.codesqaud.cafe.domain.dto.user.UserUpdateForm;
+import kr.codesqaud.cafe.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

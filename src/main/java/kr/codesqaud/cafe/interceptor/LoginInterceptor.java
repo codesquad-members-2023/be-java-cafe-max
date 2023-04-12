@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.interceptor;
 
-import kr.codesqaud.cafe.SessionConst;
+import kr.codesqaud.cafe.session.SessionConst;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

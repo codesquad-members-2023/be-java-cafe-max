@@ -1,9 +1,9 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.controller.article;
 
-import kr.codesqaud.cafe.controller.dto.article.ArticleForm;
-import kr.codesqaud.cafe.controller.dto.article.ArticleTimeForm;
-import kr.codesqaud.cafe.controller.dto.article.ArticleUpdateForm;
-import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.domain.dto.article.ArticleForm;
+import kr.codesqaud.cafe.domain.dto.article.ArticleTimeForm;
+import kr.codesqaud.cafe.domain.dto.article.ArticleUpdateForm;
+import kr.codesqaud.cafe.service.article.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

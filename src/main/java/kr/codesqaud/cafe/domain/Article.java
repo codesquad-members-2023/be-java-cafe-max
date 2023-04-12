@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.article.ArticleForm;
-
 import java.time.LocalDateTime;
 
 public class Article {

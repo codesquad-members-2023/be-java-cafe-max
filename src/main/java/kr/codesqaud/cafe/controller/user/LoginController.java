@@ -1,9 +1,9 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.controller.user;
 
-import kr.codesqaud.cafe.SessionConst;
-import kr.codesqaud.cafe.controller.dto.user.UserLoginForm;
+import kr.codesqaud.cafe.session.SessionConst;
+import kr.codesqaud.cafe.domain.dto.user.UserLoginForm;
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.service.LoginService;
+import kr.codesqaud.cafe.service.user.LoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

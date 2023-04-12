@@ -1,9 +1,9 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.service.article;
 
-import kr.codesqaud.cafe.SessionConst;
-import kr.codesqaud.cafe.controller.dto.article.ArticleForm;
-import kr.codesqaud.cafe.controller.dto.article.ArticleTimeForm;
-import kr.codesqaud.cafe.controller.dto.article.ArticleUpdateForm;
+import kr.codesqaud.cafe.session.SessionConst;
+import kr.codesqaud.cafe.domain.dto.article.ArticleForm;
+import kr.codesqaud.cafe.domain.dto.article.ArticleTimeForm;
+import kr.codesqaud.cafe.domain.dto.article.ArticleUpdateForm;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.springframework.stereotype.Service;
