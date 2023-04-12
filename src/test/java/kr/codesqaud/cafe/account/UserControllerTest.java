@@ -23,15 +23,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 class UserControllerTest {
+    private static final String JACK = "jack";
     private static final String JACK_EMAIL = "jack@email.com";
     private static final String TEST_PASSWORD = "123456789a";
-    private static final String JACK = "jack";
     private static final String JERRY_EMAIL = "jerry@email.com";
     private static final String JERRY = "jerry";
+    private static final String USER_ID = "userId";
+    private static final String NICKNAME = "nickname";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
-    private static final String NICKNAME = "nickname";
-    private static final String USER_ID = "userId";
+    public static final String RECONFIRM_PASSWORD = "reconfirmPassword";
     private static final String PROFILE_EDIT_FORM = "profileEditForm";
     private static final String PROFILE_FORM = "profileForm";
     private static final String JOIN_FORM = "joinForm";
@@ -119,7 +120,8 @@ class UserControllerTest {
             mockMvc.perform(post("/users")
                             .param(EMAIL, JERRY_EMAIL)
                             .param(NICKNAME, JERRY)
-                            .param(PASSWORD, TEST_PASSWORD))
+                            .param(PASSWORD, TEST_PASSWORD)
+                            .param(RECONFIRM_PASSWORD, TEST_PASSWORD))
                     .andExpect(status().is3xxRedirection())
                     .andDo(print());
             assertThat(userService.findByEmail(JERRY_EMAIL)).isPresent();
@@ -149,6 +151,7 @@ class UserControllerTest {
                 .nickname(jack.getNickname())
                 .password(jack.getPassword())
                 .build();
+
         session.setAttribute("user", target);
         mockMvc.perform(get("/users").session(session))
                 .andExpect(status().isOk())

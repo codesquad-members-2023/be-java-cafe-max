@@ -1,13 +1,14 @@
 package kr.codesqaud.cafe.post;
 
 import kr.codesqaud.cafe.account.User;
+import kr.codesqaud.cafe.account.UserService;
+import kr.codesqaud.cafe.account.dto.JoinForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -26,13 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class PostControllerTest {
 
-    private static final String NICKNAME = "nickname";
+    private static final String JACK = "jack";
+    private static final String JACK_EMAIL = "jack@email.com";
+    private static final String TEST_PASSWORD = "123456789a";
     private static final String TITLE = "title";
     private static final String TEXT_CONTENT = "textContent";
-    private static final String JACK = "jack";
     private static final String TEST_TITLE = "testTitle";
     private static final String TEST_CONTENT = "testContent";
-    public static final String USER = "user";
 
     @Autowired
     MockMvc mockMvc;
@@ -40,15 +40,20 @@ class PostControllerTest {
     @Autowired
     PostRepository postRepository;
 
+    @Autowired
+    UserService userService;
+
     MockHttpSession session;
+
+    User jack;
 
 
     @BeforeEach
     void setSession() {
-        User user = mock(User.class);
-        Mockito.when(user.getNickname()).thenReturn(JACK);
+        JoinForm joinForm = new JoinForm(JACK, JACK_EMAIL, TEST_PASSWORD, TEST_PASSWORD);
+        jack = userService.save(joinForm);
         session = new MockHttpSession();
-        session.setAttribute(USER, user);
+        session.setAttribute("user", jack);
     }
 
     @DisplayName("게시글 작성 페이지 열람")
@@ -66,7 +71,6 @@ class PostControllerTest {
         @Test
         void addPostSuccess() throws Exception {
             mockMvc.perform(post("/posts")
-                            .param(NICKNAME, JACK)
                             .param(TITLE, TEST_TITLE)
                             .param(TEXT_CONTENT, TEST_CONTENT)
                             .session(session))
@@ -77,10 +81,9 @@ class PostControllerTest {
 
         @DisplayName("실패")
         @ParameterizedTest
-        @CsvSource({"j,testTitle,testContent", "jack,t,textContent", "jack,title,te"})
-        void addPostFailureFailed(String nickname, String title, String textContent) throws Exception {
+        @CsvSource({"testTitle,testContent", "t,textContent", "title,te"})
+        void addPostFailureFailed(String title, String textContent) throws Exception {
             mockMvc.perform(post("/posts")
-                            .param(NICKNAME, nickname)
                             .param(TITLE, title)
                             .param(TEXT_CONTENT, textContent)
                             .session(session))
@@ -99,7 +102,6 @@ class PostControllerTest {
         @Test
         void testShowPostPageSuccess() throws Exception {
             Post post = postRepository.save(new Post.Builder()
-                    .nickname(JACK)
                     .title(TEST_TITLE)
                     .textContent(TEST_CONTENT)
                     .build());
@@ -113,7 +115,6 @@ class PostControllerTest {
         @Test
         void testShowPostPageFailed() throws Exception {
             Post post = postRepository.save(new Post.Builder()
-                    .nickname(JACK)
                     .title(TEST_TITLE)
                     .textContent(TEST_CONTENT)
                     .build());

@@ -81,7 +81,7 @@ public class UserController {
         return "redirect:/users/" + user.getId() + "/profile";
     }
 
-    @GetMapping("/users/")
+    @GetMapping("/users")
     public String viewUsers(Model model, @SessionAttribute User user) {
         if (!user.isManager()) {
             throw new RuntimeException("접근 할 수 없습니다.");
