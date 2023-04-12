@@ -11,4 +11,6 @@ public interface ArticleRepository {
     Optional<Article> findById(Long id);
 
     List<Article> findAll();
+
+    void update(Long id, Article article);
 }

@@ -16,5 +16,5 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    void update(Long id, User updateUser, String existingPassword);
+    void update(Long id, User user, String existingPassword);
 }

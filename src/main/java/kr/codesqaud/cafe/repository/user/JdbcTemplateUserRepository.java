@@ -78,8 +78,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public void update(Long id, User updateUser, String existingPassword) {
-        if (!updateUser.getPassword().equals(existingPassword)) {
+    public void update(Long id, User user, String existingPassword) {
+        if (!user.getPassword().equals(existingPassword)) {
             throw new IllegalStateException("비밀번호가 같지 않습니다.");
         }
 
@@ -88,9 +88,9 @@ public class JdbcTemplateUserRepository implements UserRepository {
                 "where ID=:id";
 
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("password", updateUser.getPassword())
-                .addValue("name", updateUser.getName())
-                .addValue("email", updateUser.getEmail())
+                .addValue("password", user.getPassword())
+                .addValue("name", user.getName())
+                .addValue("email", user.getEmail())
                 .addValue("id", id);
 
         template.update(sql, param);

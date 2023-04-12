@@ -6,6 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -55,5 +56,19 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     public List<Article> findAll() {
         String sql = "select ID, WRITER, TITLE, CONTENTS, CURRENTTIME from ARTICLES";
         return template.query(sql, articleRowMapper);
+    }
+
+    @Override
+    public void update(Long id, Article article) {
+        String sql = "update ARTICLES " +
+                "set TITLE=:title, CONTENTS=:contents " +
+                "where ID=:id";
+
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("title", article.getTitle())
+                .addValue("contents", article.getContents())
+                .addValue("id", id);
+
+        template.update(sql, param);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -49,5 +50,11 @@ public class ArticleController {
         ArticleUpdateForm article = articleService.findUpdate(id);
         model.addAttribute("articleUpdated", article);
         return "qna/updateForm";
+    }
+
+    @PutMapping("/questions/{id}")
+    public String putUpdateArticle(@PathVariable Long id, @Valid ArticleUpdateForm updateArticle) {
+        articleService.updateArticle(id, updateArticle);
+        return "redirect:/";
     }
 }

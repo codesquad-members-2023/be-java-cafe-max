@@ -48,6 +48,14 @@ public class ArticleService {
         return ArticleUpdateForm.from(article);
     }
 
+    public void updateArticle(Long id, ArticleUpdateForm updateForm) {
+        // ArticleUpdateForm의 정보들을 User에 덮어씌우기
+        Article originArticle = findArticle(id);
+        originArticle.setTitle(updateForm.getTitle());
+        originArticle.setContents(updateForm.getContents());
+        articleRepository.update(id, originArticle);
+    }
+
     private Article findArticle(Long id) {
         return articleRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("이 아이디를 찾을 수 없어: " + id));
