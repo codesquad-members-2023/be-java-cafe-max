@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,5 +54,12 @@ public class ArticleController {
 	public String editArticle(@PathVariable final Long articleId, @ModelAttribute final ArticleEditRequest request) {
 		articleService.editArticle(articleId, request);
 		return "redirect:/articles/" + articleId;
+	}
+
+	@DeleteMapping("/articles/{articleId}")
+	public String deleteArticle(@PathVariable final Long articleId, @Login final String userId) {
+		articleService.validateHasAuthorization(articleId, userId);
+		articleService.deleteArticle(articleId);
+		return "redirect:/";
 	}
 }

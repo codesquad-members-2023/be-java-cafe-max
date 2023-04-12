@@ -55,4 +55,9 @@ public class ArticleService {
 		savedArticle.editArticle(request.getTitle(), request.getContent());
 		articleRepository.update(savedArticle);
 	}
+
+	@Transactional
+	public void deleteArticle(final Long articleId) {
+		articleRepository.deleteById(articleId);
+	}
 }

@@ -38,4 +38,9 @@ public class ArticleMemoryRepository implements ArticleRepository {
 	public void update(final Article article) {
 		articleRepository.put(article.getId(), article);
 	}
+
+	@Override
+	public void deleteById(final Long id) {
+		articleRepository.remove(id);
+	}
 }
