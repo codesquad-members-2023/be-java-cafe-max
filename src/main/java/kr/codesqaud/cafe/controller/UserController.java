@@ -45,10 +45,10 @@ public class UserController {
         // "templates/" + "user/list" + ".html"
     }
 
-    @GetMapping("/users/{id}")
-    public String findProfile(@PathVariable Long id, Model model) {
+    @GetMapping("/users/{userId}")
+    public String findProfile(@PathVariable String userId, Model model) {
         // DTO 사용으로 프로필 정보만 호출
-        UserProfileForm profile = userService.findProfile(id);
+        UserProfileForm profile = userService.findProfile(userId);
         model.addAttribute("profile", profile);
         return "user/profile";
         // gradle -> 타임리프 ViewResolver가 이걸 해줌

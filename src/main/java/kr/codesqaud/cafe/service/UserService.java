@@ -47,14 +47,19 @@ public class UserService {
         return userListForms;
     }
 
-    public UserProfileForm findProfile(Long id) {
-        User user = findUser(id);
+    public UserProfileForm findProfile(String userId) {
+        User user = findUserId(userId);
         return UserProfileForm.form(user);
     }
 
     public UserUpdateForm findUpdate(Long id) {
         User user = findUser(id);
         return UserUpdateForm.form(user);
+    }
+
+    private User findUserId(String userId) {
+        return userRepository.findByUserId(userId)
+                .orElseThrow(() -> new NoSuchElementException("이 유저 아이디를 찾을 수 없어: " + userId));
     }
 
     private User findUser(Long id) {

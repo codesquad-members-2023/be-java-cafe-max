@@ -22,16 +22,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!--                <tr th:each="user, userStatus : ${users}">-->
-                <!--                    <th scope="row" th:text="${userStatus.count}"></th>-->
-                <!--                    <td><a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}"></a></td>-->
-                <!--                    <td th:text="${user.name}"></td>-->
-                <!--                    <td th:text="${user.email}"></td>-->
-                <!--                    <td><a href="/user/update" class="btn btn-success" role="button" th:href="@{/users/update/{userId}(userId=${user.userId})}">수정</a></td>-->
-                <!--                </tr>-->
                 <tr th:each="user : ${users}">
-                    <th scope="row"><a th:href="@{/users/{id}(id=${user.id})}" th:text="${user.id}"></a></th>
-                    <td th:text="${user.userId}"></td>
+                    <th scope="row"><a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.id}"></a></th>
+                    <td><a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}"></a></td>
                     <td th:text="${user.name}"></td>
                     <td th:text="${user.email}"></td>
                 </tr>

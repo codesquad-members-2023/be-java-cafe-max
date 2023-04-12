@@ -6,7 +6,7 @@
                     class="glyphicon glyphicon-chevron-down"></i></small></a>
             <ul class="nav dropdown-menu">
                 <th:block th:if="${session.loginId != null}">
-                    <li><a href="/user/profile" th:href="@{/users/{id}(id=${session.loginId})}"><i
+                    <li><a href="/user/profile" th:href="@{/users/{userId}(userId=${session.loginUserId})}"><i
                             class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a>
                     </li>
                     <li class="nav-divider"></li>

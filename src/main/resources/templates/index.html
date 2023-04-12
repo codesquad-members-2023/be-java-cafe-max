@@ -25,7 +25,7 @@
 <!--                                <a href="user/profile.html" class="author"-->
 <!--                                   th:href="@{/users/{id}(id=${session.loginUser.id})}" th:text="${session.loginUser.name}">자바지기</a>-->
                                 <a href="user/profile.html" class="author"
-                                   th:href="@{/users/{id}(id=${article.id})}" th:text="${article.writer}">자바지기</a>
+                                   th:href="@{/questions/{id}(id=${article.id})}" th:text="${article.writer}">자바지기</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
