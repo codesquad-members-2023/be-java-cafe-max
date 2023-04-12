@@ -2,8 +2,6 @@ package kr.codesqaud.cafe.controller;
 
 import java.time.LocalDateTime;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,8 +27,7 @@ public class ArticleController {
 	}
 
 	@PostMapping("/question")
-	public String posting(@ModelAttribute final PostingRequest request, final HttpSession session) {
-		String userId = (String)session.getAttribute("sessionedUser");
+	public String posting(@ModelAttribute final PostingRequest request, @Login final String userId) {
 		articleService.posting(
 			new ArticleDto(null, userId, request.getTitle(), request.getContents(), LocalDateTime.now()));
 		return "redirect:/";
