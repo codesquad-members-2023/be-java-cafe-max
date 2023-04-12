@@ -21,6 +21,7 @@ public class UserController {
     private static final String USERS = "users";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
+    public static final String ATTRIBUTE_USER = "user";
     private final UserService userService;
     private final JoinFormValidator joinFormValidator;
 
@@ -55,13 +56,13 @@ public class UserController {
             bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
             return "account/login";
         }
-        session.setAttribute("user", user);
+        session.setAttribute(ATTRIBUTE_USER, user);
         return "redirect:/users/" + user.getId() + "/profile";
     }
 
     @GetMapping("/users/logout")
     public String logout(@ModelAttribute LoginForm loginForm, HttpSession session) {
-        session.removeAttribute("user");
+        session.removeAttribute(ATTRIBUTE_USER);
         return "account/login";
     }
 
@@ -76,7 +77,7 @@ public class UserController {
             return "account/join";
         }
         User user = userService.save(joinForm);
-        session.setAttribute("user", user);
+        session.setAttribute(ATTRIBUTE_USER, user);
         return "redirect:/users/" + user.getId() + "/profile";
     }
 
@@ -134,7 +135,7 @@ public class UserController {
             return "account/profileEditForm";
         }
         User updateUser = userService.update(user, profileEditForm);
-        httpSession.setAttribute("user", updateUser);
+        httpSession.setAttribute(ATTRIBUTE_USER, updateUser);
         return "redirect:/users/{userId}/profile";
     }
 
