@@ -8,6 +8,9 @@ public class UserLoginForm {
     @NotBlank(message = "패스워드를 입력해주세요.")
     private String password;
 
+    public UserLoginForm() {
+    }
+
     public String getLoginId() {
         return loginId;
     }
