@@ -42,4 +42,10 @@ public class BoardController {
         return "board/detail";
     }
 
+    @GetMapping("/{postId}/update")
+    public String updateForm(@PathVariable Long postId, Model model) {
+        model.addAttribute("post", boardService.getPost(postId));
+        return "board/update";
+    }
+
 }
