@@ -23,7 +23,6 @@ public class ArticleService {
 
     public List<ArticleResponseDto> findArticles() {
         List<ArticleResponseDto> articleResponseDtos = new ArrayList<>();
-
         List<Article> articles = articleRepository.findAllArticle();
         for(Article article: articles){
             articleResponseDtos.add(article.toDto());

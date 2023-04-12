@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.user.UserRequestDto;
+import kr.codesqaud.cafe.dto.user.UserResponseDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,7 @@ public class UserController {
 
     @GetMapping
     public String getUserList(final Model model) {
-        List<User> users = userService.showAllUser();
+        List<UserResponseDto> users = userService.showAllUser();
         model.addAttribute("users", users);
         return "user/list";
     }
