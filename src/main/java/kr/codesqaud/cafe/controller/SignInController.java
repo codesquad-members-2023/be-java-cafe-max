@@ -14,23 +14,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class LoginController {
+public class SignInController {
     private final UserService userService;
 
-    public LoginController(UserService userService) {
+    public SignInController(UserService userService) {
         this.userService = userService;
     }
 
-    @PostMapping("/user/login-success")
+    @PostMapping("/user/sign-in-success")
     public String userLogin(@ModelAttribute LoginDTO loginDto,HttpServletRequest request){
         String userId = loginDto.getUserId();
         userService.matchPassword(loginDto);
         HttpSession session = request.getSession();
         session.setAttribute(Session.LOGIN_USER,userId);
-        return "redirect:/user/login-success/"+userId;
+        return "redirect:/user/sign-in-success/"+userId;
     }
 
-    @GetMapping("/user/login-success/{userId}")
+    @GetMapping("/user/sign-in-success/{userId}")
     public String showLoginSuccessForm(@PathVariable String userId,Model model){
         model.addAttribute("user",userService.getUserById(userId));
         return "user/login_success";
