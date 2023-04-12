@@ -35,4 +35,10 @@ public class LoginController {
         model.addAttribute("user",userService.getUserById(userId));
         return "user/login_success";
     }
+
+    @GetMapping("/user/sign-out")
+    public String userSignOut(HttpServletRequest request){
+        request.getSession().invalidate();
+        return "redirect:/";
+    }
 }
