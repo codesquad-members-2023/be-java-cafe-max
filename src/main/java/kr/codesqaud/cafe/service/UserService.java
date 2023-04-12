@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.codesqaud.cafe.controller.dto.LoginRequest;
+import kr.codesqaud.cafe.controller.dto.ModifyRequest;
 import kr.codesqaud.cafe.controller.dto.SignUpRequest;
 import kr.codesqaud.cafe.controller.dto.UserDto;
 import kr.codesqaud.cafe.domain.User;
@@ -51,5 +52,19 @@ public class UserService {
 	public boolean userLogin(LoginRequest loginRequest) {
 		User user = userRepository.findUser(loginRequest.getUserId());
 		return user.getPassword().equals(loginRequest.getPassword());
+	}
+
+	@Transactional
+	public boolean userModify(ModifyRequest modifyRequest) {
+		User user = userRepository.findUser(modifyRequest.getUserId());
+		if (user.getPassword().equals(modifyRequest.getOriPassword())) {
+			User newUser = new User(
+				modifyRequest.getUserId(), modifyRequest.getNewPassword(),
+				modifyRequest.getName(), modifyRequest.getEmail()
+			);
+			userRepository.modifyUser(newUser);
+			return true;
+		}
+		return false;
 	}
 }

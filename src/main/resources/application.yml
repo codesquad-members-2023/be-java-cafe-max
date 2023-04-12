@@ -13,6 +13,10 @@ spring:
     servlet:
       cache: false
       expose-session-attributes: true
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
 server:
   servlet:
     session:

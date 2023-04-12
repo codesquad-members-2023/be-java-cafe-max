@@ -14,4 +14,6 @@ public interface UserRepository {
 	Optional<User> findUserProfile(String id);
 
 	User findUser(String userId);
+
+	void modifyUser(User user);
 }

@@ -65,4 +65,16 @@ public class JdbcUserRepository implements UserRepository {
 			rs.getString("password")
 		), userId);
 	}
+
+	@Override
+	public void modifyUser(User user) {
+		if (!isExistsUserId(user.getUserId())) {
+			throw new NoSuchUserIdException();
+		}
+		jdbcTemplate.update("UPDATE user_account SET password = ?, name = ?, email = ? WHERE user_id = ?",
+			user.getPassword(),
+			user.getName(),
+			user.getEmail(),
+			user.getUserId());
+	}
 }

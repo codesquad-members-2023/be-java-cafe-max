@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import kr.codesqaud.cafe.controller.dto.LoginRequest;
+import kr.codesqaud.cafe.controller.dto.ModifyRequest;
 import kr.codesqaud.cafe.controller.dto.SignUpRequest;
 import kr.codesqaud.cafe.service.UserService;
 
@@ -57,5 +59,13 @@ public class UserController {
 			return "user/modify";
 		}
 		return "user/error";
+	}
+
+	@PutMapping("/users/{userId}")
+	public String modify(@ModelAttribute ModifyRequest modifyRequest) {
+		if (userService.userModify(modifyRequest)) {
+			return "redirect:/users";
+		}
+		return "user/modify";
 	}
 }
