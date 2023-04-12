@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import kr.codesqaud.cafe.dto.QuestionDetailDTO;
 import kr.codesqaud.cafe.dto.QuestionTitleDTO;
 import kr.codesqaud.cafe.dto.QuestionWriteDTO;
 
@@ -45,8 +46,23 @@ public class H2QuestionReposotory {
 			new QuestionTitleDTO(rs.getInt("idx"), rs.getString("writer"),
 				rs.getString("title"),
 				rs.getTimestamp("registrationDateTime").toLocalDateTime());
-		
+
 		return jdbcTemplate.query(sql, parameters, rowMapper);
+	}
+
+	public QuestionDetailDTO selectByIdx(int idx) {
+		String sql = "SELECT idx, writer, title, contents, registrationdatetime FROM \"post\"  WHERE idx = :idx";
+		SqlParameterSource parameters = new MapSqlParameterSource()
+			.addValue("idx", idx);
+		RowMapper<QuestionDetailDTO> rowMapper = (rs, rowNum) ->
+			new QuestionDetailDTO(rs.getInt("idx"),
+				rs.getString("writer"),
+				rs.getString("title"),
+				rs.getString("contents"),
+				rs.getTimestamp("registrationDateTime").toLocalDateTime());
+
+		return jdbcTemplate.queryForObject(sql, parameters, rowMapper);
+
 	}
 
 }

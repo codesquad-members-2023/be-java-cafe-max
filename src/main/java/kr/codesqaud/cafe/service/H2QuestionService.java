@@ -37,6 +37,6 @@ public class H2QuestionService implements QuestionService {
 
 	@Override
 	public QuestionDetailDTO findQuestion(int idx) throws NoSuchElementException {
-		return null;
+		return repository.selectByIdx(idx);
 	}
 }
