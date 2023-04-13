@@ -168,6 +168,34 @@ class PostServiceTest {
         assertThrows(PostNotFoundException.class, () -> postService.modify(postModifyRequest));
     }
 
+    @DisplayName("게시글 삭제 성공")
+    @Test
+    void delete() {
+        // given
+        Long savedId = 1L;
+        given(postRepository.findById(savedId)).willReturn(Optional.of(createPostDummy()))
+            .willThrow(new PostNotFoundException());
+
+        // when
+        postService.delete(savedId);
+
+        // then
+        assertThrows(PostNotFoundException.class, () -> postService.findById(savedId));
+    }
+
+    @DisplayName("게시글 삭제시 해당 게시글이 없는 경우 실패")
+    @Test
+    void deleteFalse() {
+        // given
+        Long savedId = 1L;
+        given(postRepository.findById(savedId)).willThrow(new PostNotFoundException());
+
+        // when
+
+        // then
+        assertThrows(PostNotFoundException.class, () -> postService.delete(savedId));
+    }
+
     private Post createPostDummy() {
         return new Post(1L, "제목", "내용", 1L, LocalDateTime.now(), 0L);
     }

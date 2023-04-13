@@ -2,10 +2,12 @@ package kr.codesqaud.cafe.repository.post;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.IntStream;
 import kr.codesqaud.annotation.RepositoryTest;
@@ -112,6 +114,21 @@ class PostRepositoryTest {
             () -> assertEquals(updatePost.getWriterId(), findPost.getWriterId()),
             () -> assertEquals(updatePost.getWriteDate(), findPost.getWriteDate()),
             () -> assertEquals(updatePost.getViews(), findPost.getViews()));
+    }
+
+    @DisplayName("게시글 삭제 성공")
+    @Test
+    void delete() {
+        // given
+        Long savedMemberId = saveMember();
+        Long savedId = postRepository.save(postDummy(savedMemberId));
+
+        // when
+        postRepository.delete(savedId);
+
+        // then
+        assertThrows(NoSuchElementException.class,
+            () -> postRepository.findById(savedId).orElseThrow());
     }
 
     private Post postDummy(Long writerId) {

@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -38,6 +39,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @WebMvcTest(PostController.class)
 public class PostControllerTest {
@@ -262,7 +264,6 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(1L);
-        given(postService.findById(id)).willReturn(createPostResponseDummy());
 
         // when
 
@@ -311,6 +312,61 @@ public class PostControllerTest {
         mockMvc.perform(put("/posts/{id}", id)
                 .param("title", "제목")
                 .param("content", "내용")
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
+            .andExpect(status().isUnauthorized())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+            .andExpect(view().name("error/4xx"))
+            .andDo(print());
+    }
+
+    @DisplayName("게시글 삭제 성공")
+    @Test
+    void deletePost() throws Exception {
+        // given
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(1L);
+
+        // when
+
+        // then
+        mockMvc.perform(delete("/posts/{id}", id)
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/"))
+            .andDo(print());
+    }
+
+    @DisplayName("게시글 삭제시 게시글이 없는 경우 실패")
+    @Test
+    void deleteFalse() throws Exception {
+        // given
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(1L);
+        willThrow(new PostNotFoundException()).given(postService).delete(id);
+
+        // when
+
+        // then
+        mockMvc.perform(delete("/posts/{id}", id)
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+            .andExpect(view().name("error/404"))
+            .andDo(print());
+    }
+
+    @DisplayName("게시글 삭제시 글 작성자와 로그인한 회원과 다를 경우 실패")
+    @Test
+    void deleteFalse2() throws Exception {
+        // given
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(1L);
+        willThrow(new Unauthorized()).given(postService).validateUnauthorized(id, accountSession);
+
+        // when
+
+        // then
+        mockMvc.perform(delete("/posts/{id}", id)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isUnauthorized())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))

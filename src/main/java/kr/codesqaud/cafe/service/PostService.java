@@ -40,7 +40,7 @@ public class PostService {
             .orElseThrow(PostNotFoundException::new)
             .increaseViews();
         postRepository.update(post);
-        return PostResponse.of(post, getWhiterResponse(post));
+        return PostResponse.of(post, getWriterResponse(post));
     }
 
     @Transactional(readOnly = true)
@@ -49,11 +49,11 @@ public class PostService {
             .stream()
             .sorted(Comparator.comparing(Post::getId)
                 .reversed())
-            .map(post -> PostResponse.of(post, getWhiterResponse(post)))
+            .map(post -> PostResponse.of(post, getWriterResponse(post)))
             .collect(Collectors.toUnmodifiableList());
     }
 
-    private WriterResponse getWhiterResponse(Post post) {
+    private WriterResponse getWriterResponse(Post post) {
         return Optional.ofNullable(post.getWriterId())
             .flatMap(memberRepository::findById)
             .map(WriterResponse::from)
@@ -62,10 +62,11 @@ public class PostService {
 
     public void modify(PostModifyRequest postModifyRequest) {
         postRepository.findById(postModifyRequest.getId())
-                .orElseThrow(PostNotFoundException::new);
+            .orElseThrow(PostNotFoundException::new);
         postRepository.update(postModifyRequest.toPost());
     }
 
+    @Transactional(readOnly = true)
     public void validateUnauthorized(Long id, AccountSession accountSession) {
         Post findPost = postRepository.findById(id)
             .orElseThrow(PostNotFoundException::new);
@@ -73,5 +74,11 @@ public class PostService {
         if (!findPost.equalsWriterId(accountSession.getId())) {
             throw new Unauthorized();
         }
+    }
+
+    public void delete(Long id) {
+        postRepository.findById(id)
+            .orElseThrow(PostNotFoundException::new);
+        postRepository.delete(id);
     }
 }

@@ -60,8 +60,8 @@ public class ProfileEditRequest {
         return nickName;
     }
 
-    public Member toMember(LocalDateTime createDate) {
-        return new Member(id, email, newPassword, nickName, createDate);
+    public Member toMember() {
+        return new Member(id, email, newPassword, nickName, null);
     }
 
     public static ProfileEditRequest from(MemberResponse memberResponse) {
