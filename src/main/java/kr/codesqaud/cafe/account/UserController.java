@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.account;
 
 import kr.codesqaud.cafe.account.dto.*;
+import kr.codesqaud.cafe.account.exception.IllegalEditEmailException;
+import kr.codesqaud.cafe.account.exception.IllegalEditPasswordException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -104,17 +106,18 @@ public class UserController {
             return "account/profileEditForm";
         }
         userService.checkId(user, userId);
-        if (userService.isDuplicateEmail(user, profileEditForm.getEmail())) {
+        try {
+            userService.check(user, profileEditForm);
+            User updateUser = userService.update(user, profileEditForm);
+            httpSession.setAttribute(ATTRIBUTE_USER, updateUser);
+            return "redirect:/users/{userId}/profile";
+        } catch (IllegalEditEmailException e) {
             bindingResult.rejectValue(EMAIL, "error.email.duplicate");
             return "account/profileEditForm";
-        }
-        if (!userService.isSamePassword(user, profileEditForm.getPassword())) {
+        } catch (IllegalEditPasswordException e) {
             bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
             return "account/profileEditForm";
         }
-        User updateUser = userService.update(user, profileEditForm);
-        httpSession.setAttribute(ATTRIBUTE_USER, updateUser);
-        return "redirect:/users/{userId}/profile";
     }
 
 }

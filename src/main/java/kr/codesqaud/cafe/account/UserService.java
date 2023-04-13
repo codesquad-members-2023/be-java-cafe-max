@@ -4,6 +4,8 @@ import kr.codesqaud.cafe.account.dto.JoinForm;
 import kr.codesqaud.cafe.account.dto.LoginForm;
 import kr.codesqaud.cafe.account.dto.ProfileEditForm;
 import kr.codesqaud.cafe.account.dto.UserForm;
+import kr.codesqaud.cafe.account.exception.IllegalEditEmailException;
+import kr.codesqaud.cafe.account.exception.IllegalEditPasswordException;
 import kr.codesqaud.cafe.account.exception.IllegalLoginPasswordException;
 import kr.codesqaud.cafe.account.exception.NoSuchLoginEmailException;
 import org.springframework.stereotype.Service;
@@ -76,5 +78,14 @@ public class UserService {
             throw new IllegalLoginPasswordException();
         }
         return user;
+    }
+
+    public void check(User user, ProfileEditForm profileEditForm) {
+        if (isDuplicateEmail(user, profileEditForm.getEmail())) {
+            throw new IllegalEditEmailException();
+        }
+        if (isSamePassword(user, profileEditForm.getPassword())) {
+            throw new IllegalEditPasswordException();
+        }
     }
 }
