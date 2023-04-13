@@ -23,6 +23,11 @@ public class Article {
         this.contents = contents;
     }
 
+    public Article(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
+
     public long getSequence() {
         return sequence;
     }

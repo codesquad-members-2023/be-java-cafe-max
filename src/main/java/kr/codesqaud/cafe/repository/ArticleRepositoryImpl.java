@@ -26,7 +26,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public Article save(Article article) {
+    public Article save(Article article) { // TODO: 저장할 때 ID가 아닌 name으로 바로 저장하게끔 수정(그러면 다른 메서드에서 join 안해도 될 듯)
         String sql = "insert into article (writer, title, contents) values (:writer, :title, :contents)";
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -36,7 +36,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Optional<Article> findBySequence(long sequence) {
-        String sql = "select sequence, writer, title, contents from article where sequence = :sequence";
+        String sql = "select a.sequence, u.name as writer, a.title, a.contents "
+                + "from article a inner join users u on a.writer = u.userId where a.sequence = :sequence";
         SqlParameterSource param = new MapSqlParameterSource("sequence", sequence);
         try {
             return Optional.ofNullable(template.queryForObject(sql, param, articleRowMapper())); // TODO: RowMapper 대신 Article.class를 사용하면 에러 발생
@@ -47,7 +48,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select sequence, writer, title, contents from article";
+        String sql = "select a.sequence, u.name as writer, a.title, a.contents "
+                + "from article a inner join users u on a.writer = u.userId";
         return template.query(sql, articleRowMapper());
     }
 
