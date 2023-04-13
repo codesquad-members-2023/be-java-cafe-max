@@ -31,4 +31,8 @@ public class ArticleDto {
 			article.getCreateAt()
 		);
 	}
+
+	public String getWriter() {
+		return writer;
+	}
 }

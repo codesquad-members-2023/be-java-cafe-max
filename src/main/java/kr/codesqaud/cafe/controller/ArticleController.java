@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.PostingRequest;
 import kr.codesqaud.cafe.service.ArticleService;
 
@@ -46,5 +47,16 @@ public class ArticleController {
 			return "redirect:/users/login";
 		}
 		return "qna/form";
+	}
+
+	@GetMapping("/articles/edit/{id}")
+	public String editingPosting(Model model, @PathVariable Long id, HttpSession session) {
+		Object userId = session.getAttribute("sessionedUser");
+		ArticleDto articleDto = articleService.findById(id);
+		if (!articleDto.getWriter().equals(userId)) {
+			return "qna/access_error";
+		}
+		model.addAttribute("edits", articleDto);
+		return "qna/edit_form";
 	}
 }
