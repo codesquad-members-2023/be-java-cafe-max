@@ -1,8 +1,11 @@
 package kr.codesqaud.cafe.account;
 
 import kr.codesqaud.cafe.account.dto.JoinForm;
+import kr.codesqaud.cafe.account.dto.LoginForm;
 import kr.codesqaud.cafe.account.dto.ProfileEditForm;
 import kr.codesqaud.cafe.account.dto.UserForm;
+import kr.codesqaud.cafe.account.exception.IllegalLoginPasswordException;
+import kr.codesqaud.cafe.account.exception.NoSuchLoginEmailException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,4 +54,27 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
+    public void checkId(User user, Long userId) {
+        if (!user.isSameId(userId)) {
+            throw new RuntimeException("접근 할 수 없습니다.");
+        }
+    }
+
+    public void checkManager(User user) {
+        if (!user.isManager()) {
+            throw new RuntimeException("접근 할 수 없습니다.");
+        }
+    }
+
+    public boolean isDuplicateEmail(User user, String email) {
+        return !user.isSameEmail(email) && containsEmail(email);
+    }
+
+    public User checkLoginForm(LoginForm loginForm) {
+        User user = findByEmail(loginForm.getEmail()).orElseThrow(NoSuchLoginEmailException::new);
+        if (!isSamePassword(user, loginForm.getPassword())) {
+            throw new IllegalLoginPasswordException();
+        }
+        return user;
+    }
 }

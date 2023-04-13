@@ -5,9 +5,13 @@ import kr.codesqaud.cafe.account.annotation.ValidPassword;
 
 public class LoginForm {
     @ValidEmail
-    private final String email;
+    private String email;
     @ValidPassword
-    private final String password;
+    private String password;
+
+
+    public LoginForm() {
+    }
 
     public LoginForm(String email, String password) {
         this.email = email;

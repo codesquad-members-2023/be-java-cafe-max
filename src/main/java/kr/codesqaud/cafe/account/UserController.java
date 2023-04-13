@@ -46,16 +46,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "account/login";
         }
-        Optional<User> userOptional = userService.findByEmail(loginForm.getEmail());
-        if (userOptional.isEmpty()) {
-            bindingResult.rejectValue(EMAIL, "error.email.notExist");
-            return "account/login";
-        }
-        User user = userOptional.get();
-        if (!userService.isSamePassword(user, loginForm.getPassword())) {
-            bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
-            return "account/login";
-        }
+        User user = userService.checkLoginForm(loginForm);
         session.setAttribute(ATTRIBUTE_USER, user);
         return "redirect:/users/" + user.getId() + "/profile";
     }
@@ -83,10 +74,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String viewUsers(Model model, @SessionAttribute User user) {
-        if (!user.isManager()) {
-            throw new RuntimeException("접근 할 수 없습니다.");
-        }
-
+        userService.checkManager(user);
         List<UserForm> allUserForm = userService.getAllUsersForm();
         model.addAttribute(USERS, allUserForm);
         return "account/users";
@@ -94,12 +82,8 @@ public class UserController {
 
     @GetMapping("/users/{userId}/profile")
     public String viewUser(Model model, @PathVariable Long userId, @SessionAttribute User user) {
-        if (!user.isSameId(userId)) {
-            throw new RuntimeException("접근 할 수 없습니다.");
-        }
-
+        userService.checkId(user, userId);
         ProfileForm profileForm = ProfileForm.from(user);
-
         model.addAttribute(PROFILE_FORM, profileForm);
         model.addAttribute(USER_ID, userId);
         return "account/profile";
@@ -107,9 +91,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}/profile/edit")
     public String viewUserProfileEditForm(Model model, @PathVariable Long userId, @SessionAttribute User user) {
-        if (!user.isSameId(userId)) {
-            throw new RuntimeException("접근 할 수 없습니다.");
-        }
+        userService.checkId(user, userId);
         ProfileEditForm profileEditForm = ProfileEditForm.from(user);
         model.addAttribute(USER_ID, userId);
         model.addAttribute(PROFILE_SETTING_FORM, profileEditForm);
@@ -119,18 +101,15 @@ public class UserController {
     @PutMapping("/users/{userId}/profile")
     public String updateUserProfile(@Valid ProfileEditForm profileEditForm, BindingResult bindingResult,
                                     @PathVariable Long userId, @SessionAttribute User user, HttpSession httpSession) {
-
         if (bindingResult.hasErrors()) {
             return "account/profileEditForm";
         }
-        if (!user.isSameId(userId)) {
-            throw new RuntimeException("접근 할 수 없습니다.");
-        }
-        if (!user.isSameEmail(profileEditForm.getEmail()) && userService.containsEmail(profileEditForm.getEmail())) {
+        userService.checkId(user, userId);
+        if (userService.isDuplicateEmail(user, profileEditForm.getEmail())) {
             bindingResult.rejectValue(EMAIL, "error.email.duplicate");
             return "account/profileEditForm";
         }
-        if (!user.isSamePassword(profileEditForm.getPassword())) {
+        if (!userService.isSamePassword(user, profileEditForm.getPassword())) {
             bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
             return "account/profileEditForm";
         }
