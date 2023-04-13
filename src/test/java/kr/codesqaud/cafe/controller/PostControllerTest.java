@@ -2,18 +2,24 @@ package kr.codesqaud.cafe.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
+import kr.codesqaud.cafe.dto.post.PostModifyRequest;
+import kr.codesqaud.cafe.exception.common.Unauthorized;
 import kr.codesqaud.cafe.session.AccountSession;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
@@ -103,7 +109,7 @@ public class PostControllerTest {
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().isOk())
-            .andExpect(view().name("post/write"))
+            .andExpect(view().name("post/postWrite"))
             .andExpect(model().attributeHasFieldErrorCode("postWriteRequest", "title", error))
             .andDo(print());
     }
@@ -133,7 +139,7 @@ public class PostControllerTest {
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().isOk())
-            .andExpect(view().name("post/write"))
+            .andExpect(view().name("post/postWrite"))
             .andExpect(model().attributeHasFieldErrorCode("postWriteRequest", "content", error))
             .andDo(print());
     }
@@ -176,7 +182,7 @@ public class PostControllerTest {
             .andDo(print());
     }
 
-    @DisplayName("글쓰기 폼")
+    @DisplayName("글쓰기 폼 페이지")
     @Test
     void writeForm() throws Exception {
         // given
@@ -189,7 +195,126 @@ public class PostControllerTest {
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-            .andExpect(view().name("post/write"))
+            .andExpect(view().name("post/postWrite"))
+            .andDo(print());
+    }
+
+    @DisplayName("글 수정 폼 페이지")
+    @Test
+    void modifyForm() throws Exception {
+        // given
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(1L);
+        given(postService.findById(id)).willReturn(createPostResponseDummy());
+
+        // when
+
+        // then
+        mockMvc.perform(get("/posts/{id}/modify", id)
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+            .andExpect(view().name("post/postModify"))
+            .andDo(print());
+    }
+
+    @DisplayName("글 수정 폼 페이지 접속시 글 작성자와 로그인한 회원과 다를 경우 실패")
+    @Test
+    void modifyFormFalse() throws Exception {
+        // given
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(2L);
+        willThrow(new Unauthorized()).given(postService).validateUnauthorized(id, accountSession);
+
+        // when
+
+        // then
+        mockMvc.perform(get("/posts/{id}/modify", id)
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
+            .andExpect(status().isUnauthorized())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+            .andExpect(view().name("error/4xx"))
+            .andDo(print());
+    }
+
+    @DisplayName("글 수정 폼 페이지 접속시 해당 게시글이 없는 경우 실패")
+    @Test
+    void modifyFormFalse2() throws Exception {
+        // given
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(1L);
+        given(postService.findById(id)).willThrow(new PostNotFoundException());
+
+        // when
+
+        // then
+        mockMvc.perform(get("/posts/{id}/modify", id)
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+            .andExpect(view().name("error/404"))
+            .andDo(print());
+    }
+
+    @DisplayName("글 수정 성공")
+    @Test
+    void modify() throws Exception {
+        // given
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(1L);
+        given(postService.findById(id)).willReturn(createPostResponseDummy());
+
+        // when
+
+        // then
+        mockMvc.perform(put("/posts/{id}", id)
+                .param("title", "제목")
+                .param("content", "내용")
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrlPattern("/posts/{id}"))
+            .andDo(print());
+    }
+
+    @DisplayName("글 수정시 해당 게시글이 없는 경우 실패")
+    @Test
+    void modifyFalse() throws Exception {
+        // given
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(1L);
+        willThrow(new PostNotFoundException()).given(postService).modify(any());
+
+        // when
+
+        // then
+        mockMvc.perform(put("/posts/{id}", id)
+                .param("title", "제목")
+                .param("content", "내용")
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+            .andExpect(view().name("error/404"))
+            .andDo(print());
+    }
+
+    @DisplayName("글 수정시 글 작성자와 로그인한 회원과 다를 경우 실패")
+    @Test
+    void modifyFalse2() throws Exception {
+        // given
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(2L);
+        willThrow(new Unauthorized()).given(postService).validateUnauthorized(id, accountSession);
+
+        // when
+
+        // then
+        mockMvc.perform(put("/posts/{id}", id)
+                .param("title", "제목")
+                .param("content", "내용")
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
+            .andExpect(status().isUnauthorized())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+            .andExpect(view().name("error/4xx"))
             .andDo(print());
     }
 

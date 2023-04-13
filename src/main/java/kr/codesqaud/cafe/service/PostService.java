@@ -5,13 +5,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Post;
+import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
+import kr.codesqaud.cafe.exception.common.Unauthorized;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
+import kr.codesqaud.cafe.session.AccountSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,5 +58,20 @@ public class PostService {
             .flatMap(memberRepository::findById)
             .map(WriterResponse::from)
             .orElseThrow(MemberNotFoundException::new);
+    }
+
+    public void modify(PostModifyRequest postModifyRequest) {
+        postRepository.findById(postModifyRequest.getId())
+                .orElseThrow(PostNotFoundException::new);
+        postRepository.update(postModifyRequest.toPost());
+    }
+
+    public void validateUnauthorized(Long id, AccountSession accountSession) {
+        Post findPost = postRepository.findById(id)
+            .orElseThrow(PostNotFoundException::new);
+
+        if (!findPost.equalsWriterId(accountSession.getId())) {
+            throw new Unauthorized();
+        }
     }
 }

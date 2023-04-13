@@ -47,7 +47,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public void update(Post post) {
-        String sql = "UPDATE post SET title = :title, content = :content, views = :views WHERE id = :id";
+        String sql = "UPDATE post SET title = :title, content = :content, views= :views WHERE id = :id";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(post);
         jdbcTemplate.update(sql, parameter);
     }

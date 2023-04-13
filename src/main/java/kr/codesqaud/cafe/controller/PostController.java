@@ -1,16 +1,18 @@
 package kr.codesqaud.cafe.controller;
 
 import javax.validation.Valid;
-import kr.codesqaud.cafe.session.AccountSession;
-import kr.codesqaud.cafe.session.SignIn;
+import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.service.PostService;
+import kr.codesqaud.cafe.session.AccountSession;
+import kr.codesqaud.cafe.session.SignIn;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class PostController {
@@ -31,7 +33,7 @@ public class PostController {
     public String write(@Valid PostWriteRequest postWriteRequest, BindingResult bindingResult,
         @SignIn AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
-            return "post/write";
+            return "post/postWrite";
         }
 
         postWriteRequest.setWriterId(accountSession.getId());
@@ -45,8 +47,28 @@ public class PostController {
         return "post/post";
     }
 
+    @PutMapping("/posts/{id}")
+    public String modify(@PathVariable Long id, @Valid PostModifyRequest postModifyRequest,
+        BindingResult bindingResult, @SignIn AccountSession accountSession) {
+        if (bindingResult.hasErrors()) {
+            return "post/postModify";
+        }
+
+        postService.validateUnauthorized(id, accountSession);
+        postModifyRequest.setId(id);
+        postService.modify(postModifyRequest);
+        return "redirect:/posts/{id}";
+    }
+
     @GetMapping("/posts/write")
     public String writeForm(PostWriteRequest postWriteRequest) {
-        return "post/write";
+        return "post/postWrite";
+    }
+
+    @GetMapping("/posts/{id}/modify")
+    public String modifyForm(@PathVariable Long id, Model model, @SignIn AccountSession accountSession) {
+        postService.validateUnauthorized(id, accountSession);
+        model.addAttribute("postModifyRequest", PostModifyRequest.from(postService.findById(id)));
+        return "post/postModify";
     }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
+import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
@@ -134,6 +135,37 @@ class PostServiceTest {
 
         // then
         assertEquals(2, findAll.size());
+    }
+
+    @DisplayName("게시글 수정 성공")
+    @Test
+    void modify() {
+        // given
+        PostModifyRequest postModifyRequest = new PostModifyRequest(1L, "tset", "content");
+        given(postRepository.findById(postModifyRequest.getId()))
+            .willReturn(Optional.of(new Post(postModifyRequest.getId(), postModifyRequest.getTitle(),
+                postModifyRequest.getContent(), 1L, LocalDateTime.now(), 0L)));
+
+        // when
+        postService.modify(postModifyRequest);
+
+        // then
+        Post findPost = postRepository.findById(postModifyRequest.getId()).orElseThrow();
+        assertEquals(postModifyRequest.getTitle(), findPost.getTitle());
+        assertEquals(postModifyRequest.getContent(), findPost.getContent());
+    }
+
+    @DisplayName("게시글이 없는 경우 수정 했을때 실패")
+    @Test
+    void modifyFalse() {
+        // given
+        PostModifyRequest postModifyRequest = new PostModifyRequest(1L, "tset", "content");
+        given(postRepository.findById(any())).willThrow(new PostNotFoundException());
+
+        // when
+
+        // then
+        assertThrows(PostNotFoundException.class, () -> postService.modify(postModifyRequest));
     }
 
     private Post createPostDummy() {
