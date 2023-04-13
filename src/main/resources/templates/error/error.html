@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>에러당</title>
+    {{> fragments/header}}
+    <link href="/css/user/login_success.css" rel="stylesheet">
 </head>
 <body>
-{{#error}}
-<div>
-    <p>statusCode: {{status}}</p>
-    <p>errorMessage: {{message}}</p>
+<div class="background">
+    {{> fragments/navbar}}
+    <div class="container" id="main">
+        <p class="user-info">{{error}}</p>
+        <a href="/" class="btn">홈으로</a>
+    </div>
 </div>
-{{/error}}
 </body>
 </html>
