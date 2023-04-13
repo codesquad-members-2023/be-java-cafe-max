@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String create(@Valid UserForm form, BindingResult bindingResult) {
+    public String create(@Valid @ModelAttribute("userForm") UserForm form, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user/form";
         }
