@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.domain.mapper;
 
-import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
-import kr.codesqaud.cafe.controller.dto.UserDTO;
-import kr.codesqaud.cafe.controller.dto.UserListDTO;
+import kr.codesqaud.cafe.controller.dto.user.ProfileEditDTO;
+import kr.codesqaud.cafe.controller.dto.user.UserDTO;
+import kr.codesqaud.cafe.controller.dto.user.UserListDTO;
 import kr.codesqaud.cafe.domain.User;
 
 public class UserMapper {

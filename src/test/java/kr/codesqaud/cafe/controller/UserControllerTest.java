@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.UserDTO;
-import kr.codesqaud.cafe.controller.dto.UserListDTO;
+import kr.codesqaud.cafe.controller.dto.user.UserDTO;
+import kr.codesqaud.cafe.controller.dto.user.UserListDTO;
 import kr.codesqaud.cafe.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

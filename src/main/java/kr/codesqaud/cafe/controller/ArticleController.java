@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.config.Session;
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
-import kr.codesqaud.cafe.controller.dto.ArticleUpdateDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleUpdateDTO;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

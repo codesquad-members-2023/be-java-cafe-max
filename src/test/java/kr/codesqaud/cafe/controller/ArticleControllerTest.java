@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

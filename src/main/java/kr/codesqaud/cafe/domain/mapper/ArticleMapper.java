@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.domain.mapper;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
-import kr.codesqaud.cafe.controller.dto.ArticleInfoDTO;
-import kr.codesqaud.cafe.controller.dto.ArticleUpdateDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleInfoDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleUpdateDTO;
 import kr.codesqaud.cafe.domain.Article;
 
 public class ArticleMapper {

@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.exception;
+package kr.codesqaud.cafe.exception.user;
 
 public class AlreadyUserExistenceException extends RuntimeException{
 

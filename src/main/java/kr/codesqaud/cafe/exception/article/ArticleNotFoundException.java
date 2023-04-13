@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.exception;
+package kr.codesqaud.cafe.exception.article;
 
 public class ArticleNotFoundException extends RuntimeException{
 

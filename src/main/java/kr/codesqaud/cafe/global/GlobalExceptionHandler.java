@@ -2,6 +2,10 @@ package kr.codesqaud.cafe.global;
 
 
 import kr.codesqaud.cafe.exception.*;
+import kr.codesqaud.cafe.exception.article.ArticleIdAndSessionIdMismatchException;
+import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
+import kr.codesqaud.cafe.exception.user.UserNotFoundException;
+import kr.codesqaud.cafe.exception.user.UserUpdateInvalidPasswordException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

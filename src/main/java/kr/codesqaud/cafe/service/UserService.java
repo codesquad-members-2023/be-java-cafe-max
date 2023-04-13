@@ -1,14 +1,14 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.LoginDTO;
-import kr.codesqaud.cafe.controller.dto.ProfileEditDTO;
-import kr.codesqaud.cafe.controller.dto.UserDTO;
-import kr.codesqaud.cafe.controller.dto.UserListDTO;
+import kr.codesqaud.cafe.controller.dto.user.ProfileEditDTO;
+import kr.codesqaud.cafe.controller.dto.user.UserDTO;
+import kr.codesqaud.cafe.controller.dto.user.UserListDTO;
 import kr.codesqaud.cafe.domain.mapper.UserMapper;
-import kr.codesqaud.cafe.exception.AlreadyUserExistenceException;
+import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.exception.LoginInvalidPasswordException;
-import kr.codesqaud.cafe.exception.UserUpdateInvalidPasswordException;
-import kr.codesqaud.cafe.exception.UserNotFoundException;
+import kr.codesqaud.cafe.exception.user.UserUpdateInvalidPasswordException;
+import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

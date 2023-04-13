@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto;
+package kr.codesqaud.cafe.controller.dto.user;
 
 public class UserListDTO {
     private final String nickName;

@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.config.Session;
 import kr.codesqaud.cafe.controller.dto.LoginDTO;
-import kr.codesqaud.cafe.controller.dto.UserDTO;
+import kr.codesqaud.cafe.controller.dto.user.UserDTO;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

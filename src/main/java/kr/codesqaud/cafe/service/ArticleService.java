@@ -1,12 +1,12 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
-import kr.codesqaud.cafe.controller.dto.ArticleInfoDTO;
-import kr.codesqaud.cafe.controller.dto.ArticleUpdateDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleInfoDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleUpdateDTO;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.mapper.ArticleMapper;
-import kr.codesqaud.cafe.exception.ArticleIdAndSessionIdMismatchException;
-import kr.codesqaud.cafe.exception.ArticleNotFoundException;
+import kr.codesqaud.cafe.exception.article.ArticleIdAndSessionIdMismatchException;
+import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
