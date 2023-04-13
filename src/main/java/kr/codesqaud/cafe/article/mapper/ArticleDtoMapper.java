@@ -16,7 +16,7 @@ public interface ArticleDtoMapper {
     @Mapping(target = "author", source = "author")
     Article toArticle(ArticleFormDto articleFormDto, String author);
 
-    ArticleListDto toListDto(Article article);
+    ArticlePreviewDto toPreviewDto(Article article);
 
     ArticleDetailDto toDetailDto(Article article);
 }

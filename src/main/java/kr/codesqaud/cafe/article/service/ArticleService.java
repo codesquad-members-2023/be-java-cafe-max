@@ -29,11 +29,11 @@ public class ArticleService {
     }
 
     //전체 글 목록을 DTO로 필터링 하고 반환
-    public List<ArticleListDto> getArticleListDtos() {
+    public List<ArticlePreviewDto> getArticleListDtos() {
         List<Article> articles = articleRepository.findAll();
-        List<ArticleListDto> articleListDtos = new ArrayList<>();
+        List<ArticlePreviewDto> articleListDtos = new ArrayList<>();
         for (Article article : articles) {
-            articleListDtos.add(ArticleDtoMapper.INSTANCE.toListDto(article));
+            articleListDtos.add(ArticleDtoMapper.INSTANCE.toPreviewDto(article));
         }
 
         return articleListDtos;

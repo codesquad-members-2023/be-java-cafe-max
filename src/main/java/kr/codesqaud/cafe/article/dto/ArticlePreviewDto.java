@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.article.dto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ArticleListDto {
+public class ArticlePreviewDto {
     //글 목록에 표시할 내용 DTO
     private String author;
 
