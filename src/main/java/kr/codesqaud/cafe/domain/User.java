@@ -48,10 +48,6 @@ public class User {
         return userEmail;
     }
 
-    public boolean isSamePassword(final String password) {
-        return this.password.equals(password);
-    }
-
     public void editProfile(final String password, final String userName, final String userEmail) {
         this.password = password;
         this.userName = userName;
