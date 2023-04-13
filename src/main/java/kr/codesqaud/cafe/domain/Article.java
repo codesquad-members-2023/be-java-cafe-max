@@ -6,10 +6,10 @@ import java.time.LocalDateTime;
 
 public class Article {
     private Long id;
-    private String writer;
-    private String title;
-    private String content;
-    private LocalDateTime createdAt;
+    private final String writer;
+    private final String title;
+    private final String content;
+    private final LocalDateTime createdAt;
 
     public Article(Long id, String writer, String title, String content, LocalDateTime createdAt) {
         this.id = id;
