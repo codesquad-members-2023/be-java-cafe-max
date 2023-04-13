@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,8 +23,8 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Optional<Post> findById(int postId) {
-        return postRepository.findById((long) postId);
+    public Post findById(int postId) {
+        return postRepository.findById((long) postId).orElseThrow(RuntimeException::new);
     }
 
     public List<SimplePostForm> getAllPosts() {
@@ -35,9 +34,15 @@ public class PostService {
     }
 
     @Transactional
-    public Post editPost(Post target, PostForm postForm) {
-        Post post = postRepository.findById(target.getId()).orElseThrow(() -> new RuntimeException());
+    public Post updateFromPostForm(Post target, PostForm postForm) {
+        Post post = postRepository.findById(target.getId()).orElseThrow(RuntimeException::new);
         postForm.editPost(post);
         return postRepository.save(post);
+    }
+
+    public void checkId(User user, Long id) {
+        if (!user.isSameId(id)) {
+            throw new RuntimeException();
+        }
     }
 }

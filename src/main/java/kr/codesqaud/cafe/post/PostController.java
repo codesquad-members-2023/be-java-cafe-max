@@ -8,7 +8,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Controller
 public class PostController {
@@ -35,41 +34,25 @@ public class PostController {
 
     @GetMapping("/posts/{postId}")
     public String viewPost(@PathVariable int postId, Model model) {
-        Optional<Post> postOptional = postService.findById(postId);
-        if (postOptional.isEmpty()) {
-            throw new RuntimeException();
-        }
-        model.addAttribute(postOptional.get());
+        Post post = postService.findById(postId);
+        model.addAttribute(post);
         return "/post/detail";
     }
 
     @GetMapping("/posts/{postId}/edit")
     public String viewEditPost(@PathVariable int postId, @SessionAttribute User user, Model model) {
-
-        Optional<Post> postOptional = postService.findById(postId);
-        if (postOptional.isEmpty()) {
-            throw new RuntimeException();
-        }
-        Post post = postOptional.get();
-        if (!post.getUser().isSameId(user.getId())) {
-            throw new RuntimeException();
-        }
+        Post post = postService.findById(postId);
+        postService.checkId(post.getUser(), user.getId());
         model.addAttribute(PostForm.from(post));
         model.addAttribute(postId);
         return "/post/editForm";
     }
 
     @PutMapping("/posts/{postId}")
-    public String editPost(@Valid PostForm postForm,@PathVariable int postId, @SessionAttribute User user, Model model) {
-        Optional<Post> postOptional = postService.findById(postId);
-        if (postOptional.isEmpty()) {
-            throw new RuntimeException();
-        }
-        Post post = postOptional.get();
-        if (!post.getUser().isSameId(user.getId())) {
-            throw new RuntimeException();
-        }
-        Post editPost = postService.editPost(post, postForm);
+    public String editPost(@Valid PostForm postForm, @PathVariable int postId, @SessionAttribute User user, Model model) {
+        Post post = postService.findById(postId);
+        postService.checkId(post.getUser(), user.getId());
+        Post editPost = postService.updateFromPostForm(post, postForm);
         model.addAttribute(editPost);
         return "/post/detail";
     }
