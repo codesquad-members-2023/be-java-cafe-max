@@ -31,7 +31,7 @@ public class JDBCArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findArticleById(int idx) {
+    public Optional<Article> findArticleByIdx(long idx) {
         Article article = jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE idx = ?",new Object[]{idx},(rs,rn) -> new Article(rs));
         return Optional.ofNullable(article);
     }

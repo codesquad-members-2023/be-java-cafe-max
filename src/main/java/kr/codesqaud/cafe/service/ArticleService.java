@@ -34,8 +34,8 @@ public class ArticleService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public ArticleDTO findArticleById(int id){
-        return articleRepository.findArticleById(id)
+    public ArticleDTO findArticleByIdx(long idx){
+        return articleRepository.findArticleByIdx(idx)
                 .map(article -> articleMapper.toArticleDTO(article))
                 .orElseThrow(ArticleNotFoundException::new);
     }

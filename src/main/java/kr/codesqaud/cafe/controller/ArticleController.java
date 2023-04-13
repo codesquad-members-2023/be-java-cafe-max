@@ -29,15 +29,15 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/article/{id}")
-    public String showDetailArticle(@PathVariable int id, Model model) {
-        model.addAttribute("article", articleService.findArticleById(id));
+    @GetMapping("/article/{idx}")
+    public String showDetailArticle(@PathVariable long idx, Model model) {
+        model.addAttribute("article", articleService.findArticleByIdx(idx));
         return "post/show";
     }
 
     @GetMapping("/article/update-form/{idx}")
     public String showUpdateForm(@PathVariable Long idx,Model model){
-        model.addAttribute("articleIdx",idx);
+        model.addAttribute("idx",idx);
         return "post/updateForm";
     }
 

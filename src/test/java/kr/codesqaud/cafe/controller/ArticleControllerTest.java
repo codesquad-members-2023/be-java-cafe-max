@@ -41,7 +41,7 @@ class ArticleControllerTest {
 
         //given
         ArticleDTO articleDto = new ArticleDTO("제목", "내용", 1L, "2023-4-10");
-        given(articleService.findArticleById(1)).willReturn(articleDto);
+        given(articleService.findArticleByIdx(1)).willReturn(articleDto);
 
         //when & then
         mockMvc.perform(MockMvcRequestBuilders.get("/article/1"))
