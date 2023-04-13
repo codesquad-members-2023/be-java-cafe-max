@@ -21,7 +21,9 @@
 
             <div class="buttons">
                 <div>
+                    <a th:if="${article.previousId == 0}" class="firstText disable" style="background: #D2DAE0;">이전 글</a>
                     <a th:if="${article.previousId != 0}" class="firstText" th:href="@{/articles/{id}(id=${article.previousId})}">이전 글</a>
+                    <a th:if="${article.nextId == 0}" class="disable" style="background: #D2DAE0;">다음 글</a>
                     <a th:if="${article.nextId != 0}" th:href="@{/articles/{id}(id=${article.nextId})}">다음 글</a>
                 </div>
                 <a th:href="@{/}">목록으로</a>
