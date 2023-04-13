@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS ARTICLES CASCADE;
 CREATE TABLE ARTICLES
 (
     id          bigint auto_increment,
-    writer      VARCHAR(50) NOT NULL,
+    userId      VARCHAR(50)  NOT NULL,
     title       VARCHAR(100) NOT NULL,
     contents    TEXT         NOT NULL,
     currentTime TIMESTAMP    NOT NULL,

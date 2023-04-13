@@ -3,21 +3,12 @@ package kr.codesqaud.cafe.domain.dto.article;
 import javax.validation.constraints.NotBlank;
 
 public class ArticleForm {
-    private String writer;
     @NotBlank(message = "제목을 입력해 주세요")
     private String title;
     @NotBlank(message = "글을 입력해 주세요")
     private String contents;
 
     public ArticleForm() {
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
     }
 
     public String getTitle() {

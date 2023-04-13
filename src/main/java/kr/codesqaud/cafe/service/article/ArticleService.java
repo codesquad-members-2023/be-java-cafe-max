@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service.article;
 
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.session.SessionConst;
 import kr.codesqaud.cafe.domain.dto.article.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleTimeForm;
@@ -22,7 +23,7 @@ public class ArticleService {
     }
 
     public Article add(ArticleForm form, HttpSession session) {
-        Article article = new Article((String) session.getAttribute(SessionConst.LOGIN_NAME), form.getTitle(), form.getContents());
+        Article article = new Article((String) session.getAttribute(SessionConst.LOGIN_USER_ID), form.getTitle(), form.getContents());
         return articleRepository.save(article);
     }
 
