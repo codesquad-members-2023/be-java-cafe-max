@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.post;
 import kr.codesqaud.cafe.account.User;
 import kr.codesqaud.cafe.post.dto.PostForm;
 import kr.codesqaud.cafe.post.dto.SimplePostForm;
+import kr.codesqaud.cafe.post.exception.IllegalPostEditAccessException;
 import kr.codesqaud.cafe.post.exception.IllegalPostIdException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,9 +47,9 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public void checkId(User user, Long id) {
+    public void checkCanAccess(User user, Long id) {
         if (!user.isSameId(id)) {
-            throw new RuntimeException();
+            throw new IllegalPostEditAccessException();
         }
     }
 

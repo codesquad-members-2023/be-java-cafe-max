@@ -46,7 +46,7 @@ public class PostController {
             return "/post/editForm";
         }
         Post post = postService.findById(postId);
-        postService.checkId(post.getUser(), user.getId());
+        postService.checkCanAccess(post.getUser(), user.getId());
         Post editPost = postService.updateFromPostForm(post, postForm);
         model.addAttribute(editPost);
         return "/post/detail";
@@ -55,7 +55,7 @@ public class PostController {
     @GetMapping("/posts/{postId}/edit")
     public String viewEditPost(@PathVariable int postId, @SessionAttribute User user, Model model) {
         Post post = postService.findById(postId);
-        postService.checkId(post.getUser(), user.getId());
+        postService.checkCanAccess(post.getUser(), user.getId());
         model.addAttribute(PostForm.from(post));
         model.addAttribute(postId);
         return "/post/editForm";
@@ -64,7 +64,7 @@ public class PostController {
     @DeleteMapping("/posts/{postId}")
     public String deletePost(@PathVariable int postId, @SessionAttribute User user) {
         Post post = postService.findById(postId);
-        postService.checkId(post.getUser(), user.getId());
+        postService.checkCanAccess(post.getUser(), user.getId());
         postService.delete(post);
         return "redirect:/";
     }
