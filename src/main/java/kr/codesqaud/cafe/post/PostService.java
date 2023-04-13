@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,8 +26,8 @@ public class PostService {
         return postRepository.save(post);
     }
 
-    public Post findById(int postId) {
-        Post post = postRepository.findById((long) postId).orElseThrow(IllegalPostIdException::new);
+    public Post findById(long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(IllegalPostIdException::new);
         if (post.isDeleted()) {
             throw new IllegalPostIdException();
         }

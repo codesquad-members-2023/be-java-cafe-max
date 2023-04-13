@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.post;
 import kr.codesqaud.cafe.account.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,6 +12,7 @@ public class Post {
     @GeneratedValue
     private Long id;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "USER_ID", updatable = false)
     private User user;

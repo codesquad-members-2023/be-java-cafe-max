@@ -62,9 +62,9 @@ class UserControllerTest {
     @DisplayName("로그인 페이지 테스트")
     @Nested
     class LoginTest {
-        @DisplayName("열람")
+        @DisplayName("오픈")
         @Test
-        void showLoginPage() throws Exception {
+        void viewLoginPage() throws Exception {
             mockMvc.perform(get("/users/login"))
                     .andExpect(status().isOk());
         }
@@ -106,9 +106,9 @@ class UserControllerTest {
     @Nested
     @DisplayName("가입 페이지 테스트")
     class JoinTest {
-        @DisplayName("열람")
+        @DisplayName("오픈")
         @Test
-        void showJoinPage() throws Exception {
+        void viewJoinPage() throws Exception {
             mockMvc.perform(get("/users/join"))
                     .andExpect(model().attributeExists(JOIN_FORM))
                     .andExpect(status().isOk());
@@ -141,9 +141,9 @@ class UserControllerTest {
     }
 
 
-    @DisplayName("맴버 리스트 페이지 열람 테스트")
+    @DisplayName("맴버 리스트 페이지 오픈 테스트")
     @Test
-    void showUsers() throws Exception {
+    void viewUsers() throws Exception {
         User target = new User.Builder()
                 .id(jack.getId())
                 .role(Role.MANAGER)
@@ -162,18 +162,18 @@ class UserControllerTest {
     @DisplayName("유저 프로필 페이지 테스트")
     @Nested
     class UserProfilePageTest {
-        @DisplayName("열람 성공")
+        @DisplayName("오픈 성공")
         @Test
-        void showUserSuccess() throws Exception {
+        void viewUserSuccess() throws Exception {
             mockMvc.perform(get("/users/" + jack.getId() + "/profile").session(session))
                     .andExpect(status().isOk())
                     .andExpect(model().attributeExists(USER_ID, PROFILE_FORM))
                     .andExpect(view().name("account/profile"));
         }
 
-        @DisplayName("열람 실패")
+        @DisplayName("오픈 실패")
         @Test
-        void showUserFailed() throws Exception {
+        void viewUserFailed() throws Exception {
             mockMvc.perform(get("/users/20"))
                     .andExpect(status().is4xxClientError());
         }
@@ -183,12 +183,12 @@ class UserControllerTest {
     @Nested
     class ProfileEditPageTest {
 
-        @DisplayName("열람")
+        @DisplayName("오픈")
         @Nested
         class OpenTest {
             @DisplayName("성공")
             @Test
-            void showUserProfileSuccess() throws Exception {
+            void viewUserProfileSuccess() throws Exception {
                 session.setAttribute("user", jack);
                 mockMvc.perform(get("/users/" + jack.getId() + "/profile/edit").session(session))
                         .andExpect(status().isOk())
@@ -198,7 +198,7 @@ class UserControllerTest {
 
             @DisplayName("실패")
             @Test
-            void showUserProfileFailed() throws Exception {
+            void viewUserProfileFailed() throws Exception {
                 mockMvc.perform(get("/users/" + (jack.getId() + 1) + "/profile/edit").session(session))
                         .andExpect(status().is4xxClientError())
                         .andExpect(view().name("error/4xx"));
@@ -208,6 +208,10 @@ class UserControllerTest {
         @DisplayName("세팅")
         @Nested
         class SettingTest {
+
+
+
+
             @DisplayName("성공")
             @Test
             void setUserProfileSuccess() throws Exception {

@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.post;
 import kr.codesqaud.cafe.account.User;
 import kr.codesqaud.cafe.account.UserService;
 import kr.codesqaud.cafe.account.dto.JoinForm;
+import kr.codesqaud.cafe.post.dto.PostForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,8 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
@@ -28,18 +28,22 @@ class PostControllerTest {
 
     private static final String JACK = "jack";
     private static final String JACK_EMAIL = "jack@email.com";
+    private static final String JERRY = "jerry";
+    private static final String JERRY_EMAIL = "jerry@email.com";
     private static final String TEST_PASSWORD = "123456789a";
     private static final String TITLE = "title";
     private static final String TEXT_CONTENT = "textContent";
     private static final String TEST_TITLE = "testTitle";
     private static final String TEST_CONTENT = "testContent";
     public static final int NON_EXISTING_POST_ID = 300;
+    public static final String EDIT_TITLE = "editTitle";
+    public static final String EDIT_TEXT_CONTENT = "editTextContent";
 
     @Autowired
     MockMvc mockMvc;
 
     @Autowired
-    PostRepository postRepository;
+    PostService postService;
 
     @Autowired
     UserService userService;
@@ -57,9 +61,9 @@ class PostControllerTest {
         session.setAttribute("user", jack);
     }
 
-    @DisplayName("게시글 작성 페이지 열람")
+    @DisplayName("게시글 작성 페이지 오픈")
     @Test
-    void showPostPage() throws Exception {
+    void viewPostPage() throws Exception {
         mockMvc.perform(get("/posts/form")
                         .session(session))
                 .andExpect(status().isOk());
@@ -77,7 +81,6 @@ class PostControllerTest {
                             .session(session))
                     .andExpect(status().is3xxRedirection())
                     .andExpect(redirectedUrlPattern("/posts/*"));
-            assertThat(postRepository.findByTitle(TEST_TITLE)).isPresent();
         }
 
         @DisplayName("실패")
@@ -90,39 +93,146 @@ class PostControllerTest {
                             .session(session))
                     .andExpect(status().isOk())
                     .andExpect(model().hasErrors())
-                    .andExpect(view().name("/post/form"));
-            assertThat(postRepository.findByTitle(TEST_TITLE)).isEmpty();
+                    .andExpect(view().name("post/form"));
         }
     }
 
-    @DisplayName("지정 게시를 알람")
+    @DisplayName("지정 게시글")
     @Nested
     class PostPageTest {
 
-        @DisplayName("성공")
-        @Test
-        void testShowPostPageSuccess() throws Exception {
-            Post post = postRepository.save(new Post.Builder()
-                    .title(TEST_TITLE)
-                    .textContent(TEST_CONTENT)
-                    .build());
+        Post testPost;
+        PostForm testForm;
 
-            mockMvc.perform(get("/posts/" + post.getId()).session(session))
-                    .andExpect(status().isOk())
-                    .andExpect(model().attributeExists("post"));
+        @BeforeEach
+        void setPost() {
+            testForm = new PostForm(TEST_TITLE, TEST_CONTENT);
+            testPost = postService.save(testForm, jack);
         }
 
-        @DisplayName("실패")
-        @Test
-        void testShowPostPageFailed() throws Exception {
-            postRepository.save(new Post.Builder()
-                    .title(TEST_TITLE)
-                    .textContent(TEST_CONTENT)
-                    .build());
+        @DisplayName("오픈")
+        @Nested
+        class OpenTest {
+            @DisplayName("성공")
+            @Test
+            void viewPostPageSuccess() throws Exception {
+                mockMvc.perform(get("/posts/" + testPost.getId())
+                                .session(session))
+                        .andExpect(status().isOk())
+                        .andExpect(model().attributeExists("post"));
+            }
 
-            mockMvc.perform(get("/posts/" + NON_EXISTING_POST_ID).session(session))
-                    .andExpect(status().is4xxClientError())
-                    .andExpect(view().name("error/4xx"));
+            @DisplayName("실패")
+            @Test
+            void viewPostPageFailed() throws Exception {
+                mockMvc.perform(get("/posts/" + NON_EXISTING_POST_ID)
+                                .session(session))
+                        .andExpect(status().is4xxClientError())
+                        .andExpect(view().name("error/4xx"));
+            }
+        }
+
+        @DisplayName("지정 게스글 수정 페이지")
+        @Nested
+        class EditTest {
+            @DisplayName("작성자 오픈 성공")
+            @Test
+            void viewPostEditPageSuccess() throws Exception {
+                mockMvc.perform(get("/posts/" + testPost.getId() + "/edit")
+                                .session(session))
+                        .andExpect(status().isOk())
+                        .andExpect(view().name("post/editForm"));
+            }
+
+            @DisplayName("오픈 실패(작성자 오류)")
+            @Test
+            void viewPostEditPageFailedByOtherUser() throws Exception {
+                setSessionByJerry();
+
+                mockMvc.perform(get("/posts/" + testPost.getId() + "/edit")
+                                .session(session))
+                        .andExpect(status().is4xxClientError())
+                        .andExpect(view().name("error/4xx"));
+            }
+
+
+            @DisplayName("수정 성공")
+            @Test
+            void editPostSuccess() throws Exception {
+                mockMvc.perform(put("/posts/" + testPost.getId())
+                                .param(TITLE, EDIT_TITLE)
+                                .param(TEXT_CONTENT, EDIT_TEXT_CONTENT)
+                                .session(session))
+                        .andExpect(status().isOk())
+                        .andExpect(view().name("post/detail"));
+                Post post = postService.findById(testPost.getId());
+                assertThat(post.getTitle()).isEqualTo(EDIT_TITLE);
+                assertThat(post.getTextContent()).isEqualTo(EDIT_TEXT_CONTENT);
+            }
+
+
+            @DisplayName("수정 실패(형식 오류)")
+            @ParameterizedTest
+            @CsvSource({"t,textContent", "title,te"})
+            void editPostFailedByType(String targetTitle, String targetContent) throws Exception {
+
+                mockMvc.perform(put("/posts/" + testPost.getId())
+                                .param(TITLE, targetTitle)
+                                .param(TEST_CONTENT, targetContent)
+                                .session(session))
+                        .andExpect(status().isOk())
+                        .andExpect(view().name("post/editForm"));
+            }
+
+            @DisplayName("수정 실패(없는 Post 아이디)")
+            @Test
+            void editPostFailedByPostId() throws Exception {
+                mockMvc.perform(put("/posts/" + NON_EXISTING_POST_ID)
+                                .param(TITLE, EDIT_TITLE)
+                                .param(TEXT_CONTENT, EDIT_TEXT_CONTENT)
+                                .session(session))
+                        .andExpect(status().is4xxClientError())
+                        .andExpect(view().name("error/4xx"));
+            }
+
+            @DisplayName("수정 실패(없는 아이디)")
+            @Test
+            void editPostFailedByUser() throws Exception {
+                setSessionByJerry();
+                mockMvc.perform(put("/posts/" + testPost.getId())
+                                .param(TITLE, EDIT_TITLE)
+                                .param(TEXT_CONTENT, EDIT_TEXT_CONTENT)
+                                .session(session))
+                        .andExpect(status().is4xxClientError())
+                        .andExpect(view().name("error/4xx"));
+            }
+
+
+            @DisplayName("삭제 실패")
+            @Test
+            void deletePostFailed() throws Exception {
+                setSessionByJerry();
+                mockMvc.perform(delete("/posts/" + testPost.getId())
+                                .session(session))
+                        .andExpect(status().is4xxClientError())
+                        .andExpect(view().name("error/4xx"));
+            }
+
+            @DisplayName("삭제 성공")
+            @Test
+            void deletePostSuccess() throws Exception {
+                mockMvc.perform(delete("/posts/" + testPost.getId())
+                                .session(session))
+                        .andExpect(status().is3xxRedirection())
+                        .andExpect(redirectedUrl("/"));
+            }
+
+            private void setSessionByJerry() {
+                JoinForm joinForm = new JoinForm(JERRY, JERRY_EMAIL, TEST_PASSWORD, TEST_PASSWORD);
+                User jerry = userService.save(joinForm);
+                session = new MockHttpSession();
+                session.setAttribute("user", jerry);
+            }
         }
     }
 

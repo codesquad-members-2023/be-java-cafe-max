@@ -40,18 +40,6 @@ public class PostController {
         return "post/detail";
     }
 
-    @PutMapping("/posts/{postId}")
-    public String editPost(@Valid PostForm postForm, BindingResult bindingResult, @PathVariable int postId, @SessionAttribute User user, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "/post/editForm";
-        }
-        Post post = postService.findById(postId);
-        postService.checkCanAccess(post.getUser(), user.getId());
-        Post editPost = postService.updateFromPostForm(post, postForm);
-        model.addAttribute(editPost);
-        return "post/detail";
-    }
-
     @GetMapping("/posts/{postId}/edit")
     public String viewEditPost(@PathVariable int postId, @SessionAttribute User user, Model model) {
         Post post = postService.findById(postId);
@@ -59,6 +47,18 @@ public class PostController {
         model.addAttribute(PostForm.from(post));
         model.addAttribute(postId);
         return "post/editForm";
+    }
+
+    @PutMapping("/posts/{postId}")
+    public String editPost(@Valid PostForm postForm, BindingResult bindingResult, @PathVariable int postId, @SessionAttribute User user, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "post/editForm";
+        }
+        Post post = postService.findById(postId);
+        postService.checkCanAccess(post.getUser(), user.getId());
+        Post editPost = postService.updateFromPostForm(post, postForm);
+        model.addAttribute(editPost);
+        return "post/detail";
     }
 
     @DeleteMapping("/posts/{postId}")
