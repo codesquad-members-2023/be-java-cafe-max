@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.config;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import kr.codesqaud.cafe.util.SignInSessionUtil;
+import kr.codesqaud.cafe.session.SignInSessionUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 public class SignInInterceptor implements HandlerInterceptor {

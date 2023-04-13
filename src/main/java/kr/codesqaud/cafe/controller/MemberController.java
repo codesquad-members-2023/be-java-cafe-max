@@ -1,14 +1,14 @@
 package kr.codesqaud.cafe.controller;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import kr.codesqaud.cafe.domain.AccountSession;
+import kr.codesqaud.cafe.session.AccountSession;
+import kr.codesqaud.cafe.session.SignIn;
 import kr.codesqaud.cafe.dto.member.SignInRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.service.MemberService;
-import kr.codesqaud.cafe.util.SignInSessionUtil;
+import kr.codesqaud.cafe.session.SignInSessionUtil;
 import kr.codesqaud.cafe.validator.ProfileEditRequestValidator;
 import kr.codesqaud.cafe.validator.SignInRequestValidator;
 import kr.codesqaud.cafe.validator.SignUpRequestValidator;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 public class MemberController {
@@ -76,8 +75,7 @@ public class MemberController {
 
     @PutMapping("/members/{id}")
     public String editProfile(@Valid ProfileEditRequest profileEditRequest,
-        BindingResult bindingResult, @SessionAttribute(value = SignInSessionUtil.SIGN_IN_SESSION_NAME, required = false)
-        AccountSession accountSession) {
+        BindingResult bindingResult, @SignIn AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
             return "member/profileEdit";
         }

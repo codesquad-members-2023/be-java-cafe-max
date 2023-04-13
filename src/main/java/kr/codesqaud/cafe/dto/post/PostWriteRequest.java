@@ -15,7 +15,7 @@ public class PostWriteRequest {
     @Length(min = 2, max = 3000)
     private final String content;
 
-    private final Long writerId;
+    private Long writerId;
 
     private final LocalDateTime writeDate;
 
@@ -36,6 +36,10 @@ public class PostWriteRequest {
 
     public Long getWriterId() {
         return writerId;
+    }
+
+    public void setWriterId(Long writerId) {
+        this.writerId = writerId;
     }
 
     public LocalDateTime getWriteDate() {

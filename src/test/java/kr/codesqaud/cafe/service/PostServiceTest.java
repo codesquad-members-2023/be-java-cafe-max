@@ -46,7 +46,7 @@ class PostServiceTest {
         given(postRepository.save(any())).willReturn(1L);
 
         // when
-        Long savedId = postService.save(postWriteRequest);
+        Long savedId = postService.write(postWriteRequest);
 
         // then
         assertEquals(1L, savedId);
@@ -114,7 +114,7 @@ class PostServiceTest {
     void findByIdFalse2() {
         // given
         given(postRepository.findById(any())).willReturn(Optional.of(createPostDummy()));
-        given(memberRepository.findById(any())).willThrow(MemberNotFoundException.class);
+        given(memberRepository.findById(1L)).willThrow(MemberNotFoundException.class);
 
         // when
 
@@ -127,7 +127,7 @@ class PostServiceTest {
     void findAll() {
         // given
         given(postRepository.findAll()).willReturn(List.of(createPostDummy(), createPostDummy2()));
-        given(memberRepository.findById(1L)).willReturn(Optional.of(createMemberDummy()));
+        given(memberRepository.findById(any())).willReturn(Optional.of(createMemberDummy()));
 
         // when
         List<PostResponse> findAll = postService.findAll();
@@ -141,7 +141,7 @@ class PostServiceTest {
     }
 
     private Post createPostDummy2() {
-        return new Post(2L, "제목2", "내용2", null, LocalDateTime.now(), 0L);
+        return new Post(2L, "제목2", "내용2", 1L, LocalDateTime.now(), 0L);
     }
 
     private Member createMemberDummy() {

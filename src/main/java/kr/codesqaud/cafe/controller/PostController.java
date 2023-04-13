@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
 import javax.validation.Valid;
+import kr.codesqaud.cafe.session.AccountSession;
+import kr.codesqaud.cafe.session.SignIn;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.service.PostService;
 import org.springframework.stereotype.Controller;
@@ -26,14 +28,15 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public String write(@Valid PostWriteRequest postWriteRequest,
-        BindingResult bindingResult) {
+    public String write(@Valid PostWriteRequest postWriteRequest, BindingResult bindingResult,
+        @SignIn AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
             return "post/write";
         }
 
-        postService.save(postWriteRequest);
-        return "redirect:/posts";
+        postWriteRequest.setWriterId(accountSession.getId());
+        postService.write(postWriteRequest);
+        return "redirect:/";
     }
 
     @GetMapping("/posts/{id}")

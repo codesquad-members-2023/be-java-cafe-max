@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.post.PostResponse;
@@ -26,7 +27,7 @@ public class PostService {
         this.memberRepository = memberRepository;
     }
 
-    public Long save(PostWriteRequest postWriteRequest) {
+    public Long write(PostWriteRequest postWriteRequest) {
         return postRepository.save(postWriteRequest.toPost());
     }
 
@@ -50,13 +51,9 @@ public class PostService {
     }
 
     private WriterResponse getWhiterResponse(Post post) {
-        WriterResponse writerResponse = null;
-
-        if (post.getWriterId() != null) {
-            writerResponse = WriterResponse.from(memberRepository.findById(post.getWriterId())
-                .orElseThrow(MemberNotFoundException::new));
-        }
-
-        return writerResponse;
+        return Optional.ofNullable(post.getWriterId())
+            .flatMap(memberRepository::findById)
+            .map(WriterResponse::from)
+            .orElseThrow(MemberNotFoundException::new);
     }
 }

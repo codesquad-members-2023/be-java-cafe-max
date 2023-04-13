@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.service;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import kr.codesqaud.cafe.domain.AccountSession;
+import kr.codesqaud.cafe.session.AccountSession;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;

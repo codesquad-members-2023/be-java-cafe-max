@@ -11,7 +11,7 @@ import static org.mockito.BDDMockito.given;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import kr.codesqaud.cafe.domain.AccountSession;
+import kr.codesqaud.cafe.session.AccountSession;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;

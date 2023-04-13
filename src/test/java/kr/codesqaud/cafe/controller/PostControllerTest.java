@@ -14,13 +14,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
-import kr.codesqaud.cafe.domain.AccountSession;
+import kr.codesqaud.cafe.session.AccountSession;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
 import kr.codesqaud.cafe.service.PostService;
-import kr.codesqaud.cafe.util.SignInSessionUtil;
+import kr.codesqaud.cafe.session.SignInSessionUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -68,7 +68,7 @@ public class PostControllerTest {
         Long writerId = 1L;
         AccountSession accountSession = new AccountSession(writerId);
         PostWriteRequest postWriteRequest = new PostWriteRequest("게시글 제목", "게시글 내용", writerId);
-        given(postService.save(any())).willReturn(writerId);
+        given(postService.write(any())).willReturn(writerId);
 
         // when
 
@@ -80,7 +80,7 @@ public class PostControllerTest {
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/posts"))
+            .andExpect(redirectedUrl("/"))
             .andDo(print());
     }
 
