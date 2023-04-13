@@ -4,7 +4,7 @@ package kr.codesqaud.cafe.article.service;
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticleDetailDto;
 import kr.codesqaud.cafe.article.dto.ArticleFormDto;
-import kr.codesqaud.cafe.article.dto.ArticleListDto;
+import kr.codesqaud.cafe.article.dto.ArticlePreviewDto;
 import kr.codesqaud.cafe.article.mapper.ArticleDtoMapper;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -17,17 +17,15 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    private final ArticleDtoMapper articleDtoMapper;
 
 
-    public ArticleService(ArticleRepository articleRepository, ArticleDtoMapper articleDtoMapper) {
+    public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
-        this.articleDtoMapper = articleDtoMapper;
     }
 
     //글 저장
-    public Long save(Article article) {
-        return articleRepository.save(article);
+    public Long save(ArticleFormDto articleFormDto, String author) {
+        return articleRepository.save(ArticleDtoMapper.INSTANCE.toArticle(articleFormDto, author));
     }
 
     //전체 글 목록을 DTO로 필터링 하고 반환
