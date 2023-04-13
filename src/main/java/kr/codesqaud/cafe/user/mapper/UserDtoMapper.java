@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.user.mapper;
 
 import kr.codesqaud.cafe.user.domain.User;
 import kr.codesqaud.cafe.user.dto.UserFormDto;
-import kr.codesqaud.cafe.user.dto.UserListDto;
+import kr.codesqaud.cafe.user.dto.UserPreviewDto;
 import kr.codesqaud.cafe.user.dto.UserProfileDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -16,5 +16,5 @@ public interface UserDtoMapper {
 
     UserProfileDto toProfileDto(User user);
 
-    UserListDto toUserListDto(User user);
+    UserPreviewDto toPreviewDto(User user);
 }

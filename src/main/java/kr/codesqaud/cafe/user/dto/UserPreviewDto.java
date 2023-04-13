@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.user.dto;
 
-public class UserListDto {
+public class UserPreviewDto {
     //회원 목록 조회영 사용자DTO
     private String userId;
 

@@ -1,7 +1,8 @@
 package kr.codesqaud.cafe.user.service;
 
 import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.dto.UserListDto;
+import kr.codesqaud.cafe.user.dto.UserFormDto;
+import kr.codesqaud.cafe.user.dto.UserPreviewDto;
 import kr.codesqaud.cafe.user.dto.UserProfileDto;
 import kr.codesqaud.cafe.user.mapper.UserDtoMapper;
 import kr.codesqaud.cafe.user.repository.UserRepository;
@@ -39,13 +40,13 @@ public class UserService {
 
 
     //회원목록 조회(+DTO로 필터)
-    public List<UserListDto> getUserList() {
+    public List<UserPreviewDto> getUserList() {
         List<User> users = userRepository.findAll();
-        List<UserListDto> userListDtos = new ArrayList<>();
+        List<UserPreviewDto> userPreviewDtos = new ArrayList<>();
         for (User user : users) {
-            userListDtos.add(UserDtoMapper.INSTANCE.toUserListDto(user));
+            userPreviewDtos.add(UserDtoMapper.INSTANCE.toPreviewDto(user));
         }
-        return userListDtos;
+        return userPreviewDtos;
     }
 
 
