@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class SignInController {
@@ -22,14 +22,14 @@ public class SignInController {
     }
 
     @PostMapping("/user/sign-in-success")
-    public String userLogin(@ModelAttribute LoginDTO loginDto,HttpServletRequest request){
+    public String userLogin(@ModelAttribute LoginDTO loginDto, HttpSession request){
         String id = loginDto.getUserId();
         userService.matchPassword(loginDto);
 
         UserDTO userDto = userService.getUserById(id);
         Session session = new Session(userDto.getId(),userDto.getNickName());
 
-        request.getSession().setAttribute(Session.LOGIN_USER,session);
+        request.setAttribute(Session.LOGIN_USER,session);
         return "redirect:/user/sign-in-success/"+id;
     }
 
@@ -40,8 +40,8 @@ public class SignInController {
     }
 
     @GetMapping("/user/sign-out")
-    public String userSignOut(HttpServletRequest request){
-        request.getSession().invalidate();
+    public String userSignOut(HttpSession request){
+        request.invalidate();
         return "redirect:/";
     }
 }
