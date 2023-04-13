@@ -46,16 +46,12 @@ public class UserService {
 
     public void editUserProfile(final String userId, final ProfileEditRequest request) {
         User savedUser = userRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        boolean isPasswordTrue = validatePassword(savedUser, request.getOriginalPassword());
+        boolean isPasswordTrue = savedUser.getPassword().equals(request.getOriginalPassword());
         if (isPasswordTrue) {
             savedUser.editProfile(request.getNewPassword(), request.getNewUserName(), request.getNewUserEmail());
             userRepository.update(savedUser);
         } else {
             //todo : 오류메세지 출력
         }
-    }
-
-    public boolean validatePassword(User user, String password) {
-        return user.isSamePassword(password);
     }
 }
