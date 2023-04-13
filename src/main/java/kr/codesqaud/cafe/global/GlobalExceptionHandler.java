@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.global;
 
 import kr.codesqaud.cafe.exception.*;
 import kr.codesqaud.cafe.exception.article.ArticleIdAndSessionIdMismatchException;
+import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
 import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.exception.user.UserUpdateInvalidPasswordException;
@@ -69,6 +70,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(LoginInvalidPasswordException.class)
     public ModelAndView handleLoginInvalidPasswordException(LoginInvalidPasswordException e, RedirectAttributes redirectAttributes) {
         return new ModelAndView(handleExceptionWithRedirect(e, "/user/sign-in", "password-error", redirectAttributes));
+    }
+
+    @ExceptionHandler(ArticleNotFoundException.class)
+    public ModelAndView handleArticleNotFoundException(ArticleNotFoundException e){
+        return createErrorResponseModelAndView("error/error",e);
     }
 
     @ExceptionHandler(ArticleIdAndSessionIdMismatchException.class)
