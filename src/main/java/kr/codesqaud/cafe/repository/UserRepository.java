@@ -10,8 +10,6 @@ public interface UserRepository {
 
     Optional<User> findByUserId(String userId);
 
-    Optional<User> findByName(String name);
-
     List<User> findAll();
 
     void update(User user);

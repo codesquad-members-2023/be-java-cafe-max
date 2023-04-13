@@ -29,13 +29,6 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByName(String name) {
-        return userRepository.values().stream()
-                .filter(user -> user.getUserName().equals(name))
-                .findAny();
-    }
-
-    @Override
     public List<User> findAll() {
         return new ArrayList<>(userRepository.values());
     }
