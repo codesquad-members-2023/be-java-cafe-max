@@ -208,9 +208,13 @@ textarea:focus {
 }
 
 p {
-    padding: 20px 0px 20px;
-    margin-bottom: 50px
+    padding: 20px 0px 60px;
+    margin-bottom: 50px;
     border-bottom: 1.5px solid #D2DAE0;
     width: 100%;
     white-space: pre-wrap;
+}
+
+.buttons > div > .disable:hover {
+    background: #D2DAE0;
 }
