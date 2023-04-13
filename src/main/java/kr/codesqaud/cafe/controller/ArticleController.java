@@ -50,7 +50,7 @@ public class ArticleController {
 	}
 
 	@GetMapping("/articles/edit/{id}")
-	public String editingPosting(Model model, @PathVariable Long id, HttpSession session) {
+	public String editPost(Model model, @PathVariable Long id, HttpSession session) {
 		Object userId = session.getAttribute("sessionedUser");
 		ArticleDto articleDto = articleService.findById(id);
 		if (!articleDto.getWriter().equals(userId)) {
