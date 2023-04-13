@@ -31,7 +31,8 @@
                                 <form  method="get" action="/article/update-form/{{article.idx}}">
                                     <button class = "post-button" type="submit">수정</button>
                                 </form>
-                                <form  method="get" action="/article/update-form/{{article.idx}}">
+                                <form  method="post" action="/article/{{article.idx}}/delete">
+                                    <input type="hidden" name="_method" value="DELETE" />
                                     <button class = "post-button" type="submit">삭제</button>
                                 </form>
                             </div>

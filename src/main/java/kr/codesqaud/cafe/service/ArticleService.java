@@ -52,4 +52,9 @@ public class ArticleService {
                 .map(article -> articleMapper.toArticleInfoDTO(article))
                 .orElseThrow(ArticleIdAndSessionIdMismatchException::new);
     }
+
+    public void deleteArticleByIdx(long idx,String id){
+        validSessionIdAndArticleId(idx,id);
+        articleRepository.deleteArticle(idx);
+    }
 }

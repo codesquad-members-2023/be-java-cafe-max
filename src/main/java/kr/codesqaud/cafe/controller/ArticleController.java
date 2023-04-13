@@ -50,4 +50,11 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    @DeleteMapping("/article/{idx}/delete")
+    public String deleteArticle(@PathVariable long idx,HttpSession httpSession){
+        Session session = (Session) httpSession.getAttribute(Session.LOGIN_USER);
+        articleService.deleteArticleByIdx(idx,session.getId());
+        return "redirect:/";
+    }
+
 }

@@ -40,4 +40,9 @@ public class JDBCArticleRepository implements ArticleRepository {
     public void updateArticle(Article article) {
         jdbcTemplate.update("UPDATE ARTICLE SET title = ?, content = ? WHERE idx = ?", article.getTitle(), article.getContent(), article.getIdx());
     }
+
+    @Override
+    public void deleteArticle(long idx) {
+        jdbcTemplate.update("DELETE FROM ARTICLE WHERE idx = ?",idx);
+    }
 }
