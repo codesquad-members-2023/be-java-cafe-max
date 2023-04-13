@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.article.domain;
 
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -16,10 +17,13 @@ public class Article {
 
     private long id;
 
-    public Article() {
-    }
 
-    public void setTime(Timestamp time) {
+
+    public Article(String author, String title, String contents, long id, Timestamp time) {
+        this.author = author;
+        this.title = title;
+        this.contents = contents;
+        this.id = id;
         this.time = time.toLocalDateTime();
     }
 
@@ -29,10 +33,6 @@ public class Article {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
 
@@ -48,15 +48,4 @@ public class Article {
         return contents;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Repository
@@ -53,7 +54,7 @@ public class JdbcArticleRepository implements ArticleRepository {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setString(1, articleFormDto.getTitle());
             ps.setString(2, articleFormDto.getContents());
-            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now())); //repository 역할이 아니다 -> service
             ps.setLong(4, id);
             return ps;
         });
@@ -68,12 +69,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
-            Article article = new Article();
-            article.setAuthor(rs.getString("author"));
-            article.setTime(rs.getTimestamp("time"));
-            article.setTitle(rs.getString("title"));
-            article.setContents(rs.getString("contents"));
-            article.setId(rs.getLong("id"));
+            Article article = new Article(rs.getString("author"), rs.getString("title"),rs.getString("contents"),rs.getLong("id"),rs.getTimestamp("time"));
             return article;
         };
     }
