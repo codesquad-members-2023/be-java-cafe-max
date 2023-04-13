@@ -115,7 +115,7 @@ class PostControllerTest {
         @DisplayName("실패")
         @Test
         void testShowPostPageFailed() throws Exception {
-            Post post = postRepository.save(new Post.Builder()
+            postRepository.save(new Post.Builder()
                     .title(TEST_TITLE)
                     .textContent(TEST_CONTENT)
                     .build());
