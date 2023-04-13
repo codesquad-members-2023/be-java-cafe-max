@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.account.User;
 import kr.codesqaud.cafe.post.dto.PostForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,18 @@ public class PostController {
         return "/post/detail";
     }
 
+    @PutMapping("/posts/{postId}")
+    public String editPost(@Valid PostForm postForm, BindingResult bindingResult, @PathVariable int postId, @SessionAttribute User user, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "/post/editForm";
+        }
+        Post post = postService.findById(postId);
+        postService.checkId(post.getUser(), user.getId());
+        Post editPost = postService.updateFromPostForm(post, postForm);
+        model.addAttribute(editPost);
+        return "/post/detail";
+    }
+
     @GetMapping("/posts/{postId}/edit")
     public String viewEditPost(@PathVariable int postId, @SessionAttribute User user, Model model) {
         Post post = postService.findById(postId);
@@ -48,12 +61,11 @@ public class PostController {
         return "/post/editForm";
     }
 
-    @PutMapping("/posts/{postId}")
-    public String editPost(@Valid PostForm postForm, @PathVariable int postId, @SessionAttribute User user, Model model) {
+    @DeleteMapping("/posts/{postId}")
+    public String deletePost(@PathVariable int postId, @SessionAttribute User user) {
         Post post = postService.findById(postId);
         postService.checkId(post.getUser(), user.getId());
-        Post editPost = postService.updateFromPostForm(post, postForm);
-        model.addAttribute(editPost);
-        return "/post/detail";
+        postService.delete(post);
+        return "redirect:/";
     }
 }

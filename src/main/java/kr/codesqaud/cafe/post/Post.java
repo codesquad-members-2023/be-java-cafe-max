@@ -23,6 +23,8 @@ public class Post {
 
     private LocalDateTime createdDateTime;
 
+    private boolean isDeleted;
+
 
     public Post() {
     }
@@ -55,15 +57,6 @@ public class Post {
         this.createdDateTime = createdDateTime;
     }
 
-    private Post(Builder builder) {
-        this.id = builder.id;
-        this.nickname = builder.nickname;
-        this.createdDateTime = builder.createdDateTime;
-        this.title = builder.title;
-        this.textContent = builder.textContent;
-        this.user = builder.user;
-    }
-
     public Long getId() {
         return id;
     }
@@ -82,6 +75,24 @@ public class Post {
 
     public LocalDateTime getCreatedDateTime() {
         return createdDateTime;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void disable() {
+        isDeleted = true;
+    }
+
+
+    private Post(Builder builder) {
+        this.id = builder.id;
+        this.nickname = builder.nickname;
+        this.createdDateTime = builder.createdDateTime;
+        this.title = builder.title;
+        this.textContent = builder.textContent;
+        this.user = builder.user;
     }
 
     public static class Builder {

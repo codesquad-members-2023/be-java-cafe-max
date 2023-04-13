@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.post;
 import kr.codesqaud.cafe.account.User;
 import kr.codesqaud.cafe.post.dto.PostForm;
 import kr.codesqaud.cafe.post.dto.SimplePostForm;
+import kr.codesqaud.cafe.post.exception.IllegalPostIdException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,11 +25,16 @@ public class PostService {
     }
 
     public Post findById(int postId) {
-        return postRepository.findById((long) postId).orElseThrow(RuntimeException::new);
+        Post post = postRepository.findById((long) postId).orElseThrow(IllegalPostIdException::new);
+        if (post.isDeleted()) {
+            throw new IllegalPostIdException();
+        }
+        return post;
     }
 
     public List<SimplePostForm> getAllPosts() {
         return postRepository.findAll().stream()
+                .filter(post -> !post.isDeleted())
                 .map(SimplePostForm::from)
                 .collect(Collectors.toList());
     }
@@ -44,5 +50,10 @@ public class PostService {
         if (!user.isSameId(id)) {
             throw new RuntimeException();
         }
+    }
+
+    public void delete(Post post) {
+        post.disable();
+        postRepository.save(post);
     }
 }

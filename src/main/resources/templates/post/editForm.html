@@ -4,7 +4,18 @@
 <body>
 <nav th:replace="fragments/navbar.html :: common">
 </nav>
-<form class="container" id="postForm" th:action="@{/posts/{id}(id = ${postId})}" th:object="${postForm}" method="post" novalidate>
+<form class="container"  th:action="@{/posts/{id}(id = ${postId})}" method="post">
+    <input type="hidden" name="_method" value="DELETE"/>
+    <div class="row justify-content-center col">
+        <div class="col-6 mb-3 row row-cols-auto justify-content-end">
+            <div class="col">
+                <button class="btn btn-danger" type="submit" role="button">삭제</button>
+            </div>
+        </div>
+    </div>
+</form>
+<form class="container" id="postForm" th:action="@{/posts/{id}(id = ${postId})}" th:object="${postForm}" method="post"
+      novalidate>
     <input type="hidden" name="_method" value="PUT"/>
     <div th:if="${#fields.hasErrors()}">
         <div class="row justify-content-center mt-3 mb-3">
@@ -12,7 +23,7 @@
         </div>
         <div class="row justify-content-center" th:if="${errors}">
             <div class="col-6">
-                <div  class="alert alert-danger" role="alert">
+                <div class="alert alert-danger" role="alert">
                     잘못 입력했습니다.
                 </div>
             </div>
@@ -52,7 +63,7 @@
         <div class="row justify-content-center col">
             <div class="col-6 mb-3 row row-cols-auto justify-content-end">
                 <div class="col">
-                    <button class="btn btn-primary" type="submit" role="button">작성완료</button>
+                    <button class="btn btn-primary" type="submit" role="button">수정완료</button>
                 </div>
             </div>
         </div>
@@ -74,7 +85,7 @@
             <div class="mb-3 col-6 ">
                 <div class="form-floating">
                 <textarea class="form-control" id="textContent"
-                          th:field="*{textContent}"  th:value="*{textContent}" placeholder="글의 내용을 입력하세요"
+                          th:field="*{textContent}" th:value="*{textContent}" placeholder="글의 내용을 입력하세요"
                           style="height: 500px;resize: none"></textarea>
                     <label for="textContent">내용</label>
                 </div>
@@ -83,12 +94,13 @@
         <div class="row justify-content-center col">
             <div class="col-6 mb-3 row row-cols-auto justify-content-end">
                 <div class="col">
-                    <button class="btn btn-primary" type="submit" role="button">작성완료</button>
+                    <button class="btn btn-primary" type="submit" role="button">수정완료</button>
                 </div>
             </div>
         </div>
     </div>
 </form>
+
 
 <footer class="container-fluid mt-auto bg-light py-3">
 
