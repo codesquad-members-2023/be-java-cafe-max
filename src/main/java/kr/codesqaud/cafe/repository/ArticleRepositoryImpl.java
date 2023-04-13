@@ -27,7 +27,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        String sql = "insert into articles (writer, title, contents) values (:writer, :title, :contents)";
+        String sql = "insert into article (writer, title, contents) values (:writer, :title, :contents)";
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         template.update(sql, param, keyHolder);
@@ -36,7 +36,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Optional<Article> findBySequence(long sequence) {
-        String sql = "select sequence, writer, title, contents from articles where sequence = :sequence";
+        String sql = "select sequence, writer, title, contents from article where sequence = :sequence";
         SqlParameterSource param = new MapSqlParameterSource("sequence", sequence);
         try {
             return Optional.ofNullable(template.queryForObject(sql, param, articleRowMapper())); // TODO: RowMapper 대신 Article.class를 사용하면 에러 발생
@@ -47,7 +47,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select sequence, writer, title, contents from articles";
+        String sql = "select sequence, writer, title, contents from article";
         return template.query(sql, articleRowMapper());
     }
 

@@ -9,8 +9,8 @@ CREATE table users
     primary key (userId)
 );
 
-DROP TABLE IF EXISTS articles;
-CREATE table articles
+DROP TABLE IF EXISTS article;
+CREATE table article
 (
     sequence bigint NOT NULL AUTO_INCREMENT,
     writer   varchar(10),
