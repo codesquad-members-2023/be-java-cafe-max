@@ -35,4 +35,9 @@ public class JDBCArticleRepository implements ArticleRepository {
         Article article = jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE idx = ?",new Object[]{idx},(rs,rn) -> new Article(rs));
         return Optional.ofNullable(article);
     }
+
+    @Override
+    public void updateArticle(Article article) {
+        jdbcTemplate.update("UPDATE ARTICLE SET title = ?, content = ? WHERE idx = ?", article.getTitle(), article.getContent(), article.getIdx());
+    }
 }

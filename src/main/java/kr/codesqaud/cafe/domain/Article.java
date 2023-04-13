@@ -22,6 +22,12 @@ public class Article {
         this.nickName = nickName;
     }
 
+    public Article(String title,String content,Long idx){
+        this.title = title;
+        this.content = content;
+        this.idx = idx;
+    }
+
     public Article(ResultSet rs) throws SQLException{
         this.title = rs.getString("title");
         this.content = rs.getString("content");

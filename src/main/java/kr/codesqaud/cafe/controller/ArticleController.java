@@ -2,13 +2,11 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.config.Session;
 import kr.codesqaud.cafe.controller.dto.ArticleDTO;
+import kr.codesqaud.cafe.controller.dto.ArticleUpdateDTO;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -37,5 +35,17 @@ public class ArticleController {
         return "post/show";
     }
 
+    @GetMapping("/article/update-form/{idx}")
+    public String showUpdateForm(@PathVariable Long idx,Model model){
+        model.addAttribute("articleIdx",idx);
+        return "post/updateForm";
+    }
+
+    @PutMapping("/article/submit/update-form/{idx}")
+    public String updateArticle(@ModelAttribute @Valid ArticleUpdateDTO articleUpdateDto, @PathVariable Long idx){
+        articleUpdateDto.setIdx(idx);
+        articleService.updateArticle(articleUpdateDto);
+        return "redirect:/";
+    }
 
 }
