@@ -51,8 +51,9 @@ public class JDBCUserRepository implements UserRepository {
     }
 
     @Override
-    public void updateUser(User user) {
+    public User updateUser(User user) {
         String sql = "UPDATE \"USER\" SET nickName = ?, email = ?, password = ? WHERE id = ?";
         jdbcTemplate.update(sql,user.getNickName(),user.getEmail(),user.getPassword(),user.getId());
+        return new User(user.getNickName(), user.getEmail(), user.getPassword(), user.getId());
     }
 }

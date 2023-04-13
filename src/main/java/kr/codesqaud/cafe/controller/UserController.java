@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.config.Session;
 import kr.codesqaud.cafe.controller.dto.user.ProfileEditDTO;
 import kr.codesqaud.cafe.controller.dto.user.UserDTO;
 import kr.codesqaud.cafe.service.UserService;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 
@@ -38,8 +40,10 @@ public class UserController {
     }
 
     @PutMapping("/user/profile/{id}")
-    public String updateUserData(@ModelAttribute @Valid ProfileEditDTO profileEditDto){
-        userService.updateUserById(profileEditDto);
+    public String updateUserData(@ModelAttribute @Valid ProfileEditDTO profileEditDto, HttpSession httpSession){
+        UserDTO userDto = userService.updateUserById(profileEditDto);
+        Session session = new Session(userDto.getId(),userDto.getNickName());
+        httpSession.setAttribute(Session.LOGIN_USER,session);
         return "redirect:/user/list";
     }
 }
