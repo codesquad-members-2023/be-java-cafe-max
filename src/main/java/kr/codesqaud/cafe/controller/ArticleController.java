@@ -20,7 +20,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @PostMapping("/article/submit/{loginUserId}")
+    @PostMapping("/article/submit")
     public String postArticle(@ModelAttribute @Valid ArticleDTO articleDto, HttpSession httpSession) {
         Session session = (Session) httpSession.getAttribute(Session.LOGIN_USER);
         articleDto.setId(session.getId());
