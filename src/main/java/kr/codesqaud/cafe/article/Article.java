@@ -1,5 +1,8 @@
 package kr.codesqaud.cafe.article;
 
+import java.math.BigInteger;
+import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -8,24 +11,20 @@ import java.time.format.DateTimeFormatter;
  * 게시글 엔티티
  */
 public class Article {
-    private static int idCount = 0;
-    private final int articleId;
-    private final String writer;
-    private final String title;
-    private final String contents;
-    private final Timestamp createdAt;
+    private BigInteger articleId;
+    private String writer;
+    private String title;
+    private String contents;
+    private Timestamp createdAt;
 
-
-
-    public Article(String writer, String title, String contents, Timestamp createdAt) {
-        this.articleId = ++idCount;
+    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public int getArticleId() {
+    public BigInteger getArticleId() {
         return articleId;
     }
 
@@ -45,12 +44,30 @@ public class Article {
         return createdAt;
     }
 
+    public void setArticleId(BigInteger articleId) {
+        this.articleId = articleId;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
-                "writer='" + writer + '\'' +
+                "articleId=" + articleId +
+                ", writer='" + writer + '\'' +
                 ", title='" + title + '\'' +
-                ", content='" + contents + '\'' +
+                ", contents='" + contents + '\'' +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }

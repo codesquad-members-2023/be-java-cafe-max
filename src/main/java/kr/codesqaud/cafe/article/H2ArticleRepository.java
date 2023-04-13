@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
+import java.math.BigInteger;
 import java.util.List;
 
 public class H2ArticleRepository implements ArticleRepository {
@@ -21,13 +22,13 @@ public class H2ArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAll() {
+    public List<ArticleDTO> findAll() {
         final String SQL = "SELECT * FROM Articles";
-        return jdbcTemplate.query(SQL, BeanPropertyRowMapper.newInstance(Article.class));
+        return jdbcTemplate.query(SQL, BeanPropertyRowMapper.newInstance(ArticleDTO.class));
     }
 
     @Override
-    public Article findById(int articleId) {
+    public ArticleDTO findById(BigInteger articleId) {
         return null;
     }
 }

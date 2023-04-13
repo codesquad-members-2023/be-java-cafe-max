@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.article.Article;
+import kr.codesqaud.cafe.article.ArticleDTO;
 import kr.codesqaud.cafe.article.ArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.math.BigInteger;
 
 @Controller
 public class ArticleController {
@@ -22,15 +25,15 @@ public class ArticleController {
 
     @PostMapping("/qna/form")
     public String saveArticle(Article article) {
-        articleRepository.save(article);
         logger.info(article.toString());
+        articleRepository.save(article);
         return "redirect:/index";
     }
 
     @GetMapping("/articles/{index}")
-    public String showDetail(@PathVariable int index, Model model) {
-        Article article = articleRepository.findById(index);
-        model.addAttribute("article", article);
+    public String showDetail(@PathVariable BigInteger index, Model model) {
+        ArticleDTO articleDTO = articleRepository.findById(index);
+        model.addAttribute("article", articleDTO);
         return "qna/detail";
     }
 }
