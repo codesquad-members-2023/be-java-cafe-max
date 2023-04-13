@@ -40,13 +40,13 @@ public class UserService {
 
     public List<UserListDTO> getUserList() {
         return userRepository.findAll().stream()
-                .map(user -> userMapper.toUserListDTO(user))
+                .map(userMapper::toUserListDTO)
                 .collect(Collectors.toUnmodifiableList());
     }
 
     public UserDTO getUserById(String id) {
         return userRepository.findUserById(id)
-                .map(user -> userMapper.toUserDTO(user))
+                .map(userMapper::toUserDTO)
                 .orElseThrow(UserNotFoundException::new);
     }
 

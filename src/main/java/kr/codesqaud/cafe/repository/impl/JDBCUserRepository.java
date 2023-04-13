@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.repository.impl;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -34,11 +33,10 @@ public class JDBCUserRepository implements UserRepository {
      */
     @Override
     public boolean exist(String id) {
-        boolean exist = jdbcTemplate.query("SELECT id FROM \"USER\" WHERE id = ? LIMIT 1 ",(rs,rn) -> rs.getString("id"),id)
+        return jdbcTemplate.query("SELECT id FROM \"USER\" WHERE id = ? LIMIT 1 ",(rs,rn) -> rs.getString("id"),id)
                 .stream()
                 .findFirst()
                 .isPresent();
-        return exist;
     }
 
     @Override

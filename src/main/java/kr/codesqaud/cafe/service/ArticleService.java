@@ -32,13 +32,13 @@ public class ArticleService {
     public List<ArticleDTO> getArticleList(){
         return articleRepository.findAll().stream()
                 .sorted(Comparator.comparing(Article::getIdx).reversed())
-                .map(article -> articleMapper.toArticleDTO(article))
+                .map(articleMapper::toArticleDTO)
                 .collect(Collectors.toUnmodifiableList());
     }
 
     public ArticleDTO findArticleByIdx(long idx){
         return articleRepository.findArticleByIdx(idx)
-                .map(article -> articleMapper.toArticleDTO(article))
+                .map(articleMapper::toArticleDTO)
                 .orElseThrow(ArticleNotFoundException::new);
     }
 
@@ -49,7 +49,7 @@ public class ArticleService {
     public ArticleInfoDTO validSessionIdAndArticleId(long idx, String id) {
         return articleRepository.findArticleByIdx(idx)
                 .filter(article -> id.equals(article.getId()))
-                .map(article -> articleMapper.toArticleInfoDTO(article))
+                .map(articleMapper::toArticleInfoDTO)
                 .orElseThrow(ArticleIdAndSessionIdMismatchException::new);
     }
 
