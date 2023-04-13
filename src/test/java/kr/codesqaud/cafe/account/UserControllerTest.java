@@ -96,9 +96,8 @@ class UserControllerTest {
             mockMvc.perform(post("/users/login")
                             .param(EMAIL, "jack1@email.com")
                             .param(PASSWORD, "12345ddd").session(session))
-                    .andExpect(status().isOk())
-                    .andExpect(model().hasErrors())
-                    .andExpect(view().name("account/login"));
+                    .andExpect(status().is4xxClientError())
+                    .andExpect(view().name("account/loginFailed"));
         }
 
     }
