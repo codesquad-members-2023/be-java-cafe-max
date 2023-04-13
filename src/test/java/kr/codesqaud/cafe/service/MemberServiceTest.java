@@ -11,6 +11,7 @@ import static org.mockito.BDDMockito.given;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import kr.codesqaud.cafe.domain.AccountSession;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
@@ -100,14 +101,16 @@ class MemberServiceTest {
     @Test
     void update() {
         // given
-        ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(1L, "mandu@gmail.com"
+        Long memberId = 1L;
+        AccountSession accountSession = new AccountSession(memberId);
+        ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(memberId, "mandu@gmail.com"
             , "Test1234", "Mandu1234", "mandu");
         given(memberRepository.findById(any()))
-            .willReturn(Optional.of(createRequestDummy().toMember().createWithId(1L)))
+            .willReturn(Optional.of(createRequestDummy().toMember().createWithId(memberId)))
             .willReturn(Optional.of(memberUpdateRequest.toMember(LocalDateTime.now())));
 
         // when
-        memberService.update(memberUpdateRequest);
+        memberService.update(memberUpdateRequest, accountSession);
 
         // then
         Member findMember = memberRepository.findById(1L).orElseThrow();
@@ -122,14 +125,16 @@ class MemberServiceTest {
     @Test
     void updateFalse() {
         // given
+        Long memberId = 1L;
+        AccountSession accountSession = new AccountSession(memberId);
         given(memberRepository.findById(any())).willReturn(Optional.empty());
 
         // when
 
         // then
         assertThrows(MemberNotFoundException.class,
-            () -> memberService.update(new ProfileEditRequest(1L,
-                "est@naver.com", "Test1234", "Test1234", "test")));
+            () -> memberService.update(new ProfileEditRequest(memberId, "est@naver.com",
+                "Test1234", "Test1234", "test"), accountSession));
     }
 
     @DisplayName("회원 중에 중복 이메일 검사 시 중복이 있는 경우 성공")
@@ -197,13 +202,13 @@ class MemberServiceTest {
     @Test
     void isNotSamePassword() {
         // given
-        Long id = 1L;
+        String email = "test@gmail.com";
         String password = "Test1234";
-        given(memberRepository.findById(id)).willReturn(Optional.of(new Member(id, "test@gmail.com",
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(new Member(1L, "test@gmail.com",
             "Test1233", "test", LocalDateTime.now())));
 
         // when
-        boolean actual = memberService.isNotSamePassword(id, password);
+        boolean actual = memberService.isNotSamePassword(email, password);
 
         // then
         assertTrue(actual);
@@ -213,16 +218,45 @@ class MemberServiceTest {
     @Test
     void isNotSamePasswordFalse() {
         // given
-        Long id = 1L;
+        String email = "test@gmail.com";
         String password = "Test1234";
-        given(memberRepository.findById(id)).willReturn(Optional.of(new Member(id, "test@gmail.com",
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(new Member(1L, "test@gmail.com",
             "Test1234", "test", LocalDateTime.now())));
 
         // when
-        boolean actual = memberService.isNotSamePassword(id, password);
+        boolean actual = memberService.isNotSamePassword(email, password);
 
         // then
         assertFalse(actual);
+    }
+
+    @DisplayName("이메일을 받아서 회원 중에 이메일이 같은 회원을 찾은 후 해당 회원 정보를 바탕으로 AccountSession을 반환한다")
+    @Test
+    void createSession() {
+        // given
+        Long savedId = 1L;
+        String email = "test@gmail.com";
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(new Member(savedId, "test@gmail.com",
+                "Test1234", "test", LocalDateTime.now())));
+
+        // when
+        AccountSession session = memberService.createSession(email);
+
+        // then
+        assertEquals(savedId, session.getId());
+    }
+
+    @DisplayName("이메일을 받아서 회원 중에 이메일이 같은 회원을 못 찾은 경우 예외를 던진다")
+    @Test
+    void createSessionFalse() {
+        // given
+        String email = "test@gmail.com";
+        given(memberRepository.findByEmail(email)).willReturn(Optional.empty());
+
+        // when
+
+        // then
+        assertThrows(MemberNotFoundException.class, () -> memberService.createSession(email));
     }
 
     private SignUpRequest createRequestDummy() {

@@ -3,10 +3,12 @@ package kr.codesqaud.cafe.service;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.codesqaud.cafe.domain.AccountSession;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
+import kr.codesqaud.cafe.exception.common.Unauthorized;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -42,9 +44,14 @@ public class MemberService {
             .collect(Collectors.toUnmodifiableList());
     }
 
-    public void update(ProfileEditRequest profileEditRequest) {
+    public void update(ProfileEditRequest profileEditRequest, AccountSession accountSession) {
         Member findMember = memberRepository.findById(profileEditRequest.getId())
             .orElseThrow(MemberNotFoundException::new);
+
+        if (!findMember.equalsId(accountSession.getId())) {
+            throw new Unauthorized();
+        }
+
         memberRepository.update(profileEditRequest.toMember(findMember.getCreateDate()));
     }
 
@@ -61,9 +68,16 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public boolean isNotSamePassword(Long id, String password) {
-        return !memberRepository.findById(id)
-            .orElseThrow()
-            .equalsPassword(password);
+    public boolean isNotSamePassword(String email, String password) {
+        return memberRepository.findByEmail(email)
+            .map(member -> !member.equalsPassword(password))
+            .orElse(true);
+    }
+
+    @Transactional(readOnly = true)
+    public AccountSession createSession(String email) {
+        Member findMember = memberRepository.findByEmail(email)
+            .orElseThrow(MemberNotFoundException::new);
+        return new AccountSession(findMember.getId());
     }
 }

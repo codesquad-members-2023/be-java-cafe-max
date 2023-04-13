@@ -7,17 +7,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
+import kr.codesqaud.cafe.domain.AccountSession;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
 import kr.codesqaud.cafe.service.PostService;
+import kr.codesqaud.cafe.util.SignInSessionUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -50,7 +53,7 @@ public class PostControllerTest {
         // when
 
         // then
-        mockMvc.perform(get("/posts"))
+        mockMvc.perform(get("/"))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("post/posts"))
@@ -62,8 +65,10 @@ public class PostControllerTest {
     @Test
     void write() throws Exception {
         // given
-        PostWriteRequest postWriteRequest = new PostWriteRequest("게시글 제목", "게시글 내용", 1L);
-        given(postService.save(any())).willReturn(1L);
+        Long writerId = 1L;
+        AccountSession accountSession = new AccountSession(writerId);
+        PostWriteRequest postWriteRequest = new PostWriteRequest("게시글 제목", "게시글 내용", writerId);
+        given(postService.save(any())).willReturn(writerId);
 
         // when
 
@@ -72,9 +77,10 @@ public class PostControllerTest {
                 .param("title", postWriteRequest.getTitle())
                 .param("content", postWriteRequest.getContent())
                 .param("writerId", String.valueOf(postWriteRequest.getWriterId()))
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/posts"))
+            .andExpect(redirectedUrl("/posts"))
             .andDo(print());
     }
 
@@ -83,7 +89,9 @@ public class PostControllerTest {
     @MethodSource("provideValueForValidatorName")
     void writeFalse(String title, String error) throws Exception {
         // given
-        PostWriteRequest postWriteRequest = new PostWriteRequest(title, "게시글 내용", 1L);
+        Long writerId = 1L;
+        AccountSession accountSession = new AccountSession(writerId);
+        PostWriteRequest postWriteRequest = new PostWriteRequest(title, "게시글 내용", writerId);
 
         // when
 
@@ -92,6 +100,7 @@ public class PostControllerTest {
                 .param("title", postWriteRequest.getTitle())
                 .param("content", postWriteRequest.getContent())
                 .param("writerId", String.valueOf(postWriteRequest.getWriterId()))
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().isOk())
             .andExpect(view().name("post/write"))
@@ -110,7 +119,9 @@ public class PostControllerTest {
     @CsvSource(value = {",NotBlank", "호,Length"})
     void writeFalse2(String content, String error) throws Exception {
         // given
-        PostWriteRequest postWriteRequest = new PostWriteRequest("게시글 제목", content, 1L);
+        Long writerId = 1L;
+        AccountSession accountSession = new AccountSession(writerId);
+        PostWriteRequest postWriteRequest = new PostWriteRequest("게시글 제목", content, writerId);
 
         // when
 
@@ -119,6 +130,7 @@ public class PostControllerTest {
                 .param("title", postWriteRequest.getTitle())
                 .param("content", postWriteRequest.getContent())
                 .param("writerId", String.valueOf(postWriteRequest.getWriterId()))
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().isOk())
             .andExpect(view().name("post/write"))
@@ -131,12 +143,14 @@ public class PostControllerTest {
     void detailPost() throws Exception {
         // given
         PostResponse postResponse = createPostResponseDummy();
+        AccountSession accountSession = new AccountSession(postResponse.getId());
         given(postService.findById(any())).willReturn(postResponse);
 
         // when
 
         // then
-        mockMvc.perform(get("/posts/{id}", postResponse.getId()))
+        mockMvc.perform(get("/posts/{id}", postResponse.getId())
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("post/post"))
@@ -148,12 +162,14 @@ public class PostControllerTest {
     @Test
     void detailPostFalse() throws Exception {
         // given
+        AccountSession accountSession = new AccountSession(1L);
         given(postService.findById(any())).willThrow(PostNotFoundException.class);
 
         // when
 
         // then
-        mockMvc.perform(get("/posts/{id}", "1"))
+        mockMvc.perform(get("/posts/{id}", "1")
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("error/404"))
@@ -164,11 +180,13 @@ public class PostControllerTest {
     @Test
     void writeForm() throws Exception {
         // given
+        AccountSession accountSession = new AccountSession(1L);
 
         // when
 
         // then
-        mockMvc.perform(get("/posts/write"))
+        mockMvc.perform(get("/posts/write")
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("post/write"))

@@ -9,9 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping("/posts")
 @Controller
 public class PostController {
 
@@ -27,7 +25,7 @@ public class PostController {
         return "post/posts";
     }
 
-    @PostMapping
+    @PostMapping("/posts")
     public String write(@Valid PostWriteRequest postWriteRequest,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -38,13 +36,13 @@ public class PostController {
         return "redirect:/posts";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/posts/{id}")
     public String post(@PathVariable Long id, Model model) {
         model.addAttribute("postResponse", postService.findById(id));
         return "post/post";
     }
 
-    @GetMapping("/write")
+    @GetMapping("/posts/write")
     public String writeForm(PostWriteRequest postWriteRequest) {
         return "post/write";
     }
