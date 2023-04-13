@@ -84,7 +84,7 @@ public class UserService {
         if (isDuplicateEmail(user, profileEditForm.getEmail())) {
             throw new IllegalEditEmailException();
         }
-        if (isSamePassword(user, profileEditForm.getPassword())) {
+        if (!isSamePassword(user, profileEditForm.getPassword())) {
             throw new IllegalEditPasswordException();
         }
     }

@@ -179,7 +179,7 @@ class UserControllerTest {
         }
     }
 
-    @DisplayName("유저 프로필 수정 페이지 테스트")
+    @DisplayName("유저 프로필 페이지 업데이트 테스트")
     @Nested
     class ProfileEditPageTest {
 
