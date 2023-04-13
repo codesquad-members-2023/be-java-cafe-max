@@ -28,20 +28,20 @@ public class ArticleService {
     }
 
     //전체 글 목록을 DTO로 필터링 하고 반환
-    public List<ArticlePreviewDto> getArticleListDtos() {
+    public List<ArticlePreviewDto> getPreviewDtos() {
         List<Article> articles = articleRepository.findAll();
-        List<ArticlePreviewDto> articleListDtos = new ArrayList<>();
+        List<ArticlePreviewDto> articlePreviewDtos = new ArrayList<>();
         for (Article article : articles) {
-            articleListDtos.add(ArticleDtoMapper.INSTANCE.toPreviewDto(article));
+            articlePreviewDtos.add(ArticleDtoMapper.INSTANCE.toPreviewDto(article));
         }
 
-        return articleListDtos;
+        return articlePreviewDtos;
     }
 
 
     //ID로 글을 찾아 DTO로 필터링 후 반환
     public ArticleDetailDto getArticleDetail(Long index) {
-        Article article = articleRepository.findByID(index);
+        Article article = articleRepository.findById(index);
         return ArticleDtoMapper.INSTANCE.toDetailDto(article);
     }
 

@@ -13,7 +13,7 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
-    Article findByID(Long index);
+    Article findById(Long index);
 
     Long modify(Article article);
 

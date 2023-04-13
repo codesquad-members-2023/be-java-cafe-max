@@ -38,7 +38,7 @@ public class ArticleController {
     //인덱스(홈)으로 매핑하여 글 목록을 보여줌
     @GetMapping("/list")
     public String listArticles(Model model) {
-        model.addAttribute("articles", articleService.getArticleListDtos());
+        model.addAttribute("articles", articleService.getPreviewDtos());
         return "articles/list";
     }
 
