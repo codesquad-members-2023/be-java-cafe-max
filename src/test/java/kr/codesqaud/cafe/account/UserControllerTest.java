@@ -36,6 +36,7 @@ class UserControllerTest {
     private static final String PROFILE_EDIT_FORM = "profileEditForm";
     private static final String PROFILE_FORM = "profileForm";
     private static final String JOIN_FORM = "joinForm";
+    private static final int NON_EXISTING_USER_ID = 200;
 
     @Autowired
     MockMvc mockMvc;
@@ -239,7 +240,7 @@ class UserControllerTest {
             @DisplayName("실패(유저 아이디)")
             @Test
             void setUserProfileFailedByUserId() throws Exception {
-                mockMvc.perform(put("/users/" + (jack.getId() + 1) + "/profile")
+                mockMvc.perform(put("/users/" + NON_EXISTING_USER_ID + "/profile")
                                 .param(PASSWORD, TEST_PASSWORD)
                                 .param(EMAIL, JERRY_EMAIL)
                                 .param(NICKNAME, JERRY)

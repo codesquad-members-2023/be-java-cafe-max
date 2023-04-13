@@ -33,7 +33,7 @@ class PostControllerTest {
     private static final String TEXT_CONTENT = "textContent";
     private static final String TEST_TITLE = "testTitle";
     private static final String TEST_CONTENT = "testContent";
-    public static final int FAILED_CASE = 300;
+    public static final int NON_EXISTING_POST_ID = 300;
 
     @Autowired
     MockMvc mockMvc;
@@ -120,7 +120,7 @@ class PostControllerTest {
                     .textContent(TEST_CONTENT)
                     .build());
 
-            mockMvc.perform(get("/posts/" + FAILED_CASE).session(session))
+            mockMvc.perform(get("/posts/" + NON_EXISTING_POST_ID).session(session))
                     .andExpect(status().is4xxClientError())
                     .andExpect(view().name("error/4xx"));
         }
