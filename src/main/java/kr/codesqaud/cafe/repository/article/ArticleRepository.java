@@ -10,4 +10,5 @@ public interface ArticleRepository {
     List<Article> findAll();
     Article findWithSurroundingArticles(Long id);
     boolean exist(Long id);
+    int edit(Article article);
 }

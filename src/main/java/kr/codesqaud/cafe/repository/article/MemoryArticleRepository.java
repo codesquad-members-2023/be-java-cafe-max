@@ -45,4 +45,13 @@ public class MemoryArticleRepository implements ArticleRepository {
         article.setNextId(nextId);
         return article;
     }
+
+    @Override
+    public int edit(Article article) {
+        Article findArticle = STORE.get(article.getId());
+        article.setTitle(article.getTitle());
+        article.setContents(article.getContents());
+        STORE.put(article.getId(), article);
+        return 1;
+    }
 }

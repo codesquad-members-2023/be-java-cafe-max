@@ -65,4 +65,14 @@ public class JdbcArticleRepository implements ArticleRepository {
                 .findFirst()
                 .orElseThrow(ArticleNotFoundException::new);
     }
+
+    @Override
+    public int edit(Article article) {
+        final String sql = "UPDATE articles SET title = :title, contents = :contents WHERE id = :id";
+        Map<String, Object> parameter = Map.of(
+                "id", article.getId(),
+                "title", article.getTitle(),
+                "contents", article.getContents());
+        return jdbcTemplate.update(sql, parameter);
+    }
 }
