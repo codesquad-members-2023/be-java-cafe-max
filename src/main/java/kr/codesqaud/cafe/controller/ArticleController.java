@@ -36,4 +36,6 @@ public class ArticleController {
         model.addAttribute("article", articleService.findArticleById(id));
         return "post/show";
     }
+
+
 }
