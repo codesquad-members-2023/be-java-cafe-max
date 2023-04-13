@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.controller.dto.ArticleDTO;
 import kr.codesqaud.cafe.controller.dto.ArticleUpdateDTO;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.mapper.ArticleMapper;
+import kr.codesqaud.cafe.exception.ArticleIdAndSessionIdMismatchException;
 import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,5 +43,11 @@ public class ArticleService {
 
     public void updateArticle(ArticleUpdateDTO articleUpdateDto){
         articleRepository.updateArticle(articleMapper.toArticle(articleUpdateDto));
+    }
+
+    public void validSessionIdAndArticleId(long idx,String id){
+            articleRepository.findArticleByIdx(idx)
+                    .filter(article -> id.equals(article.getId()))
+                    .orElseThrow(ArticleIdAndSessionIdMismatchException::new);
     }
 }

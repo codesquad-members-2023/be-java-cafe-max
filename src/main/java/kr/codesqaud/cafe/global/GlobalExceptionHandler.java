@@ -1,10 +1,7 @@
 package kr.codesqaud.cafe.global;
 
 
-import kr.codesqaud.cafe.exception.AlreadyUserExistenceException;
-import kr.codesqaud.cafe.exception.LoginInvalidPasswordException;
-import kr.codesqaud.cafe.exception.UserNotFoundException;
-import kr.codesqaud.cafe.exception.UserUpdateInvalidPasswordException;
+import kr.codesqaud.cafe.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -72,4 +69,8 @@ public class GlobalExceptionHandler {
         return new ModelAndView(handleExceptionWithRedirect(e, "/user/sign-in", "password-error", redirectAttributes));
     }
 
+    @ExceptionHandler(ArticleIdAndSessionIdMismatchException.class)
+    public ModelAndView handleArticleIdAndSessionIdMismatchException(ArticleIdAndSessionIdMismatchException e){
+        return createErrorResponseModelAndView("error/error", e);
+    }
 }
