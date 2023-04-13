@@ -3,9 +3,12 @@ package kr.codesqaud.cafe.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import kr.codesqaud.cafe.SessionConstant;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.LoginFormDTO;
 import kr.codesqaud.cafe.service.LoginService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,7 +31,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(
-            @Valid LoginFormDTO loginForm, BindingResult bindingResult, Model model, HttpServletRequest request) {
+            @Valid LoginFormDTO loginForm, BindingResult bindingResult, HttpServletRequest request) {
         User loginUser = loginService.login(loginForm);
 
         if (bindingResult.hasErrors()) {
@@ -40,7 +43,10 @@ public class LoginController {
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("loginUser", loginUser);
+        session.setAttribute(SessionConstant.LOGIN_USER_ID, loginUser.getUserId());
+        session.setAttribute(SessionConstant.LOGIN_USER_NAME, loginUser.getName());
+
+
         return "redirect:/";
     }
 
