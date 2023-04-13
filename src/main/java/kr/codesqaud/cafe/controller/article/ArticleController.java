@@ -45,7 +45,7 @@ public class ArticleController {
     }
 
     @GetMapping("/questions/{id}/updateForm")
-    public String getUpdateArticle(@PathVariable Long id, Model model, HttpSession session, BindingResult bindingResult) {
+    public String getUpdateArticle(@PathVariable Long id, Model model, HttpSession session) {
         validateUserId(id, session);
         ArticleUpdateForm article = articleService.findUpdate(id);
         model.addAttribute("articleUpdated", article);
