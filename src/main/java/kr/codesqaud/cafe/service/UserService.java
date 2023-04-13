@@ -10,6 +10,7 @@ import java.util.List;
 public class UserService {
     private UserRepository userRepository;
 
+
     public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
@@ -18,5 +19,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<User> getUserList = userRepository.dataBase();
+    public List<User> getUserList(){
+        return userRepository.getDataBase();
+    }
 }

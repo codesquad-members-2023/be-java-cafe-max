@@ -6,15 +6,15 @@ import java.util.List;
 @Repository
 public class UserRepository {
     private List<User> dataBase;
-    public UserRepository(ArrayList<User> users){
-        this.dataBase = users;
+    public UserRepository(){
+        this.dataBase = new ArrayList<>();
     }
 
     public void save(User user){
         User newUser = user;
         dataBase.add(newUser);
     }
-    public List<User> dataBase() {
+    public List<User> getDataBase() {
         return dataBase;
     }
 }
