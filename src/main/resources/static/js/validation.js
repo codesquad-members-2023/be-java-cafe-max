@@ -167,7 +167,30 @@ function validateEdit() {
     const content = checkContent();
 
     if (title && content) {
+        const form = document.getElementById("posting");
+        const methodInput = document.createElement("input");
+        methodInput.setAttribute("type", "hidden");
+        methodInput.setAttribute("name", "_method");
+        methodInput.setAttribute("value", "PUT");
+        form.appendChild(methodInput);
+
         alert("글이 정상적으로 수정되었습니다");
+        document.getElementById("posting").submit();
+    }
+}
+
+/* 글 삭제 */
+
+function validateDelete() {
+    if (confirm("삭제된 게시글은 복구가 어렵습니다. 게시글을 삭제하시겠습니까?")) {
+        const form = document.getElementById("posting");
+        const methodInput = document.createElement("input");
+        methodInput.setAttribute("type", "hidden");
+        methodInput.setAttribute("name", "_method");
+        methodInput.setAttribute("value", "DELETE");
+        form.appendChild(methodInput);
+
+        alert("글이 정상적으로 삭제되었습니다");
         document.getElementById("posting").submit();
     }
 }

@@ -240,3 +240,17 @@ p {
 .editButton:hover {
     color: #203faf;
 }
+
+.editButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    padding: 0px 0px;
+    gap: 0px;
+    width: 100%;
+    height: 64px;
+
+    background: none;
+    border: none;
+}

@@ -12,7 +12,7 @@
 
 <div layout:fragment="content">
     <section class="post">
-        <form id="posting" th:action="@{/articles/{id}(id=${article.id})}" method="post" th:method="put">
+        <form id="posting" th:action="@{/articles/{id}(id=${article.id})}" method="post">
             <input type="hidden" name="writer" th:value="${article.writer}">
             <h2>글 수정하기</h2>
             <div>
@@ -25,7 +25,10 @@
                 <textarea maxlength="1000" id="inputContent" name="contents" th:text="${article.contents}" placeholder="글의 내용을 입력하세요"></textarea>
                 <span class="checkContent hide">내용은 3자 이상 1000자 이하로 입력해주세요</span>
             </div>
-            <button type="button" class="button" onclick="validateEdit()">수정 완료</button>
+            <div class="editButtons">
+                <button type="button" class="button" onclick="validateDelete()" formaction="@{/articles/{id}(id=${article.id})}" formmethod="delete">삭제하기</button>
+                <button type="button" class="button" onclick="validateEdit()">수정 완료</button>
+            </div>
         </form>
 
         <script src="/js/validation.js"></script>
