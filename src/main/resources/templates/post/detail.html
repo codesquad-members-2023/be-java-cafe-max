@@ -55,10 +55,12 @@
             <p class="text-end pe-0 ps-0 ms-1">댓글 <span id="quantity">0</span> 개</p>
         </div>
         <div>
-            <button th:if="${post.user.id} == ${session.user.id}"
-                    th:onclick="|location.href='@{/posts/{id}/edit(id = ${postId})}'|" class="btn btn-primary"
-                    type="submit">수정
-            </button>
+            <div th:if="${post.user} != null">
+                <button th:if="${post.user.id} == ${session.user.id}"
+                        th:onclick="|location.href='@{/posts/{id}/edit(id = ${postId})}'|" class="btn btn-primary"
+                        type="submit">수정
+                </button>
+            </div>
         </div>
     </div>
 </div>

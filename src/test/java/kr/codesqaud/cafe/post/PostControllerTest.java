@@ -33,6 +33,7 @@ class PostControllerTest {
     private static final String TEXT_CONTENT = "textContent";
     private static final String TEST_TITLE = "testTitle";
     private static final String TEST_CONTENT = "testContent";
+    public static final int FAILED_CASE = 300;
 
     @Autowired
     MockMvc mockMvc;
@@ -81,7 +82,7 @@ class PostControllerTest {
 
         @DisplayName("실패")
         @ParameterizedTest
-        @CsvSource({"testTitle,testContent", "t,textContent", "title,te"})
+        @CsvSource({"t,textContent", "title,te"})
         void addPostFailureFailed(String title, String textContent) throws Exception {
             mockMvc.perform(post("/posts")
                             .param(TITLE, title)
@@ -119,7 +120,7 @@ class PostControllerTest {
                     .textContent(TEST_CONTENT)
                     .build());
 
-            mockMvc.perform(get("/posts/" + (post.getId() + 1)).session(session))
+            mockMvc.perform(get("/posts/" + FAILED_CASE).session(session))
                     .andExpect(status().is4xxClientError())
                     .andExpect(view().name("error/4xx"));
         }
