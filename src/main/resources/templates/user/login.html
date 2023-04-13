@@ -18,7 +18,7 @@
         <form id="signUp" th:action="@{/users/login}" method="post">
             <div>
                 <label for="inputUserId">아이디</label>
-                <input type="text" id="inputUserId" name="userId" placeholder="아이디를 입력해주세요">
+                <input type="text" id="inputUserId" name="userId" placeholder="아이디를 입력해주세요" autofocus>
                 <span th:if="${duplicateUserIdMessage}" th:text="${duplicateUserIdMessage}">이미 존재하는 아이디입니다</span>
                 <span class="checkUserId hide">아이디는 2자 이상 12자 이하로 입력해주세요</span>
             </div>
