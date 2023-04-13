@@ -4,8 +4,10 @@ import kr.codesqaud.cafe.domain.dto.article.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleTimeForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleUpdateForm;
 import kr.codesqaud.cafe.service.article.ArticleService;
+import kr.codesqaud.cafe.session.SessionConst;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -43,7 +45,8 @@ public class ArticleController {
     }
 
     @GetMapping("/questions/{id}/updateForm")
-    public String getUpdateArticle(@PathVariable Long id, Model model) {
+    public String getUpdateArticle(@PathVariable Long id, Model model, HttpSession session, BindingResult bindingResult) {
+        validateUserId(id, session);
         ArticleUpdateForm article = articleService.findUpdate(id);
         model.addAttribute("articleUpdated", article);
         return "qna/updateForm";
@@ -56,8 +59,18 @@ public class ArticleController {
     }
 
     @DeleteMapping("/questions/{id}")
-    public String deleteArticle(@PathVariable Long id) {
+    public String deleteArticle(@PathVariable Long id, HttpSession session) {
+        validateUserId(id, session);
         articleService.delete(id);
         return "redirect:/";
+    }
+
+    private void validateUserId(Long id, HttpSession session) {
+        String loginUserId = (String) session.getAttribute(SessionConst.LOGIN_USER_ID);
+        ArticleTimeForm article = articleService.findArticleId(id);
+
+        if (!loginUserId.equals(article.getUserId())) {
+            throw new IllegalArgumentException("자신이 작성한 게시물이어야 합니다.");
+        }
     }
 }
