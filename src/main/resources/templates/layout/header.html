@@ -65,7 +65,7 @@
                 <li><a href="#registerModal" role="button" data-toggle="modal">회원가입</a></li>
                 -->
                 {{#sessionId}}
-                    <li><a href="/user/logout" role="button" >로그아웃</a></li>
+                <li><a role="button" onclick="submit()" >로그아웃</a></li>
                 <li><a href="/user/update/{{sessionId.Id}}" role="button">개인정보수정</a></li>
                 {{/sessionId}}
             </ul>
@@ -76,3 +76,16 @@
 <script src="/js/jquery-2.2.0.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/scripts.js"></script>
+
+<script>
+    function submit(){
+        $.ajax({
+            url: "/user/logout",
+            type: "POST"
+        }).done(function (){
+            alert("로그아웃되었습니다.")
+            location.href="/";
+        })
+    }
+
+</script>
