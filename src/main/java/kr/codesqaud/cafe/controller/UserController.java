@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -21,9 +22,14 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/signup")
+    public String getSignUp(){
+        return "user/form";
+    }
+
 
     @PostMapping("/create")
-    public String postSignUp(SignUpFormDto signUpFormDto) {
+    public String postSignUp(@Valid @ModelAttribute SignUpFormDto signUpFormDto) {
         userService.signUp(signUpFormDto);
         return "redirect:/user";
     }
@@ -52,8 +58,9 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public String putUpdate(@PathVariable String id, UpdateFormDto updateFormDto) {
+    public String putUpdate(@PathVariable String id, @Valid @ModelAttribute UpdateFormDto updateFormDto ,HttpSession session) {
         userService.update(userService.findById(id), updateFormDto);
+        session.setAttribute("sessionId",new LoginSessionDto(id,updateFormDto.getName()));
         return "redirect:/user";
     }
 

@@ -38,8 +38,7 @@ public class UserService {
             userRepository.update(new User(user.getUserId(), dto.getNewPassword(), dto.getName(), dto.getEmail()));
             return true;
         }
-        return false;
-
+        throw new NotFoundException("비밀번호입력 오류");
     }
 
     public boolean login(User loginUser,String password){

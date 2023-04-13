@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 
 @Controller
@@ -24,7 +25,7 @@ public class ArticleController {
     }
 
     @PostMapping("/article/write")
-    public String postQuestion(ArticleFormDto articleFormDto,HttpSession session) {
+    public String postQuestion(@Valid @ModelAttribute ArticleFormDto articleFormDto, HttpSession session) {
         articleService.writeArticle(articleFormDto,session);
         return "redirect:/";
     }
@@ -47,15 +48,15 @@ public class ArticleController {
     public String getUpdatePage(@PathVariable int index,Model model ,HttpSession session){
         Article article = articleService.findByIdx(index);
         articleService.checkLoginAuth(article.getUserId(),session);
-        model.addAttribute("title",article.getTitle());
-        model.addAttribute("contents",article.getContents());
+        model.addAttribute("setTitle",article.getTitle());
+        model.addAttribute("setContent",article.getContents());
         model.addAttribute("index",index);
         return "qna/update_form";
     }
 
     @PutMapping("/article/update/{index}")
-    public String putUpdate(@PathVariable int index,ArticleFormDto dto){
-        articleService.update(index, dto);
+    public String putUpdate(@PathVariable int index, @Valid @ModelAttribute ArticleFormDto dto, HttpSession session){
+        articleService.update(index, dto,session);
         return "redirect:/article/show/"+index;
     }
 
