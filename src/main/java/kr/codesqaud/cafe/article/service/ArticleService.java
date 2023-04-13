@@ -18,7 +18,6 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
 
-
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
@@ -47,7 +46,7 @@ public class ArticleService {
     }
 
     public void update(long id, ArticleFormDto articleFormDto) {
-        articleRepository.modify(id, articleFormDto);
+        articleRepository.modify(ArticleDtoMapper.INSTANCE.toArticle(articleFormDto, id));
     }
 
     public void delete(long id) {
