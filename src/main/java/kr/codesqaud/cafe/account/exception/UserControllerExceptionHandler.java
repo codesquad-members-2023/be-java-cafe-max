@@ -12,22 +12,20 @@ public class UserControllerExceptionHandler {
 
     private static final String EMAIL_ERROR = "emailError";
     private static final String PASSWORD_ERROR = "passwordError";
-    public static final String EMAIL_ERROR_MESSAGE = "존재하지 않는 이메일입니다";
-    public static final String PASSWORD_ERROR_MESSAGE = "비밀번호가 일치하지 않습니다";
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalLoginPasswordException.class)
-    public String handlerIllegalLoginPasswordException(Model model) {
+    public String handlerIllegalLoginPasswordException(Model model, IllegalLoginPasswordException e) {
         model.addAttribute(new LoginForm());
-        model.addAttribute(PASSWORD_ERROR, PASSWORD_ERROR_MESSAGE);
+        model.addAttribute(PASSWORD_ERROR, e.getMessage());
         return "account/loginFailed";
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(NoSuchLoginEmailException.class)
-    public String executeRuntimeErrorHandler(Model model) {
+    public String handlerNoSuchLoginEmailException(Model model, NoSuchLoginEmailException e) {
         model.addAttribute(new LoginForm());
-        model.addAttribute(EMAIL_ERROR, EMAIL_ERROR_MESSAGE);
+        model.addAttribute(EMAIL_ERROR, e.getMessage());
         return "account/loginFailed";
     }
 }
