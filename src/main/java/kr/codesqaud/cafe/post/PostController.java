@@ -27,7 +27,7 @@ public class PostController {
     @PostMapping("/posts")
     public String savePost(@Valid PostForm postForm, Errors errors, @SessionAttribute User user) {
         if (errors.hasErrors()) {
-            return "/post/form";
+            return "post/form";
         }
         Post post = postService.save(postForm, user);
         return "redirect:/posts/" + post.getId();
@@ -37,7 +37,7 @@ public class PostController {
     public String viewPost(@PathVariable int postId, Model model) {
         Post post = postService.findById(postId);
         model.addAttribute(post);
-        return "/post/detail";
+        return "post/detail";
     }
 
     @PutMapping("/posts/{postId}")
@@ -49,7 +49,7 @@ public class PostController {
         postService.checkCanAccess(post.getUser(), user.getId());
         Post editPost = postService.updateFromPostForm(post, postForm);
         model.addAttribute(editPost);
-        return "/post/detail";
+        return "post/detail";
     }
 
     @GetMapping("/posts/{postId}/edit")
@@ -58,7 +58,7 @@ public class PostController {
         postService.checkCanAccess(post.getUser(), user.getId());
         model.addAttribute(PostForm.from(post));
         model.addAttribute(postId);
-        return "/post/editForm";
+        return "post/editForm";
     }
 
     @DeleteMapping("/posts/{postId}")
