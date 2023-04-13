@@ -18,3 +18,5 @@ create table if not exists users
     email varchar(64) not null,
     primary key (userId)
 );
+
+
