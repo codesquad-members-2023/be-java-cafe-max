@@ -16,15 +16,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final UserDtoMapper userDtoMapper;
 
-    public UserService(UserRepository userRepository, UserDtoMapper userDtoMapper) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userDtoMapper = userDtoMapper;
     }
 
     //ID 중복 확인 후 회원가입
-    public String join(User user) {
+    public String join(UserFormDto userFormDto) {
+        User user = UserDtoMapper.INSTANCE.toUser(userFormDto);
         validateDuplicateMember(user); //중복 회원 검증
         userRepository.save(user);
         return user.getUserId();

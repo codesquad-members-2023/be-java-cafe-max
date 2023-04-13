@@ -24,7 +24,7 @@ public class UserController {
     //회원 가입 시, 회원 객체 생성 후 join
     @PostMapping("/create")
     public String createUser(UserFormDto userForm) {
-        userService.join(new User(userForm.getUserId(), userForm.getPassword(), userForm.getName(), userForm.getEmail()));
+        userService.join(userForm);
         return "redirect:/user";
     }
 
