@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.domain.article.repository.ArticleRepository;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
 import kr.codesqaud.cafe.dto.LoginSessionDto;
 import kr.codesqaud.cafe.exception.DeniedAccessException;
+import kr.codesqaud.cafe.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -55,13 +56,15 @@ public class ArticleService {
     }
 
     public Article findByIdx(int idx){
-        return articleRepository.findByIdx(idx);
+        return articleRepository.findByIdx(idx).orElseThrow(()->new NotFoundException("게시글 찾을수 없음"));
     }
 
-    public boolean update(int index, ArticleFormDto dto) {
+    public boolean update(int index, ArticleFormDto dto ,HttpSession session) {
+        LoginSessionDto loginSessionDto = (LoginSessionDto) session.getAttribute("sessionId");
         Article article = new Article.Builder()
                                     .index(index)
                                     .title(dto.getTitle())
+                                    .writer(loginSessionDto.getName())
                                     .contents(dto.getContents())
                                     .build();
         articleRepository.update(article);

@@ -7,6 +7,7 @@ import kr.codesqaud.cafe.dto.SignUpFormDto;
 import kr.codesqaud.cafe.dto.UpdateFormDto;
 import kr.codesqaud.cafe.exception.DeniedAccessException;
 import kr.codesqaud.cafe.exception.LoginFailedException;
+import kr.codesqaud.cafe.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -26,9 +27,8 @@ public class UserService {
         return true;
     }
 
-    public User findById(String id) {
-
-        return userRepository.findById(id);
+    public User findById(String id){
+        return userRepository.findById(id).orElseThrow(()->new NotFoundException("유저를 찾을수 없음"));
     }
 
 
