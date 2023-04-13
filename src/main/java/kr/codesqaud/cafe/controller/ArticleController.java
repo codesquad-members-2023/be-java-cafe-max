@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +21,9 @@ public class ArticleController {
 	}
 
 	@PostMapping("/qna/form")
-	public String createNewPosting(@ModelAttribute PostingRequest postingRequest) {
-		articleService.articleSave(postingRequest);
+	public String createNewPosting(@ModelAttribute PostingRequest postingRequest, HttpSession session) {
+		Object userId = session.getAttribute("sessionedUser");
+		articleService.articleSave(postingRequest, (String)userId);
 		return "redirect:/";
 	}
 
@@ -34,5 +37,14 @@ public class ArticleController {
 	public String postDetails(Model model, @PathVariable Long id) {
 		model.addAttribute("details", articleService.findById(id));
 		return "qna/show";
+	}
+
+	@GetMapping("/questions/form")
+	public String newPosting(HttpSession session) {
+		Object user = session.getAttribute("sessionedUser");
+		if (user == null) {
+			return "redirect:/users/login";
+		}
+		return "qna/form";
 	}
 }
