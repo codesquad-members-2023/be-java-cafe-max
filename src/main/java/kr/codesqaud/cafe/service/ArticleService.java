@@ -3,10 +3,10 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.dto.article.ArticleResponse;
 import kr.codesqaud.cafe.dto.article.ArticleSaveRequest;
 import kr.codesqaud.cafe.dto.article.ArticleWithSurroundingResponse;
-import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +20,7 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Long saveArticle(final ArticleSaveRequest articleSaveRequest) {
+    public Long saveArticle(ArticleSaveRequest articleSaveRequest) {
         return articleRepository.save(articleSaveRequest.toArticle());
     }
 
@@ -28,14 +28,12 @@ public class ArticleService {
         return articleRepository.findAll().stream().map(ArticleResponse::from).collect(Collectors.toUnmodifiableList());
     }
 
+    @Transactional
     public ArticleResponse findById(Long id) {
-        if (!articleRepository.exist(id)) {
-            throw new ArticleNotFoundException();
-        }
-
         return ArticleResponse.from(articleRepository.findById(id));
     }
 
+    @Transactional
     public ArticleWithSurroundingResponse getArticleWithSurrounding(Long id) {
         return ArticleWithSurroundingResponse.from(articleRepository.findWithSurroundingArticles(id));
     }
