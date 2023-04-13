@@ -5,63 +5,68 @@
     <link href="/css/post/show.css" rel="stylesheet">
 </head>
 <body>
-    <div class="background">
-        {{> fragments/navbar}}
+<div class="background">
+    {{> fragments/navbar}}
 
-        <div class="container" id="main">
-            <div class="col-md-12 col-sm-12 col-lg-12">
-                <div class="panel panel-default">
-                  <header class="post-header">
-                      <p class="post-title">
-                          {{#article}}
-                          {{article.title}}
-                          {{/article}}
-                      </p>
-                  </header>
+    <div class="container" id="main">
+        <div class="col-md-12 col-sm-12 col-lg-12">
+            <div class="panel panel-default">
+                <header class="post-header">
+                    <p class="post-title">
+                        {{#article}}
+                        {{article.title}}
+                        {{/article}}
+                    </p>
+                </header>
 
-                  <div class="content-main">
-                      <article class="article">
-                          <div class="article-header">
-                              <hr/>
-                              <div class="article-header-text">
-                                  <p class="article-content">{{article.nickName}}</p>
-                                  <p class="article-content">
-                                      {{article.date}}
-                                  </p>
-                                  <p class="article-content">조회 10</p>
-                              </div>
-                              <hr/>
-                          </div>
+                <div class="content-main">
+                    <article class="article">
+                        <div class="article-header">
+                            <hr/>
+                            <div class="article-header-text">
+                                <p class="article-content">{{article.nickName}}</p>
+                                <p class="article-content">{{article.date}}</p>
+                                <p class="article-content">조회 10</p>
 
-                          <div class="article-doc">
-                              <p>{{#article}}
-                                  {{article.content}}
-                                  {{/article}}</p>
-                          </div>
-                      </article>
+                                <form  method="get" action="/article/update-form/{{article.idx}}">
+                                    <button class = "post-button" type="submit">수정</button>
+                                </form>
+                                <form  method="get" action="/article/update-form/{{article.idx}}">
+                                    <button class = "post-button" type="submit">삭제</button>
+                                </form>
+                            </div>
+                            <hr/>
+                        </div>
 
-                      <div class="post-comment">
-                          <div class="post-comment-slipp">
-                              <p class="post-comment-count">댓글 0개</p>
-                              <div class="post-comment-slipp-articles">
-                                  <form class="submit-write" method="get" action="../index.html ">
-                                      <div class="comment-writer-container">
-                                          <input class="comment-writer" id="writer" name="writer" value={{loginUser.nickName}} readonly/>
-                                      </div>
-                                      <div class="form-group">
-                                          <textarea class="form-control" id="comment" name="comment" placeholder="내용을 입력하세요"></textarea>
-                                      </div>
-                                      <input class="post-write-btn" type="submit" value="등록"/>
-                                  </form>
-                              </div>
-                              <form class="submit-write" method="get" action="/article/update-form/{{article.idx}}">
-                                  <input class="post-write-btn" type="submit" value="수정"/>
-                              </form>
-                          </div>
-                      </div>
-                  </div>
+                        <div class="article-doc">
+                            <p>{{#article}}
+                                {{article.content}}
+                                {{/article}}</p>
+                        </div>
+                    </article>
+
+                    <div class="post-comment">
+                        <div class="post-comment-slipp">
+                            <p class="post-comment-count">댓글 0개</p>
+                            <div class="post-comment-slipp-articles">
+                                <form class="submit-write" method="get" action="../index.html ">
+                                    <div class="comment-writer-container">
+                                        <input class="comment-writer" id="writer" name="writer"
+                                               value={{loginUser.nickName}} readonly/>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="comment" name="comment"
+                                                  placeholder="내용을 입력하세요"></textarea>
+                                    </div>
+                                    <input class="post-write-btn" type="submit" value="등록"/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-	</body>
+    </div>
+</div>
+</body>
 </html>

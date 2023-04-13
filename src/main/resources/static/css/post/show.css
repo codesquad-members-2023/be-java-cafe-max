@@ -79,6 +79,7 @@ li {
 .article-content {
     margin-right: 20px;
     font-size: 14px;
+    margin-top: 3px;
 }
 
 .article-header {
@@ -162,4 +163,12 @@ li {
     border: 1px solid lightgray;
     display: flex;
     flex-direction: column;
+}
+
+.post-button{
+    background-color: white;
+    border: none;
+    font-size: 14px;
+    color: gray;
+    margin-right: 10px;
 }
