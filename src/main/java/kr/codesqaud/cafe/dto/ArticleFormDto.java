@@ -1,8 +1,12 @@
 package kr.codesqaud.cafe.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class ArticleFormDto {
 
+    @NotBlank(message = "공백 입력 불가")
     private String title;
+    @NotBlank(message = "공백 입력 불가")
     private String contents;
 
 
