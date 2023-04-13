@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain.mapper;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDTO;
+import kr.codesqaud.cafe.controller.dto.ArticleInfoDTO;
 import kr.codesqaud.cafe.controller.dto.ArticleUpdateDTO;
 import kr.codesqaud.cafe.domain.Article;
 
@@ -17,5 +18,9 @@ public class ArticleMapper {
 
     public Article toArticle(ArticleUpdateDTO articleUpdateDto){
         return new Article(articleUpdateDto.getTitle(),articleUpdateDto.getContent(),articleUpdateDto.getIdx());
+    }
+
+    public ArticleInfoDTO toArticleInfoDTO(Article article){
+        return new ArticleInfoDTO(article.getTitle(),article.getContent());
     }
 }

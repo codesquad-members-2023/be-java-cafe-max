@@ -38,7 +38,7 @@ public class ArticleController {
     @GetMapping("/article/update-form/{idx}")
     public String showUpdateForm(@PathVariable Long idx,Model model,HttpSession httpSession){
         Session session = (Session) httpSession.getAttribute(Session.LOGIN_USER);
-        articleService.validSessionIdAndArticleId(idx,session.getId());
+        model.addAttribute("article",articleService.validSessionIdAndArticleId(idx,session.getId()));
         model.addAttribute("idx",idx);
         return "post/updateForm";
     }

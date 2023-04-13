@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDTO;
+import kr.codesqaud.cafe.controller.dto.ArticleInfoDTO;
 import kr.codesqaud.cafe.controller.dto.ArticleUpdateDTO;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.mapper.ArticleMapper;
@@ -45,9 +46,10 @@ public class ArticleService {
         articleRepository.updateArticle(articleMapper.toArticle(articleUpdateDto));
     }
 
-    public void validSessionIdAndArticleId(long idx,String id){
-            articleRepository.findArticleByIdx(idx)
-                    .filter(article -> id.equals(article.getId()))
-                    .orElseThrow(ArticleIdAndSessionIdMismatchException::new);
+    public ArticleInfoDTO validSessionIdAndArticleId(long idx, String id) {
+        return articleRepository.findArticleByIdx(idx)
+                .filter(article -> id.equals(article.getId()))
+                .map(article -> articleMapper.toArticleInfoDTO(article))
+                .orElseThrow(ArticleIdAndSessionIdMismatchException::new);
     }
 }

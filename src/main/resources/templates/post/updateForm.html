@@ -19,7 +19,7 @@
                     <p class="post-title">제목</p>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요" oninput="checkTitleValidity(this)"></textarea>
+                    <textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요" oninput="checkTitleValidity(this)">{{article.title}}</textarea>
                 </div>
                 <span id="title-error" class="error-message"></span>
             </div>
@@ -30,7 +30,7 @@
                     <p class="post-content">내용</p>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요" oninput="checkContentValidity(this)"></textarea>
+                    <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요" oninput="checkContentValidity(this)" >{{article.content}}</textarea>
                 </div>
                 <span id="content-error" class="error-message"></span>
             </div>
