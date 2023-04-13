@@ -48,8 +48,10 @@
 - bean: @Controller, @Service, @Repository 등이 붙으면 bean이다(@Component)
 - @AutoWired: 생성자에 사용(@Service)
 - @Service: Service 클래스(@Component)
-- Service 클래스 하는 역할: ??
+- Service 클래스 하는 역할: request 받은대로 (response 주기 위한) 필요한 데이터 가공을 하는 부분(을 분리)
 - Model: .addAttribute로 컨트롤러에서 데이터를 받아서 view(mustache)에 전달(ui 구성 역할)
+- domain: 
+- DTO:
 
 # 4월 10일 학습계획
 - [!!] bean과 di에 대해 알아보기(더 봐야 함)

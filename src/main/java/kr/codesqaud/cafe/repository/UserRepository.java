@@ -1,28 +1,20 @@
 package kr.codesqaud.cafe.repository;
-
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 @Repository
 public class UserRepository {
-
-    private List<User> users;
+    private List<User> dataBase;
     public UserRepository(ArrayList<User> users){
-        this.users = users;
+        this.dataBase = users;
     }
-    private Map<String, User> dataBase  = new HashMap<>();
 
     public void save(User user){
         User newUser = user;
-        dataBase.put(user.getUserId(), newUser);
+        dataBase.add(newUser);
     }
-
-    public List<User> getUserList() {
-        return users;
-    } // 머스테치 #users에 쓰일 듯
+    public List<User> dataBase() {
+        return dataBase;
+    }
 }

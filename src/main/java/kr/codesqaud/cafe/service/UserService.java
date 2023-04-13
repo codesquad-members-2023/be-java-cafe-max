@@ -18,5 +18,5 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public List<User> getUserList = userRepository.getUserList();
+    public List<User> getUserList = userRepository.dataBase();
 }

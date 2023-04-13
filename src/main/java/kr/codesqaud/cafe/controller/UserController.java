@@ -19,11 +19,11 @@ public class UserController {
 
     @GetMapping("/join")
     public String getUserForm() {
-        return "/user/form";             // 회원가입 페이지
+        return "/user/form";
     }
 
     @PostMapping("/users")
-    public String joinUser(User user) { // 회원가입 페이지의 form으로 받은 데이터를 Post 리퀘스트 받기
+    public String joinUser(User user) {
         userService.join(user);
         return "redirect:/users";
     }
