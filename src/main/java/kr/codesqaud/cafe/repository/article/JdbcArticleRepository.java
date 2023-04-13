@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.repository.article;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,13 +17,14 @@ import java.util.Objects;
 public class JdbcArticleRepository implements ArticleRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final RowMapper<Article> articleRowMapper = BeanPropertyRowMapper.newInstance(Article.class);
 
     public JdbcArticleRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public Long save(final Article article) {
+    public Long save(Article article) {
         final String sql = "INSERT INTO articles (title, writer, contents, createdAt) VALUES (:title, :writer, :contents, :createdAt)";
         final GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder);
@@ -30,9 +32,9 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findById(final Long id) {
+    public Article findById(Long id) {
         final String sql = "SELECT id, title, writer, contents, createdAt FROM articles WHERE id = :id LIMIT 1";
-        return jdbcTemplate.queryForStream(sql, Map.of("id", id), BeanPropertyRowMapper.newInstance(Article.class))
+        return jdbcTemplate.queryForStream(sql, Map.of("id", id), articleRowMapper)
                 .findFirst()
                 .orElseThrow(ArticleNotFoundException::new);
     }
@@ -40,12 +42,12 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         final String sql = "SELECT id, title, writer, contents, createdAt FROM articles";
-        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Article.class));
+        return jdbcTemplate.query(sql, articleRowMapper);
     }
 
     @Override
-    public boolean exist(final Long id) {
-        final String sql = "SELECT count(id) FROM articles WHERE id = :id LIMIT 1";
+    public boolean exist(Long id) {
+        final String sql = "SELECT count(*) FROM articles WHERE id = :id LIMIT 1";
         final Integer count = jdbcTemplate.queryForObject(sql,
                 Map.of("id", id),
                 Integer.class);
@@ -59,7 +61,7 @@ public class JdbcArticleRepository implements ArticleRepository {
                 + " LAG(id, 1, 0) OVER(ORDER BY id ASC) AS previousId, "
                 + " LEAD(id, 1, 0) OVER(ORDER BY id ASC) AS nextId "
                 + " FROM articles) WHERE id = :id";
-        return jdbcTemplate.queryForStream(sql, Map.of("id", id), BeanPropertyRowMapper.newInstance(Article.class))
+        return jdbcTemplate.queryForStream(sql, Map.of("id", id), articleRowMapper)
                 .findFirst()
                 .orElseThrow(ArticleNotFoundException::new);
     }
