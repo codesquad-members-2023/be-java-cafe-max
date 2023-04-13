@@ -2,10 +2,8 @@ package kr.codesqaud.cafe.domain.user.repository;
 
 import kr.codesqaud.cafe.domain.user.User;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 public class UserMemoryRepository implements UserRepository {
 
     private final Map<Integer, User> users = new HashMap<>();
@@ -21,10 +19,10 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public User findById(String id) {
-        return users.values().stream()
+    public Optional<User> findById(String id) {
+        return Optional.ofNullable(users.values().stream()
                 .filter(user -> user.getUserId().equals(id))
                 .findFirst()
-                .orElseGet(null);
+                .orElseGet(null));
     }
 }

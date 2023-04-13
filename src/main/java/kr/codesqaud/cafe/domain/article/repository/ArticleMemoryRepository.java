@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.domain.article.Article;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class ArticleMemoryRepository implements ArticleRepository {
@@ -20,7 +21,7 @@ public class ArticleMemoryRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findByIdx(int idx) {
+    public Optional<Article> findByIdx(int idx) {
         return null;
     }
 

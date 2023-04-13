@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ArticleJdbcRepository implements ArticleRepository {
@@ -38,17 +39,18 @@ public class ArticleJdbcRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findByIdx(int idx) {
-        return jdbcTemplate.queryForObject(
+    public Optional<Article> findByIdx(int idx) {
+       List<Article> articles = jdbcTemplate.query(
                 "SELECT IDX , ID , WRITER , TITLE , CONTENTS , DATE FROM ARTICLES WHERE IDX = ?", rowMapper(), idx
         );
+        return articles.stream().findFirst();
     }
 
     @Override
     public void update(Article article) {
         jdbcTemplate.update(
-                "UPDATE ARTICLES SET TITLE = ? ,CONTENTS = ? WHERE IDX = ?"
-                ,article.getTitle(),article.getContents(),article.getIndex()
+                "UPDATE ARTICLES SET WRITER = ?, TITLE = ? ,CONTENTS = ?  WHERE IDX = ?",
+                article.getWriter(),article.getTitle(),article.getContents(),article.getIndex()
         );
     }
 
