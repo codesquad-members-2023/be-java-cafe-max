@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import kr.codesqaud.cafe.exception.common.Unauthorized;
 import kr.codesqaud.cafe.session.AccountSession;
 import kr.codesqaud.cafe.session.SignIn;
 import kr.codesqaud.cafe.dto.member.SignInRequest;
@@ -68,18 +69,24 @@ public class MemberController {
     }
 
     @GetMapping("/members/{id}/edit")
-    public String profileEditForm(@PathVariable Long id, Model model) {
+    public String profileEditForm(@PathVariable Long id, Model model,
+        @SignIn AccountSession accountSession) {
+        if (!id.equals(accountSession.getId())) {
+            throw new Unauthorized();
+        }
+
         model.addAttribute("profileEditRequest", ProfileEditRequest.from(memberService.findById(id)));
         return "member/profileEdit";
     }
 
     @PutMapping("/members/{id}")
-    public String editProfile(@Valid ProfileEditRequest profileEditRequest,
+    public String editProfile(@PathVariable Long id, @Valid ProfileEditRequest profileEditRequest,
         BindingResult bindingResult, @SignIn AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
             return "member/profileEdit";
         }
 
+        profileEditRequest.setId(id);
         memberService.update(profileEditRequest, accountSession);
         return "redirect:/members/{id}";
     }

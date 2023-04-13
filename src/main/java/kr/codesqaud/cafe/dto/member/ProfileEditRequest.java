@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 public class ProfileEditRequest {
 
-    private final Long id;
+    private Long id;
 
     @NotBlank
     @Email
@@ -38,6 +38,10 @@ public class ProfileEditRequest {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
