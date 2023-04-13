@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Controller
 public class ArticleController {
@@ -25,14 +26,13 @@ public class ArticleController {
 
     @PostMapping("/qna/form")
     public String saveArticle(Article article) {
-        logger.info(article.toString());
         articleRepository.save(article);
         return "redirect:/index";
     }
 
-    @GetMapping("/articles/{index}")
-    public String showDetail(@PathVariable BigInteger index, Model model) {
-        ArticleDTO articleDTO = articleRepository.findById(index);
+    @GetMapping("/articles/{articleId}")
+    public String showDetail(@PathVariable BigInteger articleId, Model model) {
+        ArticleDTO articleDTO = articleRepository.findById(articleId);
         model.addAttribute("article", articleDTO);
         return "qna/detail";
     }
