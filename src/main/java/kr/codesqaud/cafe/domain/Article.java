@@ -52,7 +52,7 @@ public class Article {
     }
 
     public ArticleResponseDto toDto() {
-        return new ArticleResponseDto(id, writer, title, contents, writeTime.format(DateTimeFormatter.ofPattern("YYYY-MM-DD HH:mm")));
-
+        return new ArticleResponseDto(id, writer, title, contents, writeTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+//        "YYYY-MM-DD HH:mm"
     }
 }
