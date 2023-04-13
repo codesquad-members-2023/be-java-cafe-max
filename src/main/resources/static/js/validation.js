@@ -160,3 +160,14 @@ function validateLogin() {
     return false;
 }
 
+/* 글 수정 */
+
+function validateEdit() {
+    const title = checkTitle();
+    const content = checkContent();
+
+    if (title && content) {
+        alert("글이 정상적으로 수정되었습니다");
+        document.getElementById("posting").submit();
+    }
+}

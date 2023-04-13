@@ -205,6 +205,9 @@ textarea:focus {
     border-bottom: 1px solid #D2DAE0;
     padding: 20px 0px 20px;
     margin: 50px 0px 50px;
+
+    display: flex;
+    justify-content: space-between;
 }
 
 p {
@@ -217,4 +220,23 @@ p {
 
 .buttons > div > .disable:hover {
     background: #D2DAE0;
+}
+
+.editButton {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    text-decoration: none;
+
+    text-align: center;
+    color: #4362D0;
+
+    display: flex;
+    align-items: center;
+
+    transition: all 0.4s;
+}
+
+.editButton:hover {
+    color: #203faf;
 }
