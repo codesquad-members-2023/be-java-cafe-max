@@ -33,14 +33,14 @@ public class AllExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public String handleUserNotFoundException(UserNotFoundException exception, Model model) {
         model.addAttribute("failMessage", exception.getMessage());
-        return "exception/fail";
+        return "error/fail";
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ArticleNotFoundException.class)
     public String handelArticleNotFoundException(ArticleNotFoundException exception, Model model) {
         model.addAttribute("failMessage", exception.getMessage());
-        return "exception/fail";
+        return "error/fail";
     }
 
     @ExceptionHandler(LoginFailedException.class)
@@ -53,6 +53,6 @@ public class AllExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public String handleAccessDeniedException(AccessDeniedException exception, Model model) {
         model.addAttribute("accessDeniedMessage", exception.getMessage());
-        return "exception/forbidden";
+        return "error/403";
     }
 }
