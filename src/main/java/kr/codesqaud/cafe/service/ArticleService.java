@@ -32,6 +32,6 @@ public class ArticleService {
     public ArticleDto findById(final Long id) {
         return articleRepository.findById(id)
                 .map(ArticleDto::from)
-                .get();
+                .orElseThrow(() -> new RuntimeException("Article not found"));
     }
 }

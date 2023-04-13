@@ -41,11 +41,11 @@ public class UserService {
     }
 
     public User findByUserId(String userId) {
-        return userRepository.findByUserId(userId).get();
+        return userRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public void editUserProfile(final String userId, final ProfileEditRequest request) {
-        User savedUser = userRepository.findByUserId(userId).get();
+        User savedUser = userRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("User not found"));
         boolean isPasswordTrue = validatePassword(savedUser, request.getOriginalPassword());
         if (isPasswordTrue) {
             savedUser.editProfile(request.getNewPassword(), request.getNewUserName(), request.getNewUserEmail());
