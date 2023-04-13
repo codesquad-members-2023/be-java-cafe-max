@@ -1,6 +1,4 @@
-# be-java-cafe
-
-## Step3
+# be-java-cafe  Step3
 
 ### 📌 4 / 10 학습계획
 
@@ -28,7 +26,33 @@
 
 ### 📌 4 / 12 학습계획
 
-- [ ] 개인정보 수정 기능 구현하기
-    - [ ] 에러페이지 만들기
+- [x] 개인정보 수정 기능 구현하기
+    - [x] 에러페이지 만들기
+- [x] 기본서 읽기
+- [ ] 인프런 강의
+
+##### ✔️ 개인정보 수정 기능
+
+- [x] 개인정보 수정 내용이 담기는 ModifyRequest 생성
+- [x] UserRepository 인터페이스에 수정된 개인정보를 DB에 update 시키는 modifyUser() 메서드 생성
+- [x] JdbcUserRepository에 modifyUser()구현체 작성. 동일한 ID가 없으면 예외처리, 있다면 DB에 새로운 개인정보를 담은 update 쿼리를 날린다.
+- [x] UserService에서 userModify() 메서드 생성. -> UserRepository에 있는 findUser() 메서드를 사용해 이미 저장된 userId가 없다면 예외처리,있다면 ID와 PW를
+  담은 객체를 반환.
+  반환된 객체를 이용해 기존 DB에 있던 PW와 새로 작성된 PW를 비교해, 동일하다면 새로운 user 인스턴스에 수정된 new PW, name, email, id를 저장 후
+  UserRepository에 modifyUser()의 매개변수로 새로운 User 인스턴스 전달 return은 true. PW가 동일하지 않다면 false 반환
+- [x] UserController modify() 메서드는 UserService에서 반환된 boolean값을 가지고 true가 반환되었다면 redirect:/user를 , false가 반환되었다면 다시
+  user/modify 페이지를 반환.
+
+##### 고민했던 내용
+
+- PutMapping은 GET, POST랑 뭐가 다를까 ? 일단 사용했다
+    - hidden으로 전송 해야하는 이유가 있나?
+- 항상 닭이 먼저인지 달걀이 먼저인지 헷갈린다. controller에서 repository로 가는지 repository에서 controller로 가는지.. 왔다갔다 하는건가
+
+### 📌 4 / 13 학습계획
+
 - [ ] 인프런 강의
 - [ ] 기본서 읽기
+- [ ] 게시글 작성하기 기능 구현
+- [ ] 게시글 수정하기 기능 구현
+
