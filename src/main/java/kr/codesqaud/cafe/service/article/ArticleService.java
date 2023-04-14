@@ -1,17 +1,17 @@
 package kr.codesqaud.cafe.service.article;
 
-import kr.codesqaud.cafe.session.SessionConst;
+import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.dto.article.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleTimeForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleUpdateForm;
-import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
+import kr.codesqaud.cafe.session.SessionConst;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -28,12 +28,9 @@ public class ArticleService {
 
     public List<ArticleTimeForm> findArticles() {
         // DTO가 가지고 있는 변수로 필터링하는 과정
-        List<Article> articles = articleRepository.findAll();
-        List<ArticleTimeForm> articleTimeForms = new ArrayList<>();
-        for (Article article : articles) {
-            articleTimeForms.add(ArticleTimeForm.from(article));
-        }
-        return articleTimeForms;
+        return articleRepository.findAll().stream()
+                .map(ArticleTimeForm::from)
+                .collect(Collectors.toList());
     }
 
     public ArticleTimeForm findArticleId(Long id) {

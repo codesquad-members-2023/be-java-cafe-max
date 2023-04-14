@@ -1,16 +1,16 @@
 package kr.codesqaud.cafe.service.user;
 
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.domain.dto.user.UserForm;
 import kr.codesqaud.cafe.domain.dto.user.UserListForm;
 import kr.codesqaud.cafe.domain.dto.user.UserProfileForm;
 import kr.codesqaud.cafe.domain.dto.user.UserUpdateForm;
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -36,12 +36,9 @@ public class UserService {
     public List<UserListForm> findUsers() {
         // 이럴 때 필터링을 써주는구나
         // 다른 코드 참고하지 않고 직접 처음 생각해낸 코드 (패스워드를 뺀)
-        List<User> users = userRepository.findAll();
-        List<UserListForm> userListForms = new ArrayList<>();
-        for (User user : users) {
-            userListForms.add(UserListForm.from(user));
-        }
-        return userListForms;
+        return userRepository.findAll().stream()
+                .map(UserListForm::from)
+                .collect(Collectors.toList());
     }
 
     public UserProfileForm findProfile(String userId) {
