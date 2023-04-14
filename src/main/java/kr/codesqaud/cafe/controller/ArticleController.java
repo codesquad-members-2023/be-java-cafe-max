@@ -46,4 +46,12 @@ public class ArticleController {
         return "qna/show";
     }
 
+    @GetMapping("/articles/{index}/edit")
+    public String showEditPage(@PathVariable final long index, final Model model) {
+        Article findArticle = articleService.findOne(index).get();
+        System.out.println(findArticle.getSequence());
+        model.addAttribute("article", findArticle);
+        return "qna/edit_form";
+    }
+
 }
