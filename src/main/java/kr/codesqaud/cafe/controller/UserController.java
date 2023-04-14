@@ -1,9 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.dto.UserSignUpRequest;
-import kr.codesqaud.cafe.domain.entity.User;
-import kr.codesqaud.cafe.repository.UserH2Repository;
-import kr.codesqaud.cafe.repository.UserRepository;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,12 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class UserController {
-    private final UserRepository userRepository;
     private final UserService userService;
     @Autowired
-    public UserController(UserH2Repository userRepository, UserService userService) {
+    public UserController(UserService userService) {
 
-        this.userRepository = userRepository;
         this.userService = userService;
     }
 
@@ -28,14 +23,8 @@ public class UserController {
 
         //TODO Dto -> Entity 메서드
         if("POST".equals(request.getMethod())){
-            User user = new User(
-                    userSignUpRequest.getUserId(),
-                    userSignUpRequest.getPassword(),
-                    userSignUpRequest.getName(),
-                    userSignUpRequest.getEmail()
-            );
 
-            userRepository.save(user);
+            userService.join(userSignUpRequest);
 
             return "redirect:/users";
         }
