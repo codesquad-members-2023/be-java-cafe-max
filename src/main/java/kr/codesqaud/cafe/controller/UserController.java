@@ -50,7 +50,10 @@ public class UserController {
 	}
 
 	@PutMapping("/users/{userId}")
-	public String editUserProfile(@PathVariable final String userId, @ModelAttribute final ProfileEditRequest request) {
+	public String editUserProfile(@PathVariable final String userId,
+		@Login final String sessionUserId,
+		@ModelAttribute final ProfileEditRequest request) {
+		userService.validateHasAuthorization(sessionUserId, userId);
 		userService.editUserProfile(userId, request);
 		return "redirect:/users";
 	}
