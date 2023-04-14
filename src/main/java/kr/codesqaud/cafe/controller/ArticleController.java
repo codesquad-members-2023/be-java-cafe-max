@@ -42,7 +42,7 @@ public class ArticleController {
 	}
 
 	@GetMapping("/{articleId}/form")
-	public String showProfileEditPage(@PathVariable final Long articleId,
+	public String showArticleEditPage(@PathVariable final Long articleId,
 		@Login final String userId, final Model model) {
 		articleService.validateHasAuthorization(articleId, userId);
 		model.addAttribute("articleId", articleId);
