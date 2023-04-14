@@ -6,14 +6,13 @@ import kr.codesqaud.cafe.post.dto.SimplePostForm;
 import kr.codesqaud.cafe.post.exception.IllegalPostEditAccessException;
 import kr.codesqaud.cafe.post.exception.IllegalPostIdException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class PostService {
+
 
     private final PostRepository postRepository;
 
@@ -41,7 +40,6 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     public Post updateFromPostForm(Post target, PostForm postForm) {
         Post post = postRepository.findById(target.getId()).orElseThrow(RuntimeException::new);
         postForm.editPost(post);
