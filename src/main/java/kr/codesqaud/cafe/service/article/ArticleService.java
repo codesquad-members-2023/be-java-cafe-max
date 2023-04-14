@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.service.article;
 
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.session.SessionConst;
 import kr.codesqaud.cafe.domain.dto.article.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleTimeForm;

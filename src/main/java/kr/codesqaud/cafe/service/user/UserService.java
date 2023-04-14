@@ -14,9 +14,6 @@ import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
-    // 서비스는 컨트롤러에서 DTO를 받아서 레포지토리에 domain으로 넘겨주는 역할
-    // 위와 같이 이해했습니다.
-
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {

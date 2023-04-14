@@ -7,7 +7,6 @@ import kr.codesqaud.cafe.service.article.ArticleService;
 import kr.codesqaud.cafe.session.SessionConst;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;

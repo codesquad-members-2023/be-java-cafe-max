@@ -22,14 +22,14 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String create(@Valid @ModelAttribute("userForm") UserForm form, BindingResult bindingResult) {
+    public String create(@Valid UserForm form, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user/form";
         }
 
         // 서비스에서 DTO 사용으로 User에 넣어줄 필요가 없어짐
         userService.join(form);
-        return "redirect:/users/";
+        return "redirect:/users";
     }
 
     @GetMapping("/users")
