@@ -26,7 +26,7 @@ public class AuthController {
 
 	@PostMapping("/logout")
 	public String logout(final HttpSession session) {
-		session.invalidate();
+		authService.logout(session);
 		return "redirect:/";
 	}
 }
