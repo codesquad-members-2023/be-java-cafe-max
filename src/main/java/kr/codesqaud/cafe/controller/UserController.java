@@ -100,6 +100,8 @@ public class UserController {
         if (loginUser == null) {
             return "user/login";
         }
+        User user = userService.findById(loginUser.getUserId()).get();
+        model.addAttribute("user", user);
         model.addAttribute("loginUser", loginUser);
         return "user/update";
     }
