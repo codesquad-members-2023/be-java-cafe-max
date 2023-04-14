@@ -51,6 +51,12 @@ public class UserController {
 		return "user/login_failed";
 	}
 
+	@GetMapping("/user/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("sessionedUser");
+		return "redirect:/";
+	}
+
 	@GetMapping("/users/{userId}/form")
 	public String showModifyUserForm(Model model, @PathVariable String userId, HttpSession session) {
 		Object value = session.getAttribute("sessionedUser");
