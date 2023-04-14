@@ -51,8 +51,34 @@
 
 ### 📌 4 / 13 학습계획
 
-- [ ] 인프런 강의
-- [ ] 기본서 읽기
-- [ ] 게시글 작성하기 기능 구현
-- [ ] 게시글 수정하기 기능 구현
+- [x] 인프런 강의
+- [x] 기본서 읽기
+- [x] 게시글 작성하기 기능 구현
+- [x] 게시글 수정하기 기능 구현
+
+##### ✔️ 게시글 작성 권한 부여 기능 추가
+
+- [x] PostingRequest의 writer 삭제
+- [x] articleService의 articleSave() 메서드 매개변수에 userId를 같이 넘겨서 userId가 null이 아닌걸 확인 후,
+  PostingRequest.getArticleEntity() 메서드에 userId를 매개변수로 넘겨서 비어있던 writer에 주입..?
+- [x] articleService의 articleSave() 메서드 매개변수 userId가 null이라면 예외처리,
+  null이 아니라면articleRepository.articleSave() 메서드 실행
+- [x] ArticleController newPosting() 메서드는 session에 저장된 값이 없으면 로그인을 하지 않은 상태이기때문에 로그인 페이지로 이동,
+  값이 있으면 로그인이 되었기때문에 게시글 작성 form으로 이동
+
+##### ✔️ 게시글 수정 권한 부여 기능 추가
+
+- [x] 게시글을 수정 할 수 있는 edit_form 생성
+- [x] 남의 게시물은 수정 할 수 없는 에러페이지 access_error 생성
+- [x] ArticleController editPost() 메서드는 게시글 작성자와 ID가 일치하지 않으면 에러페이지를, 일치하면 게시글 수정 form으로 이동
+- [x] ArticleDto getWriter() 메서드 생성 : ArticleController editPost()메서드에서 사용
+
+### 📌 4 / 14 학습계획
+
+- [ ] 게시글 삭제하기 기능 구현
+- [ ] PR 제시간에 맞춰서 보내기
+- [ ] 인프런 강의 듣기
+- [ ] 빌드 다시하기
+
+
 
