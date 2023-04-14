@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.common.exception.user.UserJoinException;
 import kr.codesqaud.cafe.common.exception.user.UserLoginException;
-import kr.codesqaud.cafe.controller.dto.user.LoginUserDto;
+import kr.codesqaud.cafe.controller.dto.user.LoginUserSession;
 import kr.codesqaud.cafe.controller.dto.user.UserJoinDto;
 import kr.codesqaud.cafe.controller.dto.user.UserLoginDto;
 import kr.codesqaud.cafe.controller.dto.user.UserReadDto;
@@ -63,14 +63,14 @@ public class UserService {
         userRepository.update(userUpdateDto.toUser());
     }
 
-    public LoginUserDto login(UserLoginDto userLoginDto) {
+    public LoginUserSession login(UserLoginDto userLoginDto) {
         final User user = userRepository.findByUserId(userLoginDto.getUserId())
-                .orElseThrow(() -> new UserLoginException(UserExceptionType.INVALID_USER_ID));
+                .orElseThrow(() -> new UserLoginException(UserExceptionType.INVALID_USER_ID, userLoginDto));
 
         if (user.isNotMatchedPassword(userLoginDto.getPassword())) {
-            throw new UserLoginException(UserExceptionType.NOT_MATCHED_PASSWORD);
+            throw new UserLoginException(UserExceptionType.NOT_MATCHED_PASSWORD, userLoginDto);
         }
 
-        return new LoginUserDto(user);
+        return new LoginUserSession(user);
     }
 }

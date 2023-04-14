@@ -45,6 +45,7 @@ public class ExceptionControllerAdvice {
     public String userLoginFailedExceptionHandler(UserLoginException ex, Model model) {
         final UserExceptionType type = ex.getUserExceptionType();
 
+        model.addAttribute("loginUser", ex.getUserLoginDto());
         model.addAttribute(type.getCategory(), type.getMessage());
 
         return "user/login";

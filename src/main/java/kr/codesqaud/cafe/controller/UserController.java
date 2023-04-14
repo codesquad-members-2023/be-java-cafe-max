@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.user.LoginUserDto;
+import kr.codesqaud.cafe.controller.dto.user.LoginUserSession;
 import kr.codesqaud.cafe.controller.dto.user.UserJoinDto;
 import kr.codesqaud.cafe.controller.dto.user.UserLoginDto;
 import kr.codesqaud.cafe.controller.dto.user.UserUpdateDto;
@@ -51,7 +51,7 @@ public class UserController {
 
         userService.join(userJoinDto);
 
-        return "redirect:/users";
+        return "redirect:/users/login";
     }
 
     @GetMapping("/{id}")
@@ -83,12 +83,25 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("loginUser") UserLoginDto userLoginDto, HttpServletRequest request) {
-        final LoginUserDto loginUser = userService.login(userLoginDto);
+    public String login(@Valid @ModelAttribute("loginUser") UserLoginDto userLoginDto, BindingResult bindingResult, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "user/login";
+        }
+
+        final LoginUserSession loginUser = userService.login(userLoginDto);
 
         final HttpSession session = request.getSession();
 
         session.setAttribute("loginUser", loginUser);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("{id}/logout")
+    public String logout(@PathVariable Long id, HttpServletRequest request) {
+        final HttpSession session = request.getSession();
+
+        session.removeAttribute("loginUser");
 
         return "home";
     }

@@ -63,7 +63,7 @@
 
                         <li><a th:if="${session.loginUser != null}" th:href="@{/articles/create}" role="button">글쓰기</a></li>
                         <li><a th:if="${session.loginUser != null}" th:href="@{/users/{id}/update(id = ${session.loginUser.id})}" role="button">개인정보수정</a></li>
-                        <li><a th:if="${session.loginUser != null}" th:href="@{/users/login}" role="button">로그아웃</a></li>
+                        <li><a th:if="${session.loginUser != null}" th:href="@{/users/{id}/logout(id = ${session.loginUser.id})}" role="button">로그아웃</a></li>
                     </ul>
                 </div>
             </div>
