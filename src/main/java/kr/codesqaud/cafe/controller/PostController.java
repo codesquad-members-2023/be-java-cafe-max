@@ -56,7 +56,7 @@ public class PostController {
 
     @GetMapping("/writer/{writerId}")
     public String findPostByWriterId(@PathVariable Long writerId, Model model) {
-        List<Post> posts = postService.findPostIdByWriterId(writerId);
+        List<Post> posts = postService.findPostByWriterId(writerId);
         model.addAttribute("postResponses", posts);
         return "post/all";
     }

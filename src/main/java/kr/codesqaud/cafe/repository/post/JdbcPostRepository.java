@@ -55,7 +55,7 @@ public class JdbcPostRepository implements PostRepository {
     }
 
     @Override
-    public List<Post> findPostIdByWriterId(Long writerId) {
+    public List<Post> findPostByWriterId(Long writerId) {
         String sql = "SELECT postId,title,content,writerId,write_date,views FROM post WHERE writerId = :writerId ORDER BY write_date";
         SqlParameterSource parameter = new MapSqlParameterSource("writerId", writerId);
         return jdbcTemplate.query(sql, parameter, postRowMapper);

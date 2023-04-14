@@ -39,8 +39,8 @@ public class PostService {
         return PostResponse.of(post, getWriterResponse(post));
     }
 
-    public List<Post> findPostIdByWriterId(Long writerId){
-        return postRepository.findPostIdByWriterId(writerId);
+    public List<Post> findPostByWriterId(Long writerId) {
+        return postRepository.findPostByWriterId(writerId);
     }
 
     public List<PostResponse> findAll() {
