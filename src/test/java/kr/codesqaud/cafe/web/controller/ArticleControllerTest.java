@@ -68,7 +68,7 @@ class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("글쓰기가 성공하는지 테스트")
+    @DisplayName("회원 객체와 제목, 내용이 주어지고 글쓰기 요청시 글쓰기가 되는지 테스트")
     public void save_success() throws Exception {
         //given
         String userId = "yonghwan1107";
@@ -94,10 +94,9 @@ class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("글쓰기 작성자와 제목 입력 형식이 부적절한 경우 에러 코드를 응답하는지 테스트")
+    @DisplayName("부적절한 입력 형식의 제목이 주어지고 글쓰기 요청시 에러 응답을 받는지 테스트")
     public void save_fail1() throws Exception {
         //given
-        String writer = "";
         String title = "";
         String content = "내용1";
         LocalDateTime writeDate = LocalDateTime.now();
