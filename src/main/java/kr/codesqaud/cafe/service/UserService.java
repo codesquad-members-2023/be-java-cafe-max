@@ -50,7 +50,7 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    public UserDTO updateUserById(ProfileEditDTO profileEditDto) {
+    public UserDTO updateUser(ProfileEditDTO profileEditDto) {
         UserDTO userDto = getUserById(profileEditDto.getId());
 
         if (!matchPassword(profileEditDto, userDto)){
