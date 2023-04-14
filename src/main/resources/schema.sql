@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS post (
     id bigint NOT NULL AUTO_INCREMENT,
     title	varchar(50) NOT NULL,
     content	varchar(3000) NOT NULL,
-    writer_id bigint NULL,
+    writer_id bigint NOT NULL,
     write_date	datetime NOT NULL,
     views bigint NOT NULL,
     PRIMARY KEY (id),
