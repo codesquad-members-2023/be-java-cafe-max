@@ -53,11 +53,14 @@ public class UserController {
         return userService.signUp(requestDto);
     }
 
-    // 특정 회원 수정, TODO: PUT 메소드 방식으로 변경하기
+    // 특정 회원 수정
     @RequestMapping(value = "/users/{id}/update", produces = "application/json", method = RequestMethod.PUT)
     public UserResponseDto modify(@PathVariable(value = "id") Long id,
-        @Valid @RequestBody UserSavedRequestDto requestDto) {
+        @Valid @RequestBody UserSavedRequestDto requestDto, HttpSession session) {
         logger.info(requestDto.toString());
+
+        // 회원정보 수정시 기존 세션에 저장되어 있는 유저 정보 제거
+        session.removeAttribute("user");
         return userService.modifyUser(id, requestDto);
     }
 

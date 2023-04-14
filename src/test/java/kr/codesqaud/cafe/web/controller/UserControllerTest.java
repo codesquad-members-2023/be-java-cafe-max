@@ -392,6 +392,8 @@ class UserControllerTest {
             .andExpect(status().isOk());
     }
 
+    // TODO: 회원정보 수정시 기존 세션에 가지고 있는 회원정보 제거 됬는지 테스트
+
 
     private <T> String toJSON(T data) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(data);
