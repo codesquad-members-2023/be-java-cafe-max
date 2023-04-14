@@ -47,7 +47,7 @@ public class ArticleController {
     @GetMapping("/article/update/{index}")
     public String getUpdatePage(@PathVariable int index,Model model ,HttpSession session){
         Article article = articleService.findByIdx(index);
-        articleService.checkLoginAuth(article.getUserId(),session);
+        articleService.checkAuth(article.getUserId(),session);
         model.addAttribute("setTitle",article.getTitle());
         model.addAttribute("setContent",article.getContents());
         model.addAttribute("index",index);
