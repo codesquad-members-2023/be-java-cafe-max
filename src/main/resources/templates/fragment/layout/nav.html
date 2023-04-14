@@ -58,10 +58,10 @@
                 <div class="collapse navbar-collapse" id="navbar-collapse2">
                     <ul class="nav navbar-nav navbar-right">
                         <li class="active"><a th:href="@{/}">메인</a></li>
+                        <li><a th:href="@{/articles/create}" role="button">글쓰기</a></li>
+
                         <li><a th:if="${session.loginUser == null}" th:href="@{/users/login}" role="button">로그인</a></li>
                         <li><a th:if="${session.loginUser == null}" th:href="@{/users/join}" role="button">회원가입</a></li>
-
-                        <li><a th:if="${session.loginUser != null}" th:href="@{/articles/create}" role="button">글쓰기</a></li>
                         <li><a th:if="${session.loginUser != null}" th:href="@{/users/{id}/update(id = ${session.loginUser.id})}" role="button">개인정보수정</a></li>
                         <li><a th:if="${session.loginUser != null}" th:href="@{/users/{id}/logout(id = ${session.loginUser.id})}" role="button">로그아웃</a></li>
                     </ul>
