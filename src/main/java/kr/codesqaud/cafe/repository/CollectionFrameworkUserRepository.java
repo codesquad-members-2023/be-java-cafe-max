@@ -13,10 +13,10 @@ import kr.codesqaud.cafe.dummy.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.repository.temp_memory_db.TempUserTable;
 
 @Repository
-public class UserRepository {
+public class CollectionFrameworkUserRepository {
 	private final TempUserTable userTable;
 
-	public UserRepository() {
+	public CollectionFrameworkUserRepository() {
 		userTable = new TempUserTable();
 		CollectionFrameworkRepositoryDummyData dummyData = new CollectionFrameworkRepositoryDummyData();
 		dummyData.insertUserDummyData(userTable);
