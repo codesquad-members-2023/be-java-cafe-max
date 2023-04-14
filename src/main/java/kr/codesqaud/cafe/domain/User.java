@@ -7,7 +7,6 @@ public class User {
     private String password;
     private String email;
 
-    //todo : 기본생성자 vs JoinDTD id 어떤 걸로 할까...
     public User() {}
 
     public User(String userId, String name, String password, String email) {

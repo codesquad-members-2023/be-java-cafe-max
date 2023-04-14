@@ -29,10 +29,11 @@ public class ArticleService {
      */
     public void modify(final long id, final ArticleDTO articleDTO) {
         Article originArticle = articleRepository.findById(id).orElse(null);
-        Article modifiedArticle = Article.builder(originArticle.getId(), articleDTO.getTitle(), articleDTO.getContent(), originArticle.getAuthor())
-                .updatedAt(articleDTO.getUpdatedTime())
-                .build();
-        articleRepository.update(modifiedArticle);
+        assert originArticle != null;
+        originArticle.setTitle(articleDTO.getTitle());
+        originArticle.setContent(articleDTO.getContent());
+        originArticle.setCreatedTime(articleDTO.getCreatedTime());
+        articleRepository.update(originArticle);
     }
 
     public List<ArticleDTO> gatherPosts() {

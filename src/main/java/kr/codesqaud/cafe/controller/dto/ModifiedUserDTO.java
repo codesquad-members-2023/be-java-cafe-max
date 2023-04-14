@@ -1,13 +1,12 @@
 package kr.codesqaud.cafe.controller.dto;
 
-import kr.codesqaud.cafe.domain.User;
-
 public class ModifiedUserDTO {
     private final String userId;
     private final String originPassword;
     private final String newPassword;
     private final String name;
     private final String email;
+
     public ModifiedUserDTO(String userId, String originPassword, String newPassword, String name, String email) {
         this.userId = userId;
         this.originPassword = originPassword;

@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.service.LoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.Cookie;
@@ -26,19 +27,18 @@ public class LoginController {
         return "login/form";
     }
 
-    // todo : HttpServletResponse 뭔지 찾아보기
     @PostMapping("/login")
-    public String login(final LoginDTO loginDTO, final Model model, HttpServletRequest request, HttpServletResponse response) {
+    public String login(@ModelAttribute final LoginDTO loginDTO, final Model model, HttpServletRequest request, HttpServletResponse response) {
         boolean isLoginFailed = !loginService.checkIdAndPw(loginDTO);
-        if(isLoginFailed) {
+        if (isLoginFailed) {
             model.addAttribute("loginFailed", true);
             return "login/form";
         }
+
         LoginDTO loginUser = loginService.findId(loginDTO.getUserId());
 
         //세션 객체 얻어오기
         HttpSession session = request.getSession();
-        //세션 객체에 id 저장
         session.setAttribute("loginUser", loginUser);
 
         //쿠키 생성. 시간 정보 설정 생략 시 세션 쿠키(브라우저 종료 시 삭제)
@@ -46,7 +46,6 @@ public class LoginController {
         response.addCookie(idCookie);
 
         return "redirect:/";
-
     }
 
     @PostMapping("/logout")
@@ -56,6 +55,7 @@ public class LoginController {
             session.invalidate(); // 현재 세션을 무효화
         }
         expireCookie(response, "id");
+
         return "redirect:/";
     }
 
