@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #1
-REPOSITORY=/home/ec2-user/app
+REPOSITORY=/home/ec2-user/be-java-cafe-max
 PROJECT_NAME=cafe
 
 #2
