@@ -12,6 +12,15 @@ public class ArticleResponseDto implements Comparable<ArticleResponseDto> {
     private final LocalDateTime writeDate;
     private final Long userId;
 
+    public ArticleResponseDto() {
+        this.id = null;
+        this.writer = null;
+        this.title = null;
+        this.content = null;
+        this.writeDate = null;
+        this.userId = null;
+    }
+
     public ArticleResponseDto(Article article) {
         this.id = article.getId();
         this.writer = article.getUser().getName();

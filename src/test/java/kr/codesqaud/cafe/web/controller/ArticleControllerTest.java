@@ -13,8 +13,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.article.ArticleRepository;
 import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.domain.user.UserRepository;
@@ -30,9 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.ui.ModelMap;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -47,6 +43,13 @@ class ArticleControllerTest {
     @Autowired
     private UserRepository userRepository;
 
+    private ObjectMapper objectMapper;
+
+    @BeforeEach
+    public void setup() {
+        objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    }
+
     @BeforeEach
     public void createSampleUser() throws Exception {
         String userId = "yonghwan1107";
@@ -55,9 +58,7 @@ class ArticleControllerTest {
         String email = "yonghwan1107@gmail.com";
         String url = "/users";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
-        mockMvc.perform(post(url)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(toJSON(dto)));
+        mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(toJSON(dto)));
     }
 
     @AfterEach
@@ -79,15 +80,15 @@ class ArticleControllerTest {
         ArticleSavedRequestDto dto = new ArticleSavedRequestDto(title, content, writeDate, userId);
         String url = "/qna";
         //when
-        mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJSON(dto)))
-            .andExpect(status().isOk());
+        String jsonArticle =
+            mockMvc.perform(post(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(toJSON(dto)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        List<Article> all = repository.findAll();
-        Article article = all.get(all.size() - 1);
-        Assertions.assertThat(article.getId()).isNotNull();
-        Assertions.assertThat(article.getUser().getName()).isEqualTo(writer);
+        ArticleResponseDto article = objectMapper.readValue(jsonArticle, ArticleResponseDto.class);
+        Assertions.assertThat(article.getWriter()).isEqualTo(writer);
         Assertions.assertThat(article.getTitle()).isEqualTo(title);
         Assertions.assertThat(article.getContent()).isEqualTo(content);
     }
@@ -104,18 +105,17 @@ class ArticleControllerTest {
         ArticleSavedRequestDto dto = new ArticleSavedRequestDto(title, content, writeDate, userId);
         String url = "/qna";
         //when
-        MockHttpServletResponse response = mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJSON(dto)))
-            .andExpect(status().isOk())
-            .andReturn().getResponse();
+        String error =
+            mockMvc.perform(post(url)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(toJSON(dto)))
+                .andExpect(status().isOk()).andReturn().getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
         //then
-        Map<String, Map<String, Object>> map = new ObjectMapper().readValue(
-            response.getContentAsString(StandardCharsets.UTF_8), Map.class);
+        Map<String, Map<String, Object>> map = objectMapper.readValue(error, Map.class);
         Assertions.assertThat(map.get("title").get("errorCode")).isEqualTo(700);
         Assertions.assertThat(map.get("title").get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("title").get("errorMessage"))
-            .isEqualTo("제목은 100자 이내여야 합니다.");
+        Assertions.assertThat(map.get("title").get("errorMessage")).isEqualTo("제목은 100자 이내여야 합니다.");
     }
 
     @Test
@@ -124,16 +124,14 @@ class ArticleControllerTest {
         //given
         String url = "/";
         //when
-        ModelMap modelMap = Objects.requireNonNull(mockMvc.perform(get(url))
+        List<ArticleResponseDto> articles = (List<ArticleResponseDto>) mockMvc.perform(get(url))
             .andExpect(status().isOk())
-            .andReturn().getModelAndView()).getModelMap();
-
+            .andReturn().getModelAndView().getModelMap().getAttribute("articles");
         //then
-        List<ArticleResponseDto> articles =
-            (List<ArticleResponseDto>) modelMap.getAttribute("articles");
-        articles.forEach(article -> {
+        Assertions.assertThat(articles).isNotNull();
+        for (ArticleResponseDto article : articles) {
             Assertions.assertThat(article.getUserId()).isNotNull();
-        });
+        }
     }
 
     @Test
@@ -142,16 +140,13 @@ class ArticleControllerTest {
         //given
         String url = "/qna/form";
         //when
-        mockMvc.perform(get(url))
-            .andExpect(status().is3xxRedirection())
+        mockMvc.perform(get(url)).andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/user/login"));
         //then
     }
 
     private <T> String toJSON(T data) throws JsonProcessingException {
-        return new ObjectMapper()
-            .registerModule(new JavaTimeModule())
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .writeValueAsString(data);
+        return new ObjectMapper().registerModule(new JavaTimeModule())
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).writeValueAsString(data);
     }
 }
