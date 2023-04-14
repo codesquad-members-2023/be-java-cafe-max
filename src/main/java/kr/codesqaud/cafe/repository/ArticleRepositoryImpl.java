@@ -35,6 +35,13 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
+    public String findIdBySequence(long sequence) {
+        String sql = "select sequence, writer, title, contents from article where sequence = :sequence";
+        SqlParameterSource param = new MapSqlParameterSource("sequence", sequence);
+        return template.queryForObject(sql, param, articleRowMapper()).getWriter();
+    }
+
+    @Override
     public Optional<Article> findBySequence(long sequence) {
         String sql = "select a.sequence, u.name as writer, a.title, a.contents "
                 + "from article a inner join users u on a.writer = u.userId where a.sequence = :sequence";
@@ -51,6 +58,17 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         String sql = "select a.sequence, u.name as writer, a.title, a.contents "
                 + "from article a inner join users u on a.writer = u.userId";
         return template.query(sql, articleRowMapper());
+    }
+
+    @Override
+    public Article update(long sequence, Article article) {
+        String sql = "UPDATE article SET title = :title, contents = :contents where sequence = :sequence";
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("sequence", sequence)
+                .addValue("title", article.getTitle())
+                .addValue("contents", article.getContents());
+        template.update(sql, param);
+        return article;
     }
 
     private RowMapper<Article> articleRowMapper() {

@@ -3,7 +3,11 @@ package kr.codesqaud.cafe.service;
 import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.ArticleDTO;
+import kr.codesqaud.cafe.exception.article.InvalidRequesterIdException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
@@ -42,6 +47,17 @@ public class ArticleService {
      */
     public Optional<Article> findOne(long index) {
         return articleRepository.findBySequence(index);
+    }
+
+    public Article edit(long index, String requesterId, ArticleDTO articleDTO) {
+        String originWriter = articleRepository.findIdBySequence(index);
+        if (!originWriter.equals(requesterId)) {
+            logger.info("게시글 수정 요청 ID와 기존 게시글 ID 불일치");
+            throw new InvalidRequesterIdException();
+        }
+        Article article = new Article(articleDTO.getTitle(), articleDTO.getContents());
+        logger.info("게시글 수정 성공");
+        return articleRepository.update(index, article);
     }
 
 }

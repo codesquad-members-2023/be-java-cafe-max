@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class ArticleController {
@@ -35,7 +36,7 @@ public class ArticleController {
         article.setWriter(writer); // TODO: 서비스 안으로 캡슐화
 
         articleService.save(article);
-        logger.info("게시글 저장 성공");
+        logger.info(writer + ": 게시글 저장 성공");
         return "redirect:/";
     }
 
@@ -49,9 +50,17 @@ public class ArticleController {
     @GetMapping("/articles/{index}/edit")
     public String showEditPage(@PathVariable final long index, final Model model) {
         Article findArticle = articleService.findOne(index).get();
-        System.out.println(findArticle.getSequence());
+        logger.info("게시글 수정 페이지 조회 요청 / " + "제목: " + findArticle.getTitle());
         model.addAttribute("article", findArticle);
         return "qna/edit_form";
     }
 
+    @PutMapping("/articles/{index}")
+    public String editArticle
+            (@PathVariable final long index, HttpSession session, final ArticleDTO articleDTO, Model model) {
+        String requesterID = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
+        logger.info("requesterID: " + requesterID + " / 게시글 수정 요청");
+        articleService.edit(index, requesterID , articleDTO);
+        return "redirect:/articles/" + index;
+    }
 }

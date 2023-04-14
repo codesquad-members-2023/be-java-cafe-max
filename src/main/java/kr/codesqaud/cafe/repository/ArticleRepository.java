@@ -8,7 +8,11 @@ public interface ArticleRepository {
 
     Article save(Article article);
 
+    String findIdBySequence(long sequence);
+
     Optional<Article> findBySequence(long sequence);
 
     List<Article> findAll();
+
+    Article update(long sequence, Article article);
 }
