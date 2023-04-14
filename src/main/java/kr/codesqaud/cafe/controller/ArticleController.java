@@ -35,7 +35,7 @@ public class ArticleController {
         articleService.checkLogin(session);
         Article article = articleService.findByIdx(index);
         model.addAttribute("article", article);
-        model.addAttribute("auth",articleService.checkAuth(article.getUserId(),session));
+        model.addAttribute("auth",articleService.checkIdentity(article.getUserId(),session));
         return "qna/show";
     }
     @GetMapping("/")
