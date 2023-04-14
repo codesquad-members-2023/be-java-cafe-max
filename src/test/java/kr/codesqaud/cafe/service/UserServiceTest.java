@@ -3,11 +3,12 @@ package kr.codesqaud.cafe.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.UserDTO;
 import kr.codesqaud.cafe.exception.signUpException.InvalidUserIdException;
-import kr.codesqaud.cafe.repository.UserRepository;
-import kr.codesqaud.cafe.repository.UserRepositoryImpl;
+import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.user.UserDTO;
+import kr.codesqaud.cafe.user.UserRepository;
+import kr.codesqaud.cafe.user.UserRepositoryImpl;
+import kr.codesqaud.cafe.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

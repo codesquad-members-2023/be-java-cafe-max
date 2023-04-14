@@ -1,8 +1,7 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.article;
 
 import java.util.List;
 import java.util.Optional;
-import kr.codesqaud.cafe.domain.Article;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;

@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.article;
 
 /**
  * 게시글을 의미하는 객체

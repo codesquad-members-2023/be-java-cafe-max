@@ -1,10 +1,7 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.user;
 
 import java.util.List;
 import javax.validation.Valid;
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.UserDTO;
-import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

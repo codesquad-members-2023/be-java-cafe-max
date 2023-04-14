@@ -1,8 +1,7 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.login;
 
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.LoginFormDTO;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service

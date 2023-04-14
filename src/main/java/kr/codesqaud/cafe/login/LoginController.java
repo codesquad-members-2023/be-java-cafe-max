@@ -1,12 +1,10 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.login;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import kr.codesqaud.cafe.SessionConstant;
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.LoginFormDTO;
-import kr.codesqaud.cafe.service.LoginService;
+import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.web.SessionConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

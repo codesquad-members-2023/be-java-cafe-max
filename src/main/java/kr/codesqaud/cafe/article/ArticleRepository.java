@@ -1,8 +1,7 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.article;
 
 import java.util.List;
 import java.util.Optional;
-import kr.codesqaud.cafe.domain.Article;
 
 public interface ArticleRepository {
 

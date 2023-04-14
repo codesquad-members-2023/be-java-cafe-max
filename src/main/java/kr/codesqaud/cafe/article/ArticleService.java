@@ -1,11 +1,8 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.article;
 
 import java.util.List;
 import java.util.Optional;
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.dto.ArticleDTO;
 import kr.codesqaud.cafe.exception.article.InvalidRequesterIdException;
-import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

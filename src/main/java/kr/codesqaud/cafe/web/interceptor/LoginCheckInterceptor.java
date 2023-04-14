@@ -1,9 +1,9 @@
-package kr.codesqaud.cafe.interceptor;
+package kr.codesqaud.cafe.web.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import kr.codesqaud.cafe.SessionConstant;
+import kr.codesqaud.cafe.web.SessionConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;

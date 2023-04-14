@@ -2,8 +2,12 @@ package kr.codesqaud.cafe.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.article.Article;
+import kr.codesqaud.cafe.article.ArticleRepository;
+import kr.codesqaud.cafe.article.ArticleRepositoryImpl;
+import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.user.UserRepository;
+import kr.codesqaud.cafe.user.UserRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

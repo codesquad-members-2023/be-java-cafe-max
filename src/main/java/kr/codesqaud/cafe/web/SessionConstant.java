@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe;
+package kr.codesqaud.cafe.web;
 
 public abstract class SessionConstant {
 
