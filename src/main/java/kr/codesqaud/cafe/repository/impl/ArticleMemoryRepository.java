@@ -12,8 +12,8 @@ import kr.codesqaud.cafe.repository.ArticleRepository;
 
 public class ArticleMemoryRepository implements ArticleRepository {
 
-	private static Long sequence = 1L;
 	private final Map<Long, Article> articleRepository = new HashMap<>();
+	private Long sequence = 1L;
 
 	@Override
 	public Optional<Article> save(final Article article) {
