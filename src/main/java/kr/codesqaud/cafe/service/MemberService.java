@@ -22,7 +22,7 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public long signUp(SignUpRequestDto signUpRequestDto) {
+    public Long signUp(SignUpRequestDto signUpRequestDto) {
         Member member = signUpRequestDto.toEntity();
         if (member == null) {
             throw new IllegalArgumentException("Member 객체를 생성할 수 없습니다.");
