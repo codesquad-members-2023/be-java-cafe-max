@@ -1,8 +1,10 @@
 package kr.codesqaud.cafe.repository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -50,7 +52,7 @@ public class H2QuestionRepository implements QuestionRepository {
 		return jdbcTemplate.query(sql, parameters, rowMapper);
 	}
 
-	public QuestionDetailDTO selectByIdx(int idx) {
+	public QuestionDetailDTO selectByIdx(int idx) throws NoSuchElementException {
 		String sql = "SELECT idx, writer, title, contents, registrationdatetime FROM \"post\"  WHERE idx = :idx";
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("idx", idx);
@@ -61,7 +63,11 @@ public class H2QuestionRepository implements QuestionRepository {
 				rs.getString("contents"),
 				rs.getTimestamp("registrationDateTime").toLocalDateTime());
 
-		return jdbcTemplate.queryForObject(sql, parameters, rowMapper);
+		try {
+			return jdbcTemplate.queryForObject(sql, parameters, rowMapper);
+		} catch (DataAccessException e) {
+			throw new NoSuchElementException("존재하지 않는 개시글 입니다.");
+		}
 
 	}
 
