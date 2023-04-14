@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -19,9 +20,13 @@ public class H2UserRepository implements UserRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public void insert(SignUpDTO dto) {
+	public void insert(SignUpDTO dto) throws IllegalArgumentException {
 		String sql = "INSERT INTO \"user\"(userId, password, name, email) VALUES (?, ?, ?, ?)";
-		jdbcTemplate.update(sql, dto.getUserId(), dto.getPassword(), dto.getName(), dto.getEmail());
+		try {
+			jdbcTemplate.update(sql, dto.getUserId(), dto.getPassword(), dto.getName(), dto.getEmail());
+		} catch (DataAccessException e) {
+			throw new IllegalArgumentException("이미 등록된 아이디 입니다.");
+		}
 	}
 
 	@Override
