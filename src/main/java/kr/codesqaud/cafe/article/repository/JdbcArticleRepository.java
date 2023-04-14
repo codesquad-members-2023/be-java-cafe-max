@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.article.repository;
 
 import kr.codesqaud.cafe.article.domain.Article;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
@@ -24,12 +22,13 @@ public class JdbcArticleRepository implements ArticleRepository {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
+    //DB에서 id가 생성되기 때문에 저장하는 동시에 생성된 id를 반환한다.(테스트 코드에 쓰임)
     @Override
     public Long save(Article article) {
         String sql = "INSERT INTO articles (author, title, contents, time) VALUES (:author, :title, :contents, :time)";
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(article);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String[] keyColumnNames = {"id"}; // specify the name of the ID column
+        String[] keyColumnNames = {"id"};
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder, keyColumnNames);
         return keyHolder.getKey().longValue();
     }
