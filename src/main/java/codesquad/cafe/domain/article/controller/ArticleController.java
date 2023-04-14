@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -26,7 +27,7 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String writePost(@ModelAttribute ArticleRequestDto articleRequestDto) {
+    public String writePost(@ModelAttribute @Valid ArticleRequestDto articleRequestDto) {
         articleService.createPost(articleRequestDto);
         return "redirect:/";
     }
