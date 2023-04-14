@@ -39,7 +39,11 @@ public class PostModifyRequest {
     }
 
     public Post toPost() {
-        return new Post(id, title, content, null, null, null);
+        return Post.builder()
+            .id(id)
+            .title(title)
+            .content(content)
+            .build();
     }
 
     public static PostModifyRequest from(PostResponse postResponse) {

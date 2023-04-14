@@ -19,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
-import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.exception.common.Unauthorized;
 import kr.codesqaud.cafe.session.AccountSession;
 import kr.codesqaud.cafe.dto.post.PostResponse;
@@ -39,7 +38,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @WebMvcTest(PostController.class)
 public class PostControllerTest {
@@ -76,7 +74,7 @@ public class PostControllerTest {
         Long writerId = 1L;
         AccountSession accountSession = new AccountSession(writerId);
         PostWriteRequest postWriteRequest = new PostWriteRequest("게시글 제목", "게시글 내용", writerId);
-        given(postService.write(any())).willReturn(writerId);
+        given(postService.write(any(), any())).willReturn(writerId);
 
         // when
 
@@ -283,7 +281,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(1L);
-        willThrow(new PostNotFoundException()).given(postService).modify(any());
+        willThrow(new PostNotFoundException()).given(postService).modify(any(), any());
 
         // when
 

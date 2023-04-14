@@ -51,7 +51,7 @@ public class JdbcPostRepository implements PostRepository {
                          + " p.write_date, p.views "
                     + "FROM post p "
               + "INNER JOIN member m on m.id = p.writer_id "
-                   + "ORDER BY id DESC";
+                   + "ORDER BY id DESC"; // 교집합
         return jdbcTemplate.query(sql, postRowMapper);
     }
 
@@ -89,12 +89,15 @@ public class JdbcPostRepository implements PostRepository {
     }
 
     private final RowMapper<Post> postRowMapper = (rs, rowNum) ->
-         new Post(rs.getLong("id"), rs.getString("title"),
-            rs.getString("content"),
-            Member.builder()
+        Post.builder()
+            .id(rs.getLong("id"))
+            .title(rs.getString("title"))
+            .content(rs.getString("content"))
+            .writer(Member.builder()
                 .id(rs.getLong("writer_id"))
                 .nickName(rs.getString("writer_name"))
-                .build(),
-            rs.getTimestamp("write_date").toLocalDateTime(),
-            rs.getLong("views"));
+                .build())
+            .writeDate(rs.getTimestamp("write_date").toLocalDateTime())
+            .views(rs.getLong("views"))
+            .build();
 }

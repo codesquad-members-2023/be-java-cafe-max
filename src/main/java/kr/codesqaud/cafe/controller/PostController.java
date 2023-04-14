@@ -37,8 +37,7 @@ public class PostController {
             return "post/postWrite";
         }
 
-        postWriteRequest.setWriterId(accountSession.getId());
-        postService.write(postWriteRequest);
+        postService.write(postWriteRequest, accountSession.getId());
         return "redirect:/";
     }
 
@@ -56,8 +55,7 @@ public class PostController {
         }
 
         postService.validateUnauthorized(id, accountSession);
-        postModifyRequest.setId(id);
-        postService.modify(postModifyRequest);
+        postService.modify(postModifyRequest, id);
         return "redirect:/posts/{id}";
     }
 

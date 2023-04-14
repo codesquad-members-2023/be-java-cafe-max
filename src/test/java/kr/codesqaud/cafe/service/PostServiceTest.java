@@ -37,11 +37,12 @@ class PostServiceTest {
     @Test
     void save() {
         // given
-        PostWriteRequest postWriteRequest = new PostWriteRequest("제목", "내용", 1L);
-        given(postRepository.save(any())).willReturn(1L);
+        Long writerId = 1L;
+        PostWriteRequest postWriteRequest = new PostWriteRequest("제목", "내용", null);
+        given(postRepository.save(any())).willReturn(writerId);
 
         // when
-        Long savedId = postService.write(postWriteRequest);
+        Long savedId = postService.write(postWriteRequest, writerId);
 
         // then
         assertEquals(1L, savedId);
@@ -130,11 +131,19 @@ class PostServiceTest {
         // given
         PostModifyRequest postModifyRequest = new PostModifyRequest(1L, "tset", "content");
         given(postRepository.findById(postModifyRequest.getId()))
-            .willReturn(Optional.of(new Post(postModifyRequest.getId(), postModifyRequest.getTitle(),
-                postModifyRequest.getContent(), Member.builder().id(1L).build(), LocalDateTime.now(), 0L)));
+            .willReturn(Optional.of(Post.builder()
+                .id(postModifyRequest.getId())
+                .title(postModifyRequest.getTitle())
+                .content(postModifyRequest.getContent())
+                .writer(Member.builder()
+                    .id(1L)
+                    .build())
+                .writeDate(LocalDateTime.now())
+                .views(0L)
+                .build()));
 
         // when
-        postService.modify(postModifyRequest);
+        postService.modify(postModifyRequest, postModifyRequest.getId());
 
         // then
         Post findPost = postRepository.findById(postModifyRequest.getId()).orElseThrow();
@@ -152,7 +161,8 @@ class PostServiceTest {
         // when
 
         // then
-        assertThrows(PostNotFoundException.class, () -> postService.modify(postModifyRequest));
+        assertThrows(PostNotFoundException.class,
+            () -> postService.modify(postModifyRequest, postModifyRequest.getId()));
     }
 
     @DisplayName("게시글 삭제 성공")
@@ -184,22 +194,24 @@ class PostServiceTest {
     }
 
     private Post createPostDummy() {
-        return new Post(1L, "제목", "내용", Member.builder().id(1L).build(),
-            LocalDateTime.now(), 0L);
+        return Post.builder()
+            .id(1L)
+            .title("제목")
+            .content("내용")
+            .writer(Member.builder().id(1L).build())
+            .writeDate(LocalDateTime.now())
+            .views(0L)
+            .build();
     }
 
     private Post createPostDummy2() {
-        return new Post(2L, "제목2", "내용2", Member.builder().id(1L).build(),
-            LocalDateTime.now(), 0L);
-    }
-
-    private Member createMemberDummy() {
-        return Member.builder()
-            .id(1L)
-            .email("test@gmail.com")
-            .password("Test1234")
-            .nickName("test")
-            .createDate(LocalDateTime.now())
+        return Post.builder()
+            .id(2L)
+            .title("제목2")
+            .content("내용2")
+            .writer(Member.builder().id(1L).build())
+            .writeDate(LocalDateTime.now())
+            .views(0L)
             .build();
     }
 }

@@ -81,11 +81,15 @@ class PostRepositoryTest {
             .forEach(index -> {
                     String title = String.format("제목%d", index);
                     String content = String.format("내용%d", index);
-                    postRepository.save(new Post(null, title, content,
-                        Member.builder()
-                            .id(savedMemberId)
-                            .build(),
-                        LocalDateTime.now(), (long) index));
+                    postRepository.save(Post.builder()
+                            .title(title)
+                            .content(content)
+                            .writer(Member.builder()
+                                .id(savedMemberId)
+                                .build())
+                            .writeDate(LocalDateTime.now())
+                            .views((long) index)
+                            .build());
             });
 
         // when
@@ -102,8 +106,14 @@ class PostRepositoryTest {
         Long savedMemberId = saveMember();
         Post post = postDummy(savedMemberId);
         Long savedId = postRepository.save(post);
-        Post updatePost = new Post(savedId, "업데이트", "업데이트 내용", post.getWriter(),
-            post.getWriteDate(), 0L);
+        Post updatePost = Post.builder()
+            .id(savedId)
+            .title("업데이트")
+            .content("업데이트 내용")
+            .writer(post.getWriter())
+            .writeDate(post.getWriteDate())
+            .views(0L)
+            .build();
 
         // when
         postRepository.update(updatePost);
@@ -134,11 +144,15 @@ class PostRepositoryTest {
     }
 
     private Post postDummy(Long writerId) {
-        return new Post(null, "제목", "내용",
-            Member.builder()
+        return Post.builder()
+            .title("제목")
+            .content("내용")
+            .writer(Member.builder()
                 .id(writerId)
-                .build(),
-            LocalDateTime.now(), 0L);
+                .build())
+            .writeDate(LocalDateTime.now())
+            .views(0L)
+            .build();
     }
 
     private Long saveMember() {

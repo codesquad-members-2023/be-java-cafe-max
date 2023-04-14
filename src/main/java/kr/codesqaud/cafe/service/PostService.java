@@ -26,11 +26,11 @@ public class PostService {
         this.memberRepository = memberRepository;
     }
 
-    public Long write(PostWriteRequest postWriteRequest) {
+    public Long write(PostWriteRequest postWriteRequest, Long id) {
+        postWriteRequest.setWriterId(id);
         return postRepository.save(postWriteRequest.toPost());
     }
 
-    @Transactional(readOnly = true)
     public PostResponse findById(Long id) {
         Post post = postRepository.findById(id)
             .orElseThrow(PostNotFoundException::new)
@@ -47,7 +47,8 @@ public class PostService {
             .collect(Collectors.toUnmodifiableList());
     }
 
-    public void modify(PostModifyRequest postModifyRequest) {
+    public void modify(PostModifyRequest postModifyRequest, Long id) {
+        postModifyRequest.setId(id);
         postRepository.findById(postModifyRequest.getId())
             .orElseThrow(PostNotFoundException::new);
         postRepository.update(postModifyRequest.toPost());
