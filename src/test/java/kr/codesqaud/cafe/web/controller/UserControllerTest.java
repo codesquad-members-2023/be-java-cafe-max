@@ -52,7 +52,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입 성공 테스트")
+    @DisplayName("올바른 회원정보가 주어지고 회원가입 요청시 회원가입이 되는지 테스트")
     public void save_success() throws Exception {
         //given
         String userId = "user1";
@@ -75,15 +75,15 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입 아이디 중복 테스트")
+    @DisplayName("중복된 아이디가 주어지고 회원가입 요청시 에러 응답을 받는지 테스트")
     public void save_fail1() throws Exception {
         //given
-        String userId = "yonghwan1107";
+        String duplicateUserId = "yonghwan1107";
         String password = "yonghwan1107";
         String name = "김용환";
         String email = "yonghwan1107@naver.com";
         String url = "/users";
-        UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
+        UserSavedRequestDto dto = new UserSavedRequestDto(duplicateUserId, password, name, email);
         //when
         MockHttpServletResponse response =
             mockMvc.perform(post(url)
@@ -100,7 +100,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입 이메일 중복 테스트")
+    @DisplayName("중복된 이메일이 주어지고 회원가입 요청시 에러 응답을 받는지 테스트")
     public void save_fail2() throws Exception {
         //given
         String userId = "kimyonghwan1107";
@@ -125,7 +125,8 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입시 아이디, 패스워드, 이름, 이메일의 입력 형식 검증이 되는지 테스트")
+    @DisplayName("부적절한 입력 형식의 유저아이디, 패스워드, 이름, 이메일이 주어지고 회원가입 요청시 "
+        + "에러 응답 코드를 받는지 테스트")
     public void validate_singUp_format() throws Exception {
         //given
         String userId = "a";
@@ -166,10 +167,11 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("특정 회원의 프로필이 검색되는지 테스트")
+    @DisplayName("특정 회원의 id가 주어지고 회원의 프로필이 검색되는지 테스트")
     public void profile() throws Exception {
         //given
-        Long id = userRepository.findByUserId("yonghwan1107").orElseThrow().getId();
+        String userId = "yonghwan1107";
+        Long id = userRepository.findByUserId(userId).orElseThrow().getId();
         String url = "/users/" + id;
         //when
         UserResponseDto profile = (UserResponseDto) mockMvc.perform(get(url))
@@ -183,7 +185,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("브라우저 URI에 DB에 없는 회원 아이디로 프로필을 보고자 할때 전체 회원 목록조회로 이동되는지 테스트")
+    @DisplayName("브라우저 URI에 DB에 없는 회원 등록번호로 프로필을 보고자 할때 전체 회원 목록조회로 이동되는지 테스트")
     public void profile_fail() throws Exception {
         //given
         String url = "/users/10";
@@ -193,7 +195,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 성공 테스트")
+    @DisplayName("올바른 유저아이디와 올바른 패스워드가 주어지고 로그일할때 세션 저장소에 회원정보가 저장되는지 테스트")
     public void login_success() throws Exception {
         //given
         String userId = "yonghwan1107";
@@ -215,7 +217,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 비밀번호 불일치 테스트")
+    @DisplayName("올바른 유저아이디와 틀린 비밀번호가 주어지고 로그인할때 비밀번호 불일치로 에러 응답을 받는지 테스트")
     public void login_fail1() throws Exception {
         //given
         String userId = "yonghwan1107";
@@ -238,7 +240,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 부적절한 입력 형식 테스트")
+    @DisplayName("부적절한 입력 형식의 아이디와 패스워드가 주어지고 로그인할때 에러 응답을 받는지 테스트")
     public void login_fail2() throws Exception {
         //given
         String userId = "";
@@ -269,7 +271,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 회원이 없는 경우 테스트")
+    @DisplayName("서버에 없는 회원 아이디가 주어지고 로그인할때 에러 응답을 받는지 테스트")
     public void login_fail3() throws Exception {
         //given
         String userId = "user10";
@@ -292,7 +294,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("회원 수정 성공 테스트")
+    @DisplayName("변경된 비밀번호, 이름, 이메일이 주어지고 유저아이디가 주어질때 회원정보 수정이 되는지 테스트")
     public void update_success() throws Exception {
         //given
         String userId = "yonghwan1107";
@@ -306,13 +308,18 @@ class UserControllerTest {
         //when
         mockMvc.perform(put(url)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(toJSON(dto)))
+                .content(toJSON(dto))
+                .session(session))
             .andExpect(status().isOk());
         //then
         User actual = userRepository.findByUserId(userId).orElseThrow();
         Assertions.assertThat(actual.getName()).isEqualTo(modifiedName);
         Assertions.assertThat(actual.getPassword()).isEqualTo(modifiedPassword);
         Assertions.assertThat(actual.getEmail()).isEqualTo(modifiedEmail);
+
+        // 회원정보 수정 이후 세션 저장소에 회원 정보가 삭제되었는지 테스트
+        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
+        Assertions.assertThat(user).isNull();
     }
 
     @Test
@@ -391,8 +398,6 @@ class UserControllerTest {
                 .content(toJSON(dto)))
             .andExpect(status().isOk());
     }
-
-    // TODO: 회원정보 수정시 기존 세션에 가지고 있는 회원정보 제거 됬는지 테스트
 
 
     private <T> String toJSON(T data) throws JsonProcessingException {
