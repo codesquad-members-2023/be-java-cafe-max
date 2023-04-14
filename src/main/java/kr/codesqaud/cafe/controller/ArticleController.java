@@ -1,8 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.dto.ArticlePostRequest;
-import kr.codesqaud.cafe.repository.ArticleH2Repository;
-import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.dto.ArticleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
