@@ -107,3 +107,28 @@
 - 게시글을 삭제한다.✅
   - 작성자와 로그인한 회원이 같은 경우에만 가능하다.✅
   - 작성자가 아닌 경우 에러페이지로 이동한다.✅
+
+### URL
+
+| HTTP Method |        URL         |        기능         |
+| :---------: | :----------------: | :-----------------: |
+|     GET     |      /members      |   회원 목록 조회    |
+|     GET     |   /members/{id}    |     프로필 조회     |
+|     PUT     |   /members/{id}    |  회원 프로필 수정   |
+|     GET     | /members/{id}/edit | 회원 프로필 수정 폼 |
+|     GET     |  /members/sign-up  |     회원가입 폼     |
+|    POST     |  /members/sign-up  |      회원 가입      |
+|     GET     |  /members/sign-in  |      로그인 폼      |
+|    POST     |  /members/sign-in  |       로그인        |
+|    POST     | /members/sign-out  |      로그아웃       |
+|     GET     |         /          |  게시글 목록 조회   |
+|     GET     |       /posts       |  게시글 목록 조회   |
+|     GET     |    /posts/{id}     |  게시글 상세 조회   |
+|     PUT     |    /posts/{id}     |     게시글 수정     |
+|   DELETE    |    /posts/{id}     |     게시글 삭제     |
+|     GET     |    /posts/write    |   게시글 작성 폼    |
+|     GET     | /posts/{id}/modify |   게시글 수정 폼    |
+
+## ERD
+
+![](https://lh3.googleusercontent.com/pw/AJFCJaX1UoZ5jdJMJwDiDhO9EiosHEKQFmXe7iRDzTr86gQ_o3uTDbf8guc501C8vvIFAThz7pBGQrYaE4dZZWVQP1OVZw7-25k3nmmOcSvGBtgdEsEw_3peBtlGsrtb28ecTIoapRc2YYcz0CAaZyKnPGnF=w714-h507-s-no?authuser=0)
