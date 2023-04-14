@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.constant.SessionConst;
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.dto.ArticleUpdateForm;
 import kr.codesqaud.cafe.dto.SessionDto;
@@ -62,6 +61,7 @@ public class ArticleController {
     public String showArticle(HttpSession session, Model model, @PathVariable Long id) {
 
         SessionDto loginUser = (SessionDto) session.getAttribute(SessionConst.LOGIN_MEMBER);
+
         if (loginUser == null) {
             return "redirect:/user/login";
         }
@@ -76,13 +76,13 @@ public class ArticleController {
 
         model.addAttribute("loginUser", loginUser);
 
-        if (articleService.isAuthorized(loginUser.getUserId(), id)) {
-            Article article = articleService.findOne(id).get();
-            model.addAttribute("article", article);
-            return "qna/update";
-        }
-
-        return "error/404";
+        return articleService.findOne(id)
+                .filter(article -> articleService.isAuthorized(loginUser.getUserId(), id))
+                .map(article -> {
+                    model.addAttribute("article", article);
+                    return "qna/update";
+                })
+                .orElse("error/404");
     }
 
     @PutMapping("articles/update/{id}")
