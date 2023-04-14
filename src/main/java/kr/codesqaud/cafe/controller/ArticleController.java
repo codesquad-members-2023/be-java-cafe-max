@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.dto.ArticlePostRequest;
-import kr.codesqaud.cafe.domain.entity.Article;
 import kr.codesqaud.cafe.repository.ArticleH2Repository;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.service.ArticleService;
@@ -16,13 +15,10 @@ import java.util.List;
 
 @Controller
 public class ArticleController {
-
-    private final ArticleRepository articleRepository;
     private final ArticleService articleService;
 
     @Autowired
-    public ArticleController(ArticleH2Repository articleH2Repository, ArticleService articleService) {
-        this.articleRepository = articleH2Repository;
+    public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
@@ -33,12 +29,7 @@ public class ArticleController {
             Model model
             ){
         if("POST".equals(request.getMethod())) {
-            //TODO Dto -> Entity 메서드
-            articleRepository.save(new Article(
-                    articlePostRequest.getWriter(),
-                    articlePostRequest.getTitle(),
-                    articlePostRequest.getContents()
-            ));
+            articleService.post(articlePostRequest);
             return "redirect:/";
         }
 
@@ -55,7 +46,7 @@ public class ArticleController {
 
     @GetMapping("/article/{articleId}")
     public String showDetail(@PathVariable("articleId") long articleId, Model model){
-        model.addAttribute("article", articleRepository.findByArticleId(articleId));
+        model.addAttribute("article", articleService.findByArticleId(articleId));
 
         return "qna/show";
     }
