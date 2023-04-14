@@ -1,11 +1,12 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -25,19 +26,8 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public User findByUserId(String userId) {
-        return users.get(userId);
+    public Optional<User> findByUserId(String userId) {
+        return Optional.ofNullable(users.get(userId));
     }
-
-    @Override
-    public void updateUserPassword(User user, String password) {
-        user.setPassword(password);
-    }
-
-    @Override
-    public void clearUserList() {
-        users.clear();
-    }
-
 
 }

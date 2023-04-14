@@ -1,15 +1,14 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository {
     public User save(User user);
     public List<User> findAll();
-    public User findByUserId(String userId);
-    public void updateUserPassword(User user, String password);
-    public void clearUserList();
+    public Optional<User> findByUserId(String userId);
 }

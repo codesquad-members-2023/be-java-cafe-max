@@ -1,19 +1,18 @@
-package kr.codesqaud.cafe.domain.entity;
+package kr.codesqaud.cafe.dto;
 
-public class Article {
+import org.springframework.lang.NonNull;
+
+public class ArticleResponse {
+    @NonNull
     private long articleId;
+    @NonNull
     private String writer;
+    @NonNull
     private String title;
     private String contents;
 
-    public Article(long articleId, String writer, String title, String contents) {
+    public ArticleResponse(long articleId, String writer, String title, String contents) {
         this.articleId = articleId;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-    }
-
-    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -34,5 +33,7 @@ public class Article {
     public String getContents() {
         return contents;
     }
+
+
 
 }

@@ -1,8 +1,10 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.UserMemoryRepository;
+import kr.codesqaud.cafe.dto.UserSignUpRequest;
+import kr.codesqaud.cafe.domain.entity.User;
+import kr.codesqaud.cafe.repository.UserH2Repository;
 import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,16 +15,28 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class UserController {
     private final UserRepository userRepository;
+    private final UserService userService;
     @Autowired
-    public UserController(UserMemoryRepository userMemoryRepository) {
-        this.userRepository = userMemoryRepository;
+    public UserController(UserH2Repository userRepository, UserService userService) {
+
+        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @RequestMapping("/user/signup")
-    public String join(HttpServletRequest request, @ModelAttribute User user){
+    public String join(HttpServletRequest request, @ModelAttribute UserSignUpRequest userSignUpRequest){
 
+        //TODO Dto -> Entity 메서드
         if("POST".equals(request.getMethod())){
+            User user = new User(
+                    userSignUpRequest.getUserId(),
+                    userSignUpRequest.getPassword(),
+                    userSignUpRequest.getName(),
+                    userSignUpRequest.getEmail()
+            );
+
             userRepository.save(user);
+
             return "redirect:/users";
         }
 
@@ -30,8 +44,8 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String showUserList(Model model){
-        model.addAttribute("users", userRepository.findAll());
+    public String showUsers(Model model){
+        model.addAttribute("users", userService.findUsers());
 
         return "user/list";
     }
@@ -41,29 +55,24 @@ public class UserController {
             @PathVariable("userId") String userId
             ,Model model
     ){
-        model.addAttribute("userProfile", userRepository.findByUserId(userId));
+        model.addAttribute("userProfile", userService.findByUserId(userId));
 
         return "user/profile";
     }
 
     @GetMapping("/user/{userId}/update")
     public String showPasswordEditForm(@PathVariable("userId") String userId, Model model){
-        model.addAttribute("user", userRepository.findByUserId(userId));
+        model.addAttribute("user", userService.findByUserId(userId));
 
         return "user/form_update";
     }
 
     @PutMapping("/user/{userId}/update")
-    public String updatePassowrd(
+    public String updatePassword(
             @PathVariable("userId") String userId,
-            @RequestParam("newPassword") String password,
-            Model model
+            @RequestParam("newPassword") String newPassword
     ){
-        User user = userRepository.findByUserId(userId);
-
-        userRepository.updateUserPassword(user, password);
-
-        model.addAttribute("user", user);
+        userService.updateUserPassword(userId, newPassword);
 
         return "redirect:/users";
     }

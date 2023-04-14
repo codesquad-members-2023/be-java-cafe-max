@@ -1,13 +1,13 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.entity.Article;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Repository
 public class ArticleMemoryRepository implements ArticleRepository{
@@ -17,24 +17,26 @@ public class ArticleMemoryRepository implements ArticleRepository{
 
     @Override
     public Article save(Article article) {
-        article.setArticleId(++sequence);
         articles.put(article.getArticleId(), article);
         return article;
     }
 
     @Override
     public List<Article> findAll() {
-        return new ArrayList<>(articles.values());
+        return articles.values()
+                .stream()
+                .map(article -> new Article(
+                        article.getArticleId(),
+                        article.getWriter(),
+                        article.getTitle(),
+                        article.getContents()
+                        ))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Optional<Article> findByArticleId(long articleId) {
         return Optional.ofNullable(articles.get(articleId));
-    }
-
-    @Override
-    public void clearArticleList() {
-        articles.clear();
     }
 
 }
