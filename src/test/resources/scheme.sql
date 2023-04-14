@@ -18,5 +18,5 @@ CREATE table article
     contents text(1000),
     PRIMARY KEY (sequence),
     FOREIGN KEY (writer)
-    REFERENCES user (userId) ON UPDATE CASCADE
+    REFERENCES users (userId) ON UPDATE CASCADE
 );
