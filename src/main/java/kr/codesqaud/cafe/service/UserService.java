@@ -1,11 +1,13 @@
 package kr.codesqaud.cafe.service;
 
+import com.sun.jdi.request.DuplicateRequestException;
 import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.domain.user.repository.UserRepository;
 import kr.codesqaud.cafe.dto.LoginSessionDto;
 import kr.codesqaud.cafe.dto.SignUpFormDto;
 import kr.codesqaud.cafe.dto.UpdateFormDto;
 import kr.codesqaud.cafe.exception.DeniedAccessException;
+import kr.codesqaud.cafe.exception.DuplicatedIdException;
 import kr.codesqaud.cafe.exception.LoginFailedException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -42,7 +44,6 @@ public class UserService {
     }
 
     public boolean login(User loginUser,String password){
-
         if(!loginUser.checkPassword(password)){
             throw new LoginFailedException("로그인 실패");
         }
@@ -51,10 +52,15 @@ public class UserService {
 
     public boolean updateAccess(String id , HttpSession session){
         LoginSessionDto userSession = (LoginSessionDto) session.getAttribute("sessionId");
-        if(!id.equals(userSession.getId())){
-            throw new DeniedAccessException("돌아가라");
+        if(userSession == null || !id.equals(userSession.getId())){
+            throw new DeniedAccessException("수정 권한 없습니다.");
         }
         return true;
+    }
+
+    public void duplicatedId(String id){
+         userRepository.findById(id).filter(u->{throw new DuplicatedIdException("중복된 아이디 입니다.");
+         });
     }
 
 

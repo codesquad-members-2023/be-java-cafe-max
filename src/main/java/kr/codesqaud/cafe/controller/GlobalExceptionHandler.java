@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.exception.DeniedAccessException;
+import kr.codesqaud.cafe.exception.DuplicatedIdException;
 import kr.codesqaud.cafe.exception.LoginFailedException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import org.springframework.ui.Model;
@@ -20,6 +21,7 @@ public class GlobalExceptionHandler {
         model.addAttribute("error",e.getMessage());
         return "user/login_failed";
     }
+
 
     @ExceptionHandler(DeniedAccessException.class)
     public String deniedAccessPage(DeniedAccessException e,Model model){
@@ -47,11 +49,16 @@ public class GlobalExceptionHandler {
                }
     }
 
-
-
     @ExceptionHandler(NotFoundException.class)
     public String NotFoundException(NotFoundException e , Model model){
         model.addAttribute("error",e.getMessage());
         return "user/error";
     }
+
+    @ExceptionHandler(DuplicatedIdException.class)
+    public String DuplicatedIdException(DuplicatedIdException e , RedirectAttributes model){
+        model.addFlashAttribute("idError",e.getMessage());
+        return "redirect:/user/signup";
+    }
+
 }
