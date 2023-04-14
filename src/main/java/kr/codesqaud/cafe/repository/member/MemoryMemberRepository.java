@@ -8,9 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Member;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public class MemoryMemberRepository implements MemberRepository {
 
     private final Map<Long, Member> store;
