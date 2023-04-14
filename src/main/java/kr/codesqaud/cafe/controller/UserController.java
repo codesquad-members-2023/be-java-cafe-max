@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.common.exception.CommonException;
+import kr.codesqaud.cafe.common.exception.CommonExceptionType;
 import kr.codesqaud.cafe.controller.dto.user.LoginUserSession;
 import kr.codesqaud.cafe.controller.dto.user.UserJoinDto;
 import kr.codesqaud.cafe.controller.dto.user.UserLoginDto;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -62,7 +65,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}/update")
-    public String updateUserForm(@PathVariable Long id, Model model) {
+    public String updateUserForm(@PathVariable Long id, Model model, @SessionAttribute("loginUser") LoginUserSession loginUserSession) {
+        if (loginUserSession.isNotSameUser(id)) {
+            throw new CommonException(CommonExceptionType.ACCESS_DENIED);
+        }
         model.addAttribute("user", new UserUpdateDto(userService.find(id)));
 
         return "user/update";

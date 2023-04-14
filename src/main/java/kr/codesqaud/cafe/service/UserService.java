@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.common.exception.CommonException;
+import kr.codesqaud.cafe.common.exception.CommonExceptionType;
 import kr.codesqaud.cafe.common.exception.user.UserJoinException;
 import kr.codesqaud.cafe.common.exception.user.UserLoginException;
 import kr.codesqaud.cafe.controller.dto.user.LoginUserSession;
@@ -37,7 +39,7 @@ public class UserService {
 
     public UserReadDto find(final Long id) {
         final User user = userRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException(UserExceptionType.NOT_FOUND_USER.getMessage()));
+                () -> new CommonException(CommonExceptionType.NOT_FOUND_RESOURCE));
 
         return new UserReadDto(user);
     }
@@ -50,7 +52,7 @@ public class UserService {
 
     public void update(UserUpdateDto userUpdateDto) {
         final User user = userRepository.findById(userUpdateDto.getId())
-                .orElseThrow(() -> new IllegalArgumentException(UserExceptionType.NOT_FOUND_USER.getMessage()));
+                .orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_RESOURCE));
 
         if (user.isChangedUserId(userUpdateDto.getUserId())) {
             userRepository.findByUserId(userUpdateDto.getUserId())

@@ -5,20 +5,23 @@ import kr.codesqaud.cafe.common.exception.user.UserLoginException;
 import kr.codesqaud.cafe.controller.dto.ErrorDto;
 import kr.codesqaud.cafe.common.exception.user.UserExceptionType;
 import kr.codesqaud.cafe.common.exception.user.UserUpdateException;
-import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public String notFoundExceptionHandler(Exception ex, Model model) {
-        model.addAttribute("error", new ErrorDto(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
+    @ExceptionHandler(CommonException.class)
+    public ModelAndView commonExceptionHandler(CommonException ex) {
+        final ModelAndView mav = new ModelAndView();
+        final CommonExceptionType exceptionType = ex.getExceptionType();
 
-        return "error/error_page";
+        mav.setViewName("error/error_page");
+        mav.addObject("error", new ErrorDto(exceptionType.getStatusValue(), exceptionType.getErrorMessage()));
+        mav.setStatus(exceptionType.getStatus());
+
+        return mav;
     }
 
     @ExceptionHandler(UserJoinException.class)

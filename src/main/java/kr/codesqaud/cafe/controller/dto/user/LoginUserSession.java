@@ -22,4 +22,8 @@ public class LoginUserSession {
     public String getUserId() {
         return userId;
     }
+
+    public boolean isNotSameUser(Long id) {
+        return !this.id.equals(id);
+    }
 }
