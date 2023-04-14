@@ -15,10 +15,10 @@ import kr.codesqaud.cafe.dto.QuestionWriteDTO;
 
 @Repository
 @Primary
-public class H2QuestionReposotory {
+public class H2QuestionRepository implements QuestionRepository {
 	private final NamedParameterJdbcTemplate jdbcTemplate;
 
-	public H2QuestionReposotory(NamedParameterJdbcTemplate jdbcTemplate) {
+	public H2QuestionRepository(NamedParameterJdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 

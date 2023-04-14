@@ -15,7 +15,7 @@ import kr.codesqaud.cafe.dummy.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.repository.temp_memory_db.TempQuestionTable;
 
 @Repository
-public class CollectionFrameWorkQuestionRepository {
+public class CollectionFrameWorkQuestionRepository implements QuestionRepository {
 	private final TempQuestionTable questionTable;
 
 	public CollectionFrameWorkQuestionRepository() {
@@ -24,7 +24,7 @@ public class CollectionFrameWorkQuestionRepository {
 		dummyData.insertQuestionsDummyData(questionTable);
 	}
 
-	public synchronized void insert(QuestionWriteDTO dto) {
+	public void insert(QuestionWriteDTO dto) {
 		questionTable.insert(dto);
 	}
 

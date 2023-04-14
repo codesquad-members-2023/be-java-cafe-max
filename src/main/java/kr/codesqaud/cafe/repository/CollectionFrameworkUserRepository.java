@@ -13,7 +13,7 @@ import kr.codesqaud.cafe.dummy.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.repository.temp_memory_db.TempUserTable;
 
 @Repository
-public class CollectionFrameworkUserRepository {
+public class CollectionFrameworkUserRepository implements UserRepository {
 	private final TempUserTable userTable;
 
 	public CollectionFrameworkUserRepository() {
@@ -22,7 +22,7 @@ public class CollectionFrameworkUserRepository {
 		dummyData.insertUserDummyData(userTable);
 	}
 
-	public synchronized void insert(SignUpDTO dto) throws IllegalArgumentException {
+	public void insert(SignUpDTO dto) throws IllegalArgumentException {
 		String userId = dto.getUserId();
 		for (User user : userTable.select()) {
 			if (user.getUserId().equals(userId)) {
@@ -47,7 +47,7 @@ public class CollectionFrameworkUserRepository {
 		throw new NoSuchElementException("존재하지 않는 유저 입니다.");
 	}
 
-	public synchronized void update(SignUpDTO dto) throws NoSuchElementException {
+	public void update(SignUpDTO dto) throws NoSuchElementException {
 		String userId = dto.getUserId();
 		for (User user : userTable.select()) {
 			if (user.getUserId().equals(userId)) {
