@@ -19,13 +19,11 @@ public class UserH2Repository implements UserRepository{
     }
 
     @Override
-    public User save(User user) {
+    public void save(User user) {
         jdbcTemplate.update(
                 "INSERT INTO \"user\"(userId, password, name, email) VALUES (:userId, :password, :name, :email)",
                 new BeanPropertySqlParameterSource(user)
         );
-
-        return user;
     }
 
     @Override

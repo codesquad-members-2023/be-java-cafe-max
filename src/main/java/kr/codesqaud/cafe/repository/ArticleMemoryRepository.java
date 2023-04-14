@@ -16,9 +16,8 @@ public class ArticleMemoryRepository implements ArticleRepository{
     private Long sequence = 0L;
 
     @Override
-    public Article save(Article article) {
+    public void save(Article article) {
         articles.put(article.getArticleId(), article);
-        return article;
     }
 
     @Override

@@ -19,13 +19,11 @@ public class ArticleH2Repository implements ArticleRepository{
     }
 
     @Override
-    public Article save(Article article) {
+    public void save(Article article) {
         jdbcTemplate.update(
                 "INSERT INTO article(writer, title, contents) VALUES (:writer, :title, :contents)",
                 new BeanPropertySqlParameterSource(article)
         );
-
-        return article;
     }
 
     @Override
