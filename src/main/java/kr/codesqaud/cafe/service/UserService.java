@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.codesqaud.cafe.controller.dto.LoginRequest;
+import kr.codesqaud.cafe.controller.dto.ModifyRequest;
 import kr.codesqaud.cafe.controller.dto.SignUpRequest;
 import kr.codesqaud.cafe.controller.dto.UserDto;
 import kr.codesqaud.cafe.domain.User;
@@ -13,7 +15,7 @@ import kr.codesqaud.cafe.repository.UserRepository;
 
 @Service
 public class UserService {
-	
+
 	private final UserRepository userRepository;
 
 	public UserService(UserRepository userRepository) {
@@ -44,5 +46,25 @@ public class UserService {
 		User user = userRepository.findUserProfile(id).orElseThrow(() ->
 			new IllegalArgumentException("회원을 찾을 수 없습니다"));
 		return user;
+	}
+
+	@Transactional
+	public boolean userLogin(LoginRequest loginRequest) {
+		User user = userRepository.findUser(loginRequest.getUserId());
+		return user.getPassword().equals(loginRequest.getPassword());
+	}
+
+	@Transactional
+	public boolean userModify(ModifyRequest modifyRequest) {
+		User user = userRepository.findUser(modifyRequest.getUserId());
+		if (user.getPassword().equals(modifyRequest.getOriPassword())) {
+			User newUser = new User(
+				modifyRequest.getUserId(), modifyRequest.getNewPassword(),
+				modifyRequest.getName(), modifyRequest.getEmail()
+			);
+			userRepository.modifyUser(newUser);
+			return true;
+		}
+		return false;
 	}
 }

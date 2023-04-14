@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.exception.DuplicatedUserIdException;
+import kr.codesqaud.cafe.exception.NoSuchUserIdException;
 
 @Repository
 public class JdbcUserRepository implements UserRepository {
@@ -20,13 +21,19 @@ public class JdbcUserRepository implements UserRepository {
 
 	@Override
 	public void save(User user) {
-		findUserProfile(user.getUserId()).ifPresent(u -> {
+		if (isExistsUserId(user.getUserId())) {
 			throw new DuplicatedUserIdException();
-		});
-		jdbcTemplate.update("INSERT INTO user_account(user_id, name, email) values (?, ?, ?)",
+		}
+		jdbcTemplate.update("INSERT INTO user_account(user_id, password, name, email) values (?, ?, ?, ?)",
 			user.getUserId(),
+			user.getPassword(),
 			user.getName(),
 			user.getEmail());
+	}
+
+	private boolean isExistsUserId(String userId) {
+		return jdbcTemplate.queryForObject("SELECT EXISTS(SELECT * FROM user_account WHERE user_id = ?)",
+			Boolean.class, userId);
 	}
 
 	@Override
@@ -46,5 +53,28 @@ public class JdbcUserRepository implements UserRepository {
 				rs.getString("name"),
 				rs.getString("email")
 			), id));
+	}
+
+	@Override
+	public User findUser(String userId) {
+		if (!isExistsUserId(userId)) {
+			throw new NoSuchUserIdException();
+		}
+		return jdbcTemplate.queryForObject("SELECT * FROM user_account WHERE user_id = ?", (rs, rowNum) -> new User(
+			rs.getString("user_id"),
+			rs.getString("password")
+		), userId);
+	}
+
+	@Override
+	public void modifyUser(User user) {
+		if (!isExistsUserId(user.getUserId())) {
+			throw new NoSuchUserIdException();
+		}
+		jdbcTemplate.update("UPDATE user_account SET password = ?, name = ?, email = ? WHERE user_id = ?",
+			user.getPassword(),
+			user.getName(),
+			user.getEmail(),
+			user.getUserId());
 	}
 }

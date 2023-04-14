@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.PostingRequest;
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.exception.InvalidSessionException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 
 @Service
@@ -21,8 +22,11 @@ public class ArticleService {
 	}
 
 	@Transactional
-	public void articleSave(PostingRequest postingRequest) {
-		Article article = postingRequest.getArticleEntity();
+	public void articleSave(PostingRequest postingRequest, String userId) {
+		if (userId == null) {
+			throw new InvalidSessionException();
+		}
+		Article article = postingRequest.getArticleEntity(userId);
 		articleRepository.save(article);
 	}
 
@@ -37,5 +41,10 @@ public class ArticleService {
 	@Transactional
 	public ArticleDto findById(Long id) {
 		return ArticleDto.fromEntity(articleRepository.findPosting(id));
+	}
+
+	@Transactional
+	public void deleteRequest(Long id) {
+		articleRepository.delete(id);
 	}
 }

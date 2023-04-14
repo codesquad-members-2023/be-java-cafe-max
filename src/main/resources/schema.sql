@@ -10,8 +10,9 @@ create table if not exists article
 
 create table if not exists user_account
 (
-    user_id varchar not null,
-    name    varchar not null,
-    email   varchar not null,
+    user_id  varchar not null,
+    password varchar not null,
+    name     varchar not null,
+    email    varchar not null,
     primary key (user_id)
 );

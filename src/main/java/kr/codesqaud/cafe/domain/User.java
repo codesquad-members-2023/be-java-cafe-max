@@ -14,13 +14,19 @@ public class User {
 	}
 
 	public User(String userId, String name, String email) {
-		this.userId = userId;
-		this.name = name;
-		this.email = email;
+		this(userId, null, name, email);
+	}
+
+	public User(String userId, String password) {
+		this(userId, password, null, null);
 	}
 
 	public String getUserId() {
 		return userId;
+	}
+
+	public String getPassword() {
+		return password;
 	}
 
 	public String getName() {
