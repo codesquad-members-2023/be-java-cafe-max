@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,5 +59,16 @@ public class ArticleController {
 		}
 		model.addAttribute("edits", articleDto);
 		return "qna/edit_form";
+	}
+
+	@DeleteMapping("/articles/delete/{id}")
+	public String deletePost(@PathVariable Long id, HttpSession session) {
+		Object userId = session.getAttribute("sessionedUser");
+		ArticleDto articleDto = articleService.findById(id);
+		if (!articleDto.getWriter().equals(userId)) {
+			return "qna/access_error";
+		}
+		articleService.deleteRequest(id);
+		return "redirect:/";
 	}
 }

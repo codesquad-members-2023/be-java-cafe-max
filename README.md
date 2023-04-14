@@ -75,10 +75,15 @@
 
 ### 📌 4 / 14 학습계획
 
-- [ ] 게시글 삭제하기 기능 구현
+- [x] 게시글 삭제하기 기능 구현
 - [ ] PR 제시간에 맞춰서 보내기
 - [ ] 인프런 강의 듣기
 - [ ] 빌드 다시하기
 
+##### ✔️ 게시글 삭제 권한 부여 기능 추가
 
+- [x] ArticleController deletePost() 메서드는 게시글 작성자와 로그인 된 ID가 일치하지 않으면 에러페이지를,
+  일치하면 UserService.deleteRequest()메서드 매개변수에 게시글 넘버인 id를 넘긴 후 redirect 시키기.
+- [x] UserService.deleteRequest()메서드는 JdbcArticleRepository.delete() 메서드 매개변수에 id 값을 넘겨줌
+- [x] JdbcArticleRepository.delete() 메서드는 id 값을 매개 변수로 받아 delete 쿼리에 id값을 담아 게시글 삭제
 

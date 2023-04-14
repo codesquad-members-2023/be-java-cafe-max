@@ -42,4 +42,9 @@ public class ArticleService {
 	public ArticleDto findById(Long id) {
 		return ArticleDto.fromEntity(articleRepository.findPosting(id));
 	}
+
+	@Transactional
+	public void deleteRequest(Long id) {
+		articleRepository.delete(id);
+	}
 }

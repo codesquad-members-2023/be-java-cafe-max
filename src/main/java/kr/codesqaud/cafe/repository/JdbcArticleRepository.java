@@ -46,4 +46,9 @@ public class JdbcArticleRepository implements ArticleRepository {
 			rs.getTimestamp("created_at").toLocalDateTime()
 		), id);
 	}
+
+	@Override
+	public void delete(Long id) {
+		jdbcTemplate.update("DELETE FROM ARTICLE WHERE id = ?", id);
+	}
 }
