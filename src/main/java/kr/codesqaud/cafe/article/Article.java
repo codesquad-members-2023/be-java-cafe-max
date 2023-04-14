@@ -1,11 +1,7 @@
 package kr.codesqaud.cafe.article;
 
 import java.math.BigInteger;
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * 게시글 엔티티
