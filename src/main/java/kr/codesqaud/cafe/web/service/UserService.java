@@ -9,6 +9,7 @@ import kr.codesqaud.cafe.web.dto.user.UserLoginRequestDto;
 import kr.codesqaud.cafe.web.dto.user.UserResponseDto;
 import kr.codesqaud.cafe.web.dto.user.UserSavedRequestDto;
 import kr.codesqaud.cafe.web.dto.user.UserUpdatedResponseDto;
+import kr.codesqaud.cafe.web.exception.user.UserDuplicatedException;
 import kr.codesqaud.cafe.web.exception.user.UserExceptionType;
 import kr.codesqaud.cafe.web.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.web.exception.user.UserNotLoginMatchingException;
@@ -37,10 +38,24 @@ public class UserService {
 
     // 회원가입
     public UserResponseDto signUp(UserSavedRequestDto requestDto) {
-        validator.validateDuplicatedUserId(requestDto.toEntity());
-        validator.validateDuplicatedUserEmail(requestDto.toEntity());
+        validateDuplicatedUserId(requestDto.getUserId());
+        validateDuplicatedUserEmail(requestDto.getEmail());
         User saveUser = userRepository.save(requestDto.toEntity());
         return new UserResponseDto(saveUser);
+    }
+
+    // 회원 아이디 중복 검증
+    public void validateDuplicatedUserId(String userId) {
+        userRepository.findByUserId(userId).ifPresent((user) -> {
+            throw new UserDuplicatedException(UserExceptionType.ALREADY_EXIST_USERID);
+        });
+    }
+
+    // 회원 이메일 중복 검증
+    public void validateDuplicatedUserEmail(String email) {
+        userRepository.findByEmail(email).ifPresent((user) -> {
+            throw new UserDuplicatedException(UserExceptionType.ALREADY_EXIST_EMAIL);
+        });
     }
 
     // 특정 회원 조회
@@ -68,7 +83,7 @@ public class UserService {
         User user = userRepository.findByUserId(loginUser.getUserId()).orElseThrow(() -> {
             throw new UserNotLoginMatchingException(UserExceptionType.NOT_MATCH_LOGIN);
         });
-        validator.validateLogin(loginUser, user);
+        validator.validateLoginPassword(loginUser.getPassword(), user.getPassword());
         session.setAttribute("user", new UserResponseDto(user));
     }
 
@@ -76,15 +91,18 @@ public class UserService {
     public UserResponseDto modifyUser(Long id, UserSavedRequestDto requestDto) {
         User requestUser = requestDto.toEntity(id);
         User currentUser = findUser(id);
-        validator.validateModifiedUserEmail(requestUser, currentUser);
+        // 기존 이메일과 수정하고자 하는 이메일이 같지 않다면 수정하고자 하는 이메일이 중복되지 않았는지 검증합니다.
+        if (!validator.isEmailUnChanged(currentUser.getEmail(), requestUser.getEmail())) {
+            validateDuplicatedUserEmail(requestUser.getEmail());
+        }
         User modifyUser = userRepository.modify(requestUser);
         return new UserResponseDto(modifyUser);
     }
 
     // 비밀번호 확인
     public void confirmPassword(Long id, UserSavedRequestDto requestDto) {
-        User requestUser = requestDto.toEntity();
-        User currentUser = findUser(id);
-        validator.validateEqualPassword(requestUser, currentUser);
+        String requestPassword = requestDto.getPassword();
+        String password = findUser(id).getPassword();
+        validator.validateEqualConfirmPassword(requestPassword, password);
     }
 }
