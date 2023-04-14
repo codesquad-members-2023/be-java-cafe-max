@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class ExceptionHandlerController {
-
     @ExceptionHandler(value = NoSuchElementException.class)
     public String handleNoSuchElementException() {
         return "error/404";

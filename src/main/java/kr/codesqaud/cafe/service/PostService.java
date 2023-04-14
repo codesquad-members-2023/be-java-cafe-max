@@ -31,6 +31,7 @@ public class PostService {
         return postRepository.save(postWriteRequest.toMakePost(member), member);
     }
 
+
     public PostResponse findById(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("해당 id를 가진 글을 찾을 수 없습니다."));

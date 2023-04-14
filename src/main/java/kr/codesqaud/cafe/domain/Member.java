@@ -10,7 +10,6 @@ public class Member {
     private final LocalDateTime createDate;
 
     public Member(String email, String password, String nickName, LocalDateTime createDate) {
-
         this.email = email;
         this.password = password;
         this.nickName = nickName;
