@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -19,6 +20,7 @@ import kr.codesqaud.cafe.repository.member.MemberRepository;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Sql(scripts = "classpath:schema.sql")
 class MemberServiceTest {
 
     @Autowired
