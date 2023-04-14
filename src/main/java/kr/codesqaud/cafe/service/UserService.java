@@ -50,14 +50,14 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    public UserDTO updateUser(ProfileEditDTO profileEditDto) {
+    public void updateUser(ProfileEditDTO profileEditDto) {
         UserDTO userDto = getUserById(profileEditDto.getId());
 
         if (!matchPassword(profileEditDto, userDto)){
             throw new UserUpdateInvalidPasswordException();
         }
 
-        return userMapper.toUserDTO(userRepository.updateUser(userMapper.toUser(profileEditDto)));
+        userRepository.updateUser(userMapper.toUser(profileEditDto));
     }
 
     private boolean matchPassword(ProfileEditDTO profileEditDto, UserDTO userDto) {

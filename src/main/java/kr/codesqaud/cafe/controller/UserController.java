@@ -41,8 +41,8 @@ public class UserController {
 
     @PutMapping("/user/profile/{id}")
     public String updateUserData(@ModelAttribute @Valid ProfileEditDTO profileEditDto, HttpSession httpSession){
-        UserDTO userDto = userService.updateUser(profileEditDto);
-        Session session = new Session(userDto.getId(),userDto.getNickName());
+        userService.updateUser(profileEditDto);
+        Session session = new Session(profileEditDto.getId(),profileEditDto.getNickName());
         httpSession.setAttribute(Session.LOGIN_USER,session);
         return "redirect:/user/list";
     }

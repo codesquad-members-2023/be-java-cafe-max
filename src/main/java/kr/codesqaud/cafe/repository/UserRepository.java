@@ -14,5 +14,5 @@ public interface UserRepository {
 
     boolean exist(String id);
 
-    User updateUser(User User);
+    void updateUser(User User);
 }
