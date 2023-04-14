@@ -1,18 +1,18 @@
 package kr.codesqaud.cafe.controller.dto;
 
-public class LoginDTO {
+public class SignInDTO {
 
-    private final String userId;
+    private final String id;
 
     private final String password;
 
-    public LoginDTO(String userId, String password) {
-        this.userId = userId;
+    public SignInDTO(String id, String password) {
+        this.id = id;
         this.password = password;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
     }
 
     public String getPassword() {

@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.config.Session;
-import kr.codesqaud.cafe.controller.dto.LoginDTO;
+import kr.codesqaud.cafe.controller.dto.SignInDTO;
 import kr.codesqaud.cafe.controller.dto.user.UserDTO;
 import kr.codesqaud.cafe.service.UserService;
 import org.assertj.core.api.Assertions;
@@ -45,14 +45,14 @@ class SignInControllerTest {
     @DisplayName("로그인성공시 id와 nickName을 session에 저장한다.")
     void userLogin() throws Exception {
         //given
-        LoginDTO loginDto = new LoginDTO("id", "user");
+        SignInDTO signInDto = new SignInDTO("id", "user");
         UserDTO userDto = new UserDTO("nickName", "aaa@naver.com", "password", "id");
-        given(userService.getUserById(loginDto.getUserId())).willReturn(userDto);
+        given(userService.getUserById(signInDto.getId())).willReturn(userDto);
 
         //when
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/user/sign-in-success")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("userId", "id")
+                        .param("id", "id")
                         .param("password", "password123"))
 
                 //then

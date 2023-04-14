@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.controller.dto.LoginDTO;
+import kr.codesqaud.cafe.controller.dto.SignInDTO;
 import kr.codesqaud.cafe.controller.dto.user.ProfileEditDTO;
 import kr.codesqaud.cafe.controller.dto.user.UserDTO;
 import kr.codesqaud.cafe.controller.dto.user.UserListDTO;
@@ -64,9 +64,9 @@ public class UserService {
         return userDto.getPassword().equals(profileEditDto.getOriPassword());
     }
 
-    public void matchPassword(LoginDTO loginDto){
-        UserDTO userdto = getUserById(loginDto.getUserId());
-        if(!loginDto.getPassword().equals(userdto.getPassword())){
+    public void matchPassword(SignInDTO signInDto){
+        UserDTO userdto = getUserById(signInDto.getId());
+        if(!signInDto.getPassword().equals(userdto.getPassword())){
             throw new LoginInvalidPasswordException();
         }
     }

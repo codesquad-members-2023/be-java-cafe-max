@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.config.Session;
-import kr.codesqaud.cafe.controller.dto.LoginDTO;
+import kr.codesqaud.cafe.controller.dto.SignInDTO;
 import kr.codesqaud.cafe.controller.dto.user.UserDTO;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -22,9 +22,9 @@ public class SignInController {
     }
 
     @PostMapping("/user/sign-in-success")
-    public String userLogin(@ModelAttribute LoginDTO loginDto, HttpSession httpSession){
-        String id = loginDto.getUserId();
-        userService.matchPassword(loginDto);
+    public String userSignIn(@ModelAttribute SignInDTO signInDto, HttpSession httpSession){
+        String id = signInDto.getId();
+        userService.matchPassword(signInDto);
 
         UserDTO userDto = userService.getUserById(id);
         Session session = new Session(userDto.getId(),userDto.getNickName());
@@ -33,9 +33,9 @@ public class SignInController {
         return "redirect:/user/sign-in-success/"+id;
     }
 
-    @GetMapping("/user/sign-in-success/{userId}")
-    public String showLoginSuccessForm(@PathVariable String userId,Model model){
-        model.addAttribute("user",userService.getUserById(userId));
+    @GetMapping("/user/sign-in-success/{Id}")
+    public String showSingInSuccessForm(@PathVariable String Id, Model model){
+        model.addAttribute("user",userService.getUserById(Id));
         return "user/login_success";
     }
 
