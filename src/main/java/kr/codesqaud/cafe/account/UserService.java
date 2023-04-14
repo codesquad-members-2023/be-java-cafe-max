@@ -80,7 +80,7 @@ public class UserService {
         return user;
     }
 
-    public void check(User user, ProfileEditForm profileEditForm) {
+    public void checkEditInfo(User user, ProfileEditForm profileEditForm) {
         if (isDuplicateEmail(user, profileEditForm.getEmail())) {
             throw new IllegalEditEmailException();
         }

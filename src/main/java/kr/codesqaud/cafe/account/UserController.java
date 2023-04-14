@@ -107,7 +107,7 @@ public class UserController {
         }
         userService.checkId(user, userId);
         try {
-            userService.check(user, profileEditForm);
+            userService.checkEditInfo(user, profileEditForm);
             User updateUser = userService.update(user, profileEditForm);
             httpSession.setAttribute(ATTRIBUTE_USER, updateUser);
             return "redirect:/users/{userId}/profile";

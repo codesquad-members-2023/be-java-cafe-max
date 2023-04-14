@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.account.dto;
 
 import kr.codesqaud.cafe.account.User;
 
+import java.util.Objects;
+
 public class UserForm {
     private final Long id;
     private final String nickname;
@@ -37,6 +39,19 @@ public class UserForm {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserForm)) return false;
+        UserForm userForm = (UserForm) o;
+        return Objects.equals(getId(), userForm.getId()) && Objects.equals(getNickname(), userForm.getNickname()) && Objects.equals(getEmail(), userForm.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getNickname(), getEmail());
     }
 
     public static class Builder {
