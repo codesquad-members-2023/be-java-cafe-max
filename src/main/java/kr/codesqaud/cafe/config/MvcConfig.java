@@ -10,12 +10,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
-
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
-        registry.addViewController("/user/join").setViewName("user/form");
+        // 타임리프 에러 처리 오류 원인
+//        registry.addViewController("/user/join").setViewName("user/form");
         registry.addViewController("/user/list").setViewName("redirect:/users");
         registry.addViewController("/user/profile").setViewName("user/profile");
 

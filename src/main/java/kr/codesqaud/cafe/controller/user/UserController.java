@@ -21,6 +21,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/user/join")
+    public String join(@ModelAttribute UserForm userForm) {
+        return "user/form";
+    }
+
     @PostMapping("/user/create")
     public String create(@Valid UserForm form, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
