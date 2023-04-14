@@ -30,16 +30,20 @@ public class UserService {
         return userRepository.findByUserId(userId).isPresent();
     }
 
+    //todo : null일 때 예외처리 하기
     public void modify(final long id, final ModifiedUserDTO modifiedUserDTO) {
         User originUser = userRepository.findById(id).orElse(null);
+        assert originUser != null;
         originUser.setName(modifiedUserDTO.getName());
         originUser.setPassword(modifiedUserDTO.getNewPassword());
         originUser.setEmail(modifiedUserDTO.getEmail());
         userRepository.update(originUser);
     }
 
+    //todo : null일 때 예외처리 하기
     public boolean isPasswordRight(long id, ModifiedUserDTO modifiedUserDTO) {
         User originUser = userRepository.findById(id).orElse(null);
+        assert originUser != null;
         return originUser.getPassword().equals(modifiedUserDTO.getOriginPassword());
     }
 
