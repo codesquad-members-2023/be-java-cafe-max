@@ -31,8 +31,8 @@ public class ArticleService {
         return articleRepository.findById(id);
     }
 
-    public boolean isAuthorized(User user, Long id) {
-        return articleRepository.isCreatedBy(user.getUserId(), id);
+    public boolean isAuthorized(String userId, Long id) {
+        return articleRepository.isCreatedBy(userId, id);
     }
 
     public void update(Long id, String updateTitle, String updateContents) {

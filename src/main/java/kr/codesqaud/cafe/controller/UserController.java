@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.constant.SessionConst;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.SessionDto;
 import kr.codesqaud.cafe.dto.UserJoinForm;
 import kr.codesqaud.cafe.dto.UserLoginForm;
 import kr.codesqaud.cafe.dto.UserUpdateForm;
@@ -37,17 +38,12 @@ public class UserController {
 
         boolean isSignUpSuccess = userService.join(user);
 
-        if (isSignUpSuccess) {
-            redirectAttributes.addFlashAttribute("firstLogin", true);
-            return "redirect:/user/login";
-        }
-        redirectAttributes.addFlashAttribute("duplicateUserId",true);
-        return "redirect:/user/form";
-
+        redirectAttributes.addFlashAttribute(isSignUpSuccess ? "firstLogin" : "duplicateUserId", true);
+        return "redirect:/user/" + (isSignUpSuccess ? "login" : "form");
     }
 
     @GetMapping("users")
-    public String list(Model model, @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser) {
+    public String list(Model model, @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) SessionDto loginUser) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         model.addAttribute("loginUser", loginUser);
@@ -55,7 +51,7 @@ public class UserController {
     }
 
     @GetMapping("users/{userId}")
-    public String profile(Model model, @PathVariable String userId, @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser) {
+    public String profile(Model model, @PathVariable String userId, @SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) SessionDto loginUser) {
         model.addAttribute("user", userService.findById(userId));
         model.addAttribute("loginUser", loginUser);
         return "user/profile";
@@ -74,13 +70,15 @@ public class UserController {
         if (isLoginSuccess) {
 
             HttpSession session = request.getSession();
-            session.setAttribute(SessionConst.LOGIN_MEMBER, userService.findById(form.getUserId()).get());
+            User user = userService.findById(form.getUserId()).get();
+            SessionDto sessionDto = new SessionDto(user.getUserId(), user.getName(), user.getEmail());
+            session.setAttribute(SessionConst.LOGIN_MEMBER, sessionDto);
             return "redirect:/";
         }
         return "redirect:/user/login_failed";
     }
 
-    @GetMapping("user/logout")
+    @GetMapping ("user/logout")
     public String logout(HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
@@ -97,7 +95,7 @@ public class UserController {
     }
 
     @GetMapping("user/update")
-    public String updateForm(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) User loginUser, Model model) {
+    public String updateForm(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) SessionDto loginUser, Model model) {
 
         if (loginUser == null) {
             return "user/login";
@@ -108,13 +106,14 @@ public class UserController {
 
     @PostMapping("user/update")
     public String update(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                             User loginUser, UserUpdateForm form, RedirectAttributes redirectAttributes) {
+                             SessionDto loginUser, UserUpdateForm form, RedirectAttributes redirectAttributes) {
 
-        if (!loginUser.getPassword().equals(form.getPassword())) {
+        User user = userService.findById(loginUser.getUserId()).get();
+        if (!user.getPassword().equals(form.getPassword())) {
             redirectAttributes.addFlashAttribute("passwordIncorrect", true);
             return "redirect:/user/update";
         }
-        userService.update(loginUser, form.getName(), form.getEmail());
+        userService.update(user, form.getName(), form.getEmail());
         redirectAttributes.addAttribute("userId", loginUser.getUserId());
         return "redirect:/users/{userId}";
     }
