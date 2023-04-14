@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class MemoryArticleRepository implements ArticleRepository {
 
     private final Map<Long, Article> STORE = new ConcurrentHashMap<>();
+    private final Map<Long, Article> DELETED = new ConcurrentHashMap<>();
     private static AtomicLong sequence = new AtomicLong();
 
     @Override
@@ -52,6 +53,13 @@ public class MemoryArticleRepository implements ArticleRepository {
         article.setTitle(article.getTitle());
         article.setContents(article.getContents());
         STORE.put(article.getId(), article);
+        return 1;
+    }
+
+    @Override
+    public int delete(final Long id) {
+        DELETED.put(id, STORE.get(id));
+        STORE.remove(id);
         return 1;
     }
 }

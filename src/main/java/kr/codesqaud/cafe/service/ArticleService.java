@@ -42,4 +42,8 @@ public class ArticleService {
     public int editArticle(ArticleUpdateRequest articleUpdateRequest) {
         return articleRepository.edit(articleUpdateRequest.toArticle());
     }
+
+    public int deleteArticle(final Long id) {
+        return articleRepository.delete(id);
+    }
 }

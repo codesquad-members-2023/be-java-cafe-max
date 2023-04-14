@@ -33,7 +33,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Article findById(Long id) {
-        final String sql = "SELECT id, title, writer, contents, createdAt FROM articles WHERE id = :id LIMIT 1";
+        final String sql = "SELECT id, title, writer, contents, createdAt FROM articles WHERE id = :id AND deleted = false LIMIT 1";
         return jdbcTemplate.queryForStream(sql, Map.of("id", id), articleRowMapper)
                 .findFirst()
                 .orElseThrow(ArticleNotFoundException::new);
@@ -41,13 +41,13 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        final String sql = "SELECT id, title, writer, contents, createdAt FROM articles";
+        final String sql = "SELECT id, title, writer, contents, createdAt FROM articles WHERE deleted = false";
         return jdbcTemplate.query(sql, articleRowMapper);
     }
 
     @Override
     public boolean exist(Long id) {
-        final String sql = "SELECT count(*) FROM articles WHERE id = :id LIMIT 1";
+        final String sql = "SELECT count(*) FROM articles WHERE id = :id AND deleted = false LIMIT 1";
         final Integer count = jdbcTemplate.queryForObject(sql,
                 Map.of("id", id),
                 Integer.class);
@@ -56,11 +56,12 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Article findWithSurroundingArticles(Long id) {
-        final String sql = "SELECT id, title, writer, contents, createdAt, previousId, nextId "
-                + " FROM (SELECT id, title, writer, contents, createdAt, "
+        final String sql = "SELECT id, title, writer, contents, createdAt, deleted, previousId, nextId "
+                + " FROM (SELECT id, title, writer, contents, createdAt, deleted, "
                 + " LAG(id, 1, 0) OVER(ORDER BY id ASC) AS previousId, "
                 + " LEAD(id, 1, 0) OVER(ORDER BY id ASC) AS nextId "
-                + " FROM articles) WHERE id = :id";
+                + " FROM articles WHERE deleted = false) WHERE id = :id AND deleted = false";
+
         return jdbcTemplate.queryForStream(sql, Map.of("id", id), articleRowMapper)
                 .findFirst()
                 .orElseThrow(ArticleNotFoundException::new);
@@ -73,6 +74,14 @@ public class JdbcArticleRepository implements ArticleRepository {
                 "id", article.getId(),
                 "title", article.getTitle(),
                 "contents", article.getContents());
+        return jdbcTemplate.update(sql, parameter);
+    }
+
+    @Override
+    public int delete(final Long id) {
+        final String sql = "UPDATE articles SET deleted = true WHERE id = :id";
+        Map<String, Object> parameter = Map.of(
+                "id", id);
         return jdbcTemplate.update(sql, parameter);
     }
 }

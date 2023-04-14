@@ -11,4 +11,5 @@ public interface ArticleRepository {
     Article findWithSurroundingArticles(Long id);
     boolean exist(Long id);
     int edit(Article article);
+    int delete(Long id);
 }

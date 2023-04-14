@@ -8,6 +8,7 @@ import kr.codesqaud.cafe.exception.user.AccessDeniedException;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,5 +66,14 @@ public class ArticleController {
         }
         articleService.editArticle(articleUpdateRequest);
         return "redirect:/articles/" + id;
+    }
+
+    @DeleteMapping("/articles/{id}")
+    public String deleteArticle(@PathVariable Long id, @ModelAttribute ArticleUpdateRequest articleUpdateRequest, HttpSession httpSession) {
+        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_NAME).equals(articleUpdateRequest.getWriter())) {
+            throw new AccessDeniedException();
+        }
+        articleService.deleteArticle(id);
+        return "redirect:/";
     }
 }
