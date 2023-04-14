@@ -29,7 +29,8 @@ public class UserController {
 
         // 서비스에서 DTO 사용으로 User에 넣어줄 필요가 없어짐
         userService.join(form);
-        return "redirect:/users";
+        // 인터셉터 적용을 위해 마지막에 "/"를 붙여주는데 좋은 건지는 모르겠음
+        return "redirect:/users/";
     }
 
     @GetMapping("/users")
