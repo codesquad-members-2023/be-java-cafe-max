@@ -12,9 +12,12 @@ public class UserUpdateForm {
     @Length(min = 2, max = 10, message = "이름은 2글자부터 10글자까지만 가능합니다.")
     @NotBlank(message = "이름을 입력해주세요.")
     private String name;
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9]{8,32}$", message = "패스워드는 8글자부터 32자리까지의 대소문자, 숫자를 모두 포함해야합니다.")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$", message = "패스워드는 영문과 특수문자 숫자를 포함하며 8글자부터 32자까지만 가능합니다.")
     @NotBlank(message = "패스워드를 입력해주세요.")
     private String password;
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$", message = "패스워드는 영문과 특수문자 숫자를 포함하며 8글자부터 32자까지만 가능합니다.")
+    @NotBlank(message = "패스워드를 입력해주세요.")
+    private String existingPassword;
     @Email(message = "유효한 이메일 형식이 아닙니다.")
     @NotBlank(message = "이메일을 입력해주세요.")
     private String email;
@@ -34,6 +37,14 @@ public class UserUpdateForm {
         return new UserUpdateForm(user.getId(), user.getName(), user.getPassword(), user.getEmail());
     }
 
+    public String getExistingPassword() {
+        return existingPassword;
+    }
+
+    public void setExistingPassword(String existingPassword) {
+        this.existingPassword = existingPassword;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -44,6 +55,10 @@ public class UserUpdateForm {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {

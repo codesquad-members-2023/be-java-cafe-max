@@ -62,12 +62,16 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchElementException("이 아이디를 찾을 수 없어: " + id));
     }
 
-    public void updateUser(Long id, UserUpdateForm updateUser, String existingPassword) {
+    public void updateUser(Long id, UserUpdateForm updateUser) {
+        if (!updateUser.getExistingPassword().equals(updateUser.getPassword())) {
+            throw new IllegalStateException("비밀번호가 같지 않습니다.");
+        }
+
         // updateUser의 정보들을 User에 덮어씌우기
         User originUser = findUser(id);
         originUser.setPassword(updateUser.getPassword());
         originUser.setName(updateUser.getName());
         originUser.setEmail(updateUser.getEmail());
-        userRepository.update(id, originUser, existingPassword);
+        userRepository.update(id, originUser);
     }
 }

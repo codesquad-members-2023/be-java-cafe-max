@@ -67,12 +67,12 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public String putUpdate(@PathVariable Long id, @Valid UserUpdateForm updateUser, BindingResult bindingResult, String existingPassword) {
+    public String putUpdate(@PathVariable Long id, @Valid UserUpdateForm updateUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "user/updateForm";
         }
 
-        userService.updateUser(id, updateUser, existingPassword);
+        userService.updateUser(id, updateUser);
         return "redirect:/users";
     }
 }
