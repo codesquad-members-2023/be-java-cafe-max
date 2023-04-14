@@ -35,4 +35,10 @@ public class UserController {
         model.addAttribute("users", users);
         return "/user/list";
     }
+    @GetMapping("/users/{userId}")
+    public String userProfile(@PathVariable("userId") String userId, Model model) {
+        User user = userService.getUserByUserId(userId);
+        model.addAttribute("user", user);
+        return "user/profile";
+    }
 }
