@@ -50,8 +50,8 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public int edit(Article article) {
         Article findArticle = STORE.get(article.getId());
-        article.setTitle(article.getTitle());
-        article.setContents(article.getContents());
+        findArticle.setTitle(article.getTitle());
+        findArticle.setContents(article.getContents());
         STORE.put(article.getId(), article);
         return 1;
     }
@@ -60,6 +60,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     public int delete(final Long id) {
         DELETED.put(id, STORE.get(id));
         STORE.remove(id);
-        return 1;
+        int deleteCount = 1;
+        return deleteCount;
     }
 }
