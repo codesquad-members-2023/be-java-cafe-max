@@ -60,7 +60,12 @@ public class ProfileEditRequest {
     }
 
     public Member toMember() {
-        return new Member(id, email, newPassword, nickName, null);
+        return Member.builder()
+            .id(id)
+            .email(email)
+            .password(newPassword)
+            .nickName(nickName)
+            .build();
     }
 
     public static ProfileEditRequest from(MemberResponse memberResponse) {

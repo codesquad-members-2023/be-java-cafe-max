@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,9 +15,7 @@ import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
-import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
-import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,7 +73,6 @@ class PostServiceTest {
         // given
         Post post = createPostDummy();
         Long previousViews = post.getViews();
-        Member member = new Member(1L, "test@gmail.com", "Test1234", "test", LocalDateTime.now());
         given(postRepository.findById(1L)).willReturn(Optional.of(post));
 
         // when
@@ -135,7 +131,7 @@ class PostServiceTest {
         PostModifyRequest postModifyRequest = new PostModifyRequest(1L, "tset", "content");
         given(postRepository.findById(postModifyRequest.getId()))
             .willReturn(Optional.of(new Post(postModifyRequest.getId(), postModifyRequest.getTitle(),
-                postModifyRequest.getContent(), new Member(1L), LocalDateTime.now(), 0L)));
+                postModifyRequest.getContent(), Member.builder().id(1L).build(), LocalDateTime.now(), 0L)));
 
         // when
         postService.modify(postModifyRequest);
@@ -188,14 +184,22 @@ class PostServiceTest {
     }
 
     private Post createPostDummy() {
-        return new Post(1L, "제목", "내용", new Member(1L), LocalDateTime.now(), 0L);
+        return new Post(1L, "제목", "내용", Member.builder().id(1L).build(),
+            LocalDateTime.now(), 0L);
     }
 
     private Post createPostDummy2() {
-        return new Post(2L, "제목2", "내용2", new Member(1L), LocalDateTime.now(), 0L);
+        return new Post(2L, "제목2", "내용2", Member.builder().id(1L).build(),
+            LocalDateTime.now(), 0L);
     }
 
     private Member createMemberDummy() {
-        return new Member(1L, "test@gmail.com", "Test1234", "test", LocalDateTime.now());
+        return Member.builder()
+            .id(1L)
+            .email("test@gmail.com")
+            .password("Test1234")
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
     }
 }

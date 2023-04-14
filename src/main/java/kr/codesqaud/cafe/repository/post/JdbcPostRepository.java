@@ -91,8 +91,10 @@ public class JdbcPostRepository implements PostRepository {
     private final RowMapper<Post> postRowMapper = (rs, rowNum) ->
          new Post(rs.getLong("id"), rs.getString("title"),
             rs.getString("content"),
-            new Member(rs.getLong("writer_id"), null,
-            null, rs.getString("writer_name") ,null),
+            Member.builder()
+                .id(rs.getLong("writer_id"))
+                .nickName(rs.getString("writer_name"))
+                .build(),
             rs.getTimestamp("write_date").toLocalDateTime(),
             rs.getLong("views"));
 }

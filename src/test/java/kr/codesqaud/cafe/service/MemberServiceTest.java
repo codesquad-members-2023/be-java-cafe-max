@@ -142,8 +142,14 @@ class MemberServiceTest {
     void isDuplicateEmail() {
         // given
         String email = "test@gmail.com";
-        given(memberRepository.findByEmail(email)).willReturn(Optional.of(new Member(1L, email,
-            "Test1234", "test", LocalDateTime.now())));
+        Member member = Member.builder()
+            .id(1L)
+            .email(email)
+            .password("Test1234")
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
 
         // when
         boolean actual = memberService.isDuplicateEmail(email);
@@ -172,8 +178,14 @@ class MemberServiceTest {
         // given
         Long id = 1L;
         String email = "test@gmail.com";
-        given(memberRepository.findByEmail(email)).willReturn(Optional.of(new Member(2L, email,
-            "Test1234", "test", LocalDateTime.now())));
+        Member member = Member.builder()
+            .id(2L)
+            .email(email)
+            .password("Test1234")
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
 
         // when
         boolean actual = memberService.isDuplicateEmailAndId(email, id);
@@ -188,8 +200,14 @@ class MemberServiceTest {
         // given
         Long id = 1L;
         String email = "test@gmail.com";
-        given(memberRepository.findByEmail(email)).willReturn(Optional.of(new Member(id, email,
-            "Test1234", "test", LocalDateTime.now())));
+        Member member = Member.builder()
+            .id(id)
+            .email(email)
+            .password("Test1234")
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
 
         // when
         boolean actual = memberService.isDuplicateEmailAndId(email, id);
@@ -204,8 +222,14 @@ class MemberServiceTest {
         // given
         String email = "test@gmail.com";
         String password = "Test1234";
-        given(memberRepository.findByEmail(email)).willReturn(Optional.of(new Member(1L, "test@gmail.com",
-            "Test1233", "test", LocalDateTime.now())));
+        Member member = Member.builder()
+            .id(1L)
+            .email(email)
+            .password("Test1233")
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
 
         // when
         boolean actual = memberService.isNotSamePassword(email, password);
@@ -220,8 +244,14 @@ class MemberServiceTest {
         // given
         String email = "test@gmail.com";
         String password = "Test1234";
-        given(memberRepository.findByEmail(email)).willReturn(Optional.of(new Member(1L, "test@gmail.com",
-            "Test1234", "test", LocalDateTime.now())));
+        Member member = Member.builder()
+            .id(1L)
+            .email(email)
+            .password(password)
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
 
         // when
         boolean actual = memberService.isNotSamePassword(email, password);
@@ -236,8 +266,14 @@ class MemberServiceTest {
         // given
         Long savedId = 1L;
         String email = "test@gmail.com";
-        given(memberRepository.findByEmail(email)).willReturn(Optional.of(new Member(savedId, "test@gmail.com",
-                "Test1234", "test", LocalDateTime.now())));
+        Member member = Member.builder()
+            .id(savedId)
+            .email(email)
+            .password("Test1234")
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
 
         // when
         AccountSession session = memberService.createSession(email);

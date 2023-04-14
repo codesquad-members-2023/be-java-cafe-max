@@ -49,7 +49,9 @@ public class PostWriteRequest {
 
     public Post toPost() {
         return new Post(null, title, content,
-            new Member(writerId, null, null, null, null),
+            Member.builder()
+                .id(writerId)
+                .build(),
             writeDate, 0L);
     }
 }

@@ -81,7 +81,10 @@ class PostRepositoryTest {
             .forEach(index -> {
                     String title = String.format("제목%d", index);
                     String content = String.format("내용%d", index);
-                    postRepository.save(new Post(null, title, content, new Member(savedMemberId),
+                    postRepository.save(new Post(null, title, content,
+                        Member.builder()
+                            .id(savedMemberId)
+                            .build(),
                         LocalDateTime.now(), (long) index));
             });
 
@@ -132,12 +135,18 @@ class PostRepositoryTest {
 
     private Post postDummy(Long writerId) {
         return new Post(null, "제목", "내용",
-            new Member(writerId),
+            Member.builder()
+                .id(writerId)
+                .build(),
             LocalDateTime.now(), 0L);
     }
 
     private Long saveMember() {
-        return memberRepository.save(new Member(null, "test@naver.com", "Test1234",
-            "만두", LocalDateTime.now()));
+        return memberRepository.save(Member.builder()
+            .email("test@naver.com")
+            .password("Test1234")
+            .nickName("만두")
+            .createDate(LocalDateTime.now())
+            .build());
     }
 }

@@ -76,7 +76,11 @@ public class JdbcMemberRepository implements MemberRepository {
     }
 
     private final RowMapper<Member> memberRowMapper = (rs, rowNum) ->
-        new Member(rs.getLong("id"), rs.getString("email"),
-            rs.getString("password"), rs.getString("nickname"),
-            rs.getTimestamp("create_date").toLocalDateTime());
+        Member.builder()
+            .id(rs.getLong("id"))
+            .email(rs.getString("email"))
+            .password(rs.getString("password"))
+            .nickName(rs.getString("nickname"))
+            .createDate(rs.getTimestamp("create_date").toLocalDateTime())
+            .build();
 }
