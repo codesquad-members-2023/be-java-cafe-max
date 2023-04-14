@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.exception;
 
 import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
 import kr.codesqaud.cafe.exception.user.AccessDeniedException;
+import kr.codesqaud.cafe.exception.user.AlreadyNameExistenceException;
 import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.exception.user.LoginFailedException;
 import kr.codesqaud.cafe.exception.user.MismatchedPasswordException;
@@ -19,6 +20,13 @@ public class AllExceptionHandler {
     public String handleDuplicateUserIdException(AlreadyUserExistenceException exception, Model model) {
         model.addAttribute("userSaveRequest", exception.getUserSaveRequest());
         model.addAttribute("duplicateUserIdMessage", exception.getMessage());
+        return "user/sign-up";
+    }
+
+    @ExceptionHandler(AlreadyNameExistenceException.class)
+    public String handleDuplicateUserNameException(AlreadyNameExistenceException exception, Model model) {
+        model.addAttribute("userSaveRequest", exception.getUserSaveRequest());
+        model.addAttribute("duplicateUserNameMessage", exception.getMessage());
         return "user/sign-up";
     }
 

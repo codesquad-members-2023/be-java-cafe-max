@@ -10,4 +10,5 @@ public interface UserRepository {
     List<User> findAll();
     boolean exist(String userId);
     int update(User user);
+    boolean existByName(String name);
 }

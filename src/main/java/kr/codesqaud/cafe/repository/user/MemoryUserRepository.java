@@ -12,10 +12,12 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MemoryUserRepository implements UserRepository {
 
     private final Map<String, User> STORE = new ConcurrentHashMap<>();
+    private final Map<String, Boolean> NICKNAMES = new ConcurrentHashMap<>();
 
     @Override
     public String save(final User user) {
         STORE.put(user.getUserId(), user);
+        NICKNAMES.put(user.getName(), true);
         return user.getUserId();
     }
 
@@ -38,5 +40,10 @@ public class MemoryUserRepository implements UserRepository {
     public int update(final User user) {
         STORE.put(user.getUserId(), user);
         return 1;
+    }
+
+    @Override
+    public boolean existByName(final String name) {
+        return NICKNAMES.containsKey(name);
     }
 }

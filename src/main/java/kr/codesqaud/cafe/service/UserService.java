@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.dto.user.UserResponse;
 import kr.codesqaud.cafe.dto.user.UserSaveRequest;
 import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
+import kr.codesqaud.cafe.exception.user.AlreadyNameExistenceException;
 import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.exception.user.LoginFailedException;
 import kr.codesqaud.cafe.exception.user.MismatchedPasswordException;
@@ -27,6 +28,9 @@ public class UserService {
     public String saveUser(UserSaveRequest userSaveRequest) {
         if (userRepository.exist(userSaveRequest.getUserId())) {
             throw new AlreadyUserExistenceException(userSaveRequest);
+        }
+        if (userRepository.existByName(userSaveRequest.getName())) {
+            throw new AlreadyNameExistenceException(userSaveRequest);
         }
         return userRepository.save(userSaveRequest.toUser());
     }

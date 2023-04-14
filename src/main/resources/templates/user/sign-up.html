@@ -30,6 +30,7 @@
             <div>
                 <label for="inputNickname">닉네임</label>
                 <input type="text" id="inputNickname" name="name" placeholder="닉네임을 입력해주세요" th:field="*{name}">
+                <span th:if="${duplicateUserNameMessage}" th:text="${duplicateUserNameMessage}">이미 존재하는 닉네임입니다</span>
                 <span class="checkNickname hide">닉네임은 2자 이상 12자 이하로 입력해주세요</span>
             </div>
             <div>

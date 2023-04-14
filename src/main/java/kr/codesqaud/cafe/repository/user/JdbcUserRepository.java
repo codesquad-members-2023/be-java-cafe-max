@@ -60,4 +60,13 @@ public class JdbcUserRepository implements UserRepository {
                 "userId", user.getUserId());
         return jdbcTemplate.update(sql, parameter);
     }
+
+    @Override
+    public boolean existByName(String name) {
+        final String sql = "SELECT count(*) FROM users WHERE name = :name LIMIT 1";
+        final Integer count = jdbcTemplate.queryForObject(sql,
+                Map.of("name", name),
+                Integer.class);
+        return count > 0;
+    }
 }
