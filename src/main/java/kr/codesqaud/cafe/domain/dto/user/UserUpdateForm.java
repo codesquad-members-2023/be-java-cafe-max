@@ -1,15 +1,21 @@
 package kr.codesqaud.cafe.domain.dto.user;
 
 import kr.codesqaud.cafe.domain.User;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 public class UserUpdateForm {
     private Long id;
+    @Length(min = 2, max = 10, message = "이름은 2글자부터 10글자까지만 가능합니다.")
     @NotBlank(message = "이름을 입력해주세요.")
     private String name;
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])[a-zA-Z0-9]{8,32}$", message = "패스워드는 8글자부터 32자리까지의 대소문자, 숫자를 모두 포함해야합니다.")
     @NotBlank(message = "패스워드를 입력해주세요.")
     private String password;
+    @Email(message = "유효한 이메일 형식이 아닙니다.")
     @NotBlank(message = "이메일을 입력해주세요.")
     private String email;
 
