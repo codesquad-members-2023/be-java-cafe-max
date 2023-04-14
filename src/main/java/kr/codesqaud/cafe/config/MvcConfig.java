@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
@@ -19,7 +20,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/user/list").setViewName("redirect:/users");
         registry.addViewController("/user/profile").setViewName("user/profile");
 
-        registry.addViewController("/questions/add").setViewName("qna/form");
+//        registry.addViewController("/questions/add").setViewName("qna/form");
         registry.addViewController("/questions/show").setViewName("qna/show");
     }
 

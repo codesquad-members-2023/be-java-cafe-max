@@ -7,6 +7,7 @@ import kr.codesqaud.cafe.service.article.ArticleService;
 import kr.codesqaud.cafe.session.SessionConst;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -21,10 +22,19 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    @GetMapping("/questions/add")
+    public String join(@ModelAttribute ArticleForm articleForm) {
+        return "qna/form";
+    }
+
     @PostMapping("/questions/post")
-    public String addArticle(@Valid ArticleForm form, HttpSession session) {
+    public String addArticle(@Valid ArticleForm articleForm, HttpSession session, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "qna/form";
+        }
+
         // 서비스에서 DTO 사용으로 User에 넣어줄 필요가 없어짐
-        articleService.add(form, session);
+        articleService.add(articleForm, session);
         return "redirect:/";
     }
 
