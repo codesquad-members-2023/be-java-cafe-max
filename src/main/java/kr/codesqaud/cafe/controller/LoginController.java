@@ -27,6 +27,7 @@ public class LoginController {
         return "login/form";
     }
 
+    //todo : MvcConfigure 활성화 하려면 get, post url 달라야 함. 변경하기
     @PostMapping("/login")
     public String login(@ModelAttribute final LoginDTO loginDTO, final Model model, HttpServletRequest request, HttpServletResponse response) {
         boolean isLoginFailed = !loginService.checkIdAndPw(loginDTO);

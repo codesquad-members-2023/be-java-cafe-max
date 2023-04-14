@@ -24,6 +24,7 @@ public class ArticleController {
         return "post/form";
     }
 
+    //todo : MvcConfigure 활성화 하려면 get, post url 달라야 함. 변경하기
     @PostMapping("/post/write")
     public String writePost(@ModelAttribute final ArticleDTO articleDto) {
         articleService.write(articleDto);
