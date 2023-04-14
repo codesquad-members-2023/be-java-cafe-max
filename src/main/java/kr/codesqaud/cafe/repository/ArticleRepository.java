@@ -18,4 +18,6 @@ public interface ArticleRepository {
 	boolean delete(Long index);
 
 	boolean update(Long index, ArticleDto articleDto);
+
+	boolean updateWriter(String originalNickname, String newNickname);
 }

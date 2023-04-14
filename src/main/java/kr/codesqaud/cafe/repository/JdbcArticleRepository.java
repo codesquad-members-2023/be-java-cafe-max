@@ -74,6 +74,14 @@ public class JdbcArticleRepository implements ArticleRepository {
 		return true;
 	}
 
+	@Override
+	public boolean updateWriter(String originalNickname, String newNickname) {
+		SqlParameterSource params = new MapSqlParameterSource("original", originalNickname)
+			.addValue("writer", newNickname);
+		namedParameterJdbcTemplate.update(UPDATE_WRITER, params);
+		return true;
+	}
+
 	private RowMapper<Article> articleRowMapper() {
 		return (rs, rowNum) -> new Article(rs.getLong("index"), rs.getString("title"), rs.getString("writer"),
 			rs.getString("contents"), rs.getString("writeDate"), rs.getLong("hits"));

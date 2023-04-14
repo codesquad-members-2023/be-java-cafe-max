@@ -53,4 +53,9 @@ public class ArticleService {
 		articleRepository.update(index, articleDto);
 		return true;
 	}
+
+	public boolean updateWriter(String originalNickname, String newNickname) {
+		articleRepository.updateWriter(originalNickname, newNickname);
+		return true;
+	}
 }

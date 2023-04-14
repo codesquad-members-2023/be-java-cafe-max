@@ -63,4 +63,10 @@ public class ArticleQueryController {
 		model.addAttribute("article", article);
 		return "qna/updateDetail";
 	}
+
+	@GetMapping("/article/update/{originalNickname}/{newNickname}")
+	public String updateNickname(@PathVariable String originalNickname, @PathVariable String newNickname) {
+		articleService.updateWriter(originalNickname, newNickname);
+		return "redirect:/users";
+	}
 }

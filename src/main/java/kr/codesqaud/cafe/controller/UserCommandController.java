@@ -28,9 +28,13 @@ public class UserCommandController {
 
 	@PatchMapping("/user/update")
 	public String updateUser(UserDto userDto, HttpSession httpSession) {
+		String original = (userService.findOne(userDto.getUserID())).getNickname();
 		userService.update(userDto);
 		User user = userService.findOne(userDto.getUserID());
 		httpSession.setAttribute("sessionUser", user);
+		if (!Objects.equals(original, user.getNickname())) {
+			return "redirect:/article/update/" + original + "/" + user.getNickname();
+		}
 		return "redirect:/users";
 	}
 
