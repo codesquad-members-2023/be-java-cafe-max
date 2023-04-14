@@ -11,6 +11,14 @@ public class Member {
     private final String nickName;
     private final LocalDateTime createDate;
 
+    public Member(Long id) {
+        this.id = id;
+        this.email = null;
+        this.password = null;
+        this.nickName = null;
+        this.createDate = null;
+    }
+
     public Member(Long id, String email, String password, String nickName,
         LocalDateTime createDate) {
         this.id = id;

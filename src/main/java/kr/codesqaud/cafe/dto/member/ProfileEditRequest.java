@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.dto.member;
 
-import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;

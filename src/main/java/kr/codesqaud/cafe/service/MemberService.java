@@ -1,9 +1,7 @@
 package kr.codesqaud.cafe.service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import kr.codesqaud.cafe.session.AccountSession;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
@@ -11,6 +9,7 @@ import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.common.Unauthorized;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
+import kr.codesqaud.cafe.session.AccountSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,8 +37,6 @@ public class MemberService {
     public List<MemberResponse> findAll() {
         return memberRepository.findAll()
             .stream()
-            .sorted(Comparator.comparing(Member::getId)
-                .reversed())
             .map(MemberResponse::from)
             .collect(Collectors.toUnmodifiableList());
     }
@@ -52,7 +49,7 @@ public class MemberService {
             throw new Unauthorized();
         }
 
-        memberRepository.update(profileEditRequest.toMember(findMember.getCreateDate()));
+        memberRepository.update(profileEditRequest.toMember());
     }
 
     @Transactional(readOnly = true)

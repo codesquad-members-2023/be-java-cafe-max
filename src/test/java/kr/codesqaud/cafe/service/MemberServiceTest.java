@@ -107,7 +107,7 @@ class MemberServiceTest {
             , "Test1234", "Mandu1234", "mandu");
         given(memberRepository.findById(any()))
             .willReturn(Optional.of(createRequestDummy().toMember().createWithId(memberId)))
-            .willReturn(Optional.of(memberUpdateRequest.toMember(LocalDateTime.now())));
+            .willReturn(Optional.of(memberUpdateRequest.toMember()));
 
         // when
         memberService.update(memberUpdateRequest, accountSession);
