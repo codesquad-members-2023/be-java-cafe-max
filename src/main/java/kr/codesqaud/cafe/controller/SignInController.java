@@ -22,14 +22,14 @@ public class SignInController {
     }
 
     @PostMapping("/user/sign-in-success")
-    public String userLogin(@ModelAttribute LoginDTO loginDto, HttpSession request){
+    public String userLogin(@ModelAttribute LoginDTO loginDto, HttpSession httpSession){
         String id = loginDto.getUserId();
         userService.matchPassword(loginDto);
 
         UserDTO userDto = userService.getUserById(id);
         Session session = new Session(userDto.getId(),userDto.getNickName());
 
-        request.setAttribute(Session.LOGIN_USER,session);
+        httpSession.setAttribute(Session.LOGIN_USER,session);
         return "redirect:/user/sign-in-success/"+id;
     }
 
@@ -39,7 +39,7 @@ public class SignInController {
         return "user/login_success";
     }
 
-    @GetMapping("/user/sign-out")
+    @PostMapping("/user/sign-out")
     public String userSignOut(HttpSession request){
         request.invalidate();
         return "redirect:/";
