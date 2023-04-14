@@ -26,3 +26,8 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+// executable jar만 생성하도록 설정
+jar {
+    enabled = false
+}
