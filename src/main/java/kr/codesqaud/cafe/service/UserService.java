@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.entity.User;
+import kr.codesqaud.cafe.dto.UserSignUpRequest;
 import kr.codesqaud.cafe.repository.UserH2Repository;
 import kr.codesqaud.cafe.repository.UserRepository;
 import kr.codesqaud.cafe.dto.UserResponse;
@@ -19,6 +20,17 @@ public class UserService {
 
     public UserService(UserH2Repository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public void join(UserSignUpRequest userSignUpRequest){
+
+        //TODO Dto -> Entity 메서드
+        userRepository.save(new User(
+           userSignUpRequest.getUserId(),
+           userSignUpRequest.getPassword(),
+           userSignUpRequest.getName(),
+           userSignUpRequest.getEmail()
+        ));
     }
 
     public List<UserResponse> findUsers(){
