@@ -30,8 +30,8 @@ public class JdbcArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Long save(final Article article) {
-        final String sql = "INSERT INTO article (title, writer, contents, created_at, updated_at) " +
-                "VALUES (:title, :writer, :contents, :createdAt, :updatedAt)";
+        final String sql = "INSERT INTO article (user_fk, title, contents, created_at, updated_at) " +
+                "VALUES (:userFk, :title, :contents, :createdAt, :updatedAt)";
 
         final SqlParameterSource param = new BeanPropertySqlParameterSource(article);
         final GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
@@ -43,7 +43,11 @@ public class JdbcArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(final Long id) {
-        final String sql = "SELECT * FROM article WHERE id = :id";
+        final String sql = "" +
+                "SELECT article.id, article.user_fk, users.user_id as writer , article.title, article.contents, article.created_at, article.updated_at " +
+                "FROM article " +
+                "JOIN users ON article.user_fk = users.id " +
+                "WHERE article.id = :id";
 
         try {
             return Optional.ofNullable(template.queryForObject(sql, Map.of("id", id), articleRowMapper()));
@@ -54,7 +58,10 @@ public class JdbcArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        final String sql = "SELECT * FROM article";
+        final String sql = "" +
+                "SELECT article.id, article.user_fk, users.user_id as writer , article.title, article.contents, article.created_at, article.updated_at " +
+                "FROM article " +
+                "JOIN users ON article.user_fk = users.id";
 
         return template.query(sql, articleRowMapper());
     }
@@ -62,8 +69,9 @@ public class JdbcArticleRepositoryImpl implements ArticleRepository {
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> new Article(
                 rs.getLong("id"),
-                rs.getString("title"),
+                rs.getLong("user_fk"),
                 rs.getString("writer"),
+                rs.getString("title"),
                 rs.getString("contents"),
                 rs.getTimestamp("created_at").toLocalDateTime(),
                 rs.getTimestamp("updated_at").toLocalDateTime()
