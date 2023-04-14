@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Repository
-public class ArticleMemoryRepository implements ArticleRepository{
+public class ArticleMemoryRepository implements ArticleRepository {
 
     private static final Map<Long, Article> articles = new ConcurrentHashMap<>();
     private Long sequence = 0L;
@@ -29,7 +29,7 @@ public class ArticleMemoryRepository implements ArticleRepository{
                         article.getWriter(),
                         article.getTitle(),
                         article.getContents()
-                        ))
+                ))
                 .collect(Collectors.toList());
     }
 

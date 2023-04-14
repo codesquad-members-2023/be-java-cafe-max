@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserH2Repository implements UserRepository{
+public class UserH2Repository implements UserRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 

@@ -24,8 +24,8 @@ public class ArticleController {
     public String create(
             HttpServletRequest request,
             @ModelAttribute("question") ArticlePostRequest articlePostRequest
-            ){
-        if("POST".equals(request.getMethod())) {
+    ) {
+        if ("POST".equals(request.getMethod())) {
             articleService.post(articlePostRequest);
             return "redirect:/";
         }
@@ -34,7 +34,7 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String showIndex(Model model){
+    public String showIndex(Model model) {
         List<ArticleResponse> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
 
@@ -42,7 +42,7 @@ public class ArticleController {
     }
 
     @GetMapping("/article/{articleId}")
-    public String showDetail(@PathVariable("articleId") long articleId, Model model){
+    public String showDetail(@PathVariable("articleId") long articleId, Model model) {
         model.addAttribute("article", articleService.findByArticleId(articleId));
 
         return "qna/show";

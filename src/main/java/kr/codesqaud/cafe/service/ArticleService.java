@@ -16,13 +16,14 @@ import java.util.stream.Collectors;
 
 @Transactional
 @Service
-public class ArticleService{
+public class ArticleService {
     private final ArticleRepository articleRepository;
 
     public ArticleService(ArticleH2Repository articleRepository) {
         this.articleRepository = articleRepository;
     }
-    public List<ArticleResponse> findArticles(){
+
+    public List<ArticleResponse> findArticles() {
         return articleRepository.findAll()
                 .stream()
                 //TODO Entity -> Dto 메서드
@@ -36,7 +37,7 @@ public class ArticleService{
 
     }
 
-    public ArticleResponse findByArticleId(long articleId){
+    public ArticleResponse findByArticleId(long articleId) {
         Optional<Article> targetArticle = articleRepository.findByArticleId(articleId);
 
         //TODO Entity -> Dto 메서드
@@ -48,7 +49,7 @@ public class ArticleService{
         );
     }
 
-    public void post(ArticlePostRequest articlePostRequest){
+    public void post(ArticlePostRequest articlePostRequest) {
         Article article = new Article(
                 articlePostRequest.getWriter(),
                 articlePostRequest.getTitle(),

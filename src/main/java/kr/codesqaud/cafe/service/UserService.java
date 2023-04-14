@@ -22,18 +22,18 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void join(UserSignUpRequest userSignUpRequest){
+    public void join(UserSignUpRequest userSignUpRequest) {
 
         //TODO Dto -> Entity 메서드
         userRepository.save(new User(
-           userSignUpRequest.getUserId(),
-           userSignUpRequest.getPassword(),
-           userSignUpRequest.getName(),
-           userSignUpRequest.getEmail()
+                userSignUpRequest.getUserId(),
+                userSignUpRequest.getPassword(),
+                userSignUpRequest.getName(),
+                userSignUpRequest.getEmail()
         ));
     }
 
-    public List<UserResponse> findUsers(){
+    public List<UserResponse> findUsers() {
         return userRepository.findAll()
                 .stream()
                 //TODO Entity -> Dto 메서드
@@ -45,7 +45,8 @@ public class UserService {
                 ))
                 .collect(Collectors.toList());
     }
-    public UserResponse findByUserId(String userId){
+
+    public UserResponse findByUserId(String userId) {
         Optional<User> targetUser = userRepository.findByUserId(userId);
 
         //TODO Entity -> Dto 메서드
@@ -57,7 +58,7 @@ public class UserService {
         );
     }
 
-    public void updateUserPassword(String userId, String password){
+    public void updateUserPassword(String userId, String password) {
         Optional<User> targetUser = userRepository.findByUserId(userId);
 
         userRepository.save(new User(

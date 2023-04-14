@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class UserController {
     private final UserService userService;
+
     @Autowired
     public UserController(UserService userService) {
 
@@ -19,10 +20,10 @@ public class UserController {
     }
 
     @RequestMapping("/user/signup")
-    public String join(HttpServletRequest request, @ModelAttribute UserSignUpRequest userSignUpRequest){
+    public String join(HttpServletRequest request, @ModelAttribute UserSignUpRequest userSignUpRequest) {
 
         //TODO Dto -> Entity 메서드
-        if("POST".equals(request.getMethod())){
+        if ("POST".equals(request.getMethod())) {
 
             userService.join(userSignUpRequest);
 
@@ -33,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String showUsers(Model model){
+    public String showUsers(Model model) {
         model.addAttribute("users", userService.findUsers());
 
         return "user/list";
@@ -42,15 +43,15 @@ public class UserController {
     @GetMapping("/user/{userId}")
     public String showUserProfile(
             @PathVariable("userId") String userId
-            ,Model model
-    ){
+            , Model model
+    ) {
         model.addAttribute("userProfile", userService.findByUserId(userId));
 
         return "user/profile";
     }
 
     @GetMapping("/user/{userId}/update")
-    public String showPasswordEditForm(@PathVariable("userId") String userId, Model model){
+    public String showPasswordEditForm(@PathVariable("userId") String userId, Model model) {
         model.addAttribute("user", userService.findByUserId(userId));
 
         return "user/form_update";
@@ -60,7 +61,7 @@ public class UserController {
     public String updatePassword(
             @PathVariable("userId") String userId,
             @RequestParam("newPassword") String newPassword
-    ){
+    ) {
         userService.updateUserPassword(userId, newPassword);
 
         return "redirect:/users";

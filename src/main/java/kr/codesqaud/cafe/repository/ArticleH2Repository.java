@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ArticleH2Repository implements ArticleRepository{
+public class ArticleH2Repository implements ArticleRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public ArticleH2Repository(DataSource dataSource) {
