@@ -58,6 +58,8 @@ public class ArticleService {
 
 	@Transactional
 	public void deleteArticle(final Long articleId) {
+		articleRepository.findById(articleId)
+			.orElseThrow(() -> new NotFoundException(String.format("%d번 게시글을 찾을 수 없습니다.", articleId)));
 		articleRepository.deleteById(articleId);
 	}
 }
