@@ -46,7 +46,7 @@ public class ArticleService {
     }
 
     public void updateArticle(Long id, ArticleUpdateForm updateForm) {
-        // ArticleUpdateForm의 정보들을 User에 덮어씌우기
+        // ArticleUpdateForm의 정보들을 Article(Entity)에 덮어씌우기
         Article originArticle = findArticle(id);
         originArticle.setTitle(updateForm.getTitle());
         originArticle.setContents(updateForm.getContents());
