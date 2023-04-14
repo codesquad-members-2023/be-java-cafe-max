@@ -28,7 +28,7 @@ public class ArticleController {
     }
 
     @PostMapping("/questions/post")
-    public String addArticle(@Valid ArticleForm articleForm, HttpSession session, BindingResult bindingResult) {
+    public String addArticle(@Valid ArticleForm articleForm, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "qna/form";
         }
