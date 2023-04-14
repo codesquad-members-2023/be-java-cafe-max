@@ -59,17 +59,19 @@
 
 ### 기능에 따른 URL 컨벤션
 
-| URL                | 기능           |
-|--------------------|--------------|
-| POST /user         | 회원 가입 기능     |
-| GET /user/list     | 회원 목록 조회 기능  |
-| GET /user/:userId  | 회원 정보 조회 기능  |
-| PUT /user/:userId  | 회원 정보 수정 기능  |
-| POST /user/login   | 회원 로그인 기능    |
-| GET /user/logout   | 회원 로그아웃 기능   |
-| POST /board        | 글 쓰기 기능      |
-| GET /board/list    | 글 목록 조회 기능   |
-| GET /board/:postId | 글 상세정보 조회 기능 |
+| URL                   | 기능           |
+|-----------------------|--------------|
+| POST /user            | 회원 가입 기능     |
+| GET /user/list        | 회원 목록 조회 기능  |
+| GET /user/:userId     | 회원 정보 조회 기능  |
+| PUT /user             | 회원 정보 수정 기능  |
+| POST /user/login      | 회원 로그인 기능    |
+| GET /user/logout      | 회원 로그아웃 기능   |
+| POST /board           | 글 쓰기 기능      |
+| GET /board/list       | 글 목록 조회 기능   |
+| GET /board/:postId    | 글 상세정보 조회 기능 |
+| PUT /board            | 글 정보 수정 기능   |
+| DELETE /board/:postId | 글 삭제 기능      |
 
 ## 스프링 카페 3단계
 
