@@ -138,7 +138,7 @@ font-size: 0;
     padding-bottom: 50px;
 }
 
-#question, #signUp-form {
+#question, #signUp-form, #update-form {
     width: 70%;
     display: flex;
     flex-direction: column;
