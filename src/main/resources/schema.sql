@@ -1,4 +1,5 @@
-create table if not exists articles
+drop table if exists articles;
+create table articles
 (
     id bigint not null auto_increment,
     writer varchar(16) not null,
@@ -9,7 +10,8 @@ create table if not exists articles
     primary key (id)
 );
 
-create table if not exists users
+drop table if exists users;
+create table users
 (
     customerId bigint not null auto_increment,
     userId varchar(16) not null,

@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-// TODO: DB에 테스트했던 애들이 남지는 않으나, customerId가 올라간 채로 있는 것을 볼 수 있다. 왜 그런지 확인하자.
 class UserServiceTest {
     @Autowired
     UserService userService;
