@@ -24,7 +24,7 @@ public class UserService {
     /**
      * 회원 가입
      */
-    public void join(UserDTO userDTO) {
+    public void join(UserDTO userDTO) {  // TODO: 정보 확인을 위해 리턴값 필요
         validaUserIdUniqueness(userDTO);
         User user = userDTO.toEntity();
         userRepository.save(user);
