@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.controller.dto.user.LoginUserDto;
 import kr.codesqaud.cafe.controller.dto.user.UserJoinDto;
+import kr.codesqaud.cafe.controller.dto.user.UserLoginDto;
 import kr.codesqaud.cafe.controller.dto.user.UserUpdateDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RequestMapping("/users")
@@ -69,5 +73,23 @@ public class UserController {
         userService.update(userUpdateDto);
 
         return "redirect:/users";
+    }
+
+    @GetMapping("/login")
+    public String loginForm(Model model) {
+        model.addAttribute("loginUser", new UserLoginDto());
+
+        return "user/login";
+    }
+
+    @PostMapping("/login")
+    public String login(@Valid @ModelAttribute("loginUser") UserLoginDto userLoginDto, HttpServletRequest request) {
+        final LoginUserDto loginUser = userService.login(userLoginDto);
+
+        final HttpSession session = request.getSession();
+
+        session.setAttribute("loginUser", loginUser);
+
+        return "home";
     }
 }

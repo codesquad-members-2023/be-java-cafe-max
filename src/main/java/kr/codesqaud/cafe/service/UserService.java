@@ -1,7 +1,10 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.common.exception.user.UserJoinException;
+import kr.codesqaud.cafe.common.exception.user.UserLoginException;
+import kr.codesqaud.cafe.controller.dto.user.LoginUserDto;
 import kr.codesqaud.cafe.controller.dto.user.UserJoinDto;
+import kr.codesqaud.cafe.controller.dto.user.UserLoginDto;
 import kr.codesqaud.cafe.controller.dto.user.UserReadDto;
 import kr.codesqaud.cafe.controller.dto.user.UserUpdateDto;
 import kr.codesqaud.cafe.domain.User;
@@ -54,9 +57,20 @@ public class UserService {
                     .ifPresent(m -> { throw new UserUpdateException(UserExceptionType.DUPLICATED_USER_ID, userUpdateDto);});
         }
         if (user.isNotMatchedPassword(userUpdateDto.getPassword())) {
-            throw new UserUpdateException(UserExceptionType.NOT_MATCHED_BEFORE_PASSWORD, userUpdateDto);
+            throw new UserUpdateException(UserExceptionType.NOT_MATCHED_PASSWORD, userUpdateDto);
         }
 
         userRepository.update(userUpdateDto.toUser());
+    }
+
+    public LoginUserDto login(UserLoginDto userLoginDto) {
+        final User user = userRepository.findByUserId(userLoginDto.getUserId())
+                .orElseThrow(() -> new UserLoginException(UserExceptionType.INVALID_USER_ID));
+
+        if (user.isNotMatchedPassword(userLoginDto.getPassword())) {
+            throw new UserLoginException(UserExceptionType.NOT_MATCHED_PASSWORD);
+        }
+
+        return new LoginUserDto(user);
     }
 }

@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.common.exception;
 
 import kr.codesqaud.cafe.common.exception.user.UserJoinException;
+import kr.codesqaud.cafe.common.exception.user.UserLoginException;
 import kr.codesqaud.cafe.controller.dto.ErrorDto;
 import kr.codesqaud.cafe.common.exception.user.UserExceptionType;
 import kr.codesqaud.cafe.common.exception.user.UserUpdateException;
@@ -38,5 +39,14 @@ public class ExceptionControllerAdvice {
         model.addAttribute(type.getCategory(), type.getMessage());
 
         return "user/update";
+    }
+
+    @ExceptionHandler(UserLoginException.class)
+    public String userLoginFailedExceptionHandler(UserLoginException ex, Model model) {
+        final UserExceptionType type = ex.getUserExceptionType();
+
+        model.addAttribute(type.getCategory(), type.getMessage());
+
+        return "user/login";
     }
 }
