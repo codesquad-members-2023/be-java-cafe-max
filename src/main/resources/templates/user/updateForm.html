@@ -17,12 +17,16 @@
                 <input type="hidden" name="_method" value="PUT"/>
                 <div class="form-group">
                     <label for="userId">사용자 아이디</label>
-                    <input class="form-control" id="userId" name="userId" th:value="${session.loginUserId}" readonly>
+                    <input class="form-control" id="userId" name="userId"
+                           th:value="${session.loginUserId}" readonly>
                 </div>
                 <div class="form-group">
                     <label for="existingPassword">기존 비밀번호</label>
                     <input type="password" class="form-control" id="existingPassword" name="existingPassword"
-                           placeholder="Password">
+                           th:errorclass="field-error" th:field="*{password}" placeholder="Password">
+                    <div class="field-error" th:errors="*{password}">
+                        패스워드 오류
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="password">새로운 비밀번호</label>

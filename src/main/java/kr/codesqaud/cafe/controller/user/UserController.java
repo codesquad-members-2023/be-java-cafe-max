@@ -67,7 +67,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public String putUpdate(@PathVariable Long id, @Valid UserUpdateForm updateUser, String existingPassword, BindingResult bindingResult) {
+    public String putUpdate(@PathVariable Long id, @Valid UserUpdateForm updateUser, BindingResult bindingResult, String existingPassword) {
         if (bindingResult.hasErrors()) {
             return "user/updateForm";
         }
