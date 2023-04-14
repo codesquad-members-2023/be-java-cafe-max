@@ -36,9 +36,6 @@ class PostServiceTest {
     @Mock
     private PostRepository postRepository;
 
-    @Mock
-    private MemberRepository memberRepository;
-
     @DisplayName("게시글 저장 성공")
     @Test
     void save() {
@@ -60,8 +57,6 @@ class PostServiceTest {
         Long previousViews = 0L;
         Post post = createPostDummy();
         given(postRepository.findById(1L)).willReturn(Optional.of(post));
-        given(memberRepository.findById(1L)).willReturn(Optional.of(createMemberDummy()));
-        willDoNothing().given(postRepository).update(any());
 
         // when
         PostResponse findPostResponse = postService.findById(1L);
@@ -70,7 +65,7 @@ class PostServiceTest {
         assertAll(() -> assertEquals(post.getId(), findPostResponse.getId()),
             () -> assertEquals(post.getTitle(), findPostResponse.getTitle()),
             () -> assertEquals(post.getContent(), findPostResponse.getContent()),
-            () -> assertEquals(post.getWriterId(), findPostResponse.getWriter().getId()),
+            () -> assertEquals(post.getWriter().getId(), findPostResponse.getWriter().getId()),
             () -> assertEquals(post.getWriteDate(), findPostResponse.getWriteDate()),
             () -> assertNotEquals(previousViews, findPostResponse.getViews()));
     }
@@ -83,8 +78,6 @@ class PostServiceTest {
         Long previousViews = post.getViews();
         Member member = new Member(1L, "test@gmail.com", "Test1234", "test", LocalDateTime.now());
         given(postRepository.findById(1L)).willReturn(Optional.of(post));
-        given(memberRepository.findById(1L)).willReturn(Optional.of(member));
-        willDoNothing().given(postRepository).update(any());
 
         // when
         PostResponse findPostResponse = postService.findById(1L);
@@ -93,7 +86,7 @@ class PostServiceTest {
         assertAll(() -> assertEquals(post.getId(), findPostResponse.getId()),
             () -> assertEquals(post.getTitle(), findPostResponse.getTitle()),
             () -> assertEquals(post.getContent(), findPostResponse.getContent()),
-            () -> assertEquals(post.getWriterId(), findPostResponse.getWriter().getId()),
+            () -> assertEquals(post.getWriter().getId(), findPostResponse.getWriter().getId()),
             () -> assertEquals(post.getWriteDate(), findPostResponse.getWriteDate()),
             () -> assertNotEquals(previousViews, findPostResponse.getViews()));
     }
@@ -114,13 +107,12 @@ class PostServiceTest {
     @Test
     void findByIdFalse2() {
         // given
-        given(postRepository.findById(any())).willReturn(Optional.of(createPostDummy()));
-        given(memberRepository.findById(1L)).willThrow(MemberNotFoundException.class);
+        given(postRepository.findById(any())).willReturn(Optional.empty());
 
         // when
 
         // then
-        assertThrows(MemberNotFoundException.class, () -> postService.findById(1L));
+        assertThrows(PostNotFoundException.class, () -> postService.findById(1L));
     }
 
     @DisplayName("게시글 전체 조회 성공")
@@ -128,7 +120,6 @@ class PostServiceTest {
     void findAll() {
         // given
         given(postRepository.findAll()).willReturn(List.of(createPostDummy(), createPostDummy2()));
-        given(memberRepository.findById(any())).willReturn(Optional.of(createMemberDummy()));
 
         // when
         List<PostResponse> findAll = postService.findAll();
@@ -144,7 +135,7 @@ class PostServiceTest {
         PostModifyRequest postModifyRequest = new PostModifyRequest(1L, "tset", "content");
         given(postRepository.findById(postModifyRequest.getId()))
             .willReturn(Optional.of(new Post(postModifyRequest.getId(), postModifyRequest.getTitle(),
-                postModifyRequest.getContent(), 1L, LocalDateTime.now(), 0L)));
+                postModifyRequest.getContent(), new Member(1L), LocalDateTime.now(), 0L)));
 
         // when
         postService.modify(postModifyRequest);
@@ -197,11 +188,11 @@ class PostServiceTest {
     }
 
     private Post createPostDummy() {
-        return new Post(1L, "제목", "내용", 1L, LocalDateTime.now(), 0L);
+        return new Post(1L, "제목", "내용", new Member(1L), LocalDateTime.now(), 0L);
     }
 
     private Post createPostDummy2() {
-        return new Post(2L, "제목2", "내용2", 1L, LocalDateTime.now(), 0L);
+        return new Post(2L, "제목2", "내용2", new Member(1L), LocalDateTime.now(), 0L);
     }
 
     private Member createMemberDummy() {

@@ -1,16 +1,12 @@
 package kr.codesqaud.cafe.service;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
-import kr.codesqaud.cafe.dto.post.WriterResponse;
 import kr.codesqaud.cafe.exception.common.Unauthorized;
-import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
@@ -39,25 +35,16 @@ public class PostService {
         Post post = postRepository.findById(id)
             .orElseThrow(PostNotFoundException::new)
             .increaseViews();
-        postRepository.update(post);
-        return PostResponse.of(post, getWriterResponse(post));
+        postRepository.increaseViews(post);
+        return PostResponse.of(post);
     }
 
     @Transactional(readOnly = true)
     public List<PostResponse> findAll() {
         return postRepository.findAll()
             .stream()
-            .sorted(Comparator.comparing(Post::getId)
-                .reversed())
-            .map(post -> PostResponse.of(post, getWriterResponse(post)))
+            .map(PostResponse::of)
             .collect(Collectors.toUnmodifiableList());
-    }
-
-    private WriterResponse getWriterResponse(Post post) {
-        return Optional.ofNullable(post.getWriterId())
-            .flatMap(memberRepository::findById)
-            .map(WriterResponse::from)
-            .orElseThrow(MemberNotFoundException::new);
     }
 
     public void modify(PostModifyRequest postModifyRequest) {

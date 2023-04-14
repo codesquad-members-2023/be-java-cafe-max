@@ -66,7 +66,7 @@ class PostRepositoryTest {
             () -> assertEquals(savedId, findPost.getId()),
             () -> assertEquals(post.getTitle(), findPost.getTitle()),
             () -> assertEquals(post.getContent(), findPost.getContent()),
-            () -> assertEquals(post.getWriterId(), findPost.getWriterId()),
+            () -> assertEquals(post.getWriter().getId(), findPost.getWriter().getId()),
             () -> assertEquals(post.getWriteDate(), findPost.getWriteDate()),
             () -> assertEquals(post.getViews(), findPost.getViews()));
     }
@@ -81,7 +81,7 @@ class PostRepositoryTest {
             .forEach(index -> {
                     String title = String.format("제목%d", index);
                     String content = String.format("내용%d", index);
-                    postRepository.save(new Post(null, title, content, savedMemberId,
+                    postRepository.save(new Post(null, title, content, new Member(savedMemberId),
                         LocalDateTime.now(), (long) index));
             });
 
@@ -99,7 +99,7 @@ class PostRepositoryTest {
         Long savedMemberId = saveMember();
         Post post = postDummy(savedMemberId);
         Long savedId = postRepository.save(post);
-        Post updatePost = new Post(savedId, "업데이트", "업데이트 내용", post.getWriterId(),
+        Post updatePost = new Post(savedId, "업데이트", "업데이트 내용", post.getWriter(),
             post.getWriteDate(), 0L);
 
         // when
@@ -111,7 +111,6 @@ class PostRepositoryTest {
             () -> assertEquals(updatePost.getId(), findPost.getId()),
             () -> assertEquals(updatePost.getTitle(), findPost.getTitle()),
             () -> assertEquals(updatePost.getContent(), findPost.getContent()),
-            () -> assertEquals(updatePost.getWriterId(), findPost.getWriterId()),
             () -> assertEquals(updatePost.getWriteDate(), findPost.getWriteDate()),
             () -> assertEquals(updatePost.getViews(), findPost.getViews()));
     }
@@ -132,7 +131,8 @@ class PostRepositoryTest {
     }
 
     private Post postDummy(Long writerId) {
-        return new Post(null, "제목", "내용", writerId,
+        return new Post(null, "제목", "내용",
+            new Member(writerId),
             LocalDateTime.now(), 0L);
     }
 

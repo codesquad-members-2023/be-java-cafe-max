@@ -7,16 +7,16 @@ public class Post {
     private final Long id;
     private final String title;
     private final String content;
-    private final Long writerId;
+    private final Member writer;
     private final LocalDateTime writeDate;
     private final Long views;
 
-    public Post(Long id, String title, String content, Long writerId, LocalDateTime writeDate,
+    public Post(Long id, String title, String content, Member writer, LocalDateTime writeDate,
         Long views) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.writerId = writerId;
+        this.writer = writer;
         this.writeDate = writeDate;
         this.views = views;
     }
@@ -33,8 +33,8 @@ public class Post {
         return content;
     }
 
-    public Long getWriterId() {
-        return writerId;
+    public Member getWriter() {
+        return writer;
     }
 
     public LocalDateTime getWriteDate() {
@@ -46,14 +46,14 @@ public class Post {
     }
 
     public Post increaseViews() {
-        return new Post(id, title, content, writerId, writeDate, views + 1);
+        return new Post(id, title, content, writer, writeDate, views + 1);
     }
 
     public Post createWithId(Long id) {
-        return new Post(id, title, content, writerId, writeDate, views);
+        return new Post(id, title, content, writer, writeDate, views);
     }
 
     public boolean equalsWriterId(Long id) {
-        return writerId.equals(id);
+        return writer.equalsId(id);
     }
 }
