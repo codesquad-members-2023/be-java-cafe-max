@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #1
-REPOSITORY=/home/ec2-user/be-java-cafe-max
-PROJECT_NAME=cafe
+REPOSITORY=/home/ec2-user/app
+PROJECT_NAME=be-java-cafe-max
 
 #2
 cd $REPOSITORY/$PROJECT_NAME/
@@ -17,7 +17,7 @@ echo "> 프로젝트 Build 시작"
 #4
 ./gradlew build
 
-echo "app 디록토리로 이동"
+echo "$REPOSITORY 디록토리로 이동"
 
 cd $REPOSITORY
 
