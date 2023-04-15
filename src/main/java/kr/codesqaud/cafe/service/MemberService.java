@@ -51,4 +51,12 @@ public class MemberService {
     public void deleteById(Long memberId) {
         memberRepository.deleteById(memberId);
     }
+
+    public LoginMemberSession login(MemberLoginRequestDto memberLoginRequestDto) {
+        Member member = memberRepository.findByEmail(memberLoginRequestDto.getEmail()).orElseThrow(() -> new MemberLoginException(MemberExceptionType.INVALID_USER_ID, memberLoginRequestDto));
+        if (member.isNotMatchedPassword(memberLoginRequestDto.getPassword())) {
+            throw new MemberLoginException(MemberExceptionType.NOT_MATCHED_PASSWORD, memberLoginRequestDto);
+        }
+        return new LoginMemberSession(member);
+    }
 }
