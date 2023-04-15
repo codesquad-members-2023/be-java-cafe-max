@@ -9,8 +9,8 @@ CREATE TABLE users
     primary key (id)
 );
 
-DROP TABLE IF EXISTS article CASCADE;
-CREATE TABLE article
+DROP TABLE IF EXISTS question CASCADE;
+CREATE TABLE question
 (
     id        bigint auto_increment,
     title     VARCHAR(255) NOT NULL,
