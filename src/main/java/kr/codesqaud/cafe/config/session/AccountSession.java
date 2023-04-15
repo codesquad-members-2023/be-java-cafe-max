@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.session;
+package kr.codesqaud.cafe.config.session;
 
 public class AccountSession {
 

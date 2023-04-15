@@ -1,6 +1,7 @@
-package kr.codesqaud.cafe.session;
+package kr.codesqaud.cafe.util;
 
 import javax.servlet.http.HttpSession;
+import kr.codesqaud.cafe.config.session.AccountSession;
 
 public class SignInSessionUtil {
 

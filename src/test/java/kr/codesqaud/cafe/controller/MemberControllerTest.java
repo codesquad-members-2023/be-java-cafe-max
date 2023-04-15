@@ -17,13 +17,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 import java.util.List;
-import kr.codesqaud.cafe.session.AccountSession;
+import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.common.Unauthorized;
 import kr.codesqaud.cafe.service.MemberService;
-import kr.codesqaud.cafe.session.SignInSessionUtil;
+import kr.codesqaud.cafe.util.SignInSessionUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -10,7 +10,7 @@ import kr.codesqaud.cafe.exception.common.Unauthorized;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
-import kr.codesqaud.cafe.session.AccountSession;
+import kr.codesqaud.cafe.config.session.AccountSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -9,7 +9,7 @@ import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.common.Unauthorized;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
-import kr.codesqaud.cafe.session.AccountSession;
+import kr.codesqaud.cafe.config.session.AccountSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
