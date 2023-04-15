@@ -23,9 +23,9 @@ public class ArticleService {
     /**
      * 게시글 저장
      */
-    public Article save(ArticleDTO articleDTO) {
+    public Article save(ArticleDTO articleDTO, String writer) {
         // TODO: title/content 비어있는지 등 유효성 검증
-        Article article = new Article(articleDTO.getWriter(), articleDTO.getTitle(), articleDTO.getContents());
+        Article article = new Article(writer, articleDTO.getTitle(), articleDTO.getContents());
         return articleRepository.save(article);
     }
 

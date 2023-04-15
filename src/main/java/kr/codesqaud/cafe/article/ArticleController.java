@@ -29,8 +29,7 @@ public class ArticleController {
     @PostMapping("/articles")
     public String write(final ArticleDTO articleDTO, HttpSession session) {
         String writer = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
-        articleDTO.setWriter(writer);
-        articleService.save(articleDTO);
+        articleService.save(articleDTO, writer);
         return "redirect:/";
     }
 
