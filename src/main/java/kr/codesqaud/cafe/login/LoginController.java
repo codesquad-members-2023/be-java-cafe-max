@@ -29,8 +29,8 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(
-            @Valid LoginFormDTO loginForm, BindingResult bindingResult, HttpServletRequest request) {
-        User loginUser = loginService.login(loginForm);
+            @Valid LoginRequestDto loginRequestDto, BindingResult bindingResult, HttpServletRequest request) {
+        User loginUser = loginService.login(loginRequestDto);
 
         if (bindingResult.hasErrors()) {
             logger.info("로그인 실패");

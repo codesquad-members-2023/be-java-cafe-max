@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import kr.codesqaud.cafe.login.LoginFormDTO;
+import kr.codesqaud.cafe.login.LoginRequestDto;
 import kr.codesqaud.cafe.login.LoginService;
 import kr.codesqaud.cafe.user.User;
 import kr.codesqaud.cafe.user.UserRepository;
@@ -46,12 +46,12 @@ class LoginServiceTest {
         User user = new User("jinny", "11110000", "지니", "jinny@gmail.com");
         userRepository.save(user);
 
-        LoginFormDTO loginFormDTO = new LoginFormDTO();
-        loginFormDTO.setUserId("jinny");
-        loginFormDTO.setPassword("11110000");
+        LoginRequestDto loginRequestDto = new LoginRequestDto();
+        loginRequestDto.setUserId("jinny");
+        loginRequestDto.setPassword("11110000");
 
         // when
-        User loginUser = loginService.login(loginFormDTO);
+        User loginUser = loginService.login(loginRequestDto);
 
         // then
         assertThat(loginUser.getUserId()).isEqualTo(user.getUserId());
@@ -65,12 +65,12 @@ class LoginServiceTest {
         User user = new User("tester", "11110000", "테스터", "tester@gmail.com");
         userRepository.save(user);
 
-        LoginFormDTO loginFormDTO = new LoginFormDTO();
-        loginFormDTO.setUserId("tester");
-        loginFormDTO.setPassword("11111111");
+        LoginRequestDto loginRequestDto = new LoginRequestDto();
+        loginRequestDto.setUserId("tester");
+        loginRequestDto.setPassword("11111111");
 
         // when
-        User loginUser = loginService.login(loginFormDTO);
+        User loginUser = loginService.login(loginRequestDto);
 
         // then
         assertThat(loginUser).isEqualTo(null);
@@ -83,12 +83,12 @@ class LoginServiceTest {
         User user = new User("tester1", "11110000", "테스터", "tester@gmail.com");
         userRepository.save(user);
 
-        LoginFormDTO loginFormDTO = new LoginFormDTO();
-        loginFormDTO.setUserId("tester3");
-        loginFormDTO.setPassword("11111111");
+        LoginRequestDto loginRequestDto = new LoginRequestDto();
+        loginRequestDto.setUserId("tester3");
+        loginRequestDto.setPassword("11111111");
 
         // when
-        User loginUser = loginService.login(loginFormDTO);
+        User loginUser = loginService.login(loginRequestDto);
 
         // then
         assertThat(loginUser).isEqualTo(null);

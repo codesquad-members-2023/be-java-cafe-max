@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.login;
 
 import javax.validation.constraints.Size;
 
-public class LoginFormDTO {
+public class LoginRequestDto {
 
     @Size(min = 1, max = 10)
     private String userId;

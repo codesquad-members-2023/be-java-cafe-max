@@ -16,9 +16,9 @@ public class LoginService {
     /**
      * @return null: 로그인 실패
      */
-    public User login(LoginFormDTO loginForm) {
-        return userRepository.findById(loginForm.getUserId())
-                .filter(u -> u.getPassword().equals(loginForm.getPassword()))
+    public User login(LoginRequestDto loginRequestDto) {
+        return userRepository.findById(loginRequestDto.getUserId())
+                .filter(u -> u.getPassword().equals(loginRequestDto.getPassword()))
                 .orElse(null);
     }
 }
