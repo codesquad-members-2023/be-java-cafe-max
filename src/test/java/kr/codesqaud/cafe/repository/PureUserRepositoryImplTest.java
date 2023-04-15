@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static org.assertj.core.api.Assertions.*;
 
 class PureUserRepositoryImplTest {
     UserRepository userRepository = new MemoryUserRepositoryImpl();
@@ -36,7 +35,7 @@ class PureUserRepositoryImplTest {
         countDownLatch.await();
         executorService.shutdown();
 
-        assertThat(userRepository.findAll().size()).isEqualTo(100000);
+        Assertions.assertThat(userRepository.findAll().size()).isEqualTo(100000);
     }
 
 
@@ -47,7 +46,7 @@ class PureUserRepositoryImplTest {
 
         final Long id = userRepository.save(user);
 
-        assertThat(id).isEqualTo(1L);
+        Assertions.assertThat(id).isEqualTo(1L);
     }
 
     @DisplayName("회원 조회 시 Optional로 랩핑해서 반환 된다.")
@@ -58,8 +57,8 @@ class PureUserRepositoryImplTest {
 
         final Optional<User> userOptional = userRepository.findById(id);
 
-        assertThat(userOptional).isPresent();
-        assertThat(userOptional.get()).isInstanceOf(User.class);
+        Assertions.assertThat(userOptional).isPresent();
+        Assertions.assertThat(userOptional.get()).isInstanceOf(User.class);
     }
 
     @DisplayName("유효하지 않은 Id로 조회 시 Optional에 null로 반환 된다.")
@@ -67,6 +66,6 @@ class PureUserRepositoryImplTest {
     void findUserInvalidIdTest() {
         final Optional<User> userOptional = userRepository.findById(1L);
 
-        assertThat(userOptional).isEmpty();
+        Assertions.assertThat(userOptional).isEmpty();
     }
 }
