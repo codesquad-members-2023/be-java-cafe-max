@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class Article {
 
     private String writer;
+    private String userId;
     private String title;
     private String contents;
 
@@ -12,13 +13,21 @@ public class Article {
 
     private LocalDateTime createdTime;
 
-    public Article(String writer, String title, String contents) {
+    public Article(String userId, String writer, String title, String contents) {
+        this.userId = userId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.createdTime = LocalDateTime.now();
     }
 
+    public Article(String userId, String writer, String title, String contents, LocalDateTime createdTime) {
+        this.userId = userId;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.createdTime = createdTime;
+    }
 
     public String getWriter() {
         return writer;
@@ -44,7 +53,11 @@ public class Article {
         this.id = id;
     }
 
-    public void setCreatedTime(LocalDateTime createdTime) {
-        this.createdTime = createdTime;
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

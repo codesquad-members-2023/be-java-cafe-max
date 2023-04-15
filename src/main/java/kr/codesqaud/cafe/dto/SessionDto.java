@@ -1,11 +1,16 @@
 package kr.codesqaud.cafe.dto;
 
-public class UserForm {
+public class SessionDto {
 
     private String userId;
-    private String password;
     private String name;
     private String email;
+
+    public SessionDto(String userId, String name, String email) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+    }
 
     public String getUserId() {
         return userId;
@@ -13,14 +18,6 @@ public class UserForm {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {

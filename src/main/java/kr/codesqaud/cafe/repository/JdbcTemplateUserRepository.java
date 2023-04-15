@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -32,8 +33,14 @@ public class JdbcTemplateUserRepository implements UserRepository {
     @Override
     public Optional<User> findById(String id) {
         String sql = "select * from users where userId = ?";
-        List<User> userList = jdbcTemplate.query(sql, userRowMapper(), id);
-        return userList.stream().findAny();
+        try {
+
+            User user = jdbcTemplate.queryForObject(sql, userRowMapper(), id);
+            return Optional.ofNullable(user);
+
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -46,6 +53,16 @@ public class JdbcTemplateUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return jdbcTemplate.query("select * from users", userRowMapper());
+    }
+
+    @Override
+    public void updateUserName(String userId, String updateName) {
+        jdbcTemplate.update("update users set name = ? where userId = ?", updateName, userId);
+    }
+
+    @Override
+    public void updateUserEmail(String userId, String updateEmail) {
+        jdbcTemplate.update("update users set email = ? where userId = ?", updateEmail, userId);
     }
 
     private RowMapper<User> userRowMapper() {
