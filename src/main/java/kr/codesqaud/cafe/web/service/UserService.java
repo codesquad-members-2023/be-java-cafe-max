@@ -14,7 +14,6 @@ import kr.codesqaud.cafe.web.exception.user.UserExceptionType;
 import kr.codesqaud.cafe.web.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.web.exception.user.UserNotLoginMatchingException;
 import kr.codesqaud.cafe.web.validator.UserValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +22,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserValidator validator;
 
-    @Autowired
     public UserService(UserRepository userRepository, UserValidator validator) {
         this.userRepository = userRepository;
         this.validator = validator;

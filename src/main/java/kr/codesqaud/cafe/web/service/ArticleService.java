@@ -9,7 +9,6 @@ import kr.codesqaud.cafe.web.dto.article.ArticleResponseDto;
 import kr.codesqaud.cafe.web.dto.article.ArticleSavedRequestDto;
 import kr.codesqaud.cafe.web.exception.article.ArticleExceptionType;
 import kr.codesqaud.cafe.web.exception.article.ArticleNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +17,6 @@ public class ArticleService {
     private final ArticleRepository repository;
     private final UserService userService;
 
-    @Autowired
     public ArticleService(ArticleRepository repository, UserService userService) {
         this.repository = repository;
         this.userService = userService;

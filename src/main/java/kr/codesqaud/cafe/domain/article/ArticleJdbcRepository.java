@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.web.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -21,7 +20,6 @@ public class ArticleJdbcRepository implements ArticleRepository {
     private final JdbcTemplate template;
     private final UserService userService;
 
-    @Autowired
     public ArticleJdbcRepository(JdbcTemplate template, UserService userService) {
         this.template = template;
         this.userService = userService;
