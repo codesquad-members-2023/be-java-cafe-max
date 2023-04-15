@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import static kr.codesqaud.cafe.common.consts.SessionConst.SESSION_USER;
+
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Controller;
@@ -11,8 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
-import kr.codesqaud.cafe.common.resolver.Login;
 import kr.codesqaud.cafe.controller.dto.ArticleParam;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
@@ -29,7 +31,8 @@ public class ArticleController {
 	}
 
 	@PostMapping
-	public String post(@ModelAttribute final PostingRequest request, @Login final String userId) {
+	public String post(@ModelAttribute final PostingRequest request,
+					   @SessionAttribute(SESSION_USER) final String userId) {
 		articleService.post(
 			new ArticleParam(null, userId, request.getTitle(), request.getContents(), LocalDateTime.now()));
 		return "redirect:/";
@@ -43,7 +46,8 @@ public class ArticleController {
 
 	@GetMapping("/{articleId}/form")
 	public String showArticleEditPage(@PathVariable final Long articleId,
-									  @Login final String userId, final Model model) {
+									  @SessionAttribute(SESSION_USER) final String userId,
+									  final Model model) {
 		articleService.validateHasAuthorization(articleId, userId);
 		model.addAttribute("articleId", articleId);
 		return "qna/edit_form";
@@ -56,7 +60,8 @@ public class ArticleController {
 	}
 
 	@DeleteMapping("/{articleId}")
-	public String deleteArticle(@PathVariable final Long articleId, @Login final String userId) {
+	public String deleteArticle(@PathVariable final Long articleId,
+								@SessionAttribute(SESSION_USER) final String userId) {
 		articleService.validateHasAuthorization(articleId, userId);
 		articleService.deleteArticle(articleId);
 		return "redirect:/";

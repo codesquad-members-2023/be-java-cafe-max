@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import static kr.codesqaud.cafe.common.consts.SessionConst.SESSION_USER;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,8 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
-import kr.codesqaud.cafe.common.resolver.Login;
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
 import kr.codesqaud.cafe.controller.dto.req.ProfileEditRequest;
 import kr.codesqaud.cafe.service.UserService;
@@ -42,8 +44,8 @@ public class UserController {
 
 	@GetMapping("/users/{userId}/form")
 	public String showProfileEditPage(@PathVariable final String userId,
-		@Login final String sessionUserId,
-		final Model model) {
+									  @SessionAttribute(SESSION_USER) final String sessionUserId,
+									  final Model model) {
 		userService.validateHasAuthorization(sessionUserId, userId);
 		model.addAttribute("userId", userId);
 		return "user/edit_form";
@@ -51,8 +53,8 @@ public class UserController {
 
 	@PutMapping("/users/{userId}")
 	public String editUserProfile(@PathVariable final String userId,
-		@Login final String sessionUserId,
-		@ModelAttribute final ProfileEditRequest request) {
+								  @SessionAttribute(SESSION_USER) final String sessionUserId,
+								  @ModelAttribute final ProfileEditRequest request) {
 		userService.validateHasAuthorization(sessionUserId, userId);
 		userService.editUserProfile(userId, request);
 		return "redirect:/users";
