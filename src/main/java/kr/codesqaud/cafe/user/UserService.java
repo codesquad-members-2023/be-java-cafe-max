@@ -21,14 +21,14 @@ public class UserService {
     /**
      * 회원 가입
      */
-    public void join(LoginRequestDto loginRequestDto) {  // TODO: 정보 확인을 위해 리턴값 필요
-        validaUserIdUniqueness(loginRequestDto);
-        User user = loginRequestDto.toEntity();
+    public void join(SignUpRequestDto signUpRequestDto) {  // TODO: 정보 확인을 위해 리턴값 필요
+        validaUserIdUniqueness(signUpRequestDto);
+        User user = signUpRequestDto.toEntity();
         userRepository.save(user);
     }
 
-    private void validaUserIdUniqueness(LoginRequestDto loginRequestDto) {
-        findOne(loginRequestDto.getUserId()).ifPresent(user -> {
+    private void validaUserIdUniqueness(SignUpRequestDto signUpRequestDto) {
+        findOne(signUpRequestDto.getUserId()).ifPresent(user -> {
                     throw new InvalidUserIdException();
                 });
     }

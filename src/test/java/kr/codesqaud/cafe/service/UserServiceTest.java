@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import kr.codesqaud.cafe.exception.signUpException.InvalidUserIdException;
-import kr.codesqaud.cafe.user.LoginRequestDto;
+import kr.codesqaud.cafe.user.SignUpRequestDto;
 import kr.codesqaud.cafe.user.User;
 import kr.codesqaud.cafe.user.UserRepository;
 import kr.codesqaud.cafe.user.UserRepositoryImpl;
@@ -41,7 +41,7 @@ class UserServiceTest {
 //        userDTO.setPassword("12345678");
 //        userDTO.setEmail("test2@gmail.com");
 
-        LoginRequestDto userDTO = new LoginRequestDto("test2", "12345678", "테스터2", "test2@gmail.com");
+        SignUpRequestDto userDTO = new SignUpRequestDto("test2", "12345678", "테스터2", "test2@gmail.com");
 
         // when
         userService.join(userDTO);
@@ -61,7 +61,7 @@ class UserServiceTest {
 //        userDTO.setPassword("12345678");
 //        userDTO.setEmail("test2@gmail.com");
 
-        LoginRequestDto userDTO = new LoginRequestDto("test2", "12345678", "테스터2", "test2@gmail.com");
+        SignUpRequestDto userDTO = new SignUpRequestDto("test2", "12345678", "테스터2", "test2@gmail.com");
 
         // when
         userService.join(userDTO);

@@ -6,7 +6,7 @@ import kr.codesqaud.cafe.article.Article;
 import kr.codesqaud.cafe.article.ArticleRepository;
 import kr.codesqaud.cafe.article.ArticleRepositoryImpl;
 import kr.codesqaud.cafe.article.ArticleService;
-import kr.codesqaud.cafe.user.LoginRequestDto;
+import kr.codesqaud.cafe.user.SignUpRequestDto;
 import kr.codesqaud.cafe.user.UserRepository;
 import kr.codesqaud.cafe.user.UserRepositoryImpl;
 import kr.codesqaud.cafe.user.UserService;
@@ -42,13 +42,13 @@ class ArticleServiceTest {
         // given
 
         // 회원 가입
-        LoginRequestDto loginRequestDto = new LoginRequestDto(
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(
                 "tester", "11110000", "테스터", "tester@gmail.com"
         );
-        userService.join(loginRequestDto);
+        userService.join(signUpRequestDto);
 
         Article article = new Article("title", "contents");
-        article.setWriter(loginRequestDto.getUserId());
+        article.setWriter(signUpRequestDto.getUserId());
 
         // when
         Article savedArticle = articleRepository.save(article);
@@ -67,10 +67,10 @@ class ArticleServiceTest {
         // given
 
         // 회원 가입
-        LoginRequestDto loginRequestDto = new LoginRequestDto(
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(
                 "writer", "11110000", "테스터", "tester@gmail.com"
         );
-        userService.join(loginRequestDto);
+        userService.join(signUpRequestDto);
 
         Article article = new Article("writer", "title", "contents");
         articleRepository.save(article);

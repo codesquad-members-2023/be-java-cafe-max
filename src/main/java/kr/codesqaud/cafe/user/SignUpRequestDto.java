@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 /**
  * 회원 DTO 객체
  */
-public class LoginRequestDto {
+public class SignUpRequestDto {
 
     @Size(min = 1, max = 10)
     private String userId;
@@ -20,7 +20,7 @@ public class LoginRequestDto {
     @Email
     private String email;
 
-    public LoginRequestDto(String userId, String password, String name, String email) {
+    public SignUpRequestDto(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
