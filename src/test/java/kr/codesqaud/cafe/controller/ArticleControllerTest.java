@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.controller;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
@@ -21,6 +21,7 @@ import org.springframework.util.MultiValueMap;
 
 import kr.codesqaud.cafe.controller.dto.ArticleParam;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
+import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.service.ArticleService;
 
@@ -50,7 +51,7 @@ class ArticleControllerTest {
 			.andExpect(redirectedUrl("/"))
 			.andDo(print());
 
-		then(articleService).should().post(any(ArticleParam.class));
+		then(articleService).should().post(any(PostingRequest.class), anyString());
 	}
 
 	@DisplayName("[POST] 게시글 작성 - 로그인 되어 있지 않을 때 로그인 페이지로 리다이렉트")

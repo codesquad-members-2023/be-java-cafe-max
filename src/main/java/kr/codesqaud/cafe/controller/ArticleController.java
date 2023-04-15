@@ -2,8 +2,6 @@ package kr.codesqaud.cafe.controller;
 
 import static kr.codesqaud.cafe.common.consts.SessionConst.SESSION_USER;
 
-import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import kr.codesqaud.cafe.controller.dto.ArticleParam;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.service.ArticleService;
@@ -33,8 +30,7 @@ public class ArticleController {
 	@PostMapping
 	public String post(@ModelAttribute final PostingRequest request,
 					   @SessionAttribute(SESSION_USER) final String userId) {
-		articleService.post(
-			new ArticleParam(null, userId, request.getTitle(), request.getContents(), LocalDateTime.now()));
+		articleService.post(request, userId);
 		return "redirect:/";
 	}
 

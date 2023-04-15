@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.codesqaud.cafe.controller.dto.ArticleParam;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
+import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.exception.NotFoundException;
@@ -24,8 +26,9 @@ public class ArticleService {
 	}
 
 	@Transactional
-	public void post(final ArticleParam articleParam) {
-		articleRepository.save(articleParam.toEntity());
+	public void post(final PostingRequest request, final String userId) {
+		articleRepository.save(
+			new Article(null, userId, request.getTitle(), request.getContents(), LocalDateTime.now()));
 	}
 
 	public List<ArticleParam> getArticles() {
