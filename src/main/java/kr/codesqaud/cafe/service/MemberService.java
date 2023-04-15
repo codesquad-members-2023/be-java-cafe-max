@@ -8,9 +8,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
 import kr.codesqaud.cafe.dto.member.MemberResponseDto;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
-import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
+import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
+import kr.codesqaud.cafe.exception.common.CommonException;
+import kr.codesqaud.cafe.exception.common.CommonExceptionType;
+import kr.codesqaud.cafe.exception.member.MemberExceptionType;
+import kr.codesqaud.cafe.exception.member.MemberJoinException;
+import kr.codesqaud.cafe.exception.member.MemberLoginException;
+import kr.codesqaud.cafe.exception.member.MemberProfileEditException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 
 @Service
@@ -45,7 +52,15 @@ public class MemberService {
 
 
     public void update(ProfileEditRequestDto profileEditRequestDto) {
-        Member findMember = memberRepository.findById(profileEditRequestDto.getMemberId()).orElseThrow(() -> new NoSuchElementException("해당 id를 가진 멤버를 찾을 수 없습니다."));
+        Member findMember = memberRepository.findById(profileEditRequestDto.getMemberId()).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_MEMBER));
+
+        if (findMember.isChangedMemberNickName(profileEditRequestDto.getNickName())) {
+            memberRepository.findByNickName(profileEditRequestDto.getNickName())
+                    .ifPresent(m -> {
+                        throw new MemberProfileEditException(MemberExceptionType.DUPLICATED_MEMBER_NICKNAME, profileEditRequestDto);
+                    });
+        }
+
         findMember.setNickName(profileEditRequestDto.getNickName());
         memberRepository.update(findMember);
     }

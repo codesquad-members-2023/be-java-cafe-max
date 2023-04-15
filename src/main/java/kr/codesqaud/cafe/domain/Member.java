@@ -52,4 +52,12 @@ public class Member {
         this.nickName = nickName;
     }
 
+    public boolean isChangedMemberNickName(String nickName) {
+        return !this.nickName.equals(nickName);
+    }
+
+    public boolean isNotMatchedPassword(String password) {
+        return !this.password.equals(password);
+    }
+
 }
