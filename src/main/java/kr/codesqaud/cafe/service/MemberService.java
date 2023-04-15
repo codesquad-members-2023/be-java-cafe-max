@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import kr.codesqaud.cafe.domain.Member;
@@ -48,7 +47,6 @@ public class MemberService {
     public void update(ProfileEditRequestDto profileEditRequestDto) {
         Member findMember = memberRepository.findById(profileEditRequestDto.getMemberId()).orElseThrow(() -> new NoSuchElementException("해당 id를 가진 멤버를 찾을 수 없습니다."));
         findMember.setNickName(profileEditRequestDto.getNickName());
-        findMember.setEmail(profileEditRequestDto.getEmail());
         memberRepository.update(findMember);
     }
 
