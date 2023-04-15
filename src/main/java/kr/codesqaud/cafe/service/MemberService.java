@@ -37,7 +37,11 @@ public class MemberService {
     }
 
     public MemberResponseDto findById(Long memberId) {
-        return MemberResponseDto.of(memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("해당 id를 가진 멤버를 찾을 수 없습니다.")));
+        return MemberResponseDto.of(memberRepository.findById(memberId).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_MEMBER)));
+    }
+
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_EMAIL));
     }
 
 

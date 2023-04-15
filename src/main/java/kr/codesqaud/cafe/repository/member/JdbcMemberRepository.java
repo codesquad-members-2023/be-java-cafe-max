@@ -55,6 +55,20 @@ public class JdbcMemberRepository implements MemberRepository {
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, memberRowMapper)));
     }
 
+    @Override
+    public Optional<Member> findByEmail(String email) {
+        String sql = "SELECT memberId, email, password, nickName, create_date FROM member WHERE email = :email";
+        SqlParameterSource parameter = new MapSqlParameterSource("email", email);
+        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, memberRowMapper)));
+    }
+
+    @Override
+    public Optional<Member> findByNickName(String nickName) {
+        String sql = "SELECT memberId, email, password, nickName, create_date FROM member WHERE nickName = :nickName";
+        SqlParameterSource parameter = new MapSqlParameterSource("nickName", nickName);
+        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, memberRowMapper)));
+    }
+
 
     @Override
     public List<Member> findAll() {
@@ -81,11 +95,4 @@ public class JdbcMemberRepository implements MemberRepository {
         String sql = "DELETE FROM member";
         jdbcTemplate.update(sql, (SqlParameterSource) null);
     }
-
-//    public static String toString(Number value) {
-//        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-//        buffer.putLong(value.longValue());
-//        byte[] bytes = buffer.array();
-//        return String.nameStringFromBytes(bytes);
-//    }
 }
