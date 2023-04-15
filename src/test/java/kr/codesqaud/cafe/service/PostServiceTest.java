@@ -11,7 +11,7 @@ import java.util.List;
 
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
-import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
+import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
@@ -42,8 +42,8 @@ class PostServiceTest {
     @Test
     void save() {
         //given
-        SignUpRequestDto requestDtoMember = basicMemberData();
-        Long memberId = memberService.signUp(requestDtoMember);
+        MemberJoinRequestDto requestDtoMember = basicMemberData();
+        Long memberId = memberService.join(requestDtoMember);
         Member member = memberRepository.findById(memberId).orElseThrow();
 
         //when
@@ -63,8 +63,8 @@ class PostServiceTest {
     @Test
     void findById() {
         //given
-        SignUpRequestDto requestDtoMember = basicMemberData();
-        Long memberId = memberService.signUp(requestDtoMember);
+        MemberJoinRequestDto requestDtoMember = basicMemberData();
+        Long memberId = memberService.join(requestDtoMember);
         Member member = memberRepository.findById(memberId).orElseThrow();
 
         Long postId = postRepository.save(basicPostData(member), member);
@@ -80,12 +80,12 @@ class PostServiceTest {
     @Test
     void findAll() {
         // given
-        SignUpRequestDto requestDtoMember1 = basicMemberData();
-        Long member1Id = memberService.signUp(requestDtoMember1);
+        MemberJoinRequestDto requestDtoMember1 = basicMemberData();
+        Long member1Id = memberService.join(requestDtoMember1);
         Member member1 = memberRepository.findById(member1Id).orElseThrow();
 
-        SignUpRequestDto requestDtoMember2 = dummyMemberData();
-        Long member2Id = memberService.signUp(requestDtoMember2);
+        MemberJoinRequestDto requestDtoMember2 = dummyMemberData();
+        Long member2Id = memberService.join(requestDtoMember2);
         Member member2 = memberRepository.findById(member2Id).orElseThrow();
 
 
@@ -109,8 +109,8 @@ class PostServiceTest {
     @Test
     void getWriterResponse() {
         // given
-        SignUpRequestDto requestDtoMember = basicMemberData();
-        Long memberId = memberService.signUp(requestDtoMember);
+        MemberJoinRequestDto requestDtoMember = basicMemberData();
+        Long memberId = memberService.join(requestDtoMember);
         Member writer = memberRepository.findById(memberId).orElseThrow();
         Post post = basicPostData(writer);
 
@@ -122,18 +122,18 @@ class PostServiceTest {
     }
 
 
-    private SignUpRequestDto basicMemberData() {
+    private MemberJoinRequestDto basicMemberData() {
         String email = "test@gmail.com";
         String password = "testtest";
         String nickName = "chacha";
-        return new SignUpRequestDto(email, password, nickName);
+        return new MemberJoinRequestDto(email, password, nickName);
     }
 
-    private SignUpRequestDto dummyMemberData() {
+    private MemberJoinRequestDto dummyMemberData() {
         String email = "dummy@gmail.com";
         String password = "dummydummy";
         String nickName = "피오니";
-        return new SignUpRequestDto(email, password, nickName);
+        return new MemberJoinRequestDto(email, password, nickName);
     }
 
     private Post basicPostData(Member member) {

@@ -7,7 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDateTime;
 
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
+import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
+import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.service.MemberService;
 
@@ -183,8 +184,8 @@ class MemberControllerTest {
 
     @Test
     void deleteId() throws Exception {
-        SignUpRequestDto signUpRequestDto = basicMemberData();
-        Long memberId = memberService.signUp(signUpRequestDto);
+        MemberJoinRequestDto memberLoginRequestDto = basicMemberJoinRequestDtoData();
+        Long memberId = memberService.join(memberLoginRequestDto);
 
         mockMvc.perform(delete("/member/{memberId}", memberId)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -192,10 +193,18 @@ class MemberControllerTest {
                 .andDo(print());
     }
 
-    private SignUpRequestDto basicMemberData() {
+    private MemberJoinRequestDto basicMemberJoinRequestDtoData() {
         String email = "test@test.com";
         String password = "testtest";
         String nickName = "chacha";
-        return new SignUpRequestDto(email, password, nickName);
+        return new MemberJoinRequestDto(email, password, nickName);
+    }
+
+    private Member basicMemberData() {
+        String email = "test@test.com";
+        String password = "testtest";
+        String nickName = "chacha";
+        LocalDateTime localDateTime = LocalDateTime.now();
+        return new Member(email, password, nickName, localDateTime);
     }
 }

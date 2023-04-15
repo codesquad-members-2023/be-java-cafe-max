@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
 import kr.codesqaud.cafe.dto.member.MemberResponseDto;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
-import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,10 +37,10 @@ class MemberServiceTest {
 
     @Test
     @DisplayName("회원 저장 성공")
-    void signUp() {
-        SignUpRequestDto signUpRequestDto = basicMemberData();
+    void join() {
+        MemberJoinRequestDto memberLoginRequestDto = basicMemberData();
 
-        Long savedMemberId = memberService.signUp(signUpRequestDto);
+        Long savedMemberId = memberService.join(memberLoginRequestDto);
 
         //then
         Member targetMember = memberRepository.findById(savedMemberId).orElseThrow();
@@ -61,7 +61,7 @@ class MemberServiceTest {
                     String email = String.format("test%d@test.com", count);
                     String password = String.format("test%d", count);
                     String nickName = String.format("chacha%d", count);
-                    memberService.signUp(new SignUpRequestDto(email, password, nickName));
+                    memberService.join(new MemberJoinRequestDto(email, password, nickName));
                 });
 
         //when
@@ -74,8 +74,8 @@ class MemberServiceTest {
     @Test
     @DisplayName("회원 단건 조회")
     void findById() {
-        SignUpRequestDto requestDtoMember1 = basicMemberData();
-        Long member1Id = memberService.signUp(requestDtoMember1);
+        MemberJoinRequestDto requestDtoMember = basicMemberData();
+        Long memberId = memberService.join(requestDtoMember);
 
         //when
         MemberResponseDto memberResponseDto = memberService.findById(member1Id);
@@ -91,7 +91,7 @@ class MemberServiceTest {
     @Test
     void update() {
         //given
-        Long saveId = memberService.signUp(basicMemberData());
+        Long saveId = memberService.join(basicMemberData());
         ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(saveId, dummyMemberData().getEmail(), dummyMemberData().getPassword(), dummyMemberData().getNickName());
 
         //when
@@ -108,8 +108,8 @@ class MemberServiceTest {
     @Test
     void deleteById() {
         //given
-        SignUpRequestDto signUpRequestDto = basicMemberData();
-        Long userId = memberService.signUp(signUpRequestDto);
+        MemberJoinRequestDto memberLoginRequestDto = basicMemberData();
+        Long userId = memberService.join(memberLoginRequestDto);
 
         //when
         memberService.deleteById(userId);
@@ -119,17 +119,17 @@ class MemberServiceTest {
         assertEquals(members.size(), 0);
     }
 
-    private SignUpRequestDto basicMemberData() {
+    private MemberJoinRequestDto basicMemberData() {
         String email = "test@gmail.com";
         String password = "testtest";
         String nickName = "chacha";
         return new SignUpRequestDto(email, password, nickName);
     }
 
-    private SignUpRequestDto dummyMemberData() {
+    private MemberJoinRequestDto dummyMemberData() {
         String email = "dummy@gmail.com";
         String password = "dummydummy";
         String nickName = "피오니";
-        return new SignUpRequestDto(email, password, nickName);
+        return new MemberJoinRequestDto(email, password, nickName);
     }
 }
