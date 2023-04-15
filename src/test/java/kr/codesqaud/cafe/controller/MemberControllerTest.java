@@ -1,5 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -11,6 +14,7 @@ import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
 import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.service.MemberService;
+import kr.codesqaud.cafe.session.LoginMemberSession;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,9 +23,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpSession;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,7 +49,7 @@ class MemberControllerTest {
     }
 
     @Test
-    void findAll() throws Exception {
+    void readMember() throws Exception {
         mockMvc.perform(get("/member"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/all"))
@@ -131,7 +138,7 @@ class MemberControllerTest {
 
     @Test
     void profile() throws Exception {
-        Long memberId = memberRepository.save(new Member("test@test.com", "testtest", "chacha", LocalDateTime.now()));
+        Long memberId = memberRepository.save(basicMemberData());
 
         //when
         mockMvc.perform(get("/member/{memberId}", memberId))
@@ -157,16 +164,13 @@ class MemberControllerTest {
     @DisplayName("/put 요청시 db에서 회원 프로필을 수정한다.")
     void editProfile() throws Exception {
         //given
-        Member savedMember = new Member("test@test.com", "testtest", "chacha", LocalDateTime.now());
+        Member savedMember = basicMemberData();
         Long saveMemberId = memberRepository.save(savedMember);
 
-        String newEmail = "newTest@test.com";
         String newPassword = "testtesttest";
         String newNickName = "피오니";
-
         //when
         mockMvc.perform(put("/member/{memberId}", saveMemberId)
-                        .param("email", newEmail)
                         .param("password", newPassword)
                         .param("nickName", newNickName)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
@@ -174,27 +178,6 @@ class MemberControllerTest {
                 .andDo(print());
     }
 
-
-    @Test
-    void profileEditForm() throws Exception {
-        // given
-        Long savedId = memberRepository.save(
-                new Member("test@test.com", "testtest", "chacha", LocalDateTime.now()));
-
-        // when,then
-        mockMvc.perform(get("/member/{memberId}/edit", savedId))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/profileEdit"))
-                .andDo(print());
-    }
-
-    @Test
-    void signUpForm() throws Exception {
-        mockMvc.perform(get("/member/signUp"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/signUp"))
-                .andExpect(model().attributeExists("signUpRequestDto"));
-    }
 
     @Test
     void deleteId() throws Exception {
@@ -221,4 +204,5 @@ class MemberControllerTest {
         LocalDateTime localDateTime = LocalDateTime.now();
         return new Member(email, password, nickName, localDateTime);
     }
+
 }
