@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -15,18 +14,16 @@ import java.util.List;
 public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final SimpleJdbcInsert insertAction;
 
     public JdbcTemplateArticleRepository(final DataSource dataSource) {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        this.insertAction = new SimpleJdbcInsert(dataSource)
-                .withTableName("article");
     }
 
     @Override
     public void save(final Article article) {
+        String sql = "insert into article(writer, title, contents, createdAt) values (:writer, :title, :contents, :createdAt) ";
         SqlParameterSource params = new BeanPropertySqlParameterSource(article);
-        insertAction.execute(params);
+        namedParameterJdbcTemplate.update(sql, params);
     }
 
     @Override
@@ -38,7 +35,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                             , rs.getString("writer")
                             , rs.getString("title")
                             , rs.getString("contents")
-                            , rs.getTimestamp("date").toLocalDateTime()));
+                            , rs.getTimestamp("createdAt").toLocalDateTime()));
     }
 
     @Override
@@ -52,7 +49,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                                 , rs.getString("writer")
                                 , rs.getString("title")
                                 , rs.getString("contents")
-                                , rs.getTimestamp("date").toLocalDateTime());
+                                , rs.getTimestamp("createdAt").toLocalDateTime());
                     return article;
         });
     }

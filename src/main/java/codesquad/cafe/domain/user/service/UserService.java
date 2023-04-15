@@ -5,10 +5,13 @@ import codesquad.cafe.domain.user.dto.UserRequestDto;
 import codesquad.cafe.domain.user.dto.UserResponseDto;
 import codesquad.cafe.domain.user.dto.UserUpdateRequestDto;
 import codesquad.cafe.domain.user.repository.UserRepository;
+import codesquad.cafe.global.exception.CustomException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static codesquad.cafe.global.exception.ErrorCode.*;
 
 @Service
 public class UserService {
@@ -25,10 +28,9 @@ public class UserService {
     }
 
     private void validateDuplicateUser(final User user) {
-        System.out.println(userRepository.findById(user.getId()));
         userRepository.findById(user.getId())
                 .ifPresent(u -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                    throw new CustomException(ALREADY_EXIST_USER);
                 });
     }
 
@@ -45,19 +47,19 @@ public class UserService {
     public UserResponseDto findUser(final String id) {
         return userRepository.findById(id)
                 .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
     }
 
     public void updateUser(final String id, final UserUpdateRequestDto userUpdateRequestDto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
         validatePassword(user, userUpdateRequestDto);
         userRepository.update(user.update(userUpdateRequestDto));
     }
 
     private void validatePassword(final User user, final UserUpdateRequestDto userUpdateRequestDto) {
         if(!user.getPassword().equals(userUpdateRequestDto.getPassword())) {
-            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(WRONG_INPUT_PASSWORD);
         }
     }
 }

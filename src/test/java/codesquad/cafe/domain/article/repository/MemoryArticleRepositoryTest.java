@@ -63,9 +63,11 @@ class MemoryArticleRepositoryTest {
     }
 
     private Article createDummyArticle1() {
-        return new Article("sio", "title1", "contents1", LocalDateTime.of(2023, 4, 7, 3, 3));
+        return new Article("sio", "title1", "contents1");
     }
+
     private Article createDummyArticle2() {
-        return new Article("시오", "title2", "contents2", LocalDateTime.of(2023, 4, 7, 3, 9));
+        return new Article("시오", "title2", "contents2");
     }
+
 }

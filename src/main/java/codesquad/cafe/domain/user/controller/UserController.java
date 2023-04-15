@@ -35,22 +35,22 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public String showProfile(@PathVariable("userId") final String id, final Model model) {
-        UserResponseDto user = userService.findUser(id);
+    public String showProfile(@PathVariable String userId, final Model model) {
+        UserResponseDto user = userService.findUser(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
 
     @GetMapping("/{userId}/form")
-    public String showUpdateForm(@PathVariable("userId") final String id, final Model model) {
-        model.addAttribute("userId", id);
+    public String showUpdateForm(@PathVariable String userId, final Model model) {
+        model.addAttribute("userId", userId);
         return "user/updateForm";
     }
 
     @PutMapping("/{userId}/update")
-    public String updateUser(@PathVariable("userId") final String id,
+    public String updateUser(@PathVariable String userId,
                              @ModelAttribute UserUpdateRequestDto userUpdateRequestDto) {
-        userService.updateUser(id, userUpdateRequestDto);
+        userService.updateUser(userId, userUpdateRequestDto);
         return "redirect:/users";
     }
 

@@ -6,14 +6,14 @@ public class ArticleResponseDto {
     private String writer;
     private String title;
     private String contents;
-    private String date;
+    private String createdAt;
 
-    public ArticleResponseDto(final Long id, final String writer, final String title, final String contents, final String localDateTime) {
+    public ArticleResponseDto(final Long id, final String writer, final String title, final String contents, final String createdAt) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.date = localDateTime;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -28,11 +28,11 @@ public class ArticleResponseDto {
         return title;
     }
 
-    public String getDate() {
-        return date;
-    }
-
     public String getContents() {
         return contents;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
     }
 }
