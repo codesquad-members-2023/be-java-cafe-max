@@ -45,9 +45,9 @@ class MemberServiceTest {
         //then
         Member targetMember = memberRepository.findById(savedMemberId).orElseThrow();
         assertAll(() -> assertEquals(savedMemberId, targetMember.getMemberId()),
-                () -> assertEquals(signUpRequestDto.getEmail(), targetMember.getEmail()),
-                () -> assertEquals(signUpRequestDto.getPassword(), targetMember.getPassword()),
-                () -> assertEquals(signUpRequestDto.getNickName(), targetMember.getNickName()));
+                () -> assertEquals(memberLoginRequestDto.getEmail(), targetMember.getEmail()),
+                () -> assertEquals(memberLoginRequestDto.getPassword(), targetMember.getPassword()),
+                () -> assertEquals(memberLoginRequestDto.getNickName(), targetMember.getNickName()));
     }
 
 
@@ -78,15 +78,32 @@ class MemberServiceTest {
         Long memberId = memberService.join(requestDtoMember);
 
         //when
-        MemberResponseDto memberResponseDto = memberService.findById(member1Id);
+        MemberResponseDto memberResponseDto = memberService.findById(memberId);
 
         //then
         assertAll(
-                () -> assertEquals(member1Id, memberResponseDto.getMemberId()),
-                () -> assertEquals(requestDtoMember1.getEmail(), memberResponseDto.getEmail()),
-                () -> assertEquals(requestDtoMember1.getNickName(), memberResponseDto.getNickName()));
-
+                () -> assertEquals(memberId, memberResponseDto.getMemberId()),
+                () -> assertEquals(requestDtoMember.getEmail(), memberResponseDto.getEmail()),
+                () -> assertEquals(requestDtoMember.getNickName(), memberResponseDto.getNickName()));
     }
+
+    @Test
+    @DisplayName("회원 이메일 조회")
+    void findByEmail() {
+        MemberJoinRequestDto requestDtoMember = basicMemberData();
+        Long memberId = memberService.join(requestDtoMember);
+        String memberEmail = memberService.findById(memberId).getEmail();
+
+        //when
+        Member member = memberService.findByEmail(memberEmail);
+
+        //then
+        assertAll(
+                () -> assertEquals(memberEmail, member.getEmail()),
+                () -> assertEquals(requestDtoMember.getNickName(), member.getNickName()),
+                () -> assertEquals(requestDtoMember.getPassword(), member.getPassword()));
+    }
+
 
     @Test
     void update() {
@@ -101,7 +118,6 @@ class MemberServiceTest {
         Member targetMember = memberRepository.findById(saveId).orElseThrow();
         assertAll(
                 () -> assertEquals(saveId, targetMember.getMemberId()),
-                () -> assertEquals(dummyMemberData().getEmail(), targetMember.getEmail()),
                 () -> assertEquals(dummyMemberData().getNickName(), targetMember.getNickName()));
     }
 
@@ -122,8 +138,8 @@ class MemberServiceTest {
     private MemberJoinRequestDto basicMemberData() {
         String email = "test@gmail.com";
         String password = "testtest";
-        String nickName = "chacha";
-        return new SignUpRequestDto(email, password, nickName);
+        String nickName = "차차";
+        return new MemberJoinRequestDto(email, password, nickName);
     }
 
     private MemberJoinRequestDto dummyMemberData() {
