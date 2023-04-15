@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.user;
 import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.exception.signUpException.InvalidUserIdException;
+import kr.codesqaud.cafe.login.LoginRequestDto;
 import org.springframework.stereotype.Service;
 
 /**
@@ -48,5 +49,14 @@ public class UserService {
      */
     public Optional<User> findOne(String userId) {
         return userRepository.findById(userId);
+    }
+
+    /**
+     * @return null: 로그인 실패
+     */
+    public User login(LoginRequestDto loginRequestDto) {
+        return userRepository.findById(loginRequestDto.getUserId())
+                .filter(u -> u.getPassword().equals(loginRequestDto.getPassword()))
+                .orElse(null);
     }
 }
