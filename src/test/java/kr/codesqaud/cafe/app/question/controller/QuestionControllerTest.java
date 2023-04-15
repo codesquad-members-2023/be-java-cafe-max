@@ -1,5 +1,6 @@
-package kr.codesqaud.cafe.web.controller;
+package kr.codesqaud.cafe.app.question.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
@@ -11,15 +12,17 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import kr.codesqaud.cafe.domain.article.ArticleRepository;
-import kr.codesqaud.cafe.domain.user.User;
-import kr.codesqaud.cafe.domain.user.UserRepository;
-import kr.codesqaud.cafe.web.dto.article.ArticleResponseDto;
-import kr.codesqaud.cafe.web.dto.article.ArticleSavedRequestDto;
-import kr.codesqaud.cafe.web.dto.user.UserSavedRequestDto;
-import org.assertj.core.api.Assertions;
+import kr.codesqaud.cafe.app.question.repository.QuestionRepository;
+import kr.codesqaud.cafe.app.user.entity.User;
+import kr.codesqaud.cafe.app.user.repository.UserRepository;
+import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
+import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
+import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequestDto;
+import kr.codesqaud.cafe.errors.errorcode.CommonErrorCode;
+import kr.codesqaud.cafe.errors.response.ErrorResponse;
+import kr.codesqaud.cafe.errors.response.ErrorResponse.ValidationError;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,18 +30,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class ArticleControllerTest {
+class QuestionControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private ArticleRepository repository;
+    private QuestionRepository repository;
 
     @Autowired
     private UserRepository userRepository;
@@ -69,7 +73,7 @@ class ArticleControllerTest {
 
     @Test
     @DisplayName("회원 객체와 제목, 내용이 주어지고 글쓰기 요청시 글쓰기가 되는지 테스트")
-    public void save_success() throws Exception {
+    public void write_success() throws Exception {
         //given
         String userId = "yonghwan1107";
         User user = userRepository.findByUserId(userId).orElseThrow();
@@ -77,7 +81,7 @@ class ArticleControllerTest {
         String title = "제목1";
         String content = "내용1";
         LocalDateTime writeDate = LocalDateTime.now();
-        ArticleSavedRequestDto dto = new ArticleSavedRequestDto(title, content, writeDate, userId);
+        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, writeDate, userId);
         String url = "/qna";
         //when
         String jsonArticle =
@@ -87,50 +91,40 @@ class ArticleControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        ArticleResponseDto article = objectMapper.readValue(jsonArticle, ArticleResponseDto.class);
-        Assertions.assertThat(article.getWriter()).isEqualTo(writer);
-        Assertions.assertThat(article.getTitle()).isEqualTo(title);
-        Assertions.assertThat(article.getContent()).isEqualTo(content);
+        QuestionResponse article = objectMapper.readValue(jsonArticle, QuestionResponse.class);
+        assertThat(article.getWriter()).isEqualTo(writer);
+        assertThat(article.getTitle()).isEqualTo(title);
+        assertThat(article.getContent()).isEqualTo(content);
     }
 
     @Test
     @DisplayName("부적절한 입력 형식의 제목이 주어지고 글쓰기 요청시 에러 응답을 받는지 테스트")
-    public void save_fail1() throws Exception {
+    public void write_fail1() throws Exception {
         //given
         String title = "";
         String content = "내용1";
         LocalDateTime writeDate = LocalDateTime.now();
         String userId = "user1";
-        ArticleSavedRequestDto dto = new ArticleSavedRequestDto(title, content, writeDate, userId);
+        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, writeDate, userId);
         String url = "/qna";
         //when
-        String error =
+        String jsonErrors =
             mockMvc.perform(post(url)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(toJSON(dto)))
-                .andExpect(status().isOk()).andReturn().getResponse()
+                .andExpect(status().isBadRequest()).andReturn().getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
         //then
-        Map<String, Map<String, Object>> map = objectMapper.readValue(error, Map.class);
-        Assertions.assertThat(map.get("title").get("errorCode")).isEqualTo(700);
-        Assertions.assertThat(map.get("title").get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("title").get("errorMessage")).isEqualTo("제목은 100자 이내여야 합니다.");
-    }
+        List<ValidationError> errors = new ArrayList<>();
+        errors.add(new ValidationError("title", "제목은 100자 이내여야 합니다."));
 
-    @Test
-    @DisplayName("게시글 조회 목록 페이지 요청시 각 게시글 정보를 가져오고 게시글의 회원 정보를 가지고 있는지 테스트")
-    public void list() throws Exception {
-        //given
-        String url = "/";
-        //when
-        List<ArticleResponseDto> articles = (List<ArticleResponseDto>) mockMvc.perform(get(url))
-            .andExpect(status().isOk())
-            .andReturn().getModelAndView().getModelMap().getAttribute("articles");
-        //then
-        Assertions.assertThat(articles).isNotNull();
-        for (ArticleResponseDto article : articles) {
-            Assertions.assertThat(article.getUserId()).isNotNull();
-        }
+        ErrorResponse actual = objectMapper.readValue(jsonErrors, ErrorResponse.class);
+        ErrorResponse expected = new ErrorResponse(
+            CommonErrorCode.INVALID_INPUT_FORMAT.getName(),
+            HttpStatus.BAD_REQUEST,
+            "유효하지 않은 입력 형식입니다.",
+            errors);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -138,10 +132,9 @@ class ArticleControllerTest {
     public void form_fail() throws Exception {
         //given
         String url = "/qna/form";
-        //when
+        //when & then
         mockMvc.perform(get(url)).andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/user/login"));
-        //then
     }
 
     private <T> String toJSON(T data) throws JsonProcessingException {

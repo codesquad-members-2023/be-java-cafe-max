@@ -1,5 +1,6 @@
-package kr.codesqaud.cafe.web.controller;
+package kr.codesqaud.cafe.app.user.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -9,12 +10,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import kr.codesqaud.cafe.domain.user.User;
-import kr.codesqaud.cafe.domain.user.UserRepository;
-import kr.codesqaud.cafe.web.dto.user.UserLoginRequestDto;
-import kr.codesqaud.cafe.web.dto.user.UserResponseDto;
-import kr.codesqaud.cafe.web.dto.user.UserSavedRequestDto;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import kr.codesqaud.cafe.app.user.entity.User;
+import kr.codesqaud.cafe.app.user.repository.UserRepository;
+import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequestDto;
+import kr.codesqaud.cafe.app.user.controller.dto.UserResponseDto;
+import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequestDto;
+import kr.codesqaud.cafe.errors.response.ErrorResponse;
+import kr.codesqaud.cafe.errors.response.ErrorResponse.ValidationError;
+import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,8 +29,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -40,8 +46,11 @@ class UserControllerTest {
 
     private MockHttpSession session;
 
+    private ObjectMapper objectMapper;
+
     @BeforeEach
     public void beforeEach() throws Exception {
+        objectMapper = new ObjectMapper();
         session = new MockHttpSession();
         createSampleUser("yonghwan1107", "yonghwan1107", "김용환", "yonghwan1107@naver.com");
     }
@@ -53,7 +62,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("올바른 회원정보가 주어지고 회원가입 요청시 회원가입이 되는지 테스트")
-    public void save_success() throws Exception {
+    public void signup_success() throws Exception {
         //given
         String userId = "user1";
         String password = "user1user1";
@@ -68,15 +77,15 @@ class UserControllerTest {
             .andExpect(status().isOk());
         //then
         User user = userRepository.findByUserId(userId).orElseThrow();
-        Assertions.assertThat(user.getUserId()).isEqualTo(userId);
-        Assertions.assertThat(user.getPassword()).isEqualTo(password);
-        Assertions.assertThat(user.getName()).isEqualTo(name);
-        Assertions.assertThat(user.getEmail()).isEqualTo(email);
+        assertThat(user.getUserId()).isEqualTo(userId);
+        assertThat(user.getPassword()).isEqualTo(password);
+        assertThat(user.getName()).isEqualTo(name);
+        assertThat(user.getEmail()).isEqualTo(email);
     }
 
     @Test
     @DisplayName("중복된 아이디가 주어지고 회원가입 요청시 에러 응답을 받는지 테스트")
-    public void save_fail1() throws Exception {
+    public void signup_fail1() throws Exception {
         //given
         String duplicateUserId = "yonghwan1107";
         String password = "yonghwan1107";
@@ -85,23 +94,24 @@ class UserControllerTest {
         String url = "/users";
         UserSavedRequestDto dto = new UserSavedRequestDto(duplicateUserId, password, name, email);
         //when
-        MockHttpServletResponse response =
-            mockMvc.perform(post(url)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(toJSON(dto)))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
+        String jsonErrorResponse = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJSON(dto)))
+            .andExpect(status().isConflict())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        Map map = new ObjectMapper()
-            .readValue(response.getContentAsString(StandardCharsets.UTF_8), Map.class);
-        Assertions.assertThat(map.get("errorCode")).isEqualTo(600);
-        Assertions.assertThat(map.get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("errorMessage")).isEqualTo("이미 존재하는 아이디입니다.");
+        ErrorResponse actual = objectMapper.readValue(jsonErrorResponse, ErrorResponse.class);
+        ErrorResponse expected = new ErrorResponse(
+            UserErrorCode.ALREADY_EXIST_USERID.name(),
+            HttpStatus.CONFLICT,
+            UserErrorCode.ALREADY_EXIST_USERID.getMessage(),
+            null);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     @DisplayName("중복된 이메일이 주어지고 회원가입 요청시 에러 응답을 받는지 테스트")
-    public void save_fail2() throws Exception {
+    public void signup_fail2() throws Exception {
         //given
         String userId = "kimyonghwan1107";
         String password = "yonghwan1107";
@@ -110,24 +120,25 @@ class UserControllerTest {
         String url = "/users";
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, duplicatedEmail);
         //when
-        MockHttpServletResponse response =
-            mockMvc.perform(post(url)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(toJSON(dto)))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
+        String jsonErrorResponse = mockMvc.perform(post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJSON(dto)))
+            .andExpect(status().isConflict())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        Map map = new ObjectMapper()
-            .readValue(response.getContentAsString(StandardCharsets.UTF_8), Map.class);
-        Assertions.assertThat(map.get("errorCode")).isEqualTo(601);
-        Assertions.assertThat(map.get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("errorMessage")).isEqualTo("이미 존재하는 이메일입니다.");
+        ErrorResponse actual = objectMapper.readValue(jsonErrorResponse, ErrorResponse.class);
+        ErrorResponse expected = new ErrorResponse(
+            UserErrorCode.ALREADY_EXIST_EMAIL.name(),
+            HttpStatus.CONFLICT,
+            UserErrorCode.ALREADY_EXIST_EMAIL.getMessage(),
+            null);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
     @DisplayName("부적절한 입력 형식의 유저아이디, 패스워드, 이름, 이메일이 주어지고 회원가입 요청시 "
         + "에러 응답 코드를 받는지 테스트")
-    public void validate_singUp_format() throws Exception {
+    public void signup_fail3() throws Exception {
         //given
         String userId = "a";
         String password = "u";
@@ -136,34 +147,24 @@ class UserControllerTest {
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
         String url = "/users";
         //when
-        MockHttpServletResponse response = mockMvc.perform(post(url)
+        String jsonErrors = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
-            .andExpect(status().isOk())
-            .andReturn().getResponse();
+            .andExpect(status().isBadRequest())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        Map<String, Map<String, Object>> map = new ObjectMapper().readValue(
-            response.getContentAsString(StandardCharsets.UTF_8), Map.class);
+        List<ValidationError> errors = new ArrayList<>();
+        errors.add(new ValidationError("password", "8~16자 영문 대 소문자, 숫자, 특수문자만 사용 가능합니다."));
+        errors.add(new ValidationError("userId", "5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다."));
+        errors.add(new ValidationError("email",
+            "(소문자 또는 숫자로 최소1글자)@(소문자 최소1글자).(소문자 2~3글자) 형식으로 사용 가능합니다."));
+        errors.add(new ValidationError("name", "1~20자 영문 소문자, 한글만 사용 가능합니다."));
 
-        Assertions.assertThat(map.get("userId").get("errorCode")).isEqualTo(700);
-        Assertions.assertThat(map.get("userId").get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("userId").get("errorMessage"))
-            .isEqualTo("5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.");
+        ErrorResponse errorResponse = objectMapper.readValue(jsonErrors, ErrorResponse.class);
+        Assertions.assertThat(errorResponse.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+        Assertions.assertThat(errorResponse.getErrorMessage()).isEqualTo("유효하지 않은 입력 형식입니다.");
+        Assertions.assertThat(errorResponse.getErrors()).containsAll(errors);
 
-        Assertions.assertThat(map.get("password").get("errorCode")).isEqualTo(700);
-        Assertions.assertThat(map.get("password").get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("password").get("errorMessage"))
-            .isEqualTo("8~16자 영문 대 소문자, 숫자, 특수문자만 사용 가능합니다.");
-
-        Assertions.assertThat(map.get("name").get("errorCode")).isEqualTo(700);
-        Assertions.assertThat(map.get("name").get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("name").get("errorMessage"))
-            .isEqualTo("1~20자 영문 소문자, 한글만 사용 가능합니다.");
-
-        Assertions.assertThat(map.get("email").get("errorCode")).isEqualTo(700);
-        Assertions.assertThat(map.get("email").get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("email").get("errorMessage"))
-            .isEqualTo("(소문자 또는 숫자로 최소1글자)@(소문자 최소1글자).(소문자 2~3글자) 형식으로 사용 가능합니다.");
     }
 
     @Test
@@ -174,24 +175,14 @@ class UserControllerTest {
         Long id = userRepository.findByUserId(userId).orElseThrow().getId();
         String url = "/users/" + id;
         //when
-        UserResponseDto profile = (UserResponseDto) mockMvc.perform(get(url))
+        UserResponseDto actual = (UserResponseDto) Objects.requireNonNull(mockMvc.perform(get(url))
             .andExpect(status().isOk())
-            .andReturn().getModelAndView().getModelMap().get("user");
+            .andReturn().getModelAndView()).getModelMap().get("user");
         //then
-        Assertions.assertThat(profile.getId()).isEqualTo(id);
-        Assertions.assertThat(profile.getUserId()).isEqualTo("yonghwan1107");
-        Assertions.assertThat(profile.getName()).isEqualTo("김용환");
-        Assertions.assertThat(profile.getEmail()).isEqualTo("yonghwan1107@naver.com");
-    }
-
-    @Test
-    @DisplayName("브라우저 URI에 DB에 없는 회원 등록번호로 프로필을 보고자 할때 전체 회원 목록조회로 이동되는지 테스트")
-    public void profile_fail() throws Exception {
-        //given
-        String url = "/users/10";
-        //when
-        mockMvc.perform(get(url)).andExpect(status().is3xxRedirection());
-        //then
+        assertThat(actual.getId()).isEqualTo(id);
+        assertThat(actual.getUserId()).isEqualTo("yonghwan1107");
+        assertThat(actual.getName()).isEqualTo("김용환");
+        assertThat(actual.getEmail()).isEqualTo("yonghwan1107@naver.com");
     }
 
     @Test
@@ -208,12 +199,12 @@ class UserControllerTest {
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
-            .andExpect(status().is3xxRedirection());
+            .andExpect(redirectedUrl("/"));
         //then
         UserResponseDto user = (UserResponseDto) session.getAttribute("user");
-        Assertions.assertThat(user.getUserId()).isEqualTo(userId);
-        Assertions.assertThat(user.getName()).isEqualTo("김용환");
-        Assertions.assertThat(user.getEmail()).isEqualTo("yonghwan1107@naver.com");
+        assertThat(user.getUserId()).isEqualTo(userId);
+        assertThat(user.getName()).isEqualTo("김용환");
+        assertThat(user.getEmail()).isEqualTo("yonghwan1107@naver.com");
     }
 
     @Test
@@ -225,18 +216,20 @@ class UserControllerTest {
         String url = "/users/login";
         UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
         //when
-        MockHttpServletResponse response = mockMvc.perform(post(url)
+        String jsonErrorResponse = mockMvc.perform(post(url)
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
-            .andExpect(status().isOk())
-            .andReturn().getResponse();
+            .andExpect(status().isBadRequest())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        Map map = new ObjectMapper()
-            .readValue(response.getContentAsString(StandardCharsets.UTF_8), Map.class);
-        Assertions.assertThat(map.get("errorCode")).isEqualTo(801);
-        Assertions.assertThat(map.get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("errorMessage")).isEqualTo("아이디 또는 비밀번호가 일치하지 않습니다.");
+        ErrorResponse actual = objectMapper.readValue(jsonErrorResponse, ErrorResponse.class);
+        ErrorResponse expected = new ErrorResponse(
+            UserErrorCode.NOT_MATCH_LOGIN.name(),
+            HttpStatus.BAD_REQUEST,
+            UserErrorCode.NOT_MATCH_LOGIN.getMessage(),
+            null);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -248,26 +241,21 @@ class UserControllerTest {
         String url = "/users/login";
         UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
         //when
-        MockHttpServletResponse response = mockMvc.perform(post(url)
+        String jsonErrors = mockMvc.perform(post(url)
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
-            .andExpect(status().isOk())
-            .andReturn().getResponse();
+            .andExpect(status().isBadRequest())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        Map<String, Map<String, Object>> map =
-            new ObjectMapper().readValue(response.getContentAsString(StandardCharsets.UTF_8),
-                Map.class);
+        List<ValidationError> errors = new ArrayList<>();
+        errors.add(new ValidationError("password", "8~16자 영문 대 소문자, 숫자, 특수문자만 사용 가능합니다."));
+        errors.add(new ValidationError("userId", "5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다."));
 
-        Assertions.assertThat(map.get("userId").get("errorCode")).isEqualTo(700);
-        Assertions.assertThat(map.get("userId").get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("userId").get("errorMessage"))
-            .isEqualTo("5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.");
-
-        Assertions.assertThat(map.get("password").get("errorCode")).isEqualTo(700);
-        Assertions.assertThat(map.get("password").get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("password").get("errorMessage"))
-            .isEqualTo("8~16자 영문 대 소문자, 숫자, 특수문자만 사용 가능합니다.");
+        ErrorResponse errorResponse = objectMapper.readValue(jsonErrors, ErrorResponse.class);
+        Assertions.assertThat(errorResponse.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+        Assertions.assertThat(errorResponse.getErrorMessage()).isEqualTo("유효하지 않은 입력 형식입니다.");
+        Assertions.assertThat(errorResponse.getErrors()).containsAll(errors);
     }
 
     @Test
@@ -279,18 +267,20 @@ class UserControllerTest {
         String url = "/users/login";
         UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
         //when
-        MockHttpServletResponse response = mockMvc.perform(post(url)
+        String jsonErrorResponse = mockMvc.perform(post(url)
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
-            .andExpect(status().isOk())
-            .andReturn().getResponse();
+            .andExpect(status().isBadRequest())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        Map map = new ObjectMapper()
-            .readValue(response.getContentAsString(StandardCharsets.UTF_8), Map.class);
-        Assertions.assertThat(map.get("errorCode")).isEqualTo(801);
-        Assertions.assertThat(map.get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("errorMessage")).isEqualTo("아이디 또는 비밀번호가 일치하지 않습니다.");
+        ErrorResponse actual = objectMapper.readValue(jsonErrorResponse, ErrorResponse.class);
+        ErrorResponse expected = new ErrorResponse(
+            UserErrorCode.NOT_MATCH_LOGIN.name(),
+            HttpStatus.BAD_REQUEST,
+            UserErrorCode.NOT_MATCH_LOGIN.getMessage(),
+            null);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -313,13 +303,9 @@ class UserControllerTest {
             .andExpect(status().isOk());
         //then
         User actual = userRepository.findByUserId(userId).orElseThrow();
-        Assertions.assertThat(actual.getName()).isEqualTo(modifiedName);
-        Assertions.assertThat(actual.getPassword()).isEqualTo(modifiedPassword);
-        Assertions.assertThat(actual.getEmail()).isEqualTo(modifiedEmail);
-
-        // 회원정보 수정 이후 세션 저장소에 회원 정보가 삭제되었는지 테스트
-        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
-        Assertions.assertThat(user).isNull();
+        assertThat(actual.getName()).isEqualTo(modifiedName);
+        assertThat(actual.getPassword()).isEqualTo(modifiedPassword);
+        assertThat(actual.getEmail()).isEqualTo(modifiedEmail);
     }
 
     @Test
@@ -336,18 +322,19 @@ class UserControllerTest {
         UserSavedRequestDto dto = new UserSavedRequestDto(userId, modifiedPassword, modifiedName,
             modifiedEmail);
         //when
-        MockHttpServletResponse response =
-            mockMvc.perform(put(url)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(toJSON(dto)))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
+        String jsonErrorResponse = mockMvc.perform(put(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJSON(dto)))
+            .andExpect(status().isConflict())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        Map map = new ObjectMapper()
-            .readValue(response.getContentAsString(StandardCharsets.UTF_8), Map.class);
-        Assertions.assertThat(map.get("errorCode")).isEqualTo(601);
-        Assertions.assertThat(map.get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("errorMessage")).isEqualTo("이미 존재하는 이메일입니다.");
+        ErrorResponse actual = objectMapper.readValue(jsonErrorResponse, ErrorResponse.class);
+        ErrorResponse expected = new ErrorResponse(
+            UserErrorCode.ALREADY_EXIST_EMAIL.name(),
+            HttpStatus.CONFLICT,
+            UserErrorCode.ALREADY_EXIST_EMAIL.getMessage(),
+            null);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -358,13 +345,12 @@ class UserControllerTest {
         String url = "/users/password/" + id;
         String password = "yonghwan1107";
         UserSavedRequestDto dto = new UserSavedRequestDto(null, password, null, null);
-        //when
+        //when & then
         mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/user/form/" + id));
-        //then
     }
 
     @Test
@@ -376,17 +362,19 @@ class UserControllerTest {
         String password = "awioefjoawiefj";
         UserSavedRequestDto dto = new UserSavedRequestDto(null, password, null, null);
         //when
-        MockHttpServletResponse response = mockMvc.perform(post(url)
+        String jsonErrorResponse = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
-            .andExpect(status().isOk())
-            .andReturn().getResponse();
+            .andExpect(status().isBadRequest())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        Map map = new ObjectMapper()
-            .readValue(response.getContentAsString(StandardCharsets.UTF_8), Map.class);
-        Assertions.assertThat(map.get("errorCode")).isEqualTo(802);
-        Assertions.assertThat(map.get("httpStatus")).isEqualTo("OK");
-        Assertions.assertThat(map.get("errorMessage")).isEqualTo("비밀번호가 일치하지 않습니다.");
+        ErrorResponse actual = objectMapper.readValue(jsonErrorResponse, ErrorResponse.class);
+        ErrorResponse expected = new ErrorResponse(
+            UserErrorCode.NOT_MATCH_PASSWORD.name(),
+            HttpStatus.BAD_REQUEST,
+            UserErrorCode.NOT_MATCH_PASSWORD.getMessage(),
+            null);
+        assertThat(actual).isEqualTo(expected);
     }
 
     private void createSampleUser(String userId, String password, String name, String email)
@@ -399,6 +387,7 @@ class UserControllerTest {
             .andExpect(status().isOk());
     }
 
+    // TODO: 비로그인 상태에서 /user/form/1 입장시 들어가지는 문제
 
     private <T> String toJSON(T data) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(data);
