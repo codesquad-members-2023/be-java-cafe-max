@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.controller.article;
 
 public class ArticleForm {
     private String writer;

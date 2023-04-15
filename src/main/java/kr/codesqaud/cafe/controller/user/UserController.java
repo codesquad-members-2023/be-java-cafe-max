@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.controller.user;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
@@ -7,39 +7,41 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
     public UserController(UserService userService){
         this.userService = userService;
     }
 
-    @GetMapping("/user/create")
-    public String createForm(){
+    @GetMapping("/create")
+    public String create(){
         return "user/form";
     }
 
-    @PostMapping("/user/create")
+    @PostMapping("/create")
     public String create(UserForm form){
-        User user = new User(form);
+        User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
         userService.join(user);
         return "redirect:/users";
     }
 
-    @GetMapping("/users")
+    @GetMapping("")
     public String list(Model model){
-        List<User> users = userService.findUsers();
+        List<UserResponse> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public String profile(@PathVariable String userId, Model model){
-        User user = userService.findOne(userId).get();
-        model.addAttribute("user", user);
+        UserResponse userResponse = userService.findByUserId(userId).get();
+        model.addAttribute("user", userResponse);
         return "user/profile";
     }
 

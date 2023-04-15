@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.controller.article;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.service.ArticleService;
@@ -16,14 +16,14 @@ public class ArticleController {
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
+
     @GetMapping("/questions")
-    public String createForm(){
+    public String create(){
         return "qna/form";
     }
-
     @PostMapping("/questions")
     public String create(ArticleForm form){
-        Article article = new Article(form);
+        Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
         articleService.post(article);
         return "redirect:/";
     }
@@ -32,7 +32,7 @@ public class ArticleController {
     public String list(Model model){
         List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/articles/{id}")

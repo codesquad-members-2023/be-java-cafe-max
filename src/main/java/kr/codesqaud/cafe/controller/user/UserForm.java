@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.controller.user;
 
 public class UserForm {
     private String userId;

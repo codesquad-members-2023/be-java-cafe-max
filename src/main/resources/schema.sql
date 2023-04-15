@@ -1,4 +1,4 @@
-create table if not exists articles_squad
+create table if not exists articles
 (
     id bigint not null auto_increment,
     writer varchar(16) not null,
@@ -9,7 +9,7 @@ create table if not exists articles_squad
     primary key (id)
 );
 
-create table if not exists users_squad
+create table if not exists users
 (
     customerId bigint not null auto_increment,
     userId varchar(16) not null,
@@ -18,3 +18,5 @@ create table if not exists users_squad
     email varchar(64) not null,
     primary key (userId)
 );
+
+

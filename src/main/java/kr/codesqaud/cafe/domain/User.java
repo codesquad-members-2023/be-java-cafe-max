@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.UserForm;
+import kr.codesqaud.cafe.controller.user.UserForm;
 
 public class User {
 
@@ -12,11 +12,12 @@ public class User {
     private String email;
 
     public User(){}
-    public User(UserForm form){
-        this.userId = form.getUserId();
-        this.password = form.getPassword();
-        this.name = form.getName();
-        this.email = form.getEmail();
+
+    public User(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
     public Long getCustomerId() {

@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,10 +8,10 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository{
@@ -24,9 +24,9 @@ public class JdbcArticleRepository implements ArticleRepository{
     @Override
     public Article save(Article article) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("articles_squad").usingGeneratedKeyColumns("id");
+        jdbcInsert.withTableName("articles").usingGeneratedKeyColumns("id");
 
-        Map<String, Object> parameters = new HashMap<>();
+        Map<String, Object> parameters = new ConcurrentHashMap<>();
         parameters.put("writer", article.getWriter());
         parameters.put("title", article.getTitle());
         parameters.put("contents", article.getContents());
@@ -40,18 +40,18 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public Optional<Article> findById(Long id) {
-        List<Article> result = jdbcTemplate.query("select * from articles_squad where id = ?", articleRowMapper(), id);
+        List<Article> result = jdbcTemplate.query("select * from articles where id = ?", articleRowMapper(), id);
         return result.stream().findAny();
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from articles_squad", articleRowMapper());
+        return jdbcTemplate.query("select * from articles", articleRowMapper());
     }
 
     @Override
     public void clearStore() {
-        jdbcTemplate.update("delete from articles_squad");
+        jdbcTemplate.update("delete from articles");
     }
 
     private RowMapper<Article> articleRowMapper(){
@@ -66,6 +66,4 @@ public class JdbcArticleRepository implements ArticleRepository{
             return article;
         };
     }
-
-
 }

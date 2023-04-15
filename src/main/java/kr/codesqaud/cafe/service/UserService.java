@@ -1,11 +1,14 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.user.UserResponse;
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -16,13 +19,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
     // 회원 가입
+
+    @Transactional(rollbackFor = {IllegalStateException.class})
     public String join(User user){
         // 같은 이름, 같은 아이디가 있는 중복 회원X
         validateDuplicateUserName(user);
         validateDuplicateUserId(user);
 
-        userRepository.save(user);
-        return user.getUserId();
+        return userRepository.save(user).getUserId();
     }
 
     // 중복 이름 예외
@@ -43,11 +47,21 @@ public class UserService {
     }
 
     // 전체 회원 조회
-    public List<User> findUsers(){
-        return userRepository.findAll();
+    public List<UserResponse> findUsers(){
+        return userRepository.findAll().stream()
+                .map(user -> new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail()))
+                .collect(Collectors.toUnmodifiableList());
     }
 
-    public Optional<User> findOne(String userId) {
-        return userRepository.findByUserId(userId);
+    public Optional<UserResponse> findByUserId(String userId) {
+        User user = userRepository.findByUserId(userId).get();
+        UserResponse userResponse = new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail());
+        return Optional.ofNullable(userResponse);
+    }
+
+    public Optional<UserResponse> findByName(String name){
+        User user = userRepository.findByName(name).get();
+        UserResponse userResponse = new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail());
+        return Optional.ofNullable(userResponse);
     }
 }
