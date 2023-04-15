@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.codesqaud.cafe.common.resolver.Login;
-import kr.codesqaud.cafe.controller.dto.ArticleDto;
+import kr.codesqaud.cafe.controller.dto.ArticleParam;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.service.ArticleService;
@@ -31,7 +31,7 @@ public class ArticleController {
 	@PostMapping
 	public String post(@ModelAttribute final PostingRequest request, @Login final String userId) {
 		articleService.post(
-			new ArticleDto(null, userId, request.getTitle(), request.getContents(), LocalDateTime.now()));
+			new ArticleParam(null, userId, request.getTitle(), request.getContents(), LocalDateTime.now()));
 		return "redirect:/";
 	}
 

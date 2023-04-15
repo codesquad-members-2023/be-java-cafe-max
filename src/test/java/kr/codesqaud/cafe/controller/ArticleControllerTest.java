@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDto;
+import kr.codesqaud.cafe.controller.dto.ArticleParam;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.service.ArticleService;
@@ -50,7 +50,7 @@ class ArticleControllerTest {
 			.andExpect(redirectedUrl("/"))
 			.andDo(print());
 
-		then(articleService).should().post(any(ArticleDto.class));
+		then(articleService).should().post(any(ArticleParam.class));
 	}
 
 	@DisplayName("[POST] 게시글 작성 - 로그인 되어 있지 않을 때 로그인 페이지로 리다이렉트")
@@ -76,8 +76,8 @@ class ArticleControllerTest {
 	@Test
 	void givenNothing_whenShowArticleDetails_thenReturnsArticleDetailsView() throws Exception {
 		// given
-		ArticleDto articleDto = new ArticleDto(1L, "bruni", "테스트코드", "어려워", LocalDateTime.now());
-		given(articleService.findById(anyLong())).willReturn(articleDto);
+		ArticleParam articleParam = new ArticleParam(1L, "bruni", "테스트코드", "어려워", LocalDateTime.now());
+		given(articleService.findById(anyLong())).willReturn(articleParam);
 
 		// when & then
 		mockMvc.perform(request(HttpMethod.GET, "/articles/1")

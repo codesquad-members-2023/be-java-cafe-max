@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDto;
+import kr.codesqaud.cafe.controller.dto.ArticleParam;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
@@ -37,10 +37,10 @@ class ArticleServiceTest {
 		@Test
 		void givenPostingRequest_whenPosting_thenReturnsNothing() {
 			// given
-			ArticleDto articleDto = new ArticleDto(null, "브루니", "게시글 제목", "게시글 내용", LocalDateTime.now());
+			ArticleParam articleParam = new ArticleParam(null, "브루니", "게시글 제목", "게시글 내용", LocalDateTime.now());
 
 			// when & then
-			assertThatCode(() -> articleService.post(articleDto))
+			assertThatCode(() -> articleService.post(articleParam))
 				.doesNotThrowAnyException();
 		}
 	}

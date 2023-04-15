@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDto;
+import kr.codesqaud.cafe.controller.dto.ArticleParam;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
@@ -24,20 +24,20 @@ public class ArticleService {
 	}
 
 	@Transactional
-	public void post(final ArticleDto articleDto) {
-		articleRepository.save(articleDto.toEntity());
+	public void post(final ArticleParam articleParam) {
+		articleRepository.save(articleParam.toEntity());
 	}
 
-	public List<ArticleDto> getArticles() {
+	public List<ArticleParam> getArticles() {
 		return articleRepository.findAll()
 			.stream()
-			.map(ArticleDto::from)
+			.map(ArticleParam::from)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public ArticleDto findById(final Long id) {
+	public ArticleParam findById(final Long id) {
 		return articleRepository.findById(id)
-			.map(ArticleDto::from)
+			.map(ArticleParam::from)
 			.orElseThrow(() -> new NotFoundException(String.format("%d번 게시글을 찾을 수 없습니다.", id)));
 	}
 

@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import kr.codesqaud.cafe.controller.dto.UserDto;
+import kr.codesqaud.cafe.controller.dto.UserParam;
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
 import kr.codesqaud.cafe.controller.dto.req.ProfileEditRequest;
 import kr.codesqaud.cafe.domain.user.User;
@@ -48,7 +48,7 @@ class UserControllerTest {
 
 		// when & then
 		mockMvc.perform(post("/user/create")
-				.params(body))
+							.params(body))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/users"))
 			.andDo(print());
@@ -60,15 +60,15 @@ class UserControllerTest {
 	@Test
 	void givenNothing_whenShowAllUsers_thenReturnsUserListView() throws Exception {
 		// given
-		UserDto userDto = UserDto.from(new User("bruni", "qwer1234!", "브루니", "bruni@codesquad.com"));
-		given(userService.getUsers()).willReturn(List.of(userDto));
+		UserParam userParam = UserParam.from(new User("bruni", "qwer1234!", "브루니", "bruni@codesquad.com"));
+		given(userService.getUsers()).willReturn(List.of(userParam));
 
 		// when & then
 		mockMvc.perform(request(HttpMethod.GET, "/users"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("user/list"))
 			.andExpect(model().attributeExists("users"))
-			.andExpect(model().attribute("users", List.of(userDto)))
+			.andExpect(model().attribute("users", List.of(userParam)))
 			.andDo(print());
 
 		then(userService).should().getUsers();
@@ -78,14 +78,14 @@ class UserControllerTest {
 	@Test
 	void givenNothing_whenShowProfile_thenReturnsProfileView() throws Exception {
 		// given
-		UserDto userDto = UserDto.from(new User("bruni", "qwer1234!", "브루니", "bruni@codesquad.com"));
-		given(userService.findByUserId(anyString())).willReturn(userDto);
+		UserParam userParam = UserParam.from(new User("bruni", "qwer1234!", "브루니", "bruni@codesquad.com"));
+		given(userService.findByUserId(anyString())).willReturn(userParam);
 
 		// when & then
 		mockMvc.perform(request(HttpMethod.GET, "/users/bruni"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("user/profile"))
-			.andExpect(model().attribute("user", userDto))
+			.andExpect(model().attribute("user", userParam))
 			.andDo(print());
 
 		then(userService).should().findByUserId("bruni");
@@ -99,7 +99,7 @@ class UserControllerTest {
 
 		// when & then
 		mockMvc.perform(request(HttpMethod.GET, "/users/bruni/form")
-				.sessionAttr("sessionedUser", "bruni"))
+							.sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("user/edit_form"))
 			.andExpect(model().attribute("userId", "bruni"))
@@ -116,7 +116,7 @@ class UserControllerTest {
 
 		// when & then
 		mockMvc.perform(request(HttpMethod.GET, "/users/bruni/form")
-				.sessionAttr("sessionedUser", "unknown"))
+							.sessionAttr("sessionedUser", "unknown"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("error"))
 			.andDo(print());
@@ -139,8 +139,8 @@ class UserControllerTest {
 
 		// when & then
 		mockMvc.perform(put("/users/bruni")
-				.params(body)
-				.sessionAttr("sessionedUser", "bruni"))
+							.params(body)
+							.sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/users"))
 			.andDo(print());
@@ -164,8 +164,8 @@ class UserControllerTest {
 
 		// when & then
 		mockMvc.perform(put("/users/bruni")
-				.params(body)
-				.sessionAttr("sessionedUser", "unknown"))
+							.params(body)
+							.sessionAttr("sessionedUser", "unknown"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("error"))
 			.andDo(print());

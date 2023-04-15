@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.codesqaud.cafe.controller.dto.UserDto;
+import kr.codesqaud.cafe.controller.dto.UserParam;
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
 import kr.codesqaud.cafe.controller.dto.req.ProfileEditRequest;
 import kr.codesqaud.cafe.domain.user.User;
@@ -33,16 +33,16 @@ public class UserService {
 			.orElseThrow(DuplicatedUserIdException::new);
 	}
 
-	public List<UserDto> getUsers() {
+	public List<UserParam> getUsers() {
 		return userRepository.findAll()
 			.stream()
-			.map(UserDto::from)
+			.map(UserParam::from)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public UserDto findByUserId(final String userId) {
+	public UserParam findByUserId(final String userId) {
 		return userRepository.findByUserId(userId)
-			.map(UserDto::from)
+			.map(UserParam::from)
 			.orElseThrow(() -> new NotFoundException(userId.concat("는 존재하지 않는 아이디입니다.")));
 	}
 
