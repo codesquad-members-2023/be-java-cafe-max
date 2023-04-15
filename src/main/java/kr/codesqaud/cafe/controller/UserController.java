@@ -66,7 +66,7 @@ public class UserController {
 
     @GetMapping("/{id}/update")
     public String updateUserForm(@PathVariable Long id, Model model, @SessionAttribute("loginUser") LoginUserSession loginUserSession) {
-        if (loginUserSession.isNotSameUser(id)) {
+        if (loginUserSession.isOtherUser(id)) {
             throw new CommonException(CommonExceptionType.ACCESS_DENIED);
         }
         model.addAttribute("user", new UserUpdateDto(userService.find(id)));

@@ -2,9 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

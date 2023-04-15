@@ -23,7 +23,7 @@ public class LoginUserSession {
         return userId;
     }
 
-    public boolean isNotSameUser(Long id) {
+    public boolean isOtherUser(Long id) {
         return !this.id.equals(id);
     }
 }
