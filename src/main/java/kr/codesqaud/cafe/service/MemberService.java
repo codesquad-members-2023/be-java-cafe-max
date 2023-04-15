@@ -19,6 +19,7 @@ import kr.codesqaud.cafe.exception.member.MemberJoinException;
 import kr.codesqaud.cafe.exception.member.MemberLoginException;
 import kr.codesqaud.cafe.exception.member.MemberProfileEditException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
+import kr.codesqaud.cafe.session.LoginMemberSession;
 
 @Service
 public class MemberService {
@@ -49,7 +50,6 @@ public class MemberService {
     public Member findByEmail(String email) {
         return memberRepository.findByEmail(email).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_EMAIL));
     }
-
 
     public void update(ProfileEditRequestDto profileEditRequestDto) {
         Member findMember = memberRepository.findById(profileEditRequestDto.getMemberId()).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_MEMBER));
