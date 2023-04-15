@@ -22,11 +22,11 @@ public class ArticleService {
 
     /**
      * 게시글 저장
-     * @param article 게시글
      */
-    public void save(Article article) {
+    public Article save(ArticleDTO articleDTO) {
         // TODO: title/content 비어있는지 등 유효성 검증
-        articleRepository.save(article);
+        Article article = new Article(articleDTO.getWriter(), articleDTO.getTitle(), articleDTO.getContents());
+        return articleRepository.save(article);
     }
 
     /**

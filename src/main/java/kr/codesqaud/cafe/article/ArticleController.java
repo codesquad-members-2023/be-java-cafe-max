@@ -28,12 +28,9 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String write(final ArticleDTO articleDTO, HttpSession session) {
-        Article article = new Article(articleDTO.getTitle(), articleDTO.getContents());
         String writer = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
-        article.setWriter(writer); // TODO: 서비스 안으로 캡슐화
-
-        articleService.save(article);
-        logger.info(writer + ": 게시글 저장 성공");
+        articleDTO.setWriter(writer);
+        articleService.save(articleDTO);
         return "redirect:/";
     }
 
@@ -54,7 +51,7 @@ public class ArticleController {
 
     @PutMapping("/articles/{index}")
     public String editArticle
-            (@PathVariable final long index, HttpSession session, final ArticleDTO articleDTO, Model model) {
+            (@PathVariable final long index, HttpSession session, final ArticleDTO articleDTO) {
         String requesterID = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
         logger.info("requesterID: " + requesterID + " / 게시글 수정 요청");
         articleService.edit(index, requesterID , articleDTO);
