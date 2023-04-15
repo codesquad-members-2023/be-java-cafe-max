@@ -5,10 +5,13 @@
                data-toggle="dropdown"><i class="glyphicon glyphicon-home" style="color:#dd1111;"></i> Home <small><i
                     class="glyphicon glyphicon-chevron-down"></i></small></a>
             <ul class="nav dropdown-menu">
-                <li><a href="/user/profile"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a>
-                </li>
-                <li class="nav-divider"></li>
-                <li><a href="#"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>
+                    <li><a href="/user/profile" th:href="@{/users/{userId}(userId=${session.loginUserId})}"><i
+                            class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a>
+                    </li>
+                <th:block th:if="${session.loginId != null}">
+                    <li class="nav-divider"></li>
+                    <li><a href="#" th:href="@{/users/{id}/updateForm(id=${session.loginId})}"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>
+                </th:block>
             </ul>
 
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse2">
@@ -20,13 +23,19 @@
         </div>
         <div th:fragment="navbar-collapse2" class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
-<!--                TODO: 고정이 아니라, 버튼 누르면 active 되게 해보고 싶다..-->
                 <li class="active"><a href="/">Posts</a></li>
-                <li><a href="/questions/add" role="button">질문하기</a></li>
-                <li><a href="/user/login" role="button">로그인</a></li>
-                <li><a href="/user/join" role="button">회원가입</a></li>
-                <li><a href="#" role="button">로그아웃</a></li>
-                <li><a href="#" role="button">개인정보수정</a></li>
+
+                <th:block th:if="${session.loginId == null}">
+                    <li><a href="/login" role="button">로그인</a></li>
+                    <li><a href="/user/join" role="button">회원가입</a></li>
+                </th:block>
+
+                <th:block th:if="${session.loginId != null}">
+                    <li><a href="/questions/add" role="button">질문하기</a></li>
+                    <li><a href="/logout" role="button">로그아웃</a></li>
+                    <li><a href="#" role="button"
+                           th:href="@{/users/{id}/updateForm(id=${session.loginId})}">개인정보수정</a></li>
+                </th:block>
             </ul>
         </div>
     </div>

@@ -5,6 +5,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class JdbcTemplateArticleRepository implements ArticleRepository {
     private final NamedParameterJdbcTemplate template;
     private final SimpleJdbcInsert simpleJdbcInsert;
+    private final RowMapper<Article> articleRowMapper = BeanPropertyRowMapper.newInstance(Article.class);
 
     public JdbcTemplateArticleRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
@@ -37,13 +39,12 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(Long id) {
-        String sql = "select ID, WRITER, TITLE, CONTENTS, CURRENTTIME from ARTICLES where ID = :id";
+        String sql = "select ID, USERID, TITLE, CONTENTS, CURRENTTIME from ARTICLES where ID = :id";
 
         try {
             Map<String, Object> param = Map.of("id", id);
-            Article article = template.queryForObject(sql, param, articleRowMapper());
-            assert article != null;
-            return Optional.of(article);
+            Article article = template.queryForObject(sql, param, articleRowMapper);
+            return Optional.ofNullable(article);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -51,12 +52,29 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select ID, WRITER, TITLE, CONTENTS, CURRENTTIME from ARTICLES";
-        return template.query(sql, articleRowMapper());
+        String sql = "select ID, USERID, TITLE, CONTENTS, CURRENTTIME from ARTICLES";
+        return template.query(sql, articleRowMapper);
     }
 
-    // TODO: 이대로 메서드로 두는 것이 좋은지, 필드로 빼는 것이 좋은지 판단 후 재구현
-    private RowMapper<Article> articleRowMapper() {
-        return BeanPropertyRowMapper.newInstance(Article.class);
+    @Override
+    public void update(Long id, Article article) {
+        String sql = "update ARTICLES " +
+                "set TITLE=:title, CONTENTS=:contents " +
+                "where ID=:id";
+
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("title", article.getTitle())
+                .addValue("contents", article.getContents())
+                .addValue("id", id);
+
+        template.update(sql, param);
+    }
+
+    @Override
+    public void deleteArticle(Long id) {
+        String sql = "delete from articles where id=:id";
+
+        Map<String, Object> param = Map.of("id", id);
+        template.update(sql, param);
     }
 }

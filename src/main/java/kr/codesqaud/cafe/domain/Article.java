@@ -1,12 +1,10 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.article.ArticleForm;
-
 import java.time.LocalDateTime;
 
 public class Article {
     private Long id;
-    private String writer;
+    private String userId;
     private String title;
     private String contents;
     private LocalDateTime currentTime;
@@ -14,8 +12,8 @@ public class Article {
     public Article() {
     }
 
-    public Article(String writer, String title, String contents) {
-        this.writer = writer;
+    public Article(String userId, String title, String contents) {
+        this.userId = userId;
         this.title = title;
         this.contents = contents;
         this.currentTime = LocalDateTime.now();
@@ -29,16 +27,16 @@ public class Article {
         this.currentTime = currentTime;
     }
 
-    public String getWriter() {
-        return writer;
+    public String getUserId() {
+        return userId;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setWriter(String writer) {
-        this.writer = writer;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setTitle(String title) {

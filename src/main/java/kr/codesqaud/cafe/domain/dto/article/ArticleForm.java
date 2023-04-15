@@ -1,25 +1,17 @@
-package kr.codesqaud.cafe.controller.dto.article;
+package kr.codesqaud.cafe.domain.dto.article;
+
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 
-//
 public class ArticleForm {
-    @NotBlank(message = "이름을 입력해 주세요")
-    private String writer;
     @NotBlank(message = "제목을 입력해 주세요")
+    @Length(min = 5, max = 30, message = "제목은 5글자부터 30글자까지만 가능합니다.")
     private String title;
     @NotBlank(message = "글을 입력해 주세요")
     private String contents;
 
     public ArticleForm() {
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
     }
 
     public String getTitle() {

@@ -1,29 +1,25 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.domain.dto.user;
 
-public class User {
+import kr.codesqaud.cafe.domain.User;
+
+public class UserListForm {
     private Long id;
     private String userId;
-    private String loginId;
-    private String password;
     private String name;
     private String email;
 
-    public User() {
+    public UserListForm() {
     }
 
-    public User(String userId, String password, String name, String email) {
+    private UserListForm(Long id, String userId, String name, String email) {
+        this.id = id;
         this.userId = userId;
-        this.password = password;
         this.name = name;
         this.email = email;
     }
 
-    public String getLoginId() {
-        return loginId;
-    }
-
-    public void setLoginId(String loginId) {
-        this.loginId = loginId;
+    public static UserListForm from(User user) {
+        return new UserListForm(user.getId(), user.getUserId(), user.getName(), user.getEmail());
     }
 
     public Long getId() {
@@ -40,14 +36,6 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {

@@ -16,12 +16,16 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a th:href="@{/questions/{id}(id=${article.id})}" th:text="${article.title}">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
+                                <a th:href="@{/questions/{id}(id=${article.id})}" th:text="${article.title}">국내에서 Ruby
+                                    on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time" th:text="${article.currentTime}">2016-01-15 18:47</span>
-                                <a href="user/profile.html" class="author" th:href="@{/questions/{id}(id=${article.id})}" th:text="${article.writer}">자바지기</a>
+<!--                                <a href="user/profile.html" class="author"-->
+<!--                                   th:href="@{/users/{id}(id=${session.loginUser.id})}" th:text="${session.loginUser.name}">자바지기</a>-->
+                                <a href="user/profile.html" class="author"
+                                   th:href="@{/users/{userId}(userId=${article.userId})}" th:text="${article.userId}">자바지기</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
@@ -30,24 +34,24 @@
                         </div>
                     </div>
                 </li>
-<!--                <li>-->
-<!--                    <div class="wrap">-->
-<!--                        <div class="main">-->
-<!--                            <strong class="subject">-->
-<!--                                <a href="/questions/show">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a>-->
-<!--                            </strong>-->
-<!--                            <div class="auth-info">-->
-<!--                                <i class="icon-add-comment"></i>-->
-<!--                                <span class="time">2016-01-05 18:47</span>-->
-<!--                                <a href="user/profile.html" class="author">김문수</a>-->
-<!--                            </div>-->
-<!--                            <div class="reply" title="댓글">-->
-<!--                                <i class="icon-reply"></i>-->
-<!--                                <span class="point">12</span>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </li>-->
+                <!--                <li>-->
+                <!--                    <div class="wrap">-->
+                <!--                        <div class="main">-->
+                <!--                            <strong class="subject">-->
+                <!--                                <a href="/questions/show">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a>-->
+                <!--                            </strong>-->
+                <!--                            <div class="auth-info">-->
+                <!--                                <i class="icon-add-comment"></i>-->
+                <!--                                <span class="time">2016-01-05 18:47</span>-->
+                <!--                                <a href="user/profile.html" class="author">김문수</a>-->
+                <!--                            </div>-->
+                <!--                            <div class="reply" title="댓글">-->
+                <!--                                <i class="icon-reply"></i>-->
+                <!--                                <span class="point">12</span>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </li>-->
             </ul>
             <div class="row">
                 <div class="col-md-3"></div>
@@ -63,7 +67,9 @@
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">
-                    <a href="/questions/add" class="btn btn-primary pull-right" role="button">질문하기</a>
+                    <th:block th:if="${session.loginId != null}">
+                        <a href="/questions/add" class="btn btn-primary pull-right" role="button">질문하기</a>
+                    </th:block>
                 </div>
             </div>
         </div>
