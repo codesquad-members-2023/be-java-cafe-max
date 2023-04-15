@@ -8,6 +8,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public class ArticleCreateDto {
+    private static final String BLANK = "";
+
     private Long userFk;
 
     @NotBlank(message = "제목을 입력하세요.")
@@ -18,20 +20,14 @@ public class ArticleCreateDto {
     @Size(max = 1000, message = "본문은 {max}글자 이하로 입력하세요.")
     private String contents;
 
-    public ArticleCreateDto(Long userFk, String title, String contents) {
-        this.userFk = userFk;
-        this.title = title;
-        this.contents = contents;
-    }
-
     public ArticleCreateDto() {
     }
 
-    public Long getuserFk() {
+    public Long getUserFk() {
         return userFk;
     }
 
-    public void setuserFk(Long userFk) {
+    public void setUserFk(Long userFk) {
         this.userFk = userFk;
     }
 
@@ -53,7 +49,7 @@ public class ArticleCreateDto {
 
     public Article toArticle() {
         if (isEmptyContents()) {
-            contents = "";
+            contents = BLANK;
         }
 
         return new Article(userFk, title, contents);
