@@ -10,13 +10,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
-import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
+import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
+import kr.codesqaud.cafe.exception.common.CommonException;
+import kr.codesqaud.cafe.exception.common.CommonExceptionType;
 import kr.codesqaud.cafe.service.MemberService;
+import kr.codesqaud.cafe.session.LoginMemberSession;
 
 @Controller
 @RequestMapping("/member")
@@ -86,7 +93,10 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}/edit")
-    public String profileEditForm(@PathVariable Long memberId, Model model) {
+    public String profileEditForm(@PathVariable Long memberId, Model model, @SessionAttribute("loginMember") LoginMemberSession longinMemberSession) {
+        if (longinMemberSession.isNotEqualMember(memberId)) {
+            throw new CommonException(CommonExceptionType.ACCESS_DENIED);
+        }
         model.addAttribute("profileEditRequest", ProfileEditRequestDto.of(memberService.findById(memberId)));
         return "/profileEdit";
     }
