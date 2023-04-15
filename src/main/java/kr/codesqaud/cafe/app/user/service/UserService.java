@@ -1,19 +1,17 @@
-package kr.codesqaud.cafe.web.service;
+package kr.codesqaud.cafe.app.user.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
-import kr.codesqaud.cafe.domain.user.User;
-import kr.codesqaud.cafe.domain.user.UserRepository;
-import kr.codesqaud.cafe.web.dto.user.UserLoginRequestDto;
-import kr.codesqaud.cafe.web.dto.user.UserResponseDto;
-import kr.codesqaud.cafe.web.dto.user.UserSavedRequestDto;
-import kr.codesqaud.cafe.web.dto.user.UserUpdatedResponseDto;
-import kr.codesqaud.cafe.web.exception.user.UserDuplicatedException;
-import kr.codesqaud.cafe.web.exception.user.UserExceptionType;
-import kr.codesqaud.cafe.web.exception.user.UserNotFoundException;
-import kr.codesqaud.cafe.web.exception.user.UserNotLoginMatchingException;
-import kr.codesqaud.cafe.web.validator.UserValidator;
+import kr.codesqaud.cafe.app.user.entity.User;
+import kr.codesqaud.cafe.app.user.repository.UserRepository;
+import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequestDto;
+import kr.codesqaud.cafe.app.user.controller.dto.UserResponseDto;
+import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequestDto;
+import kr.codesqaud.cafe.app.user.controller.dto.UserUpdatedResponseDto;
+import kr.codesqaud.cafe.errors.exception.RestApiException;
+import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
+import kr.codesqaud.cafe.app.user.validator.UserValidator;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -45,28 +43,28 @@ public class UserService {
     // 회원 아이디 중복 검증
     public void validateDuplicatedUserId(String userId) {
         userRepository.findByUserId(userId).ifPresent((user) -> {
-            throw new UserDuplicatedException(UserExceptionType.ALREADY_EXIST_USERID);
+            throw new RestApiException(UserErrorCode.ALREADY_EXIST_USERID);
         });
     }
 
     // 회원 이메일 중복 검증
     public void validateDuplicatedUserEmail(String email) {
         userRepository.findByEmail(email).ifPresent((user) -> {
-            throw new UserDuplicatedException(UserExceptionType.ALREADY_EXIST_EMAIL);
+            throw new RestApiException(UserErrorCode.ALREADY_EXIST_EMAIL);
         });
     }
 
     // 특정 회원 조회
     public User findUser(Long id) {
         return userRepository.findById(id).orElseThrow(() -> {
-            throw new UserNotFoundException(UserExceptionType.NOT_FOUND_USER);
+            throw new RestApiException(UserErrorCode.NOT_FOUND_USER);
         });
     }
 
     // 특정 회원 조회
     public User findUser(String userId) {
         return userRepository.findByUserId(userId).orElseThrow(() -> {
-            throw new UserNotFoundException(UserExceptionType.NOT_FOUND_USER);
+            throw new RestApiException(UserErrorCode.NOT_FOUND_USER);
         });
     }
 
@@ -79,7 +77,7 @@ public class UserService {
     public void login(UserLoginRequestDto requestDto, HttpSession session) {
         User loginUser = requestDto.toEntity();
         User user = userRepository.findByUserId(loginUser.getUserId()).orElseThrow(() -> {
-            throw new UserNotLoginMatchingException(UserExceptionType.NOT_MATCH_LOGIN);
+            throw new RestApiException(UserErrorCode.NOT_MATCH_LOGIN);
         });
         validator.validateLoginPassword(loginUser.getPassword(), user.getPassword());
         session.setAttribute("user", new UserResponseDto(user));

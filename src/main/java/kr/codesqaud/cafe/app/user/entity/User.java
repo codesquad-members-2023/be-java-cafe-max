@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain.user;
+package kr.codesqaud.cafe.app.user.entity;
 
 import java.util.Objects;
 

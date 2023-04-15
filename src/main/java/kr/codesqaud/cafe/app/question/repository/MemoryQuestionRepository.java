@@ -1,37 +1,38 @@
-package kr.codesqaud.cafe.domain.article;
+package kr.codesqaud.cafe.app.question.repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import kr.codesqaud.cafe.app.question.entity.Question;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ArticleMemoryRepository implements ArticleRepository {
+public class MemoryQuestionRepository implements QuestionRepository {
 
-    private final List<Article> store = new ArrayList<>();
+    private final List<Question> store = new ArrayList<>();
     private static long sequence = 0;
 
     @Override
-    public List<Article> findAll() {
+    public List<Question> findAll() {
         return Collections.unmodifiableList(store);
     }
 
     @Override
-    public Optional<Article> findById(Long id) {
+    public Optional<Question> findById(Long id) {
         return store.stream().filter(article -> article.getId().equals(id)).findFirst();
     }
 
     @Override
-    public Article save(Article article) {
-        Article newArticle =
-            new Article(nextId(),
-                article.getTitle(),
-                article.getContent(),
-                article.getWriteDate(),
-                article.getUser());
-        store.add(newArticle);
-        return newArticle;
+    public Question save(Question question) {
+        Question newQuestion =
+            new Question(nextId(),
+                question.getTitle(),
+                question.getContent(),
+                question.getWriteDate(),
+                question.getUser());
+        store.add(newQuestion);
+        return newQuestion;
     }
 
     @Override

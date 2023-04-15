@@ -1,15 +1,15 @@
-package kr.codesqaud.cafe.web.dto.article;
+package kr.codesqaud.cafe.app.question.controller.dto;
 
 import java.time.LocalDateTime;
 import javax.validation.constraints.Pattern;
-import kr.codesqaud.cafe.domain.article.Article;
-import kr.codesqaud.cafe.domain.user.User;
+import kr.codesqaud.cafe.app.question.entity.Question;
+import kr.codesqaud.cafe.app.user.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ArticleSavedRequestDto {
+public class QuestionSavedRequest {
 
-    private static final Logger logger = LoggerFactory.getLogger(ArticleSavedRequestDto.class);
+    private static final Logger logger = LoggerFactory.getLogger(QuestionSavedRequest.class);
 
     @Pattern(regexp = "^.{1,100}$", message = "제목은 100자 이내여야 합니다.")
     private final String title;
@@ -18,11 +18,11 @@ public class ArticleSavedRequestDto {
     @Pattern(regexp = "^[a-z\\d_-]{5,20}$", message = "5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.")
     private final String userId;
 
-    public ArticleSavedRequestDto() {
+    public QuestionSavedRequest() {
         this(null, null, LocalDateTime.now(), null);
     }
 
-    public ArticleSavedRequestDto(String title, String content,
+    public QuestionSavedRequest(String title, String content,
         LocalDateTime writeDate, String userId) {
         this.title = title;
         this.content = content;
@@ -30,8 +30,8 @@ public class ArticleSavedRequestDto {
         this.userId = userId;
     }
 
-    public Article toEntity(User user) {
-        return new Article(null, title, content, writeDate, user);
+    public Question toEntity(User user) {
+        return new Question(null, title, content, writeDate, user);
     }
 
     public String getTitle() {

@@ -1,7 +1,7 @@
-package kr.codesqaud.cafe.web.dto.user;
+package kr.codesqaud.cafe.app.user.controller.dto;
 
 import javax.validation.constraints.Pattern;
-import kr.codesqaud.cafe.domain.user.User;
+import kr.codesqaud.cafe.app.user.entity.User;
 
 public class UserLoginRequestDto {
 

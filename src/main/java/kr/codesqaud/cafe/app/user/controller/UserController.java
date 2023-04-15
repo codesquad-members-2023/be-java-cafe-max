@@ -1,11 +1,11 @@
-package kr.codesqaud.cafe.web.controller;
+package kr.codesqaud.cafe.app.user.controller;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import kr.codesqaud.cafe.web.dto.user.UserLoginRequestDto;
-import kr.codesqaud.cafe.web.dto.user.UserResponseDto;
-import kr.codesqaud.cafe.web.dto.user.UserSavedRequestDto;
-import kr.codesqaud.cafe.web.service.UserService;
+import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequestDto;
+import kr.codesqaud.cafe.app.user.controller.dto.UserResponseDto;
+import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequestDto;
+import kr.codesqaud.cafe.app.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;

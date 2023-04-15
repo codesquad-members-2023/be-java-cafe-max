@@ -1,9 +1,8 @@
-package kr.codesqaud.cafe.web.validator;
+package kr.codesqaud.cafe.app.user.validator;
 
 import java.util.Objects;
-import kr.codesqaud.cafe.web.exception.user.UserExceptionType;
-import kr.codesqaud.cafe.web.exception.user.UserNotLoginMatchingException;
-import kr.codesqaud.cafe.web.exception.user.UserNotPasswordMatchingException;
+import kr.codesqaud.cafe.errors.exception.RestApiException;
+import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,14 +11,14 @@ public class UserValidator {
     // 두 회원의 비밀번호가 일치하는지 검증
     public void validateEqualConfirmPassword(String requestPassword, String password) {
         if (isPasswordNotMatching(requestPassword, password)) {
-            throw new UserNotPasswordMatchingException(UserExceptionType.NOT_MATCH_PASSWORD);
+            throw new RestApiException(UserErrorCode.NOT_MATCH_PASSWORD);
         }
     }
 
     // 로그인 검증 (아이디 존재, 비밀번호 일치)
     public void validateLoginPassword(String requestPassword, String password) {
         if (isPasswordNotMatching(requestPassword, password)) {
-            throw new UserNotLoginMatchingException(UserExceptionType.NOT_MATCH_LOGIN);
+            throw new RestApiException(UserErrorCode.NOT_MATCH_LOGIN);
         }
     }
 

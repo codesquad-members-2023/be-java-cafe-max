@@ -1,10 +1,10 @@
-package kr.codesqaud.cafe.web.controller;
+package kr.codesqaud.cafe.app.question.controller;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import kr.codesqaud.cafe.web.dto.article.ArticleResponseDto;
-import kr.codesqaud.cafe.web.dto.article.ArticleSavedRequestDto;
-import kr.codesqaud.cafe.web.service.ArticleService;
+import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
+import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
+import kr.codesqaud.cafe.app.question.service.QuestionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,28 +18,36 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
-public class ArticleController {
+public class QuestionController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
-    private final ArticleService articleService;
+    private static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
+    private final QuestionService questionService;
 
-    public ArticleController(ArticleService articleService) {
-        this.articleService = articleService;
+    public QuestionController(QuestionService questionService) {
+        this.questionService = questionService;
     }
+
+    // 전체 게시글 조회
+    @GetMapping({"/", "/qna"})
+    public String home(Model model) {
+        model.addAttribute("articles", questionService.getAllArticles());
+        return "index";
+    }
+
 
     // 특정 게시글 조회
     @GetMapping("/qna/{id}")
     public String detail(@PathVariable(value = "id") Long id, Model model) {
-        model.addAttribute("article", articleService.findArticle(id));
+        model.addAttribute("article", questionService.findArticle(id));
         return "qna/detail";
     }
 
     // 특정 게시글 추가
     @PostMapping("/qna")
     @ResponseBody
-    public ArticleResponseDto create(@Valid @RequestBody ArticleSavedRequestDto requestDto) {
+    public QuestionResponse create(@Valid @RequestBody QuestionSavedRequest requestDto) {
         logger.info("create : " + requestDto.toString());
-        return articleService.write(requestDto);
+        return questionService.write(requestDto);
     }
 
     // 게시글 글쓰기 페이지

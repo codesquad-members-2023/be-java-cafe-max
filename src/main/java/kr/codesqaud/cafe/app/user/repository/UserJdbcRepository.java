@@ -1,7 +1,8 @@
-package kr.codesqaud.cafe.domain.user;
+package kr.codesqaud.cafe.app.user.repository;
 
 import java.util.List;
 import java.util.Optional;
+import kr.codesqaud.cafe.app.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;

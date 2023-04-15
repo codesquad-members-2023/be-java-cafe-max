@@ -1,9 +1,9 @@
-package kr.codesqaud.cafe.web.dto.article;
+package kr.codesqaud.cafe.app.question.controller.dto;
 
 import java.time.LocalDateTime;
-import kr.codesqaud.cafe.domain.article.Article;
+import kr.codesqaud.cafe.app.question.entity.Question;
 
-public class ArticleResponseDto implements Comparable<ArticleResponseDto> {
+public class QuestionResponse implements Comparable<QuestionResponse> {
 
     private final Long id;
     private final String writer;
@@ -12,7 +12,7 @@ public class ArticleResponseDto implements Comparable<ArticleResponseDto> {
     private final LocalDateTime writeDate;
     private final Long userId;
 
-    public ArticleResponseDto() {
+    public QuestionResponse() {
         this.id = null;
         this.writer = null;
         this.title = null;
@@ -21,13 +21,13 @@ public class ArticleResponseDto implements Comparable<ArticleResponseDto> {
         this.userId = null;
     }
 
-    public ArticleResponseDto(Article article) {
-        this.id = article.getId();
-        this.writer = article.getUser().getName();
-        this.title = article.getTitle();
-        this.content = article.getContent();
-        this.writeDate = article.getWriteDate();
-        this.userId = article.getUser().getId();
+    public QuestionResponse(Question question) {
+        this.id = question.getId();
+        this.writer = question.getUser().getName();
+        this.title = question.getTitle();
+        this.content = question.getContent();
+        this.writeDate = question.getWriteDate();
+        this.userId = question.getUser().getId();
     }
 
     public Long getId() {
@@ -62,7 +62,7 @@ public class ArticleResponseDto implements Comparable<ArticleResponseDto> {
     }
 
     @Override
-    public int compareTo(ArticleResponseDto dto) {
+    public int compareTo(QuestionResponse dto) {
         return dto.getWriteDate().compareTo(this.writeDate);
     }
 }
