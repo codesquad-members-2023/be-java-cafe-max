@@ -28,7 +28,7 @@ public class MemberController {
     }
 
     @GetMapping
-    public String findAll(Model model) {
+    public String readMember(Model model) {
         model.addAttribute("memberResponsesDto", memberService.findAll());
         return "/all";
     }
