@@ -36,11 +36,31 @@ public class MemberController {
     @PostMapping("/signUp")
     public String signUp(@ModelAttribute("signUpRequestDto") @Valid SignUpRequestDto signUpRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "member/signUp";
+            return "member/join";
         }
-        memberService.signUp(signUpRequestDto);
-        return "redirect:/member";
+        memberService.join(memberJoinDto);
+        return "redirect:/join";
     }
+
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute("memberLoginRequestDto") @Valid MemberLoginRequestDto memberLoginRequestDto, BindingResult bindingResult, HttpServletRequest httpServletRequest) {
+        if (bindingResult.hasErrors()) {
+            return "member/login";
+        }
+
+        LoginMemberSession loginMember = memberService.login(memberLoginRequestDto);
+        HttpSession httpSession = httpServletRequest.getSession();
+        httpSession.setAttribute("loginMember", loginMember);
+
+        return "redirect:/login";
+    }
+
+    @GetMapping("/login")
+    public String loginForm(@ModelAttribute("signUpRequestDto") MemberLoginRequestDto memberLoginRequestDto) {
+        return "/login";
+    }
+
 
     @GetMapping("/{memberId}")
     public String profile(@PathVariable Long memberId, Model model) {
@@ -73,5 +93,12 @@ public class MemberController {
     @DeleteMapping("/{memberId}")
     public void deleteId(@PathVariable Long memberId) {
         memberService.deleteById(memberId);
+    }
+
+    @GetMapping("/{memberId}/logout")
+    public String logout(HttpServletRequest httpServletRequest) {
+        final HttpSession httpSession = httpServletRequest.getSession();
+        httpSession.removeAttribute("loginMember");
+        return "home";
     }
 }
