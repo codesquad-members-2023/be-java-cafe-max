@@ -12,73 +12,73 @@
     <div class="col-md-12 col-sm-12 col-lg-12">
       <div class="panel panel-default">
         <header class="qna-header">
-          <h2 class="qna-title" th:text="${article.title}"></h2>
+          <h2 class="qna-title" th:text="${question.title}"></h2>
         </header>
         <div class="content-main">
-          <article class="article">
-            <div class="article-header">
-              <div class="article-header-thumb">
+          <question class="question">
+            <div class="question-header">
+              <div class="question-header-thumb">
                 <img alt=""
-                     class="article-author-thumb"
+                     class="question-author-thumb"
                      src="https://graph.facebook.com/v2.3/100000059371774/picture">
               </div>
-              <div class="article-header-text">
-                <a class="article-author-name" th:href="@{/users/{id}(id=${article.userId})}"
-                   th:text="${article.writer}"></a>
-                <a class="article-header-time" href="/questions/413"
-                   th:text="${#temporals.format(article.writeDate, 'YYYY-MM-dd HH:mm')}"
+              <div class="question-header-text">
+                <a class="question-author-name" th:href="@{/users/{id}(id=${question.userId})}"
+                   th:text="${question.writer}"></a>
+                <a class="question-header-time" href="/questions/413"
+                   th:text="${#temporals.format(question.writeDate, 'YYYY-MM-dd HH:mm')}"
                    title="퍼머링크">
                   <i class="icon-link"></i>
                 </a>
               </div>
             </div>
-            <div class="article-doc">
-              <p th:text="${article.content}"></p>
+            <div class="question-doc">
+              <p th:text="${question.content}"></p>
             </div>
-            <div class="article-util">
-              <ul class="article-util-list">
+            <div class="question-util">
+              <ul class="question-util-list">
                 <li>
-                  <a class="link-modify-article" href="/questions/423/form">수정</a>
+                  <a class="link-modify-question" href="/questions/423/form">수정</a>
                 </li>
                 <li>
                   <form action="/questions/423" class="form-delete" method="POST">
                     <input name="_method" type="hidden" value="DELETE">
-                    <button class="link-delete-article" type="submit">삭제</button>
+                    <button class="link-delete-question" type="submit">삭제</button>
                   </form>
                 </li>
                 <li>
-                  <a class="link-modify-article" href="/">목록</a>
+                  <a class="link-modify-question" href="/">목록</a>
                 </li>
               </ul>
             </div>
-          </article>
+          </question>
 
           <div class="qna-comment">
             <div class="qna-comment-slipp">
               <p class="qna-comment-count"><strong>2</strong>개의 의견</p>
               <div class="qna-comment-slipp-articles">
 
-                <article class="article" id="answer-1405">
-                  <div class="article-header">
-                    <div class="article-header-thumb">
+                <question class="question" id="answer-1405">
+                  <div class="question-header">
+                    <div class="question-header-thumb">
                       <img alt=""
-                           class="article-author-thumb"
+                           class="question-author-thumb"
                            src="https://graph.facebook.com/v2.3/1324855987/picture">
                     </div>
-                    <div class="article-header-text">
-                      <a class="article-author-name" href="/users/1/자바지기">자바지기</a>
-                      <a class="article-header-time" href="#answer-1434" title="퍼머링크">
+                    <div class="question-header-text">
+                      <a class="question-author-name" href="/users/1/자바지기">자바지기</a>
+                      <a class="question-header-time" href="#answer-1434" title="퍼머링크">
                         2016-01-12 14:06
                       </a>
                     </div>
                   </div>
-                  <div class="article-doc comment-doc">
+                  <div class="question-doc comment-doc">
                     <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
                   </div>
-                  <div class="article-util">
-                    <ul class="article-util-list">
+                  <div class="question-util">
+                    <ul class="question-util-list">
                       <li>
-                        <a class="link-modify-article"
+                        <a class="link-modify-question"
                            href="/questions/413/answers/1405/form">수정</a>
                       </li>
                       <li>
@@ -90,28 +90,28 @@
                       </li>
                     </ul>
                   </div>
-                </article>
-                <article class="article" id="answer-1406">
-                  <div class="article-header">
-                    <div class="article-header-thumb">
+                </question>
+                <question class="question" id="answer-1406">
+                  <div class="question-header">
+                    <div class="question-header-thumb">
                       <img alt=""
-                           class="article-author-thumb"
+                           class="question-author-thumb"
                            src="https://graph.facebook.com/v2.3/1324855987/picture">
                     </div>
-                    <div class="article-header-text">
-                      <a class="article-author-name" href="/users/1/자바지기">자바지기</a>
-                      <a class="article-header-time" href="#answer-1434" title="퍼머링크">
+                    <div class="question-header-text">
+                      <a class="question-author-name" href="/users/1/자바지기">자바지기</a>
+                      <a class="question-header-time" href="#answer-1434" title="퍼머링크">
                         2016-01-12 14:06
                       </a>
                     </div>
                   </div>
-                  <div class="article-doc comment-doc">
+                  <div class="question-doc comment-doc">
                     <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
                   </div>
-                  <div class="article-util">
-                    <ul class="article-util-list">
+                  <div class="question-util">
+                    <ul class="question-util-list">
                       <li>
-                        <a class="link-modify-article"
+                        <a class="link-modify-question"
                            href="/questions/413/answers/1405/form">수정</a>
                       </li>
                       <li>
@@ -123,7 +123,7 @@
                       </li>
                     </ul>
                   </div>
-                </article>
+                </question>
                 <form class="submit-write">
                   <div class="form-group" style="padding:14px;">
                     <textarea class="form-control" placeholder="Update your status"></textarea>
@@ -141,24 +141,24 @@
 </th:block>
 <th:block layout:fragment="pageCustomScript">
   <script id="answerTemplate" type="text/template">
-    <article class="article">
-      <div class="article-header">
-        <div class="article-header-thumb">
-          <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb"
+    <question class="question">
+      <div class="question-header">
+        <div class="question-header-thumb">
+          <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="question-author-thumb"
                alt="">
         </div>
-        <div class="article-header-text">
-          <a href="#" class="article-author-name">{0}</a>
-          <div class="article-header-time">{1}</div>
+        <div class="question-header-text">
+          <a href="#" class="question-author-name">{0}</a>
+          <div class="question-header-time">{1}</div>
         </div>
       </div>
-      <div class="article-doc comment-doc">
+      <div class="question-doc comment-doc">
         {2}
       </div>
-      <div class="article-util">
-        <ul class="article-util-list">
+      <div class="question-util">
+        <ul class="question-util-list">
           <li>
-            <a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
+            <a class="link-modify-question" href="/api/qna/updateAnswer/{3}">수정</a>
           </li>
           <li>
             <form class="delete-answer-form" action="/api/questions/{3}/answers/{4}" method="POST">
@@ -168,7 +168,7 @@
           </li>
         </ul>
       </div>
-    </article>
+    </question>
   </script>
 </th:block>
 </body>

@@ -3,10 +3,11 @@ $(document).ready(function () {
     e.preventDefault()
     $.ajax({
       type: "POST",
-      url: "/users/logout",
-      success: function (msg) {
-        location.href = "/user/login"
-      }
+      url: "/users/logout"
+    }).done(function () {
+      location.href = "/user/login"
+    }).fail(function () {
+      alert("로그아웃에 실패하였습니다.")
     })
   })
 })

@@ -4,45 +4,32 @@ $(document).ready(function () {
     await clearErrorMessage()
 
     const data = {
-      "writer": $("#writer").val(),
-      "title": $("#title").val(),
-      "content": $("#content").val(),
-      "userId": $("#userId").val()
+      writer: $("#writer").val(),
+      title: $("#title").val(),
+      content: $("#content").val(),
+      userId: $("#userId").val()
     }
 
     $.ajax({
       type: "POST",
       url: "/qna",
       data: JSON.stringify(data),
-      contentType: 'application/json; charset=utf-8',
-      success: function (resp) {
-        if (hasFormatError(resp)) {
-          writeError(resp)
-          return;
-        }
-        location.href = "/"
+      contentType: 'application/json; charset=utf-8'
+    }).done(function () {
+      location.href = "/"
+    }).fail(function (response) {
+      const errorResponse = response.responseJSON
+
+      // QNA 입력 형식 오류
+      if (errorResponse.name === 'INVALID_INPUT_FORMAT') {
+        errorResponse.errors.forEach(item => {
+          $(`#${item.field}Error`).text(item.message)
+        })
       }
     })
   })
 
   function clearErrorMessage() {
     $("#form p").text("")
-  }
-
-  function hasFormatError(respMap) {
-    for (let key in respMap) {
-      const value = respMap[key]
-      if (value.errorCode !== undefined) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function writeError(respMap) {
-    for (let key in respMap) {
-      const value = respMap[key]
-      $(`#${key}Error`).text(value.errorMessage)
-    }
   }
 })

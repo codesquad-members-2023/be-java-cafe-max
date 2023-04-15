@@ -17,17 +17,20 @@ $(document).ready(function () {
       url: urlPath,
       data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8',
-      success: function (resp) {
-        if (resp.errorCode === 601) {
-          $("#emailError").text(resp.errorMessage)
-          return;
-        }
-        if (hasFormatError(resp)) {
-          writeError(resp)
-          return;
-        }
-        alert("회원 정보 수정이 완료되었니다.")
-        location.href = "/users"
+    }).done(function () {
+      alert("회원정보 수정이 완료되었습니다.")
+      location.href = "/user/login"
+    }).fail(function (response) {
+      const errorResponse = response.responseJSON
+      // 유저 이메일 중복
+      if (errorResponse.name === 'ALREADY_EXIST_EMAIL') {
+        $("#emailError").text(errorResponse.errorMessage)
+      }
+      // 유저 입력 형식 오류
+      if (errorResponse.name === 'INVALID_INPUT_FORMAT') {
+        errorResponse.errors.forEach(item => {
+          $(`#${item.field}Error`).text(item.message)
+        })
       }
     })
   })
