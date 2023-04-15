@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 /**
  * 회원 DTO 객체
  */
-public class UserDTO {
+public class LoginRequestDto {
 
     @Size(min = 1, max = 10)
     private String userId;
@@ -19,6 +19,13 @@ public class UserDTO {
 
     @Email
     private String email;
+
+    public LoginRequestDto(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
 
     public User toEntity() {
         return new User.Builder()
@@ -33,31 +40,15 @@ public class UserDTO {
         return userId;
     }
 
-    public void setUserId(final String userId) {
-        this.userId = userId;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(final String email) {
-        this.email = email;
     }
 }

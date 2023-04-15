@@ -24,12 +24,12 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String create(@Valid final UserDTO userDTO, BindingResult bindingResult) {
+    public String create(@Valid final LoginRequestDto loginRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // TODO: 에러 내용이 출력되게끔 로직 추가
             return "redirect:/error";
         }
-        userService.join(userDTO);
+        userService.join(loginRequestDto);
         return "redirect:/users";
     }
 
