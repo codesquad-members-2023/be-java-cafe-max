@@ -33,8 +33,14 @@ public class MemberController {
         return "/all";
     }
 
-    @PostMapping("/signUp")
-    public String signUp(@ModelAttribute("signUpRequestDto") @Valid SignUpRequestDto signUpRequestDto, BindingResult bindingResult) {
+    @GetMapping("/join")
+    public String joinMember(Model model) {
+        model.addAttribute("memberJoinRequestDto", new MemberJoinRequestDto());
+        return "/form";
+    }
+
+    @PostMapping("/join")
+    public String join(@Valid @ModelAttribute("member") MemberJoinRequestDto memberJoinDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "member/join";
         }
@@ -85,10 +91,6 @@ public class MemberController {
         return "/profileEdit";
     }
 
-    @GetMapping("/signUp")
-    public String signUpForm(@ModelAttribute("signUpRequestDto") SignUpRequestDto signUpRequestDto) {
-        return "/signUp";
-    }
 
     @DeleteMapping("/{memberId}")
     public void deleteId(@PathVariable Long memberId) {
