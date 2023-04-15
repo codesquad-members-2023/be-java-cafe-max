@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import kr.codesqaud.cafe.exception.signUpException.InvalidUserIdException;
+import kr.codesqaud.cafe.user.LoginRequestDto;
 import kr.codesqaud.cafe.user.User;
-import kr.codesqaud.cafe.user.UserDTO;
 import kr.codesqaud.cafe.user.UserRepository;
 import kr.codesqaud.cafe.user.UserRepositoryImpl;
 import kr.codesqaud.cafe.user.UserService;
@@ -35,11 +35,13 @@ class UserServiceTest {
     @DisplayName("회원 가입을 하면 회원 정보가 저장소에 저장된다.")
     void join() {
         // given
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUserId("test2");
-        userDTO.setName("test2");
-        userDTO.setPassword("12345678");
-        userDTO.setEmail("test2@gmail.com");
+//        UserDTO userDTO = new UserDTO();
+//        userDTO.setUserId("test2");
+//        userDTO.setName("test2");
+//        userDTO.setPassword("12345678");
+//        userDTO.setEmail("test2@gmail.com");
+
+        LoginRequestDto userDTO = new LoginRequestDto("test2", "12345678", "테스터2", "test2@gmail.com");
 
         // when
         userService.join(userDTO);
@@ -53,14 +55,17 @@ class UserServiceTest {
     @DisplayName("중복 ID로 회원 가입하면 예외가 발생한다.")
     void joinByDuplicatedId() {
         // given
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUserId("test2");
-        userDTO.setName("test2");
-        userDTO.setPassword("12345678");
-        userDTO.setEmail("test2@gmail.com");
+//        UserDTO userDTO = new UserDTO();
+//        userDTO.setUserId("test2");
+//        userDTO.setName("test2");
+//        userDTO.setPassword("12345678");
+//        userDTO.setEmail("test2@gmail.com");
+
+        LoginRequestDto userDTO = new LoginRequestDto("test2", "12345678", "테스터2", "test2@gmail.com");
 
         // when
         userService.join(userDTO);
+
 
         // then
         InvalidUserIdException e = assertThrows(InvalidUserIdException.class, () -> userService.join(userDTO));

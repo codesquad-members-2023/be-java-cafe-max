@@ -6,7 +6,7 @@ import kr.codesqaud.cafe.article.Article;
 import kr.codesqaud.cafe.article.ArticleRepository;
 import kr.codesqaud.cafe.article.ArticleRepositoryImpl;
 import kr.codesqaud.cafe.article.ArticleService;
-import kr.codesqaud.cafe.user.UserDTO;
+import kr.codesqaud.cafe.user.LoginRequestDto;
 import kr.codesqaud.cafe.user.UserRepository;
 import kr.codesqaud.cafe.user.UserRepositoryImpl;
 import kr.codesqaud.cafe.user.UserService;
@@ -42,15 +42,13 @@ class ArticleServiceTest {
         // given
 
         // 회원 가입
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUserId("tester");
-        userDTO.setPassword("11110000");
-        userDTO.setName("테스터");
-        userDTO.setEmail("tester@gmail.com");
-        userService.join(userDTO);
+        LoginRequestDto loginRequestDto = new LoginRequestDto(
+                "tester", "11110000", "테스터", "tester@gmail.com"
+        );
+        userService.join(loginRequestDto);
 
         Article article = new Article("title", "contents");
-        article.setWriter(userDTO.getUserId());
+        article.setWriter(loginRequestDto.getUserId());
 
         // when
         Article savedArticle = articleRepository.save(article);
@@ -69,19 +67,16 @@ class ArticleServiceTest {
         // given
 
         // 회원 가입
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUserId("writer");
-        userDTO.setPassword("11110000");
-        userDTO.setName("테스터");
-        userDTO.setEmail("tester@gmail.com");
-        userService.join(userDTO);
+        LoginRequestDto loginRequestDto = new LoginRequestDto(
+                "writer", "11110000", "테스터", "tester@gmail.com"
+        );
+        userService.join(loginRequestDto);
 
         Article article = new Article("writer", "title", "contents");
         articleRepository.save(article);
-        System.out.println(article.getSequence());
 
         // when
-        Article findArticle = articleService.findOne(article.getSequence()).get();
+        Article findArticle = articleService.findOne(1).get();
 
         // then
         String writer = articleRepository.findIdBySequence(findArticle.getSequence());
