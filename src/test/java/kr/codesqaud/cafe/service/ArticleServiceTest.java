@@ -40,7 +40,7 @@ class ArticleServiceTest {
 			ArticleDto articleDto = new ArticleDto(null, "브루니", "게시글 제목", "게시글 내용", LocalDateTime.now());
 
 			// when & then
-			assertThatCode(() -> articleService.posting(articleDto))
+			assertThatCode(() -> articleService.post(articleDto))
 				.doesNotThrowAnyException();
 		}
 	}

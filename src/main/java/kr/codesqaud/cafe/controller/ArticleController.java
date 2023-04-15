@@ -29,8 +29,8 @@ public class ArticleController {
 	}
 
 	@PostMapping
-	public String posting(@ModelAttribute final PostingRequest request, @Login final String userId) {
-		articleService.posting(
+	public String post(@ModelAttribute final PostingRequest request, @Login final String userId) {
+		articleService.post(
 			new ArticleDto(null, userId, request.getTitle(), request.getContents(), LocalDateTime.now()));
 		return "redirect:/";
 	}
@@ -43,7 +43,7 @@ public class ArticleController {
 
 	@GetMapping("/{articleId}/form")
 	public String showArticleEditPage(@PathVariable final Long articleId,
-		@Login final String userId, final Model model) {
+									  @Login final String userId, final Model model) {
 		articleService.validateHasAuthorization(articleId, userId);
 		model.addAttribute("articleId", articleId);
 		return "qna/edit_form";

@@ -43,14 +43,14 @@ class ArticleControllerTest {
 
 		// when & then
 		mockMvc.perform(post("/articles")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.params(body)
-				.sessionAttr("sessionedUser", "bruni"))
+							.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+							.params(body)
+							.sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/"))
 			.andDo(print());
 
-		then(articleService).should().posting(any(ArticleDto.class));
+		then(articleService).should().post(any(ArticleDto.class));
 	}
 
 	@DisplayName("[POST] 게시글 작성 - 로그인 되어 있지 않을 때 로그인 페이지로 리다이렉트")
@@ -63,8 +63,8 @@ class ArticleControllerTest {
 
 		// when & then
 		mockMvc.perform(post("/articles")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.params(body))
+							.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+							.params(body))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/user/login"))
 			.andDo(print());
@@ -81,7 +81,7 @@ class ArticleControllerTest {
 
 		// when & then
 		mockMvc.perform(request(HttpMethod.GET, "/articles/1")
-				.sessionAttr("sessionedUser", "bruni"))
+							.sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("qna/show"))
 			.andExpect(model().attributeExists("article"))
@@ -111,7 +111,7 @@ class ArticleControllerTest {
 
 		// when & then
 		mockMvc.perform(request(HttpMethod.GET, "/articles/1/form")
-				.sessionAttr("sessionedUser", "bruni"))
+							.sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("qna/edit_form"))
 			.andExpect(model().attributeExists("articleId"))
@@ -142,7 +142,7 @@ class ArticleControllerTest {
 
 		// when & then
 		mockMvc.perform(request(HttpMethod.GET, "/articles/1/form")
-				.sessionAttr("sessionedUser", "bruni"))
+							.sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("error"))
 			.andDo(print());
@@ -162,8 +162,8 @@ class ArticleControllerTest {
 
 		// when & then
 		mockMvc.perform(put("/articles/1")
-				.sessionAttr("sessionedUser", "bruni")
-				.params(body))
+							.sessionAttr("sessionedUser", "bruni")
+							.params(body))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/articles/1"))
 			.andDo(print());
@@ -181,7 +181,7 @@ class ArticleControllerTest {
 
 		// when & then
 		mockMvc.perform(put("/articles/1")
-				.params(body))
+							.params(body))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/user/login"))
 			.andDo(print());
@@ -198,7 +198,7 @@ class ArticleControllerTest {
 
 		// when & then
 		mockMvc.perform(delete("/articles/1")
-				.sessionAttr("sessionedUser", "bruni"))
+							.sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/"))
 			.andDo(print());
@@ -217,7 +217,7 @@ class ArticleControllerTest {
 
 		// when & then
 		mockMvc.perform(delete("/articles/1")
-				.sessionAttr("sessionedUser", "bruni"))
+							.sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("error"))
 			.andDo(print());

@@ -24,7 +24,7 @@ public class ArticleService {
 	}
 
 	@Transactional
-	public void posting(final ArticleDto articleDto) {
+	public void post(final ArticleDto articleDto) {
 		articleRepository.save(articleDto.toEntity());
 	}
 
