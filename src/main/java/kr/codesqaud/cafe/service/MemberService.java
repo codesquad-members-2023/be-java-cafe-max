@@ -22,11 +22,11 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public Long signUp(SignUpRequestDto signUpRequestDto) {
-        Member member = signUpRequestDto.toEntity();
-        if (member == null) {
-            throw new IllegalArgumentException("Member 객체를 생성할 수 없습니다.");
-        }
+    public Long join(MemberJoinRequestDto memberJoinRequestDto) {
+        Member member = memberJoinRequestDto.toUser();
+        memberRepository.findByEmail(memberJoinRequestDto.getEmail()).ifPresent(m -> {
+            throw new MemberJoinException(MemberExceptionType.DUPLICATED_EMAIL, memberJoinRequestDto);
+        });
         return memberRepository.save(member);
     }
 
