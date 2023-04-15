@@ -29,7 +29,7 @@ public class UserService {
     }
 
     public Long join(final UserJoinDto userJoinDto) {
-        userRepository.findByEmail(userJoinDto.getUserId())
+        userRepository.findByEmail(userJoinDto.getEmail())
                 .ifPresent(m -> {throw new UserJoinException(UserExceptionType.DUPLICATED_EMAIL, userJoinDto);});
         userRepository.findByUserId(userJoinDto.getUserId())
                 .ifPresent(m -> { throw new UserJoinException(UserExceptionType.DUPLICATED_USER_ID, userJoinDto);});
