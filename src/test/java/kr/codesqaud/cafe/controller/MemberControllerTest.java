@@ -140,6 +140,20 @@ class MemberControllerTest {
     }
 
     @Test
+    void profileEditForm() throws Exception {
+        // given
+        Long savedId = memberRepository.save(basicMemberData());
+
+        // when,then
+        mockMvc.perform(get("/member/{memberId}/edit", savedId)
+                        .sessionAttr("loginMember", new LoginMemberSession(savedId, "test@test.com")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/profileEdit"))
+                .andDo(print());
+    }
+
+
+    @Test
     @DisplayName("/put 요청시 db에서 회원 프로필을 수정한다.")
     void editProfile() throws Exception {
         //given
