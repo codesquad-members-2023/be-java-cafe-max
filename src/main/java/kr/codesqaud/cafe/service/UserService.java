@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.domain.UserForm;
+import kr.codesqaud.cafe.repository.JdbcUserRepository;
+import kr.codesqaud.cafe.repository.MemoryUserRepository;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +13,8 @@ import java.util.List;
 public class UserService {
     private UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserService(JdbcUserRepository jdbcUserRepository) {
+        this.userRepository = jdbcUserRepository;
     }
 
     public void saveUser(UserForm userForm) {
