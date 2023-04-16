@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -56,8 +57,10 @@ class ArticleControllerTest {
 		MockHttpSession resultSession = (MockHttpSession)mvcResult.getRequest().getSession();
 		Session session = (Session)resultSession.getAttribute(Session.LOGIN_USER);
 
-		Assertions.assertThat(session.getId().equals("id")).isTrue();
-		Assertions.assertThat(session.getNickName().equals("testUser")).isTrue();
+		assertAll(
+			() -> Assertions.assertThat(session.getId().equals("id")).isTrue(),
+			() -> Assertions.assertThat(session.getNickName().equals("testUser")).isTrue()
+		);
 	}
 
 	@Test

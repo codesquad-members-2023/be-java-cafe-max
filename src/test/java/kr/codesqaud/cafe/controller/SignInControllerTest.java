@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -49,21 +50,23 @@ class SignInControllerTest {
 		given(userService.getUserById(signInRequest.getId())).willReturn(userDto);
 
 		//when
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/user/sign-in-success")
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/user/sign-in")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("id", "id")
 				.param("password", "password123"))
 
 			//then
 			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/user/sign-in-success/id"));
+			.andExpect(view().name("redirect:/user/sign-in/id"));
 
 		MvcResult mvcResult = resultActions.andReturn();
 		MockHttpSession resultSession = (MockHttpSession)mvcResult.getRequest().getSession();
 		Session session = (Session)resultSession.getAttribute(Session.LOGIN_USER);
 
-		Assertions.assertThat(session.getId().equals(userDto.getId())).isTrue();
-		Assertions.assertThat(session.getNickName().equals(userDto.getNickName())).isTrue();
+		assertAll(
+			() -> Assertions.assertThat(session.getId().equals(userDto.getId())).isTrue(),
+			() -> Assertions.assertThat(session.getNickName().equals(userDto.getNickName())).isTrue()
+		);
 	}
 
 	@Test
@@ -74,7 +77,7 @@ class SignInControllerTest {
 		given(userService.getUserById(userDto.getId())).willReturn(userDto);
 
 		//when
-		mockMvc.perform(MockMvcRequestBuilders.get("/user/sign-in-success/id")
+		mockMvc.perform(MockMvcRequestBuilders.get("/user/sign-in/id")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.session(httpSession))
 			//then
