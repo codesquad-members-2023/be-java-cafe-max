@@ -4,7 +4,7 @@ import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
 
 public class User {
     private Long id;
-    private String userId;
+    private final String userId;
     private String password;
     private String userName;
     private String userEmail;
@@ -46,10 +46,6 @@ public class User {
 
     public String getUserEmail() {
         return userEmail;
-    }
-
-    public boolean isSamePassword(final String password) {
-        return this.password.equals(password);
     }
 
     public void editProfile(final String password, final String userName, final String userEmail) {

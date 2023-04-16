@@ -25,13 +25,13 @@ public class UserController {
         return "user/login";
     }
 
-    @PostMapping("/join")//생성
+    @PostMapping("/join")
     public String join(@ModelAttribute JoinRequest joinRequest) {
         userService.join(joinRequest);
         return "redirect:/users";
     }
 
-    @GetMapping("/users")//view 가져오기
+    @GetMapping("/users")
     public String listAllUsers(Model model) {
         model.addAttribute("users", userService.getUsers());
         return "user/list";
@@ -43,13 +43,13 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/users/{userId}/form")
+    @GetMapping("/profile-edit-form/{userId}")
     public String showProfileEditPage(@PathVariable final String userId, final Model model) {
         model.addAttribute("userId", userId);
         return "user/edit_form";
     }
 
-    @PutMapping("/users/{userId}")//리소스 수정
+    @PutMapping("/users/{userId}")
     public String editUserProfile(@PathVariable final String userId, @ModelAttribute final ProfileEditRequest request) {
         userService.editUserProfile(userId, request);
         return "redirect:/users";

@@ -3,11 +3,10 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.controller.dto.UserDto;
 import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
 import kr.codesqaud.cafe.controller.dto.request.ProfileEditRequest;
-import kr.codesqaud.cafe.repository.UserRepository;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ public class UserService {
 
 
     private void validateDuplicateMember(User user) {
-        userRepository.findByName(user.getUserName())
+        userRepository.findByUserId(user.getUserId())
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
@@ -41,24 +40,18 @@ public class UserService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public List<User> findUsers() {
-        return new ArrayList<>(userRepository.findAll());
-    }
-
     public User findByUserId(String userId) {
-        return userRepository.findByName(userId).get();
+        return userRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public void editUserProfile(final String userId, final ProfileEditRequest request) {
-        User savedUser = userRepository.findByUserId(userId).get();
-        boolean isPasswordTrue = validatePassword(savedUser, request.getOriginalPassword());
-        if(isPasswordTrue){
-            savedUser.editProfile(request.getNewPassword(), request.getUserName(), request.getUserEmail());
+        User savedUser = userRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        boolean isPasswordTrue = savedUser.getPassword().equals(request.getOriginalPassword());
+        if (isPasswordTrue) {
+            savedUser.editProfile(request.getNewPassword(), request.getNewUserName(), request.getNewUserEmail());
             userRepository.update(savedUser);
+        } else {
+            //todo : 오류메세지 출력
         }
-    }
-
-    public boolean validatePassword(User user, String password) {
-        return user.isSamePassword(password);
     }
 }
