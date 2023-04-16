@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import kr.codesqaud.cafe.config.Session;
-import kr.codesqaud.cafe.controller.dto.SignInDTO;
+import kr.codesqaud.cafe.controller.dto.SignInRequest;
 import kr.codesqaud.cafe.controller.dto.user.UserDTO;
 import kr.codesqaud.cafe.service.UserService;
 
@@ -44,9 +44,9 @@ class SignInControllerTest {
 	@DisplayName("로그인성공시 id와 nickName을 session에 저장한다.")
 	void userLogin() throws Exception {
 		//given
-		SignInDTO signInDto = new SignInDTO("id", "user");
+		SignInRequest signInRequest = new SignInRequest("id", "user");
 		UserDTO userDto = new UserDTO("nickName", "aaa@naver.com", "password", "id");
-		given(userService.getUserById(signInDto.getId())).willReturn(userDto);
+		given(userService.getUserById(signInRequest.getId())).willReturn(userDto);
 
 		//when
 		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/user/sign-in-success")

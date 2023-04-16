@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import kr.codesqaud.cafe.controller.dto.SignInDTO;
+import kr.codesqaud.cafe.controller.dto.SignInRequest;
 import kr.codesqaud.cafe.controller.dto.user.ProfileEditDTO;
 import kr.codesqaud.cafe.controller.dto.user.UserDTO;
 import kr.codesqaud.cafe.controller.dto.user.UserListDTO;
@@ -65,9 +65,9 @@ public class UserService {
 		return userDto.getPassword().equals(profileEditDto.getOriPassword());
 	}
 
-	public void matchPassword(SignInDTO signInDto) {
-		UserDTO userdto = getUserById(signInDto.getId());
-		if (!signInDto.getPassword().equals(userdto.getPassword())) {
+	public void matchPassword(SignInRequest signInRequest) {
+		UserDTO userdto = getUserById(signInRequest.getId());
+		if (!signInRequest.getPassword().equals(userdto.getPassword())) {
 			throw new LoginInvalidPasswordException();
 		}
 	}
