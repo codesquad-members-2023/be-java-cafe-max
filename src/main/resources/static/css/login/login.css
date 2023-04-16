@@ -52,69 +52,12 @@ li {
     width: 80%;
 }
 
-.article-doc {
-    line-height: 30px;
-}
-
 .title {
     font-size: 32px;
     text-align: center;
     font-weight: 500;
     margin-top: 100px;
     margin-bottom: 60px;
-}
-
-.comment {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    border-top: 1px solid lightgray;
-}
-
-.article-header-text {
-    color: gray;
-    display: flex;
-}
-
-.article-content {
-    margin-right: 20px;
-    font-size: 14px;
-}
-
-.article-header {
-    margin-bottom: 50px;
-}
-
-.post-comment {
-    margin-top: 60px;
-}
-
-.post-comment-count {
-    margin-bottom: 30px;
-}
-
-.comment-author-name {
-    font-weight: bold;
-}
-
-.comment-time {
-    color: lightgray;
-}
-
-.comment-content {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.post-title {
-    font-weight: bold;
-    margin-top: 20px;
-    margin-left: 3%;
-}
-
-.post-content {
-    margin-top: 20px;
-    margin-left: 3%;
-    font-weight: bold;
 }
 
 .info-container {
@@ -129,7 +72,7 @@ li {
     flex-direction: column;
     text-align: center;
     justify-content: center;
-    width: 200px;
+    width: 40%;
     height: 30px;
     font-size: 14px;
     background-color: black;
@@ -163,22 +106,67 @@ li {
     outline: none;
 }
 
-.comment-writer {
-    font-weight: bold;
-    margin: 20px;
-}
-
-.text-box {
-    border: 1px solid lightgray;
-    margin-top: 20px;
-}
-
-.submit-write {
-
-    display: flex;
-    flex-direction: column;
-}
-
 label {
     width: 25%;
+}
+
+/* 비밀번호 찾기, 아이디 찾기, 회원가입 CSS */
+
+.find_wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.find_text {
+    color: #03c75a;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.find_text:hover {
+    text-decoration: underline;
+}
+
+#find_wrap ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
+
+#find_wrap li {
+    display: block;
+    padding: 0;
+}
+
+#find_wrap li a {
+    display: block;
+    padding: 0 3px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+
+#find_wrap li a:hover {
+    background-color: #f8f8f8;
+}
+
+#find_wrap:before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    right: 18px;
+    border: 12px solid transparent;
+    border-bottom-color: #ebebeb;
+}
+
+#find_wrap:after {
+    content: "";
+    position: absolute;
+    top: -11px;
+    right: 18px;
+    border: 11px solid transparent;
+    border-bottom-color: #fff;
 }

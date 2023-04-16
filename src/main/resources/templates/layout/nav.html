@@ -3,14 +3,20 @@
 <html lang="ko">
 <nav class="navbar navbar-fixed-top header">
     <div class="col-md-12">
-        <div class="navbar-header">
-            <a href="/index.html" class="navbar-brand"></a>
-        </div>
+        <div class="navbar-brand"></div>
         <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="/">메인 페이지</a></li>
             <li class="active"><a href="/users/list">멤버 리스트</a></li>
-            <li><a class="black-component" href="/user/login" role="button">로그인</a></li>
-            <li><a class="black-component" href="/user/join" role="button">회원가입</a></li>
+            <th:block th:if="${session.loginUser} == null">
+                <li><a th:href="@{/login}" class="black-component" role="button">로그인</a></li>
+                <li><a th:href="@{/user/join}" class="black-component" role="button">회원가입</a></li>
+            </th:block>
+            <form th:if="${session.loginUser} != null" th:action="@{/logout}" th:method="post">
+                <button class="black-component" type="submit">로그아웃</button>
+            </form>
+            <li th:if="${session.loginUser} != null">
+                <a th:href="@{/users/{id}/modify(id=${session.loginUser.id})}" class="black-component" role="button">정보수정</a>
+            </li>
         </ul>
     </div>
 </nav>

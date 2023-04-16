@@ -2,21 +2,23 @@ package kr.codesqaud.cafe.controller.dto;
 
 import kr.codesqaud.cafe.domain.User;
 
-public class UserReadDTO { //회원 정보 전달용
+public class ProfileDTO { //프로필용
     private final Long id;
     private final String userId;
     private final String name;
     private final String email;
 
-    public UserReadDTO(Long id, String userId, String name, String email) {
+//    profileDTO는 직접 입력값을 받아서 생성되지 않으므로 private 선언
+    private ProfileDTO(Long id, String userId, String name, String email) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.email = email;
     }
 
-    public static UserReadDTO toUserReadDTO(final User user) {
-        return new UserReadDTO(user.getId(), user.getUserId(), user.getName(), user.getEmail());
+//    Entity -> DTO
+    public static ProfileDTO from(final User user) {
+        return new ProfileDTO(user.getId(), user.getUserId(), user.getName(), user.getEmail());
     }
 
     public Long getId() {

@@ -5,7 +5,7 @@
 
 <br>
 
-## Step 1. 회원가입 및 회원 목록 조회 기능 (2023.03.27 ~ 30 Done)
+## Step 1. 회원가입 및 회원 목록 조회 기능 (Done)
 
 ----
 
@@ -62,7 +62,7 @@
 
 <br>
 
-## Step 2. 글쓰기 기능 (2023.03.31 ~ing)
+## Step 2. 글쓰기 기능 
 
 ---
 
@@ -70,7 +70,7 @@
 - [x] 모든 사용자는 글 쓰기 기능으로 게시글을 작성할 수 있어야 한다.
 - [x] 모든 사용자는 글 목록 조회 기능으로 게시글 목록을 볼 수 있어야 한다.
 - [x] 모든 사용자는 게시글 상세 내용을 볼 수 있어야 한다.
-- [ ] (선택) 입력된 게시글을 수정할 수 있어야 한다.
+- [x] (선택) 입력된 게시글을 수정할 수 있어야 한다.
 
 <br>
 
@@ -106,7 +106,7 @@
 - [x] Controller에 상세 페이지 접근 메서드를 추가하고 URL은 /article/{index}로 매핑(@GetMapping)한다. 
 - [x] 해당하는 데이터를 조회한 후 Model에 저장해 /post/show에 전달한다.
 - [x] /post/show에서는 Controller에서 전달한 데이터를 활용해 html을 생성한다.
-- [ ] 게시글 수정 후 상세보기 페이지("redirect:/post/{index}")로 이동한다.
+- [x] 게시글 수정 후 상세보기 페이지("redirect:/post/{index}")로 이동한다.
 
 <br>
 
@@ -114,16 +114,50 @@
 - [ ] 회원목록에서 회원가입한 사용자의 정보를 수정할 수 있다.
   - [ ] 비밀번호, 이름, 이메일만 수정할 수 있으며, 사용자 아이디는 수정할 수 없다.
   - [ ] 비밀번호가 일치하는 경우에만 수정 가능하다.
-- [ ] /user/form.html 파일을 /user/updateForm.html로 복사한 후 수정화면을 생성한다.
-- [ ] 개인정보수정 페이지는 "/user/{id}/form"와 같이 구현한다.
-  - [ ] URL 매핑 시 @PathVarialbe 애노테이션을 활용해 인자 값을 얻는다.
-  - [ ] {id}에 해당하는 User를 DB에서 조회한다(UserRepository의 findOne()).
-- [ ] UserController의 사용자가 수정한 정보를 User 클래스에 저장한다.
-- [ ] DB에서 조회한 User 데이터를 새로 입력받은 데이터로 업데이트한다.
-  - [ ] UserRepository의 save() 메서드를 사용해 업데이트 한다. 
+- [x] 개인정보수정 페이지는 "/user/{id}/form"와 같이 구현한다.
+  - [x] URL 매핑 시 @PathVarialbe 애노테이션을 활용해 인자 값을 얻는다.
+  - [x] {id}에 해당하는 User를 DB에서 조회한다(UserRepository의 findOne()).
+- [x] UserController의 사용자가 수정한 정보를 User 클래스에 저장한다.
+- [x] DB에서 조회한 User 데이터를 새로 입력받은 데이터로 업데이트한다.
+
+<br>
+
+Step 3.
 
 
 <br>
+
+## Step 4. 로그인
+---
+
+### 기능요구사항
+- [x] 로그인, 로그아웃 기능 정상적으로 동작
+- [x] 로그인 상태 : 상단메뉴 로그아웃, 개인정보수정 표시
+- [x] 로그아웃 상태 : 상단메뉴 로그인, 회원가입 표시
+
+<br>
+
+### 프로그래밍 요구사항
+- [x] Spring MVC에서 메서드 인자로 HttpSession을 이용해서 로그인 구현
+- [x] 로그인 성공하는 경우 HttpSession에 로그인 정보 추가
+  ```java
+    session.setAttribute(“sessionedUser", user);
+
+- [x] Spring Security 같은 별도 라이브러리 사용 금지
+- [ ] API가 아닌 템플릿 기반으로 구현
+
+<br>
+
+### 추가 구현요구사항
+#### 개인정보 수정 기능 추가
+- [ ] 로그인한 사용자는 자신의 정보를 수정할 수 있어야 한다
+  - [ ] HttpSession에 저장된 User 데이터를 가져온다
+  - [ ] 로그인한 사용자와 수정하는 계정의 id가 같은 경우에만 수정하도록 한다
+  - [ ] 다른 사용자의 정보를 수정하려는 경우 에러 페이지를 출력한다
+- [] 이름, 이메일만 수정할 수 있으며 사용자 아이디는 수정할 수 없다
+- [x] 비밀번호가 일치하는 경우에만 수정 가능하다
+
+
 <br>
 
 ## What I learn & Trouble-Shooting
@@ -294,7 +328,7 @@ Q. @RequestMapping과 @GetMapping의 차이
 <br>
 
 ### 🛠 Trouble-Shooting
-🚫TroubleShooting 1. Cannot resolve MVC view 'user/form’
+🚫TroubleShooting 1. Cannot resolve MVC view `user/form`
 
 ```java
 package kr.codesqaud.cafe.controller;
@@ -357,7 +391,7 @@ spring:
 
 - 1 errors<EOL>Field error in object 'userJoinDTO' on field 'id': rejected value [null];
 - codes [\[typeMismatch.userJoinDTO.id\](http://typemismatch.userjoindto.id/),\[typeMismatch.id\](http://typemismatch.id/),typeMismatch.long,typeMismatch]; arguments
-- ConversionFailedException: Failed to convert from type [null] to type [long] for value 'null'; nested exception is java.lang.IllegalArgumentException: A null value cannot be assigned to a primitive type]]
+- ConversionFailedException: Failed to convert from type [null] to type [long] for value 'null'; nested exception is java.lang.IllegalArgumentException: A null value cannot be assigned to a primitive type
 
 🧐 입력값을 전달하는 과정에서 문제가 생겼다. 로그를 토대로 검색해보니 userJoinDTO 객체의 id 필드에서 null 값을 받아 Long 타입으로 변환하는 과정에서 발생한 오류라고 한다.
 
@@ -442,7 +476,7 @@ public class ArticleController {
 </form>
 ```
 
-- <form> 태그 : 사용자가 입력한 값을 서버로 전송하기 위해 사용
+- `<form>` 태그 : 사용자가 입력한 값을 서버로 전송하기 위해 사용
     - action 속성이 /post/wirte로 설정되어 있고, method 속성이 post로 설정되어 있으므로 입력된 title과 content가 POST 방식으로 /post/write 주소로 전송된다.
 
 등록 버튼을 누르면 HTML은 다음과 같은 요청을 서버에 보낸다.

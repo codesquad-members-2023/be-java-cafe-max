@@ -5,6 +5,11 @@ spring:
     suffix: .html
     cache: false
 
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
   datasource:
     url: jdbc:h2:mem:test_db
     driver-class-name: org.h2.Driver

@@ -24,20 +24,21 @@ public class ArticleController {
         return "post/form";
     }
 
+    //todo : MvcConfigure 활성화 하려면 get, post url 달라야 함. 변경하기
     @PostMapping("/post/write")
     public String writePost(@ModelAttribute final ArticleDTO articleDto) {
         articleService.write(articleDto);
         return "redirect:/";
     }
 
-    @GetMapping("/post/show/{id}")
+    @GetMapping("/posts/{id}/show")
     public String showPost(@PathVariable final long id, final Model model) {
         ArticleDTO wantedPost = articleService.clickOne(id);
         model.addAttribute("wantedPost", wantedPost);
         return "post/show";
     }
 
-    @GetMapping("/post/modify/{id}")
+    @GetMapping("/posts/{id}/modify")
     public String modifyForm(@PathVariable final long id, final Model model) {
         ArticleDTO wantedPost = articleService.clickOne(id);
         model.addAttribute("articleDTO", wantedPost);
@@ -45,10 +46,10 @@ public class ArticleController {
     }
 
     //todo : @ModelAttribute 없어도 되는 원리 정리하기
-    @PostMapping("/post/modify/{id}")
+    @PostMapping("/posts/{id}/modify")
     public String modifyPost(@PathVariable final long id, final ArticleDTO articleDTO) {
         articleService.modify(id, articleDTO);
-        return "redirect:/post/show/{id}";
+        return "redirect:/posts/{id}/show";
     }
 }
 

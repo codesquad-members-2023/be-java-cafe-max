@@ -1,14 +1,15 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.controller.dto.UserJoinDTO;
-import kr.codesqaud.cafe.controller.dto.UserReadDTO;
+import kr.codesqaud.cafe.controller.dto.JoinDTO;
+import kr.codesqaud.cafe.controller.dto.ModifiedUserDTO;
+import kr.codesqaud.cafe.controller.dto.ProfileDTO;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -19,33 +20,42 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void signUp(final UserJoinDTO userJoinDTO) {
-        //1. UserJoinDTO -> User 변환
-        User user = User.toUser(userJoinDTO);
-
-        //2. repository signUp 메서드 호출
+    //수정 : User.toUser -> joinDTO.toEntity
+    public void signUp(final JoinDTO joinDTO) {
+        User user = joinDTO.toEntity();
         userRepository.join(user);
     }
 
-    public void modify(final long id, final UserReadDTO userReadDTO) {
+    public boolean checkDuplicate(String userId) {
+        return userRepository.findByUserId(userId).isPresent();
+    }
+
+    //todo : null일 때 예외처리 하기
+    public void modify(final long id, final ModifiedUserDTO modifiedUserDTO) {
         User originUser = userRepository.findById(id).orElse(null);
-        originUser.setName(userReadDTO.getName());
-        originUser.setEmail(userReadDTO.getEmail());
+        assert originUser != null;
+        originUser.setName(modifiedUserDTO.getName());
+        originUser.setPassword(modifiedUserDTO.getNewPassword());
+        originUser.setEmail(modifiedUserDTO.getEmail());
         userRepository.update(originUser);
     }
 
-    public UserReadDTO findOne(final long id) {
-        Optional<User> wantedUser = userRepository.findById(id);
-        return wantedUser.map(UserReadDTO::toUserReadDTO).orElse(null);
+    //todo : null일 때 예외처리 하기
+    public boolean isPasswordRight(long id, ModifiedUserDTO modifiedUserDTO) {
+        User originUser = userRepository.findById(id).orElse(null);
+        assert originUser != null;
+        return originUser.getPassword().equals(modifiedUserDTO.getOriginPassword());
     }
 
-    public List<UserReadDTO> findUsers() {
-        List<User> userList = userRepository.findAll();
-        List<UserReadDTO> userReadDTOList = new ArrayList<>();
-        for (User user : userList) {
-            userReadDTOList.add(UserReadDTO.toUserReadDTO(user));
-        }
-        return userReadDTOList;
+    public ProfileDTO findOne(final long id) {
+        Optional<User> wantedUser = userRepository.findById(id);
+        return wantedUser.map(ProfileDTO::from).orElse(null);
+    }
+
+    public List<ProfileDTO> findUsers() {
+        return userRepository.findAll().stream()
+                .map(ProfileDTO::from)
+                .collect(Collectors.toList());
     }
 }
 
