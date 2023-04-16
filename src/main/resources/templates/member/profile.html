@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col text-end mt-3">
+            <div class="col text-end mt-3" th:if="${session.account.id == memberResponse.id}">
                 <a th:href="@{/members/{id}/edit(id = ${memberResponse.id})}"
                    class="btn btn-primary btn-sm">수정</a>
             </div>

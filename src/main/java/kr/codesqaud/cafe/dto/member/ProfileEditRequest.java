@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.dto.member;
 
-import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -9,7 +8,7 @@ import org.hibernate.validator.constraints.Length;
 
 public class ProfileEditRequest {
 
-    private final Long id;
+    private Long id;
 
     @NotBlank
     @Email
@@ -40,6 +39,10 @@ public class ProfileEditRequest {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -56,8 +59,13 @@ public class ProfileEditRequest {
         return nickName;
     }
 
-    public Member toMember(LocalDateTime createDate) {
-        return new Member(id, email, newPassword, nickName, createDate);
+    public Member toMember() {
+        return Member.builder()
+            .id(id)
+            .email(email)
+            .password(newPassword)
+            .nickName(nickName)
+            .build();
     }
 
     public static ProfileEditRequest from(MemberResponse memberResponse) {

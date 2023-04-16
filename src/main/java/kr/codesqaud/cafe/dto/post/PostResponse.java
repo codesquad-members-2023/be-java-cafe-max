@@ -51,8 +51,8 @@ public class PostResponse {
         return views;
     }
 
-    public static PostResponse of(Post post, WriterResponse writer) {
+    public static PostResponse of(Post post) {
         return new PostResponse(post.getId(), post.getTitle(), post.getContent(),
-            writer, post.getWriteDate(), post.getViews());
+            WriterResponse.from(post.getWriter()), post.getWriteDate(), post.getViews());
     }
 }

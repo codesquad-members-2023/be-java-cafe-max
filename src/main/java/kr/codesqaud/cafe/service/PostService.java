@@ -1,16 +1,16 @@
 package kr.codesqaud.cafe.service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Post;
+import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
-import kr.codesqaud.cafe.dto.post.WriterResponse;
-import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
+import kr.codesqaud.cafe.exception.common.Unauthorized;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
+import kr.codesqaud.cafe.config.session.AccountSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,37 +26,47 @@ public class PostService {
         this.memberRepository = memberRepository;
     }
 
-    public Long save(PostWriteRequest postWriteRequest) {
+    public Long write(PostWriteRequest postWriteRequest, Long id) {
+        postWriteRequest.setWriterId(id);
         return postRepository.save(postWriteRequest.toPost());
     }
 
-    @Transactional(readOnly = true)
     public PostResponse findById(Long id) {
         Post post = postRepository.findById(id)
-            .orElseThrow(PostNotFoundException::new);
-        post.increaseViews();
-        postRepository.update(post);
-        return PostResponse.of(post, getWhiterResponse(post));
+            .orElseThrow(PostNotFoundException::new)
+            .increaseViews();
+        postRepository.increaseViews(post);
+        return PostResponse.of(post);
     }
 
     @Transactional(readOnly = true)
     public List<PostResponse> findAll() {
         return postRepository.findAll()
             .stream()
-            .sorted(Comparator.comparing(Post::getId)
-                .reversed())
-            .map(post -> PostResponse.of(post, getWhiterResponse(post)))
+            .map(PostResponse::of)
             .collect(Collectors.toUnmodifiableList());
     }
 
-    private WriterResponse getWhiterResponse(Post post) {
-        WriterResponse writerResponse = null;
+    public void modify(PostModifyRequest postModifyRequest, Long id) {
+        postModifyRequest.setId(id);
+        postRepository.findById(postModifyRequest.getId())
+            .orElseThrow(PostNotFoundException::new);
+        postRepository.update(postModifyRequest.toPost());
+    }
 
-        if (post.getWriterId() != null) {
-            writerResponse = WriterResponse.from(memberRepository.findById(post.getWriterId())
-                .orElseThrow(MemberNotFoundException::new));
+    @Transactional(readOnly = true)
+    public void validateUnauthorized(Long id, AccountSession accountSession) {
+        Post findPost = postRepository.findById(id)
+            .orElseThrow(PostNotFoundException::new);
+
+        if (!findPost.equalsWriterId(accountSession.getId())) {
+            throw new Unauthorized();
         }
+    }
 
-        return writerResponse;
+    public void delete(Long id) {
+        postRepository.findById(id)
+            .orElseThrow(PostNotFoundException::new);
+        postRepository.delete(id);
     }
 }

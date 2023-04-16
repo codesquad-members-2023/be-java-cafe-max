@@ -7,16 +7,16 @@ public class Post {
     private final Long id;
     private final String title;
     private final String content;
-    private final Long writerId;
+    private final Member writer;
     private final LocalDateTime writeDate;
-    private Long views;
+    private final Long views;
 
-    public Post(Long id, String title, String content, Long writerId, LocalDateTime writeDate,
+    private Post(Long id, String title, String content, Member writer, LocalDateTime writeDate,
         Long views) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.writerId = writerId;
+        this.writer = writer;
         this.writeDate = writeDate;
         this.views = views;
     }
@@ -33,8 +33,8 @@ public class Post {
         return content;
     }
 
-    public Long getWriterId() {
-        return writerId;
+    public Member getWriter() {
+        return writer;
     }
 
     public LocalDateTime getWriteDate() {
@@ -45,11 +45,66 @@ public class Post {
         return views;
     }
 
-    public void increaseViews() {
-        views++;
+    public Post increaseViews() {
+        return new Post(id, title, content, writer, writeDate, views + 1);
     }
 
     public Post createWithId(Long id) {
-        return new Post(id, title, content, writerId, writeDate, views);
+        return new Post(id, title, content, writer, writeDate, views);
+    }
+
+    public boolean equalsWriterId(Long id) {
+        return writer.equalsId(id);
+    }
+
+    public static PostBuilder builder() {
+        return new PostBuilder();
+    }
+
+    public static class PostBuilder {
+
+        private Long id;
+        private String title;
+        private String content;
+        private Member writer;
+        private LocalDateTime writeDate;
+        private Long views;
+
+        public PostBuilder() {
+        }
+
+        public PostBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public PostBuilder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public PostBuilder content(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public PostBuilder writer(Member writer) {
+            this.writer = writer;
+            return this;
+        }
+
+        public PostBuilder writeDate(LocalDateTime writeDate) {
+            this.writeDate = writeDate;
+            return this;
+        }
+
+        public PostBuilder views(Long views) {
+            this.views = views;
+            return this;
+        }
+
+        public Post build() {
+            return new Post(id, title, content, writer, writeDate, views);
+        }
     }
 }

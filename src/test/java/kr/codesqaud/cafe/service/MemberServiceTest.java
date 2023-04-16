@@ -2,18 +2,20 @@ package kr.codesqaud.cafe.service;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
-import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -38,30 +40,12 @@ class MemberServiceTest {
         // given
         SignUpRequest signUpRequest = createRequestDummy();
         given(memberRepository.save(any())).willReturn(1L);
-        given(memberRepository.findByEmail(signUpRequest.getEmail()))
-            .willReturn(Optional.empty());
 
         // when
         Long savedId = memberService.signUp(signUpRequest);
 
         // then
         assertEquals(1L, savedId);
-    }
-
-    @DisplayName("회원 저장시 이메일이 중복인 경우 실패")
-    @Test
-    void createFalse2() {
-        // given
-        SignUpRequest signUpRequest = createRequestDummy2();
-        Member member = signUpRequest.toMember().createWithId(1L);
-        given(memberRepository.findByEmail(any())).willReturn(Optional.of(member));
-
-        // when
-
-        // then
-        assertThrows(DuplicateMemberEmailException.class,
-            () -> memberService.signUp(new SignUpRequest(signUpRequest.getEmail()
-                , "Test1111", "test")));
     }
 
     @DisplayName("회원 단건 조회 성공")
@@ -117,15 +101,16 @@ class MemberServiceTest {
     @Test
     void update() {
         // given
-        ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(1L, "mandu@gmail.com"
+        Long memberId = 1L;
+        AccountSession accountSession = new AccountSession(memberId);
+        ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(memberId, "mandu@gmail.com"
             , "Test1234", "Mandu1234", "mandu");
         given(memberRepository.findById(any()))
-            .willReturn(Optional.of(createRequestDummy().toMember().createWithId(1L)))
-            .willReturn(Optional.of(memberUpdateRequest.toMember(LocalDateTime.now())));
-        given(memberRepository.findByEmail(any())).willReturn(Optional.empty());
+            .willReturn(Optional.of(createRequestDummy().toMember().createWithId(memberId)))
+            .willReturn(Optional.of(memberUpdateRequest.toMember()));
 
         // when
-        memberService.update(memberUpdateRequest);
+        memberService.update(memberUpdateRequest, accountSession);
 
         // then
         Member findMember = memberRepository.findById(1L).orElseThrow();
@@ -140,32 +125,174 @@ class MemberServiceTest {
     @Test
     void updateFalse() {
         // given
+        Long memberId = 1L;
+        AccountSession accountSession = new AccountSession(memberId);
         given(memberRepository.findById(any())).willReturn(Optional.empty());
 
         // when
 
         // then
         assertThrows(MemberNotFoundException.class,
-            () -> memberService.update(new ProfileEditRequest(1L,
-                "est@naver.com", "Test1234", "Test1234", "test")));
+            () -> memberService.update(new ProfileEditRequest(memberId, "est@naver.com",
+                "Test1234", "Test1234", "test"), accountSession));
     }
 
-    @DisplayName("회원 정보 수정시 이미 있는 회원의 이메일인 경우 실패")
+    @DisplayName("회원 중에 중복 이메일 검사 시 중복이 있는 경우 성공")
     @Test
-    void updateFalse2() {
+    void isDuplicateEmail() {
         // given
-        given(memberRepository.findById(any()))
-            .willReturn(Optional.of(createRequestDummy().toMember().createWithId(1L)));
-        given(memberRepository.findByEmail(createRequestDummy2().getEmail()))
-            .willReturn(Optional.of(createRequestDummy2().toMember().createWithId(2L)));
-        ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(1L,
-            createRequestDummy2().getEmail(), "Mandu1234", "Mandu7777", "updateMandu");
+        String email = "test@gmail.com";
+        Member member = Member.builder()
+            .id(1L)
+            .email(email)
+            .password("Test1234")
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
+
+        // when
+        boolean actual = memberService.isDuplicateEmail(email);
+
+        // then
+        assertTrue(actual);
+    }
+
+    @DisplayName("회원 중에 중복 이메일 검사 시 중복이 없는 경우 실패")
+    @Test
+    void isDuplicateEmailFalse() {
+        // given
+        String email = "test@gmail.com";
+        given(memberRepository.findByEmail(email)).willReturn(Optional.empty());
+
+        // when
+        boolean actual = memberService.isDuplicateEmail(email);
+
+        // then
+        assertFalse(actual);
+    }
+
+    @DisplayName("회원 중에 중복 이메일과 같은 아이디 검사 시 이메일 중복이 있고 중복인 이메일의 회원 아이디가 다를 경우 성공")
+    @Test
+    void isDuplicateEmailAndId() {
+        // given
+        Long id = 1L;
+        String email = "test@gmail.com";
+        Member member = Member.builder()
+            .id(2L)
+            .email(email)
+            .password("Test1234")
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
+
+        // when
+        boolean actual = memberService.isDuplicateEmailAndId(email, id);
+
+        // then
+        assertTrue(actual);
+    }
+
+    @DisplayName("회원 중에 중복 이메일과 같은 아이디 검사 시 이메일 중복이 있고 중복인 이메일의 회원 아이디가 같을 경우 성공")
+    @Test
+    void isDuplicateEmailAndIdFalse() {
+        // given
+        Long id = 1L;
+        String email = "test@gmail.com";
+        Member member = Member.builder()
+            .id(id)
+            .email(email)
+            .password("Test1234")
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
+
+        // when
+        boolean actual = memberService.isDuplicateEmailAndId(email, id);
+
+        // then
+        assertFalse(actual);
+    }
+
+    @DisplayName("회원 비밀번호 검사 시 같지 않을 경우 성공")
+    @Test
+    void isNotSamePassword() {
+        // given
+        String email = "test@gmail.com";
+        String password = "Test1234";
+        Member member = Member.builder()
+            .id(1L)
+            .email(email)
+            .password("Test1233")
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
+
+        // when
+        boolean actual = memberService.isNotSamePassword(email, password);
+
+        // then
+        assertTrue(actual);
+    }
+
+    @DisplayName("회원 비밀번호 검사 시 같을 경우 실패")
+    @Test
+    void isNotSamePasswordFalse() {
+        // given
+        String email = "test@gmail.com";
+        String password = "Test1234";
+        Member member = Member.builder()
+            .id(1L)
+            .email(email)
+            .password(password)
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
+
+        // when
+        boolean actual = memberService.isNotSamePassword(email, password);
+
+        // then
+        assertFalse(actual);
+    }
+
+    @DisplayName("이메일을 받아서 회원 중에 이메일이 같은 회원을 찾은 후 해당 회원 정보를 바탕으로 AccountSession을 반환한다")
+    @Test
+    void createSession() {
+        // given
+        Long savedId = 1L;
+        String email = "test@gmail.com";
+        Member member = Member.builder()
+            .id(savedId)
+            .email(email)
+            .password("Test1234")
+            .nickName("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
+
+        // when
+        AccountSession session = memberService.createSession(email);
+
+        // then
+        assertEquals(savedId, session.getId());
+    }
+
+    @DisplayName("이메일을 받아서 회원 중에 이메일이 같은 회원을 못 찾은 경우 예외를 던진다")
+    @Test
+    void createSessionFalse() {
+        // given
+        String email = "test@gmail.com";
+        given(memberRepository.findByEmail(email)).willReturn(Optional.empty());
 
         // when
 
         // then
-        assertThrows(DuplicateMemberEmailException.class,
-            () -> memberService.update(memberUpdateRequest));
+        assertThrows(MemberNotFoundException.class, () -> memberService.createSession(email));
     }
 
     private SignUpRequest createRequestDummy() {

@@ -1,17 +1,20 @@
 package kr.codesqaud.cafe.controller;
 
 import javax.validation.Valid;
+import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.service.PostService;
+import kr.codesqaud.cafe.config.session.AccountSession;
+import kr.codesqaud.cafe.config.session.SignIn;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
-@RequestMapping("/posts")
 @Controller
 public class PostController {
 
@@ -27,25 +30,51 @@ public class PostController {
         return "post/posts";
     }
 
-    @PostMapping
-    public String write(@Valid PostWriteRequest postWriteRequest,
-        BindingResult bindingResult) {
+    @PostMapping("/posts")
+    public String write(@Valid PostWriteRequest postWriteRequest, BindingResult bindingResult,
+        @SignIn AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
-            return "post/write";
+            return "post/postWrite";
         }
 
-        postService.save(postWriteRequest);
-        return "redirect:/posts";
+        postService.write(postWriteRequest, accountSession.getId());
+        return "redirect:/";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/posts/{id}")
     public String post(@PathVariable Long id, Model model) {
         model.addAttribute("postResponse", postService.findById(id));
         return "post/post";
     }
 
-    @GetMapping("/write")
+    @PutMapping("/posts/{id}")
+    public String modify(@PathVariable Long id, @Valid PostModifyRequest postModifyRequest,
+        BindingResult bindingResult, @SignIn AccountSession accountSession) {
+        if (bindingResult.hasErrors()) {
+            return "post/postModify";
+        }
+
+        postService.validateUnauthorized(id, accountSession);
+        postService.modify(postModifyRequest, id);
+        return "redirect:/posts/{id}";
+    }
+
+    @DeleteMapping("/posts/{id}")
+    public String delete(@PathVariable Long id, @SignIn AccountSession accountSession) {
+        postService.validateUnauthorized(id, accountSession);
+        postService.delete(id);
+        return "redirect:/";
+    }
+
+    @GetMapping("/posts/write")
     public String writeForm(PostWriteRequest postWriteRequest) {
-        return "post/write";
+        return "post/postWrite";
+    }
+
+    @GetMapping("/posts/{id}/modify")
+    public String modifyForm(@PathVariable Long id, Model model, @SignIn AccountSession accountSession) {
+        postService.validateUnauthorized(id, accountSession);
+        model.addAttribute("postModifyRequest", PostModifyRequest.from(postService.findById(id)));
+        return "post/postModify";
     }
 }

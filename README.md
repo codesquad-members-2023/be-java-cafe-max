@@ -72,4 +72,63 @@
 - Controller, Service, Repository에 대하여 테스트 코드를 작성한다.✅
 - 배포 스크립트 작성한다.✅
 - aws를 이용하여 배포를 한다 .✅
-- 
+
+## 4단계 미션
+
+### 학습 계획
+
+- cookie
+- session
+- interceptor
+
+### 구현할 기능 목록
+
+- 이메일, 패스워드를 입력하여 로그인을 한다. ✅
+
+  - 로그인 상태인 경우 상단 메뉴에 로그아웃, 개인정보 수정이 표시되어야 한다. ✅
+
+- 로그인이 된 상태에서 로그아웃을 한다. ✅
+
+  - 로그인 상태가 아닌 경우에는 로그인, 회원가입이 표시되어야 한다. ✅
+
+## 5단계 미션
+
+### 학습 계획
+
+- argumentResolver
+
+### 구현할 기능 목록
+
+- 로그인한 사용자만 게시글을 작성한다. ✅
+- 로그인한 사용자만 게시글을 세부내용을 조회한다. ✅
+- 게시글을 수정한다.✅
+  - 작성자와 로그인한 회원이 같은 경우에만 가능하다.✅
+  - 작성자가 아닌 경우 에러페이지로 이동한다.✅
+- 게시글을 삭제한다.✅
+  - 작성자와 로그인한 회원이 같은 경우에만 가능하다.✅
+  - 작성자가 아닌 경우 에러페이지로 이동한다.✅
+
+### URL
+
+| HTTP Method |        URL         |        기능         |
+| :---------: | :----------------: | :-----------------: |
+|     GET     |      /members      |   회원 목록 조회    |
+|     GET     |   /members/{id}    |     프로필 조회     |
+|     PUT     |   /members/{id}    |  회원 프로필 수정   |
+|     GET     | /members/{id}/edit | 회원 프로필 수정 폼 |
+|     GET     |  /members/sign-up  |     회원가입 폼     |
+|    POST     |  /members/sign-up  |      회원 가입      |
+|     GET     |  /members/sign-in  |      로그인 폼      |
+|    POST     |  /members/sign-in  |       로그인        |
+|    POST     | /members/sign-out  |      로그아웃       |
+|     GET     |         /          |  게시글 목록 조회   |
+|     GET     |       /posts       |  게시글 목록 조회   |
+|     GET     |    /posts/{id}     |  게시글 상세 조회   |
+|     PUT     |    /posts/{id}     |     게시글 수정     |
+|   DELETE    |    /posts/{id}     |     게시글 삭제     |
+|     GET     |    /posts/write    |   게시글 작성 폼    |
+|     GET     | /posts/{id}/modify |   게시글 수정 폼    |
+
+## ERD
+
+![](https://lh3.googleusercontent.com/pw/AJFCJaX1UoZ5jdJMJwDiDhO9EiosHEKQFmXe7iRDzTr86gQ_o3uTDbf8guc501C8vvIFAThz7pBGQrYaE4dZZWVQP1OVZw7-25k3nmmOcSvGBtgdEsEw_3peBtlGsrtb28ecTIoapRc2YYcz0CAaZyKnPGnF=w714-h507-s-no?authuser=0)

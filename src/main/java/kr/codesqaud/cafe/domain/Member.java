@@ -11,7 +11,7 @@ public class Member {
     private final String nickName;
     private final LocalDateTime createDate;
 
-    public Member(Long id, String email, String password, String nickName,
+    private Member(Long id, String email, String password, String nickName,
         LocalDateTime createDate) {
         this.id = id;
         this.email = email;
@@ -54,5 +54,50 @@ public class Member {
 
     public Member createWithId(Long id) {
         return new Member(id, email, password, nickName, createDate);
+    }
+
+    public static MemberBuilder builder() {
+        return new MemberBuilder();
+    }
+
+    public static class MemberBuilder {
+
+        private Long id;
+        private String email;
+        private String password;
+        private String nickName;
+        private LocalDateTime createDate;
+
+        public MemberBuilder() {
+        }
+
+        public MemberBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public MemberBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public MemberBuilder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public MemberBuilder nickName(String nickName) {
+            this.nickName = nickName;
+            return this;
+        }
+
+        public MemberBuilder createDate(LocalDateTime createDate) {
+            this.createDate = createDate;
+            return this;
+        }
+
+        public Member build() {
+            return new Member(id, email, password, nickName, createDate);
+        }
     }
 }

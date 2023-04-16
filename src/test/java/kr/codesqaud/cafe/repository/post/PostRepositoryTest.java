@@ -2,10 +2,12 @@ package kr.codesqaud.cafe.repository.post;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.IntStream;
 import kr.codesqaud.annotation.RepositoryTest;
@@ -64,7 +66,7 @@ class PostRepositoryTest {
             () -> assertEquals(savedId, findPost.getId()),
             () -> assertEquals(post.getTitle(), findPost.getTitle()),
             () -> assertEquals(post.getContent(), findPost.getContent()),
-            () -> assertEquals(post.getWriterId(), findPost.getWriterId()),
+            () -> assertEquals(post.getWriter().getId(), findPost.getWriter().getId()),
             () -> assertEquals(post.getWriteDate(), findPost.getWriteDate()),
             () -> assertEquals(post.getViews(), findPost.getViews()));
     }
@@ -79,8 +81,15 @@ class PostRepositoryTest {
             .forEach(index -> {
                     String title = String.format("제목%d", index);
                     String content = String.format("내용%d", index);
-                    postRepository.save(new Post(null, title, content, savedMemberId,
-                        LocalDateTime.now(), (long) index));
+                    postRepository.save(Post.builder()
+                            .title(title)
+                            .content(content)
+                            .writer(Member.builder()
+                                .id(savedMemberId)
+                                .build())
+                            .writeDate(LocalDateTime.now())
+                            .views((long) index)
+                            .build());
             });
 
         // when
@@ -97,8 +106,14 @@ class PostRepositoryTest {
         Long savedMemberId = saveMember();
         Post post = postDummy(savedMemberId);
         Long savedId = postRepository.save(post);
-        Post updatePost = new Post(savedId, "업데이트", "업데이트 내용", post.getWriterId(),
-            post.getWriteDate(), 0L);
+        Post updatePost = Post.builder()
+            .id(savedId)
+            .title("업데이트")
+            .content("업데이트 내용")
+            .writer(post.getWriter())
+            .writeDate(post.getWriteDate())
+            .views(0L)
+            .build();
 
         // when
         postRepository.update(updatePost);
@@ -109,18 +124,43 @@ class PostRepositoryTest {
             () -> assertEquals(updatePost.getId(), findPost.getId()),
             () -> assertEquals(updatePost.getTitle(), findPost.getTitle()),
             () -> assertEquals(updatePost.getContent(), findPost.getContent()),
-            () -> assertEquals(updatePost.getWriterId(), findPost.getWriterId()),
             () -> assertEquals(updatePost.getWriteDate(), findPost.getWriteDate()),
             () -> assertEquals(updatePost.getViews(), findPost.getViews()));
     }
 
+    @DisplayName("게시글 삭제 성공")
+    @Test
+    void delete() {
+        // given
+        Long savedMemberId = saveMember();
+        Long savedId = postRepository.save(postDummy(savedMemberId));
+
+        // when
+        postRepository.delete(savedId);
+
+        // then
+        assertThrows(NoSuchElementException.class,
+            () -> postRepository.findById(savedId).orElseThrow());
+    }
+
     private Post postDummy(Long writerId) {
-        return new Post(null, "제목", "내용", writerId,
-            LocalDateTime.now(), 0L);
+        return Post.builder()
+            .title("제목")
+            .content("내용")
+            .writer(Member.builder()
+                .id(writerId)
+                .build())
+            .writeDate(LocalDateTime.now())
+            .views(0L)
+            .build();
     }
 
     private Long saveMember() {
-        return memberRepository.save(new Member(null, "test@naver.com", "Test1234",
-            "만두", LocalDateTime.now()));
+        return memberRepository.save(Member.builder()
+            .email("test@naver.com")
+            .password("Test1234")
+            .nickName("만두")
+            .createDate(LocalDateTime.now())
+            .build());
     }
 }

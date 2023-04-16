@@ -1,13 +1,11 @@
 package kr.codesqaud.cafe.config;
 
-import kr.codesqaud.cafe.exception.common.BadRequestException;
 import kr.codesqaud.cafe.exception.common.NotFoundException;
+import kr.codesqaud.cafe.exception.common.Unauthorized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,19 +15,14 @@ public class GlobalExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(BadRequestException.class)
-    public String badRequest(BadRequestException e, Model model) {
-        BindingResult bindingResult = new BeanPropertyBindingResult(e.getErrorData(), getClassName(e));
-        bindingResult.rejectValue(e.getField(), e.getErrorCode());
-        model.addAttribute(String.format("org.springframework.validation.BindingResult.%s",
-            bindingResult.getObjectName()), bindingResult);
-        model.addAttribute(bindingResult.getObjectName(), e.getErrorData());
-        return e.getViewName();
-    }
-
-    private String getClassName(BadRequestException e) {
-        String className = e.getErrorData().getClass().getSimpleName();
-        return className.replace(className.charAt(0), (char) (className.charAt(0) + 32));
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(Unauthorized.class)
+    public String unauthorized(Unauthorized e, Model model) {
+        logger.error("Unauthorized", e);
+        model.addAttribute("status", HttpStatus.UNAUTHORIZED.value());
+        model.addAttribute("error", HttpStatus.UNAUTHORIZED.getReasonPhrase());
+        model.addAttribute("message", e.getMessage());
+        return "error/4xx";
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

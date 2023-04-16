@@ -30,12 +30,9 @@ spring:
     h2:
         console:
             enabled: true
-            path: /h2-console
     devtools:
         livereload:
             enabled: true
-        thymeleaf:
-            cache: false
 ---
 spring:
     config:
@@ -50,4 +47,11 @@ spring:
     sql:
         init:
             mode: always
+    thymeleaf:
+        cache: false
+server:
+    servlet:
+        session:
+            tracking-modes: cookie
+
 

@@ -2,24 +2,28 @@ package kr.codesqaud.cafe.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
-import kr.codesqaud.cafe.exception.member.DuplicateMemberEmailException;
-import kr.codesqaud.cafe.exception.member.NotMatchMemberPassword;
+import kr.codesqaud.cafe.exception.common.Unauthorized;
 import kr.codesqaud.cafe.service.MemberService;
+import kr.codesqaud.cafe.util.SignInSessionUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -27,11 +31,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-
 @WebMvcTest(MemberController.class)
+@ComponentScan(basePackages = "kr.codesqaud.cafe.validator")
 class MemberControllerTest {
 
     @Autowired
@@ -50,14 +55,14 @@ class MemberControllerTest {
         // when
 
         // then
-        mockMvc.perform(post("/members")
+        mockMvc.perform(post("/members/sign-up")
                 .param("email", signUpRequest.getEmail())
                 .param("password", signUpRequest.getPassword())
                 .param("nickName", signUpRequest.getNickName())
                 .param("createDate", signUpRequest.getCreateDate().toString())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/members"))
+            .andExpect(redirectedUrl("/"))
             .andDo(print());
     }
 
@@ -72,7 +77,7 @@ class MemberControllerTest {
         // when
 
         // then
-        mockMvc.perform(post("/members")
+        mockMvc.perform(post("/members/sign-up")
                 .param("email", email)
                 .param("password", password)
                 .param("nickName", nickName)
@@ -95,7 +100,7 @@ class MemberControllerTest {
         // when
 
         // then
-        mockMvc.perform(post("/members")
+        mockMvc.perform(post("/members/sign-up")
                 .param("email", email)
                 .param("password", password)
                 .param("nickName", nickName)
@@ -118,7 +123,7 @@ class MemberControllerTest {
         // when
 
         // then
-        mockMvc.perform(post("/members")
+        mockMvc.perform(post("/members/sign-up")
                 .param("email", email)
                 .param("password", password)
                 .param("nickName", nickName)
@@ -135,8 +140,8 @@ class MemberControllerTest {
     void signUpFalse4() throws Exception {
         // given
         SignUpRequest signUpRequest = new SignUpRequest("test@gmail.com", "Test1234", "만두");
-        given(memberService.signUp(any()))
-            .willThrow(new DuplicateMemberEmailException("member/signUp", signUpRequest));
+        given(memberService.isDuplicateEmail(signUpRequest.getEmail()))
+            .willReturn(true);
         String email = "test@gmail.com";
         String password = "Test4444";
         String nickName = "만두2";
@@ -144,7 +149,7 @@ class MemberControllerTest {
         // when
 
         // then
-        mockMvc.perform(post("/members")
+        mockMvc.perform(post("/members/sign-up")
                 .param("email", email)
                 .param("password", password)
                 .param("nickName", nickName)
@@ -154,20 +159,24 @@ class MemberControllerTest {
             .andExpect(view().name("member/signUp"))
             .andExpect(model().attributeHasFieldErrorCode("signUpRequest", "email", "Duplicate"))
             .andDo(print());
+
     }
 
     @DisplayName("회원 목록 조회")
     @Test
     void findAll() throws Exception {
         // given
-        List<MemberResponse> memberResponses = List.of(new MemberResponse(1L, "test@nave.com",
+        Long savedId = 1L;
+        AccountSession accountSession = new AccountSession(savedId);
+        List<MemberResponse> memberResponses = List.of(new MemberResponse(savedId, "test@nave.com",
             "만두", LocalDateTime.now()));
         given(memberService.findAll()).willReturn(memberResponses);
 
         // when
 
         // then
-        mockMvc.perform(get("/members"))
+        mockMvc.perform(get("/members")
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/members"))
@@ -179,13 +188,16 @@ class MemberControllerTest {
     @Test
     void profileEditForm() throws Exception {
         // given
-        given(memberService.findById(1L)).willReturn(new MemberResponse(1L, "test@nave.com",
+        Long savedId = 1L;
+        AccountSession accountSession = new AccountSession(savedId);
+        given(memberService.findById(savedId)).willReturn(new MemberResponse(savedId, "test@nave.com",
             "만두", LocalDateTime.now()));
 
         // when
 
         // then
-        mockMvc.perform(get("/members/{id}/edit", 1L))
+        mockMvc.perform(get("/members/{id}/edit", savedId)
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/profileEdit"))
@@ -197,18 +209,21 @@ class MemberControllerTest {
     @Test
     void editProfile() throws Exception {
         // given
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(id);
 
         // when
 
         // then
-        mockMvc.perform(put("/members/{id}", 1L)
+        mockMvc.perform(put("/members/{id}", id)
                 .param("email", "test2@gmail.com")
                 .param("password", "Test1234")
                 .param("newPassword", "Test4444")
                 .param("nickName", "만두")
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/members/{id}"))
+            .andExpect(redirectedUrlPattern("/members/{id}"))
             .andDo(print());
     }
 
@@ -216,10 +231,12 @@ class MemberControllerTest {
     @Test
     void editProfileFalse() throws Exception {
         // given
-        ProfileEditRequest profileEditRequest = new ProfileEditRequest(1L, "test@gmail.com",
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(id);
+        ProfileEditRequest profileEditRequest = new ProfileEditRequest(id, "test@gmail.com",
             "Test1234", "Mandu1234", "mandu");
-        willThrow(new DuplicateMemberEmailException("member/profileEdit", profileEditRequest))
-            .given(memberService).update(any());
+        given(memberService.isDuplicateEmailAndId(profileEditRequest.getEmail(), profileEditRequest.getId()))
+            .willReturn(true);
 
         // when
 
@@ -229,6 +246,7 @@ class MemberControllerTest {
                 .param("password", profileEditRequest.getPassword())
                 .param("newPassword", profileEditRequest.getNewPassword())
                 .param("nickName", profileEditRequest.getNickName())
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -241,10 +259,12 @@ class MemberControllerTest {
     @Test
     void editProfileFalse2() throws Exception {
         // given
-        ProfileEditRequest profileEditRequest = new ProfileEditRequest(1L, "test@gmail.com",
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(id);
+        ProfileEditRequest profileEditRequest = new ProfileEditRequest(id, "test@gmail.com",
             "Test1234", "Mandu1234", "mandu");
-        willThrow(new NotMatchMemberPassword("member/profileEdit", profileEditRequest))
-            .given(memberService).update(any());
+        given(memberService.isNotSamePassword(profileEditRequest.getEmail(), profileEditRequest.getPassword()))
+            .willReturn(true);
 
         // when
 
@@ -254,11 +274,112 @@ class MemberControllerTest {
                 .param("password", profileEditRequest.getPassword())
                 .param("newPassword", profileEditRequest.getNewPassword())
                 .param("nickName", profileEditRequest.getNickName())
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/profileEdit"))
             .andExpect(model().attributeHasFieldErrorCode("profileEditRequest", "password", "NotMatch"))
+            .andDo(print());
+    }
+
+    @DisplayName("회원 프로필 수정시 해당 회원이 아닌 경우 실패")
+    @Test
+    void editProfileFalse3() throws Exception {
+        Long id = 1L;
+        AccountSession accountSession = new AccountSession(2L);
+        ProfileEditRequest profileEditRequest = new ProfileEditRequest(id, "test@gmail.com",
+            "Test1234", "Mandu1234", "mandu");
+        doThrow(new Unauthorized()).when(memberService).update(any(), any());
+
+        // when
+
+        // then
+        mockMvc.perform(put("/members/{id}", profileEditRequest.getId())
+                .param("email", profileEditRequest.getEmail())
+                .param("password", profileEditRequest.getPassword())
+                .param("newPassword", profileEditRequest.getNewPassword())
+                .param("nickName", profileEditRequest.getNickName())
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+            .andExpect(status().isUnauthorized())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+            .andExpect(view().name("error/4xx"))
+            .andDo(print());
+    }
+
+    @DisplayName("로그인 페이지")
+    @Test
+    void signInPage() throws Exception {
+        // given
+
+        // when
+
+        // then
+        mockMvc.perform(get("/members/sign-in"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+            .andExpect(view().name("member/signIn"))
+            .andDo(print());
+    }
+
+    @DisplayName("이메일과 패스워드를 입력 받아서 일치하는 회원이 있는 경우 성공")
+    @Test
+    void signIn() throws Exception {
+        // given
+        String email = "test@gmail.com";
+        String password = "Test1234";
+        AccountSession accountSession = new AccountSession(1L);
+        given(memberService.isNotSamePassword(email, password)).willReturn(false);
+        given(memberService.createSession(email)).willReturn(accountSession);
+
+        // when
+
+        // then
+        mockMvc.perform(post("/members/sign-in")
+                .param("email", email)
+                .param("password", password)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/"))
+            .andExpect(request().sessionAttribute(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
+            .andDo(print());
+    }
+
+    @DisplayName("이메일과 패스워드를 입력 받아서 일치하는 회원이 없는 경우 실패")
+    @Test
+    void signInFalse() throws Exception {
+        // given
+        String email = "test@gmail.com";
+        String password = "Test1234";
+        given(memberService.isNotSamePassword(email, password)).willReturn(true);
+
+        // when
+
+        // then
+        mockMvc.perform(post("/members/sign-in")
+                .param("email", email)
+                .param("password", password)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+            .andExpect(status().isOk())
+            .andExpect(view().name("member/signIn"))
+            .andDo(print());
+    }
+
+    @DisplayName("로그인 상태에서 로그아웃시 세션이 무효화 된다")
+    @Test
+    void signOut() throws Exception {
+        // given
+        AccountSession accountSession = new AccountSession(1L);
+
+        // when
+
+        // then
+        mockMvc.perform(post("/members/sign-out")
+                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/"))
+            .andExpect(request().sessionAttributeDoesNotExist(SignInSessionUtil.SIGN_IN_SESSION_NAME))
             .andDo(print());
     }
 }

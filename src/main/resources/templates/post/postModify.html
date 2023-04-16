@@ -11,7 +11,7 @@
         <div>
             <h2 class="title">글쓰기</h2>
         </div>
-        <form th:action="@{/posts}" th:method="post" th:object="${postWriteRequest}">
+        <form class="form" th:action="@{/posts/{id}(id= __${id}__)}" th:method="put" th:object="${postModifyRequest}">
             <div class="form-floating">
                 <input type="text" class="form-control" id="title" name="title"
                        aria-describedby="validationTitleFeedback"

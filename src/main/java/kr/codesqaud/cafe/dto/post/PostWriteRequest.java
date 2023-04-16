@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.dto.post;
 
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
+import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
 import org.hibernate.validator.constraints.Length;
 
@@ -15,7 +16,7 @@ public class PostWriteRequest {
     @Length(min = 2, max = 3000)
     private final String content;
 
-    private final Long writerId;
+    private Long writerId;
 
     private final LocalDateTime writeDate;
 
@@ -38,11 +39,23 @@ public class PostWriteRequest {
         return writerId;
     }
 
+    public void setWriterId(Long writerId) {
+        this.writerId = writerId;
+    }
+
     public LocalDateTime getWriteDate() {
         return writeDate;
     }
 
     public Post toPost() {
-        return new Post(null, title, content, writerId, writeDate, 0L);
+        return Post.builder()
+            .title(title)
+            .content(content)
+            .writer(Member.builder()
+                .id(writerId)
+                .build())
+            .writeDate(writeDate)
+            .views(0L)
+            .build();
     }
 }
