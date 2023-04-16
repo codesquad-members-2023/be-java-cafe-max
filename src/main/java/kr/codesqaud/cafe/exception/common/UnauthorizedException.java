@@ -1,14 +1,14 @@
 package kr.codesqaud.cafe.exception.common;
 
-public class Unauthorized extends RuntimeException {
+public class UnauthorizedException extends RuntimeException {
 
     private static final String ERROR_MASSAGE = "권환이 없습니다.";
 
-    public Unauthorized() {
+    public UnauthorizedException() {
         super(ERROR_MASSAGE);
     }
 
-    public Unauthorized(String message) {
+    public UnauthorizedException(String message) {
         super(message);
     }
 }

@@ -6,7 +6,7 @@ import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
-import kr.codesqaud.cafe.exception.common.Unauthorized;
+import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.config.session.AccountSession;
@@ -46,7 +46,7 @@ public class MemberService {
             .orElseThrow(MemberNotFoundException::new);
 
         if (!findMember.equalsId(accountSession.getId())) {
-            throw new Unauthorized();
+            throw new UnauthorizedException();
         }
 
         memberRepository.update(profileEditRequest.toMember());

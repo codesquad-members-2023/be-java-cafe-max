@@ -6,7 +6,7 @@ import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
-import kr.codesqaud.cafe.exception.common.Unauthorized;
+import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
@@ -60,7 +60,7 @@ public class PostService {
             .orElseThrow(PostNotFoundException::new);
 
         if (!findPost.equalsWriterId(accountSession.getId())) {
-            throw new Unauthorized();
+            throw new UnauthorizedException();
         }
     }
 

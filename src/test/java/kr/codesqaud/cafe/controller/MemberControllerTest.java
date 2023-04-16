@@ -21,7 +21,7 @@ import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
-import kr.codesqaud.cafe.exception.common.Unauthorized;
+import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.service.MemberService;
 import kr.codesqaud.cafe.util.SignInSessionUtil;
 import org.junit.jupiter.api.DisplayName;
@@ -290,7 +290,7 @@ class MemberControllerTest {
         AccountSession accountSession = new AccountSession(2L);
         ProfileEditRequest profileEditRequest = new ProfileEditRequest(id, "test@gmail.com",
             "Test1234", "Mandu1234", "mandu");
-        doThrow(new Unauthorized()).when(memberService).update(any(), any());
+        doThrow(new UnauthorizedException()).when(memberService).update(any(), any());
 
         // when
 

@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Stream;
-import kr.codesqaud.cafe.exception.common.Unauthorized;
+import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
@@ -224,7 +224,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(2L);
-        willThrow(new Unauthorized()).given(postService).validateUnauthorized(id, accountSession);
+        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(id, accountSession);
 
         // when
 
@@ -302,7 +302,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(2L);
-        willThrow(new Unauthorized()).given(postService).validateUnauthorized(id, accountSession);
+        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(id, accountSession);
 
         // when
 
@@ -359,7 +359,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(1L);
-        willThrow(new Unauthorized()).given(postService).validateUnauthorized(id, accountSession);
+        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(id, accountSession);
 
         // when
 

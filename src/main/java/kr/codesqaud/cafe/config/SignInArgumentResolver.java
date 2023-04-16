@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.config;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import kr.codesqaud.cafe.exception.common.Unauthorized;
+import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.config.session.SignIn;
 import kr.codesqaud.cafe.util.SignInSessionUtil;
@@ -27,7 +27,7 @@ public class SignInArgumentResolver implements HandlerMethodArgumentResolver {
         HttpSession session = request.getSession(false);
 
         if (session == null) {
-            throw new Unauthorized();
+            throw new UnauthorizedException();
         }
 
         return session.getAttribute(SignInSessionUtil.SIGN_IN_SESSION_NAME);

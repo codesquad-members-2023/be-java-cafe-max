@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.config;
 
 import kr.codesqaud.cafe.exception.common.NotFoundException;
-import kr.codesqaud.cafe.exception.common.Unauthorized;
+import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,8 +16,8 @@ public class GlobalExceptionHandler {
     private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(Unauthorized.class)
-    public String unauthorized(Unauthorized e, Model model) {
+    @ExceptionHandler(UnauthorizedException.class)
+    public String unauthorized(UnauthorizedException e, Model model) {
         logger.error("Unauthorized", e);
         model.addAttribute("status", HttpStatus.UNAUTHORIZED.value());
         model.addAttribute("error", HttpStatus.UNAUTHORIZED.getReasonPhrase());

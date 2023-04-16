@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import kr.codesqaud.cafe.exception.common.Unauthorized;
+import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.config.session.SignIn;
 import kr.codesqaud.cafe.dto.member.SignInRequest;
@@ -72,7 +72,7 @@ public class MemberController {
     public String profileEditForm(@PathVariable Long id, Model model,
         @SignIn AccountSession accountSession) {
         if (!id.equals(accountSession.getId())) {
-            throw new Unauthorized();
+            throw new UnauthorizedException();
         }
 
         model.addAttribute("profileEditRequest", ProfileEditRequest.from(memberService.findById(id)));
