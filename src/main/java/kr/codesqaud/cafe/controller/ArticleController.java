@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import static kr.codesqaud.cafe.config.Session.*;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -28,7 +30,7 @@ public class ArticleController {
 
 	@PostMapping("/article/submit")
 	public String postArticle(@ModelAttribute @Valid ArticleDTO articleDto, HttpSession httpSession) {
-		Session session = (Session)httpSession.getAttribute(Session.LOGIN_USER);
+		Session session = getLoginUser(httpSession);
 		articleDto.setId(session.getId());
 		articleDto.setNickName(session.getNickName());
 		articleService.post(articleDto);
@@ -43,7 +45,7 @@ public class ArticleController {
 
 	@GetMapping("/article/update-form/{idx}")
 	public String showUpdateForm(@PathVariable Long idx, Model model, HttpSession httpSession) {
-		Session session = (Session)httpSession.getAttribute(Session.LOGIN_USER);
+		Session session = getLoginUser(httpSession);
 		model.addAttribute("article", articleService.validSessionIdAndArticleId(idx, session.getId()));
 		model.addAttribute("idx", idx);
 		return "post/updateForm";
@@ -58,7 +60,7 @@ public class ArticleController {
 
 	@DeleteMapping("/article/{idx}/delete")
 	public String deleteArticle(@PathVariable Long idx, HttpSession httpSession) {
-		Session session = (Session)httpSession.getAttribute(Session.LOGIN_USER);
+		Session session = getLoginUser(httpSession);
 		articleService.deleteArticleByIdx(idx, session.getId());
 		return "redirect:/";
 	}
