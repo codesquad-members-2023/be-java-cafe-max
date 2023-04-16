@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe;
+package kr.codesqaud.cafe.domain;
 
 public class User {
     private static int userNumFactory = 0;
@@ -8,7 +8,7 @@ public class User {
     private String email;       // form에서 사용된 name에 맞춤
 
     public User(String userId, String password, String email) {
-        userNumFactory += 1;
+        userNumFactory += 1;                  //    고민하기!
         this.userNum = userNumFactory;
         this.userId = userId;
         this.password = password;
