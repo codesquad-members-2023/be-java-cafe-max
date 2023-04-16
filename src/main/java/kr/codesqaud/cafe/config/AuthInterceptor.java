@@ -17,11 +17,14 @@ public class AuthInterceptor implements HandlerInterceptor {
             return true;
         }
         HttpSession session = request.getSession();
-        if (request.getRequestURI().equals("/users") && request.getMethod().equals("POST")) {
-            return true;
-        }
-
         User user = (User) session.getAttribute("user");
+        if (request.getRequestURI().equals("/users")) {
+            if (request.getMethod().equals("POST")) {
+                return true;
+            } else if (request.getMethod().equals("GET") && !user.isManager()) {
+                throw new RuntimeException();
+            }
+        }
         if (user == null) {
             response.sendRedirect("/users/login");
             return false;

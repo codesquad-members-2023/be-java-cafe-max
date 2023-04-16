@@ -74,8 +74,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String viewUsers(Model model, @SessionAttribute User user) {
-        userService.checkManager(user);
+    public String viewUsers(Model model) {
         List<UserForm> allUserForm = userService.getAllUsersForm();
         model.addAttribute(USERS, allUserForm);
         return "account/users";

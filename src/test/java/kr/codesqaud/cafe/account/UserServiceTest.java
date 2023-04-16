@@ -105,14 +105,6 @@ class UserServiceTest {
         assertThatCode(() -> userService.checkId(jack, NO_MATCH_USER_ID)).isInstanceOf(RuntimeException.class);
     }
 
-    @DisplayName("User가 Manager인지 확인")
-    @Test
-    void checkManager() {
-        User jack = userService.save(new JoinForm(JACK, JACK_EMAIL, TEST_PASSWORD, TEST_PASSWORD));
-        assertThatThrownBy(() -> userService.checkManager(jack)).isInstanceOf(RuntimeException.class);
-        jack.setRole(Role.MANAGER);
-        assertThatCode(() -> userService.checkManager(jack)).doesNotThrowAnyException();
-    }
 
     @DisplayName("다른 중복된 email인지 확인")
     @Test
