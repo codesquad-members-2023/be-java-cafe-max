@@ -7,13 +7,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class LoginInterceptor implements HandlerInterceptor {
+    private static final String LOGIN_URL = "/users/login";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession httpSession = request.getSession(false);
 
         if (httpSession == null || httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_ID) == null) {
-            response.sendRedirect("/users/login");
+            response.sendRedirect(LOGIN_URL);
             return false;
         }
 
