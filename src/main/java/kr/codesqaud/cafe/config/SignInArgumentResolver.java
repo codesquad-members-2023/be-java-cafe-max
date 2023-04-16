@@ -7,11 +7,13 @@ import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.config.session.SignIn;
 import kr.codesqaud.cafe.util.SignInSessionUtil;
 import org.springframework.core.MethodParameter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+@Component
 public class SignInArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override

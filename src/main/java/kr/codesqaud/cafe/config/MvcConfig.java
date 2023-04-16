@@ -9,9 +9,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
+    private final SignInInterceptor signInInterceptor;
+    private final SignInArgumentResolver signInArgumentResolver;
+
+    public MvcConfig(SignInInterceptor signInInterceptor,
+        SignInArgumentResolver signInArgumentResolver) {
+        this.signInInterceptor = signInInterceptor;
+        this.signInArgumentResolver = signInArgumentResolver;
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new SignInInterceptor())
+        registry.addInterceptor(signInInterceptor)
             .addPathPatterns("/**")
             .excludePathPatterns("/", "/members/sign-up", "/members/sign-in", "/members/sign-out",
                 "/css/**", "/error/**");
@@ -19,6 +28,6 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(new SignInArgumentResolver());
+        resolvers.add(signInArgumentResolver);
     }
 }
