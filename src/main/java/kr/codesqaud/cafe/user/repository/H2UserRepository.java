@@ -8,8 +8,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.user.dto.request.SignUpDTO;
-import kr.codesqaud.cafe.user.dto.response.UserDTO;
+import kr.codesqaud.cafe.user.dto.request.SignUpRequestDTO;
+import kr.codesqaud.cafe.user.dto.response.UserResponseDTO;
 
 @Repository
 @Primary
@@ -20,7 +20,7 @@ public class H2UserRepository implements UserRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public void insert(SignUpDTO dto) throws IllegalArgumentException {
+	public void insert(SignUpRequestDTO dto) throws IllegalArgumentException {
 		String sql = "INSERT INTO \"user\"(userId, password, name, email) VALUES (?, ?, ?, ?)";
 		try {
 			jdbcTemplate.update(sql, dto.getUserId(), dto.getPassword(), dto.getName(), dto.getEmail());
@@ -30,17 +30,17 @@ public class H2UserRepository implements UserRepository {
 	}
 
 	@Override
-	public List<UserDTO> selectAll() {
+	public List<UserResponseDTO> selectAll() {
 		return null;
 	}
 
 	@Override
-	public UserDTO selectByUserId(String userId) throws NoSuchElementException {
+	public UserResponseDTO selectByUserId(String userId) throws NoSuchElementException {
 		return null;
 	}
 
 	@Override
-	public void update(SignUpDTO dto) throws NoSuchElementException {
+	public void update(SignUpRequestDTO dto) throws NoSuchElementException {
 		// TODO document why this method is empty
 	}
 }

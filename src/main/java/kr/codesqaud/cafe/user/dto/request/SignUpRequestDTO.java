@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 
 import kr.codesqaud.cafe.user.domain.User;
 
-public class SignUpDTO {
+public class SignUpRequestDTO {
 	@NotBlank(message = "아이디를 입력해 주세요.")
 	@Pattern(regexp = "^[a-zA-z0-9]{4,20}$"
 		, message = "아이디는 영문, 숫자 조합 4 ~ 20자를 입력해 주세요.")
@@ -31,7 +31,7 @@ public class SignUpDTO {
 		return password.equals(passwordCheck);
 	}
 
-	public SignUpDTO(String userId, String password, String passwordCheck, String name, String email) {
+	public SignUpRequestDTO(String userId, String password, String passwordCheck, String name, String email) {
 		this.userId = userId;
 		this.password = password;
 		this.passwordCheck = passwordCheck;
@@ -59,8 +59,8 @@ public class SignUpDTO {
 		return email;
 	}
 
-	public User toUser(int idx) {
-		return new User(idx, userId, password, name, email);
+	public User toUser(int id) {
+		return new User(id, userId, password, name, email);
 	}
 
 }

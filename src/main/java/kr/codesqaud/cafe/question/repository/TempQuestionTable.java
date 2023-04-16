@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import kr.codesqaud.cafe.question.domain.Question;
-import kr.codesqaud.cafe.question.dto.response.QuestionWriteDTO;
+import kr.codesqaud.cafe.question.dto.request.QuestionWriteRequestDTO;
 
 public class TempQuestionTable {
 	private final List<Question> questions = new ArrayList<>();
-	private final AtomicInteger questionIdx = new AtomicInteger(1);
+	private final AtomicInteger id = new AtomicInteger(1);
 
-	public synchronized void insert(QuestionWriteDTO dto) {
-		questions.add(dto.toEntity(questionIdx.getAndIncrement()));
+	public synchronized void insert(QuestionWriteRequestDTO dto) {
+		questions.add(dto.toEntity(id.getAndIncrement()));
 	}
 
 	public List<Question> select() {

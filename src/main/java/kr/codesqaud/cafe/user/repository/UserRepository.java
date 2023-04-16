@@ -3,15 +3,15 @@ package kr.codesqaud.cafe.user.repository;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import kr.codesqaud.cafe.user.dto.request.SignUpDTO;
-import kr.codesqaud.cafe.user.dto.response.UserDTO;
+import kr.codesqaud.cafe.user.dto.request.SignUpRequestDTO;
+import kr.codesqaud.cafe.user.dto.response.UserResponseDTO;
 
 public interface UserRepository {
-	void insert(SignUpDTO dto) throws IllegalArgumentException;
+	void insert(SignUpRequestDTO dto) throws IllegalArgumentException;
 
-	List<UserDTO> selectAll();
+	List<UserResponseDTO> selectAll();
 
-	UserDTO selectByUserId(String userId) throws NoSuchElementException;
+	UserResponseDTO selectByUserId(String userId) throws NoSuchElementException;
 
-	void update(SignUpDTO dto) throws NoSuchElementException;
+	void update(SignUpRequestDTO dto) throws NoSuchElementException;
 }

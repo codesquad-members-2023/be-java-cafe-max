@@ -11,9 +11,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.question.dto.response.QuestionDetailDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionTitleDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionWriteDTO;
+import kr.codesqaud.cafe.question.dto.request.QuestionWriteRequestDTO;
+import kr.codesqaud.cafe.question.dto.response.QuestionDetailResponseDTO;
+import kr.codesqaud.cafe.question.dto.response.QuestionTitleResponseDTO;
 
 @Repository
 @Primary
@@ -24,7 +24,7 @@ public class H2QuestionRepository implements QuestionRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public void insert(QuestionWriteDTO dto) {
+	public void insert(QuestionWriteRequestDTO dto) {
 		String sql = "INSERT INTO \"post\"(writer, title, contents) VALUES (:writer , :title, :contents)";
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("writer", dto.getWriter())
@@ -39,25 +39,25 @@ public class H2QuestionRepository implements QuestionRepository {
 		return jdbcTemplate.queryForObject(sql, (SqlParameterSource)null, Integer.class);
 	}
 
-	public List<QuestionTitleDTO> selectQuestionTitlesByOffset(int postOffset, int pageSize) {
+	public List<QuestionTitleResponseDTO> selectQuestionTitlesByOffset(int postOffset, int pageSize) {
 		String sql = "SELECT idx, writer, title, contents, registrationdatetime FROM \"post\" ORDER BY idx ASC LIMIT :pageSize OFFSET :postOffset";
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("postOffset", postOffset)
 			.addValue("pageSize", pageSize);
-		RowMapper<QuestionTitleDTO> rowMapper = (rs, rowNum) ->
-			new QuestionTitleDTO(rs.getInt("idx"), rs.getString("writer"),
+		RowMapper<QuestionTitleResponseDTO> rowMapper = (rs, rowNum) ->
+			new QuestionTitleResponseDTO(rs.getInt("idx"), rs.getString("writer"),
 				rs.getString("title"),
 				rs.getTimestamp("registrationDateTime").toLocalDateTime());
 
 		return jdbcTemplate.query(sql, parameters, rowMapper);
 	}
 
-	public QuestionDetailDTO selectByIdx(int idx) throws NoSuchElementException {
-		String sql = "SELECT idx, writer, title, contents, registrationdatetime FROM \"post\"  WHERE idx = :idx";
+	public QuestionDetailResponseDTO selectById(int id) throws NoSuchElementException {
+		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\"  WHERE idx = :id";
 		SqlParameterSource parameters = new MapSqlParameterSource()
-			.addValue("idx", idx);
-		RowMapper<QuestionDetailDTO> rowMapper = (rs, rowNum) ->
-			new QuestionDetailDTO(rs.getInt("idx"),
+			.addValue("id", id);
+		RowMapper<QuestionDetailResponseDTO> rowMapper = (rs, rowNum) ->
+			new QuestionDetailResponseDTO(rs.getInt("id"),
 				rs.getString("writer"),
 				rs.getString("title"),
 				rs.getString("contents"),

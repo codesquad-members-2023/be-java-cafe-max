@@ -2,26 +2,26 @@ package kr.codesqaud.cafe.question.domain;
 
 import java.time.LocalDateTime;
 
-import kr.codesqaud.cafe.question.dto.response.QuestionDetailDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionTitleDTO;
+import kr.codesqaud.cafe.question.dto.response.QuestionDetailResponseDTO;
+import kr.codesqaud.cafe.question.dto.response.QuestionTitleResponseDTO;
 
 public class Question {
-	private int idx;
+	private int id;
 	private String writer;
 	private String title;
 	private String contents;
 	private LocalDateTime registrationDateTime;
 
-	public Question(int idx, String writer, String title, String contents, LocalDateTime registrationDateTime) {
-		this.idx = idx;
+	public Question(int id, String writer, String title, String contents, LocalDateTime registrationDateTime) {
+		this.id = id;
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
 		this.registrationDateTime = registrationDateTime;
 	}
 
-	public int getIdx() {
-		return idx;
+	public int getId() {
+		return id;
 	}
 
 	public String getWriter() {
@@ -40,11 +40,11 @@ public class Question {
 		return registrationDateTime;
 	}
 
-	public QuestionDetailDTO toDetailsDto() {
-		return new QuestionDetailDTO(idx, writer, title, contents, registrationDateTime);
+	public QuestionDetailResponseDTO toDetailsDto() {
+		return new QuestionDetailResponseDTO(id, writer, title, contents, registrationDateTime);
 	}
 
-	public QuestionTitleDTO toTitleDto() {
-		return new QuestionTitleDTO(idx, writer, title, registrationDateTime);
+	public QuestionTitleResponseDTO toTitleDto() {
+		return new QuestionTitleResponseDTO(id, writer, title, registrationDateTime);
 	}
 }

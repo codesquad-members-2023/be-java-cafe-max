@@ -7,11 +7,11 @@ import kr.codesqaud.cafe.common.domain.PageHandler;
 /**
  * Q&A 게시판 목록과 페이징 정보를 저장할 DTO
  */
-public class QuestionBoardDTO {
+public class QuestionBoardResponseDTO {
 	private final PageHandler pageHandler;
-	private final List<QuestionTitleDTO> questionTitles;
+	private final List<QuestionTitleResponseDTO> questionTitles;
 
-	public QuestionBoardDTO(PageHandler pageHandler, List<QuestionTitleDTO> questionTitles) {
+	public QuestionBoardResponseDTO(PageHandler pageHandler, List<QuestionTitleResponseDTO> questionTitles) {
 		this.pageHandler = pageHandler;
 		this.questionTitles = questionTitles;
 	}
@@ -20,7 +20,7 @@ public class QuestionBoardDTO {
 		return pageHandler;
 	}
 
-	public List<QuestionTitleDTO> getQuestionTitles() {
+	public List<QuestionTitleResponseDTO> getQuestionTitles() {
 		return questionTitles;
 	}
 }

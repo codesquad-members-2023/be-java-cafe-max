@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.common.repository.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.question.domain.Question;
-import kr.codesqaud.cafe.question.dto.response.QuestionDetailDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionTitleDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionWriteDTO;
+import kr.codesqaud.cafe.question.dto.request.QuestionWriteRequestDTO;
+import kr.codesqaud.cafe.question.dto.response.QuestionDetailResponseDTO;
+import kr.codesqaud.cafe.question.dto.response.QuestionTitleResponseDTO;
 
 @Repository
 public class CollectionFrameWorkQuestionRepository implements QuestionRepository {
@@ -23,7 +23,7 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 		dummyData.insertQuestionsDummyData(questionTable);
 	}
 
-	public void insert(QuestionWriteDTO dto) {
+	public void insert(QuestionWriteRequestDTO dto) {
 		questionTable.insert(dto);
 	}
 
@@ -31,17 +31,17 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 		return questionTable.countAll();
 	}
 
-	public List<QuestionTitleDTO> selectQuestionTitlesByOffset(int postOffset, int pageSize) {
+	public List<QuestionTitleResponseDTO> selectQuestionTitlesByOffset(int postOffset, int pageSize) {
 		return questionTable.select().stream()
-			.sorted(Comparator.comparing(Question::getIdx).reversed())
+			.sorted(Comparator.comparing(Question::getId).reversed())
 			.skip(postOffset).limit(pageSize)
 			.map(Question::toTitleDto)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public QuestionDetailDTO selectByIdx(int idx) throws NoSuchElementException {
+	public QuestionDetailResponseDTO selectById(int id) throws NoSuchElementException {
 		for (Question question : questionTable.select()) {
-			if (question.getIdx() == idx) {
+			if (question.getId() == id) {
 				return question.toDetailsDto();
 			}
 		}

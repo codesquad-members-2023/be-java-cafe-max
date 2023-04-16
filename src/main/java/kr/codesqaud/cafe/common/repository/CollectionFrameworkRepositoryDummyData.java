@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.common.repository;
 
-import kr.codesqaud.cafe.question.dto.response.QuestionWriteDTO;
+import kr.codesqaud.cafe.question.dto.request.QuestionWriteRequestDTO;
 import kr.codesqaud.cafe.question.repository.TempQuestionTable;
-import kr.codesqaud.cafe.user.dto.request.SignUpDTO;
+import kr.codesqaud.cafe.user.dto.request.SignUpRequestDTO;
 import kr.codesqaud.cafe.user.repository.TempUserTable;
 
 public class CollectionFrameworkRepositoryDummyData {
@@ -13,12 +13,12 @@ public class CollectionFrameworkRepositoryDummyData {
 	 */
 	public void insertUserDummyData(TempUserTable table) {
 		String password = "qwe123!!!";
-		table.insert(new SignUpDTO("admin", password, password, "관리자", "admin@mail.com"));
-		table.insert(new SignUpDTO("apeintospace", password, password, "ape", "ape@mail.com"));
-		table.insert(new SignUpDTO("user01", password, password, "유저", "user01@mail.com"));
-		table.insert(new SignUpDTO("user02", password, password, "유저", "user02@mail.com"));
-		table.insert(new SignUpDTO("user03", password, password, "유저", "user03@mail.com"));
-		table.insert(new SignUpDTO("user04", password, password, "유저", "user04@mail.com"));
+		table.insert(new SignUpRequestDTO("admin", password, password, "관리자", "admin@mail.com"));
+		table.insert(new SignUpRequestDTO("apeintospace", password, password, "ape", "ape@mail.com"));
+		table.insert(new SignUpRequestDTO("user01", password, password, "유저", "user01@mail.com"));
+		table.insert(new SignUpRequestDTO("user02", password, password, "유저", "user02@mail.com"));
+		table.insert(new SignUpRequestDTO("user03", password, password, "유저", "user03@mail.com"));
+		table.insert(new SignUpRequestDTO("user04", password, password, "유저", "user04@mail.com"));
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class CollectionFrameworkRepositoryDummyData {
 	 */
 	public void insertQuestionsDummyData(TempQuestionTable table) {
 		for (int i = 1; i <= 500; i++) {
-			table.insert(new QuestionWriteDTO("apeintospace", "title" + i, "content" + i));
+			table.insert(new QuestionWriteRequestDTO("apeintospace", "title" + i, "content" + i));
 		}
 	}
 }

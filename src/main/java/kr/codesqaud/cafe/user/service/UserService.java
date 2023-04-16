@@ -5,8 +5,8 @@ import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
-import kr.codesqaud.cafe.user.dto.request.SignUpDTO;
-import kr.codesqaud.cafe.user.dto.response.UserDTO;
+import kr.codesqaud.cafe.user.dto.request.SignUpRequestDTO;
+import kr.codesqaud.cafe.user.dto.response.UserResponseDTO;
 import kr.codesqaud.cafe.user.repository.UserRepository;
 
 @Service
@@ -22,7 +22,7 @@ public class UserService {
 	 * @param dto 회원 가입 정보
 	 * @throws IllegalArgumentException 이미 등록된 회원 ID을 중복하여 등록한 경우 Exception 발생
 	 */
-	public void addUser(SignUpDTO dto) throws IllegalArgumentException {
+	public void addUser(SignUpRequestDTO dto) throws IllegalArgumentException {
 		repository.insert(dto);
 	}
 
@@ -30,7 +30,7 @@ public class UserService {
 	 * 회원 목록 검색
 	 * @return 회원 목록이 담긴 List
 	 */
-	public List<UserDTO> findAllUsers() {
+	public List<UserResponseDTO> findAllUsers() {
 		return repository.selectAll();
 	}
 
@@ -40,7 +40,7 @@ public class UserService {
 	 * @return ID에 해당하는 회원 정보
 	 * @throws NoSuchElementException 존재하지 않는 회원을 검색한 경우 Exception 발생
 	 */
-	public UserDTO findUser(String userId) throws NoSuchElementException {
+	public UserResponseDTO findUser(String userId) throws NoSuchElementException {
 		return repository.selectByUserId(userId);
 	}
 
@@ -49,7 +49,7 @@ public class UserService {
 	 * @param dto 수정할 회원 정보
 	 * @throws NoSuchElementException 존재하지 않는 회원의 정보를 수정하려 한 경우 Exception 발생
 	 */
-	public void modifyUser(SignUpDTO dto) throws NoSuchElementException {
+	public void modifyUser(SignUpRequestDTO dto) throws NoSuchElementException {
 		repository.update(dto);
 	}
 
