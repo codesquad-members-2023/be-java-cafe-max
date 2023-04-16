@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.config;
 
 import kr.codesqaud.cafe.account.User;
+import kr.codesqaud.cafe.global.IllegalAccessIdException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -29,7 +30,7 @@ public class AuthBeforeAdvice {
                 .findFirst()
                 .orElseThrow();
         if (!user.isSameId(userId)) {
-            throw new RuntimeException("접근 할 수 없습니다.");
+            throw new IllegalAccessIdException();
         }
     }
 }
