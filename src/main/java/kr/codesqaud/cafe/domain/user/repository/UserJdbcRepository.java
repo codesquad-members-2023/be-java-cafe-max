@@ -6,13 +6,14 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 
-public class UserJdbcImpl implements UserRepository {
+public class UserJdbcRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public UserJdbcImpl(JdbcTemplate jdbcTemplate) {
+    public UserJdbcRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -24,10 +25,11 @@ public class UserJdbcImpl implements UserRepository {
     }
 
     @Override
-    public User findById(String id) {
-        return jdbcTemplate.queryForObject(
-                "SELECT * FROM USERS WHERE ID = ?", rowMapper(), id
+    public Optional<User> findById(String id) { // EmptyResultDataAccessException 때문에 query 사용
+        List<User> users= jdbcTemplate.query(
+                "SELECT IDX , ID , PASSWORD , NAME , EMAIL FROM USERS WHERE ID = ?", rowMapper(), id
         );
+        return users.stream().findFirst();
     }
 
     private RowMapper<User> rowMapper() {
@@ -47,7 +49,7 @@ public class UserJdbcImpl implements UserRepository {
     @Override
     public List<User> findAll() {
         return jdbcTemplate.query(
-                "SELECT * FROM USERS", rowMapper()
+                "SELECT IDX , ID , PASSWORD , NAME , EMAIL  FROM USERS", rowMapper()
         );
     }
 }

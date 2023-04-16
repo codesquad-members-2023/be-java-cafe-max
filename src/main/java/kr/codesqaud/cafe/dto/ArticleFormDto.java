@@ -1,14 +1,14 @@
 package kr.codesqaud.cafe.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class ArticleFormDto {
 
-    private String writer;
+    @NotBlank(message = "공백 입력 불가")
     private String title;
+    @NotBlank(message = "공백 입력 불가")
     private String contents;
 
-    public String getWriter() {
-        return writer;
-    }
 
     public String getTitle() {
         return title;
@@ -18,9 +18,6 @@ public class ArticleFormDto {
         return contents;
     }
 
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
 
     public void setTitle(String title) {
         this.title = title;

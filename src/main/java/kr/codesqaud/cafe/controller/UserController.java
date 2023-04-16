@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.dto.LoginSessionDto;
 import kr.codesqaud.cafe.dto.SignUpFormDto;
 import kr.codesqaud.cafe.dto.UpdateFormDto;
 import kr.codesqaud.cafe.domain.user.User;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -19,16 +22,22 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/signup")
+    public String getSignUp(){
+        return "user/form";
+    }
+
 
     @PostMapping("/create")
-    public String postSignUp(SignUpFormDto signUpFormDto) {
+    public String postSignUp(@Valid @ModelAttribute SignUpFormDto signUpFormDto) {
+        userService.duplicatedId(signUpFormDto.getUserId());
         userService.signUp(signUpFormDto);
         return "redirect:/user";
     }
 
     @GetMapping("")
     public String getUserList(Model model) {
-        List<User> list = userService.users();
+        List<User> list = userService.getUserList();
         model.addAttribute("memberList", list);
         return "user/list";
     }
@@ -42,16 +51,33 @@ public class UserController {
     }
 
     @GetMapping("/update/{id}")
-    public String getUpdateForm(@PathVariable String id, Model model) {
+    public String getUpdateForm(@PathVariable String id, Model model, HttpSession session) {
+        userService.updateAccess(id,session);
         User user = userService.findById(id);
         model.addAttribute("user", user);
         return "user/update_form";
     }
 
     @PutMapping("/update/{id}")
-    public String putUpdate(@PathVariable String id, UpdateFormDto updateFormDto) {
+    public String putUpdate(@PathVariable String id, @Valid @ModelAttribute UpdateFormDto updateFormDto ,HttpSession session) {
         userService.update(userService.findById(id), updateFormDto);
+        session.setAttribute("sessionId",new LoginSessionDto(id,updateFormDto.getName()));
         return "redirect:/user";
+    }
+
+    @PostMapping("/signIn")
+    public String signIn (@RequestParam("userId")String id, @RequestParam("password")String password,
+                          HttpSession session){
+        User user = userService.findById(id);
+        userService.login(user,password);
+        session.setAttribute("sessionId",new LoginSessionDto(user.getUserId(),user.getName()));
+        return "redirect:/";
+    }
+
+    @PostMapping("/logout")
+    public String logOut(HttpSession session){
+        session.invalidate();
+        return "redirect:/";
     }
 
 

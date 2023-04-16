@@ -1,5 +1,5 @@
 package kr.codesqaud.cafe.domain.user;
-
+import kr.codesqaud.cafe.dto.UpdateFormDto;
 
 public class User {
 
@@ -19,10 +19,11 @@ public class User {
     }
 
     public User(String userId, String password, String name, String email) {
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
+        this(0,userId,password,name,email);
+    }
+
+    public boolean checkPassword(String FormPassword) {
+        return password.equals(FormPassword);
     }
 
     public int getIndex() {
