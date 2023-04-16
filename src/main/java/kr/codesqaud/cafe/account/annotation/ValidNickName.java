@@ -18,7 +18,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({FIELD})
 @ReportAsSingleViolation
 @Retention(RUNTIME)
-@Documented
 @Constraint(validatedBy = {})
 public @interface ValidNickName {
 
