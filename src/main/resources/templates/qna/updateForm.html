@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <label for="title">제목</label>
                     <input type="text" class="form-control" id="title" name="title" th:errorclass="field-error"
-                           th:errors="*{title}" placeholder="제목"/>
+                           th:field="*{title}" placeholder="제목"/>
                     <div class="field-error" th:errors="*{title}">
                         제목 오류
                     </div>
@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <label for="contents">내용</label>
                     <textarea name="contents" id="contents" rows="5" class="form-control" th:errorclass="field-error"
-                              th:errors="*{contents}"></textarea>
+                              th:field="*{contents}"></textarea>
                     <div class="field-error" th:errors="*{contents}">
                         본문 오류
                     </div>
