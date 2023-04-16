@@ -1,0 +1,33 @@
+.login-section {
+    height: 200px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.login-form {
+    width: 50%;
+    max-width: 400px;
+    margin: 0 auto;
+
+}
+
+.button-form{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    gap: 10px;
+    width: 400px;
+    height: 40px;
+}
+
+.nav-form{
+    display: flex;
+    align-items: center;
+}
+

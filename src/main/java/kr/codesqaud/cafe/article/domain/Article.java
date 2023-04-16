@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.article.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 
 public class Article {
@@ -15,11 +16,14 @@ public class Article {
 
     private long id;
 
-    public Article(String author, String title, String contents) {
+
+
+    public Article(String author, String title, String contents, Long id, LocalDateTime time) {
         this.author = author;
         this.title = title;
         this.contents = contents;
-        this.time = LocalDateTime.now();
+        if(id != null) this.id = id;
+        this.time = Objects.requireNonNullElseGet(time, LocalDateTime::now);
     }
 
     public LocalDateTime getTime() {
@@ -28,10 +32,6 @@ public class Article {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
 
@@ -46,4 +46,5 @@ public class Article {
     public String getContents() {
         return contents;
     }
+
 }

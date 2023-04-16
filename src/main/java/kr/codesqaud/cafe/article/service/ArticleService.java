@@ -3,7 +3,9 @@ package kr.codesqaud.cafe.article.service;
 
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticleDetailDto;
-import kr.codesqaud.cafe.article.dto.ArticleListDto;
+import kr.codesqaud.cafe.article.dto.ArticleFormDto;
+import kr.codesqaud.cafe.article.dto.ArticlePreviewDto;
+import kr.codesqaud.cafe.article.mapper.ArticleDtoMapper;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,25 +23,33 @@ public class ArticleService {
     }
 
     //글 저장
-    public Long save(Article article) {
-        return articleRepository.save(article);
+    public Long save(ArticleFormDto articleFormDto, String author) {
+        return articleRepository.save(ArticleDtoMapper.INSTANCE.toArticle(articleFormDto, author));
     }
 
     //전체 글 목록을 DTO로 필터링 하고 반환
-    public List<ArticleListDto> getArticleListDtos() {
+    public List<ArticlePreviewDto> getPreviewDtos() {
         List<Article> articles = articleRepository.findAll();
-        List<ArticleListDto> articleListDtos = new ArrayList<>();
+        List<ArticlePreviewDto> articlePreviewDtos = new ArrayList<>();
         for (Article article : articles) {
-            articleListDtos.add(new ArticleListDto(article.getAuthor(), article.getTitle(), article.getTime(), article.getId()));
+            articlePreviewDtos.add(ArticleDtoMapper.INSTANCE.toPreviewDto(article));
         }
 
-        return articleListDtos;
+        return articlePreviewDtos;
     }
 
 
     //ID로 글을 찾아 DTO로 필터링 후 반환
     public ArticleDetailDto getArticleDetail(Long index) {
-        Article article = articleRepository.findByID(index);
-        return new ArticleDetailDto(article.getAuthor(), article.getTitle(), article.getContents());
+        Article article = articleRepository.findById(index);
+        return ArticleDtoMapper.INSTANCE.toDetailDto(article);
+    }
+
+    public void update(long id, ArticleFormDto articleFormDto) {
+        articleRepository.modify(ArticleDtoMapper.INSTANCE.toArticle(articleFormDto, id));
+    }
+
+    public void delete(long id) {
+        articleRepository.delete(id);
     }
 }

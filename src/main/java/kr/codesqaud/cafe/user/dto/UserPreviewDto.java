@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.user.dto;
 
-public class UserListDto {
+public class UserPreviewDto {
     //회원 목록 조회영 사용자DTO
     private String userId;
 
@@ -8,9 +8,15 @@ public class UserListDto {
 
     private String email;
 
-    public UserListDto(String userId, String name, String email) {
+    public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
     }
 

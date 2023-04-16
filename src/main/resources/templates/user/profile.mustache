@@ -1,0 +1,19 @@
+{{>layout/header}}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-3">
+            {{#user}}
+            <div class="card">
+                <img class="card-img-top" src="../../static/images/80-text.png" alt="User Profile Image">
+                <div class="card-body">
+                    <h5 class="card-title">{{name}}</h5>
+                    <p class="card-text">{{email}}</p>
+                </div>
+            </div>
+            {{/user}}
+        </div>
+    </div>
+</div>
+
+{{>layout/footer}}

@@ -9,6 +9,6 @@ public interface UserRepository {
 
     public List<User> findAll();
 
-    public Optional<User> findByID(String userID);
+    public Optional<User> findById(String userID);
 
 }

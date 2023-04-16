@@ -1,0 +1,29 @@
+{{>layout/header}}
+<div class="container">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h2 class="mt-5">게시판</h2>
+        <a href="/articles/write-form"><button id="new-post-button" class="btn btn-primary mt-5">새로운 글쓰기</button></a>
+    </div>
+    <hr>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>글쓴이</th>
+            <th>날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#articles}}
+        <tr>
+            <td>{{id}}</td>
+            <td><a href="/articles/{{id}}">{{title}}</a></td>
+            <td>{{author}}</td>
+            <td>{{time}}</td>
+        </tr>
+        {{/articles}}
+        </tbody>
+    </table>
+</div>
+{{>layout/footer}}
