@@ -5,7 +5,7 @@
 - Spring MVC
 - Spring Validation
 - Thymeleaf
-- Spring Jdbc
+- Spring JPA
 
 ## URL Convention
 

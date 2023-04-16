@@ -1,17 +1,69 @@
 package kr.codesqaud.cafe.account;
 
+
+import kr.codesqaud.cafe.post.Post;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Entity
+@Table(name = "ACCOUNT")
 public class User {
 
-    private final Long id;
-    private final String nickname;
-    private final String email;
-    private final String password;
+    private static final String BLANK = "";
+    @Id
+    @GeneratedValue
+    @Column(name = "user_id")
+    private Long id;
+    private String nickname;
+    @Column(unique = true)
+    private String email;
+    private String password;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts = new ArrayList<>();
+
+    public User() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
 
     private User(Builder builder) {
         this.id = builder.id;
         this.email = builder.email;
         this.password = builder.password;
         this.nickname = builder.nickname;
+        this.role = builder.role;
     }
 
     public Long getId() {
@@ -30,20 +82,43 @@ public class User {
         return password;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
     public boolean isSamePassword(String targetPassword) {
         return targetPassword.equals(password);
     }
 
+    public boolean isSameEmail(String email) {
+        return this.email.equals(email);
+    }
+
+    public boolean isSameId(Long userId) {
+        return Objects.equals(id, userId);
+    }
+
+    public boolean isManager() {
+        return role.equals(Role.MANAGER);
+    }
+
     public static class Builder {
-        private Long id = 0L;
-        private String nickname = "";
-        private String email = "";
-        private String password = "";
+        private Long id = Long.MIN_VALUE;
+        private String nickname = BLANK;
+        private String email = BLANK;
+        private String password = BLANK;
+        private Role role = Role.USER;
 
         public Builder id(Long id) {
             this.id = id;
             return this;
         }
+
+        public Builder role(Role role) {
+            this.role = role;
+            return this;
+        }
+
 
         public Builder nickname(String nickname) {
             this.nickname = nickname;

@@ -1,47 +1,59 @@
 package kr.codesqaud.cafe.post;
 
-import kr.codesqaud.cafe.exception.ErrorCode;
+import kr.codesqaud.cafe.account.User;
 import kr.codesqaud.cafe.post.dto.PostForm;
 import kr.codesqaud.cafe.post.dto.SimplePostForm;
-import kr.codesqaud.cafe.post.exception.InvalidPostIdFailedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import kr.codesqaud.cafe.post.exception.IllegalPostEditAccessException;
+import kr.codesqaud.cafe.post.exception.IllegalPostIdException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class PostService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PostService.class);
+
     private final PostRepository postRepository;
 
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 
-    public Post createNewPost(PostForm postForm) {
-        Post post = postForm.toPost();
-        int saveId = postRepository.save(post);
-        return findById(saveId);
+    public Post save(PostForm postForm, User user) {
+        Post post = postForm.toPost(user);
+        return postRepository.save(post);
     }
 
-
-    public Post findById(int postId) {
-
-        Optional<Post> optionalPost = postRepository.findById(postId);
-        if (optionalPost.isEmpty()) {
-            logger.info(ErrorCode.INVALID_POST_ID_CODE.getMessage());
-            throw new InvalidPostIdFailedException(ErrorCode.INVALID_POST_ID_CODE);
+    public Post findById(long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(IllegalPostIdException::new);
+        if (post.isDeleted()) {
+            throw new IllegalPostIdException();
         }
-        return optionalPost.get();
+        return post;
     }
 
     public List<SimplePostForm> getAllPosts() {
-        return postRepository.getAllPosts().stream()
+        return postRepository.findAll().stream()
+                .filter(post -> !post.isDeleted())
                 .map(SimplePostForm::from)
                 .collect(Collectors.toList());
+    }
+
+    public Post updateFromPostForm(Post target, PostForm postForm) {
+        Post post = postRepository.findById(target.getId()).orElseThrow(RuntimeException::new);
+        postForm.editPost(post);
+        return postRepository.save(post);
+    }
+
+    public void checkCanAccess(User user, Long id) {
+        if (!user.isSameId(id)) {
+            throw new IllegalPostEditAccessException();
+        }
+    }
+
+    public void delete(Post post) {
+        post.disable();
+        postRepository.save(post);
     }
 }

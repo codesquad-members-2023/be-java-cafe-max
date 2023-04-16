@@ -1,28 +1,26 @@
 package kr.codesqaud.cafe.account.dto;
 
 import kr.codesqaud.cafe.account.User;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import kr.codesqaud.cafe.account.annotation.ValidEmail;
+import kr.codesqaud.cafe.account.annotation.ValidNickName;
+import kr.codesqaud.cafe.account.annotation.ValidPassword;
 
 public class JoinForm {
-    @NotEmpty
-    @Size(max = 64, min = 2, message = "{error.nickname.size}")
+    @ValidNickName
     private final String nickname;
-    @NotEmpty
-    @Email
+    @ValidEmail
     private final String email;
-    @NotEmpty
-    @Size(max = 32, min = 8, message = "{error.password.size}")
-    @Pattern(regexp = "^(.*[a-z]+.*[1-9]+.*)|(.*[1-9]+.*[a-z]+.*)$", message = "{error.password.pattern}")
+    @ValidPassword
     private final String password;
 
-    public JoinForm(String nickname, String email, String password) {
+    @ValidPassword
+    private final String reconfirmPassword;
+
+    public JoinForm(String nickname, String email, String password, String reconfirmPassword) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
+        this.reconfirmPassword = reconfirmPassword;
     }
 
     public String getNickname() {
@@ -35,6 +33,10 @@ public class JoinForm {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getReconfirmPassword() {
+        return reconfirmPassword;
     }
 
     public User toUser() {

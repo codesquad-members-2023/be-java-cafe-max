@@ -1,24 +1,62 @@
 package kr.codesqaud.cafe.post;
 
+import kr.codesqaud.cafe.account.User;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+@Entity
 public class Post {
-    private final Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    private final String nickname;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", updatable = false)
+    private User user;
 
-    private final String title;
+    private String nickname;
 
-    private final String textContent;
+    private String title;
+    @Lob
+    private String textContent;
 
-    private final LocalDateTime createdDateTime;
+    private LocalDateTime createdDateTime;
 
-    private Post(Builder builder) {
-        this.id = builder.id;
-        this.nickname = builder.nickname;
-        this.createdDateTime = builder.createdDateTime;
-        this.title = builder.title;
-        this.textContent = builder.textContent;
+    private boolean isDeleted;
+
+
+    public Post() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
+
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
     }
 
     public Long getId() {
@@ -41,6 +79,24 @@ public class Post {
         return createdDateTime;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void disable() {
+        isDeleted = true;
+    }
+
+
+    private Post(Builder builder) {
+        this.id = builder.id;
+        this.nickname = builder.nickname;
+        this.createdDateTime = builder.createdDateTime;
+        this.title = builder.title;
+        this.textContent = builder.textContent;
+        this.user = builder.user;
+    }
+
     public static class Builder {
         private Long id;
 
@@ -51,6 +107,7 @@ public class Post {
         private String textContent;
 
         private LocalDateTime createdDateTime;
+        private User user;
 
         public Builder() {
 
@@ -78,6 +135,11 @@ public class Post {
 
         public Builder createdDateTime(LocalDateTime createdDateTime) {
             this.createdDateTime = createdDateTime;
+            return this;
+        }
+
+        public Builder User(User user) {
+            this.user = user;
             return this;
         }
 

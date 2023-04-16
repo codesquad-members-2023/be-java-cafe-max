@@ -1,31 +1,39 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<nav th:fragment="anonymous" class="navbar navbar-expand bg-body-tertiary justify-content-center row-cols-auto">
-    <div class="col-10 row row-cols-auto justify-content-between">
-        <div class="nav align-self-center ms-3">
-            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/}">HELLO JAVA!</a>
-        </div>
-        <div class="container  row row-cols-auto">
-            <div class="nav" id="logout">
-                <a class="btn btn-primary" th:href="@{/users/login}" type="submit" role="button">로그인</a>
-            </div>
+<nav th:fragment="common" class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">CodeNote</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <button th:if="${session.user == null && #httpServletRequest.requestURI != '/users/login'}"
+                    th:onclick="|location.href='@{/users/login}'|"
+                    class="d-flex btn btn-outline-success me-2 nav-item">로그인
+            </button>
+            <button th:if="${session.user == null && #httpServletRequest.requestURI != '/users/join'}"
+                    th:onclick="|location.href='@{/users/join}'|"
+                    class="d-flex btn btn-outline-success me-2 nav-item">회원가입
+            </button>
+            <button th:if="${session.user != null}" class="btn btn-secondary dropdown-toggle" type="button"
+                    aria-expanded="false"
+                    data-bs-toggle="dropdown">
+                Menu
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" th:if="${session.user != null}">
+                <li th:if="${session.user.role == T(kr.codesqaud.cafe.account.Role).MANAGER}">
+                    <a class="dropdown-item" th:href="@{/users}">맴버리스트
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item" th:href="@{/users/{id}/profile(id = ${session.user.id})}">개인정보</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" th:href="@{/posts/form}">글쓰기</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" th:href="@{/users/logout}">로그아웃</a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
-
-<nav th:fragment="user" class="navbar navbar-expand bg-body-tertiary justify-content-center row-cols-auto">
-    <div class="col-10 row row-cols-auto justify-content-between">
-        <div class="nav align-self-center ms-3 ">
-            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/}">HELLO JAVA!</a>
-        </div>
-        <div class="container  row row-cols-auto">
-            <div class="nav" id="membersButton">
-                <a class="btn btn-primary" th:href="@{/users}" type="submit" role="button">맴버리스트</a>
-            </div>
-            <div class="nav" id="logout">
-                <a class="btn btn-primary" th:href="@{/}" type="submit" role="button">로그아웃</a>
-            </div>
-        </div>
-    </div>
-</nav>
-</html>

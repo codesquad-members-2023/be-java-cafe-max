@@ -1,16 +1,18 @@
 package kr.codesqaud.cafe.account;
 
 import kr.codesqaud.cafe.account.dto.JoinForm;
-import kr.codesqaud.cafe.account.dto.ProfileSettingForm;
+import kr.codesqaud.cafe.account.dto.LoginForm;
+import kr.codesqaud.cafe.account.dto.ProfileEditForm;
 import kr.codesqaud.cafe.account.dto.UserForm;
-import kr.codesqaud.cafe.account.exception.InvalidUserIdException;
+import kr.codesqaud.cafe.account.exception.IllegalEditEmailException;
+import kr.codesqaud.cafe.account.exception.IllegalEditPasswordException;
+import kr.codesqaud.cafe.account.exception.IllegalLoginPasswordException;
+import kr.codesqaud.cafe.account.exception.NoSuchLoginEmailException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static kr.codesqaud.cafe.exception.ErrorCode.INVALID_USER_ID_CODE;
 
 
 @Service
@@ -22,24 +24,24 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public int save(JoinForm joinForm) {
+    public User save(JoinForm joinForm) {
         User user = joinForm.toUser();
         return userRepository.save(user);
     }
 
     public List<UserForm> getAllUsersForm() {
-        return userRepository.getAllUsers().stream()
+        return userRepository.findAll().stream()
                 .map(UserForm::from)
                 .collect(Collectors.toList());
     }
 
-    public void update(ProfileSettingForm profileSettingForm, Long userId) {
-        userRepository.update(profileSettingForm.setUser(findById(userId)));
+    public User update(User user, ProfileEditForm profileEditForm) {
+        User entity = profileEditForm.setUser(user);
+        return userRepository.save(entity);
     }
 
-    public boolean isSamePassword(Long userId, String targetPassword) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        return userOptional.map(user -> user.isSamePassword(targetPassword)).orElse(false);
+    public boolean isSamePassword(User user, String targetPassword) {
+        return user.isSamePassword(targetPassword);
     }
 
     public Optional<User> findByEmail(String email) {
@@ -47,19 +49,43 @@ public class UserService {
     }
 
     public boolean containsEmail(String email) {
-        return userRepository.containsEmail(email);
+        return userRepository.existsByEmail(email);
     }
 
-    public User findById(Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            return userOptional.get();
-        } else {
-            throw new InvalidUserIdException(INVALID_USER_ID_CODE);
+    public Optional<User> findById(Long userId) {
+        return userRepository.findById(userId);
+    }
+
+    public void checkId(User user, Long userId) {
+        if (!user.isSameId(userId)) {
+            throw new RuntimeException("접근 할 수 없습니다.");
         }
     }
 
-    public boolean isDuplicateEmail(String targetEmail) {
-        return userRepository.findByEmail(targetEmail).isPresent();
+    public void checkManager(User user) {
+        if (!user.isManager()) {
+            throw new RuntimeException("접근 할 수 없습니다.");
+        }
+    }
+
+    public boolean isDuplicateEmail(User user, String email) {
+        return !user.isSameEmail(email) && containsEmail(email);
+    }
+
+    public User checkLoginForm(LoginForm loginForm) {
+        User user = findByEmail(loginForm.getEmail()).orElseThrow(NoSuchLoginEmailException::new);
+        if (!isSamePassword(user, loginForm.getPassword())) {
+            throw new IllegalLoginPasswordException();
+        }
+        return user;
+    }
+
+    public void checkEditInfo(User user, ProfileEditForm profileEditForm) {
+        if (isDuplicateEmail(user, profileEditForm.getEmail())) {
+            throw new IllegalEditEmailException();
+        }
+        if (!isSamePassword(user, profileEditForm.getPassword())) {
+            throw new IllegalEditPasswordException();
+        }
     }
 }

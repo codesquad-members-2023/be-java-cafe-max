@@ -27,7 +27,7 @@ public class SimplePostForm {
         return new SimplePostForm.Builder()
                 .id(post.getId())
                 .nickname(post.getNickname())
-                .textContent(post.getTextContent())
+                .textContent((post.getTextContent().length() > 150) ? post.getTextContent().substring(0, 150) : post.getTextContent())
                 .title(post.getTitle())
                 .createdDateTime(post.getCreatedDateTime())
                 .build();
