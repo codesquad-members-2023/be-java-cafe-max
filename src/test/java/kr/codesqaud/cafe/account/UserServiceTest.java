@@ -97,14 +97,6 @@ class UserServiceTest {
         assertThat(userRepository.findById(jack.getId())).contains(jack);
     }
 
-    @DisplayName("유저 아이디를 체크")
-    @Test
-    void checkId() {
-        User jack = userService.save(new JoinForm(JACK, JACK_EMAIL, TEST_PASSWORD, TEST_PASSWORD));
-        assertThatCode(() -> userService.checkId(jack, jack.getId())).doesNotThrowAnyException();
-        assertThatCode(() -> userService.checkId(jack, NO_MATCH_USER_ID)).isInstanceOf(RuntimeException.class);
-    }
-
 
     @DisplayName("다른 중복된 email인지 확인")
     @Test

@@ -56,17 +56,6 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
-    public void checkId(User user, Long userId) {
-        if (!user.isSameId(userId)) {
-            throw new RuntimeException("접근 할 수 없습니다.");
-        }
-    }
-
-    public void checkManager(User user) {
-        if (!user.isManager()) {
-            throw new RuntimeException("접근 할 수 없습니다.");
-        }
-    }
 
     public boolean isDuplicateEmail(User user, String email) {
         return !user.isSameEmail(email) && containsEmail(email);

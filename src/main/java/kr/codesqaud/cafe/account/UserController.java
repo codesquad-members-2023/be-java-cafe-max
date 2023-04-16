@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.account;
 
+import kr.codesqaud.cafe.account.annotation.ValidPathId;
 import kr.codesqaud.cafe.account.dto.*;
 import kr.codesqaud.cafe.account.exception.IllegalEditEmailException;
 import kr.codesqaud.cafe.account.exception.IllegalEditPasswordException;
@@ -80,31 +81,31 @@ public class UserController {
         return "account/users";
     }
 
+    @ValidPathId
     @GetMapping("/users/{userId}/profile")
     public String viewUser(Model model, @PathVariable Long userId, @SessionAttribute User user) {
-        userService.checkId(user, userId);
         ProfileForm profileForm = ProfileForm.from(user);
         model.addAttribute(PROFILE_FORM, profileForm);
         model.addAttribute(USER_ID, userId);
         return "account/profile";
     }
 
+    @ValidPathId
     @GetMapping("/users/{userId}/profile/edit")
     public String viewUserProfileEditForm(Model model, @PathVariable Long userId, @SessionAttribute User user) {
-        userService.checkId(user, userId);
         ProfileEditForm profileEditForm = ProfileEditForm.from(user);
         model.addAttribute(USER_ID, userId);
         model.addAttribute(PROFILE_SETTING_FORM, profileEditForm);
         return "account/profileEditForm";
     }
 
+    @ValidPathId
     @PutMapping("/users/{userId}/profile")
     public String updateUserProfile(@Valid ProfileEditForm profileEditForm, BindingResult bindingResult,
                                     @PathVariable Long userId, @SessionAttribute User user, HttpSession httpSession) {
         if (bindingResult.hasErrors()) {
             return "account/profileEditForm";
         }
-        userService.checkId(user, userId);
         try {
             userService.checkEditInfo(user, profileEditForm);
             User updateUser = userService.update(user, profileEditForm);
