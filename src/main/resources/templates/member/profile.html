@@ -19,15 +19,15 @@
                 </div>
                 <div class="col-sm-9">
                     <div class="row row-cols-1">
-                        <span class="col">이메일 : [[${memberResponse.email}]]</span>
-                        <span class="col">닉네임 : [[${memberResponse.nickName}]]</span>
-                        <span class="col">생성날짜 : [[${memberResponse.getCrateDateFormat()}]]</span>
+                        <span class="col">이메일 : [[${memberResponsesDto.email}]]</span>
+                        <span class="col">닉네임 : [[${memberResponsesDto.nickName}]]</span>
+                        <span class="col">생성날짜 : [[${memberResponsesDto.convertLocalDateTime()}]]</span>
                     </div>
                 </div>
             </div>
             <div class="col text-end mt-3">
-                <a th:href="@{/members/{id}/edit(id = ${memberResponse.id})}"
-                   class="btn btn-primary btn-sm">수정</a>
+                <a th:href="@{/members/{email}/edit(email = ${memberResponsesDto.email})}"
+                   class="btn btn-primary btn-sm">수정 완료</a>
             </div>
         </div>
     </div>

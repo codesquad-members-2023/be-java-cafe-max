@@ -13,10 +13,9 @@
                 <h2 class="post-title" th:text="${postResponse.title}">자바 웹개발 교육 홈페이지 디자인 개발</h2>
             </div>
             <div class="row row-cols-3 post-detail">
-                <span class="col-sm-2" th:if="${postResponse.writer == null}">비회원</span>
                 <span class="col-sm-2" th:if="${postResponse.writer != null}"
                       th:text="${postResponse.writer.nickName}">비회원</span>
-                <span class="col-sm-4">작성일자:[[${postResponse.getWriteDateFormat()}]]</span>
+                <span class="col-sm-4">작성일자:[[${postResponse.convertLocalDateTime()}]]</span>
                 <span class="col-sm-2">조회 [[${postResponse.views}]]</span>
             </div>
             <div class="post-content">
@@ -41,7 +40,7 @@
         </div>
         <form>
             <div class="form-group">
-                <div class="comment-from-writer">만두</div>
+                <div class="comment-from-writer">차차</div>
                 <textarea class="form-control" id="comment" name="comment" placeholder="내용을 입력하세요"></textarea>
                 <div class="col text-end">
                     <button class="btn btn-primary btn-sm comment-button" type="submit">등록</button>

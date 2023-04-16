@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="" xmlns="" lang="">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout/head :: head(~{::link})">
   <link rel="stylesheet" th:href="@{/css/member/members.css}">
   <title></title>
@@ -16,7 +16,7 @@
   </div>
   <div id="members" class="row row-cols-1">
     <div id="membersCount" class="col">
-      전체글 [[${memberResponses.size()}]]개
+      전체글 [[${memberResponsesDto.size()}]]개
     </div>
     <table>
       <thead>
@@ -25,12 +25,12 @@
       <th class="signUpDate">회원가입일</th>
       </thead>
       <tbody>
-      <tr th:each="memberResponse : ${memberResponses}">
+      <tr th:each="memberResponse : ${memberResponsesDto}">
         <td class="nickName" >
-          <a class="nav-link" th:href="@{/members/{id}(id = ${memberResponse.id})}" th:text="${memberResponse.nickName}">만두</a>
+          <a class="nav-link" th:href="@{/members/{memberId}(memberId = ${memberResponse.memberId})}" th:text="${memberResponse.nickName}">차차</a>
         </td>
         <td class="email" th:text="${memberResponse.email}">test@gmail.com</td>
-        <td class="signUpDate" th:text="${memberResponse.getCrateDateFormat()}">2023-03-28</td>
+        <td class="signUpDate" th:text="${memberResponse.convertLocalDateTime()}">2023-04-30</td>
       </tr>
       </tbody>
     </table>
