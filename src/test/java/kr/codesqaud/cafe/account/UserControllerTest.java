@@ -236,9 +236,8 @@ class UserControllerTest {
                                 .param(EMAIL, JERRY_EMAIL)
                                 .param(NICKNAME, JERRY)
                                 .session(session))
-                        .andExpect(status().isOk())
-                        .andExpect(model().hasErrors())
-                        .andExpect(view().name("account/profileEditForm"));
+                        .andExpect(status().is4xxClientError())
+                        .andExpect(view().name("account/profileEditFormFailed"));
             }
 
             @DisplayName("실패(유저 아이디)")

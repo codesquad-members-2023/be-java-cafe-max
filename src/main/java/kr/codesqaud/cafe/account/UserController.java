@@ -2,8 +2,6 @@ package kr.codesqaud.cafe.account;
 
 import kr.codesqaud.cafe.account.annotation.ValidPathId;
 import kr.codesqaud.cafe.account.dto.*;
-import kr.codesqaud.cafe.account.exception.IllegalEditEmailException;
-import kr.codesqaud.cafe.account.exception.IllegalEditPasswordException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -101,23 +99,15 @@ public class UserController {
 
     @ValidPathId
     @PutMapping("/users/{userId}/profile")
-    public String updateUserProfile(@Valid ProfileEditForm profileEditForm, BindingResult bindingResult,
+    public String updateUserProfile(@ModelAttribute @Valid ProfileEditForm profileEditForm, BindingResult bindingResult,
                                     @PathVariable Long userId, @SessionAttribute User user, HttpSession httpSession) {
         if (bindingResult.hasErrors()) {
             return "account/profileEditForm";
         }
-        try {
-            userService.checkEditInfo(user, profileEditForm);
-            User updateUser = userService.update(user, profileEditForm);
-            httpSession.setAttribute(ATTRIBUTE_USER, updateUser);
-            return "redirect:/users/{userId}/profile";
-        } catch (IllegalEditEmailException e) {
-            bindingResult.rejectValue(EMAIL, "error.email.duplicate");
-            return "account/profileEditForm";
-        } catch (IllegalEditPasswordException e) {
-            bindingResult.rejectValue(PASSWORD, "error.password.notMatch");
-            return "account/profileEditForm";
-        }
+        userService.checkEditInfo(user, profileEditForm);
+        User updateUser = userService.update(user, profileEditForm);
+        httpSession.setAttribute(ATTRIBUTE_USER, updateUser);
+        return "redirect:/users/{userId}/profile";
     }
 
 }
