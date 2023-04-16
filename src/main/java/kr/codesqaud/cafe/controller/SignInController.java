@@ -35,8 +35,8 @@ public class SignInController {
 	}
 
 	@GetMapping("/user/sign-in/{Id}")
-	public String showSingInSuccessForm(@PathVariable String Id, Model model) {
-		model.addAttribute("user", userService.getUserById(Id));
+	public String showSingInSuccessForm(@PathVariable String id, Model model) {
+		model.addAttribute("user", userService.getUserById(id));
 		return "user/login_success";
 	}
 

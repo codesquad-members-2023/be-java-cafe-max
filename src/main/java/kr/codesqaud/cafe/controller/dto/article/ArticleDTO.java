@@ -16,7 +16,7 @@ public class ArticleDTO {
 
 	private final String date;
 
-	private String Id;
+	private String id;
 
 	private String nickName;
 
@@ -36,7 +36,7 @@ public class ArticleDTO {
 	}
 
 	public String getId() {
-		return Id;
+		return id;
 	}
 
 	public String getNickName() {
@@ -44,7 +44,7 @@ public class ArticleDTO {
 	}
 
 	public void setId(String id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public void setNickName(String nickName) {
