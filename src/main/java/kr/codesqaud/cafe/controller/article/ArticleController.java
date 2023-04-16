@@ -17,6 +17,13 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    @GetMapping
+    public String list(Model model){
+        List<Article> articles = articleService.findArticles();
+        model.addAttribute("articles", articles);
+        return "index";
+    }
+
     @GetMapping("/questions")
     public String create(){
         return "qna/form";
@@ -26,13 +33,6 @@ public class ArticleController {
         Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
         articleService.post(article);
         return "redirect:/";
-    }
-
-    @GetMapping("/")
-    public String list(Model model){
-        List<Article> articles = articleService.findArticles();
-        model.addAttribute("articles", articles);
-        return "index";
     }
 
     @GetMapping("/articles/{id}")
