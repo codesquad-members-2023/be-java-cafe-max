@@ -67,12 +67,13 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public String putUpdate(@PathVariable Long id, @Valid UserUpdateForm updateUser, BindingResult bindingResult) {
+    public String putUpdate(@PathVariable Long id, @Valid UserUpdateForm userUpdated, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("userUpdated", userUpdated);
             return "user/updateForm";
         }
 
-        userService.updateUser(id, updateUser);
+        userService.updateUser(id, userUpdated);
         return "redirect:/users";
     }
 }
