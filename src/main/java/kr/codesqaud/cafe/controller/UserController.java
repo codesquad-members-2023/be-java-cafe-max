@@ -1,6 +1,10 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.common.exception.CommonException;
+import kr.codesqaud.cafe.common.exception.CommonExceptionType;
+import kr.codesqaud.cafe.controller.dto.user.LoginUserSession;
 import kr.codesqaud.cafe.controller.dto.user.UserJoinDto;
+import kr.codesqaud.cafe.controller.dto.user.UserLoginDto;
 import kr.codesqaud.cafe.controller.dto.user.UserUpdateDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +16,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RequestMapping("/users")
@@ -47,7 +54,7 @@ public class UserController {
 
         userService.join(userJoinDto);
 
-        return "redirect:/users";
+        return "redirect:/users/login";
     }
 
     @GetMapping("/{id}")
@@ -58,7 +65,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}/update")
-    public String updateUserForm(@PathVariable Long id, Model model) {
+    public String updateUserForm(@PathVariable Long id, Model model, @SessionAttribute("loginUser") LoginUserSession loginUserSession) {
+        if (loginUserSession.isOtherUser(id)) {
+            throw new CommonException(CommonExceptionType.ACCESS_DENIED);
+        }
         model.addAttribute("user", new UserUpdateDto(userService.find(id)));
 
         return "user/update";
@@ -69,5 +79,36 @@ public class UserController {
         userService.update(userUpdateDto);
 
         return "redirect:/users";
+    }
+
+    @GetMapping("/login")
+    public String loginForm(Model model) {
+        model.addAttribute("loginUser", new UserLoginDto());
+
+        return "user/login";
+    }
+
+    @PostMapping("/login")
+    public String login(@Valid @ModelAttribute("loginUser") UserLoginDto userLoginDto, BindingResult bindingResult, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "user/login";
+        }
+
+        final LoginUserSession loginUser = userService.login(userLoginDto);
+
+        final HttpSession session = request.getSession();
+
+        session.setAttribute("loginUser", loginUser);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("{id}/logout")
+    public String logout(@PathVariable Long id, HttpServletRequest request) {
+        final HttpSession session = request.getSession();
+
+        session.removeAttribute("loginUser");
+
+        return "home";
     }
 }

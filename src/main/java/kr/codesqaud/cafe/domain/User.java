@@ -14,7 +14,7 @@ public class User {
     public User() {
     }
 
-    private User(Long id, String userId, String name, String password, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(Long id, String userId, String name, String password, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -52,40 +52,16 @@ public class User {
         return email;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public boolean isNotMatchedPassword(String password) {

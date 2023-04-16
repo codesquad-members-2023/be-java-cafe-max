@@ -1,38 +1,56 @@
 package kr.codesqaud.cafe.common.exception;
 
+import kr.codesqaud.cafe.common.exception.user.UserJoinException;
+import kr.codesqaud.cafe.common.exception.user.UserLoginException;
 import kr.codesqaud.cafe.controller.dto.ErrorDto;
 import kr.codesqaud.cafe.common.exception.user.UserExceptionType;
-import kr.codesqaud.cafe.common.exception.user.UserFormInputException;
-import kr.codesqaud.cafe.controller.dto.user.UserFormDto;
-import kr.codesqaud.cafe.controller.dto.user.UserUpdateDto;
-import org.springframework.http.HttpStatus;
+import kr.codesqaud.cafe.common.exception.user.UserUpdateException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public String notFoundExceptionHandler(Exception ex, Model model) {
-        model.addAttribute("error", new ErrorDto(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
+    @ExceptionHandler(CommonException.class)
+    public ModelAndView commonExceptionHandler(CommonException ex) {
+        final ModelAndView mav = new ModelAndView();
+        final CommonExceptionType exceptionType = ex.getExceptionType();
 
-        return "error/error_page";
+        mav.setViewName("error/error_page");
+        mav.addObject("error", new ErrorDto(exceptionType.getStatusValue(), exceptionType.getErrorMessage()));
+        mav.setStatus(exceptionType.getStatus());
+
+        return mav;
     }
 
-    @ExceptionHandler(UserFormInputException.class)
-    public String userJoinDuplicatedExceptionHandler(UserFormInputException ex, Model model) {
-        final UserExceptionType exceptionType = ex.getUserExceptionType();
-        final UserFormDto userFormDto = ex.getUserFormDto();
+    @ExceptionHandler(UserJoinException.class)
+    public String userJoinExceptionHandler(UserJoinException ex, Model model) {
+        final UserExceptionType type = ex.getUserExceptionType();
 
-        model.addAttribute("user", userFormDto);
-        model.addAttribute(exceptionType.getCategory(), exceptionType.getMessage());
-
-        if (userFormDto instanceof UserUpdateDto) {
-            return "user/update";
-        }
+        model.addAttribute("user", ex.getUserJoinDto());
+        model.addAttribute(type.getCategory(), type.getMessage());
 
         return "user/form";
+    }
+
+    @ExceptionHandler(UserUpdateException.class)
+    public String userJoinDuplicatedExceptionHandler(UserUpdateException ex, Model model) {
+        final UserExceptionType type = ex.getUserExceptionType();
+
+        model.addAttribute("user", ex.getUserUpdateDto());
+        model.addAttribute(type.getCategory(), type.getMessage());
+
+        return "user/update";
+    }
+
+    @ExceptionHandler(UserLoginException.class)
+    public String userLoginFailedExceptionHandler(UserLoginException ex, Model model) {
+        final UserExceptionType type = ex.getUserExceptionType();
+
+        model.addAttribute("loginUser", ex.getUserLoginDto());
+        model.addAttribute(type.getCategory(), type.getMessage());
+
+        return "user/login";
     }
 }

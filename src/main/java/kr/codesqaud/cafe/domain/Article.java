@@ -4,26 +4,29 @@ import java.time.LocalDateTime;
 
 public class Article {
     private Long id;
-    private String title;
+    private Long userFk;
     private String writer;
+    private String title;
     private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    private Article(Long id, String title, String writer, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Article(Long id, Long userFk, String writer, String title, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.title = title;
+        this.userFk = userFk;
         this.writer = writer;
+        this.title = title;
         this.contents = contents;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public Article(String title, String writer, String contents) {
-        this(null, title, writer, contents, LocalDateTime.now(), LocalDateTime.now());
+    public Article(Long userFk, String title, String contents) {
+        this(null, userFk, null, title, contents, LocalDateTime.now(), LocalDateTime.now());
     }
 
-    public Article() {
+    public Long getuserFk() {
+        return userFk;
     }
 
     public Long getId() {
@@ -52,25 +55,5 @@ public class Article {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
