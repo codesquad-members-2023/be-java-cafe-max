@@ -21,15 +21,15 @@
                            th:value="${session.loginUserId}" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="existingPassword">기존 비밀번호</label>
+                    <label for="existingPassword">새로운 비밀번호</label>
                     <input type="password" class="form-control" id="existingPassword" name="existingPassword"
-                           th:errorclass="field-error" th:field="*{password}" placeholder="Password">
-                    <div class="field-error" th:errors="*{password}">
+                           th:errorclass="field-error" th:field="*{existingPassword}" placeholder="Password">
+                    <div class="field-error" th:errors="*{existingPassword}">
                         패스워드 오류
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password">새로운 비밀번호</label>
+                    <label for="password">새로운 비밀번호 다시</label>
                     <input type="password" class="form-control" id="password" name="password"
                            th:errorclass="field-error" th:field="*{password}" placeholder="Password">
                     <div class="field-error" th:errors="*{password}">
