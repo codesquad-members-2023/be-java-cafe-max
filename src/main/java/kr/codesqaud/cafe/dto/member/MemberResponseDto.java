@@ -35,10 +35,6 @@ public class MemberResponseDto {
         return nickName;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
 
     public static MemberResponseDto of(Member member) {
         return new MemberResponseDto(member.getMemberId(), member.getEmail(), member.getPassword(), member.getNickName(), member.getCreateDate());

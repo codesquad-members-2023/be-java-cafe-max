@@ -10,13 +10,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
-import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
+import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
+import kr.codesqaud.cafe.exception.common.CommonException;
+import kr.codesqaud.cafe.exception.common.CommonExceptionType;
 import kr.codesqaud.cafe.service.MemberService;
+import kr.codesqaud.cafe.session.LoginMemberSession;
 
 @Controller
 @RequestMapping("/member")
@@ -28,19 +35,45 @@ public class MemberController {
     }
 
     @GetMapping
-    public String findAll(Model model) {
+    public String readMember(Model model) {
         model.addAttribute("memberResponsesDto", memberService.findAll());
         return "/all";
     }
 
-    @PostMapping("/signUp")
-    public String signUp(@ModelAttribute("signUpRequestDto") @Valid SignUpRequestDto signUpRequestDto, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "member/signUp";
-        }
-        memberService.signUp(signUpRequestDto);
-        return "redirect:/member";
+    @GetMapping("/join")
+    public String joinMember(Model model) {
+        model.addAttribute("memberJoinRequestDto", new MemberJoinRequestDto());
+        return "/form";
     }
+
+    @PostMapping("/join")
+    public String join(@Valid @ModelAttribute("member") MemberJoinRequestDto memberJoinDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "member/join";
+        }
+        memberService.join(memberJoinDto);
+        return "redirect:/join";
+    }
+
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute("memberLoginRequestDto") @Valid MemberLoginRequestDto memberLoginRequestDto, BindingResult bindingResult, HttpServletRequest httpServletRequest) {
+        if (bindingResult.hasErrors()) {
+            return "member/login";
+        }
+
+        LoginMemberSession loginMember = memberService.login(memberLoginRequestDto);
+        HttpSession httpSession = httpServletRequest.getSession();
+        httpSession.setAttribute("loginMember", loginMember);
+
+        return "redirect:/login";
+    }
+
+    @GetMapping("/login")
+    public String loginForm(@ModelAttribute("signUpRequestDto") MemberLoginRequestDto memberLoginRequestDto) {
+        return "/login";
+    }
+
 
     @GetMapping("/{memberId}")
     public String profile(@PathVariable Long memberId, Model model) {
@@ -60,18 +93,24 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}/edit")
-    public String profileEditForm(@PathVariable Long memberId, Model model) {
+    public String profileEditForm(@PathVariable Long memberId, Model model, @SessionAttribute("loginMember") LoginMemberSession longinMemberSession) {
+        if (longinMemberSession.isNotEqualMember(memberId)) {
+            throw new CommonException(CommonExceptionType.ACCESS_DENIED);
+        }
         model.addAttribute("profileEditRequest", ProfileEditRequestDto.of(memberService.findById(memberId)));
         return "/profileEdit";
     }
 
-    @GetMapping("/signUp")
-    public String signUpForm(@ModelAttribute("signUpRequestDto") SignUpRequestDto signUpRequestDto) {
-        return "/signUp";
-    }
 
     @DeleteMapping("/{memberId}")
     public void deleteId(@PathVariable Long memberId) {
         memberService.deleteById(memberId);
+    }
+
+    @GetMapping("/{memberId}/logout")
+    public String logout(HttpServletRequest httpServletRequest) {
+        final HttpSession httpSession = httpServletRequest.getSession();
+        httpSession.removeAttribute("loginMember");
+        return "home";
     }
 }

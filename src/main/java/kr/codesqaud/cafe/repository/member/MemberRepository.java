@@ -10,6 +10,10 @@ public interface MemberRepository {
 
     Optional<Member> findById(Long memberId);
 
+    Optional<Member> findByEmail(String email);
+
+    Optional<Member> findByNickName(String nickName);
+
     List<Member> findAll();
 
     void update(Member member);

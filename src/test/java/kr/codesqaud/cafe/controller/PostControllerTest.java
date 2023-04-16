@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
-import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
+import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
@@ -60,8 +60,8 @@ class PostControllerTest {
 
     @Test
     void write() throws Exception {
-        SignUpRequestDto requestDtoMember = dummyMemberData();
-        Long memberId = memberService.signUp(requestDtoMember);
+        MemberJoinRequestDto requestDtoMember = dummyMemberData();
+        Long memberId = memberService.join(requestDtoMember);
         Member member = memberRepository.findById(memberId).orElseThrow();
 
         Long savedPostId = postRepository.save(dummyPostData(member), member);
@@ -81,8 +81,8 @@ class PostControllerTest {
 
     @Test
     void eachPost() throws Exception {
-        SignUpRequestDto requestDtoMember = basicMemberData();
-        Long memberId = memberService.signUp(requestDtoMember);
+        MemberJoinRequestDto requestDtoMember = basicMemberData();
+        Long memberId = memberService.join(requestDtoMember);
         Member member = memberRepository.findById(memberId).orElseThrow();
         Long savedPostId = postRepository.save(basicPostData(member), member);
 
@@ -100,11 +100,11 @@ class PostControllerTest {
                 .andDo(print());
     }
 
-    private SignUpRequestDto basicMemberData() {
+    private MemberJoinRequestDto basicMemberData() {
         String email = "test@gmail.com";
         String password = "testtest";
         String nickName = "chacha";
-        return new SignUpRequestDto(email, password, nickName);
+        return new MemberJoinRequestDto(email, password, nickName);
     }
 
 
@@ -116,11 +116,11 @@ class PostControllerTest {
         return new Post(title, content, member, writeTime, views);
     }
 
-    private SignUpRequestDto dummyMemberData() {
+    private MemberJoinRequestDto dummyMemberData() {
         String email = "dummy@gmail.com";
         String password = "dummydummy";
         String nickName = "피오니";
-        return new SignUpRequestDto(email, password, nickName);
+        return new MemberJoinRequestDto(email, password, nickName);
     }
 
     private Post dummyPostData(Member member) {

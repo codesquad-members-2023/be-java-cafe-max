@@ -5,14 +5,21 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
 import kr.codesqaud.cafe.dto.member.MemberResponseDto;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
-import kr.codesqaud.cafe.dto.member.SignUpRequestDto;
+import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
+import kr.codesqaud.cafe.exception.common.CommonException;
+import kr.codesqaud.cafe.exception.common.CommonExceptionType;
+import kr.codesqaud.cafe.exception.member.MemberExceptionType;
+import kr.codesqaud.cafe.exception.member.MemberJoinException;
+import kr.codesqaud.cafe.exception.member.MemberLoginException;
+import kr.codesqaud.cafe.exception.member.MemberProfileEditException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
+import kr.codesqaud.cafe.session.LoginMemberSession;
 
 @Service
 public class MemberService {
@@ -22,11 +29,11 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public long signUp(SignUpRequestDto signUpRequestDto) {
-        Member member = signUpRequestDto.toEntity();
-        if (member == null) {
-            throw new IllegalArgumentException("Member 객체를 생성할 수 없습니다.");
-        }
+    public Long join(MemberJoinRequestDto memberJoinRequestDto) {
+        Member member = memberJoinRequestDto.toUser();
+        memberRepository.findByEmail(memberJoinRequestDto.getEmail()).ifPresent(m -> {
+            throw new MemberJoinException(MemberExceptionType.DUPLICATED_EMAIL, memberJoinRequestDto);
+        });
         return memberRepository.save(member);
     }
 
@@ -37,18 +44,36 @@ public class MemberService {
     }
 
     public MemberResponseDto findById(Long memberId) {
-        return MemberResponseDto.of(memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("해당 id를 가진 멤버를 찾을 수 없습니다.")));
+        return MemberResponseDto.of(memberRepository.findById(memberId).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_MEMBER)));
     }
 
+    public Member findByEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_EMAIL));
+    }
 
     public void update(ProfileEditRequestDto profileEditRequestDto) {
-        Member findMember = memberRepository.findById(profileEditRequestDto.getMemberId()).orElseThrow(() -> new NoSuchElementException("해당 id를 가진 멤버를 찾을 수 없습니다."));
+        Member findMember = memberRepository.findById(profileEditRequestDto.getMemberId()).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_MEMBER));
+
+        if (findMember.isChangedMemberNickName(profileEditRequestDto.getNickName())) {
+            memberRepository.findByNickName(profileEditRequestDto.getNickName())
+                    .ifPresent(m -> {
+                        throw new MemberProfileEditException(MemberExceptionType.DUPLICATED_MEMBER_NICKNAME, profileEditRequestDto);
+                    });
+        }
+
         findMember.setNickName(profileEditRequestDto.getNickName());
-        findMember.setEmail(profileEditRequestDto.getEmail());
         memberRepository.update(findMember);
     }
 
     public void deleteById(Long memberId) {
         memberRepository.deleteById(memberId);
+    }
+
+    public LoginMemberSession login(MemberLoginRequestDto memberLoginRequestDto) {
+        Member member = memberRepository.findByEmail(memberLoginRequestDto.getEmail()).orElseThrow(() -> new MemberLoginException(MemberExceptionType.INVALID_USER_ID, memberLoginRequestDto));
+        if (member.isNotMatchedPassword(memberLoginRequestDto.getPassword())) {
+            throw new MemberLoginException(MemberExceptionType.NOT_MATCHED_PASSWORD, memberLoginRequestDto);
+        }
+        return new LoginMemberSession(member);
     }
 }

@@ -51,12 +51,8 @@ public class Post {
         return views;
     }
 
-    public void increaseViews(){
+    public void increaseViews() {
         views++;
-    }
-
-    public Post buildPost(Member writer) {
-        return new Post(title, content, writer, writeDate, views);
     }
 
     public void setPostId(Long postId) {

@@ -31,6 +31,7 @@ public class PostService {
         return postRepository.save(postWriteRequest.toMakePost(member), member);
     }
 
+
     public PostResponse findById(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("해당 id를 가진 글을 찾을 수 없습니다."));
@@ -39,8 +40,8 @@ public class PostService {
         return PostResponse.of(post, getWriterResponse(post));
     }
 
-    public List<Post> findPostIdByWriterId(Long writerId){
-        return postRepository.findPostIdByWriterId(writerId);
+    public List<Post> findPostByWriterId(Long writerId) {
+        return postRepository.findPostByWriterId(writerId);
     }
 
     public List<PostResponse> findAll() {

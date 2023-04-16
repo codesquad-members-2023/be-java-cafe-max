@@ -10,7 +10,6 @@ public class Member {
     private final LocalDateTime createDate;
 
     public Member(String email, String password, String nickName, LocalDateTime createDate) {
-
         this.email = email;
         this.password = password;
         this.nickName = nickName;
@@ -51,6 +50,14 @@ public class Member {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public boolean isChangedMemberNickName(String nickName) {
+        return !this.nickName.equals(nickName);
+    }
+
+    public boolean isNotMatchedPassword(String password) {
+        return !this.password.equals(password);
     }
 
 }
