@@ -1,19 +1,19 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.domain.Article;
-
 import java.util.List;
 import java.util.Optional;
 
+import kr.codesqaud.cafe.domain.Article;
+
 public interface ArticleRepository {
 
-    void save(Article article);
+	void save(Article article);
 
-    List<Article> findAll();
+	List<Article> findAll();
 
-    Optional<Article> findArticleByIdx(Long idx);
+	Optional<Article> findArticleByIdx(Long idx);
 
-    void updateArticle(Article article);
+	void updateArticle(Article article);
 
-    void deleteArticle(Long idx);
+	void deleteArticle(Long idx);
 }

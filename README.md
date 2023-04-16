@@ -40,19 +40,18 @@
 
 ### URL
 
-| 기능                  | URL                               | HTTP 메서드 |
-| --------------------- | --------------------------------- | ----------- |
-| 회원 가입 기능        | /users/sign-up                    | POST        |
-| 회원 목록 조회 기능   | /user/list                        | GET         |
-| 회원 프로필 조회 기능 | /users/profile/{id}               | GET         |
-| 회원정보 수정 기능    | /users/profile/{id}               | PUT         |
-| 게시글 상세보기 기능  | /articles/{idx}                   | GET         |
-| 게시글 작성 기능      | /article/submit                   | POST        |
-| 게시글 수정 기능      | /article/submit/update-form/{idx} | PUT         |
-| 게시글 삭제기능       | /article/{idx}/delete             | DELETE      |
-| 로그인 기능           | /user/sign-in-success             | POST        |
-| 로그아웃 기능         | /user/sign-out                    | POST        |
-| 메인 페이지           | /                                 | GET         |
+| 회원 가입 기능        | /user/sign-up                     | POST   |
+| --------------------- | --------------------------------- | ------ |
+| 회원 목록 조회 기능   | /user/list                        | GET    |
+| 회원 프로필 조회 기능 | /user/profile/{id}                | GET    |
+| 회원정보 수정 기능    | /user/profile/{id}                | PUT    |
+| 게시글 상세보기 기능  | /article/{idx}                    | GET    |
+| 게시글 작성 기능      | /article/submit                   | POST   |
+| 게시글 수정 기능      | /article/submit/update-form/{idx} | PUT    |
+| 게시글 삭제기능       | /article/{idx}/delete             | DELETE |
+| 로그인 기능           | /user/sign-in-success             | POST   |
+| 로그아웃 기능         | /user/sign-out                    | POST   |
+| 메인 페이지           | /                                 | GET    |
 
 
 

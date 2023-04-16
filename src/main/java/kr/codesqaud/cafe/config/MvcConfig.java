@@ -7,34 +7,33 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
 
-        //article
-        registry.addViewController("/article").setViewName("post/form");
+		//article
+		registry.addViewController("/article").setViewName("post/form");
 
+		//user
+		registry.addViewController("/user/sign-up-form").setViewName("user/form");
+		registry.addViewController("/user/sign-in").setViewName("user/login");
+		registry.addViewController("/user/sign-in-success").setViewName("user/login_success");
+		registry.addViewController("/user/profile/{id}/form").setViewName("user/updateForm");
 
-        //user
-        registry.addViewController("/user/sign-up-form").setViewName("user/form");
-        registry.addViewController("/user/sign-in").setViewName("user/login");
-        registry.addViewController("/user/sign-in-success").setViewName("user/login_success");
-        registry.addViewController("/user/profile/{id}/form").setViewName("user/updateForm");
+		//error
+		registry.addViewController("/error-page").setViewName("error/error");
+	}
 
-        //error
-        registry.addViewController("/error-page").setViewName("error/error");
-    }
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new LoginInterceptor())
+			.addPathPatterns("/**")
+			.excludePathPatterns("/")
+			.excludePathPatterns("/user/list")
+			.excludePathPatterns("/user/sign-up")
+			.excludePathPatterns("/user/sign-up-form")
+			.excludePathPatterns("/user/sign-in")
+			.excludePathPatterns("/user/sign-in-success")
+			.excludePathPatterns("/css/**", "/images/**", "/js/**");
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry){
-        registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/**")
-                .excludePathPatterns("/")
-                .excludePathPatterns("/user/list")
-                .excludePathPatterns("/user/sign-up")
-                .excludePathPatterns("/user/sign-up-form")
-                .excludePathPatterns("/user/sign-in")
-                .excludePathPatterns("/user/sign-in-success")
-                .excludePathPatterns("/css/**","/images/**","/js/**");
-
-    }
+	}
 }
