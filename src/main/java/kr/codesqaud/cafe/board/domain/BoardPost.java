@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.board.domain;
 
-import kr.codesqaud.cafe.board.dto.PostResponse;
-
 import java.time.LocalDateTime;
 
 public class BoardPost {
@@ -14,22 +12,21 @@ public class BoardPost {
     public BoardPost() {
     }
 
-    public BoardPost(Long postId, String writer, String title, String contents, LocalDateTime writeDateTime) {
-        this.postId = postId;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-        this.writeDateTime = writeDateTime;
-    }
-
+    // 점층적 생성자 패턴을 사용해봤습니다.
     public BoardPost(String writer, String title, String contents) {
+        this(writer, title, contents, null);
+    }
+
+    public BoardPost(String writer, String title, String contents, Long postId) {
+        this(writer, title, contents, postId, null);
+    }
+
+    public BoardPost(String writer, String title, String contents, Long postId, LocalDateTime writeDateTime) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-    }
-
-    public PostResponse toPostResponse() {
-        return new PostResponse(postId, writer, title, contents, writeDateTime);
+        this.postId = postId;
+        this.writeDateTime = writeDateTime;
     }
 
     public Long getPostId() {

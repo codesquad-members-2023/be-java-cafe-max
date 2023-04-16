@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.user.repository;
 
+import kr.codesqaud.cafe.exception.ResourceNotFoundException;
 import kr.codesqaud.cafe.user.domain.User;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -28,21 +30,25 @@ public class UserJdbcRepository {
         return user.getUserId();
     }
 
-    public int containsUserId(String userId) {
+    public boolean containsUserId(String userId) {
         Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
         Optional<Integer> countOfUser = Optional.ofNullable(jdbcTemplate.queryForObject(
                 "SELECT COUNT(*) FROM users WHERE user_id = :user_id", namedParameters, Integer.class));
-        return countOfUser.orElse(0);
+        return countOfUser.orElse(0) > 0;
     }
 
     public User findByUserId(String userId) {
         Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
-        return jdbcTemplate.queryForObject("SELECT user_id, password, user_name, email FROM users WHERE user_id = :user_id",
-                namedParameters, userRowMapper);
+        try {
+            return jdbcTemplate.queryForObject("SELECT user_id, password, user_name, email FROM users WHERE user_id = :user_id",
+                    namedParameters, userRowMapper);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("요청한 데이터가 존재하지 않습니다.");
+        }
     }
 
     public List<User> findAll() {
-        return jdbcTemplate.query("SELECT * FROM users", userRowMapper);
+        return jdbcTemplate.query("SELECT user_id, password, user_name, email FROM users", userRowMapper);
     }
 
 }
