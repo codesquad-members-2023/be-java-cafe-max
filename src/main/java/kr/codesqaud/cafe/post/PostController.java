@@ -21,7 +21,7 @@ public class PostController {
 
     @GetMapping(value = {"/posts/new", "/posts/form"})
     public String viewPostForm(@ModelAttribute PostForm postForm) {
-        return "/post/form";
+        return "post/form";
     }
 
     @PostMapping("/posts")
