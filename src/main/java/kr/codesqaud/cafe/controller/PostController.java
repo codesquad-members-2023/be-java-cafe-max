@@ -32,11 +32,11 @@ public class PostController {
     }
 
     @PostMapping("/write")
-    public String write(@Valid PostWriteRequest postWriteRequest, BindingResult bindingResult) {
+    public String write(@Valid PostWriteRequest postWriteRequest, @SessionAttribute("loginMember") LoginMemberSession loginMemberSession, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "post/write";
         }
-
+        postWriteRequest.setWriterId(loginMemberSession.getMemberEmail());
         postService.save(postWriteRequest);
         return "redirect:/write";
     }
