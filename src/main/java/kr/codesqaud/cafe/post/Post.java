@@ -31,8 +31,13 @@ public class Post {
     public Post() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    private Post(Builder builder) {
+        this.id = builder.id;
+        this.nickname = builder.nickname;
+        this.createdDateTime = builder.createdDateTime;
+        this.title = builder.title;
+        this.textContent = builder.textContent;
+        this.user = builder.user;
     }
 
     public User getUser() {
@@ -43,40 +48,44 @@ public class Post {
         this.user = user;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setTextContent(String textContent) {
-        this.textContent = textContent;
-    }
-
-    public void setCreatedDateTime(LocalDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNickname() {
         return nickname;
     }
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getTextContent() {
         return textContent;
     }
 
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
+    }
+
     public LocalDateTime getCreatedDateTime() {
         return createdDateTime;
+    }
+
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
     }
 
     public boolean isDeleted() {
@@ -85,16 +94,6 @@ public class Post {
 
     public void disable() {
         isDeleted = true;
-    }
-
-
-    private Post(Builder builder) {
-        this.id = builder.id;
-        this.nickname = builder.nickname;
-        this.createdDateTime = builder.createdDateTime;
-        this.title = builder.title;
-        this.textContent = builder.textContent;
-        this.user = builder.user;
     }
 
     public static class Builder {

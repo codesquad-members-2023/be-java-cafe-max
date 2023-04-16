@@ -20,7 +20,7 @@ public class MainController {
     @GetMapping
     public String viewIndex(Model model) {
         List<SimplePostForm> simpleForms = postService.getAllPosts();
-        model.addAttribute(SIMPLE_FORMS,simpleForms);
+        model.addAttribute(SIMPLE_FORMS, simpleForms);
         return "index";
     }
 

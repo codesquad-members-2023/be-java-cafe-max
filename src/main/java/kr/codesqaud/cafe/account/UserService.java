@@ -56,7 +56,6 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
-
     public boolean isDuplicateEmail(User user, String email) {
         return !user.isSameEmail(email) && containsEmail(email);
     }

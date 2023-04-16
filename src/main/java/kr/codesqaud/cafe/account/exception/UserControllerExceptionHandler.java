@@ -19,6 +19,12 @@ public class UserControllerExceptionHandler {
     private static final String NICK_NAME = "nickname";
     private static final String EMPTY_PASSWORD = "";
 
+    private static void addProfileEditForm(HttpServletRequest request, Model model) {
+        String email = request.getParameter(EMAIL);
+        String nickName = request.getParameter(NICK_NAME);
+        model.addAttribute(new ProfileEditForm(nickName, email, EMPTY_PASSWORD));
+    }
+
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalLoginPasswordException.class)
     public String handlerIllegalLoginPasswordException(Model model, IllegalLoginPasswordException e) {
@@ -49,11 +55,5 @@ public class UserControllerExceptionHandler {
         addProfileEditForm(request, model);
         model.addAttribute(PASSWORD_ERROR, e.getMessage());
         return "account/profileEditFormFailed";
-    }
-
-    private static void addProfileEditForm(HttpServletRequest request, Model model) {
-        String email = request.getParameter(EMAIL);
-        String nickName = request.getParameter(NICK_NAME);
-        model.addAttribute(new ProfileEditForm(nickName, email, EMPTY_PASSWORD));
     }
 }

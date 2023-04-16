@@ -15,11 +15,11 @@ import java.util.List;
 @Controller
 public class UserController {
 
+    public static final String ATTRIBUTE_USER = "user";
     private static final String USER_ID = "userId";
     private static final String PROFILE_FORM = "profileForm";
     private static final String PROFILE_SETTING_FORM = "profileEditForm";
     private static final String USERS = "users";
-    public static final String ATTRIBUTE_USER = "user";
     private final UserService userService;
     private final JoinFormValidator joinFormValidator;
 

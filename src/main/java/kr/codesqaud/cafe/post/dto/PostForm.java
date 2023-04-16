@@ -20,26 +20,24 @@ public class PostForm {
         this.textContent = textContent;
     }
 
-
-    public void setTitle(String title) {
-        this.title = title;
+    public static PostForm from(Post post) {
+        return new PostForm(post.getTitle(), post.getTextContent());
     }
-
-    public void setTextContent(String textContent) {
-        this.textContent = textContent;
-    }
-
 
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getTextContent() {
         return textContent;
     }
 
-    public static PostForm from(Post post) {
-        return new PostForm(post.getTitle(), post.getTextContent());
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
     }
 
     public Post toPost(User user) {
