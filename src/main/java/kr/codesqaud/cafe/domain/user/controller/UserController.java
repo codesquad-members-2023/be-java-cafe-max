@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.domain.user.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,21 +43,25 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{id}")
-	public String findUserProfile(@PathVariable("id") Long id, Model model) {
-		User user = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
-		model.addAttribute("user", new UserDetailResponseDto(user));
+	public String findUserProfile(@PathVariable("id") String id, Model model) {
+
+		Optional<User> user = userRepository.findById(id);
+		if (user.isEmpty()) {
+			return "redirect:/";
+		}
+		model.addAttribute("user", new UserDetailResponseDto(user.get()));
 		return "/user/profile";
 	}
 
 	@GetMapping("/users/{id}/form")
-	public String updateUserProfile(@PathVariable("id") Long id, Model model) {
+	public String updateUserProfile(@PathVariable("id") String id, Model model) {
 		User user = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
 		model.addAttribute("user", new UserDetailResponseDto(user));
 		return "/user/updateForm";
 	}
 
 	@PutMapping("/users/{id}/update")
-	public String modifyUserProfile(UserUpdateRequestDto userUpdateDto, @PathVariable("id") Long id) {
+	public String modifyUserProfile(UserUpdateRequestDto userUpdateDto, @PathVariable("id") String id) {
 		userRepository.update(userUpdateDto.toEntity(id));
 		return "redirect:/users";
 	}
