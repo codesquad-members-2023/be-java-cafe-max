@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import kr.codesqaud.cafe.controller.dto.ArticleParam;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.domain.article.Article;
@@ -128,10 +129,10 @@ class ArticleServiceTest {
 			articleService.editArticle(1L, request);
 
 			// then
-			Article article = articleService.findById(1L).toEntity();
+			ArticleParam articleParam = articleService.findById(1L);
 			SoftAssertions.assertSoftly(softAssertions -> {
-				softAssertions.assertThat(article.getTitle()).isEqualTo("수정된 제목");
-				softAssertions.assertThat(article.getContent()).isEqualTo("수정된 내용");
+				softAssertions.assertThat(articleParam.getTitle()).isEqualTo("수정된 제목");
+				softAssertions.assertThat(articleParam.getContent()).isEqualTo("수정된 내용");
 			});
 		}
 

@@ -23,18 +23,28 @@ public class ArticleParam {
 		this.createdAt = DATE_TIME_FORMATTER.format(createdAt);
 	}
 
-	public Article toEntity() {
-		return new Article(
-			id,
-			writer,
-			title,
-			content,
-			LocalDateTime.parse(createdAt, DATE_TIME_FORMATTER)
-		);
-	}
-
 	public static ArticleParam from(final Article article) {
 		return new ArticleParam(article.getId(), article.getWriter(), article.getTitle(), article.getContent(),
 								article.getCreatedAt());
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getWriter() {
+		return writer;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public String getCreatedAt() {
+		return createdAt;
 	}
 }
