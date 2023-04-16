@@ -48,7 +48,7 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public boolean containsEmail(String email) {
+    public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
 
@@ -56,9 +56,6 @@ public class UserService {
         return userRepository.findById(userId);
     }
 
-    public boolean isDuplicateEmail(User user, String email) {
-        return !user.isSameEmail(email) && containsEmail(email);
-    }
 
     public User checkLoginForm(LoginForm loginForm) {
         User user = findByEmail(loginForm.getEmail()).orElseThrow(NoSuchLoginEmailException::new);
@@ -69,7 +66,7 @@ public class UserService {
     }
 
     public void checkEditInfo(User user, ProfileEditForm profileEditForm) {
-        if (isDuplicateEmail(user, profileEditForm.getEmail())) {
+        if (!user.isSameEmail(profileEditForm.getEmail()) && existsByEmail(profileEditForm.getEmail())) {
             throw new IllegalEditEmailException();
         }
         if (!isSamePassword(user, profileEditForm.getPassword())) {

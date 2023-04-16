@@ -84,9 +84,9 @@ class UserServiceTest {
     @DisplayName("이메일주소 포함여부 확인")
     @Test
     void containsEmail() {
-        assertThat(userService.containsEmail(JACK_EMAIL)).isFalse();
+        assertThat(userService.existsByEmail(JACK_EMAIL)).isFalse();
         userService.save(new JoinForm(JACK, JACK_EMAIL, TEST_PASSWORD, TEST_PASSWORD));
-        assertThat(userService.containsEmail(JACK_EMAIL)).isTrue();
+        assertThat(userService.existsByEmail(JACK_EMAIL)).isTrue();
     }
 
     @DisplayName("아이디로 User 찾기")
@@ -96,16 +96,6 @@ class UserServiceTest {
         assertThat(userRepository.findById(jack.getId())).contains(jack);
     }
 
-
-    @DisplayName("다른 중복된 email인지 확인")
-    @Test
-    void isDuplicateEmail() {
-        User jack = userService.save(new JoinForm(JACK, JACK_EMAIL, TEST_PASSWORD, TEST_PASSWORD));
-        userService.save(new JoinForm(JERRY, JERRY_EMAIL, TEST_PASSWORD, TEST_PASSWORD));
-        assertThat(userService.isDuplicateEmail(jack, JERRY_EMAIL)).isTrue();
-        assertThat(userService.isDuplicateEmail(jack, JACK_EMAIL)).isFalse();
-        assertThat(userService.isDuplicateEmail(jack, NO_EXIST_EMAIL)).isFalse();
-    }
 
     @DisplayName("loginForm 정보를 체크")
     @Test

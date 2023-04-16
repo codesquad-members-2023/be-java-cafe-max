@@ -26,7 +26,7 @@ public class JoinFormValidator implements Validator {
         if (errors.hasErrors()) {
             return;
         }
-        if (userService.containsEmail(joinForm.getEmail())) {
+        if (userService.existsByEmail(joinForm.getEmail())) {
             errors.rejectValue(EMAIL, "error.email.duplicate");
             return;
         }
