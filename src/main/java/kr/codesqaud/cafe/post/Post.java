@@ -14,7 +14,7 @@ public class Post {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "USER_ID", updatable = false)
+    @JoinColumn(name = "account_id", updatable = false)
     private User user;
 
     private String nickname;

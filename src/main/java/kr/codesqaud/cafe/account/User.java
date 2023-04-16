@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "ACCOUNT")
+@Table(name = "account")
 public class User {
 
     private static final String BLANK = "";
     @Id
     @GeneratedValue
-    @Column(name = "user_id")
+    @Column(name = "account_id")
     private Long id;
     private String nickname;
     @Column(unique = true)
