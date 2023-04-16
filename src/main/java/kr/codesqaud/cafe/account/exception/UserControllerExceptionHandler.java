@@ -15,9 +15,9 @@ public class UserControllerExceptionHandler {
 
     private static final String EMAIL_ERROR = "emailError";
     private static final String PASSWORD_ERROR = "passwordError";
-    public static final String EMAIL = "email";
-    public static final String NICK_NAME = "nickname";
-    public static final String EMPTY_PASSWORD = "";
+    private static final String EMAIL = "email";
+    private static final String NICK_NAME = "nickname";
+    private static final String EMPTY_PASSWORD = "";
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalLoginPasswordException.class)

@@ -19,8 +19,6 @@ public class UserController {
     private static final String PROFILE_FORM = "profileForm";
     private static final String PROFILE_SETTING_FORM = "profileEditForm";
     private static final String USERS = "users";
-    private static final String EMAIL = "email";
-    private static final String PASSWORD = "password";
     public static final String ATTRIBUTE_USER = "user";
     private final UserService userService;
     private final JoinFormValidator joinFormValidator;

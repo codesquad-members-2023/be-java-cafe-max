@@ -30,7 +30,6 @@ class UserServiceTest {
     public static final String TEST_PASSWORD = "password";
     public static final String JERRY_EMAIL = "jerry@email.com";
     public static final String JERRY = "jerry";
-    public static final long NO_MATCH_USER_ID = 300;
     public static final String NO_EXIST_EMAIL = "jane@email.com";
     public static final String NO_MATCH_PASSWORD = "123456789a";
 
