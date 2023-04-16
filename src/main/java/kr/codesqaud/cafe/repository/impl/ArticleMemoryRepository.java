@@ -12,8 +12,8 @@ import kr.codesqaud.cafe.repository.ArticleRepository;
 
 public class ArticleMemoryRepository implements ArticleRepository {
 
-	private static Long sequence = 1L;
 	private final Map<Long, Article> articleRepository = new HashMap<>();
+	private Long sequence = 1L;
 
 	@Override
 	public Optional<Article> save(final Article article) {
@@ -32,5 +32,15 @@ public class ArticleMemoryRepository implements ArticleRepository {
 	@Override
 	public Optional<Article> findById(final Long id) {
 		return Optional.ofNullable(articleRepository.get(id));
+	}
+
+	@Override
+	public void update(final Article article) {
+		articleRepository.put(article.getId(), article);
+	}
+
+	@Override
+	public void deleteById(final Long id) {
+		articleRepository.remove(id);
 	}
 }

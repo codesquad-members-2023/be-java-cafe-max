@@ -16,4 +16,22 @@ function setRowIdOfUser() {
     }
 }
 
+function postRequest() {
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", e => {
+        e.preventDefault();
+        const url = "/logout";
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('POST', url);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                window.location.href = xhr.responseURL;
+            }
+        }
+        xhr.send();
+    });
+}
+
 setRowIdOfUser();
+postRequest();

@@ -2,8 +2,6 @@ package kr.codesqaud.cafe.domain.article;
 
 import java.time.LocalDateTime;
 
-import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
-
 public class Article {
 
 	private Long id;
@@ -18,17 +16,6 @@ public class Article {
 		this.title = title;
 		this.content = content;
 		this.createdAt = createdAt;
-	}
-
-	private Article(String writer, String title, String content, LocalDateTime createdAt) {
-		this(null, writer, title, content, createdAt);
-	}
-
-	public static Article from(final PostingRequest postingRequest) {
-		return new Article(postingRequest.getWriter(),
-			postingRequest.getTitle(),
-			postingRequest.getContents(),
-			LocalDateTime.now());
 	}
 
 	public Long getId() {
@@ -53,5 +40,10 @@ public class Article {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public void editArticle(final String title, final String content) {
+		this.title = title;
+		this.content = content;
 	}
 }

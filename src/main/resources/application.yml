@@ -19,8 +19,11 @@ spring:
   mustache:
     suffix: .html
     cache: false
+    expose-session-attributes: true
 
 server:
   servlet:
     encoding:
       force: true
+    session:
+      tracking-modes: cookie
