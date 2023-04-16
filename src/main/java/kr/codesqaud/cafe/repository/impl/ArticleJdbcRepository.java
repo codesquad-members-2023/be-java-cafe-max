@@ -43,14 +43,15 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
 	@Override
 	public List<Article> findAll() {
-		return jdbcTemplate.query("SELECT * FROM article", articleMapper);
+		return jdbcTemplate.query("SELECT id, writer, title, content, created_at FROM article", articleMapper);
 	}
 
 	@Override
 	public Optional<Article> findById(final Long id) {
 		try {
 			return Optional.ofNullable(
-				jdbcTemplate.queryForObject("SELECT * FROM article WHERE id = :id", Map.of("id", id), articleMapper));
+				jdbcTemplate.queryForObject("SELECT id, writer, title, content, created_at FROM article WHERE id = :id",
+											Map.of("id", id), articleMapper));
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
 		}

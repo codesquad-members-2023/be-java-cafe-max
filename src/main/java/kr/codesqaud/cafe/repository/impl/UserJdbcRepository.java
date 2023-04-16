@@ -45,15 +45,16 @@ public class UserJdbcRepository implements UserRepository {
 
 	@Override
 	public List<User> findAll() {
-		return jdbcTemplate.query("SELECT * FROM user_account", userMapper);
+		return jdbcTemplate.query("SELECT user_id, password, name, email FROM user_account", userMapper);
 	}
 
 	@Override
 	public Optional<User> findByUserId(final String userId) {
 		try {
 			return Optional.ofNullable(
-				jdbcTemplate.queryForObject("SELECT * FROM user_account WHERE user_id = :userId",
-											Map.of("userId", userId), userMapper));
+				jdbcTemplate.queryForObject(
+					"SELECT user_id, password, name, email FROM user_account WHERE user_id = :userId",
+					Map.of("userId", userId), userMapper));
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
 		}
@@ -76,7 +77,7 @@ public class UserJdbcRepository implements UserRepository {
 											"email", user.getEmail(),
 											"userId", user.getUserId());
 		jdbcTemplate.update(
-			"UPDATE user_account SET password = :password, name = :name, email = :email WHERE user_id = :useId",
+			"UPDATE user_account SET password = :password, name = :name, email = :email WHERE user_id = :userId",
 			params);
 	}
 }
