@@ -224,7 +224,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(2L);
-        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(id, accountSession);
+        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(id, accountSession.getId());
 
         // when
 
@@ -302,7 +302,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(2L);
-        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(id, accountSession);
+        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(id, accountSession.getId());
 
         // when
 
@@ -359,7 +359,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(1L);
-        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(id, accountSession);
+        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(id, accountSession.getId());
 
         // when
 

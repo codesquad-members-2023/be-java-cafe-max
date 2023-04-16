@@ -41,11 +41,11 @@ public class MemberService {
             .collect(Collectors.toUnmodifiableList());
     }
 
-    public void update(ProfileEditRequest profileEditRequest, AccountSession accountSession) {
+    public void update(ProfileEditRequest profileEditRequest, Long accountSessionId) {
         Member findMember = memberRepository.findById(profileEditRequest.getId())
             .orElseThrow(MemberNotFoundException::new);
 
-        if (!findMember.equalsId(accountSession.getId())) {
+        if (!findMember.equalsId(accountSessionId)) {
             throw new UnauthorizedException();
         }
 

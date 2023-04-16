@@ -55,11 +55,11 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public void validateUnauthorized(Long id, AccountSession accountSession) {
+    public void validateUnauthorized(Long id, Long accountSessionId) {
         Post findPost = postRepository.findById(id)
             .orElseThrow(PostNotFoundException::new);
 
-        if (!findPost.equalsWriterId(accountSession.getId())) {
+        if (!findPost.equalsWriterId(accountSessionId)) {
             throw new UnauthorizedException();
         }
     }

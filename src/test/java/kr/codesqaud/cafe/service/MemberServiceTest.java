@@ -110,7 +110,7 @@ class MemberServiceTest {
             .willReturn(Optional.of(memberUpdateRequest.toMember()));
 
         // when
-        memberService.update(memberUpdateRequest, accountSession);
+        memberService.update(memberUpdateRequest, accountSession.getId());
 
         // then
         Member findMember = memberRepository.findById(1L).orElseThrow();
@@ -134,7 +134,7 @@ class MemberServiceTest {
         // then
         assertThrows(MemberNotFoundException.class,
             () -> memberService.update(new ProfileEditRequest(memberId, "est@naver.com",
-                "Test1234", "Test1234", "test"), accountSession));
+                "Test1234", "Test1234", "test"), accountSession.getId()));
     }
 
     @DisplayName("회원 중에 중복 이메일 검사 시 중복이 있는 경우 성공")

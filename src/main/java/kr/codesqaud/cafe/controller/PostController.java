@@ -54,14 +54,14 @@ public class PostController {
             return "post/postModify";
         }
 
-        postService.validateUnauthorized(id, accountSession);
+        postService.validateUnauthorized(id, accountSession.getId());
         postService.modify(postModifyRequest, id);
         return "redirect:/posts/{id}";
     }
 
     @DeleteMapping("/posts/{id}")
     public String delete(@PathVariable Long id, @SignIn AccountSession accountSession) {
-        postService.validateUnauthorized(id, accountSession);
+        postService.validateUnauthorized(id, accountSession.getId());
         postService.delete(id);
         return "redirect:/";
     }
@@ -73,7 +73,7 @@ public class PostController {
 
     @GetMapping("/posts/{id}/modify")
     public String modifyForm(@PathVariable Long id, Model model, @SignIn AccountSession accountSession) {
-        postService.validateUnauthorized(id, accountSession);
+        postService.validateUnauthorized(id, accountSession.getId());
         model.addAttribute("postModifyRequest", PostModifyRequest.from(postService.findById(id)));
         return "post/postModify";
     }

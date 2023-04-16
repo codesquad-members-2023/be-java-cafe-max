@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Controller
 public class MemberController {
@@ -87,7 +88,7 @@ public class MemberController {
         }
 
         profileEditRequest.setId(id);
-        memberService.update(profileEditRequest, accountSession);
+        memberService.update(profileEditRequest, accountSession.getId());
         return "redirect:/members/{id}";
     }
 
