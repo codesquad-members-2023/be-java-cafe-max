@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,8 +26,7 @@ public class ArticleService {
 
 	@Transactional
 	public void post(final PostingRequest request, final String userId) {
-		articleRepository.save(
-			new Article(null, userId, request.getTitle(), request.getContents(), LocalDateTime.now()));
+		articleRepository.save(Article.of(userId, request.getTitle(), request.getContents()));
 	}
 
 	public List<ArticleParam> getArticles() {
