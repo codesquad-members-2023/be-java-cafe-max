@@ -19,6 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    // 회원 가입
     @GetMapping("/create")
     public String create(){
         return "user/form";
@@ -38,11 +39,11 @@ public class UserController {
         return "user/list";
     }
 
+    // 유저 프로필 보기
     @GetMapping("/{userId}")
     public String profile(@PathVariable String userId, Model model){
         UserResponse userResponse = userService.findByUserId(userId).get();
         model.addAttribute("user", userResponse);
         return "user/profile";
     }
-
 }
