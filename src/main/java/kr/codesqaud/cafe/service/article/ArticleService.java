@@ -21,8 +21,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Article add(ArticleForm form, HttpSession session) {
-        Article article = new Article((String) session.getAttribute(SessionConst.LOGIN_USER_ID), form.getTitle(), form.getContents());
+    public Article add(ArticleForm form, String loginUserId) {
+        Article article = new Article(loginUserId, form.getTitle(), form.getContents());
         return articleRepository.save(article);
     }
 

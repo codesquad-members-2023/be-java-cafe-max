@@ -34,7 +34,7 @@ public class ArticleController {
         }
 
         // 서비스에서 DTO 사용으로 User에 넣어줄 필요가 없어짐
-        articleService.add(articleForm, session);
+        articleService.add(articleForm, (String) session.getAttribute(SessionConst.LOGIN_USER_ID));
         return "redirect:/";
     }
 
@@ -55,7 +55,7 @@ public class ArticleController {
 
     @GetMapping("/questions/{id}/updateForm")
     public String getUpdateArticle(@PathVariable Long id, Model model, HttpSession session) {
-        validateUserId(id, session);
+        validateUserId(id, (String) session.getAttribute(SessionConst.LOGIN_USER_ID));
         ArticleUpdateForm article = articleService.findUpdate(id);
         model.addAttribute("articleUpdated", article);
         return "qna/updateForm";
@@ -73,13 +73,12 @@ public class ArticleController {
 
     @DeleteMapping("/questions/{id}")
     public String deleteArticle(@PathVariable Long id, HttpSession session) {
-        validateUserId(id, session);
+        validateUserId(id, (String) session.getAttribute(SessionConst.LOGIN_USER_ID));
         articleService.delete(id);
         return "redirect:/";
     }
 
-    private void validateUserId(Long id, HttpSession session) {
-        String loginUserId = (String) session.getAttribute(SessionConst.LOGIN_USER_ID);
+    private void validateUserId(Long id, String loginUserId) {
         ArticleTimeForm article = articleService.findArticleId(id);
 
         if (!loginUserId.equals(article.getUserId())) {
