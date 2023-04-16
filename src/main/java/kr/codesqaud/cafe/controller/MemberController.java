@@ -69,7 +69,7 @@ public class MemberController {
         return "member/profile";
     }
 
-    @GetMapping("/members/{id}/edit")
+    @GetMapping("/members/{id}/profile")
     public String profileEditForm(@PathVariable Long id, Model model,
         @SignIn AccountSession accountSession) {
         if (!id.equals(accountSession.getId())) {
