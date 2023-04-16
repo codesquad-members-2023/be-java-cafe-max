@@ -34,7 +34,7 @@ public class SignInController {
 		return "redirect:/user/sign-in/" + id;
 	}
 
-	@GetMapping("/user/sign-in/{Id}")
+	@GetMapping("/user/sign-in/{id}")
 	public String showSingInSuccessForm(@PathVariable String id, Model model) {
 		model.addAttribute("user", userService.getUserById(id));
 		return "user/login_success";

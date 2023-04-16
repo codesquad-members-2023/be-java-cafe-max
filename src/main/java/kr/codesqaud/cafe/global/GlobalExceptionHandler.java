@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
 		RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
 		if (requestUri.contains("/profile")) {
-			return createErrorResponseModelAndView("error/error", e);
+			return createErrorResponseModelAndView("error/400_bad_request", e);
 		}
 		return new ModelAndView(handleExceptionWithRedirect(e, "/user/sign-in-form", "id-error", redirectAttributes));
 	}
@@ -82,11 +82,11 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ArticleNotFoundException.class)
 	public ModelAndView handleArticleNotFoundException(ArticleNotFoundException e) {
-		return createErrorResponseModelAndView("error/error", e);
+		return createErrorResponseModelAndView("error/400_bad_request", e);
 	}
 
 	@ExceptionHandler(ArticleIdAndSessionIdMismatchException.class)
 	public ModelAndView handleArticleIdAndSessionIdMismatchException(ArticleIdAndSessionIdMismatchException e) {
-		return createErrorResponseModelAndView("error/error", e);
+		return createErrorResponseModelAndView("error/401_unauthorized", e);
 	}
 }
