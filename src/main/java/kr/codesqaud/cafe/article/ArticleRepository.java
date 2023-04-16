@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.article;
 
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
 public interface ArticleRepository {
     void save(Article article);
 
-    List<Article> findAll();
+    List<ArticleDTO> findAll();
 
-    Article findById(int articleId);
+    ArticleDTO findById(BigInteger articleId);
 }
