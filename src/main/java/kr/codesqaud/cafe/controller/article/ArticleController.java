@@ -62,7 +62,11 @@ public class ArticleController {
     }
 
     @PutMapping("/questions/{id}")
-    public String putUpdateArticle(@PathVariable Long id, @Valid ArticleUpdateForm updateArticle) {
+    public String putUpdateArticle(@PathVariable Long id, @Valid ArticleUpdateForm updateArticle, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "qna/updateForm";
+        }
+
         articleService.updateArticle(id, updateArticle);
         return "redirect:/";
     }
