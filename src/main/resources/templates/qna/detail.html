@@ -23,7 +23,7 @@
                      src="https://graph.facebook.com/v2.3/100000059371774/picture">
               </div>
               <div class="article-header-text">
-                <a class="article-author-name" th:href="@{/users/{id}(id=${article.user_id})}"
+                <a class="article-author-name" th:href="@{/users/{id}(id=${article.userId})}"
                    th:text="${article.writer}"></a>
                 <a class="article-header-time" href="/questions/413"
                    th:text="${#temporals.format(article.writeDate, 'YYYY-MM-dd HH:mm')}"

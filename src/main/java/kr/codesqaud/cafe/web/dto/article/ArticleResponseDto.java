@@ -10,15 +10,24 @@ public class ArticleResponseDto implements Comparable<ArticleResponseDto> {
     private final String title;
     private final String content;
     private final LocalDateTime writeDate;
-    private final Long user_id;
+    private final Long userId;
+
+    public ArticleResponseDto() {
+        this.id = null;
+        this.writer = null;
+        this.title = null;
+        this.content = null;
+        this.writeDate = null;
+        this.userId = null;
+    }
 
     public ArticleResponseDto(Article article) {
         this.id = article.getId();
-        this.writer = article.getWriter();
+        this.writer = article.getUser().getName();
         this.title = article.getTitle();
         this.content = article.getContent();
         this.writeDate = article.getWriteDate();
-        this.user_id = article.getUser_id();
+        this.userId = article.getUser().getId();
     }
 
     public Long getId() {
@@ -41,15 +50,15 @@ public class ArticleResponseDto implements Comparable<ArticleResponseDto> {
         return writeDate;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public Long getUserId() {
+        return userId;
     }
 
     @Override
     public String toString() {
         return String.format(
             "ArticleResponseDto{id=%d, writer=%s, title=%s, content=%s, writeDate=%s, user_id=%d}",
-            id, writer, title, content, writeDate, user_id);
+            id, writer, title, content, writeDate, userId);
     }
 
     @Override

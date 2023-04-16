@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.web.dto.article;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Pattern;
 import kr.codesqaud.cafe.domain.article.Article;
+import kr.codesqaud.cafe.domain.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,8 +11,6 @@ public class ArticleSavedRequestDto {
 
     private static final Logger logger = LoggerFactory.getLogger(ArticleSavedRequestDto.class);
 
-    @Pattern(regexp = "^[a-z가-힣]{1,20}$", message = "1~20자 영문 소문자, 한글만 사용 가능합니다.")
-    private final String writer;
     @Pattern(regexp = "^.{1,100}$", message = "제목은 100자 이내여야 합니다.")
     private final String title;
     private final String content;
@@ -20,25 +19,19 @@ public class ArticleSavedRequestDto {
     private final String userId;
 
     public ArticleSavedRequestDto() {
-        this(null, null, null, LocalDateTime.now(), null);
+        this(null, null, LocalDateTime.now(), null);
     }
 
-    public ArticleSavedRequestDto(String writer, String title, String content,
+    public ArticleSavedRequestDto(String title, String content,
         LocalDateTime writeDate, String userId) {
-        this.writer = writer;
         this.title = title;
         this.content = content;
         this.writeDate = writeDate;
         this.userId = userId;
-        logger.info("매개변수 생성자 : " + this);
     }
 
-    public Article toEntity(Long nextId, Long user_id) {
-        return new Article(nextId, writer, title, content, writeDate, user_id);
-    }
-
-    public String getWriter() {
-        return writer;
+    public Article toEntity(User user) {
+        return new Article(null, title, content, writeDate, user);
     }
 
     public String getTitle() {
@@ -60,7 +53,7 @@ public class ArticleSavedRequestDto {
     @Override
     public String toString() {
         return String.format(
-            "ArticleSavedRequestDto{writer=%s, title=%s, content=%s, writeDate=%s, userId=%s}",
-            writer, title, content, writeDate, userId);
+            "ArticleSavedRequestDto{title=%s, content=%s, writeDate=%s, userId=%s}",
+            title, content, writeDate, userId);
     }
 }

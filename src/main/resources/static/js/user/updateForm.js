@@ -13,7 +13,7 @@ $(document).ready(function () {
     const urlPath = "/users/" + id + "/update"
 
     $.ajax({
-      type: "POST",
+      type: 'put',
       url: urlPath,
       data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8',
