@@ -26,7 +26,7 @@ import kr.codesqaud.cafe.service.MemberService;
 import kr.codesqaud.cafe.session.LoginMemberSession;
 
 @Controller
-@RequestMapping("/member")
+@RequestMapping("/members")
 public class MemberController {
     private final MemberService memberService;
 
