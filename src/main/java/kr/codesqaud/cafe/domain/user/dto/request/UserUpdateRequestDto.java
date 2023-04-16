@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.domain.user.entity.User;
 
 public class UserUpdateRequestDto {
 
+	private String id;
 	private String name;
 	private String email;
 	private String password;
@@ -18,8 +19,8 @@ public class UserUpdateRequestDto {
 		return name;
 	}
 
-	public User toEntity(Long id) {
-		User convertedUser = new User(name, password, email);
+	public User toEntity(String id) {
+		User convertedUser = new User(id, name, password, email);
 		convertedUser.setId(id);
 		return convertedUser;
 	}
