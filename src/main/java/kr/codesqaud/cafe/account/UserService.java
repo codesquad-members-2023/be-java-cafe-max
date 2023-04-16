@@ -36,8 +36,8 @@ public class UserService {
     }
 
     public User update(User user, ProfileEditForm profileEditForm) {
-        User entity = profileEditForm.setUser(user);
-        return userRepository.save(entity);
+        User changedUser = profileEditForm.setUser(user);
+        return userRepository.save(changedUser);
     }
 
     public boolean isSamePassword(User user, String targetPassword) {
