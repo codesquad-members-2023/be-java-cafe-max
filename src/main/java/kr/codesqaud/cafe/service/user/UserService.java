@@ -63,7 +63,8 @@ public class UserService {
     }
 
     public void updateUser(Long id, UserUpdateForm updateUser) {
-        if (!updateUser.getExistingPassword().equals(updateUser.getPassword())) {
+        String password = updateUser.getPassword();
+        if (!updateUser.isSamePassword(password)) {
             throw new IllegalStateException("비밀번호가 같지 않습니다.");
         }
 
