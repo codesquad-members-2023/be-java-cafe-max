@@ -19,15 +19,18 @@
             </button>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
-            <ul class="nav navbar-nav navbar-right">
+            <ul th:if="${session.loginUserId==null}" class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/">Posts</a></li>
-                <li><a href="../static/user/login.html" role="button">로그인</a></li>
-                <li><a href="/user/create" role="button">회원가입</a></li>
+                <li><a href="/login" role="button">로그인</a></li>
+                <li><a href="/users/new" role="button">회원가입</a></li>
+            </ul>
                 <!--
                 <li><a href="#loginModal" role="button" data-toggle="modal">로그인</a></li>
                 <li><a href="#registerModal" role="button" data-toggle="modal">회원가입</a></li>
                 -->
-                <li><a href="#" role="button">로그아웃</a></li>
+            <ul th:if="${session.loginUserId!=null}" class="nav navbar-nav navbar-right">
+                <li class="active"><a href="/">Posts</a></li>
+                <li><a href="/logout" role="button">로그아웃</a></li>
                 <li><a href="#" role="button">개인정보수정</a></li>
             </ul>
         </div>

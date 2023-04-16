@@ -1,8 +1,7 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.user;
 
 import java.util.List;
 import java.util.Optional;
-import kr.codesqaud.cafe.domain.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -40,7 +39,7 @@ public class UserRepositoryImpl implements UserRepository {
         SqlParameterSource param = new MapSqlParameterSource("userId", userId);
         try {
             return Optional.ofNullable(template.queryForObject(sql, param, userRowMapper()));
-        } catch (EmptyResultDataAccessException e) { // TODO: 해당 처리를 안하면 DB에 해당 데이터가 없을 때 예외가 발생한다. 이렇게 하는것이 맞는지 모르겠다.
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
 

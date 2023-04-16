@@ -1,4 +1,5 @@
-CREATE TABLE IF NOT EXISTS users
+DROP TABLE IF EXISTS users;
+CREATE table users
 (
     sequence bigint NOT NULL AUTO_INCREMENT,
     userId varchar(10),
@@ -8,7 +9,8 @@ CREATE TABLE IF NOT EXISTS users
     primary key (userId)
 );
 
-CREATE TABLE IF NOT EXISTS article
+DROP TABLE IF EXISTS article;
+CREATE table article
 (
     sequence bigint NOT NULL AUTO_INCREMENT,
     writer varchar(10),

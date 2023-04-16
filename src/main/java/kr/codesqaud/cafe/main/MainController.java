@@ -1,8 +1,8 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.main;
 
 import java.util.List;
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.article.Article;
+import kr.codesqaud.cafe.article.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

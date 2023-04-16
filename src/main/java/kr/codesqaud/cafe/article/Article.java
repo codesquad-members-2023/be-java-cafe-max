@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.article;
 
 /**
  * 게시글을 의미하는 객체
@@ -19,6 +19,11 @@ public class Article {
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+    }
+
+    public Article(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }
