@@ -1,32 +1,40 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.Repository.ArticleRepository;
+import kr.codesqaud.cafe.Repository.article.ArticleRepository;
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.article.ArticleRequestDto;
+import kr.codesqaud.cafe.dto.article.ArticleResponseDto;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    ArticleService(ArticleRepository articleRepository) {
-        this.articleRepository = new ArticleRepository();
+    ArticleService(final ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 
-    public Article saveArticle(Article article) {
-        articleRepository.saveArticle(article);
-        return article;
+    public void saveArticle(final ArticleRequestDto articleRequestDto) {
+        articleRepository.saveArticle(articleRequestDto.toEntity());
     }
 
-    public List<Article> findArticles() {
-        return articleRepository.findAllArticle();
+    public List<ArticleResponseDto> findArticles() {
+        List<ArticleResponseDto> articleResponseDtos = new ArrayList<>();
+        List<Article> articles = articleRepository.findAllArticle();
+        for(Article article: articles){
+            articleResponseDtos.add(article.toDto());
+        }
+        return articleResponseDtos;
     }
 
-    public Article findArticleBySequence(int articleId) {
+    public ArticleResponseDto findArticleBySequence(final int articleId) {
         Article article = articleRepository.findArticleById(articleId).orElseThrow(
                 () -> new IllegalArgumentException("해당하는 게시글이 없습니다."));
-        return article;
+        ArticleResponseDto articleResponseDto = article.toDto();
+        return articleResponseDto;
     }
 }
 

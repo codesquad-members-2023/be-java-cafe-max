@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.user.UserRequestDto;
+import kr.codesqaud.cafe.dto.user.UserResponseDto;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,31 +20,26 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/form")
-    public String loginPage() {
-        return "user/form";
-    }
 
-    @PostMapping("/form")
-    public String register(User user) {
-        userService.join(user);
+    @PostMapping("/register")
+    public String register(final UserRequestDto userRequestDto) {
+        userService.join(userRequestDto);
         return "redirect:/users";
     }
 
-    @GetMapping("")
-    public String getUserList(Model model) {
-        List<User> users = userService.showAllUser();
+    @GetMapping
+    public String getUserList(final Model model) {
+        List<UserResponseDto> users = userService.showAllUser();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{id}")
-    public String readUserProfile(@PathVariable String id, Model model) {
+    public String readUserProfile(@PathVariable String id, final Model model) {
         model.addAttribute("user", userService.findUserById(id));
         return "user/profile";
     }
