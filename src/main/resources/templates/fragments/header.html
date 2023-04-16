@@ -14,10 +14,19 @@
         <button id="check">
             <span class="menu-bar"><img src="/images/menu-bar.png" width="20px"></span>
         </button>
+        {{^sessionUser}}
         <div class="bar">
             <a href="/users" class="head button" role="button">멤버리스트</a>
             <a href="/user/login" class="head button" role="button">로그인</a>
             <a href="/user/form" class="head button" role="button">회원가입</a>
         </div>
+        {{/sessionUser}}
+        {{#sessionUser}}
+        <div class="bar">
+            <a href="/users" class="head button" role="button">멤버리스트</a>
+            <a href="/checkForUpdate" class="head button" role="button">정보수정</a>
+            <a href="/user/logout" class="head button" role="button">로그아웃</a>
+        </div>
+        {{/sessionUser}}
     </div>
 </nav>

@@ -1,17 +1,14 @@
 {{> fragments/header}}
 <div></div>
 <div class="wrap">
-    <form name="question" method="post" action="/qna/write">
+    <form name="question" id="question" method="post" action="/qna/write">
+        <input type="hidden" name="writer" value="{{writer}}"/>
         <div class="h3">
             <h3>글쓰기</h3>
         </div>
         <div class="title-form">
             <label for="title">제목</label>
             <input type="text" id="title" name="title" placeholder="글의 제목을 입력하세요." onkeyup="verifyTitle()">
-        </div>
-        <div class="title-form">
-            <label for="writer">글쓴이</label>
-            <input class="form-control" id="writer" name="writer" placeholder="글쓴이"/>
         </div>
         <div class="content-form">
             <label for="content">내용</label>

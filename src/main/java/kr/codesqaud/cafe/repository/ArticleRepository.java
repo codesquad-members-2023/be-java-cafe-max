@@ -4,17 +4,20 @@ import java.util.List;
 import java.util.Optional;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.ArticleDto;
 
 public interface ArticleRepository {
-	Article save(Article article);
+	Article create(Article article);
 
 	Optional<Article> findByIndex(Long index);
 
-	Optional<Article> findByTitle(String title);
-
-	Optional<Article> findByContents(String contents);
-
 	List<Article> findAll();
 
-	boolean increaseHits(long index);
+	boolean increaseHits(Long index);
+
+	boolean delete(Long index);
+
+	boolean update(Long index, ArticleDto articleDto);
+
+	boolean updateWriter(String originalNickname, String newNickname);
 }
