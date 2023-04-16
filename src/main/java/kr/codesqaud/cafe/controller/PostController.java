@@ -49,13 +49,13 @@ public class PostController {
 
     @GetMapping("/write")
     public String writeForm(Model model) {
-        PostWriteRequest postWriteRequest = new PostWriteRequest("", "", null, null);
+        PostWriteRequest postWriteRequest = new PostWriteRequest("", "", null);
         model.addAttribute("postWriteRequest", postWriteRequest);
         return "post/write";
     }
 
     @GetMapping("/writer/{writerId}")
-    public String findPostByWriterId(@PathVariable Long writerId, Model model) {
+    public String findPostByWriterId(@PathVariable String writerId, Model model) {
         List<Post> posts = postService.findPostByWriterId(writerId);
         model.addAttribute("postResponses", posts);
         return "post/all";

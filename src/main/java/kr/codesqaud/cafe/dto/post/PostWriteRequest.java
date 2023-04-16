@@ -17,10 +17,10 @@ public class PostWriteRequest {
     @NotBlank
     @Length(min = 2, max = 3000)
     private final String content;
-    private final Long writerId;
+    private String writerId;
     private final LocalDateTime writeDate;
 
-    public PostWriteRequest(String title, String content, Long writerId, LocalDateTime writeDate) {
+    public PostWriteRequest(String title, String content, String writerId) {
         this.title = title;
         this.content = content;
         this.writerId = writerId;
@@ -35,11 +35,15 @@ public class PostWriteRequest {
         return content;
     }
 
-    public Long getWriterId() {
+    public String getWriterId() {
         return writerId;
     }
 
+    public void setWriterId(String writerId) {
+        this.writerId = writerId;
+    }
+
     public Post toMakePost(Member member) {
-        return new Post(title, content, member, writeDate, 0L);
+        return new Post(title, content, member.getEmail(), writeDate, 0L);
     }
 }

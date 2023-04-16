@@ -27,7 +27,7 @@ public class PostService {
     }
 
     public Long save(PostWriteRequest postWriteRequest) {
-        Member member = memberRepository.findById(postWriteRequest.getWriterId()).orElseThrow();
+        Member member = memberRepository.findByEmail(postWriteRequest.getWriterId()).orElseThrow();
         return postRepository.save(postWriteRequest.toMakePost(member), member);
     }
 
@@ -40,7 +40,7 @@ public class PostService {
         return PostResponse.of(post, getWriterResponse(post));
     }
 
-    public List<Post> findPostByWriterId(Long writerId) {
+    public List<Post> findPostByWriterId(String writerId) {
         return postRepository.findPostByWriterId(writerId);
     }
 
@@ -55,7 +55,7 @@ public class PostService {
 
     WriterResponse getWriterResponse(Post post) {
         return Optional.ofNullable(post.getWriterId())
-                .flatMap(memberRepository::findById)
+                .flatMap(memberRepository::findByEmail)
                 .map(WriterResponse::from)
                 .orElseThrow(() -> new NoSuchElementException("해당 id를 가진 글쓴이를 찾을 수 없습니다."));
     }

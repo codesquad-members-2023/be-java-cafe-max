@@ -26,7 +26,7 @@ public class JdbcPostRepository implements PostRepository {
         Long postId = rs.getLong("postId");
         String title = rs.getString("title");
         String content = rs.getString("content");
-        Long writerId = rs.getLong("writerId");
+        String writerId = rs.getString("writerId");
         LocalDateTime writeDate = rs.getTimestamp("write_date").toLocalDateTime();
         Long views = rs.getLong("views");
         return new Post(postId, title, content, writerId, writeDate, views);

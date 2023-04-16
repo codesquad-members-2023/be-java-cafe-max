@@ -52,7 +52,7 @@ public class MemberService {
     }
 
     public void update(ProfileEditRequestDto profileEditRequestDto) {
-        Member findMember = memberRepository.findById(profileEditRequestDto.getMemberId()).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_MEMBER));
+        Member findMember = memberRepository.findByEmail(profileEditRequestDto.getEmail()).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_MEMBER));
 
         if (findMember.isChangedMemberNickName(profileEditRequestDto.getNickName())) {
             memberRepository.findByNickName(profileEditRequestDto.getNickName())
