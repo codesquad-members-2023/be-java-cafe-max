@@ -1,15 +1,17 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.dto;
 
-public class User {
+import org.springframework.lang.NonNull;
+
+public class UserSignUpRequest {
     private String userId;
+    @NonNull
     private String password;
+    @NonNull
     private String name;
+    @NonNull
     private String email;
 
-    public User() {
-    }
-
-    private User(String userId, String password, String name, String email) {
+    public UserSignUpRequest(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -20,31 +22,15 @@ public class User {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }

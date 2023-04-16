@@ -1,61 +1,49 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.ArticleMemoryRepository;
-import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.dto.ArticlePostRequest;
+import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.dto.ArticleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class ArticleController {
-
-    private final ArticleRepository articleRepository;
+    private final ArticleService articleService;
 
     @Autowired
-    public ArticleController(ArticleMemoryRepository articleMemoryRepository) {
-        this.articleRepository = articleMemoryRepository;
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
     }
 
-    @GetMapping("/qna/write")
-    public String write(){
+    @RequestMapping("/article/write")
+    public String create(
+            HttpServletRequest request,
+            @ModelAttribute("question") ArticlePostRequest articlePostRequest
+    ) {
+        if ("POST".equals(request.getMethod())) {
+            articleService.post(articlePostRequest);
+            return "redirect:/";
+        }
+
         return "qna/form";
     }
 
-    @PostMapping("/qna/write")
-    public String create(
-            @RequestParam("writer") String writer,
-            @RequestParam("title") String title,
-            @RequestParam("contents") String contents,
-            Model model
-    ){
-        Article article = new Article();
-
-        article.setWriter(writer);
-        article.setTitle(title);
-        article.setContents(contents);
-
-        articleRepository.save(article);
-
-        model.addAttribute("article", article);
-
-        return "redirect:/";
-    }
-
     @GetMapping("/")
-    public String showIndex(Model model){
-        model.addAttribute("articles", articleRepository.findAll());
+    public String showIndex(Model model) {
+        List<ArticleResponse> articles = articleService.findArticles();
+        model.addAttribute("articles", articles);
 
         return "index";
     }
 
-    @GetMapping("/articles/{index}")
-    public String showDetail(@PathVariable("index") long index, Model model){
-        model.addAttribute("article", articleRepository.findByIndex(index));
+    @GetMapping("/article/{articleId}")
+    public String showDetail(@PathVariable("articleId") long articleId, Model model) {
+        model.addAttribute("article", articleService.findByArticleId(articleId));
 
         return "qna/show";
     }
