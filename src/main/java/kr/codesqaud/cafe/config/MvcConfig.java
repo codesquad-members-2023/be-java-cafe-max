@@ -15,7 +15,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
 		//user
 		registry.addViewController("/user/sign-up-form").setViewName("user/form");
-		registry.addViewController("/user/sign-in").setViewName("user/login");
+		registry.addViewController("/user/sign-in-form").setViewName("user/login");
 		registry.addViewController("/user/sign-in-success").setViewName("user/login_success");
 		registry.addViewController("/user/profile/{id}/form").setViewName("user/updateForm");
 
@@ -31,8 +31,9 @@ public class MvcConfig implements WebMvcConfigurer {
 			.excludePathPatterns("/user/list")
 			.excludePathPatterns("/user/sign-up")
 			.excludePathPatterns("/user/sign-up-form")
+			.excludePathPatterns("/user/sign-in-form")
 			.excludePathPatterns("/user/sign-in")
-			.excludePathPatterns("/user/sign-in-success")
+			.excludePathPatterns("/user/sign-in/{id}")
 			.excludePathPatterns("/css/**", "/images/**", "/js/**");
 
 	}

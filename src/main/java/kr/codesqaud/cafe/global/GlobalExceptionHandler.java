@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
 		if (requestUri.contains("/profile")) {
 			return createErrorResponseModelAndView("error/error", e);
 		}
-		return new ModelAndView(handleExceptionWithRedirect(e, "/user/sign-in", "id-error", redirectAttributes));
+		return new ModelAndView(handleExceptionWithRedirect(e, "/user/sign-in-form", "id-error", redirectAttributes));
 	}
 
 	@ExceptionHandler(UserUpdateInvalidPasswordException.class)
@@ -76,7 +76,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(LoginInvalidPasswordException.class)
 	public ModelAndView handleLoginInvalidPasswordException(LoginInvalidPasswordException e,
 		RedirectAttributes redirectAttributes) {
-		return new ModelAndView(handleExceptionWithRedirect(e, "/user/sign-in", "password-error", redirectAttributes));
+		return new ModelAndView(
+			handleExceptionWithRedirect(e, "/user/sign-in-form", "password-error", redirectAttributes));
 	}
 
 	@ExceptionHandler(ArticleNotFoundException.class)
