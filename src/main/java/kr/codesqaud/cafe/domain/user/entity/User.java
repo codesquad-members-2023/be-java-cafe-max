@@ -7,10 +7,11 @@ public class User {
 	private String password;
 	private String name;
 	private String email;
-	private Long id;
+	private String id;
 	LocalDateTime dateTime;
 
-	public User(String name, String password, String email) {
+	public User(String id, String name, String password, String email) {
+		this.id = id;
 		this.password = password;
 		this.name = name;
 		this.email = email;
@@ -18,6 +19,10 @@ public class User {
 	}
 
 	public User() {
+	}
+
+	public boolean isCorrectPassword(String password) {
+		return this.password.equals(password);
 	}
 
 	public String getName() {
@@ -44,11 +49,11 @@ public class User {
 		this.name = name;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

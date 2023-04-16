@@ -2,8 +2,11 @@ package kr.codesqaud.cafe.global.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import kr.codesqaud.cafe.global.common.interceptor.LoginInterceptor;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
@@ -14,5 +17,15 @@ public class MvcConfig implements WebMvcConfigurer {
 		registry.addViewController("/user/form").setViewName("user/form");
 		registry.addViewController("/user/login").setViewName("user/login");
 		registry.addViewController("/post/form").setViewName("post/form");
+		registry.addViewController("/login").setViewName("user/login");
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new LoginInterceptor())
+			.order(Ordered.HIGHEST_PRECEDENCE)
+			.addPathPatterns("/articles/**", "/users/**")
+			.excludePathPatterns("/user/join", "/login", "/css/**", "images/**", "/js/**",
+				"/*.ico");
 	}
 }
