@@ -36,7 +36,7 @@ public class ArticleService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public ArticleDTO findArticleByIdx(long idx){
+    public ArticleDTO findArticleByIdx(Long idx){
         return articleRepository.findArticleByIdx(idx)
                 .map(articleMapper::toArticleDTO)
                 .orElseThrow(ArticleNotFoundException::new);
@@ -46,14 +46,14 @@ public class ArticleService {
         articleRepository.updateArticle(articleMapper.toArticle(articleUpdateDto));
     }
 
-    public ArticleInfoDTO validSessionIdAndArticleId(long idx, String id) {
+    public ArticleInfoDTO validSessionIdAndArticleId(Long idx, String id) {
         return articleRepository.findArticleByIdx(idx)
                 .filter(article -> id.equals(article.getId()))
                 .map(articleMapper::toArticleInfoDTO)
                 .orElseThrow(ArticleIdAndSessionIdMismatchException::new);
     }
 
-    public void deleteArticleByIdx(long idx,String id){
+    public void deleteArticleByIdx(Long idx,String id){
         validSessionIdAndArticleId(idx,id);
         articleRepository.deleteArticle(idx);
     }

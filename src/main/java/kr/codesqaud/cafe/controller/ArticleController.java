@@ -30,7 +30,7 @@ public class ArticleController {
     }
 
     @GetMapping("/article/{idx}")
-    public String showDetailArticle(@PathVariable long idx, Model model) {
+    public String showDetailArticle(@PathVariable Long idx, Model model) {
         model.addAttribute("article", articleService.findArticleByIdx(idx));
         return "post/show";
     }
@@ -51,7 +51,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("/article/{idx}/delete")
-    public String deleteArticle(@PathVariable long idx,HttpSession httpSession){
+    public String deleteArticle(@PathVariable Long idx,HttpSession httpSession){
         Session session = (Session) httpSession.getAttribute(Session.LOGIN_USER);
         articleService.deleteArticleByIdx(idx,session.getId());
         return "redirect:/";

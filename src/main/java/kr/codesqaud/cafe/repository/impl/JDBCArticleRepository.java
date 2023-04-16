@@ -31,7 +31,7 @@ public class JDBCArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findArticleByIdx(long idx) {
+    public Optional<Article> findArticleByIdx(Long idx) {
         List<Article> article = jdbcTemplate.query("SELECT * FROM ARTICLE WHERE idx = ?",(rs,rn) -> new Article(rs),idx);
         return article.stream().findFirst();
     }
@@ -42,7 +42,7 @@ public class JDBCArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void deleteArticle(long idx) {
+    public void deleteArticle(Long idx) {
         jdbcTemplate.update("DELETE FROM ARTICLE WHERE idx = ?",idx);
     }
 }
