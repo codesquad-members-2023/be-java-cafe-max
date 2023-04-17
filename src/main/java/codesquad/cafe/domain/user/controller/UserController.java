@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String registerUser(@ModelAttribute final UserRequestDto userRequestDto) {
+    public String registerUser(@ModelAttribute @Valid final UserRequestDto userRequestDto) {
         userService.join(userRequestDto);
         return "redirect:/users";
     }
