@@ -22,6 +22,10 @@ public class User {
         return new User(id, this.userId, this.password, this.name, this.email);
     }
 
+    public long getId() {
+        return id;
+    }
+
     public String getUserId() {
         return userId;
     }

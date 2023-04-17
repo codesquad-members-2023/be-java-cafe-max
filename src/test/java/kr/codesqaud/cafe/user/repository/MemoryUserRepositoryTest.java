@@ -11,7 +11,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class UserRepositoryTest {
+class MemoryUserRepositoryTest {
 
     private UserRepository userRepository;
 
