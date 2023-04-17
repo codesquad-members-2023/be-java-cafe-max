@@ -169,7 +169,7 @@ class MemberControllerTest {
         mockMvc.perform(get("/members/{email}/edit", basicMemberData().getEmail())
                         .sessionAttr("loginMember", new LoginMemberSession(savedId, "test@test.com")))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/profileEdit"))
+                .andExpect(view().name("member/profileEdit"))
                 .andDo(print());
     }
 
