@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Primary
 @Repository
@@ -47,10 +48,8 @@ public class JdbcArticleRepositoryImpl implements ArticleRepository {
                 "JOIN users ON article.user_fk = users.id " +
                 "WHERE article.id = :id";
 
-        try {
-            return Optional.ofNullable(template.queryForObject(sql, Map.of("id", id), articleRowMapper()));
-        } catch (EmptyResultDataAccessException ex) {
-            return Optional.empty();
+        try (Stream<Article> result = template.queryForStream(sql, Map.of("id", id), articleRowMapper())) {
+            return result.findFirst();
         }
     }
 

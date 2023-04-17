@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.context.annotation.Primary;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Primary
 @Repository
@@ -45,10 +45,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     public Optional<User> findById(final Long id) {
         final String sql  = "SELECT * FROM users WHERE id = :id";
 
-        try {
-            return Optional.ofNullable(template.queryForObject(sql, Map.of("id", id), userRowMapper()));
-        } catch (EmptyResultDataAccessException ex) {
-            return Optional.empty();
+        try (final Stream<User> result = template.queryForStream(sql, Map.of("id", id), userRowMapper())) {
+            return result.findFirst();
         }
     }
 
@@ -56,10 +54,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     public Optional<User> findByUserId(final String userId) {
         final String sql  = "SELECT * FROM users WHERE user_id = :userId";
 
-        try {
-            return Optional.ofNullable(template.queryForObject(sql, Map.of("userId", userId), userRowMapper()));
-        } catch (EmptyResultDataAccessException ex) {
-            return Optional.empty();
+        try (final Stream<User> result = template.queryForStream(sql, Map.of("userId", userId), userRowMapper())) {
+            return result.findFirst();
         }
     }
 
@@ -67,10 +63,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     public Optional<User> findByEmail(final String email) {
         final String sql  = "SELECT * FROM users WHERE email = :email";
 
-        try {
-            return Optional.ofNullable(template.queryForObject(sql, Map.of("email", email), userRowMapper()));
-        } catch (EmptyResultDataAccessException ex) {
-            return Optional.empty();
+        try (final Stream<User> result = template.queryForStream(sql, Map.of("email", email), userRowMapper())) {
+            return result.findFirst();
         }
     }
 
