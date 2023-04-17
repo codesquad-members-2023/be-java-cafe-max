@@ -110,7 +110,7 @@ public class MemberController {
         memberService.deleteById(member.getMemberId());
     }
 
-    @GetMapping("/{memberId}/logout")
+    @PostMapping("/logout")
     public String logout(HttpServletRequest httpServletRequest) {
         final HttpSession httpSession = httpServletRequest.getSession();
         httpSession.removeAttribute("loginMember");
