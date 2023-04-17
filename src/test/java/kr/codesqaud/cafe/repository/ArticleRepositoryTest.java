@@ -44,7 +44,7 @@ public class ArticleRepositoryTest {
         assertThat(savedArticle.getAuthor()).isEqualTo(AUTHOR);
         assertThat(savedArticle.getTitle()).isEqualTo(TITLE);
         assertThat(savedArticle.getContents()).isEqualTo(CONTENTS);
-        assertThat(savedArticle.getTime()).isEqualTo(TIME);
+        assertThat(savedArticle.getCreatedTime()).isEqualTo(TIME);
     }
 
     @Test
