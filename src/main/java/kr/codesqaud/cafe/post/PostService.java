@@ -25,16 +25,11 @@ public class PostService {
     }
 
     public Post findById(long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(IllegalPostIdException::new);
-        if (post.isDeleted()) {
-            throw new IllegalPostIdException();
-        }
-        return post;
+        return postRepository.findByIdAndAndIsDeleted(postId, false).orElseThrow(IllegalPostIdException::new);
     }
 
     public List<SimplePostForm> getAllPosts() {
-        return postRepository.findAll().stream()
-                .filter(post -> !post.isDeleted())
+        return postRepository.findAllByIsDeleted(false).stream()
                 .map(SimplePostForm::from)
                 .collect(Collectors.toList());
     }
