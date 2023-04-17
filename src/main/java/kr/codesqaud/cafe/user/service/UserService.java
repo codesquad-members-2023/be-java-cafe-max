@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,5 +32,13 @@ public class UserService {
 
     public UserProfileResponse getProfile(String userId) {
         return UserProfileResponse.from(userRepository.findByUserId(userId).orElseThrow());
+    }
+
+    public Optional<User> login(String userId, String password) {
+        Optional<User> user = userRepository.findByUserId(userId);
+        if (user.isPresent() && !password.equals(user.get().getPassword())) {
+            user = Optional.empty();
+        }
+        return user;
     }
 }
