@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-public class JdbcArticleRepositoryTest {
+public class ArticleRepositoryTest {
 
     @Autowired
     private JdbcArticleRepository articleRepository;
@@ -86,10 +87,10 @@ public class JdbcArticleRepositoryTest {
         long savedId = articleRepository.save(article);
 
         // when
-        articleRepository.delete(savedId);
+        articleRepository.deleteById(savedId);
 
         // then
-        assertNull(articleRepository.findById(savedId));
+        assertThrows(EmptyResultDataAccessException.class, () ->articleRepository.findById(savedId));
     }
 
 }
