@@ -50,7 +50,8 @@ public class UserService {
         return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
     }
 
-    public void updateUser(final String id, final UserUpdateRequestDto userUpdateRequestDto) {
+    public void updateUser(final String id, final UserUpdateRequestDto userUpdateRequestDto, final User sessionUser) {
+        validateUpdateUser(sessionUser, id);
         User user = isExistUser(id);
         validatePassword(user, userUpdateRequestDto.getPassword());
         userRepository.update(user.update(userUpdateRequestDto));
@@ -71,5 +72,11 @@ public class UserService {
         User user = isExistUser(userLoginRequestDto.getUserId());
         validatePassword(user, userLoginRequestDto.getPassword());
         return user;
+    }
+
+    public void validateUpdateUser(final User user, final String userId) {
+        if (!user.getId().equals(userId)) {
+            throw new CustomException(UNAUTHORIZED_USER);
+        }
     }
 }
