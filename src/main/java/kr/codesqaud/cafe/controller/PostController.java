@@ -30,6 +30,11 @@ public class PostController {
         return "post/posts";
     }
 
+    @GetMapping("/posts/form")
+    public String writeForm(PostWriteRequest postWriteRequest) {
+        return "post/postWrite";
+    }
+
     @PostMapping("/posts")
     public String write(@Valid PostWriteRequest postWriteRequest, BindingResult bindingResult,
         @RequestAttribute AccountSession accountSession) {
@@ -45,6 +50,13 @@ public class PostController {
     public String post(@PathVariable Long id, Model model) {
         model.addAttribute("postResponse", postService.findById(id));
         return "post/post";
+    }
+
+    @GetMapping("/posts/{id}/form")
+    public String modifyForm(@PathVariable Long id, Model model, @RequestAttribute AccountSession accountSession) {
+        postService.validateUnauthorized(id, accountSession.getId());
+        model.addAttribute("postModifyRequest", PostModifyRequest.from(postService.findById(id)));
+        return "post/postModify";
     }
 
     @PutMapping("/posts/{id}")
@@ -64,17 +76,5 @@ public class PostController {
         postService.validateUnauthorized(id, accountSession.getId());
         postService.delete(id);
         return "redirect:/";
-    }
-
-    @GetMapping("/posts/write")
-    public String writeForm(PostWriteRequest postWriteRequest) {
-        return "post/postWrite";
-    }
-
-    @GetMapping("/posts/{id}/modify")
-    public String modifyForm(@PathVariable Long id, Model model, @RequestAttribute AccountSession accountSession) {
-        postService.validateUnauthorized(id, accountSession.getId());
-        model.addAttribute("postModifyRequest", PostModifyRequest.from(postService.findById(id)));
-        return "post/postModify";
     }
 }

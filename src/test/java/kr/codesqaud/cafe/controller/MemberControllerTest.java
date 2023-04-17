@@ -196,7 +196,7 @@ class MemberControllerTest {
         // when
 
         // then
-        mockMvc.perform(get("/members/{id}/profile", savedId)
+        mockMvc.perform(get("/members/{id}/form", savedId)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))

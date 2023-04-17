@@ -191,7 +191,7 @@ public class PostControllerTest {
         // when
 
         // then
-        mockMvc.perform(get("/posts/write")
+        mockMvc.perform(get("/posts/form")
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -210,7 +210,7 @@ public class PostControllerTest {
         // when
 
         // then
-        mockMvc.perform(get("/posts/{id}/modify", id)
+        mockMvc.perform(get("/posts/{id}/form", id)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -229,7 +229,7 @@ public class PostControllerTest {
         // when
 
         // then
-        mockMvc.perform(get("/posts/{id}/modify", id)
+        mockMvc.perform(get("/posts/{id}/form", id)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isUnauthorized())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -248,7 +248,7 @@ public class PostControllerTest {
         // when
 
         // then
-        mockMvc.perform(get("/posts/{id}/modify", id)
+        mockMvc.perform(get("/posts/{id}/form", id)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
