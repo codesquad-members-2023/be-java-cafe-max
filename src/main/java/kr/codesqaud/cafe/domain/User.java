@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.domain;
 
 public class User {
     private static int userNumFactory = 0;
-    private int userNum;
+    private final int userNum;
     private String userId;
     private String password;
     private String email;       // form에서 사용된 name에 맞춤
