@@ -32,6 +32,10 @@ $(document).ready(function () {
           $(`#${item.field}Error`).text(item.message)
         })
       }
+      // 비밀번호 일치하지 않음
+      if (errorResponse.name === 'NOT_MATCH_PASSWORD') {
+        $("#passwordError").text(errorResponse.errorMessage)
+      }
     })
   })
 

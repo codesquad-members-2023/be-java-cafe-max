@@ -34,7 +34,7 @@
           </th:block>
           <th:block th:if="${session.user}">
             <li><a id="logout" role="button">로그아웃</a></li>
-            <li><a role="button" th:href="@{/password/{id}(id=${session.user.id})}">개인정보수정</a>
+            <li><a role="button" th:href="@{/user/form/{id}(id=${session.user.id})}">개인정보수정</a>
             </li>
           </th:block>
 
