@@ -1,9 +1,7 @@
 package codesquad.cafe.domain.article.controller;
 
 import codesquad.cafe.domain.article.domain.Article;
-import codesquad.cafe.domain.article.dto.ArticleRequestDto;
-import codesquad.cafe.domain.article.repository.MemoryArticleRepository;
-import codesquad.cafe.domain.user.repository.MemoryUserRepository;
+import codesquad.cafe.domain.article.repository.JdbcTemplateArticleRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +14,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 class ArticleControllerTest {
@@ -26,7 +22,7 @@ class ArticleControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    MemoryArticleRepository articleRepository;
+    JdbcTemplateArticleRepository articleRepository;
 
     @Test
     @DisplayName("[GET] / 로 이동하면 게시글 목록 가져와서 index 화면에 출력하기 테스트")
@@ -52,7 +48,7 @@ class ArticleControllerTest {
     @Test
     @DisplayName("[GET] /articles/{postId} 로 이동하면 해당 게시글의 정보를 불러와 qna/show에 출력하기 테스트")
     void showDetailPost() throws Exception {
-        articleRepository.save(createDummyArticle());
+        articleRepository.save(createDummyArticle(), "chunghye98");
 
         mockMvc.perform(MockMvcRequestBuilders.get("/articles/{postId}", 1L))
                 .andExpect(MockMvcResultMatchers.status().isOk())

@@ -1,16 +1,13 @@
 package codesquad.cafe.domain.article.repository;
 
 import codesquad.cafe.domain.article.domain.Article;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemoryArticleRepositoryTest {
 
@@ -23,7 +20,7 @@ class MemoryArticleRepositoryTest {
         Article article = createDummyArticle1();
 
         // when
-        articleRepository.save(article);
+        articleRepository.save(article, "chunghye98");
 
         // then
         assertThat(articleRepository.findById(1L)).usingRecursiveComparison().isEqualTo(article.createdWith(1L));
@@ -40,8 +37,8 @@ class MemoryArticleRepositoryTest {
         list.add(article2);
 
         // when
-        articleRepository.save(article1);
-        articleRepository.save(article2);
+        articleRepository.save(article1, "chunghye98");
+        articleRepository.save(article2, "sio98");
 
         // then
         assertThat(articleRepository.findAll()).usingRecursiveComparison().isEqualTo(list);
@@ -55,7 +52,7 @@ class MemoryArticleRepositoryTest {
         Long id = 1L;
 
         // when
-        articleRepository.save(article);
+        articleRepository.save(article, "chunghye98");
         Article foundArticle = articleRepository.findById(id);
 
         // then
