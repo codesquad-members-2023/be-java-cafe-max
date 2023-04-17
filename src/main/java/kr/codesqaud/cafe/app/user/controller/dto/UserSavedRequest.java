@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.app.user.controller.dto;
 import javax.validation.constraints.Pattern;
 import kr.codesqaud.cafe.app.user.entity.User;
 
-public class UserSavedRequestDto {
+public class UserSavedRequest {
 
     @Pattern(regexp = "^[a-z\\d_-]{5,20}$", message = "5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.")
     private final String userId;
@@ -14,11 +14,11 @@ public class UserSavedRequestDto {
     @Pattern(regexp = "[a-z\\d]+@[a-z]+\\.[a-z]{2,3}", message = "(소문자 또는 숫자로 최소1글자)@(소문자 최소1글자).(소문자 2~3글자) 형식으로 사용 가능합니다.")
     private final String email;
 
-    public UserSavedRequestDto() {
+    public UserSavedRequest() {
         this(null, null, null, null);
     }
 
-    public UserSavedRequestDto(String userId, String password, String name, String email) {
+    public UserSavedRequest(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;

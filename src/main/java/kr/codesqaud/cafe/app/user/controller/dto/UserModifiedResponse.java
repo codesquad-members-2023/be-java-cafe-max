@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.app.user.controller.dto;
 
 import kr.codesqaud.cafe.app.user.entity.User;
 
-public class UserUpdatedResponseDto {
+public class UserModifiedResponse {
 
     private Long id;
     private String userId;
@@ -10,7 +10,7 @@ public class UserUpdatedResponseDto {
     private String name;
     private String email;
 
-    public UserUpdatedResponseDto(User user) {
+    public UserModifiedResponse(User user) {
         this.id = user.getId();
         this.userId = user.getUserId();
         this.password = user.getPassword();

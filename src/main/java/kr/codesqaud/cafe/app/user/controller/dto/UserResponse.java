@@ -2,14 +2,14 @@ package kr.codesqaud.cafe.app.user.controller.dto;
 
 import kr.codesqaud.cafe.app.user.entity.User;
 
-public class UserResponseDto {
+public class UserResponse {
 
     private final Long id;
     private final String userId;
     private final String name;
     private final String email;
 
-    public UserResponseDto(User user) {
+    public UserResponse(User user) {
         this.id = user.getId();
         this.userId = user.getUserId();
         this.name = user.getName();
