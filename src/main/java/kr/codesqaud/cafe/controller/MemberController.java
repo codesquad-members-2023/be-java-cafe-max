@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
 import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
@@ -112,7 +113,7 @@ public class MemberController {
 
     @PostMapping("/logout")
     public String logout(HttpServletRequest httpServletRequest) {
-        final HttpSession httpSession = httpServletRequest.getSession();
+        HttpSession httpSession = httpServletRequest.getSession();
         httpSession.removeAttribute("loginMember");
         return "redirect:/posts";
     }
