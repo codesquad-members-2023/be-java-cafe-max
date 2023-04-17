@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.app.question.controller.dto;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Pattern;
 import kr.codesqaud.cafe.app.question.entity.Question;
-import kr.codesqaud.cafe.app.user.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +29,8 @@ public class QuestionSavedRequest {
         this.userId = userId;
     }
 
-    public Question toEntity(User user) {
-        return new Question(null, title, content, writeDate, user);
+    public Question toEntity(Long userId) {
+        return new Question(null, title, content, writeDate, userId);
     }
 
     public String getTitle() {

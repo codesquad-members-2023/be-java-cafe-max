@@ -2,40 +2,37 @@ package kr.codesqaud.cafe.app.question.controller.dto;
 
 import java.time.LocalDateTime;
 import kr.codesqaud.cafe.app.question.entity.Question;
+import kr.codesqaud.cafe.app.user.entity.User;
 
 public class QuestionResponse implements Comparable<QuestionResponse> {
 
     private final Long id;
-    private final String writer;
     private final String title;
     private final String content;
     private final LocalDateTime writeDate;
     private final Long userId;
+    private final String writer;
 
     public QuestionResponse() {
         this.id = null;
-        this.writer = null;
         this.title = null;
         this.content = null;
         this.writeDate = null;
         this.userId = null;
+        this.writer = null;
     }
 
-    public QuestionResponse(Question question) {
+    public QuestionResponse(Question question, User user) {
         this.id = question.getId();
-        this.writer = question.getUser().getName();
         this.title = question.getTitle();
         this.content = question.getContent();
         this.writeDate = question.getWriteDate();
-        this.userId = question.getUser().getId();
+        this.userId = user.getId();
+        this.writer = user.getName();
     }
 
     public Long getId() {
         return id;
-    }
-
-    public String getWriter() {
-        return writer;
     }
 
     public String getTitle() {
@@ -52,6 +49,10 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
 
     public Long getUserId() {
         return userId;
+    }
+
+    public String getWriter() {
+        return writer;
     }
 
     @Override

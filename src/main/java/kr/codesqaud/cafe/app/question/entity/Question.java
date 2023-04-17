@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.app.question.entity;
 
 import java.time.LocalDateTime;
-import kr.codesqaud.cafe.app.user.entity.User;
 
 public class Question {
 
@@ -9,15 +8,15 @@ public class Question {
     private final String title; // 제목
     private final String content; // 내용
     private final LocalDateTime writeDate; // 작성일자
-    private final User user; // 회원
+    private final Long userId; // 회원 등록번호
 
     public Question(Long id, String title, String content,
-        LocalDateTime writeDate, User user) {
+        LocalDateTime writeDate, Long userId) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writeDate = writeDate;
-        this.user = user;
+        this.userId = userId;
     }
 
     public Long getId() {
@@ -36,7 +35,7 @@ public class Question {
         return writeDate;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 }

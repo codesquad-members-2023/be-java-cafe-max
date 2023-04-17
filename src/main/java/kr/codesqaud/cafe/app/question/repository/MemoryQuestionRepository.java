@@ -30,7 +30,7 @@ public class MemoryQuestionRepository implements QuestionRepository {
                 question.getTitle(),
                 question.getContent(),
                 question.getWriteDate(),
-                question.getUser());
+                question.getUserId());
         store.add(newQuestion);
         return newQuestion;
     }

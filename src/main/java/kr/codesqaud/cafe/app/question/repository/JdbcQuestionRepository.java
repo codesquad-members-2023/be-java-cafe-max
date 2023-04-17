@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.app.question.entity.Question;
-import kr.codesqaud.cafe.app.user.service.UserService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,11 +18,9 @@ import org.springframework.stereotype.Repository;
 public class JdbcQuestionRepository implements QuestionRepository {
 
     private final JdbcTemplate template;
-    private final UserService userService;
 
-    public JdbcQuestionRepository(JdbcTemplate template, UserService userService) {
+    public JdbcQuestionRepository(JdbcTemplate template) {
         this.template = template;
-        this.userService = userService;
     }
 
     @Override
@@ -53,7 +50,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
         pstmt.setString(1, question.getTitle());
         pstmt.setString(2, question.getContent());
         pstmt.setString(3, question.getWriteDate().toString());
-        pstmt.setLong(4, question.getUser().getId());
+        pstmt.setLong(4, question.getUserId());
         return pstmt;
     }
 
@@ -67,6 +64,6 @@ public class JdbcQuestionRepository implements QuestionRepository {
             rs.getString("title"),
             rs.getString("content"),
             rs.getTimestamp("writeDate").toLocalDateTime(),
-            userService.findUser(rs.getLong("userId")));
+            rs.getLong("userId"));
     }
 }
