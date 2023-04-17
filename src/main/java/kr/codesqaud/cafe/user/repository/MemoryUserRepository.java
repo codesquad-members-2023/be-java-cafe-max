@@ -7,15 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class MemoryUserRepository implements UserRepository {
 
     private final Map<Long, User> users = new HashMap<>();
-    private static long sequence = 0L;
+    private final AtomicLong sequence = new AtomicLong(0L);
 
     @Override
     public User save(User user) {
-        users.put(++sequence, user.create(sequence));
+        users.put(sequence.incrementAndGet(), user.create(sequence.get()));
         return user;
     }
 
