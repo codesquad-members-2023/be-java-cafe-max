@@ -148,8 +148,8 @@ class MemberControllerTest {
 
     @Test
     void profile() throws Exception {
-        Long memberId = memberRepository.save(basicMemberData());
-
+        Long memberId = memberService.join(basicMemberJoinRequestDtoData());
+        ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(memberId,basicMemberJoinRequestDtoData().getEmail(),basicMemberJoinRequestDtoData().getPassword(),basicMemberJoinRequestDtoData().getNickName());
         //when
         mockMvc.perform(put("/members/{email}", basicMemberData().getEmail())
                         .param("memberId",String.valueOf(profileEditRequestDto.getMemberId()))
@@ -195,8 +195,7 @@ class MemberControllerTest {
 
     @Test
     void deleteId() throws Exception {
-        MemberJoinRequestDto memberLoginRequestDto = basicMemberJoinRequestDtoData();
-        Long memberId = memberService.join(memberLoginRequestDto);
+        memberService.join(basicMemberJoinRequestDtoData());
 
         mockMvc.perform(delete("/members/{email}", basicMemberJoinRequestDtoData().getEmail())
                         .contentType(MediaType.APPLICATION_JSON))
