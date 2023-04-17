@@ -23,7 +23,7 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
         ModelAndView modelAndView = new ModelAndView();
         ErrorResponse errorResponse = new ErrorResponse(e);
         modelAndView.setViewName(errorResponse.getViewName());
-        modelAndView.addObject(errorResponse);
+        modelAndView.addObject("message",errorResponse.getMessage());
         return modelAndView;
     }
 }
