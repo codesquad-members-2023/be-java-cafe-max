@@ -10,11 +10,11 @@ import java.util.Map;
 @Repository
 public class UserRepository {
 
-    private List<User> users;
+    private final List<User> users;
     public UserRepository(ArrayList<User> users){
         this.users = users;
     }
-    private Map<String, User> dataBase  = new HashMap<>();
+    private final Map<String, User> dataBase  = new HashMap<>();
 
     public void save(User user){
         User newUser = user;
