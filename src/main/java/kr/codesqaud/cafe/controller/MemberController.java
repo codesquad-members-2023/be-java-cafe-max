@@ -98,8 +98,9 @@ public class MemberController {
         if (longinMemberSession.isNotEqualMember(email)) {
             throw new CommonException(CommonExceptionType.ACCESS_DENIED);
         }
-        model.addAttribute("profileEditRequest", ProfileEditRequestDto.of(memberService.findById(memberId)));
-        return "/profileEdit";
+        Member member = memberService.findByEmail(email);
+        model.addAttribute("profileEditRequestDto", ProfileEditRequestDto.of(memberService.findById(member.getMemberId())));
+        return "member/profileEdit";
     }
 
 
