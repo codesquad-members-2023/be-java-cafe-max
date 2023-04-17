@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.article.repository;
 
 import kr.codesqaud.cafe.article.domain.Article;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
@@ -35,20 +35,15 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "SELECT * FROM articles";
+        String sql = "SELECT id, author, title, contents, time FROM articles";
         return namedParameterJdbcTemplate.query(sql, articleRowMapper());
     }
 
     @Override
     public Article findById(long id) {
-        String sql = "SELECT * FROM articles WHERE id = :id";
-
-        try {
-            SqlParameterSource namedParameters = new MapSqlParameterSource("id", id);
-            return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, articleRowMapper());
-        } catch (EmptyResultDataAccessException e){
-            return null;
-        }
+        String sql = "SELECT id, author, title, contents, time FROM articles WHERE id = :id";
+        SqlParameterSource namedParameters = new MapSqlParameterSource("id", id);
+        return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, articleRowMapper());
     }
 
     @Override

@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.user.repository;
 
-import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.user.domain.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -42,13 +41,13 @@ public class JdbcUserRepository implements UserRepository{
 
     @Override
     public List<User> findAll() {
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT userId, password, name, email  FROM users";
         return jdbcTemplate.query(sql, userRowMapper());
     }
 
     @Override
     public Optional<User> findById(String userId) {
-        String sql = "SELECT * FROM users WHERE userId = ?";
+        String sql = "SELECT userId, password, name, email FROM users WHERE userId = ?";
         try {
             User user = jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
             return Optional.of(user);
@@ -64,5 +63,3 @@ public class JdbcUserRepository implements UserRepository{
         };
     }
 }
-
-
