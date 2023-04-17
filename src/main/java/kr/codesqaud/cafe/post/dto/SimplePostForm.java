@@ -5,6 +5,8 @@ import kr.codesqaud.cafe.post.Post;
 import java.time.LocalDateTime;
 
 public class SimplePostForm {
+    public static final int MAX_LENGTH = 150;
+    public static final int BEGIN_INDEX = 0;
     private final Long id;
 
     private final String nickname;
@@ -27,10 +29,14 @@ public class SimplePostForm {
         return new SimplePostForm.Builder()
                 .id(post.getId())
                 .nickname(post.getNickname())
-                .textContent((post.getTextContent().length() > 150) ? post.getTextContent().substring(0, 150) : post.getTextContent())
+                .textContent(getSimpleTextContent(post))
                 .title(post.getTitle())
                 .createdDateTime(post.getCreatedDateTime())
                 .build();
+    }
+
+    private static String getSimpleTextContent(Post post) {
+        return (post.getTextContent().length() > MAX_LENGTH) ? post.getTextContent().substring(BEGIN_INDEX, MAX_LENGTH) : post.getTextContent();
     }
 
     public Long getId() {
