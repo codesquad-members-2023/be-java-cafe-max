@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import kr.codesqaud.cafe.controller.dto.ArticleParam;
+import kr.codesqaud.cafe.controller.dto.ArticleRequest;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
@@ -77,8 +77,8 @@ class ArticleControllerTest {
 	@Test
 	void givenNothing_whenShowArticleDetails_thenReturnsArticleDetailsView() throws Exception {
 		// given
-		ArticleParam articleParam = new ArticleParam(1L, "bruni", "테스트코드", "어려워", LocalDateTime.now());
-		given(articleService.findById(anyLong())).willReturn(articleParam);
+		ArticleRequest articleRequest = new ArticleRequest(1L, "bruni", "테스트코드", "어려워", LocalDateTime.now());
+		given(articleService.findById(anyLong())).willReturn(articleRequest);
 
 		// when & then
 		mockMvc.perform(request(HttpMethod.GET, "/articles/1")

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.codesqaud.cafe.controller.dto.ArticleParam;
+import kr.codesqaud.cafe.controller.dto.ArticleRequest;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.domain.article.Article;
@@ -29,16 +29,16 @@ public class ArticleService {
 		articleRepository.save(Article.of(userId, request.getTitle(), request.getContents()));
 	}
 
-	public List<ArticleParam> getArticles() {
+	public List<ArticleRequest> getArticles() {
 		return articleRepository.findAll()
 			.stream()
-			.map(ArticleParam::from)
+			.map(ArticleRequest::from)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public ArticleParam findById(final Long id) {
+	public ArticleRequest findById(final Long id) {
 		return articleRepository.findById(id)
-			.map(ArticleParam::from)
+			.map(ArticleRequest::from)
 			.orElseThrow(() -> new NotFoundException(String.format("%d번 게시글을 찾을 수 없습니다.", id)));
 	}
 
