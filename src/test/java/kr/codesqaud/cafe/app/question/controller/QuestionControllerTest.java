@@ -7,19 +7,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
 import kr.codesqaud.cafe.app.question.repository.QuestionRepository;
+import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.repository.UserRepository;
-import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
-import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
-import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.errors.errorcode.CommonErrorCode;
 import kr.codesqaud.cafe.errors.response.ErrorResponse;
 import kr.codesqaud.cafe.errors.response.ErrorResponse.ValidationError;
@@ -91,10 +92,12 @@ class QuestionControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        QuestionResponse article = objectMapper.readValue(jsonArticle, QuestionResponse.class);
-        assertThat(article.getWriter()).isEqualTo(writer);
-        assertThat(article.getTitle()).isEqualTo(title);
-        assertThat(article.getContent()).isEqualTo(content);
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> questionMap = objectMapper.readValue(jsonArticle, typeReference);
+        assertThat(questionMap.get("writer")).isEqualTo(writer);
+        assertThat(questionMap.get("title")).isEqualTo(title);
+        assertThat(questionMap.get("content")).isEqualTo(content);
     }
 
     @Test

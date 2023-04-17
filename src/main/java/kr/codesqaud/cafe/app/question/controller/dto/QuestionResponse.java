@@ -13,15 +13,6 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
     private final Long userId;
     private final String writer;
 
-    public QuestionResponse() {
-        this.id = null;
-        this.title = null;
-        this.content = null;
-        this.writeDate = null;
-        this.userId = null;
-        this.writer = null;
-    }
-
     public QuestionResponse(Question question, User user) {
         this.id = question.getId();
         this.title = question.getTitle();
