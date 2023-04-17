@@ -2,54 +2,49 @@ package kr.codesqaud.cafe.user.repository;
 
 import kr.codesqaud.cafe.user.domain.User;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class JdbcUserRepository implements UserRepository{
 
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public JdbcUserRepository(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Override
     public String save(User user) {
-        String sql = "INSERT INTO users (userId, password, name, email) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (userId, password, name, email) VALUES (:userId, :password, :name, :email)";
+        SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(user);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, user.getUserId());
-            ps.setString(2, user.getPassword());
-            ps.setString(3, user.getName());
-            ps.setString(4, user.getEmail());
-            return ps;
-        }, keyHolder);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
         return user.getUserId();
-
     }
 
     @Override
     public List<User> findAll() {
-        String sql = "SELECT userId, password, name, email  FROM users";
-        return jdbcTemplate.query(sql, userRowMapper());
+        String sql = "SELECT userId, password, name, email FROM users";
+        return namedParameterJdbcTemplate.query(sql, userRowMapper());
     }
 
     @Override
     public Optional<User> findById(String userId) {
-        String sql = "SELECT userId, password, name, email FROM users WHERE userId = ?";
+        String sql = "SELECT userId, password, name, email FROM users WHERE userId = :userId";
+        SqlParameterSource namedParameters = new MapSqlParameterSource("userId", userId);
         try {
-            User user = jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
+            User user = namedParameterJdbcTemplate.queryForObject(sql, namedParameters, userRowMapper());
             return Optional.of(user);
         } catch (EmptyResultDataAccessException ex) {
             return Optional.empty();
