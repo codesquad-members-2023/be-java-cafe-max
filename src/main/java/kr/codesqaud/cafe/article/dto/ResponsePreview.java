@@ -9,14 +9,14 @@ public class ResponsePreview {
 
     private final String title;
 
-    private final String time;
+    private final String createdTime;
 
     private final long id;
 
-    public ResponsePreview(String author, String title, LocalDateTime time, long id) {
+    public ResponsePreview(String author, String title, LocalDateTime createdTime, long id) {
         this.author = author;
         this.title = title;
-        this.time = time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.createdTime = createdTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.id = id;
     }
 
@@ -30,8 +30,8 @@ public class ResponsePreview {
     }
 
 
-    public String getTime() {
-        return time;
+    public String getCreatedTime() {
+        return createdTime;
     }
 
 

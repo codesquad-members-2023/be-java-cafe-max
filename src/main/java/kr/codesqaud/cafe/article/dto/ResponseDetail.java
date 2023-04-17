@@ -12,15 +12,15 @@ public class ResponseDetail {
 
     private final String contents;
 
-    private final String time;
+    private final String createdTime;
 
     private final long id;
 
-    public ResponseDetail(String author, String title, String contents, LocalDateTime time, long id) {
+    public ResponseDetail(String author, String title, String contents, LocalDateTime createdTime, long id) {
         this.author = author;
         this.title = title;
         this.contents = contents;
-        this.time = time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.createdTime = createdTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.id = id;
     }
 
@@ -40,8 +40,8 @@ public class ResponseDetail {
         return contents;
     }
 
-    public String getTime() {
-        return time;
+    public String getCreatedTime() {
+        return createdTime;
     }
 
 }
