@@ -191,7 +191,7 @@ class UserControllerTest {
         //given
         String userId = "yonghwan1107";
         String password = "yonghwan1107";
-        String url = "/users/login";
+        String url = "/login";
         UserLoginRequest dto = new UserLoginRequest(userId, password);
 
         //when
@@ -213,7 +213,7 @@ class UserControllerTest {
         //given
         String userId = "yonghwan1107";
         String password = "useaweiofjaw";
-        String url = "/users/login";
+        String url = "/login";
         UserLoginRequest dto = new UserLoginRequest(userId, password);
         //when
         String jsonErrorResponse = mockMvc.perform(post(url)
@@ -238,7 +238,7 @@ class UserControllerTest {
         //given
         String userId = "";
         String password = "";
-        String url = "/users/login";
+        String url = "/login";
         UserLoginRequest dto = new UserLoginRequest(userId, password);
         //when
         String jsonErrors = mockMvc.perform(post(url)
@@ -264,7 +264,7 @@ class UserControllerTest {
         //given
         String userId = "user10";
         String password = "user10user10";
-        String url = "/users/login";
+        String url = "/login";
         UserLoginRequest dto = new UserLoginRequest(userId, password);
         //when
         String jsonErrorResponse = mockMvc.perform(post(url)
@@ -342,7 +342,7 @@ class UserControllerTest {
     public void password_success() throws Exception {
         //given
         Long id = userRepository.findByUserId("yonghwan1107").orElseThrow().getId();
-        String url = "/users/password/" + id;
+        String url = "/password/" + id;
         String password = "yonghwan1107";
         UserSavedRequest dto = new UserSavedRequest(null, password, null, null);
         //when & then
@@ -358,7 +358,7 @@ class UserControllerTest {
     public void password_fail() throws Exception {
         //given
         Long id = userRepository.findByUserId("yonghwan1107").orElseThrow().getId();
-        String url = "/users/password/" + id;
+        String url = "/password/" + id;
         String password = "awioefjoawiefj";
         UserSavedRequest dto = new UserSavedRequest(null, password, null, null);
         //when
