@@ -113,7 +113,7 @@ class PostControllerTest {
         String content = "내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게";
         LocalDateTime writeTime = LocalDateTime.now();
         Long views = 0L;
-        return new Post(title, content, member, writeTime, views);
+        return new Post(title, content, member.getEmail(), writeTime, views);
     }
 
     private MemberJoinRequestDto dummyMemberData() {
@@ -128,6 +128,6 @@ class PostControllerTest {
         String content = "니가 참 궁금해 그건 너도 마찬가지 이거면 충분해";
         LocalDateTime writeTime = LocalDateTime.now();
         Long views = 0L;
-        return new Post(title, content, member, writeTime, views);
+        return new Post(title, content, member.getEmail(), writeTime, views);
     }
 }

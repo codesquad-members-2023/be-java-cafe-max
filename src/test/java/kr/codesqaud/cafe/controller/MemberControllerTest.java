@@ -141,9 +141,13 @@ class MemberControllerTest {
         Long memberId = memberRepository.save(basicMemberData());
 
         //when
-        mockMvc.perform(get("/member/{memberId}", memberId))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/profile"));
+        mockMvc.perform(put("/members/{email}", basicMemberData().getEmail())
+                        .param("memberId",String.valueOf(profileEditRequestDto.getMemberId()))
+                        .param("email", profileEditRequestDto.getEmail())
+                        .param("password", profileEditRequestDto.getPassword())
+                        .param("nickName",profileEditRequestDto.getNickName()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/members/{email}"));
     }
 
     @Test
@@ -152,7 +156,7 @@ class MemberControllerTest {
         Long savedId = memberRepository.save(basicMemberData());
 
         // when,then
-        mockMvc.perform(get("/member/{memberId}/edit", savedId)
+        mockMvc.perform(get("/members/{email}/edit", basicMemberData().getEmail())
                         .sessionAttr("loginMember", new LoginMemberSession(savedId, "test@test.com")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/profileEdit"))
@@ -184,7 +188,7 @@ class MemberControllerTest {
         MemberJoinRequestDto memberLoginRequestDto = basicMemberJoinRequestDtoData();
         Long memberId = memberService.join(memberLoginRequestDto);
 
-        mockMvc.perform(delete("/member/{memberId}", memberId)
+        mockMvc.perform(delete("/members/{email}", basicMemberJoinRequestDtoData().getEmail())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());

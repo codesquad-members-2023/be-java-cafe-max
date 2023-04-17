@@ -75,26 +75,27 @@ public class MemberController {
     }
 
 
-    @GetMapping("/{memberId}")
-    public String profile(@PathVariable Long memberId, Model model) {
-        model.addAttribute("memberResponsesDto", memberService.findById(memberId));
-        return "/profile";
+    @GetMapping("/{email}")
+    public String profile(@PathVariable String email, Model model) {
+        Member member = memberService.findByEmail(email);
+        model.addAttribute("memberResponsesDto", memberService.findById(member.getMemberId()));
+        return "member/profile";
     }
 
-    @PutMapping("/{memberId}")
+    @PutMapping("/{email}")
     public String editProfile(@ModelAttribute @Valid ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "member/profiledEdit";
         }
 
         memberService.update(profileEditRequestDto);
-        redirectAttributes.addAttribute("memberId", profileEditRequestDto.getMemberId());
-        return "redirect:/member/{memberId}";
+        redirectAttributes.addAttribute("email", profileEditRequestDto.getEmail());
+        return "redirect:/members/{email}";
     }
 
-    @GetMapping("/{memberId}/edit")
-    public String profileEditForm(@PathVariable Long memberId, Model model, @SessionAttribute("loginMember") LoginMemberSession longinMemberSession) {
-        if (longinMemberSession.isNotEqualMember(memberId)) {
+    @GetMapping("/{email}/edit")
+    public String profileEditForm(@PathVariable String email, Model model, @SessionAttribute("loginMember") LoginMemberSession longinMemberSession) {
+        if (longinMemberSession.isNotEqualMember(email)) {
             throw new CommonException(CommonExceptionType.ACCESS_DENIED);
         }
         model.addAttribute("profileEditRequest", ProfileEditRequestDto.of(memberService.findById(memberId)));
@@ -102,9 +103,10 @@ public class MemberController {
     }
 
 
-    @DeleteMapping("/{memberId}")
-    public void deleteId(@PathVariable Long memberId) {
-        memberService.deleteById(memberId);
+    @DeleteMapping("/{email}")
+    public void deleteId(@PathVariable String email) {
+        Member member = memberService.findByEmail(email);
+        memberService.deleteById(member.getMemberId());
     }
 
     @GetMapping("/{memberId}/logout")

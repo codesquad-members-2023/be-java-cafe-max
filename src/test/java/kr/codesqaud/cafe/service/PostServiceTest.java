@@ -89,8 +89,8 @@ class PostServiceTest {
         Member member2 = memberRepository.findById(member2Id).orElseThrow();
 
 
-        Long post1Id = postRepository.save(new Post("title1", "content1", member1, LocalDateTime.now(), 0L), member1);
-        Long post2Id = postRepository.save(new Post("title2", "content2", member2, LocalDateTime.now(), 0L), member2);
+        Long post1Id = postRepository.save(new Post("title1", "content1", member1.getEmail(), LocalDateTime.now(), 0L), member1);
+        Long post2Id = postRepository.save(new Post("title2", "content2", member2.getEmail(), LocalDateTime.now(), 0L), member2);
 
         // when
         List<PostResponse> result = postService.findAll();
@@ -141,7 +141,7 @@ class PostServiceTest {
         String content = "내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게";
         LocalDateTime writeTime = LocalDateTime.now();
         Long views = 0L;
-        return new Post(title, content, member, writeTime, views);
+        return new Post(title, content, member.getEmail(), writeTime, views);
     }
 
 }
