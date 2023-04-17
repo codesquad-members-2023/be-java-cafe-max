@@ -35,10 +35,11 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
-            return new Article(rs.getString("writer"),
-                    rs.getString("title"),
-                    rs.getString("contents")
-            );
+            return Article.builder()
+                    .writer(rs.getString("writer"))
+                    .title(rs.getString("title"))
+                    .contents(rs.getString("contents"))
+                    .build();
         };
     }
 }

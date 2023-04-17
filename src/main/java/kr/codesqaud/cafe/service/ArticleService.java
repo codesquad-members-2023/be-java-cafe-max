@@ -17,8 +17,11 @@ public class ArticleService {
     }
 
     public void saveArticle(ArticleForm articleForm) {
-        Article article = new Article(articleForm.getWriter(), articleForm.getTitle(), articleForm.getContents());
-
+        Article article = Article.builder()
+                .writer((articleForm.getWriter()))
+                .title(articleForm.getTitle())
+                .contents(articleForm.getContents())
+                .build();
         articleRepository.save(article);
     }
 
