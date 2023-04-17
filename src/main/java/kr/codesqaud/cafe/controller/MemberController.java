@@ -2,12 +2,11 @@ package kr.codesqaud.cafe.controller;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.config.session.AccountSession;
-import kr.codesqaud.cafe.config.session.SignIn;
+import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignInRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
-import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
+import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.service.MemberService;
 import kr.codesqaud.cafe.util.SignInSessionUtil;
 import kr.codesqaud.cafe.validator.ProfileEditRequestValidator;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.bind.annotation.RequestAttribute;
 
 @Controller
 public class MemberController {
@@ -71,7 +70,7 @@ public class MemberController {
 
     @GetMapping("/members/{id}/profile")
     public String profileEditForm(@PathVariable Long id, Model model,
-        @SignIn AccountSession accountSession) {
+        @RequestAttribute AccountSession accountSession) {
         if (!id.equals(accountSession.getId())) {
             throw new UnauthorizedException();
         }
@@ -82,7 +81,7 @@ public class MemberController {
 
     @PutMapping("/members/{id}")
     public String editProfile(@PathVariable Long id, @Valid ProfileEditRequest profileEditRequest,
-        BindingResult bindingResult, @SignIn AccountSession accountSession) {
+        BindingResult bindingResult, @RequestAttribute AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
             return "member/profileEdit";
         }

@@ -1,11 +1,10 @@
 package kr.codesqaud.cafe.controller;
 
 import javax.validation.Valid;
+import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.service.PostService;
-import kr.codesqaud.cafe.config.session.AccountSession;
-import kr.codesqaud.cafe.config.session.SignIn;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 
 @Controller
 public class PostController {
@@ -32,7 +32,7 @@ public class PostController {
 
     @PostMapping("/posts")
     public String write(@Valid PostWriteRequest postWriteRequest, BindingResult bindingResult,
-        @SignIn AccountSession accountSession) {
+        @RequestAttribute AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
             return "post/postWrite";
         }
@@ -49,7 +49,7 @@ public class PostController {
 
     @PutMapping("/posts/{id}")
     public String modify(@PathVariable Long id, @Valid PostModifyRequest postModifyRequest,
-        BindingResult bindingResult, @SignIn AccountSession accountSession) {
+        BindingResult bindingResult, @RequestAttribute AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
             return "post/postModify";
         }
@@ -60,7 +60,7 @@ public class PostController {
     }
 
     @DeleteMapping("/posts/{id}")
-    public String delete(@PathVariable Long id, @SignIn AccountSession accountSession) {
+    public String delete(@PathVariable Long id, @RequestAttribute AccountSession accountSession) {
         postService.validateUnauthorized(id, accountSession.getId());
         postService.delete(id);
         return "redirect:/";
@@ -72,7 +72,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}/modify")
-    public String modifyForm(@PathVariable Long id, Model model, @SignIn AccountSession accountSession) {
+    public String modifyForm(@PathVariable Long id, Model model, @RequestAttribute AccountSession accountSession) {
         postService.validateUnauthorized(id, accountSession.getId());
         model.addAttribute("postModifyRequest", PostModifyRequest.from(postService.findById(id)));
         return "post/postModify";
