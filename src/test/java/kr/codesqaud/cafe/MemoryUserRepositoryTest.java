@@ -16,7 +16,7 @@ class MemoryUserRepositoryTest {
     @Test
     @DisplayName("유저 저장소에 유저가 제대로 추가된다.")
     void saveTest() {
-        User user = new User("nag", "name", "asdf@gmail.com", "1234");
+        User user = User.builder().build();
 
         memoryUserRepository.save(user);
         List<User> users = memoryUserRepository.getAllUsers();

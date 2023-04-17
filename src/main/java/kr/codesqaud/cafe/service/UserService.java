@@ -17,7 +17,12 @@ public class UserService {
     }
 
     public void saveUser(UserForm userForm) {
-        User user = new User(userForm.getUserId(), userForm.getPassword(), userForm.getUserName(), userForm.getEmail());
+        User user = User.builder()
+                .userId(userForm.getUserId())
+                .password(userForm.getPassword())
+                .userName(userForm.getUserName())
+                .email(userForm.getEmail())
+                .build();
 
         userRepository.save(user);
     }
