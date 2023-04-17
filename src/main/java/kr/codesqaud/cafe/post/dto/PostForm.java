@@ -2,17 +2,17 @@ package kr.codesqaud.cafe.post.dto;
 
 import kr.codesqaud.cafe.account.User;
 import kr.codesqaud.cafe.post.Post;
+import kr.codesqaud.cafe.post.annotation.ValidPostTextContent;
+import kr.codesqaud.cafe.post.annotation.ValidPostTitle;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class PostForm {
-    @NotEmpty
-    @Size(max = 64, min = 2, message = "{error.title.size}")
+    @ValidPostTitle
     private String title;
-    @NotEmpty
-    @Size(max = 1000, min = 3, message = "{error.textContent.size}")
+    @ValidPostTextContent
     private String textContent;
 
     public PostForm(String title, String textContent) {
