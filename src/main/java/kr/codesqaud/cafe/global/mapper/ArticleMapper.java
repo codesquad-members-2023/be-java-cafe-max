@@ -1,11 +1,14 @@
 package kr.codesqaud.cafe.global.mapper;
 
+import org.springframework.stereotype.Component;
+
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 
+@Component
 public class ArticleMapper {
 	public Article toArticle(ArticlePostRequest articlePostRequest) {
 		return new Article(articlePostRequest.getTitle(), articlePostRequest.getContent(), articlePostRequest.getId(),
@@ -20,7 +23,6 @@ public class ArticleMapper {
 	public ArticleResponse toArticleResponse(Article article) {
 		ArticleResponse articlePostRequest = new ArticleResponse(article.getTitle(), article.getContent(),
 			article.getIdx(), article.getDate(), article.getNickName());
-		// ArticleResponse.setNickName(article.getNickName());
 		return articlePostRequest;
 	}
 

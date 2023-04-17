@@ -24,9 +24,9 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
 
-	public UserService(@Qualifier("jdbcRepository") UserRepository userRepository) {
+	public UserService(@Qualifier("jdbcRepository") UserRepository userRepository, UserMapper userMapper) {
 		this.userRepository = userRepository;
-		this.userMapper = new UserMapper();
+		this.userMapper = userMapper;
 	}
 
 	public void addUser(UserSignUpRequest userSignUpRequest) {

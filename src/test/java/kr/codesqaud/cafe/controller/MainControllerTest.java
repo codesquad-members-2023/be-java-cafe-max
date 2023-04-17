@@ -39,7 +39,7 @@ class MainControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(view().name("index"))
 			.andExpect(model().attributeExists("articleList"))//객체 검증
-			.andExpect(model().attribute("postList", articleList));
+			.andExpect(model().attribute("articleList", articleList));
 	}
 
 }

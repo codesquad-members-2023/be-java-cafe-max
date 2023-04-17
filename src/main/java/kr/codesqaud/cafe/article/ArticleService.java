@@ -22,13 +22,15 @@ public class ArticleService {
 	private final ArticleRepository articleRepository;
 	private final ArticleMapper articleMapper;
 
-	public ArticleService(@Qualifier("jdbcRepository") ArticleRepository articleRepository) {
+	public ArticleService(@Qualifier("jdbcRepository") ArticleRepository articleRepository,
+		ArticleMapper articleMapper) {
 		this.articleRepository = articleRepository;
-		this.articleMapper = new ArticleMapper();
+		this.articleMapper = articleMapper;
 	}
 
 	public void post(ArticlePostRequest articlePostRequest) {
-		articleRepository.save(articleMapper.toArticle(articlePostRequest));
+		Article article = articleMapper.toArticle(articlePostRequest);
+		articleRepository.save(article);
 	}
 
 	public List<ArticleResponse> getArticleList() {
