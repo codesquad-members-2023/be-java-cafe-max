@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.post.repository;
 
 import kr.codesqaud.cafe.post.service.Post;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -27,6 +28,8 @@ public class MemoryPostRepository implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        return posts.values().stream().collect(Collectors.toUnmodifiableList());
+        return posts.values().stream()
+                .sorted(Comparator.comparing(Post::getWritingTime).reversed())
+                .collect(Collectors.toUnmodifiableList());
     }
 }

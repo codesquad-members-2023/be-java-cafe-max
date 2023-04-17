@@ -45,7 +45,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        String sql = "select id, writer, title, contents, writing_time from post";
+        String sql = "select id, writer, title, contents, writing_time from post order by writing_time desc";
         return jdbcTemplate.query(sql, rowMapper());
     }
 
