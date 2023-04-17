@@ -52,7 +52,7 @@ class UserServiceTest {
     void getAllUsersForm() {
         User jack = userService.save(new JoinForm(JACK, JACK_EMAIL, TEST_PASSWORD, TEST_PASSWORD));
         User jerry = userService.save(new JoinForm(JERRY, JERRY_EMAIL, TEST_PASSWORD, TEST_PASSWORD));
-        List<UserForm> allUsersForm = userService.getAllUsersForm();
+        List<UserForm> allUsersForm = userService.getAllUsersForm(0);
         assertThat(allUsersForm).contains(UserForm.from(jerry), UserForm.from(jack));
     }
 

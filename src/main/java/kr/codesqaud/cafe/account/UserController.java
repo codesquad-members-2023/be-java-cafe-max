@@ -20,6 +20,7 @@ public class UserController {
     private static final String PROFILE_FORM = "profileForm";
     private static final String PROFILE_SETTING_FORM = "profileEditForm";
     private static final String USERS = "users";
+    public static final int DEFAULT_PAGE = 0;
     private final UserService userService;
     private final JoinFormValidator joinFormValidator;
 
@@ -72,7 +73,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String viewUsers(Model model) {
-        List<UserForm> allUserForm = userService.getAllUsersForm();
+        List<UserForm> allUserForm = userService.getAllUsersForm(DEFAULT_PAGE);
         model.addAttribute(USERS, allUserForm);
         return "account/users";
     }

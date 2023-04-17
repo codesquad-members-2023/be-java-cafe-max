@@ -8,6 +8,8 @@ import kr.codesqaud.cafe.account.exception.IllegalEditEmailException;
 import kr.codesqaud.cafe.account.exception.IllegalEditPasswordException;
 import kr.codesqaud.cafe.account.exception.IllegalLoginPasswordException;
 import kr.codesqaud.cafe.account.exception.NoSuchLoginEmailException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +31,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<UserForm> getAllUsersForm() {
-        return userRepository.findAll().stream()
+    public List<UserForm> getAllUsersForm(int page) {
+        Pageable limit = PageRequest.of(page, 10);
+        return userRepository.findAll(limit).stream()
                 .map(UserForm::from)
                 .collect(Collectors.toList());
     }
