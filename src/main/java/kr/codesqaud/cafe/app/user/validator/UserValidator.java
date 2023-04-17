@@ -24,7 +24,7 @@ public class UserValidator {
 
     // 비밀번호가 일치하는지 않는지 검사
     private boolean isPasswordMatching(String requestPassword, String password) {
-        return !Objects.equals(requestPassword, password);
+        return Objects.equals(requestPassword, password);
     }
 
     // 수정하고자 하는 이메일이 기존 이메일과 동일한지 검사
