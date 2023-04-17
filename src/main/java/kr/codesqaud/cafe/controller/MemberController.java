@@ -119,7 +119,9 @@ public class MemberController {
             return "member/signIn";
         }
 
-        SignInSessionUtil.create(httpSession, memberService.createSession(signInRequest.getEmail()));
+        AccountSession accountSession = new AccountSession(
+            memberService.findByEmail(signInRequest.getEmail()).getId());
+        SignInSessionUtil.create(httpSession, accountSession);
         return "redirect:/";
     }
 

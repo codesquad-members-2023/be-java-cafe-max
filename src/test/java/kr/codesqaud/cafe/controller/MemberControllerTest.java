@@ -17,7 +17,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import kr.codesqaud.cafe.config.session.AccountSession;
+import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
@@ -329,9 +331,9 @@ class MemberControllerTest {
         // given
         String email = "test@gmail.com";
         String password = "Test1234";
-        AccountSession accountSession = new AccountSession(1L);
+        MemberResponse memberResponse = new MemberResponse(1L, email, "test", LocalDateTime.now());
         given(memberService.isNotSamePassword(email, password)).willReturn(false);
-        given(memberService.createSession(email)).willReturn(accountSession);
+        given(memberService.findByEmail(email)).willReturn(memberResponse);
 
         // when
 
@@ -342,7 +344,6 @@ class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/"))
-            .andExpect(request().sessionAttribute(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andDo(print());
     }
 

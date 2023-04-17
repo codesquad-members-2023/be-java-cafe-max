@@ -72,9 +72,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public AccountSession createSession(String email) {
-        Member findMember = memberRepository.findByEmail(email)
-            .orElseThrow(MemberNotFoundException::new);
-        return new AccountSession(findMember.getId());
+    public MemberResponse findByEmail(String email) {
+        return MemberResponse.from(memberRepository.findByEmail(email)
+            .orElseThrow(MemberNotFoundException::new));
     }
 }

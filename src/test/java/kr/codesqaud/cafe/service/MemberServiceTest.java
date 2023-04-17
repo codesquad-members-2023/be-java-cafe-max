@@ -260,9 +260,9 @@ class MemberServiceTest {
         assertFalse(actual);
     }
 
-    @DisplayName("이메일을 받아서 회원 중에 이메일이 같은 회원을 찾은 후 해당 회원 정보를 바탕으로 AccountSession을 반환한다")
+    @DisplayName("조회할 회원의 이메일이 같을 때 이메일로 회원을 조회하면 회원을 반환한다")
     @Test
-    void createSession() {
+    void findEmail() {
         // given
         Long savedId = 1L;
         String email = "test@gmail.com";
@@ -276,15 +276,15 @@ class MemberServiceTest {
         given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
 
         // when
-        AccountSession session = memberService.createSession(email);
+        MemberResponse findMemberResponse = memberService.findByEmail(email);
 
         // then
-        assertEquals(savedId, session.getId());
+        assertEquals(1L, findMemberResponse.getId());
     }
 
-    @DisplayName("이메일을 받아서 회원 중에 이메일이 같은 회원을 못 찾은 경우 예외를 던진다")
+    @DisplayName("조회할 회원의 이메일이 같지 않을 떄 이메일로 회원을 조회하면 예외를 던진다")
     @Test
-    void createSessionFalse() {
+    void findEmailFalse() {
         // given
         String email = "test@gmail.com";
         given(memberRepository.findByEmail(email)).willReturn(Optional.empty());
@@ -292,7 +292,7 @@ class MemberServiceTest {
         // when
 
         // then
-        assertThrows(MemberNotFoundException.class, () -> memberService.createSession(email));
+        assertThrows(MemberNotFoundException.class, () -> memberService.findByEmail(email));
     }
 
     private SignUpRequest createRequestDummy() {
