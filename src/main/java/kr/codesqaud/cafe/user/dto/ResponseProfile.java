@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.user.dto;
 
-public class UserProfileDto {
+public class ResponseProfile {
     //회원 프로필 내용 DTO
 
     private String name;
@@ -15,12 +15,12 @@ public class UserProfileDto {
         this.name = name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

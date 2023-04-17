@@ -1,9 +1,9 @@
 package kr.codesqaud.cafe.user.mapper;
 
 import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.dto.UserFormDto;
-import kr.codesqaud.cafe.user.dto.UserPreviewDto;
-import kr.codesqaud.cafe.user.dto.UserProfileDto;
+import kr.codesqaud.cafe.user.dto.RequestForm;
+import kr.codesqaud.cafe.user.dto.ResponsePreview;
+import kr.codesqaud.cafe.user.dto.ResponseProfile;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -12,9 +12,9 @@ public interface UserDtoMapper {
 
     UserDtoMapper INSTANCE = Mappers.getMapper(UserDtoMapper.class);
 
-    User toUser(UserFormDto userFormDto);
+    User toUser(RequestForm requestForm);
 
-    UserProfileDto toProfileDto(User user);
+    ResponseProfile toProfileDto(User user);
 
-    UserPreviewDto toPreviewDto(User user);
+    ResponsePreview toPreviewDto(User user);
 }
