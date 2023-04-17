@@ -1,7 +1,6 @@
 package codesquad.cafe.domain.article.repository;
 
 import codesquad.cafe.domain.article.domain.Article;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -16,9 +15,9 @@ public class MemoryArticleRepository implements ArticleRepository {
     private AtomicLong id = new AtomicLong();
 
     @Override
-    public void save(final Article article) {
-        id.getAndIncrement();
-        store.put(id.get(), article.createdWith(id.get()));
+    public void save(final Article article, final String id) {
+        this.id.getAndIncrement();
+        store.put(this.id.get(), article.createdWith(this.id.get()));
     }
 
     @Override

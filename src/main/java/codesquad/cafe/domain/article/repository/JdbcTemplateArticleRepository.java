@@ -20,9 +20,15 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void save(final Article article) {
-        String sql = "insert into article(writer, title, contents, createdAt) values (:writer, :title, :contents, :createdAt) ";
-        SqlParameterSource params = new BeanPropertySqlParameterSource(article);
+    public void save(final Article article, final String id) {
+        String sql = "insert into article(writer, title, contents, createdAt, writer_id) " +
+                "values (:writer, :title, :contents, :createdAt, :writer_id) ";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("writer", article.getWriter());
+        params.addValue("title", article.getTitle());
+        params.addValue("contents", article.getContents());
+        params.addValue("createdAt", article.getCreatedAt());
+        params.addValue("writer_id", id);
         namedParameterJdbcTemplate.update(sql, params);
     }
 

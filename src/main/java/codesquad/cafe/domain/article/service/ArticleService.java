@@ -4,6 +4,7 @@ import codesquad.cafe.domain.article.domain.Article;
 import codesquad.cafe.domain.article.dto.ArticleRequestDto;
 import codesquad.cafe.domain.article.dto.ArticleResponseDto;
 import codesquad.cafe.domain.article.repository.ArticleRepository;
+import codesquad.cafe.domain.user.domain.User;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void createPost(final ArticleRequestDto articleRequestDto) {
-        articleRepository.save(articleRequestDto.toEntity());
+    public void createPost(final ArticleRequestDto articleRequestDto, final User user) {
+        articleRepository.save(articleRequestDto.toEntity(), user.getId());
     }
 
     public List<ArticleResponseDto> findPosts() {
