@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.user.repository;
 
 import kr.codesqaud.cafe.user.service.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -40,7 +41,11 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public Optional<User> findByUserId(String userId) {
         String sql = "select id, user_id, password, name, email from `user` where user_id = ?";
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), userId));
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), userId));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
