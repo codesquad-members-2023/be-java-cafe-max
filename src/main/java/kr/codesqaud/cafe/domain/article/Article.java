@@ -54,4 +54,8 @@ public class Article {
 		this.title = title;
 		this.content = content;
 	}
+
+	public boolean isSameWriter(final String userId) {
+		return writer.equals(userId);
+	}
 }

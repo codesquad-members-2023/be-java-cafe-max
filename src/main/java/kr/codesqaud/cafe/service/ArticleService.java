@@ -44,7 +44,7 @@ public class ArticleService {
 
 	public void validateHasAuthorization(final Long articleId, final String userId) {
 		articleRepository.findById(articleId)
-			.filter(article -> article.getWriter().equals(userId))
+			.filter(article -> article.isSameWriter(userId))
 			.orElseThrow(NoAuthorizationException::new);
 	}
 
