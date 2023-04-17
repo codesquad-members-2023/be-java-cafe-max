@@ -10,10 +10,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.mapper.ArticleMapper;
-import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.article.ArticleService;
+import kr.codesqaud.cafe.article.domain.Article;
+import kr.codesqaud.cafe.article.dto.ArticleDTO;
+import kr.codesqaud.cafe.article.repository.ArticleRepository;
+import kr.codesqaud.cafe.global.mapper.ArticleMapper;
 
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {

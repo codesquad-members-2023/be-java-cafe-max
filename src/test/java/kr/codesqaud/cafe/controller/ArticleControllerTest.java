@@ -18,10 +18,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import kr.codesqaud.cafe.config.Session;
-import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
-import kr.codesqaud.cafe.controller.dto.article.ArticleInfoDTO;
-import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.article.ArticleController;
+import kr.codesqaud.cafe.article.ArticleService;
+import kr.codesqaud.cafe.article.dto.ArticleDTO;
+import kr.codesqaud.cafe.article.dto.ArticleInfoDTO;
+import kr.codesqaud.cafe.global.config.Session;
 
 @WebMvcTest(ArticleController.class)
 class ArticleControllerTest {

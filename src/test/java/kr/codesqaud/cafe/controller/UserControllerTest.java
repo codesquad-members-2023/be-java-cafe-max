@@ -21,10 +21,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import kr.codesqaud.cafe.config.Session;
-import kr.codesqaud.cafe.controller.dto.user.UserDTO;
-import kr.codesqaud.cafe.controller.dto.user.UserListDTO;
-import kr.codesqaud.cafe.service.UserService;
+import kr.codesqaud.cafe.account.UserController;
+import kr.codesqaud.cafe.account.UserService;
+import kr.codesqaud.cafe.account.dto.UserDTO;
+import kr.codesqaud.cafe.account.dto.UserListDTO;
+import kr.codesqaud.cafe.global.config.Session;
 
 @WebMvcTest(UserController.class)
 class UserControllerTest {

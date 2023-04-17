@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.codesqaud.cafe.exception.LoginInvalidPasswordException;
-import kr.codesqaud.cafe.exception.article.ArticleIdAndSessionIdMismatchException;
-import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
-import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
-import kr.codesqaud.cafe.exception.user.UserNotFoundException;
-import kr.codesqaud.cafe.exception.user.UserUpdateInvalidPasswordException;
+import kr.codesqaud.cafe.account.exception.AlreadyUserExistenceException;
+import kr.codesqaud.cafe.account.exception.LoginInvalidPasswordException;
+import kr.codesqaud.cafe.account.exception.UserNotFoundException;
+import kr.codesqaud.cafe.account.exception.UserUpdateInvalidPasswordException;
+import kr.codesqaud.cafe.article.exception.ArticleIdAndSessionIdMismatchException;
+import kr.codesqaud.cafe.article.exception.ArticleNotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

@@ -18,10 +18,11 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import kr.codesqaud.cafe.config.Session;
-import kr.codesqaud.cafe.controller.dto.SignInRequest;
-import kr.codesqaud.cafe.controller.dto.user.UserDTO;
-import kr.codesqaud.cafe.service.UserService;
+import kr.codesqaud.cafe.account.SignInController;
+import kr.codesqaud.cafe.account.UserService;
+import kr.codesqaud.cafe.account.dto.SignInRequest;
+import kr.codesqaud.cafe.account.dto.UserDTO;
+import kr.codesqaud.cafe.global.config.Session;
 
 @WebMvcTest(SignInController.class)
 class SignInControllerTest {

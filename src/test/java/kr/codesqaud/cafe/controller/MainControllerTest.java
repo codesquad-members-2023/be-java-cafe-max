@@ -14,8 +14,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
-import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.article.ArticleService;
+import kr.codesqaud.cafe.article.dto.ArticleDTO;
+import kr.codesqaud.cafe.global.MainController;
 
 @WebMvcTest(MainController.class)
 class MainControllerTest {
