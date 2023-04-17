@@ -1,9 +1,9 @@
 package kr.codesqaud.cafe.article.mapper;
 
 import kr.codesqaud.cafe.article.domain.Article;
-import kr.codesqaud.cafe.article.dto.ArticleDetailDto;
-import kr.codesqaud.cafe.article.dto.ArticleFormDto;
-import kr.codesqaud.cafe.article.dto.ArticlePreviewDto;
+import kr.codesqaud.cafe.article.dto.RequestForm;
+import kr.codesqaud.cafe.article.dto.ResponseDetail;
+import kr.codesqaud.cafe.article.dto.ResponsePreview;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -14,12 +14,12 @@ public interface ArticleDtoMapper {
     ArticleDtoMapper INSTANCE = Mappers.getMapper(ArticleDtoMapper.class);
 
     @Mapping(target = "author", source = "author")
-    Article toArticle(ArticleFormDto articleFormDto, String author);
+    Article toArticle(RequestForm requestForm, String author);
 
     @Mapping(target = "id", source = "id")
-    Article toArticle(ArticleFormDto articleFormDto, long id);
+    Article toArticle(RequestForm requestForm, long id);
 
-    ArticlePreviewDto toPreviewDto(Article article);
+    ResponsePreview toPreviewDto(Article article);
 
-    ArticleDetailDto toDetailDto(Article article);
+    ResponseDetail toDetailDto(Article article);
 }

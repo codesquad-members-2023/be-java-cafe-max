@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.article.controller;
 
-import kr.codesqaud.cafe.article.dto.ArticleDetailDto;
-import kr.codesqaud.cafe.article.dto.ArticleFormDto;
+import kr.codesqaud.cafe.article.dto.RequestForm;
+import kr.codesqaud.cafe.article.dto.ResponseDetail;
 import kr.codesqaud.cafe.article.service.ArticleService;
 import kr.codesqaud.cafe.utils.Session;
 import org.springframework.stereotype.Controller;
@@ -28,9 +28,9 @@ public class ArticleController {
     }
 
     //글 작성 클릭 시 매핑하고 글 저장
-    @PostMapping("/create")
-    public String createArticle(ArticleFormDto articleFormDto, HttpSession session) {
-        articleService.save(articleFormDto, Session.getUserId(session));
+    @PostMapping("/save")
+    public String createArticle(RequestForm requestForm, HttpSession session) {
+        articleService.save(requestForm, Session.getUserId(session));
         return "redirect:/articles/list";
     }
 
@@ -50,8 +50,8 @@ public class ArticleController {
 
     @GetMapping("/{id}/modify")
     public String showModifyForm(@PathVariable long id, Model model, HttpSession session) {
-        ArticleDetailDto articleDetailDto = articleService.getArticleDetail(id);
-        if (!Session.getUserId(session).equals(articleDetailDto.getAuthor())) {
+        ResponseDetail responseDetail = articleService.getArticleDetail(id);
+        if (!Session.getUserId(session).equals(responseDetail.getAuthor())) {
             return "articles/forbidden";
         }
         model.addAttribute("articleDetail", articleService.getArticleDetail(id));
@@ -59,15 +59,15 @@ public class ArticleController {
     }
 
     @PutMapping("/update")
-    public String updateArticle(long id, ArticleFormDto articleFormDto) {
-        articleService.update(id, articleFormDto);
+    public String updateArticle(@PathVariable long id, RequestForm requestForm) {
+        articleService.update(id, requestForm);
         return "redirect:/articles/" + id;
     }
 
     @DeleteMapping("/delete")
     public String deleteArticle(long id, HttpSession session){
-        ArticleDetailDto articleDetailDto = articleService.getArticleDetail(id);
-        if (!Session.getUserId(session).equals(articleDetailDto.getAuthor())) {
+        ResponseDetail responseDetail = articleService.getArticleDetail(id);
+        if (!Session.getUserId(session).equals(responseDetail.getAuthor())) {
             return "articles/forbidden";
         }
 
