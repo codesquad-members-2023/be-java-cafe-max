@@ -80,8 +80,7 @@ public class UserController {
     @ValidUserIdPath
     @GetMapping("/users/{userId}/profile")
     public String viewUser(Model model, @PathVariable Long userId, @SessionAttribute User user) {
-        ProfileForm profileForm = ProfileForm.from(user);
-        model.addAttribute(PROFILE_FORM, profileForm);
+        model.addAttribute(PROFILE_FORM, ProfileForm.from(user));
         model.addAttribute(USER_ID, userId);
         return "account/profile";
     }
@@ -89,12 +88,15 @@ public class UserController {
     @ValidUserIdPath
     @GetMapping("/users/{userId}/profile/edit")
     public String viewUserProfileEditForm(Model model, @PathVariable Long userId, @SessionAttribute User user) {
-        ProfileEditForm profileEditForm = ProfileEditForm.from(user);
         model.addAttribute(USER_ID, userId);
-        model.addAttribute(PROFILE_SETTING_FORM, profileEditForm);
+        model.addAttribute(PROFILE_SETTING_FORM, ProfileEditForm.from(user));
         return "account/profileEditForm";
     }
 
+
+    /**
+     * @param userId AuthBeforeAdvice 에서 접근 제한을 확인하기 위하여 사용합니다.
+     */
     @ValidUserIdPath
     @PutMapping("/users/{userId}/profile")
     public String updateUserProfile(@ModelAttribute @Valid ProfileEditForm profileEditForm, BindingResult bindingResult,

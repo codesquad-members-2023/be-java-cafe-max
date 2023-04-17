@@ -25,7 +25,7 @@ public class AuthBeforeAdvice {
 
     @Before("validUserIdPath()")
     public void validateUserIdPath(JoinPoint joinPoint) {
-        User user = getUser(joinPoint);
+        User user = getUser();
         Long userId = getPathId(joinPoint);
         if (!user.isSameId(userId)) {
             throw new IllegalAccessIdException();
@@ -38,12 +38,16 @@ public class AuthBeforeAdvice {
 
     @Before("validPostIdPath()")
     public void validatePathId(JoinPoint joinPoint) {
-        HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest().getSession();
-        User user = (User) session.getAttribute("user");
+        User user = getUser();
         Post post = getPost(joinPoint);
         if (!Objects.equals(post.getUser().getId(), user.getId())) {
             throw new IllegalAccessIdException();
         }
+    }
+
+    private static User getUser() {
+        HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest().getSession();
+        return (User) session.getAttribute("user");
     }
 
     private static Post getPost(JoinPoint joinPoint) {
@@ -56,13 +60,6 @@ public class AuthBeforeAdvice {
     private static Long getPathId(JoinPoint joinPoint) {
         return Arrays.stream(joinPoint.getArgs()).filter(Long.class::isInstance)
                 .map(Long.class::cast)
-                .findFirst()
-                .orElseThrow();
-    }
-
-    private static User getUser(JoinPoint joinPoint) {
-        return Arrays.stream(joinPoint.getArgs()).filter(User.class::isInstance)
-                .map(User.class::cast)
                 .findFirst()
                 .orElseThrow();
     }
