@@ -1,6 +1,7 @@
 package codesquad.cafe.domain.user.controller;
 
 import codesquad.cafe.domain.user.domain.User;
+import codesquad.cafe.domain.user.repository.JdbcUserRepository;
 import codesquad.cafe.domain.user.repository.MemoryUserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ class UserControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    MemoryUserRepository userRepository;
+    JdbcUserRepository userRepository;
 
     @Test
     @DisplayName("[GET] /users/join 경로로 이동하면 /user/form.html 보여주기 테스트")
@@ -91,6 +92,17 @@ class UserControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.view().name("redirect:/users"));
 
+    }
+
+    @Test
+    @DisplayName("[POST] /users/login 으로 이동하면 로그인 하기")
+    void login() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/users/login")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("userId", "chunghye98")
+                .param("password", "tjs601724"))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.view().name("redirect:/"));
     }
 
     private void saveDummyUser() {

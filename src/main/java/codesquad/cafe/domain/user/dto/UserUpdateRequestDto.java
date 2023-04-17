@@ -1,7 +1,5 @@
 package codesquad.cafe.domain.user.dto;
 
-import codesquad.cafe.domain.user.domain.User;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -11,7 +9,6 @@ public class UserUpdateRequestDto {
     private String password;
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d\\w\\W]{8,}$", message = "비밀번호는 최소 8자, 문자와 숫자는 하나 이상 포함되어야 합니다.")
     private String updatedPassword;
-
     @NotBlank(message = "이름은 반드시 입력해야 합니다.")
     private String name;
     @NotBlank
