@@ -107,7 +107,7 @@ public class UserController {
     public String logout(@PathVariable Long id, HttpServletRequest request) {
         final HttpSession session = request.getSession();
 
-        session.removeAttribute("loginUser");
+        session.invalidate();
 
         return "home";
     }
