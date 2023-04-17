@@ -55,10 +55,7 @@ public class UserController {
 
     @GetMapping("/{userId}/update")
     public String updateUser(@PathVariable String userId, Model model, HttpSession httpSession) {
-        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_ID).equals(userId)) {
-            throw new AccessDeniedException();
-        }
-
+        checkUserPermissions(httpSession, userId);
         UserUpdateRequest userUpdateRequest = userService.makeUserUpdateRequestByUserId(userId);
         model.addAttribute("user", userUpdateRequest);
 
@@ -67,10 +64,7 @@ public class UserController {
 
     @PutMapping("/{userId}")
     public String updateUser(@ModelAttribute UserUpdateRequest userUpdateRequest, HttpSession httpSession) {
-        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_ID).equals(userUpdateRequest.getUserId())) {
-            throw new AccessDeniedException();
-        }
-
+        checkUserPermissions(httpSession, userUpdateRequest.getUserId());
         userService.updateUser(userUpdateRequest);
         return "redirect:/users";
     }
@@ -94,5 +88,11 @@ public class UserController {
             httpSession.invalidate();
         }
         return "redirect:/";
+    }
+
+    private void checkUserPermissions(HttpSession httpSession, String userId) {
+        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_ID).equals(userId)) {
+            throw new AccessDeniedException();
+        }
     }
 }
