@@ -42,7 +42,8 @@ public class PostController {
             return "post/postWrite";
         }
 
-        postService.write(postWriteRequest, accountSession.getId());
+        postWriteRequest.setWriterId(accountSession.getId());
+        postService.write(postWriteRequest);
         return "redirect:/";
     }
 
@@ -66,15 +67,14 @@ public class PostController {
             return "post/postModify";
         }
 
-        postService.validateUnauthorized(id, accountSession.getId());
-        postService.modify(postModifyRequest, id);
+        postModifyRequest.setId(id);
+        postService.modify(postModifyRequest, accountSession.getId());
         return "redirect:/posts/{id}";
     }
 
     @DeleteMapping("/posts/{id}")
     public String delete(@PathVariable Long id, @RequestAttribute AccountSession accountSession) {
-        postService.validateUnauthorized(id, accountSession.getId());
-        postService.delete(id);
+        postService.delete(id, accountSession.getId());
         return "redirect:/";
     }
 }

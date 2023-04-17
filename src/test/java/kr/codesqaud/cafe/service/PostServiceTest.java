@@ -38,11 +38,11 @@ class PostServiceTest {
     void save() {
         // given
         Long writerId = 1L;
-        PostWriteRequest postWriteRequest = new PostWriteRequest("제목", "내용", null);
+        PostWriteRequest postWriteRequest = new PostWriteRequest("제목", "내용", writerId);
         given(postRepository.save(any())).willReturn(writerId);
 
         // when
-        Long savedId = postService.write(postWriteRequest, writerId);
+        Long savedId = postService.write(postWriteRequest);
 
         // then
         assertEquals(1L, savedId);
@@ -170,11 +170,12 @@ class PostServiceTest {
     void delete() {
         // given
         Long savedId = 1L;
+        Long accountSessionId = 1L;
         given(postRepository.findById(savedId)).willReturn(Optional.of(createPostDummy()))
             .willThrow(new PostNotFoundException());
 
         // when
-        postService.delete(savedId);
+        postService.delete(savedId, accountSessionId);
 
         // then
         assertThrows(PostNotFoundException.class, () -> postService.findById(savedId));
@@ -185,12 +186,13 @@ class PostServiceTest {
     void deleteFalse() {
         // given
         Long savedId = 1L;
+        Long accountSessionId = 1L;
         given(postRepository.findById(savedId)).willThrow(new PostNotFoundException());
 
         // when
 
         // then
-        assertThrows(PostNotFoundException.class, () -> postService.delete(savedId));
+        assertThrows(PostNotFoundException.class, () -> postService.delete(savedId, accountSessionId));
     }
 
     private Post createPostDummy() {

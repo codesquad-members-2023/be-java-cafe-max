@@ -74,7 +74,7 @@ public class PostControllerTest {
         Long writerId = 1L;
         AccountSession accountSession = new AccountSession(writerId);
         PostWriteRequest postWriteRequest = new PostWriteRequest("게시글 제목", "게시글 내용", writerId);
-        given(postService.write(any(), any())).willReturn(writerId);
+        given(postService.write(any())).willReturn(writerId);
 
         // when
 
@@ -302,7 +302,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(2L);
-        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(id, accountSession.getId());
+        willThrow(new UnauthorizedException()).given(postService).modify(any(), any());
 
         // when
 
@@ -340,7 +340,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(1L);
-        willThrow(new PostNotFoundException()).given(postService).delete(id);
+        willThrow(new PostNotFoundException()).given(postService).delete(id, accountSession.getId());
 
         // when
 
@@ -359,7 +359,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(1L);
-        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(id, accountSession.getId());
+        willThrow(new UnauthorizedException()).given(postService).delete(id, accountSession.getId());
 
         // when
 

@@ -8,7 +8,6 @@ import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
-import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,15 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final MemberRepository memberRepository;
 
-    public PostService(PostRepository postRepository, MemberRepository memberRepository) {
+    public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.memberRepository = memberRepository;
     }
 
-    public Long write(PostWriteRequest postWriteRequest, Long id) {
-        postWriteRequest.setWriterId(id);
+    public Long write(PostWriteRequest postWriteRequest) {
         return postRepository.save(postWriteRequest.toPost());
     }
 
@@ -46,10 +42,8 @@ public class PostService {
             .collect(Collectors.toUnmodifiableList());
     }
 
-    public void modify(PostModifyRequest postModifyRequest, Long id) {
-        postModifyRequest.setId(id);
-        postRepository.findById(postModifyRequest.getId())
-            .orElseThrow(PostNotFoundException::new);
+    public void modify(PostModifyRequest postModifyRequest, Long accountSessionId) {
+        validateUnauthorized(postModifyRequest.getId(), accountSessionId);
         postRepository.update(postModifyRequest.toPost());
     }
 
@@ -63,9 +57,8 @@ public class PostService {
         }
     }
 
-    public void delete(Long id) {
-        postRepository.findById(id)
-            .orElseThrow(PostNotFoundException::new);
+    public void delete(Long id, Long accountSessionId) {
+        validateUnauthorized(id, accountSessionId);
         postRepository.delete(id);
     }
 }
