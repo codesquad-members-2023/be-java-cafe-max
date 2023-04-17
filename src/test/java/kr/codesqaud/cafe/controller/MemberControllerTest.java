@@ -13,6 +13,7 @@ import java.util.Objects;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
 import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
+import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.service.MemberService;
 import kr.codesqaud.cafe.session.LoginMemberSession;
@@ -98,7 +99,6 @@ class MemberControllerTest {
         //given
         memberService.join(basicMemberJoinRequestDtoData());
         MemberLoginRequestDto memberLoginRequestDto = new MemberLoginRequestDto(basicMemberJoinRequestDtoData().getEmail(), basicMemberJoinRequestDtoData().getPassword());
-
         //when
         mockMvc.perform(post("/members/login")
                         .param("email", memberLoginRequestDto.getEmail())
