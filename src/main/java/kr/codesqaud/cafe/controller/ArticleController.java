@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.PostingRequest;
@@ -69,6 +70,14 @@ public class ArticleController {
 			return "qna/access_error";
 		}
 		articleService.deleteRequest(id);
+		return "redirect:/";
+	}
+
+	@PutMapping("/articles/edit/{id}")
+	public String updatePost(@ModelAttribute PostingRequest postingRequest, @PathVariable Long id,
+		HttpSession session) {
+		Object writer = session.getAttribute("sessionedUser");
+		articleService.updateRequest(postingRequest, id, (String)writer);
 		return "redirect:/";
 	}
 }
