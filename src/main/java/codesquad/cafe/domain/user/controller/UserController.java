@@ -50,7 +50,7 @@ public class UserController {
 
     @PutMapping("/{userId}/update")
     public String updateUser(@PathVariable String userId,
-                             @ModelAttribute UserUpdateRequestDto userUpdateRequestDto) {
+                             @ModelAttribute @Valid UserUpdateRequestDto userUpdateRequestDto) {
         userService.updateUser(userId, userUpdateRequestDto);
         return "redirect:/users";
     }
