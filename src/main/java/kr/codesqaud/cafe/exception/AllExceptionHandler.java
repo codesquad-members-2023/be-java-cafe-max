@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class AllExceptionHandler {
 
     @ExceptionHandler(AlreadyUserExistenceException.class)
-    public String handleDuplicateUserIdException(AlreadyUserExistenceException exception, Model model) {
+    public String handleAlreadyUserExistenceException(AlreadyUserExistenceException exception, Model model) {
         model.addAttribute("userSaveRequest", exception.getUserSaveRequest());
         model.addAttribute("duplicateUserIdMessage", exception.getMessage());
         return "user/sign-up";
     }
 
     @ExceptionHandler(AlreadyNameExistenceException.class)
-    public String handleDuplicateUserNameException(AlreadyNameExistenceException exception, Model model) {
+    public String handleAlreadyNameExistenceException(AlreadyNameExistenceException exception, Model model) {
         model.addAttribute("userSaveRequest", exception.getUserSaveRequest());
         model.addAttribute("duplicateUserNameMessage", exception.getMessage());
         return "user/sign-up";
@@ -41,14 +41,14 @@ public class AllExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public String handleUserNotFoundException(UserNotFoundException exception, Model model) {
         model.addAttribute("failMessage", exception.getMessage());
-        return "error/fail";
+        return "error/404";
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ArticleNotFoundException.class)
     public String handelArticleNotFoundException(ArticleNotFoundException exception, Model model) {
         model.addAttribute("failMessage", exception.getMessage());
-        return "error/fail";
+        return "error/404";
     }
 
     @ExceptionHandler(LoginFailedException.class)
