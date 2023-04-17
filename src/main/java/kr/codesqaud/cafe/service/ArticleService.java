@@ -20,7 +20,7 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public boolean writeArticle(ArticleFormDto dto, HttpSession session) {
+    public void writeArticle(ArticleFormDto dto, HttpSession session) {
         LoginSessionDto loginSessionDto = (LoginSessionDto) session.getAttribute("sessionId");
         Article article = new Article.Builder()
                 .userId(loginSessionDto.getId())
@@ -29,7 +29,6 @@ public class ArticleService {
                 .contents(dto.getContents())
                 .build();
         articleRepository.save(article);
-        return true;
     }
 
     public boolean checkLogin(LoginSessionDto dto) {
@@ -44,11 +43,10 @@ public class ArticleService {
         return id.equals(sessionId);
     }
 
-    public boolean checkAuth(String id, LoginSessionDto sessionDto) {
-        if (checkLogin(sessionDto) && checkIdentity(id, sessionDto.getId())) {
-            return checkIdentity(id, sessionDto.getId());
+    public void checkAuth(String id, LoginSessionDto sessionDto) {
+        if (!checkLogin(sessionDto) || !checkIdentity(id, sessionDto.getId())) {
+            throw new DeniedAccessException("작성자만 수정 가능합니다.");
         }
-        throw new DeniedAccessException("작성자만 수정 가능합니다.");
     }
 
 
@@ -60,20 +58,19 @@ public class ArticleService {
         return articleRepository.findByIdx(idx).orElseThrow(() -> new NotFoundException("게시글 찾을수 없음"));
     }
 
-    public boolean update(int index, ArticleFormDto dto, HttpSession session) {
-        LoginSessionDto loginSessionDto = (LoginSessionDto) session.getAttribute("sessionId");
+    public void update(int index, ArticleFormDto dto, String name) {
+        articleRepository.findByIdx(index).orElseThrow(() -> new NotFoundException("게시글 찾을 수 없음"));
         Article article = new Article.Builder()
                 .index(index)
                 .title(dto.getTitle())
-                .writer(loginSessionDto.getName())
+                .writer(name)
                 .contents(dto.getContents())
                 .build();
         articleRepository.update(article);
-        return false;
     }
 
-    public boolean delete(int index) {
+    public void delete(int index) {
+        articleRepository.findByIdx(index).orElseThrow(() -> new NotFoundException("게시글 찾을 수 없음"));
         articleRepository.delete(index);
-        return true;
     }
 }

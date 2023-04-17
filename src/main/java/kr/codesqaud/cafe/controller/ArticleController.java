@@ -62,7 +62,8 @@ public class ArticleController {
 
     @PutMapping("/article/update/{index}")
     public String putUpdate(@PathVariable int index, @Valid @ModelAttribute ArticleFormDto dto, HttpSession session) {
-        articleService.update(index, dto, session);
+        LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
+        articleService.update(index, dto, sessionDto.getName());
         return "redirect:/article/show/" + index;
     }
 
