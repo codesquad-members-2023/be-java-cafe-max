@@ -69,7 +69,6 @@ public class UserController {
         return new UserResponse(user);
     }
 
-
     // 회원가입 페이지
     @GetMapping("/user/form")
     public ModelAndView createForm() {
@@ -85,6 +84,4 @@ public class UserController {
         mav.addObject("user", userResponse);
         return mav;
     }
-
-
 }
