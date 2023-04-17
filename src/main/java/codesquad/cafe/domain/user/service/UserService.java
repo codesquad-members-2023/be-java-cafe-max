@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static codesquad.cafe.global.exception.ErrorCode.*;
+import static codesquad.cafe.domain.user.exception.UserErrorCode.*;
 
 @Service
 public class UserService {
