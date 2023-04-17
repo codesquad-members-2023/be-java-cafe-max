@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.dto.member;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import kr.codesqaud.cafe.domain.Member;
 
@@ -35,6 +36,9 @@ public class MemberResponseDto {
         return nickName;
     }
 
+    public String convertLocalDateTime() {
+        return createDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
 
     public static MemberResponseDto of(Member member) {
         return new MemberResponseDto(member.getMemberId(), member.getEmail(), member.getPassword(), member.getNickName(), member.getCreateDate());
