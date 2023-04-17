@@ -1,8 +1,6 @@
 package codesquad.cafe.global.exception;
 
-import codesquad.cafe.domain.user.exception.UserErrorCode;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
 
 public class ErrorResponse {
     private final HttpStatus status;
@@ -11,7 +9,7 @@ public class ErrorResponse {
     private final String viewName;
 
     public ErrorResponse(CustomException e) {
-        UserErrorCode errorCode = e.getErrorCode();
+        ErrorCode errorCode = e.getErrorCode();
         this.status = errorCode.getStatus();
         this.code = errorCode.getCode();
         this.message = errorCode.getMessage();
