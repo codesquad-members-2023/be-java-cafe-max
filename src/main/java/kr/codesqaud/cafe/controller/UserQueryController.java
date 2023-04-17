@@ -37,14 +37,7 @@ public class UserQueryController {
 
 	@GetMapping("/check/{userID}")
 	public String checkUserID(@PathVariable String userID, HttpSession session) {
-		Object value = session.getAttribute("sessionUser");
-		if (value == null) {
-			return "redirect:/user/login";
-		}
-		User user = (User)value;
-		if (!user.getUserID().equals(userID)) {
-			throw new IllegalStateException("다른 사용자의 정보는 수정할 수 없습니다.");
-		}
+		User user = (User)session.getAttribute("sessionUser");
 		return "user/checkForUpdate";
 	}
 

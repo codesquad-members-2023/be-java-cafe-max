@@ -32,7 +32,7 @@ public class UserCommandController {
 		userService.update(userDto);
 		User user = userService.findOne(userDto.getUserID());
 		httpSession.setAttribute("sessionUser", user);
-		if (!Objects.equals(original, user.getNickname())) {
+		if (!original.equals(user.getNickname())) {
 			return "redirect:/article/update/" + original + "/" + user.getNickname();
 		}
 		return "redirect:/users";

@@ -30,11 +30,7 @@ public class ArticleQueryController {
 
 	@GetMapping("/questions/form")
 	public String getArticleForm(HttpSession session, Model model) {
-		Object value = session.getAttribute("sessionUser");
-		if (value == null) {
-			return "redirect:/user/login";
-		}
-		User user = (User)value;
+		User user = (User)session.getAttribute("sessionUser");
 		model.addAttribute("writer", user.getNickname());
 		return "qna/form";
 	}
@@ -42,11 +38,7 @@ public class ArticleQueryController {
 	@GetMapping("/articles/{index}/{writer}")
 	public String showArticle(@PathVariable long index, @PathVariable String writer, HttpSession session, Model model) {
 		String equal = null;
-		Object value = session.getAttribute("sessionUser");
-		if (value == null) {
-			return "redirect:/user/login";
-		}
-		User user = (User)value;
+		User user = (User)session.getAttribute("sessionUser");
 		if (user.getNickname().equals(writer)) {
 			equal = "true";
 		}
