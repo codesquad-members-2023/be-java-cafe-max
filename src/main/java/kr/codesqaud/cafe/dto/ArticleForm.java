@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.dto;
 
 public class ArticleForm {
     private String writer;

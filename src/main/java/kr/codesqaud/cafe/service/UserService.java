@@ -1,9 +1,8 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.domain.UserForm;
+import kr.codesqaud.cafe.dto.UserForm;
 import kr.codesqaud.cafe.repository.JdbcUserRepository;
-import kr.codesqaud.cafe.repository.MemoryUserRepository;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 

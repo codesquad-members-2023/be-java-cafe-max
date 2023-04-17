@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.LoginForm;
+import kr.codesqaud.cafe.dto.LoginForm;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.LoginService;
 import org.springframework.stereotype.Controller;
