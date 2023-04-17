@@ -29,7 +29,6 @@ class PostServiceTest {
     public static final String TEST_CONTENT = "test_content";
     public static final String TARGET_TITLE = "target_title";
     public static final String TARGET_CONTENT = "target_content";
-    public static final long TEST_ID = 1L;
 
     @Autowired
     PostService postService;
