@@ -52,7 +52,7 @@ public class UserService {
 
     //특정 회원 조회(+DTO 필터)
     public ResponseProfile getUserProfile(String userId) {
-        User user = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다"));
         return UserDtoMapper.INSTANCE.toProfileDto(user);
     }
 
