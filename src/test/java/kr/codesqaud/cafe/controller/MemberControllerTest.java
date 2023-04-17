@@ -111,7 +111,9 @@ class MemberControllerTest {
 
     @Test
     void loginForm() throws Exception {
-        mockMvc.perform(get("/login"))
+        memberService.join(basicMemberJoinRequestDtoData());
+
+        mockMvc.perform(get("/members/login"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/login"))
                 .andDo(print());
