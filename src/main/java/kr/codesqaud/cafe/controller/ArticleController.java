@@ -37,7 +37,11 @@ public class ArticleController {
 	}
 
 	@GetMapping("/articles/{id}")
-	public String postDetails(Model model, @PathVariable Long id) {
+	public String postDetails(Model model, @PathVariable Long id, HttpSession session) {
+		Object user = session.getAttribute("sessionedUser");
+		if (user == null) {
+			return "redirect:/users/login";
+		}
 		model.addAttribute("details", articleService.findById(id));
 		return "qna/show";
 	}
