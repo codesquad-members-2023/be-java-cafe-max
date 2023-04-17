@@ -8,7 +8,7 @@ $(document).ready(function () {
     }
 
     const id = $("#id").val()
-    const urlPath = `/users/password/${id}`
+    const urlPath = `/password/${id}`
 
     $.ajax({
       type: "POST",

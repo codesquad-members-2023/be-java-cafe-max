@@ -3,9 +3,9 @@ $(document).ready(function () {
     e.preventDefault()
     $.ajax({
       type: "POST",
-      url: "/users/logout"
+      url: "/logout"
     }).done(function () {
-      location.href = "/user/login"
+      location.href = "/login"
     }).fail(function () {
       alert("로그아웃에 실패하였습니다.")
     })

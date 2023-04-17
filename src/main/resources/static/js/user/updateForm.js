@@ -19,7 +19,7 @@ $(document).ready(function () {
       contentType: 'application/json; charset=utf-8',
     }).done(function () {
       alert("회원정보 수정이 완료되었습니다.")
-      location.href = "/user/login"
+      location.href = "/login"
     }).fail(function (response) {
       const errorResponse = response.responseJSON
       // 유저 이메일 중복
@@ -37,22 +37,5 @@ $(document).ready(function () {
 
   function clearErrorMessage() {
     $("#form p").text("")
-  }
-
-  function hasFormatError(respMap) {
-    for (let key in respMap) {
-      const value = respMap[key]
-      if (value.errorCode !== undefined) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function writeError(respMap) {
-    for (let key in respMap) {
-      const value = respMap[key]
-      $(`#${key}Error`).text(value.errorMessage)
-    }
   }
 })
