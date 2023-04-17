@@ -93,17 +93,6 @@ class PostServiceTest {
         assertThat(savePost.getTextContent()).isEqualTo(TARGET_CONTENT);
     }
 
-    @DisplayName("post를 업데이트(실패)")
-    @Test
-    void updateFromPostFormFailed() {
-        Post post = new Post.Builder()
-                .id(NO_EXIST_ID)
-                .build();
-        assertThatThrownBy(() -> postService.updateFromPostForm(post, new PostForm(TARGET_TITLE, TARGET_CONTENT)))
-                .isInstanceOf(RuntimeException.class);
-    }
-
-
     @DisplayName("Post를 삭제")
     @Test
     void delete() {

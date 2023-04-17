@@ -35,9 +35,8 @@ public class PostService {
     }
 
     public Post updateFromPostForm(Post target, PostForm postForm) {
-        Post post = postRepository.findById(target.getId()).orElseThrow(RuntimeException::new);
-        postForm.editPost(post);
-        return postRepository.save(post);
+        postForm.editPost(target);
+        return postRepository.save(target);
     }
 
     public void delete(Post post) {
