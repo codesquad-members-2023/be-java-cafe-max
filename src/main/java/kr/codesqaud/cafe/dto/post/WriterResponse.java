@@ -3,16 +3,16 @@ package kr.codesqaud.cafe.dto.post;
 import kr.codesqaud.cafe.domain.Member;
 
 public class WriterResponse {
-    private final String writerId;
+    private final String writerEmail;
     private final String nickName;
 
-    public WriterResponse(String writerId, String nickName) {
-        this.writerId = writerId;
+    public WriterResponse(String writerEmail, String nickName) {
+        this.writerEmail = writerEmail;
         this.nickName = nickName;
     }
 
-    public String getWriterId() {
-        return writerId;
+    public String getWriterEmail() {
+        return writerEmail;
     }
 
     public String getNickName() {

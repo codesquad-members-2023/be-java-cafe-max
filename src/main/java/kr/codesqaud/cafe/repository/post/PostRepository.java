@@ -12,7 +12,7 @@ public interface PostRepository {
 
     Optional<Post> findById(Long postId);
 
-    List<Post> findPostByWriterId(String writerId);
+    List<Post> findPostByWriterEmail(String writerEmail);
 
     List<Post> findAll();
 

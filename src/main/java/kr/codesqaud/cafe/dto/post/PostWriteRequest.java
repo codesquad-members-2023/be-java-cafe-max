@@ -17,13 +17,13 @@ public class PostWriteRequest {
     @NotBlank
     @Length(min = 2, max = 3000)
     private final String content;
-    private String writerId;
+    private String writerEmail;
     private final LocalDateTime writeDate;
 
-    public PostWriteRequest(String title, String content, String writerId) {
+    public PostWriteRequest(String title, String content, String writerEmail) {
         this.title = title;
         this.content = content;
-        this.writerId = writerId;
+        this.writerEmail = writerEmail;
         this.writeDate = LocalDateTime.now();
     }
 
@@ -35,12 +35,12 @@ public class PostWriteRequest {
         return content;
     }
 
-    public String getWriterId() {
-        return writerId;
+    public String getWriterEmail() {
+        return writerEmail;
     }
 
-    public void setWriterId(String writerId) {
-        this.writerId = writerId;
+    public void setWriterEmail(String writerEmail) {
+        this.writerEmail = writerEmail;
     }
 
     public Post toMakePost(Member member) {

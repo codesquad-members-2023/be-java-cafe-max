@@ -26,10 +26,10 @@ public class JdbcPostRepository implements PostRepository {
         Long postId = rs.getLong("postId");
         String title = rs.getString("title");
         String content = rs.getString("content");
-        String writerId = rs.getString("writerId");
+        String writerEmail = rs.getString("writerEmail");
         LocalDateTime writeDate = rs.getTimestamp("write_date").toLocalDateTime();
         Long views = rs.getLong("views");
-        return new Post(postId, title, content, writerId, writeDate, views);
+        return new Post(postId, title, content, writerEmail, writeDate, views);
     };
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
@@ -40,7 +40,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Long save(Post post, Member member) {
-        String sql = "INSERT INTO post(title,content,writerId,write_date,views) VALUES(:title, :content, :writerId,:writeDate,:views)";
+        String sql = "INSERT INTO post(title,content,writerEmail,write_date,views) VALUES(:title, :content, :writerEmail,:writeDate,:views)";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(post);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, parameter, keyHolder);
@@ -49,21 +49,21 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Optional<Post> findById(Long postId) {
-        String sql = "SELECT postId,title,content,writerId,write_date,views FROM post WHERE postId=:postId";
+        String sql = "SELECT postId,title,content,writerEmail,write_date,views FROM post WHERE postId=:postId";
         SqlParameterSource parameter = new MapSqlParameterSource("postId", postId);
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, postRowMapper)));
     }
 
     @Override
-    public List<Post> findPostByWriterId(Long writerId) {
-        String sql = "SELECT postId,title,content,writerId,write_date,views FROM post WHERE writerId = :writerId ORDER BY write_date";
-        SqlParameterSource parameter = new MapSqlParameterSource("writerId", writerId);
+    public List<Post> findPostByWriterEmail(String writerEmail) {
+        String sql = "SELECT postId,title,content,writerEmail,write_date,views FROM post WHERE writerEmail = :writerEmail ORDER BY write_date";
+        SqlParameterSource parameter = new MapSqlParameterSource("writerEmail", writerEmail);
         return jdbcTemplate.query(sql, parameter, postRowMapper);
     }
 
     @Override
     public List<Post> findAll() {
-        String sql = "SELECT postId, title, content,writerId,write_date,views,FROM post";
+        String sql = "SELECT postId, title, content,writerEmail,write_date,views,FROM post";
         return jdbcTemplate.query(sql, postRowMapper);
     }
 

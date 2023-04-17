@@ -36,7 +36,7 @@ public class PostController {
         if (bindingResult.hasErrors()) {
             return "post/write";
         }
-        postWriteRequest.setWriterId(loginMemberSession.getMemberEmail());
+        postWriteRequest.setWriterEmail(loginMemberSession.getMemberEmail());
         postService.save(postWriteRequest);
         return "redirect:/write";
     }
@@ -54,9 +54,9 @@ public class PostController {
         return "post/write";
     }
 
-    @GetMapping("/writer/{writerId}")
-    public String findPostByWriterId(@PathVariable String writerId, Model model) {
-        List<Post> posts = postService.findPostByWriterId(writerId);
+    @GetMapping("/writer/{writerEmail}")
+    public String findPostBywriterEmail(@PathVariable String writerEmail, Model model) {
+        List<Post> posts = postService.findPostByWriterEmail(writerEmail);
         model.addAttribute("postResponses", posts);
         return "post/all";
     }

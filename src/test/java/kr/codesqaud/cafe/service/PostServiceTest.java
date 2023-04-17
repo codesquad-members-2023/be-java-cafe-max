@@ -54,7 +54,7 @@ class PostServiceTest {
         assertAll(
                 () -> assertEquals(basicPostData(member).getTitle(), postResponse.getTitle()),
                 () -> assertEquals(basicPostData(member).getContent(), postResponse.getContent()),
-                () -> assertEquals(basicPostData(member).getWriterId(), postResponse.getWriter().getWriterId()),
+                () -> assertEquals(basicPostData(member).getWriterEmail(), postResponse.getWriter().getWriterEmail()),
                 () -> assertEquals(basicPostData(member).getWriteDate().withNano(0), postResponse.getWriteDate().withNano(0)),
                 () -> assertEquals(basicPostData(member).getViews() + 1, postResponse.getViews()),
                 () -> assertNotNull(savedPostId));
@@ -74,7 +74,7 @@ class PostServiceTest {
 
         //then
         assertEquals(postId, postResponse.getPostId());
-        assertEquals(basicPostData(member).getWriterId(), postResponse.getWriter().getWriterId());
+        assertEquals(basicPostData(member).getWriterEmail(), postResponse.getWriter().getWriterEmail());
     }
 
     @Test
