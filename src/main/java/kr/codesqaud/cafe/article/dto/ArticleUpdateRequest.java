@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.article.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-public class ArticleUpdateDTO {
+public class ArticleUpdateRequest {
 
 	@NotBlank
 	@Pattern(regexp = "^\\s*[\\S\\s]+\\s*$")
@@ -15,7 +15,7 @@ public class ArticleUpdateDTO {
 
 	private Long idx;
 
-	public ArticleUpdateDTO(String title, String content) {
+	public ArticleUpdateRequest(String title, String content) {
 		this.title = title;
 		this.content = content;
 	}

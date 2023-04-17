@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.article.domain.Article;
-import kr.codesqaud.cafe.article.dto.ArticleDTO;
-import kr.codesqaud.cafe.article.dto.ArticleInfoDTO;
-import kr.codesqaud.cafe.article.dto.ArticleUpdateDTO;
+import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
+import kr.codesqaud.cafe.article.dto.ArticleResponse;
+import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
+import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 import kr.codesqaud.cafe.article.exception.ArticleIdAndSessionIdMismatchException;
 import kr.codesqaud.cafe.article.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
@@ -26,31 +27,31 @@ public class ArticleService {
 		this.articleMapper = new ArticleMapper();
 	}
 
-	public void post(ArticleDTO articleDTO) {
-		articleRepository.save(articleMapper.toArticle(articleDTO));
+	public void post(ArticlePostRequest articlePostRequest) {
+		articleRepository.save(articleMapper.toArticle(articlePostRequest));
 	}
 
-	public List<ArticleDTO> getArticleList() {
+	public List<ArticleResponse> getArticleList() {
 		return articleRepository.findAll().stream()
 			.sorted(Comparator.comparing(Article::getIdx).reversed())
-			.map(articleMapper::toArticleDTO)
+			.map(articleMapper::toArticleResponse)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public ArticleDTO findArticleByIdx(Long idx) {
+	public ArticleResponse findArticleByIdx(Long idx) {
 		return articleRepository.findArticleByIdx(idx)
-			.map(articleMapper::toArticleDTO)
+			.map(articleMapper::toArticleResponse)
 			.orElseThrow(ArticleNotFoundException::new);
 	}
 
-	public void updateArticle(ArticleUpdateDTO articleUpdateDto) {
-		articleRepository.updateArticle(articleMapper.toArticle(articleUpdateDto));
+	public void updateArticle(ArticleUpdateRequest articleUpdateRequest) {
+		articleRepository.updateArticle(articleMapper.toArticle(articleUpdateRequest));
 	}
 
-	public ArticleInfoDTO validSessionIdAndArticleId(Long idx, String id) {
+	public ArticleTitleAndContentResponse validSessionIdAndArticleId(Long idx, String id) {
 		return articleRepository.findArticleByIdx(idx)
 			.filter(article -> id.equals(article.getId()))
-			.map(articleMapper::toArticleInfoDTO)
+			.map(articleMapper::toArticleTitleAndContentResponse)
 			.orElseThrow(ArticleIdAndSessionIdMismatchException::new);
 	}
 

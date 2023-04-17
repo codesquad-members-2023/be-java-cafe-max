@@ -1,28 +1,30 @@
 package kr.codesqaud.cafe.global.mapper;
 
 import kr.codesqaud.cafe.article.domain.Article;
-import kr.codesqaud.cafe.article.dto.ArticleDTO;
-import kr.codesqaud.cafe.article.dto.ArticleInfoDTO;
-import kr.codesqaud.cafe.article.dto.ArticleUpdateDTO;
+import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
+import kr.codesqaud.cafe.article.dto.ArticleResponse;
+import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
+import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 
 public class ArticleMapper {
-	public Article toArticle(ArticleDTO articleDTO) {
-		return new Article(articleDTO.getTitle(), articleDTO.getContent(), articleDTO.getId(),
-			articleDTO.getNickName());
+	public Article toArticle(ArticlePostRequest articlePostRequest) {
+		return new Article(articlePostRequest.getTitle(), articlePostRequest.getContent(), articlePostRequest.getId(),
+			articlePostRequest.getNickName());
 	}
 
-	public ArticleDTO toArticleDTO(Article article) {
-		ArticleDTO articleDto = new ArticleDTO(article.getTitle(), article.getContent(), article.getIdx(),
-			article.getDate());
-		articleDto.setNickName(article.getNickName());
-		return articleDto;
+	public Article toArticle(ArticleUpdateRequest articleUpdateRequest) {
+		return new Article(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent(),
+			articleUpdateRequest.getIdx());
 	}
 
-	public Article toArticle(ArticleUpdateDTO articleUpdateDto) {
-		return new Article(articleUpdateDto.getTitle(), articleUpdateDto.getContent(), articleUpdateDto.getIdx());
+	public ArticleResponse toArticleResponse(Article article) {
+		ArticleResponse articlePostRequest = new ArticleResponse(article.getTitle(), article.getContent(),
+			article.getIdx(), article.getDate(), article.getNickName());
+		// ArticleResponse.setNickName(article.getNickName());
+		return articlePostRequest;
 	}
 
-	public ArticleInfoDTO toArticleInfoDTO(Article article) {
-		return new ArticleInfoDTO(article.getTitle(), article.getContent());
+	public ArticleTitleAndContentResponse toArticleTitleAndContentResponse(Article article) {
+		return new ArticleTitleAndContentResponse(article.getTitle(), article.getContent());
 	}
 }

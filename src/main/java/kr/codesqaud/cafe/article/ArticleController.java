@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-import kr.codesqaud.cafe.article.dto.ArticleDTO;
-import kr.codesqaud.cafe.article.dto.ArticleUpdateDTO;
+import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
+import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 import kr.codesqaud.cafe.global.config.Session;
 
 @Controller
@@ -28,11 +28,11 @@ public class ArticleController {
 	}
 
 	@PostMapping("/article/submit")
-	public String postArticle(@ModelAttribute @Valid ArticleDTO articleDto, HttpSession httpSession) {
+	public String postArticle(@ModelAttribute @Valid ArticlePostRequest articlePostRequest, HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
-		articleDto.setId(session.getId());
-		articleDto.setNickName(session.getNickName());
-		articleService.post(articleDto);
+		articlePostRequest.setId(session.getId());
+		articlePostRequest.setNickName(session.getNickName());
+		articleService.post(articlePostRequest);
 		return "redirect:/";
 	}
 
@@ -51,9 +51,10 @@ public class ArticleController {
 	}
 
 	@PutMapping("/article/submit/update-form/{idx}")
-	public String updateArticle(@ModelAttribute @Valid ArticleUpdateDTO articleUpdateDto, @PathVariable Long idx) {
-		articleUpdateDto.setIdx(idx);
-		articleService.updateArticle(articleUpdateDto);
+	public String updateArticle(@ModelAttribute @Valid ArticleUpdateRequest articleUpdateRequest,
+		@PathVariable Long idx) {
+		articleUpdateRequest.setIdx(idx);
+		articleService.updateArticle(articleUpdateRequest);
 		return "redirect:/";
 	}
 

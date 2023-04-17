@@ -20,8 +20,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import kr.codesqaud.cafe.article.ArticleController;
 import kr.codesqaud.cafe.article.ArticleService;
-import kr.codesqaud.cafe.article.dto.ArticleDTO;
-import kr.codesqaud.cafe.article.dto.ArticleInfoDTO;
+import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
+import kr.codesqaud.cafe.article.dto.ArticleResponse;
+import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.global.config.Session;
 
 @WebMvcTest(ArticleController.class)
@@ -68,11 +69,14 @@ class ArticleControllerTest {
 	void showDetailArticleTest() throws Exception {
 
 		//given
-		ArticleDTO articleDto = new ArticleDTO("제목입니다", "내용입니다", 1L, "2023-4-10");
+		ArticlePostRequest articlePostRequest = new ArticlePostRequest("제목입니다", "내용입니다");
 		Session session = (Session)httpSession.getAttribute(Session.LOGIN_USER);
-		articleDto.setId(session.getId());
-		articleDto.setNickName(session.getNickName());
-		given(articleService.findArticleByIdx(1L)).willReturn(articleDto);
+		articlePostRequest.setId(session.getId());
+		articlePostRequest.setNickName(session.getNickName());
+
+		ArticleResponse articleResponse = new ArticleResponse(articlePostRequest.getTitle(),
+			articlePostRequest.getContent(), 1L, "2023-4-17", "nickName");
+		given(articleService.findArticleByIdx(1L)).willReturn(articleResponse);
 
 		//when & then
 		mockMvc.perform(MockMvcRequestBuilders.get("/article/1")
@@ -80,20 +84,21 @@ class ArticleControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(view().name("post/show"))
 			.andExpect(model().attributeExists("article"))//객체 검증
-			.andExpect(model().attribute("article", articleDto));
+			.andExpect(model().attribute("article", articleResponse));
 	}
 
 	@Test
 	@DisplayName("해당 글을 작성한 사용자는 글의 내용을 업데이트 할수 있는 form으로 이동할수 있다.")
 	void showUpdateFormTest() throws Exception {
-		ArticleInfoDTO articleInfoDto = new ArticleInfoDTO("제목입니다", "내용입니다");
-		given(articleService.validSessionIdAndArticleId(1L, "id")).willReturn(articleInfoDto);
+		ArticleTitleAndContentResponse articleTitleAndContentResponse = new ArticleTitleAndContentResponse("제목입니다",
+			"내용입니다");
+		given(articleService.validSessionIdAndArticleId(1L, "id")).willReturn(articleTitleAndContentResponse);
 
 		mockMvc.perform(MockMvcRequestBuilders.get("/article/update-form/1")
 				.session(httpSession))
 			.andExpect(status().isOk())
 			.andExpect(view().name("post/updateForm"))
-			.andExpect(model().attribute("article", articleInfoDto))
+			.andExpect(model().attribute("article", articleTitleAndContentResponse))
 			.andExpect(model().attribute("idx", 1L));
 	}
 

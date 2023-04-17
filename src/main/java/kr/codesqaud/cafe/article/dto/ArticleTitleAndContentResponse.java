@@ -1,11 +1,11 @@
 package kr.codesqaud.cafe.article.dto;
 
-public class ArticleInfoDTO {
+public class ArticleTitleAndContentResponse {
 
 	private final String title;
 	private final String content;
 
-	public ArticleInfoDTO(String title, String content) {
+	public ArticleTitleAndContentResponse(String title, String content) {
 		this.title = title;
 		this.content = content;
 	}

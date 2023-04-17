@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.article.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-public class ArticleDTO {
+public class ArticlePostRequest {
 	@NotBlank
 	@Pattern(regexp = "^\\s*[\\S\\s]+\\s*$")
 	private final String title;
@@ -12,19 +12,13 @@ public class ArticleDTO {
 	@Pattern(regexp = "^[\\s\\S]{3,1000}$")
 	private final String content;
 
-	private final Long idx;
-
-	private final String date;
-
 	private String id;
 
 	private String nickName;
 
-	public ArticleDTO(String title, String content, Long idx, String date) {
+	public ArticlePostRequest(String title, String content) {
 		this.title = title;
 		this.content = content;
-		this.idx = idx;
-		this.date = date;
 	}
 
 	public String getTitle() {
