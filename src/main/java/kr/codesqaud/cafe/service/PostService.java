@@ -26,12 +26,11 @@ public class PostService {
         return postRepository.save(postWriteRequest.toPost());
     }
 
-    public PostResponse findById(Long id) {
-        Post post = postRepository.findById(id)
-            .orElseThrow(PostNotFoundException::new)
-            .increaseViews();
-        postRepository.increaseViews(post);
-        return PostResponse.of(post);
+    public PostResponse findById(Long id, Long accountSessionId) {
+        validateUnauthorized(id, accountSessionId);
+        postRepository.increaseViews(id);
+        return PostResponse.of(postRepository.findById(id)
+            .orElseThrow(PostNotFoundException::new));
     }
 
     @Transactional(readOnly = true)

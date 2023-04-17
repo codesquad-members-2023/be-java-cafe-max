@@ -149,8 +149,8 @@ public class PostControllerTest {
     void detailPost() throws Exception {
         // given
         PostResponse postResponse = createPostResponseDummy();
-        AccountSession accountSession = new AccountSession(postResponse.getId());
-        given(postService.findById(any())).willReturn(postResponse);
+        AccountSession accountSession = new AccountSession(postResponse.getWriter().getId());
+        given(postService.findById(1L, accountSession.getId())).willReturn(postResponse);
 
         // when
 
@@ -169,7 +169,7 @@ public class PostControllerTest {
     void detailPostFalse() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(1L);
-        given(postService.findById(any())).willThrow(PostNotFoundException.class);
+        given(postService.findById(1L, accountSession.getId())).willThrow(PostNotFoundException.class);
 
         // when
 
@@ -205,7 +205,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(1L);
-        given(postService.findById(id)).willReturn(createPostResponseDummy());
+        given(postService.findById(id, accountSession.getId())).willReturn(createPostResponseDummy());
 
         // when
 
@@ -224,7 +224,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(2L);
-        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(id, accountSession.getId());
+        given(postService.findById(id, accountSession.getId())).willThrow(new UnauthorizedException());
 
         // when
 
@@ -243,7 +243,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(1L);
-        given(postService.findById(id)).willThrow(new PostNotFoundException());
+        given(postService.findById(id, accountSession.getId())).willThrow(new PostNotFoundException());
 
         // when
 

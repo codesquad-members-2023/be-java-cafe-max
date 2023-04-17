@@ -45,16 +45,12 @@ public class Post {
         return views;
     }
 
-    public Post increaseViews() {
-        return new Post(id, title, content, writer, writeDate, views + 1);
-    }
-
     public Post createWithId(Long id) {
         return new Post(id, title, content, writer, writeDate, views);
     }
 
-    public boolean equalsWriterId(Long id) {
-        return writer.equalsId(id);
+    public boolean equalsWriterId(Long writerId) {
+        return writer.equalsId(writerId);
     }
 
     public static PostBuilder builder() {

@@ -66,11 +66,13 @@ public class JdbcPostRepository implements PostRepository {
     }
 
     @Override
-    public void increaseViews(Post post) {
+    public void increaseViews(Long id) {
         String sql = "UPDATE post "
-                      + "SET views = :views "
+                      + "SET views =  SELECT views + 1 "
+                                    + "FROM post "
+                                    + "WHERE id = :id "
                     + "WHERE id = :id";
-        SqlParameterSource parameter = new BeanPropertySqlParameterSource(post);
+        SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         jdbcTemplate.update(sql, parameter);
     }
 

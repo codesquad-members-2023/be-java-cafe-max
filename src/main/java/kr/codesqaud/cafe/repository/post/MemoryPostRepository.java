@@ -45,7 +45,7 @@ public class MemoryPostRepository implements PostRepository {
     }
 
     @Override
-    public void increaseViews(Post id) {
+    public void increaseViews(Long id) {
 
     }
 
