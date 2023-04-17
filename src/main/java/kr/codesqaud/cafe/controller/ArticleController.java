@@ -52,28 +52,28 @@ public class ArticleController {
     @GetMapping("/articles/{id}/edit")
     public String editArticle(@PathVariable Long id, Model model, HttpSession httpSession) {
         final ArticleResponse article = articleService.findById(id);
-        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_NAME).equals(article.getWriter())) {
-            throw new AccessDeniedException();
-        }
+        checkUserPermissions(httpSession, article.getWriter());
         model.addAttribute("article", article);
         return "article/edit";
     }
 
     @PutMapping("/articles/{id}")
     public String editArticle(@PathVariable Long id, @ModelAttribute ArticleUpdateRequest articleUpdateRequest, HttpSession httpSession) {
-        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_NAME).equals(articleUpdateRequest.getWriter())) {
-            throw new AccessDeniedException();
-        }
+        checkUserPermissions(httpSession, articleUpdateRequest.getWriter());
         articleService.editArticle(articleUpdateRequest);
         return "redirect:/articles/" + id;
     }
 
     @DeleteMapping("/articles/{id}")
     public String deleteArticle(@PathVariable Long id, @ModelAttribute ArticleUpdateRequest articleUpdateRequest, HttpSession httpSession) {
-        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_NAME).equals(articleUpdateRequest.getWriter())) {
-            throw new AccessDeniedException();
-        }
+        checkUserPermissions(httpSession, articleUpdateRequest.getWriter());
         articleService.deleteArticle(id);
         return "redirect:/";
+    }
+
+    private void checkUserPermissions(HttpSession httpSession, String writer) {
+        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_NAME).equals(writer)) {
+            throw new AccessDeniedException();
+        }
     }
 }
