@@ -24,7 +24,7 @@ public class UserController {
     }
 
 
-    //회원 가입 시, 회원 객체 생성 후 join
+    @PostMapping("/save")
     public String createUser(RequestForm userForm) {
         userService.join(userForm);
         return "redirect:/user";
