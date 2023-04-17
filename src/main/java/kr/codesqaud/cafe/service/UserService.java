@@ -50,9 +50,8 @@ public class UserService {
         return true;
     }
 
-    public boolean updateAccess(String id, HttpSession session) {
-        LoginSessionDto userSession = (LoginSessionDto) session.getAttribute("sessionId");
-        if (userSession == null || !id.equals(userSession.getId())) {
+    public boolean updateAccess(String id, LoginSessionDto sessionId) {
+        if (sessionId == null || !id.equals(sessionId.getId())) {
             throw new DeniedAccessException("수정 권한 없습니다.");
         }
         return true;

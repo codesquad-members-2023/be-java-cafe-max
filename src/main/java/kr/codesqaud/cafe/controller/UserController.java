@@ -52,7 +52,8 @@ public class UserController {
 
     @GetMapping("/update/{id}")
     public String getUpdateForm(@PathVariable String id, Model model, HttpSession session) {
-        userService.updateAccess(id, session);
+        LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
+        userService.updateAccess(id, sessionDto);
         User user = userService.findById(id);
         model.addAttribute("user", user);
         return "user/update_form";

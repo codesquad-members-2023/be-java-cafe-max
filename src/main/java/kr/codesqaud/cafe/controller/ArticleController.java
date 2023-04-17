@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
+import kr.codesqaud.cafe.dto.LoginSessionDto;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,8 @@ public class ArticleController {
 
     @GetMapping("/article/question")
     public String getWriteForm(HttpSession session) {
-        articleService.checkLogin(session);
+        LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
+        articleService.checkLogin(sessionDto);
         return "qna/form";
     }
 
@@ -33,10 +35,11 @@ public class ArticleController {
 
     @GetMapping("/article/show/{index}")
     public String getShow(@PathVariable int index, Model model, HttpSession session) {
-        articleService.checkLogin(session);
+        LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
+        articleService.checkLogin(sessionDto);
         Article article = articleService.findByIdx(index);
         model.addAttribute("article", article);
-        model.addAttribute("auth", articleService.checkIdentity(article.getUserId(), session));
+        model.addAttribute("auth", articleService.checkIdentity(article.getUserId(), sessionDto.getId()));
         return "qna/show";
     }
 
@@ -49,7 +52,8 @@ public class ArticleController {
     @GetMapping("/article/update/{index}")
     public String getUpdatePage(@PathVariable int index, Model model, HttpSession session) {
         Article article = articleService.findByIdx(index);
-        articleService.checkAuth(article.getUserId(), session);
+        LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
+        articleService.checkAuth(article.getUserId(), sessionDto);
         model.addAttribute("setTitle", article.getTitle());
         model.addAttribute("setContent", article.getContents());
         model.addAttribute("index", index);
