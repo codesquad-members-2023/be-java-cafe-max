@@ -114,6 +114,6 @@ public class MemberController {
     public String logout(HttpServletRequest httpServletRequest) {
         final HttpSession httpSession = httpServletRequest.getSession();
         httpSession.removeAttribute("loginMember");
-        return "home";
+        return "redirect:/posts";
     }
 }
