@@ -206,14 +206,14 @@ class MemberControllerTest {
     private MemberJoinRequestDto basicMemberJoinRequestDtoData() {
         String email = "test@test.com";
         String password = "testtest";
-        String nickName = "chacha";
+        String nickName = "차차";
         return new MemberJoinRequestDto(email, password, nickName);
     }
 
     private Member basicMemberData() {
         String email = "test@test.com";
         String password = "testtest";
-        String nickName = "chacha";
+        String nickName = "차차";
         LocalDateTime localDateTime = LocalDateTime.now();
         return new Member(email, password, nickName, localDateTime);
     }
