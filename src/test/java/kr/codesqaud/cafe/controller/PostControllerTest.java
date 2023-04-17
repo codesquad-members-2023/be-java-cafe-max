@@ -23,6 +23,7 @@ import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
 import kr.codesqaud.cafe.service.MemberService;
 import kr.codesqaud.cafe.service.PostService;
+import kr.codesqaud.cafe.session.LoginMemberSession;
 
 
 @SpringBootTest
@@ -66,6 +67,8 @@ class PostControllerTest {
 
         Long savedPostId = postRepository.save(dummyPostData(member), member);
         PostResponse postResponse = postService.findById(savedPostId);
+
+        LoginMemberSession loginMemberSession = new LoginMemberSession(memberId,dummyMemberData().getEmail());
 
         //when,then
         mockMvc.perform(post("/posts/write/")
