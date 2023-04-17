@@ -55,7 +55,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void delete(long id) {
+    public void deleteById(long id) {
         String sql = "DELETE FROM articles WHERE id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource("id", id);
         namedParameterJdbcTemplate.update(sql, namedParameters);

@@ -50,6 +50,6 @@ public class ArticleService {
     }
 
     public void delete(long id) {
-        articleRepository.delete(id);
+        articleRepository.deleteById(id);
     }
 }
