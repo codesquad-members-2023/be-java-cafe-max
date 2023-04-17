@@ -23,7 +23,7 @@ public class JdbcUserRepository implements UserRepository {
     public JdbcUserRepository(final DataSource dataSource) {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.insertAction = new SimpleJdbcInsert(dataSource)
-                .withTableName("cafe_user");
+                .withTableName("users");
     }
 
     @Override
@@ -35,7 +35,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(final String id) {
-        String sql = "SELECT * FROM cafe_user WHERE id = :id";
+        String sql = "SELECT * FROM users WHERE id = :id";
         SqlParameterSource params = new MapSqlParameterSource("id", id);
         try {
             User user = namedParameterJdbcTemplate.queryForObject(sql, params,
@@ -52,7 +52,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        String sql = "select * from cafe_user";
+        String sql = "select * from users";
         return namedParameterJdbcTemplate.query(sql,
                 (rs, rowNum) -> new User(
                         rs.getString("id")
@@ -63,7 +63,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public void update(final User user) {
-        String sql = "update cafe_user set password = :password, name = :name, email = :email where id = :id";
+        String sql = "update users set password = :password, name = :name, email = :email where id = :id";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("id", user.getId());
         params.addValue("password", user.getPassword());
