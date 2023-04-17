@@ -27,4 +27,5 @@ public class Session {
         User user = (User) session.getAttribute(sessionName);
         return user.getUserId();
     }
+
 }

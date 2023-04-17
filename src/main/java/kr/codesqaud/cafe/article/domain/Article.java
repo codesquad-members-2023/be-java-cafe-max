@@ -17,12 +17,11 @@ public class Article {
     private long id;
 
 
-
     public Article(String author, String title, String contents, Long id, LocalDateTime time) {
         this.author = author;
         this.title = title;
         this.contents = contents;
-        if(id != null) this.id = id;
+        if (id != null) this.id = id;
         this.time = Objects.requireNonNullElseGet(time, LocalDateTime::now);
     }
 
