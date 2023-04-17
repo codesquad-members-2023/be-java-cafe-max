@@ -46,4 +46,8 @@ public class JoinForm {
                 .password(password)
                 .build();
     }
+
+    public boolean isSamePassword() {
+        return password.equals(reconfirmPassword);
+    }
 }

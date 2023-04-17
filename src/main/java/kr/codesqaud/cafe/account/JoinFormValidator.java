@@ -30,7 +30,7 @@ public class JoinFormValidator implements Validator {
             errors.rejectValue(EMAIL, "error.email.duplicate");
             return;
         }
-        if (!joinForm.getPassword().equals(joinForm.getReconfirmPassword())) {
+        if (!joinForm.isSamePassword()) {
             errors.rejectValue("reconfirmPassword", "error.password.missMatch");
         }
     }
