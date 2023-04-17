@@ -22,7 +22,7 @@ public class ArticleController {
     }
 
 
-    @GetMapping("/write-form")
+    @GetMapping("/write")
     public String writeForm(HttpSession session) {
         return Session.isLoggedIn(session) ? "articles/write-form" : "redirect:/user/login";
     }
@@ -31,11 +31,11 @@ public class ArticleController {
     @PostMapping("/save")
     public String createArticle(RequestForm requestForm, HttpSession session) {
         articleService.save(requestForm, Session.getUserId(session));
-        return "redirect:/articles/list";
+        return "redirect:/articles";
     }
 
     //인덱스(홈)으로 매핑하여 글 목록을 보여줌
-    @GetMapping("/list")
+    @GetMapping
     public String listArticles(Model model) {
         model.addAttribute("articles", articleService.getPreviewDtos());
         return "articles/list";
@@ -58,7 +58,7 @@ public class ArticleController {
         return "articles/modify-form";
     }
 
-    @PutMapping("/update")
+    @PutMapping("/{id}")
     public String updateArticle(@PathVariable long id, RequestForm requestForm) {
         articleService.update(id, requestForm);
         return "redirect:/articles/" + id;
