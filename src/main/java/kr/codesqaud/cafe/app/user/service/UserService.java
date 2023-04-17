@@ -3,15 +3,14 @@ package kr.codesqaud.cafe.app.user.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
+import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequest;
+import kr.codesqaud.cafe.app.user.controller.dto.UserResponse;
+import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.repository.UserRepository;
-import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequestDto;
-import kr.codesqaud.cafe.app.user.controller.dto.UserResponseDto;
-import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequestDto;
-import kr.codesqaud.cafe.app.user.controller.dto.UserUpdatedResponseDto;
-import kr.codesqaud.cafe.errors.exception.RestApiException;
-import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
 import kr.codesqaud.cafe.app.user.validator.UserValidator;
+import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
+import kr.codesqaud.cafe.errors.exception.RestApiException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,29 +25,27 @@ public class UserService {
     }
 
     // 전체 회원 목록
-    public List<UserResponseDto> getAllUsers() {
+    public List<User> getAllUsers() {
         return userRepository.findAll().stream()
-            .map(UserResponseDto::new)
             .collect(Collectors.toUnmodifiableList());
     }
 
     // 회원가입
-    public UserResponseDto signUp(UserSavedRequestDto requestDto) {
+    public User signUp(UserSavedRequest requestDto) {
         validateDuplicatedUserId(requestDto.getUserId());
         validateDuplicatedUserEmail(requestDto.getEmail());
-        User saveUser = userRepository.save(requestDto.toEntity());
-        return new UserResponseDto(saveUser);
+        return userRepository.save(requestDto.toEntity());
     }
 
     // 회원 아이디 중복 검증
-    public void validateDuplicatedUserId(String userId) {
+    private void validateDuplicatedUserId(String userId) {
         userRepository.findByUserId(userId).ifPresent((user) -> {
             throw new RestApiException(UserErrorCode.ALREADY_EXIST_USERID);
         });
     }
 
     // 회원 이메일 중복 검증
-    public void validateDuplicatedUserEmail(String email) {
+    private void validateDuplicatedUserEmail(String email) {
         userRepository.findByEmail(email).ifPresent((user) -> {
             throw new RestApiException(UserErrorCode.ALREADY_EXIST_EMAIL);
         });
@@ -68,35 +65,29 @@ public class UserService {
         });
     }
 
-    // 특정 회원 조회 (비밀번호 포함)
-    public UserUpdatedResponseDto findUpdateUser(Long id) {
-        return new UserUpdatedResponseDto(findUser(id));
-    }
-
     // 로그인
-    public void login(UserLoginRequestDto requestDto, HttpSession session) {
+    public void login(UserLoginRequest requestDto, HttpSession session) {
         User loginUser = requestDto.toEntity();
         User user = userRepository.findByUserId(loginUser.getUserId()).orElseThrow(() -> {
             throw new RestApiException(UserErrorCode.NOT_MATCH_LOGIN);
         });
         validator.validateLoginPassword(loginUser.getPassword(), user.getPassword());
-        session.setAttribute("user", new UserResponseDto(user));
+        session.setAttribute("user", new UserResponse(user));
     }
 
     // 회원 정보 수정
-    public UserResponseDto modifyUser(Long id, UserSavedRequestDto requestDto) {
+    public User modifyUser(Long id, UserSavedRequest requestDto) {
         User requestUser = requestDto.toEntity(id);
         User currentUser = findUser(id);
         // 기존 이메일과 수정하고자 하는 이메일이 같지 않다면 수정하고자 하는 이메일이 중복되지 않았는지 검증합니다.
         if (!validator.isEmailUnChanged(currentUser.getEmail(), requestUser.getEmail())) {
             validateDuplicatedUserEmail(requestUser.getEmail());
         }
-        User modifyUser = userRepository.modify(requestUser);
-        return new UserResponseDto(modifyUser);
+        return userRepository.modify(requestUser);
     }
 
     // 비밀번호 확인
-    public void confirmPassword(Long id, UserSavedRequestDto requestDto) {
+    public void confirmPassword(Long id, UserSavedRequest requestDto) {
         String requestPassword = requestDto.getPassword();
         String password = findUser(id).getPassword();
         validator.validateEqualConfirmPassword(requestPassword, password);

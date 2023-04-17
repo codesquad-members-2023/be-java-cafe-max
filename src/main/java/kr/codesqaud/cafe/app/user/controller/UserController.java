@@ -1,10 +1,14 @@
 package kr.codesqaud.cafe.app.user.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequestDto;
-import kr.codesqaud.cafe.app.user.controller.dto.UserResponseDto;
-import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequestDto;
+import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequest;
+import kr.codesqaud.cafe.app.user.controller.dto.UserResponse;
+import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
+import kr.codesqaud.cafe.app.user.controller.dto.UserModifiedResponse;
+import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +35,11 @@ public class UserController {
     @GetMapping("/users")
     public ModelAndView list() {
         ModelAndView mav = new ModelAndView("user/list");
-        mav.addObject("users", userService.getAllUsers());
+        List<UserResponse> userResponses =
+            userService.getAllUsers().stream()
+                .map(UserResponse::new)
+                .collect(Collectors.toUnmodifiableList());
+        mav.addObject("users", userResponses);
         return mav;
     }
 
@@ -39,31 +47,33 @@ public class UserController {
     @GetMapping("/users/{id}")
     public ModelAndView profile(@PathVariable(value = "id") Long id) {
         ModelAndView mav = new ModelAndView("user/profile");
-        mav.addObject("user", new UserResponseDto(userService.findUser(id)));
+        mav.addObject("user", new UserResponse(userService.findUser(id)));
         return mav;
     }
 
     // 특정 회원 추가
     @PostMapping("/users")
-    public UserResponseDto create(@Valid @RequestBody UserSavedRequestDto requestDto) {
+    public UserResponse create(@Valid @RequestBody UserSavedRequest requestDto) {
         logger.info("create : " + requestDto.toString());
-        return userService.signUp(requestDto);
+        User user = userService.signUp(requestDto);
+        return new UserResponse(user);
     }
 
     // 특정 회원 수정
     @PutMapping("/users/{id}/update")
-    public UserResponseDto modify(@PathVariable(value = "id") Long id,
-        @Valid @RequestBody UserSavedRequestDto requestDto, HttpSession session) {
+    public UserResponse modify(@PathVariable(value = "id") Long id,
+        @Valid @RequestBody UserSavedRequest requestDto, HttpSession session) {
         logger.info(requestDto.toString());
 
         // 회원정보 수정시 기존 세션에 저장되어 있는 유저 정보 제거
         session.removeAttribute("user");
-        return userService.modifyUser(id, requestDto);
+        User user = userService.modifyUser(id, requestDto);
+        return new UserResponse(user);
     }
 
     // 로그인
     @PostMapping("/users/login")
-    public ModelAndView login(@Valid @RequestBody UserLoginRequestDto requestDto,
+    public ModelAndView login(@Valid @RequestBody UserLoginRequest requestDto,
         HttpSession session) {
         logger.info("login" + requestDto.toString());
         userService.login(requestDto, session);
@@ -81,7 +91,7 @@ public class UserController {
     // 비밀번호 확인
     @PostMapping("/users/password/{id}")
     public ModelAndView passwordConfirm(@PathVariable(value = "id") Long id,
-        @Valid @RequestBody UserSavedRequestDto requestDto) {
+        @Valid @RequestBody UserSavedRequest requestDto) {
         userService.confirmPassword(id, requestDto);
         return new ModelAndView(new RedirectView("/user/form/" + id));
     }
@@ -96,7 +106,9 @@ public class UserController {
     @GetMapping("/user/form/{id}")
     public ModelAndView modifyForm(@PathVariable(value = "id") Long id) {
         ModelAndView mav = new ModelAndView("user/updateForm");
-        mav.addObject("user", userService.findUpdateUser(id));
+        User user = userService.findUser(id);
+        UserModifiedResponse userResponse = new UserModifiedResponse(user);
+        mav.addObject("user", userResponse);
         return mav;
     }
 
