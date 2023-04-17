@@ -11,6 +11,7 @@ import kr.codesqaud.cafe.account.exception.NoSuchLoginEmailException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -26,6 +28,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public User save(JoinForm joinForm) {
         User user = joinForm.toUser();
         return userRepository.save(user);
@@ -37,7 +40,7 @@ public class UserService {
                 .map(UserForm::from)
                 .collect(Collectors.toList());
     }
-
+    @Transactional
     public User update(User user, ProfileEditForm profileEditForm) {
         User changedUser = profileEditForm.setUser(user);
         return userRepository.save(changedUser);
