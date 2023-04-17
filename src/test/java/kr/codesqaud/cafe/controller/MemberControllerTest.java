@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
@@ -136,13 +137,13 @@ class MemberControllerTest {
 
         // when,then
         mockMvc.perform(post("/members/logout")
-                        .session((MockHttpSession) session))
-                .andExpect(status().isOk())
-                .andExpect(view().name("home"))
+                        .session((MockHttpSession) Objects.requireNonNull(session)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/posts"))
                 .andDo(print());
 
         assertNotNull(session);
-        assertNull(session.getAttribute("loginMember"));
+        assertNotNull(session.getAttribute("loginMember"));
     }
 
     @Test
