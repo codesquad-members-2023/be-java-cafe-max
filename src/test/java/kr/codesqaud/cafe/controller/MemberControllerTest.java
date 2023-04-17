@@ -50,7 +50,9 @@ class MemberControllerTest {
 
     @Test
     void readMember() throws Exception {
-        mockMvc.perform(get("/member"))
+        memberService.join(basicMemberJoinRequestDtoData());
+
+        mockMvc.perform(get("/members"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/all"))
                 .andDo(print());
@@ -61,7 +63,7 @@ class MemberControllerTest {
     @DisplayName("/post 요청시 db에 회원이 저장이 된다.(회원가입)")
     void joinMember() throws Exception {
         //when,then
-        mockMvc.perform(post("/member/join")
+        mockMvc.perform(post("/members/join")
                         .param("email", basicMemberData().getEmail())
                         .param("password", basicMemberData().getPassword())
                         .param("nickName", basicMemberData().getNickName())
@@ -79,9 +81,14 @@ class MemberControllerTest {
 
     @Test
     void joinForm() throws Exception {
-        mockMvc.perform(get("/member/join"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/form"))
+        MemberJoinRequestDto memberJoinRequestDto = basicMemberJoinRequestDtoData();
+
+        mockMvc.perform(post("/members/join")
+                .param("email", memberJoinRequestDto.getEmail())
+                .param("nickName", memberJoinRequestDto.getNickName())
+                .param("password", memberJoinRequestDto.getPassword()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/join"))
                 .andExpect(model().attributeExists("memberJoinRequestDto"));
     }
 
@@ -92,7 +99,7 @@ class MemberControllerTest {
         MemberLoginRequestDto memberLoginRequestDto = new MemberLoginRequestDto(basicMemberJoinRequestDtoData().getEmail(), basicMemberJoinRequestDtoData().getPassword());
 
         //when
-        mockMvc.perform(post("/member/login")
+        mockMvc.perform(post("/members/login")
                         .param("email", memberLoginRequestDto.getEmail())
                         .param("password", memberLoginRequestDto.getPassword()))
                 .andExpect(status().is3xxRedirection())
@@ -117,7 +124,7 @@ class MemberControllerTest {
         memberService.join(basicMemberJoinRequestDtoData());
         MemberLoginRequestDto memberLoginRequestDto = new MemberLoginRequestDto(basicMemberJoinRequestDtoData().getEmail(), basicMemberJoinRequestDtoData().getPassword());
 
-        HttpSession session = mockMvc.perform(post("/member/login")
+        HttpSession session = mockMvc.perform(post("/members/login")
                         .param("email", memberLoginRequestDto.getEmail())
                         .param("password", memberLoginRequestDto.getPassword()))
                 .andExpect(status().is3xxRedirection())
@@ -126,7 +133,7 @@ class MemberControllerTest {
                 .getSession();
 
         // when,then
-        mockMvc.perform(get("/member/{memberId}/logout", 1)
+        mockMvc.perform(post("/members/logout")
                         .session((MockHttpSession) session))
                 .andExpect(status().isOk())
                 .andExpect(view().name("home"))
@@ -174,7 +181,7 @@ class MemberControllerTest {
         String newPassword = "testtesttest";
         String newNickName = "피오니";
         //when
-        mockMvc.perform(put("/member/{memberId}", saveMemberId)
+        mockMvc.perform(put("/members/{memberId}", saveMemberId)
                         .param("password", newPassword)
                         .param("nickName", newNickName)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
