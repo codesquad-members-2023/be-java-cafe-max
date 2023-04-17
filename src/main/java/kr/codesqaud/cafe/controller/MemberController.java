@@ -47,11 +47,11 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String join(@Valid @ModelAttribute("member") MemberJoinRequestDto memberJoinDto, BindingResult bindingResult) {
+    public String join(@Valid @ModelAttribute MemberJoinRequestDto memberJoinRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "member/join";
         }
-        memberService.join(memberJoinDto);
+        memberService.join(memberJoinRequestDto);
         return "redirect:/join";
     }
 
