@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Objects;
 import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.repository.UserRepository;
-import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequestDto;
-import kr.codesqaud.cafe.app.user.controller.dto.UserResponseDto;
-import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequestDto;
+import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequest;
+import kr.codesqaud.cafe.app.user.controller.dto.UserResponse;
+import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.errors.response.ErrorResponse;
 import kr.codesqaud.cafe.errors.response.ErrorResponse.ValidationError;
 import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
@@ -69,7 +69,7 @@ class UserControllerTest {
         String name = "김용일";
         String email = "user1@naver.com";
         String url = "/users";
-        UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
+        UserSavedRequest dto = new UserSavedRequest(userId, password, name, email);
         //when
         mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -92,7 +92,7 @@ class UserControllerTest {
         String name = "김용환";
         String email = "yonghwan1107@naver.com";
         String url = "/users";
-        UserSavedRequestDto dto = new UserSavedRequestDto(duplicateUserId, password, name, email);
+        UserSavedRequest dto = new UserSavedRequest(duplicateUserId, password, name, email);
         //when
         String jsonErrorResponse = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -118,7 +118,7 @@ class UserControllerTest {
         String name = "김용환";
         String duplicatedEmail = "yonghwan1107@naver.com";
         String url = "/users";
-        UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, duplicatedEmail);
+        UserSavedRequest dto = new UserSavedRequest(userId, password, name, duplicatedEmail);
         //when
         String jsonErrorResponse = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -144,7 +144,7 @@ class UserControllerTest {
         String password = "u";
         String name = "김용일!@#$";
         String email = "user1";
-        UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
+        UserSavedRequest dto = new UserSavedRequest(userId, password, name, email);
         String url = "/users";
         //when
         String jsonErrors = mockMvc.perform(post(url)
@@ -175,7 +175,7 @@ class UserControllerTest {
         Long id = userRepository.findByUserId(userId).orElseThrow().getId();
         String url = "/users/" + id;
         //when
-        UserResponseDto actual = (UserResponseDto) Objects.requireNonNull(mockMvc.perform(get(url))
+        UserResponse actual = (UserResponse) Objects.requireNonNull(mockMvc.perform(get(url))
             .andExpect(status().isOk())
             .andReturn().getModelAndView()).getModelMap().get("user");
         //then
@@ -192,7 +192,7 @@ class UserControllerTest {
         String userId = "yonghwan1107";
         String password = "yonghwan1107";
         String url = "/users/login";
-        UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
+        UserLoginRequest dto = new UserLoginRequest(userId, password);
 
         //when
         mockMvc.perform(post(url)
@@ -201,7 +201,7 @@ class UserControllerTest {
                 .content(toJSON(dto)))
             .andExpect(redirectedUrl("/"));
         //then
-        UserResponseDto user = (UserResponseDto) session.getAttribute("user");
+        UserResponse user = (UserResponse) session.getAttribute("user");
         assertThat(user.getUserId()).isEqualTo(userId);
         assertThat(user.getName()).isEqualTo("김용환");
         assertThat(user.getEmail()).isEqualTo("yonghwan1107@naver.com");
@@ -214,7 +214,7 @@ class UserControllerTest {
         String userId = "yonghwan1107";
         String password = "useaweiofjaw";
         String url = "/users/login";
-        UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
+        UserLoginRequest dto = new UserLoginRequest(userId, password);
         //when
         String jsonErrorResponse = mockMvc.perform(post(url)
                 .session(session)
@@ -239,7 +239,7 @@ class UserControllerTest {
         String userId = "";
         String password = "";
         String url = "/users/login";
-        UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
+        UserLoginRequest dto = new UserLoginRequest(userId, password);
         //when
         String jsonErrors = mockMvc.perform(post(url)
                 .session(session)
@@ -265,7 +265,7 @@ class UserControllerTest {
         String userId = "user10";
         String password = "user10user10";
         String url = "/users/login";
-        UserLoginRequestDto dto = new UserLoginRequestDto(userId, password);
+        UserLoginRequest dto = new UserLoginRequest(userId, password);
         //when
         String jsonErrorResponse = mockMvc.perform(post(url)
                 .session(session)
@@ -293,7 +293,7 @@ class UserControllerTest {
         String modifiedEmail = "yonghwan1234@naver.com";
         Long id = userRepository.findByUserId(userId).orElseThrow().getId();
         String url = "/users/" + id + "/update";
-        UserSavedRequestDto dto = new UserSavedRequestDto(userId, modifiedPassword, modifiedName,
+        UserSavedRequest dto = new UserSavedRequest(userId, modifiedPassword, modifiedName,
             modifiedEmail);
         //when
         mockMvc.perform(put(url)
@@ -319,7 +319,7 @@ class UserControllerTest {
         String modifiedEmail = "user1@naver.com";
         Long id = userRepository.findByUserId(userId).orElseThrow().getId();
         String url = "/users/" + id + "/update";
-        UserSavedRequestDto dto = new UserSavedRequestDto(userId, modifiedPassword, modifiedName,
+        UserSavedRequest dto = new UserSavedRequest(userId, modifiedPassword, modifiedName,
             modifiedEmail);
         //when
         String jsonErrorResponse = mockMvc.perform(put(url)
@@ -344,7 +344,7 @@ class UserControllerTest {
         Long id = userRepository.findByUserId("yonghwan1107").orElseThrow().getId();
         String url = "/users/password/" + id;
         String password = "yonghwan1107";
-        UserSavedRequestDto dto = new UserSavedRequestDto(null, password, null, null);
+        UserSavedRequest dto = new UserSavedRequest(null, password, null, null);
         //when & then
         mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -360,7 +360,7 @@ class UserControllerTest {
         Long id = userRepository.findByUserId("yonghwan1107").orElseThrow().getId();
         String url = "/users/password/" + id;
         String password = "awioefjoawiefj";
-        UserSavedRequestDto dto = new UserSavedRequestDto(null, password, null, null);
+        UserSavedRequest dto = new UserSavedRequest(null, password, null, null);
         //when
         String jsonErrorResponse = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -380,7 +380,7 @@ class UserControllerTest {
     private void createSampleUser(String userId, String password, String name, String email)
         throws Exception {
         String url = "/users";
-        UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
+        UserSavedRequest dto = new UserSavedRequest(userId, password, name, email);
         mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))

@@ -19,7 +19,7 @@ import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.repository.UserRepository;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
-import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequestDto;
+import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.errors.errorcode.CommonErrorCode;
 import kr.codesqaud.cafe.errors.response.ErrorResponse;
 import kr.codesqaud.cafe.errors.response.ErrorResponse.ValidationError;
@@ -61,7 +61,7 @@ class QuestionControllerTest {
         String name = "김용환";
         String email = "yonghwan1107@gmail.com";
         String url = "/users";
-        UserSavedRequestDto dto = new UserSavedRequestDto(userId, password, name, email);
+        UserSavedRequest dto = new UserSavedRequest(userId, password, name, email);
         mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON).content(toJSON(dto)));
     }
 
