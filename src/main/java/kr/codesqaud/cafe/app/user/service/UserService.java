@@ -2,9 +2,7 @@ package kr.codesqaud.cafe.app.user.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequest;
-import kr.codesqaud.cafe.app.user.controller.dto.UserResponse;
 import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.repository.UserRepository;
@@ -66,13 +64,13 @@ public class UserService {
     }
 
     // 로그인
-    public void login(UserLoginRequest requestDto, HttpSession session) {
+    public User login(UserLoginRequest requestDto) {
         User loginUser = requestDto.toEntity();
         User user = userRepository.findByUserId(loginUser.getUserId()).orElseThrow(() -> {
             throw new RestApiException(UserErrorCode.NOT_MATCH_LOGIN);
         });
         validator.validateLoginPassword(loginUser.getPassword(), user.getPassword());
-        session.setAttribute("user", new UserResponse(user));
+        return user;
     }
 
     // 회원 정보 수정

@@ -76,7 +76,8 @@ public class UserController {
     public ModelAndView login(@Valid @RequestBody UserLoginRequest requestDto,
         HttpSession session) {
         logger.info("login" + requestDto.toString());
-        userService.login(requestDto, session);
+        User user = userService.login(requestDto);
+        session.setAttribute("user", new UserResponse(user));
         return new ModelAndView(new RedirectView("/"));
     }
 
