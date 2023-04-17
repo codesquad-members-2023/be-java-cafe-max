@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.account;
 
-import kr.codesqaud.cafe.account.annotation.ValidPathId;
+import kr.codesqaud.cafe.account.annotation.ValidUserIdPath;
 import kr.codesqaud.cafe.account.dto.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,7 +77,7 @@ public class UserController {
         return "account/users";
     }
 
-    @ValidPathId
+    @ValidUserIdPath
     @GetMapping("/users/{userId}/profile")
     public String viewUser(Model model, @PathVariable Long userId, @SessionAttribute User user) {
         ProfileForm profileForm = ProfileForm.from(user);
@@ -86,7 +86,7 @@ public class UserController {
         return "account/profile";
     }
 
-    @ValidPathId
+    @ValidUserIdPath
     @GetMapping("/users/{userId}/profile/edit")
     public String viewUserProfileEditForm(Model model, @PathVariable Long userId, @SessionAttribute User user) {
         ProfileEditForm profileEditForm = ProfileEditForm.from(user);
@@ -95,7 +95,7 @@ public class UserController {
         return "account/profileEditForm";
     }
 
-    @ValidPathId
+    @ValidUserIdPath
     @PutMapping("/users/{userId}/profile")
     public String updateUserProfile(@ModelAttribute @Valid ProfileEditForm profileEditForm, BindingResult bindingResult,
                                     @PathVariable Long userId, @SessionAttribute User user, HttpSession httpSession) {
