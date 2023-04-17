@@ -12,85 +12,97 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @SpringBootTest
 @Transactional
 public class ArticleRepositoryTest {
 
+    private static final String AUTHOR = "John Doe";
+    private static final String TITLE = "Test Article";
+    private static final String CONTENTS = "Test contents";
+
+    private static final LocalDateTime TIME = LocalDateTime.now();
+
     @Autowired
     private JdbcArticleRepository articleRepository;
 
     @Test
-    @DisplayName("새로운 글을 저장하면 id로 찾을 수 있다")
-    public void saveArticle_ShouldInsertIntoDatabase() {
+    @DisplayName("새로운 글을 저장시 id로 찾을 수 있다")
+    public void test_save() {
         // given
-        Article article = new Article("John Doe", "Test Article", "Test contents", null, LocalDateTime.now());
+        Article article = new Article(AUTHOR, TITLE, CONTENTS, null, TIME);
 
         // when
-        Long savedId = articleRepository.save(article);
+        long savedId = articleRepository.save(article);
 
         // then
-        assertNotNull(articleRepository.findById(savedId));
+        Article savedArticle = articleRepository.findById(savedId);
+        assertThat(savedArticle).isNotNull();
+        assertThat(savedArticle.getAuthor()).isEqualTo(AUTHOR);
+        assertThat(savedArticle.getTitle()).isEqualTo(TITLE);
+        assertThat(savedArticle.getContents()).isEqualTo(CONTENTS);
+        assertThat(savedArticle.getTime()).isEqualTo(TIME);
     }
 
     @Test
     @DisplayName("글을 저장하고 findAll을 하면 저장된 글 수만큼 가져온다")
-    public void findAll_ShouldReturnListOfArticles() {
+    public void test_findAll() {
         // given
-        Article article = new Article("John Doe", "Test Article", "Test contents", null, LocalDateTime.now());
+        Article article = new Article(AUTHOR, TITLE, CONTENTS, null, TIME);
         articleRepository.save(article);
 
         // when
         List<Article> articles = articleRepository.findAll();
 
         // then
-        assertEquals(articles.size() , 1);
+        assertThat(articles.size()).isEqualTo(1);
     }
 
     @Test
     @DisplayName("특정 글을 ID로 검색할 수 있다.")
-    public void findById_ShouldReturnArticle() {
+    public void test_findById() {
         // given
-        Article article = new Article("John Doe", "Test Article", "Test contents", null, LocalDateTime.now());
+        Article article = new Article(AUTHOR, TITLE, CONTENTS, null, TIME);
         long savedId = articleRepository.save(article);
 
         // when
-        Article foundArticle = articleRepository.findById(savedId);
+        Article actualArticle = articleRepository.findById(savedId);
 
         // then
-        assertEquals(foundArticle.getId() , savedId);
+        assertThat(actualArticle.getId()).isEqualTo(savedId);
     }
 
     @Test
-    @DisplayName("글을 수정")
-    public void modify_ShouldUpdateArticleInDatabase() {
+    @DisplayName("글 수정하면 DB에도 수정이 된다.")
+    public void test_modify() {
         // given
-        Article article = new Article("John Doe", "Test Article", "Test contents", null, LocalDateTime.now());
+        Article article = new Article(AUTHOR, TITLE, CONTENTS, null, TIME);
         long savedId =  articleRepository.save(article);
+        Article articleV2 = new Article(AUTHOR, "Modified title", CONTENTS, savedId, LocalDateTime.now());
 
         // when
-        Article modifiedArticle = new Article("John Doe", "Modified title", "Test contents", savedId, LocalDateTime.now());
-        articleRepository.modify(modifiedArticle);
+        articleRepository.modify(articleV2);
 
         // then
-        Article foundArticle = articleRepository.findById(savedId);
-        assertEquals(foundArticle.getTitle(), "Modified title");
+        Article modifiedArticle = articleRepository.findById(savedId);
+        assertThat(modifiedArticle.getTitle()).isEqualTo("Modified title");
     }
 
     @Test
-    @DisplayName("글을 삭제하고 다시 찾으면 null을 반환한다")
-    public void delete_ShouldRemoveArticleFromDatabase() {
+    @DisplayName("글을 삭제하고 다시 찾으면 에러 발생")
+    public void test_deleteById() {
         // given
-        Article article = new Article("John Doe", "Test Article", "Test contents", null, LocalDateTime.now());
+        Article article = new Article(AUTHOR, TITLE, CONTENTS, null, TIME);
         long savedId = articleRepository.save(article);
 
         // when
         articleRepository.deleteById(savedId);
 
         // then
-        assertThrows(EmptyResultDataAccessException.class, () ->articleRepository.findById(savedId));
+        assertThrows(EmptyResultDataAccessException.class, () -> articleRepository.findById(savedId));
     }
 
 }
