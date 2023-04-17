@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -57,13 +58,14 @@ public class JdbcUserRepository implements UserRepository {
 
 	@Override
 	public User findUser(String userId) {
-		if (!isExistsUserId(userId)) {
+		try {
+			return jdbcTemplate.queryForObject("SELECT * FROM user_account WHERE user_id = ?", (rs, rowNum) -> new User(
+				rs.getString("user_id"),
+				rs.getString("password")
+			), userId);
+		} catch (EmptyResultDataAccessException e) {
 			throw new NoSuchUserIdException();
 		}
-		return jdbcTemplate.queryForObject("SELECT * FROM user_account WHERE user_id = ?", (rs, rowNum) -> new User(
-			rs.getString("user_id"),
-			rs.getString("password")
-		), userId);
 	}
 
 	@Override
