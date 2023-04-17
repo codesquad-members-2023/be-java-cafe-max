@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/signup")
-    public String getSignUp(){
+    public String getSignUp() {
         return "user/form";
     }
 
@@ -52,35 +52,31 @@ public class UserController {
 
     @GetMapping("/update/{id}")
     public String getUpdateForm(@PathVariable String id, Model model, HttpSession session) {
-        userService.updateAccess(id,session);
+        userService.updateAccess(id, session);
         User user = userService.findById(id);
         model.addAttribute("user", user);
         return "user/update_form";
     }
 
     @PutMapping("/update/{id}")
-    public String putUpdate(@PathVariable String id, @Valid @ModelAttribute UpdateFormDto updateFormDto ,HttpSession session) {
+    public String putUpdate(@PathVariable String id, @Valid @ModelAttribute UpdateFormDto updateFormDto, HttpSession session) {
         userService.update(userService.findById(id), updateFormDto);
-        session.setAttribute("sessionId",new LoginSessionDto(id,updateFormDto.getName()));
+        session.setAttribute("sessionId", new LoginSessionDto(id, updateFormDto.getName()));
         return "redirect:/user";
     }
 
     @PostMapping("/signIn")
-    public String signIn (@RequestParam("userId")String id, @RequestParam("password")String password,
-                          HttpSession session){
+    public String signIn(@RequestParam("userId") String id, @RequestParam("password") String password,
+                         HttpSession session) {
         User user = userService.findById(id);
-        userService.login(user,password);
-        session.setAttribute("sessionId",new LoginSessionDto(user.getUserId(),user.getName()));
+        userService.login(user, password);
+        session.setAttribute("sessionId", new LoginSessionDto(user.getUserId(), user.getName()));
         return "redirect:/";
     }
 
     @PostMapping("/logout")
-    public String logOut(HttpSession session){
+    public String logOut(HttpSession session) {
         session.invalidate();
         return "redirect:/";
     }
-
-
 }
-
-

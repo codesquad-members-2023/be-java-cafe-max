@@ -29,8 +29,8 @@ public class UserService {
         return true;
     }
 
-    public User findById(String id){
-        return userRepository.findById(id).orElseThrow(()->new NotFoundException("유저를 찾을수 없음"));
+    public User findById(String id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("유저를 찾을수 없음"));
     }
 
 
@@ -43,26 +43,26 @@ public class UserService {
         throw new NotFoundException("비밀번호입력 오류");
     }
 
-    public boolean login(User loginUser,String password){
-        if(!loginUser.checkPassword(password)){
+    public boolean login(User loginUser, String password) {
+        if (!loginUser.checkPassword(password)) {
             throw new LoginFailedException("로그인 실패");
         }
         return true;
     }
 
-    public boolean updateAccess(String id , HttpSession session){
+    public boolean updateAccess(String id, HttpSession session) {
         LoginSessionDto userSession = (LoginSessionDto) session.getAttribute("sessionId");
-        if(userSession == null || !id.equals(userSession.getId())){
+        if (userSession == null || !id.equals(userSession.getId())) {
             throw new DeniedAccessException("수정 권한 없습니다.");
         }
         return true;
     }
 
-    public void duplicatedId(String id){
-         userRepository.findById(id).filter(u->{throw new DuplicatedIdException("중복된 아이디 입니다.");
-         });
+    public void duplicatedId(String id) {
+        userRepository.findById(id).filter(u -> {
+            throw new DuplicatedIdException("중복된 아이디 입니다.");
+        });
     }
-
 
 
     public List<User> getUserList() {

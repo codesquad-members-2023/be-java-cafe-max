@@ -12,10 +12,10 @@ public class SignUpFormDto {
     @NotBlank(message = "공백은 입력할 수 없습니다.")
     private String password;
     @NotBlank(message = "공백은 입력할 수 없습니다.")
-    @Length(message = "2글자~10글자 사이로 입력",min = 2, max = 10)
+    @Length(message = "2글자~10글자 사이로 입력", min = 2, max = 10)
     private String name;
     @NotBlank(message = "공백은 입력할 수 없습니다.")
-    @Email
+    @Email(message = "공백은 입력할 수 없습니다.")
     private String email;
 
     public String getUserId() {

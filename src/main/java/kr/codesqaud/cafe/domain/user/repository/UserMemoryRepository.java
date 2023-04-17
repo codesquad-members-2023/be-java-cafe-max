@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain.user.repository;
 
 import kr.codesqaud.cafe.domain.user.User;
+import kr.codesqaud.cafe.exception.NotFoundException;
 
 import java.util.*;
 
@@ -22,7 +23,8 @@ public class UserMemoryRepository implements UserRepository {
     public Optional<User> findById(String id) {
         return Optional.ofNullable(users.values().stream()
                 .filter(user -> user.getUserId().equals(id))
-                .findFirst()
-                .orElseGet(null));
+                .findFirst().orElseThrow(() -> new NotFoundException("존재하지 않는 id")));
     }
+
 }
+

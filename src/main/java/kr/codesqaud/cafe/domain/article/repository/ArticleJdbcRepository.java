@@ -35,7 +35,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query(
-                "SELECT IDX , ID , WRITER , TITLE , CONTENTS , DATE  FROM ARTICLES ORDER BY IDX DESC ",rowMapper());
+                "SELECT IDX , ID , WRITER , TITLE , CONTENTS , DATE FROM ARTICLES ORDER BY IDX DESC ",rowMapper());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
     @Override
     public void update(Article article) {
         jdbcTemplate.update(
-                "UPDATE ARTICLES SET WRITER = ?, TITLE = ? ,CONTENTS = ?  WHERE IDX = ?",
+                "UPDATE ARTICLES SET WRITER = ? , TITLE = ? , CONTENTS = ? WHERE IDX = ?",
                 article.getWriter(),article.getTitle(),article.getContents(),article.getIndex()
         );
     }
