@@ -23,7 +23,6 @@ class MainControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	// ArticleController에서 잡고 있는 Bean 객체에 대해 Mock 형태의 객체를 생성해준다.
 	@MockBean
 	ArticleService articleService;
 
