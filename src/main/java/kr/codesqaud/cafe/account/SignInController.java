@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.codesqaud.cafe.account.dto.SignInRequest;
-import kr.codesqaud.cafe.account.dto.UserDTO;
+import kr.codesqaud.cafe.account.dto.UserResponse;
 import kr.codesqaud.cafe.global.config.Session;
 
 @Controller
@@ -26,7 +26,7 @@ public class SignInController {
 		String id = signInRequest.getId();
 		userService.matchPassword(signInRequest);
 
-		UserDTO userDto = userService.getUserById(id);
+		UserResponse userDto = userService.getUserById(id);
 		Session session = new Session(userDto.getId(), userDto.getNickName());
 
 		httpSession.setAttribute(Session.LOGIN_USER, session);

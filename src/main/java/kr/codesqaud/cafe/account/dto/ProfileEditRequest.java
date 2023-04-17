@@ -5,8 +5,11 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Length;
 
-public class UserDTO {
+public class ProfileEditRequest {
 
+	private final String id;
+
+	@NotBlank
 	@Length(min = 2, max = 12)
 	private final String nickName;
 
@@ -16,21 +19,25 @@ public class UserDTO {
 
 	@NotBlank
 	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$")
-	private final String password;
+	private final String newPassword;
 
 	@NotBlank
-	@Length(min = 2, max = 12)
-	private final String id;
+	private final String oriPassword;
 
-	public UserDTO(String nickName, String email, String password, String id) {
+	public ProfileEditRequest(String nickName, String email, String newPassword, String oriPassword, String id) {
 		this.nickName = nickName;
 		this.email = email;
-		this.password = password;
+		this.newPassword = newPassword;
+		this.oriPassword = oriPassword;
 		this.id = id;
 	}
 
 	public String getId() {
 		return id;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
 	}
 
 	public String getNickName() {
@@ -41,8 +48,8 @@ public class UserDTO {
 		return email;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getOriPassword() {
+		return oriPassword;
 	}
 
 }

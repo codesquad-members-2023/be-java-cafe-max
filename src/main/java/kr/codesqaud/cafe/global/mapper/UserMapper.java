@@ -1,25 +1,28 @@
 package kr.codesqaud.cafe.global.mapper;
 
 import kr.codesqaud.cafe.account.domain.User;
-import kr.codesqaud.cafe.account.dto.ProfileEditDTO;
-import kr.codesqaud.cafe.account.dto.UserDTO;
-import kr.codesqaud.cafe.account.dto.UserListDTO;
+import kr.codesqaud.cafe.account.dto.ProfileEditRequest;
+import kr.codesqaud.cafe.account.dto.UserListResponse;
+import kr.codesqaud.cafe.account.dto.UserResponse;
+import kr.codesqaud.cafe.account.dto.UserSignUpRequest;
 
 public class UserMapper {
-	public UserDTO toUserDTO(User user) {
-		return new UserDTO(user.getNickName(), user.getEmail(), user.getPassword(), user.getId());
+	public UserResponse toUserResponse(User user) {
+		return new UserResponse(user.getNickName(), user.getEmail(), user.getPassword(), user.getId());
 	}
 
-	public UserListDTO toUserListDTO(User user) {
-		return new UserListDTO(user.getNickName(), user.getEmail(), user.getId(), user.getDate());
+	public UserListResponse toUserListResponse(User user) {
+		return new UserListResponse(user.getNickName(), user.getEmail(), user.getId(), user.getDate());
 	}
 
-	public User toUser(UserDTO userDTO) {
-		return new User(userDTO.getNickName(), userDTO.getEmail(), userDTO.getPassword(), userDTO.getId());
+	public User toUser(UserSignUpRequest userSignUpRequest) {
+		return new User(userSignUpRequest.getNickName(), userSignUpRequest.getEmail(), userSignUpRequest.getPassword(),
+			userSignUpRequest.getId());
 	}
 
-	public User toUser(ProfileEditDTO profileEditDTO) {
-		return new User(profileEditDTO.getNickName(), profileEditDTO.getEmail(), profileEditDTO.getNewPassword(),
-			profileEditDTO.getId());
+	public User toUser(ProfileEditRequest profileEditRequest) {
+		return new User(profileEditRequest.getNickName(), profileEditRequest.getEmail(),
+			profileEditRequest.getNewPassword(),
+			profileEditRequest.getId());
 	}
 }

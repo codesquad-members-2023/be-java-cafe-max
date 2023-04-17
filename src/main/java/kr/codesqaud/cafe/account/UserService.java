@@ -6,10 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import kr.codesqaud.cafe.account.dto.ProfileEditDTO;
+import kr.codesqaud.cafe.account.dto.ProfileEditRequest;
 import kr.codesqaud.cafe.account.dto.SignInRequest;
-import kr.codesqaud.cafe.account.dto.UserDTO;
-import kr.codesqaud.cafe.account.dto.UserListDTO;
+import kr.codesqaud.cafe.account.dto.UserListResponse;
+import kr.codesqaud.cafe.account.dto.UserResponse;
+import kr.codesqaud.cafe.account.dto.UserSignUpRequest;
 import kr.codesqaud.cafe.account.exception.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.account.exception.LoginInvalidPasswordException;
 import kr.codesqaud.cafe.account.exception.UserNotFoundException;
@@ -28,9 +29,9 @@ public class UserService {
 		this.userMapper = new UserMapper();
 	}
 
-	public void addUser(UserDTO userDTO) {
-		validateId(userDTO.getId());
-		userRepository.save(userMapper.toUser(userDTO));
+	public void addUser(UserSignUpRequest userSignUpRequest) {
+		validateId(userSignUpRequest.getId());
+		userRepository.save(userMapper.toUser(userSignUpRequest));
 	}
 
 	private void validateId(String id) {
@@ -39,35 +40,35 @@ public class UserService {
 		}
 	}
 
-	public List<UserListDTO> getUserList() {
+	public List<UserListResponse> getUserList() {
 		return userRepository.findAll().stream()
-			.map(userMapper::toUserListDTO)
+			.map(userMapper::toUserListResponse)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public UserDTO getUserById(String id) {
+	public UserResponse getUserById(String id) {
 		return userRepository.findUserById(id)
-			.map(userMapper::toUserDTO)
+			.map(userMapper::toUserResponse)
 			.orElseThrow(UserNotFoundException::new);
 	}
 
-	public void updateUser(ProfileEditDTO profileEditDto) {
-		UserDTO userDto = getUserById(profileEditDto.getId());
+	public void updateUser(ProfileEditRequest profileEditRequest) {
+		UserResponse userResponse = getUserById(profileEditRequest.getId());
 
-		if (!matchPassword(profileEditDto, userDto)) {
+		if (!matchPassword(profileEditRequest, userResponse)) {
 			throw new UserUpdateInvalidPasswordException();
 		}
 
-		userRepository.updateUser(userMapper.toUser(profileEditDto));
+		userRepository.updateUser(userMapper.toUser(profileEditRequest));
 	}
 
-	private boolean matchPassword(ProfileEditDTO profileEditDto, UserDTO userDto) {
-		return userDto.getPassword().equals(profileEditDto.getOriPassword());
+	private boolean matchPassword(ProfileEditRequest profileEditRequest, UserResponse userResponse) {
+		return userResponse.getPassword().equals(profileEditRequest.getOriPassword());
 	}
 
 	public void matchPassword(SignInRequest signInRequest) {
-		UserDTO userdto = getUserById(signInRequest.getId());
-		if (!signInRequest.getPassword().equals(userdto.getPassword())) {
+		UserResponse userResponse = getUserById(signInRequest.getId());
+		if (!signInRequest.getPassword().equals(userResponse.getPassword())) {
 			throw new LoginInvalidPasswordException();
 		}
 	}

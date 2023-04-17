@@ -23,8 +23,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import kr.codesqaud.cafe.account.UserController;
 import kr.codesqaud.cafe.account.UserService;
-import kr.codesqaud.cafe.account.dto.UserDTO;
-import kr.codesqaud.cafe.account.dto.UserListDTO;
+import kr.codesqaud.cafe.account.dto.UserListResponse;
+import kr.codesqaud.cafe.account.dto.UserResponse;
 import kr.codesqaud.cafe.global.config.Session;
 
 @WebMvcTest(UserController.class)
@@ -63,7 +63,7 @@ class UserControllerTest {
 	@DisplayName("회원가입 성공시 회원들의 list 를 user/list 에서 나열한다.")
 	void showUserListTest() throws Exception {
 		//given
-		List<UserListDTO> userList = new ArrayList<>();
+		List<UserListResponse> userList = new ArrayList<>();
 		given(userService.getUserList()).willReturn(userList);
 
 		//when & then
@@ -79,8 +79,9 @@ class UserControllerTest {
 	@DisplayName("유저의 id,nickName,email정보를 db로부터 가져와 user/profile에서 볼수있다.")
 	void showUserProfileTest() throws Exception {
 		//given
-		UserDTO userDTO = new UserDTO("nickName", "aaa@naver.com", "password123", "testId");
-		given(userService.getUserById("testId")).willReturn(userDTO);
+		UserResponse userResponse = new UserResponse("nickName", "aaa@naver.com", "password123",
+			"testId");
+		given(userService.getUserById("testId")).willReturn(userResponse);
 
 		//when & then
 		mockMvc.perform(MockMvcRequestBuilders.get("/user/profile/testId")
@@ -88,7 +89,7 @@ class UserControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(view().name("user/profile"))
 			.andExpect(model().attributeExists("user"))//객체 검증
-			.andExpect(model().attribute("user", userDTO));
+			.andExpect(model().attribute("user", userResponse));
 
 	}
 

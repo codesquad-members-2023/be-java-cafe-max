@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
-import kr.codesqaud.cafe.account.dto.ProfileEditDTO;
-import kr.codesqaud.cafe.account.dto.UserDTO;
+import kr.codesqaud.cafe.account.dto.ProfileEditRequest;
+import kr.codesqaud.cafe.account.dto.UserSignUpRequest;
 import kr.codesqaud.cafe.global.config.Session;
 
 @Controller
@@ -25,8 +25,8 @@ public class UserController {
 	}
 
 	@PostMapping("/user/sign-up")
-	public String signUp(@ModelAttribute @Valid UserDTO userDto) {
-		userService.addUser(userDto);
+	public String signUp(@ModelAttribute @Valid UserSignUpRequest userSignUpRequest) {
+		userService.addUser(userSignUpRequest);
 		return "redirect:/user/list";
 	}
 
@@ -43,9 +43,10 @@ public class UserController {
 	}
 
 	@PutMapping("/user/profile/{id}")
-	public String updateUserData(@ModelAttribute @Valid ProfileEditDTO profileEditDto, HttpSession httpSession) {
-		userService.updateUser(profileEditDto);
-		Session session = new Session(profileEditDto.getId(), profileEditDto.getNickName());
+	public String updateUserData(@ModelAttribute @Valid ProfileEditRequest profileEditRequest,
+		HttpSession httpSession) {
+		userService.updateUser(profileEditRequest);
+		Session session = new Session(profileEditRequest.getId(), profileEditRequest.getNickName());
 		httpSession.setAttribute(Session.LOGIN_USER, session);
 		return "redirect:/user/list";
 	}
