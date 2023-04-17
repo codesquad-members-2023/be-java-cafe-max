@@ -68,10 +68,11 @@ public class UserController {
 	}
 
 	@PutMapping("/users/{userId}")
-	public String modify(@ModelAttribute ModifyRequest modifyRequest) {
+	public String modify(Model model, @ModelAttribute ModifyRequest modifyRequest) {
 		if (userService.userModify(modifyRequest)) {
 			return "redirect:/users";
 		}
-		return "user/modify";
+		model.addAttribute("userId", modifyRequest.getUserId());
+		return "user/modify_faild";
 	}
 }
