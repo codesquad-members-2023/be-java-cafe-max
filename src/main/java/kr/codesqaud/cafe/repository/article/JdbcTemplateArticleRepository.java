@@ -25,7 +25,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     public JdbcTemplateArticleRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-                .withTableName("articles")
+                .withTableName("ARTICLES")
                 .usingGeneratedKeyColumns("id");
     }
 
@@ -72,7 +72,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void deleteArticle(Long id) {
-        String sql = "delete from articles where id=:id";
+        String sql = "delete from ARTICLES where id=:id";
 
         Map<String, Object> param = Map.of("id", id);
         template.update(sql, param);

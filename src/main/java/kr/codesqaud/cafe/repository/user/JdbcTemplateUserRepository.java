@@ -25,7 +25,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
     public JdbcTemplateUserRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-                .withTableName("users")
+                .withTableName("USERS")
                 .usingGeneratedKeyColumns("id");
     }
 
