@@ -24,12 +24,12 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     //DB에서 id가 생성되기 때문에 저장하는 동시에 생성된 id를 반환한다.(테스트 코드에 쓰임)
     @Override
-    public Long save(Article article) {
+    public long save(Article article) {
         String sql = "INSERT INTO articles (author, title, contents, time) VALUES (:author, :title, :contents, :time)";
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(article);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
-        return keyHolder.getKey().longValue();
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
 
@@ -47,7 +47,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Long modify(Article article) {
+    public long modify(Article article) {
         String sql = "UPDATE articles SET title=:title, contents=:contents, time=:time WHERE id=:id";
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(article);
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);

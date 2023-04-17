@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface ArticleRepository {
 
-    Long save(Article article);
+    long save(Article article);
 
     List<Article> findAll();
 
     Article findById(long id);
 
-    Long modify(Article article);
+    long modify(Article article);
 
     void delete(long id);
 }
