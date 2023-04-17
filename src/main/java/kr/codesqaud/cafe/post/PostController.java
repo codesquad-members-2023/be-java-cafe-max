@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.post;
 
 import kr.codesqaud.cafe.account.User;
+import kr.codesqaud.cafe.post.annotation.ValidPostIdPath;
 import kr.codesqaud.cafe.post.dto.PostForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,37 +35,33 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public String viewPost(@PathVariable int postId, Model model) {
-        Post post = postService.findById(postId);
+    public String viewPost(@PathVariable("postId") Post post, Model model) {
         model.addAttribute(post);
         return "post/detail";
     }
 
+    @ValidPostIdPath
     @GetMapping("/posts/{postId}/edit")
-    public String viewEditPost(@PathVariable int postId, @SessionAttribute User user, Model model) {
-        Post post = postService.findById(postId);
-        postService.checkCanAccess(post.getUser(), user.getId());
+    public String viewEditPost(@PathVariable("postId") Post post, Model model) {
         model.addAttribute(PostForm.from(post));
-        model.addAttribute(postId);
+        model.addAttribute(post.getId());
         return "post/editForm";
     }
 
+    @ValidPostIdPath
     @PutMapping("/posts/{postId}")
-    public String editPost(@Valid PostForm postForm, BindingResult bindingResult, @PathVariable int postId, @SessionAttribute User user, Model model) {
+    public String editPost(@Valid PostForm postForm, BindingResult bindingResult, @PathVariable("postId") Post post, Model model) {
         if (bindingResult.hasErrors()) {
             return "post/editForm";
         }
-        Post post = postService.findById(postId);
-        postService.checkCanAccess(post.getUser(), user.getId());
         Post editPost = postService.updateFromPostForm(post, postForm);
         model.addAttribute(editPost);
         return "post/detail";
     }
 
+    @ValidPostIdPath
     @DeleteMapping("/posts/{postId}")
-    public String deletePost(@PathVariable int postId, @SessionAttribute User user) {
-        Post post = postService.findById(postId);
-        postService.checkCanAccess(post.getUser(), user.getId());
+    public String deletePost(@PathVariable("postId") Post post) {
         postService.delete(post);
         return "redirect:/";
     }

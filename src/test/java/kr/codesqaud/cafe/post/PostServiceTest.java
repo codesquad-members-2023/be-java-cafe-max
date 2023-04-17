@@ -4,7 +4,6 @@ import kr.codesqaud.cafe.account.User;
 import kr.codesqaud.cafe.account.UserService;
 import kr.codesqaud.cafe.account.dto.JoinForm;
 import kr.codesqaud.cafe.post.dto.PostForm;
-import kr.codesqaud.cafe.post.exception.IllegalPostEditAccessException;
 import kr.codesqaud.cafe.post.exception.IllegalPostIdException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -104,24 +103,6 @@ class PostServiceTest {
                 .isInstanceOf(RuntimeException.class);
     }
 
-    @DisplayName("접근 가능 여부 확인(실패)")
-    @Test
-    void checkCanAccessFailed() {
-        User user = new User.Builder()
-                .id(TEST_ID)
-                .build();
-        assertThatThrownBy(() -> postService.checkCanAccess(user, NO_EXIST_ID))
-                .isInstanceOf(IllegalPostEditAccessException.class);
-    }
-
-    @DisplayName("접근 가능 여부 확인(성공)")
-    @Test
-    void checkCanAccessSuccess() {
-        User user = new User.Builder()
-                .id(TEST_ID)
-                .build();
-        assertThatCode(() -> postService.checkCanAccess(user, TEST_ID)).doesNotThrowAnyException();
-    }
 
     @DisplayName("Post를 삭제")
     @Test

@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.config;
 
+import kr.codesqaud.cafe.post.PostIdToPostConverter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -9,9 +11,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final HandlerInterceptor authInterceptor;
+    private final PostIdToPostConverter postIdToPostConverter;
 
-    public WebConfig(HandlerInterceptor authInterceptor) {
+    public WebConfig(HandlerInterceptor authInterceptor, PostIdToPostConverter postIdToPostConverter) {
         this.authInterceptor = authInterceptor;
+        this.postIdToPostConverter = postIdToPostConverter;
     }
 
     @Override
@@ -19,5 +23,10 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/users/**", "/posts/**")
                 .excludePathPatterns("/users/login", "/users/join");
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(postIdToPostConverter);
     }
 }
