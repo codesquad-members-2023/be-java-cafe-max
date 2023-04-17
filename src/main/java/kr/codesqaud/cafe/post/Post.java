@@ -41,52 +41,28 @@ public class Post {
         this.user = builder.user;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public User getUser() {
+        return user;
     }
 
     public String getNickname() {
         return nickname;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getTextContent() {
         return textContent;
     }
 
-    public void setTextContent(String textContent) {
-        this.textContent = textContent;
-    }
-
     public LocalDateTime getCreatedDateTime() {
         return createdDateTime;
-    }
-
-    public void setCreatedDateTime(LocalDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
     }
 
     public boolean isDeleted() {
