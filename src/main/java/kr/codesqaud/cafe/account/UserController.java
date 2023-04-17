@@ -24,30 +24,30 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@PostMapping("/user/sign-up")
+	@PostMapping("/users/sign-up")
 	public String signUp(@ModelAttribute @Valid UserSignUpRequest userSignUpRequest) {
 		userService.addUser(userSignUpRequest);
-		return "redirect:/user/list";
+		return "redirect:/users/list";
 	}
 
-	@GetMapping("/user/list")
+	@GetMapping("/users/list")
 	public String showUserList(Model model) {
 		model.addAttribute("users", userService.getUserList());
 		return "user/list";
 	}
 
-	@GetMapping("/user/profile/{id}")
+	@GetMapping("/users/profile/{id}")
 	public String showUserProfile(@PathVariable String id, Model model) {
 		model.addAttribute("user", userService.getUserById(id));
 		return "user/profile";
 	}
 
-	@PutMapping("/user/profile/{id}")
+	@PutMapping("/users/profile/{id}")
 	public String updateUserData(@ModelAttribute @Valid ProfileEditRequest profileEditRequest,
 		HttpSession httpSession) {
 		userService.updateUser(profileEditRequest);
 		Session session = new Session(profileEditRequest.getId(), profileEditRequest.getNickName());
 		httpSession.setAttribute(Session.LOGIN_USER, session);
-		return "redirect:/user/list";
+		return "redirect:/users/list";
 	}
 }

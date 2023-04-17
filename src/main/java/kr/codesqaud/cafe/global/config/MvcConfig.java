@@ -11,13 +11,13 @@ public class MvcConfig implements WebMvcConfigurer {
 	public void addViewControllers(ViewControllerRegistry registry) {
 
 		//article
-		registry.addViewController("/article").setViewName("post/form");
+		registry.addViewController("/article").setViewName("article/form");
 
 		//user
-		registry.addViewController("/user/sign-up-form").setViewName("user/form");
-		registry.addViewController("/user/sign-in-form").setViewName("user/login");
-		registry.addViewController("/user/sign-in-success").setViewName("user/login_success");
-		registry.addViewController("/user/profile/{id}/form").setViewName("user/updateForm");
+		registry.addViewController("/users/sign-up-form").setViewName("user/form");
+		registry.addViewController("/users/sign-in-form").setViewName("user/sign-in");
+		registry.addViewController("/users/sign-in-success").setViewName("user/sign-in-success");
+		registry.addViewController("/users/profile/{id}/form").setViewName("user/updateForm");
 
 	}
 
@@ -26,10 +26,12 @@ public class MvcConfig implements WebMvcConfigurer {
 		registry.addInterceptor(new LoginInterceptor())
 			.addPathPatterns("/**")
 			.excludePathPatterns("/")
-			.excludePathPatterns("/user/list")
-			.excludePathPatterns("/user/sign-up-form")
-			.excludePathPatterns("/user/sign-in-form")
-			.excludePathPatterns("/user/sign-in")
+			.excludePathPatterns("/users/list")
+			.excludePathPatterns("/users/sign-up-form")
+			.excludePathPatterns("/users/sign-in-form")
+			.excludePathPatterns("/users/sign-in")
+			.excludePathPatterns("/users/sign-up")
+			.excludePathPatterns("/users/profile/{id}")
 			.excludePathPatterns("/css/**", "/images/**", "/js/**");
 
 	}

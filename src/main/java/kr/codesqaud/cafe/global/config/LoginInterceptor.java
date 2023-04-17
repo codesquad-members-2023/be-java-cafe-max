@@ -12,7 +12,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 		Exception {
 		HttpSession session = request.getSession();
 		if (session.getAttribute(Session.LOGIN_USER) == null) {
-			response.sendRedirect("/user/sign-in-form");
+			response.sendRedirect("/users/sign-in-form");
 			return false;
 		}
 		return true;

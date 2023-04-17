@@ -27,7 +27,7 @@ public class ArticleController {
 		this.articleService = articleService;
 	}
 
-	@PostMapping("/article/submit")
+	@PostMapping("/articles/submit")
 	public String postArticle(@ModelAttribute @Valid ArticlePostRequest articlePostRequest, HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
 		articlePostRequest.setId(session.getId());
@@ -36,21 +36,21 @@ public class ArticleController {
 		return "redirect:/";
 	}
 
-	@GetMapping("/article/{idx}")
+	@GetMapping("/articles/{idx}")
 	public String showDetailArticle(@PathVariable Long idx, Model model) {
 		model.addAttribute("article", articleService.findArticleByIdx(idx));
-		return "post/show";
+		return "article/show";
 	}
 
-	@GetMapping("/article/update-form/{idx}")
+	@GetMapping("/articles/update-form/{idx}")
 	public String showUpdateForm(@PathVariable Long idx, Model model, HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
 		model.addAttribute("article", articleService.validSessionIdAndArticleId(idx, session.getId()));
 		model.addAttribute("idx", idx);
-		return "post/updateForm";
+		return "article/updateForm";
 	}
 
-	@PutMapping("/article/submit/update-form/{idx}")
+	@PutMapping("/articles/submit/update-form/{idx}")
 	public String updateArticle(@ModelAttribute @Valid ArticleUpdateRequest articleUpdateRequest,
 		@PathVariable Long idx) {
 		articleUpdateRequest.setIdx(idx);
@@ -58,7 +58,7 @@ public class ArticleController {
 		return "redirect:/";
 	}
 
-	@DeleteMapping("/article/{idx}/delete")
+	@DeleteMapping("/articles/{idx}/delete")
 	public String deleteArticle(@PathVariable Long idx, HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
 		articleService.deleteArticleByIdx(idx, session.getId());

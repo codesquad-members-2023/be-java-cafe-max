@@ -48,7 +48,7 @@ class UserControllerTest {
 	@Test
 	@DisplayName("회원가입시 db에 회원을 저장한후 user/list 로 리다이렉트한다.")
 	void signUpTest() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/user/sign-up")
+		mockMvc.perform(MockMvcRequestBuilders.post("/users/sign-up")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("nickName", "nickName")
@@ -56,7 +56,7 @@ class UserControllerTest {
 				.param("password", "password123")
 				.param("id", "charlie"))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/user/list"));
+			.andExpect(view().name("redirect:/users/list"));
 	}
 
 	@Test
@@ -67,7 +67,7 @@ class UserControllerTest {
 		given(userService.getUserList()).willReturn(userList);
 
 		//when & then
-		mockMvc.perform(MockMvcRequestBuilders.get("/user/list")
+		mockMvc.perform(MockMvcRequestBuilders.get("/users/list")
 				.session(httpSession))
 			.andExpect(status().isOk())
 			.andExpect(view().name("user/list"))
@@ -84,7 +84,7 @@ class UserControllerTest {
 		given(userService.getUserById("testId")).willReturn(userResponse);
 
 		//when & then
-		mockMvc.perform(MockMvcRequestBuilders.get("/user/profile/testId")
+		mockMvc.perform(MockMvcRequestBuilders.get("/users/profile/testId")
 				.session(httpSession))
 			.andExpect(status().isOk())
 			.andExpect(view().name("user/profile"))
@@ -98,7 +98,7 @@ class UserControllerTest {
 	void updateUserDataTest() throws Exception {
 
 		//given & when
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.put("/user/profile/testId")
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.put("/users/profile/testId")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("nickName", "nickName")
@@ -109,7 +109,7 @@ class UserControllerTest {
 
 			//then
 			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/user/list"));
+			.andExpect(view().name("redirect:/users/list"));
 
 		MvcResult mvcResult = resultActions.andReturn();
 		MockHttpSession resultSession = (MockHttpSession)mvcResult.getRequest().getSession();

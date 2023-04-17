@@ -51,14 +51,14 @@ class SignInControllerTest {
 		given(userService.getUserById(signInRequest.getId())).willReturn(userResponse);
 
 		//when
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/user/sign-in")
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/users/sign-in")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("id", "id")
 				.param("password", "password123"))
 
 			//then
 			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/user/sign-in/id"));
+			.andExpect(view().name("redirect:/users/sign-in/id"));
 
 		MvcResult mvcResult = resultActions.andReturn();
 		MockHttpSession resultSession = (MockHttpSession)mvcResult.getRequest().getSession();
@@ -78,12 +78,12 @@ class SignInControllerTest {
 		given(userService.getUserById(userResponse.getId())).willReturn(userResponse);
 
 		//when
-		mockMvc.perform(MockMvcRequestBuilders.get("/user/sign-in/id")
+		mockMvc.perform(MockMvcRequestBuilders.get("/users/sign-in/id")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.session(httpSession))
 			//then
 			.andExpect(status().isOk())
-			.andExpect(view().name("user/login_success"))
+			.andExpect(view().name("user/sign-in-success"))
 			.andExpect(model().attribute("user", userResponse));
 	}
 
@@ -91,7 +91,7 @@ class SignInControllerTest {
 	@DisplayName("로그아웃시 세션을 invalidate 시킨다.")
 	void userSignOut() throws Exception {
 		//when
-		mockMvc.perform(MockMvcRequestBuilders.post("/user/sign-out")
+		mockMvc.perform(MockMvcRequestBuilders.post("/users/sign-out")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.session(httpSession))
 			//then

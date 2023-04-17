@@ -38,7 +38,7 @@ class MainControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.get("/"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("index"))
-			.andExpect(model().attributeExists("postList"))//객체 검증
+			.andExpect(model().attributeExists("articleList"))//객체 검증
 			.andExpect(model().attribute("postList", articleList));
 	}
 

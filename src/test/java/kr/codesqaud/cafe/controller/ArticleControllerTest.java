@@ -46,7 +46,7 @@ class ArticleControllerTest {
 	@Test
 	@DisplayName("postArticle 메서드를 통해 article을 저장후 메인페이지로 리다이렉트 한다.")
 	void postArticleTest() throws Exception {
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/article/submit")
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/articles/submit")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("title", "title")
@@ -79,10 +79,10 @@ class ArticleControllerTest {
 		given(articleService.findArticleByIdx(1L)).willReturn(articleResponse);
 
 		//when & then
-		mockMvc.perform(MockMvcRequestBuilders.get("/article/1")
+		mockMvc.perform(MockMvcRequestBuilders.get("/articles/1")
 				.session(httpSession))
 			.andExpect(status().isOk())
-			.andExpect(view().name("post/show"))
+			.andExpect(view().name("article/show"))
 			.andExpect(model().attributeExists("article"))//객체 검증
 			.andExpect(model().attribute("article", articleResponse));
 	}
@@ -94,10 +94,10 @@ class ArticleControllerTest {
 			"내용입니다");
 		given(articleService.validSessionIdAndArticleId(1L, "id")).willReturn(articleTitleAndContentResponse);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/article/update-form/1")
+		mockMvc.perform(MockMvcRequestBuilders.get("/articles/update-form/1")
 				.session(httpSession))
 			.andExpect(status().isOk())
-			.andExpect(view().name("post/updateForm"))
+			.andExpect(view().name("article/updateForm"))
 			.andExpect(model().attribute("article", articleTitleAndContentResponse))
 			.andExpect(model().attribute("idx", 1L));
 	}
@@ -105,7 +105,7 @@ class ArticleControllerTest {
 	@Test
 	@DisplayName("글 수정페이지에서 수정할 제목, 내용을 입력한후 수정버튼을 누르면 글이 수정된후 메인페이지로 이동한다.")
 	void updateArticleTest() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.put("/article/submit/update-form/1")
+		mockMvc.perform(MockMvcRequestBuilders.put("/articles/submit/update-form/1")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("title", "제목입니다")
@@ -117,7 +117,7 @@ class ArticleControllerTest {
 	@Test
 	@DisplayName("글 세부 페이지에서 해당 삭제버튼을 누르면 글 삭제후 메인페이지로 이동한다.")
 	void deleteArticleTest() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.delete("/article/1/delete")
+		mockMvc.perform(MockMvcRequestBuilders.delete("/articles/1/delete")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
 			.andExpect(status().is3xxRedirection())

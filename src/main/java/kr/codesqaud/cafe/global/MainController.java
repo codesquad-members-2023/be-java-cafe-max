@@ -16,7 +16,7 @@ public class MainController {
 
 	@GetMapping("/")
 	public String showArticleList(Model model) {
-		model.addAttribute("postList", articleService.getArticleList());
+		model.addAttribute("articleList", articleService.getArticleList());
 		return "index";
 	}
 }
