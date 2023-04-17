@@ -1,24 +1,32 @@
 package kr.codesqaud.cafe.service;
 
-import static kr.codesqaud.cafe.fixture.FixtureFactory.createArticle;
+import static kr.codesqaud.cafe.fixture.FixtureFactory.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.ArgumentsProvider;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import kr.codesqaud.cafe.controller.dto.ArticleDetails;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.domain.article.Article;
+import kr.codesqaud.cafe.domain.articlecomment.ArticleComment;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import kr.codesqaud.cafe.repository.ArticleCommentRepository;
@@ -35,6 +43,17 @@ class ArticleServiceTest {
 
 	@InjectMocks
 	private ArticleService articleService;
+
+	static class ArticleComments implements ArgumentsProvider {
+
+		@Override
+		public Stream<Arguments> provideArguments(ExtensionContext context) {
+			return Stream.of(
+				Arguments.of(createArticleComments(), 3),
+				Arguments.of(List.of(), 0)
+			);
+		}
+	}
 
 	@DisplayName("게시글을 올릴 때")
 	@Nested
@@ -72,6 +91,46 @@ class ArticleServiceTest {
 				() -> assertThatCode(() -> articleService.getArticles())
 					.doesNotThrowAnyException(),
 				() -> then(articleRepository).should().findAll()
+			);
+		}
+	}
+
+	@DisplayName("게시글 상세화면에 필요한 정보를 조회할 때")
+	@Nested
+	class GetArticleDetailsTest {
+
+		@DisplayName("게시글 아이디가 주어지면 게시글 정보와 댓글 리스트가 포함된 정보를 반환한다.")
+		@ArgumentsSource(ArticleComments.class)
+		@ParameterizedTest
+		void givenArticleId_whenFindArticleDetails_thenReturnsArticleDetails(List<ArticleComment> articleComments,
+																			 int size) {
+			// given
+			given(articleRepository.findById(anyLong())).willReturn(Optional.of(createArticle()));
+			given(articleCommentRepository.findAllByArticleId(anyLong())).willReturn(articleComments);
+
+			// when
+			ArticleDetails articleDetails = articleService.getArticleDetails(1L);
+
+			// then
+			assertAll(
+				() -> assertThat(articleDetails).isNotNull(),
+				() -> assertThat(articleDetails.getArticleCommentRequest()).hasSize(size),
+				() -> then(articleRepository).should().findById(1L),
+				() -> then(articleCommentRepository).should().findAllByArticleId(1L)
+			);
+		}
+
+		@DisplayName("존재하지 않는 게시글 아이디가 주어지면 예외를 던진다.")
+		@Test
+		void givenNotExistsArticleId_whenFindArticleDetails_thenThrowsException() {
+			// given
+			given(articleRepository.findById(anyLong())).willReturn(Optional.empty());
+
+			// when & then
+			assertAll(
+				() -> assertThatThrownBy(() -> articleService.getArticleDetails(1L)),
+				() -> then(articleRepository).should().findById(1L),
+				() -> then(articleCommentRepository).should(never()).findAllByArticleId(anyLong())
 			);
 		}
 	}

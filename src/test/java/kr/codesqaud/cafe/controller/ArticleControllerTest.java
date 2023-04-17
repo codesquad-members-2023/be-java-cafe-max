@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import static kr.codesqaud.cafe.fixture.FixtureFactory.createArticle;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -7,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,9 +21,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import kr.codesqaud.cafe.controller.dto.ArticleCommentRequest;
+import kr.codesqaud.cafe.controller.dto.ArticleDetails;
 import kr.codesqaud.cafe.controller.dto.ArticleRequest;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
+import kr.codesqaud.cafe.domain.articlecomment.ArticleComment;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.service.ArticleService;
 
@@ -77,8 +82,9 @@ class ArticleControllerTest {
 	@Test
 	void givenNothing_whenShowArticleDetails_thenReturnsArticleDetailsView() throws Exception {
 		// given
-		ArticleRequest articleRequest = new ArticleRequest(1L, "bruni", "테스트코드", "어려워", LocalDateTime.now());
-		given(articleService.findById(anyLong())).willReturn(articleRequest);
+		ArticleDetails articleDetails = new ArticleDetails(ArticleRequest.from(createArticle()), List.of(
+			ArticleCommentRequest.from(new ArticleComment(1L, "이건 댓글!", LocalDateTime.now(), "익명의 사용자", 1L))));
+		given(articleService.getArticleDetails(anyLong())).willReturn(articleDetails);
 
 		// when & then
 		mockMvc.perform(request(HttpMethod.GET, "/articles/1")
@@ -86,9 +92,10 @@ class ArticleControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(view().name("qna/show"))
 			.andExpect(model().attributeExists("article"))
+			.andExpect(model().attributeExists("articleComments"))
+			.andExpect(model().attributeExists("articleCommentCount"))
 			.andDo(print());
-
-		then(articleService).should().findById(anyLong());
+		then(articleService).should().getArticleDetails(1L);
 	}
 
 	@DisplayName("[GET] 게시글 상세보기 - 로그인 되어 있지 않을 때 로그인 페이지로 리다이렉트")

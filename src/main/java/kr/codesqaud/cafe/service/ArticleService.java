@@ -51,12 +51,6 @@ public class ArticleService {
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public ArticleRequest findById(final Long id) {
-		return articleRepository.findById(id)
-			.map(ArticleRequest::from)
-			.orElseThrow(() -> new NotFoundException(String.format("%d번 게시글을 찾을 수 없습니다.", id)));
-	}
-
 	public void validateHasAuthorization(final Long articleId, final String userId) {
 		articleRepository.findById(articleId)
 			.filter(article -> article.isSameWriter(userId))
