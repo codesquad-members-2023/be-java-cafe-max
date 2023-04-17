@@ -54,8 +54,8 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public User modify(User user) {
-        template.update("UPDATE users SET password = ?, name = ?, email = ? WHERE id = ?",
-            user.getPassword(), user.getName(), user.getEmail(), user.getId());
+        template.update("UPDATE users SET name = ?, email = ? WHERE id = ?",
+            user.getName(), user.getEmail(), user.getId());
         return findByUserId(user.getUserId()).orElseThrow();
     }
 

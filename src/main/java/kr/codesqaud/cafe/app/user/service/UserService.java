@@ -81,6 +81,8 @@ public class UserService {
         if (!validator.isEmailUnChanged(currentUser.getEmail(), requestUser.getEmail())) {
             validateDuplicatedUserEmail(requestUser.getEmail());
         }
+        validator.validateEqualConfirmPassword(requestUser.getPassword(),
+            currentUser.getPassword());
         return userRepository.modify(requestUser);
     }
 
