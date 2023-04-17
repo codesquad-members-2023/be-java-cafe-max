@@ -32,7 +32,7 @@
             <ul th:if="${session.loginUser!=null}" class="nav navbar-nav navbar-right">
                 <li><a href="/">Posts</a></li>
                 <li><a href="/users/logout" role="button">로그아웃</a></li>
-                <li><a th:href="@{/users/{userId}/update(userId=${session.loginUser})}" role="button">개인정보수정</a></li>
+                <li><a th:href="@{/users/{userId}/form(userId=${session.loginUser.getId()})}" role="button">개인정보수정</a></li>
             </ul>
         </div>
     </div>
