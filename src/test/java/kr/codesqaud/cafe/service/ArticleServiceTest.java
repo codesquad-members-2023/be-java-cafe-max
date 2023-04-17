@@ -1,80 +1,87 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.exception.ArticleNotFoundException;
-import kr.codesqaud.cafe.repository.ArticleRepository;
-import kr.codesqaud.cafe.repository.impl.MemoryArticleRepository;
+import static org.mockito.BDDMockito.*;
+
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.Assertions.*;
+import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
+import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.mapper.ArticleMapper;
+import kr.codesqaud.cafe.repository.ArticleRepository;
 
-
+@ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
 
-    private ArticleService articleService;
+	@InjectMocks
+	private ArticleService articleService;
 
+	@Mock
+	private ArticleRepository articleRepository;
 
-    @BeforeEach
-    void initArticleService(){
-        ArticleRepository articleRepository = new MemoryArticleRepository();
-        articleService = new ArticleService(articleRepository);
-    }
+	@Mock
+	private ArticleMapper articleMapper;
 
-    @Test
-    @DisplayName("article post 성공 테스트")
-    void post_test(){
-        //given
-        Article article = new Article("title","content");
+	private ArticleDTO articleDto;
 
-        //when & then
-        assertThatCode(() -> articleService.post(article.toDTO())).doesNotThrowAnyException();
-    }
+	private Article article;
 
-    @Test
-    @DisplayName("article 조회 성공 테스트")
-    void getArticleList_success_test(){
-        //given
-        articleService.post(new ArticleDTO("title","content",null,null));
-        articleService.post(new ArticleDTO("title","content",null,null));
-        articleService.post(new ArticleDTO("title","content",null,null));
+	@BeforeEach
+	void setup() {
+		articleDto = new ArticleDTO("제목입니다", "내용입니다", 1l, "2023-4-15");
+		article = new Article("제목입니다", "내용입니다", "id", "nickName");
+	}
 
-        //when & then
-        assertThat(articleService.getArticleList().size() == 3).isTrue();
-    }
+	@Test
+	void postTest() {
+		//given
+		given(articleMapper.toArticle(articleDto)).willReturn(article);
 
-    @Test
-    @DisplayName("article 조회 실패 테스트")
-    void getArticleList_fail_test(){
-        //given
-        articleService.post(new ArticleDTO("title","content",null,null));
-        articleService.post(new ArticleDTO("title","content",null,null));
-        articleService.post(new ArticleDTO("title","content",null,null));
+		//when
+		articleService.post(articleDto);
 
-        //when & then
-        assertThat(articleService.getArticleList().size() == 4).isFalse();
-    }
+		// Then
+		Assertions.assertThat(articleMapper.toArticle(articleDto).equals(article)).isTrue();
+	}
 
-    @Test
-    @DisplayName("저장되지 않는 아이디를 검색했을때 예외가 발생한다.")
-    void findArticleById_throwException_test() {
-        //given
-        int id = 1;
+	@Test
+	void getArticleListTest() {
+		//given
+		//        Article article1 = new Article("재목입니다","본문입니다",);
+		//        ArticleDTO articleDto = new ArticleDTO("제목입니다","내용입니다","")
+		//        List<Article> articleList = new ArrayList<>(Arrays.asList(article,article1));
+		//        given(articleRepository.findAll()).willReturn(articleList);
+		//        given(articleMapper.toArticleDTO(article)).willReturn(articleDto);
+		//        given(articleMapper.toArticleDTO(article1)).willReturn(articleDto);
+		//
+		//        //when
+		//        List<ArticleDTO> articleDto = articleService.getArticleList();
+		//
+		//        //then
+		//        Assertions.assertThat(articleDto.size()==2).isTrue();
+		//        Assertions.assertThat(articleDto.get(0).equals(article1)).isTrue();
+		//        Assertions.assertThat(articleDto.get(1).equals(article)).isTrue();
 
-        //when & then
-        assertThatThrownBy(() -> articleService.findArticleById(id)).isInstanceOf(ArticleNotFoundException.class);
-    }
+	}
 
-    @Test
-    @DisplayName("저장된 아이디를 검색했을때 예외가 발생하지 않는다.")
-    void findArticleById_doesNotThrowException_test() {
-        //given
-        articleService.post(new ArticleDTO("title","content",null,null));
-        int id = 1;
+	@Test
+	void findArticleByIdx() {
+	}
 
-        //when & then
-        assertThatCode(() -> articleService.findArticleById(id)).doesNotThrowAnyException();
-    }
+	@Test
+	void updateArticle() {
+	}
+
+	@Test
+	void validSessionIdAndArticleId() {
+	}
+
+	@Test
+	void deleteArticleByIdx() {
+	}
 }

@@ -1,52 +1,62 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
+import static kr.codesqaud.cafe.util.DateUtil.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static kr.codesqaud.cafe.util.DateUtil.getCurrentDate;
-
-
 public class Article {
-    private final String title;
-    private final String content;
-    private int id;
-    private final String date;
+	private String title;
+	private String content;
+	private Long idx;
+	private String date;
+	private String id;
+	private String nickName;
 
-    public Article(String title,String content){
-        this.title = title;
-        this.content = content;
-        this.date = getCurrentDate();
-    }
+	public Article(String title, String content, String id, String nickName) {
+		this.title = title;
+		this.content = content;
+		this.date = getCurrentDate();
+		this.id = id;
+		this.nickName = nickName;
+	}
 
-    public Article(ResultSet rs) throws SQLException{
-        this.title = rs.getString("title");
-        this.content = rs.getString("content");
-        this.id = rs.getInt("id");
-        this.date = rs.getString("date");
-    }
+	public Article(String title, String content, Long idx) {
+		this.title = title;
+		this.content = content;
+		this.idx = idx;
+	}
 
-    public String getDate() {
-        return date;
-    }
+	public Article(ResultSet rs) throws SQLException {
+		this.title = rs.getString("title");
+		this.content = rs.getString("content");
+		this.idx = rs.getLong("idx");
+		this.date = rs.getString("date");
+		this.id = rs.getString("id");
+		this.nickName = rs.getString("nickName");
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getDate() {
+		return date;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
-    public ArticleDTO toDTO(){
-        return new ArticleDTO(title,content,id,date);
-    }
+	public Long getIdx() {
+		return idx;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
 }

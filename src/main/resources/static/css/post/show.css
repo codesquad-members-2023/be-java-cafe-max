@@ -1,3 +1,6 @@
+.panel{
+    width: 100%;
+}
 .col-md-12 {
     display: flex;
     width: 100%;
@@ -31,6 +34,7 @@ li {
     flex-direction: column;
     text-align: center;
     justify-content: center;
+    align-items: center;
     width: 80px;
     height: 30px;
     font-size: 14px;
@@ -76,6 +80,7 @@ li {
 .article-content {
     margin-right: 20px;
     font-size: 14px;
+    margin-top: 3px;
 }
 
 .article-header {
@@ -159,4 +164,12 @@ li {
     border: 1px solid lightgray;
     display: flex;
     flex-direction: column;
+}
+
+.post-button{
+    background-color: white;
+    border: none;
+    font-size: 14px;
+    color: gray;
+    margin-right: 10px;
 }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    {{> fragments/header}}
+    <link href="/css/user/form.css" rel="stylesheet">
+</head>
+<body>
+<div class="background">
+    {{> fragments/navbar}}
+
+    <div class="container" id="main">
+        <header class="post-header">
+            <p class="title">글수정하기</p>
+        </header>
+        <form class="submit-write" method="post" action="/article/submit/update-form/{{idx}}">
+            <input type="hidden" name="_method" value="PUT" />
+            <div class="text-box">
+                <div class="comment-writer-container">
+                    <p class="post-title">제목</p>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요" oninput="checkTitleValidity(this)">{{article.title}}</textarea>
+                </div>
+                <span id="title-error" class="error-message"></span>
+            </div>
+
+
+            <div class="text-box">
+                <div class="comment-writer-container">
+                    <p class="post-content">내용</p>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요" oninput="checkContentValidity(this)" >{{article.content}}</textarea>
+                </div>
+                <span id="content-error" class="error-message"></span>
+            </div>
+
+            <input class="post-write-btn" type="submit" value="등록"/>
+        </form>
+    </div>
+</div>
+</body>
+<script src="/js/postValidator.js"></script>
+</html>

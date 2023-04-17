@@ -12,18 +12,32 @@
         <header class="post-header">
             <p class="title">로그인</p>
         </header>
-        <form name="question" class="info-container" method="get" action="/user/login-success">
+        <form name="question" class="info-container" method="post" action="/user/sign-in">
             <div class="form-group">
-                <label for="email">이메일</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
+                <label for="id">아이디</label>
+                <input type="userId" class="form-control" id="id" name="id" placeholder="아이디를 입력하세요"
+                       onclick="hideIdErrorMessage(this)">
             </div>
+            {{#id-error}}
+            <div>
+                <p id="error-message">{{id-error}}</p>
+            </div>
+            {{/id-error}}
             <div class="form-group">
                 <label for="password">비밀번호</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요">
+                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요"
+                       onclick="hidePasswordErrorMessage(this)">
             </div>
+            {{#password-error}}
+            <div>
+                <p id="password-error-message">{{password-error}}</p>
+            </div>
+            {{/password-error}}
             <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
+
         </form>
     </div>
 </div>
 </body>
+<script src="/js/signInValidator.js"></script>
 </html>

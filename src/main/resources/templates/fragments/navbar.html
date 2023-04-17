@@ -5,14 +5,24 @@
         <div class="col-md-12">
             <div class="navbar-header">
                 <a href="/" class="navbar-brand">
-                    <img src="/images/KakaoCI.png" />
+                    <img src="/images/KakaoCI.png"/>
                 </a>
             </div>
 
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="/users">멤버 리스트</a></li>
-                <li><a class="black-component" href="/user/login" role="button">로그인</a></li>
-                <li><a class="black-component" href="/users/sign-up" role="button">회원가입</a></li>
+                <li class="active"><a href="/user/list">멤버 리스트</a></li>
+                {{#loginUser}}
+                <form method="post" action="/user/sign-out">
+                    <li>
+                        <button class="black-component" type="submit">로그아웃</button>
+                    </li>
+                </form>
+                <li><a class="black-component" href="/user/profile/{{loginUser.id}}/form" role="button">개인정보수정</a></li>
+                {{/loginUser}}
+                {{^loginUser}}
+                <li><a class="black-component" href="/user/sign-in-form" role="button">로그인</a></li>
+                <li><a class="black-component" href="/user/sign-up-form" role="button">회원가입</a></li>
+                {{/loginUser}}
             </ul>
         </div>
     </nav>

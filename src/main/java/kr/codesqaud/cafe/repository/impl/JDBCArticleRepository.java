@@ -1,38 +1,51 @@
 package kr.codesqaud.cafe.repository.impl;
 
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.ArticleRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
+import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.repository.ArticleRepository;
 
 @Repository
 @Qualifier("jdbcRepository")
 public class JDBCArticleRepository implements ArticleRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+	private final JdbcTemplate jdbcTemplate;
 
-    public JDBCArticleRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+	public JDBCArticleRepository(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
-    @Override
-    public void save(Article article) {
-        jdbcTemplate.update("INSERT INTO ARTICLE (title, content, date) VALUES (?, ?, ?)",
-                article.getTitle(),article.getContent(),article.getDate());
-    }
+	@Override
+	public void save(Article article) {
+		jdbcTemplate.update("INSERT INTO ARTICLE (title, content, date, id,nickName) VALUES (?, ?, ?, ?, ?)",
+			article.getTitle(), article.getContent(), article.getDate(), article.getId(), article.getNickName());
+	}
 
-    @Override
-    public List<Article> findAll() {
-        return jdbcTemplate.query("SELECT * FROM ARTICLE", (rs,rn) -> new Article(rs));
-    }
+	@Override
+	public List<Article> findAll() {
+		return jdbcTemplate.query("SELECT * FROM ARTICLE", (rs, rn) -> new Article(rs));
+	}
 
-    @Override
-    public Optional<Article> findArticleById(int id) {
-        Article article = jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE id = ?",new Object[]{id},(rs,rn) -> new Article(rs));
-        return Optional.ofNullable(article);
-    }
+	@Override
+	public Optional<Article> findArticleByIdx(Long idx) {
+		List<Article> article = jdbcTemplate.query("SELECT * FROM ARTICLE WHERE idx = ?", (rs, rn) -> new Article(rs),
+			idx);
+		return article.stream().findFirst();
+	}
+
+	@Override
+	public void updateArticle(Article article) {
+		jdbcTemplate.update("UPDATE ARTICLE SET title = ?, content = ? WHERE idx = ?", article.getTitle(),
+			article.getContent(), article.getIdx());
+	}
+
+	@Override
+	public void deleteArticle(Long idx) {
+		jdbcTemplate.update("DELETE FROM ARTICLE WHERE idx = ?", idx);
+	}
 }

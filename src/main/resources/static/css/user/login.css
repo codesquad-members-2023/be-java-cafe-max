@@ -36,6 +36,7 @@ li {
     font-size: 14px;
     background-color: black;
     color: white;
+    align-items: center;
 }
 
 .black-component:hover {
@@ -182,4 +183,13 @@ li {
 
 label {
     width: 25%;
+}
+
+#error-message{
+    color: red;
+    font-size: 8px;
+}
+#password-error-message{
+    color: red;
+    font-size: 8px;
 }
