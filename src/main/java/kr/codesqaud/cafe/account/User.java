@@ -19,7 +19,6 @@ public class User {
     @Column(name = "account_id")
     private Long id;
     private String nickname;
-    @Column(unique = true)
     private String email;
     private String password;
     @Enumerated(value = EnumType.STRING)
