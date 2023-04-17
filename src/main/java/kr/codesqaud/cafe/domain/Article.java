@@ -8,9 +8,11 @@ public class Article {
     private String writer;
     private String contents;
     private LocalDateTime createdAt;
+    private Long previousId;
+    private Long nextId;
 
     public Article() {
-        // 기본 생성자가 없으면 mapping이 안된다.
+
     }
 
     public Article(String title, String writer, String contents) {
@@ -27,15 +29,22 @@ public class Article {
     public String getWriter() { return writer; }
     public String getContents() { return contents; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public Long getPreviousId() {
+        return previousId;
+    }
+    public Long getNextId() {
+        return nextId;
+    }
 
-    public void setIdUsingSequence(Long sequence) {
-        this.id = sequence;
-    } // memory repository 사용 시
-
-    // 기본 생성자와 setter가 없으니 mapping이 안된다. 어떻게 동작하는 걸까?
     public void setId(Long id) { this.id = id; }
     public void setTitle(String title) { this.title = title; }
     public void setWriter(String writer) { this.writer = writer; }
     public void setContents(String contents) { this.contents = contents; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public void setPreviousId(final Long previousId) {
+        this.previousId = previousId;
+    }
+    public void setNextId(final Long nextId) {
+        this.nextId = nextId;
+    }
 }

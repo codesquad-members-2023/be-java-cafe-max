@@ -14,5 +14,6 @@ CREATE TABLE Articles (
   title     VARCHAR(50) NOT NULL,
   writer    VARCHAR(50) NOT NULL,
   contents  TEXT NOT NULL,
-  createdAt DATETIME NOT NULL
+  createdAt DATETIME NOT NULL,
+  deleted   BOOLEAN NOT NULL DEFAULT FALSE
 );

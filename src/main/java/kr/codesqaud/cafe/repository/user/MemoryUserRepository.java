@@ -11,11 +11,14 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private final Map<String, User> STORE = new ConcurrentHashMap<>(); // 동시성 문제
+    private final Map<String, User> STORE = new ConcurrentHashMap<>();
+    private final Map<String, Boolean> NICKNAMES = new ConcurrentHashMap<>();
 
     @Override
-    public void save(User user) {
+    public String save(final User user) {
         STORE.put(user.getUserId(), user);
+        NICKNAMES.put(user.getName(), true);
+        return user.getUserId();
     }
 
     @Override
@@ -34,7 +37,13 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public void update(User user) {
+    public int update(final User user) {
         STORE.put(user.getUserId(), user);
+        return 1;
+    }
+
+    @Override
+    public boolean existByName(final String name) {
+        return NICKNAMES.containsKey(name);
     }
 }

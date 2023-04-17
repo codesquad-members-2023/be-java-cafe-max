@@ -3,12 +3,15 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.dto.user.UserResponse;
 import kr.codesqaud.cafe.dto.user.UserSaveRequest;
 import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
+import kr.codesqaud.cafe.exception.user.AlreadyNameExistenceException;
 import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
+import kr.codesqaud.cafe.exception.user.LoginFailedException;
 import kr.codesqaud.cafe.exception.user.MismatchedPasswordException;
 import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,25 +25,30 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void saveUser(UserSaveRequest userSaveRequest) throws AlreadyUserExistenceException { // 새로운 회원 저장하기
-        if (userRepository.exist(userSaveRequest.getUserId())) { // userId 중복 여부 검사
+    public String saveUser(UserSaveRequest userSaveRequest) {
+        if (userRepository.exist(userSaveRequest.getUserId())) {
             throw new AlreadyUserExistenceException(userSaveRequest);
         }
-        userRepository.save(userSaveRequest.toUser());
+        if (userRepository.existByName(userSaveRequest.getName())) {
+            throw new AlreadyNameExistenceException(userSaveRequest);
+        }
+        return userRepository.save(userSaveRequest.toUser());
     }
 
-    public List<UserResponse> getAllUsers() { // 모든 회원 가져오기
+    public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream().map(UserResponse::from).collect(Collectors.toUnmodifiableList());
     }
 
-    public void updateUser(UserUpdateRequest userUpdateRequest) { // 기존 회원의 정보를 수정하기
-        if (!userRepository.findByUserId(userUpdateRequest.getUserId()).isPasswordMatched(userUpdateRequest.getCurrentPassword())) { // 현재 비밀번호 일치 여부 검사
+    @Transactional
+    public int updateUser(UserUpdateRequest userUpdateRequest) {
+        if (!userRepository.findByUserId(userUpdateRequest.getUserId()).isPasswordMatched(userUpdateRequest.getCurrentPassword())) {
             throw new MismatchedPasswordException(userUpdateRequest);
         }
-        userRepository.update(userUpdateRequest.toUser());
+        return userRepository.update(userUpdateRequest.toUser());
     }
 
-    public UserResponse findByUserId(String userId) { // DTO 변환은 service 역할 vs controller 역할
+    @Transactional
+    public UserResponse findByUserId(String userId) {
         if (!userRepository.exist(userId)) {
             throw new UserNotFoundException();
         }
@@ -48,11 +56,21 @@ public class UserService {
         return UserResponse.from(userRepository.findByUserId(userId));
     }
 
-    public UserUpdateRequest makeUserUpdateRequestByUserId(String userId) { // service 역할이 맞을까
+    @Transactional
+    public UserUpdateRequest makeUserUpdateRequestByUserId(String userId) {
+        return UserUpdateRequest.from(userRepository.findByUserId(userId));
+    }
+
+    @Transactional
+    public UserResponse login(String userId, String password) {
         if (!userRepository.exist(userId)) {
-            throw new UserNotFoundException();
+            throw new LoginFailedException();
         }
 
-        return UserUpdateRequest.from(userRepository.findByUserId(userId));
+        if (!userRepository.findByUserId(userId).isPasswordMatched(password)) {
+            throw new LoginFailedException();
+        }
+
+        return UserResponse.from(userRepository.findByUserId(userId));
     }
 }

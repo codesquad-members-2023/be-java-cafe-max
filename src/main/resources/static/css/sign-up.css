@@ -122,3 +122,13 @@ form > div > span {
 .hide {
     display: none;
 }
+
+/* 로그인 */
+.loginFailed {
+    padding: 5px 0px 0px;
+
+    font-weight: 400;
+    font-size: 13px;
+
+    color: #4362D0;
+}

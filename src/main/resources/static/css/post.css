@@ -156,6 +156,7 @@ textarea:focus {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 
     width: 100%;
 }
@@ -185,6 +186,10 @@ textarea:focus {
 .buttons > a {
     width: 100px;
     height: 32px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .buttons > a:hover, .buttons > div > a:hover {
@@ -200,10 +205,52 @@ textarea:focus {
     border-bottom: 1px solid #D2DAE0;
     padding: 20px 0px 20px;
     margin: 50px 0px 50px;
+
+    display: flex;
+    justify-content: space-between;
 }
 
 p {
-    border-bottom: 2px solid #D2DAE0;
+    padding: 20px 0px 60px;
+    margin-bottom: 50px;
+    border-bottom: 1.5px solid #D2DAE0;
     width: 100%;
-    padding: 20px 0px 20px;
+    white-space: pre-wrap;
+}
+
+.buttons > div > .disable:hover {
+    background: #D2DAE0;
+}
+
+.editButton {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 100%;
+    text-decoration: none;
+
+    text-align: center;
+    color: #4362D0;
+
+    display: flex;
+    align-items: center;
+
+    transition: all 0.4s;
+}
+
+.editButton:hover {
+    color: #203faf;
+}
+
+.editButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    padding: 0px 0px;
+    gap: 0px;
+    width: 100%;
+    height: 64px;
+
+    background: none;
+    border: none;
 }

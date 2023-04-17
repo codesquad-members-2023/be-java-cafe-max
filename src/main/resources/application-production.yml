@@ -13,6 +13,13 @@ spring:
   sql:
     init:
       mode: always
-    initialization-mode: always
     schema:
       - classpath:schema.sql
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+server:
+  servlet:
+    session:
+      tracking-modes: cookie

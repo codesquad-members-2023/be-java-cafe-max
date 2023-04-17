@@ -1,7 +1,6 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.user;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.user.MemoryUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class MemoryUserRepositoryTest {
 
@@ -19,7 +19,7 @@ class MemoryUserRepositoryTest {
         memoryUserRepository = new MemoryUserRepository();
     }
 
-    @DisplayName("회원이 정상적으로 저장되는지 확인하는 테스트")
+    @DisplayName("user를 save하면 memoryRepository에 정상적으로 저장되는지 확인하는 테스트")
     @Test
     void save() {
         // given
@@ -33,7 +33,7 @@ class MemoryUserRepositoryTest {
         assertThat(findUser).isEqualTo(user);
     }
 
-    @DisplayName("모든 회원을 가져오는지 확인하는 테스트")
+    @DisplayName("findAll을 통해 모든 user를 List로 가져오는지 확인하는 테스트")
     @Test
     void findAll() {
         // given
@@ -47,7 +47,8 @@ class MemoryUserRepositoryTest {
         List<User> allUser = memoryUserRepository.findAll();
 
         // then
-        assertThat(allUser.size()).isEqualTo(2);
-        assertThat(allUser).contains(user1, user2);
+        assertAll(
+            () -> assertThat(allUser.size()).isEqualTo(2),
+            () -> assertThat(allUser).contains(user1, user2));
     }
 }
