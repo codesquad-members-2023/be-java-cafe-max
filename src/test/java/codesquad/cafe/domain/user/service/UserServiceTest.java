@@ -108,7 +108,7 @@ class UserServiceTest {
         userService.join(userRequestDto);
 
         // when
-        UserUpdateRequestDto userUpdateRequestDto = new UserUpdateRequestDto("1234", "1111", "시오", "siioo@gmail.com");
+        UserUpdateRequestDto userUpdateRequestDto = new UserUpdateRequestDto("1234", "시오", "siioo@gmail.com");
 //        userService.updateUser("sio", userUpdateRequestDto, sessionUser);
 
         // then
@@ -120,7 +120,7 @@ class UserServiceTest {
     void validatePassword() {
         // given
         userService.join(createDummyUserDto1());
-        UserUpdateRequestDto userUpdateRequestDto = new UserUpdateRequestDto("1111", "4567", "siioo", "siioo@gmail.com");
+        UserUpdateRequestDto userUpdateRequestDto = new UserUpdateRequestDto("1111", "siioo", "siioo@gmail.com");
 
 //        Assertions.assertThrows(IllegalStateException.class,
 //                () -> userService.updateUser("sio", userUpdateRequestDto, sessionUser));

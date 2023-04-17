@@ -37,7 +37,6 @@ public class User {
 
     public User update(final UserUpdateRequestDto userUpdateRequestDto) {
         this.name = userUpdateRequestDto.getName();
-        this.password = userUpdateRequestDto.getUpdatedPassword();
         this.email = userUpdateRequestDto.getEmail();
         return this;
     }
