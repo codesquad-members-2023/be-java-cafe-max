@@ -15,7 +15,7 @@
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
             <header class="qna-header">
-                <h2 class="qna-title" th:text="${article.get().title}">title</h2>
+                <h2 class="qna-title" th:text="${article.title}">title</h2>
             </header>
             <div class="content-main">
                 <article class="article">
@@ -24,23 +24,23 @@
                             <img src="https://graph.facebook.com/v2.3/100000059371774/picture" class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a th:href="@{/users/{userId}(userId=${article.get().userId})}" class="article-author-name" th:text="${article.get().writer}">writer</a>
-                            <a href="/questions/413" class="article-header-time" title="퍼머링크" th:text="${article.get().createdTime}">
+                            <a th:href="@{/users/{userId}(userId=${article.userId})}" class="article-author-name" th:text="${article.writer}">writer</a>
+                            <a href="/questions/413" class="article-header-time" title="퍼머링크" th:text="${article.createdTime}">
                                 localDateTime
                                 <i class="icon-link"></i>
                             </a>
                         </div>
                     </div>
-                    <div class="article-doc" th:text="${article.get().contents}">
+                    <div class="article-doc" th:text="${article.contents}">
                         contents
                     </div>
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>
-                                <a class="link-modify-article" th:href="@{/articles/update/{id}(id=${article.get().id})}">수정</a>
+                                <a class="link-modify-article" th:href="@{/articles/update/{id}(id=${article.id})}">수정</a>
                             </li>
                             <li>
-                                <form class="form-delete" th:action="@{/articles/delete/{id}(id=${article.get().id})}" method="POST">
+                                <form class="form-delete" th:action="@{/articles/delete/{id}(id=${article.id})}" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button class="link-delete-article" type="submit">삭제</button>
                                 </form>

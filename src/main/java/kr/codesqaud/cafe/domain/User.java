@@ -37,4 +37,14 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public boolean checkPassword(String password) {
+        return this.password.equals(password);
+    }
+
+    public User updateNameAndEmail(String name, String email) {
+        this.name = name;
+        this.email = email;
+        return this;
+    }
 }

@@ -76,13 +76,13 @@ public class ArticleController {
 
         model.addAttribute("loginUser", loginUser);
 
-        return articleService.findOne(id)
-                .filter(article -> articleService.isAuthorized(loginUser.getUserId(), id))
-                .map(article -> {
-                    model.addAttribute("article", article);
-                    return "qna/update";
-                })
-                .orElse("error/404");
+        Article article = articleService.findOne(id);
+
+        if (article.isAuthor(loginUser.getUserId())) {
+            model.addAttribute("article", article);
+            return "qna/update";
+        }
+        return "error/404";
     }
 
     @PutMapping("articles/update/{id}")
@@ -101,8 +101,8 @@ public class ArticleController {
 
         model.addAttribute("loginUser", loginUser);
 
-
-        if (articleService.isAuthorized(loginUser.getUserId(), id)) {
+        Article article = articleService.findOne(id);
+        if (article.isAuthor(loginUser.getUserId())) {
             articleService.delete(id);
             return "redirect:/";
         }

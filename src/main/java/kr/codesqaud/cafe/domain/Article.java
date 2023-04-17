@@ -60,4 +60,8 @@ public class Article {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public boolean isAuthor(String userId) {
+        return this.userId.equals(userId);
+    }
 }

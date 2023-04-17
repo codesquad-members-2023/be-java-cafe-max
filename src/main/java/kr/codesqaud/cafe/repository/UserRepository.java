@@ -11,6 +11,6 @@ public interface UserRepository {
     Optional<User> findById(String userId);
     Optional<User> findByName(String name);
     List<User> findAll();
-    public void updateUserName(String userId, String updateName);
-    public void updateUserEmail(String userId, String updateEmail);
+    public void updateUser(User user);
+
 }

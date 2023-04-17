@@ -37,17 +37,9 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public void updateUserName(String userId, String updateName) {
-        User user = store.get(userId);
-        user.setName(updateName);
-        store.put(userId, user);
-    }
+    public void updateUser(User user) {
 
-    @Override
-    public void updateUserEmail(String userId, String updateEmail) {
-        User user = store.get(userId);
-        user.setEmail(updateEmail);
-        store.put(userId, user);
+        store.put(user.getUserId(), user);
     }
 
     public void clearStore() {
