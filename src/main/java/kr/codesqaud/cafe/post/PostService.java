@@ -34,9 +34,9 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public Post updateFromPostForm(Post target, PostForm postForm) {
-        postForm.editPost(target);
-        return postRepository.save(target);
+    public Post updateFromPostForm(Post post, PostForm postForm) {
+        post.setFrom(postForm);
+        return postRepository.save(post);
     }
 
     public void delete(Post post) {

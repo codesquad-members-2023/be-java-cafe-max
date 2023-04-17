@@ -5,8 +5,6 @@ import kr.codesqaud.cafe.post.Post;
 import kr.codesqaud.cafe.post.annotation.ValidPostTextContent;
 import kr.codesqaud.cafe.post.annotation.ValidPostTitle;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public class PostForm {
@@ -48,10 +46,5 @@ public class PostForm {
                 .textContent(textContent)
                 .createdDateTime(LocalDateTime.now())
                 .build();
-    }
-
-    public void editPost(Post post) {
-        post.setTitle(this.title);
-        post.setTextContent(this.textContent);
     }
 }

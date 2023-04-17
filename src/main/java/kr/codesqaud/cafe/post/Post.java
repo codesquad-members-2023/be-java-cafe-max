@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.post;
 
 import kr.codesqaud.cafe.account.User;
+import kr.codesqaud.cafe.post.dto.PostForm;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -94,6 +95,11 @@ public class Post {
 
     public void disable() {
         isDeleted = true;
+    }
+
+    public void setFrom(PostForm postForm) {
+        title = postForm.getTitle();
+        textContent = postForm.getTextContent();
     }
 
     public static class Builder {
