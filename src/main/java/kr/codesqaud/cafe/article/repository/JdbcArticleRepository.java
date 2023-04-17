@@ -28,8 +28,7 @@ public class JdbcArticleRepository implements ArticleRepository {
         String sql = "INSERT INTO articles (author, title, contents, time) VALUES (:author, :title, :contents, :time)";
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(article);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String[] keyColumnNames = {"id"};
-        namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder, keyColumnNames);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
@@ -41,11 +40,11 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findById(Long index) {
+    public Article findById(long id) {
         String sql = "SELECT * FROM articles WHERE id = :id";
 
         try {
-            SqlParameterSource namedParameters = new MapSqlParameterSource("id", index);
+            SqlParameterSource namedParameters = new MapSqlParameterSource("id", id);
             return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, articleRowMapper());
         } catch (EmptyResultDataAccessException e){
             return null;
@@ -77,4 +76,3 @@ public class JdbcArticleRepository implements ArticleRepository {
         );
     }
 }
-

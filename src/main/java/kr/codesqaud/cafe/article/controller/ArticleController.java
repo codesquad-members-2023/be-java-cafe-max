@@ -19,7 +19,6 @@ public class ArticleController {
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
-
     }
 
 
@@ -43,9 +42,9 @@ public class ArticleController {
     }
 
     //글 목록에서 제목 클릭시, 상세 글을 보여줌
-    @GetMapping("/{index}")
-    public String showArticleDetail(Model model, @PathVariable Long index, HttpSession session) {
-        model.addAttribute("articleDetail", articleService.getArticleDetail(index));
+    @GetMapping("/{id}")
+    public String showArticleDetail(Model model, @PathVariable long id, HttpSession session) {
+        model.addAttribute("articleDetail", articleService.getArticleDetail(id));
         return Session.isLoggedIn(session) ? "articles/show-detail" : "redirect:/user/login";
     }
 

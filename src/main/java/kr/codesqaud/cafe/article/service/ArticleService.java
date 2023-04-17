@@ -40,8 +40,8 @@ public class ArticleService {
 
 
     //ID로 글을 찾아 DTO로 필터링 후 반환
-    public ArticleDetailDto getArticleDetail(Long index) {
-        Article article = articleRepository.findById(index);
+    public ArticleDetailDto getArticleDetail(long id) {
+        Article article = articleRepository.findById(id);
         return ArticleDtoMapper.INSTANCE.toDetailDto(article);
     }
 
