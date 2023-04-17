@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class MemoryUserRepositoryTest {
 
@@ -46,7 +47,8 @@ class MemoryUserRepositoryTest {
         List<User> allUser = memoryUserRepository.findAll();
 
         // then
-        assertThat(allUser.size()).isEqualTo(2);
-        assertThat(allUser).contains(user1, user2);
+        assertAll(
+            () -> assertThat(allUser.size()).isEqualTo(2),
+            () -> assertThat(allUser).contains(user1, user2));
     }
 }

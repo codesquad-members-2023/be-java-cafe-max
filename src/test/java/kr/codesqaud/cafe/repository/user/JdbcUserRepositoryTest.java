@@ -12,7 +12,9 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @JdbcTest
 @Sql("classpath:test.sql")
@@ -40,8 +42,9 @@ class JdbcUserRepositoryTest {
         String savedUser2 = userRepository.save(user2);
 
         // then
-        assertThat(savedUser1).isEqualTo(user1.getUserId());
-        assertThat(savedUser2).isEqualTo(user2.getUserId());
+        assertAll(
+            () -> assertThat(savedUser1).isEqualTo(user1.getUserId()),
+            () -> assertThat(savedUser2).isEqualTo(user2.getUserId()));
     }
 
     @DisplayName("userId가 일치하는 user를 가져오는지 확인하는 테스트")
@@ -58,11 +61,12 @@ class JdbcUserRepositoryTest {
         User findUser2 = userRepository.findByUserId("jdbcUser2");
 
         // then
-        assertThat(findUser1.getUserId()).isEqualTo(savedUser1);
-        assertThat(findUser2.getUserId()).isEqualTo(savedUser2);
-        assertThatThrownBy(() -> userRepository.findByUserId("none"))
-                .isInstanceOf(UserNotFoundException.class)
-                .hasMessage("존재하지 않는 회원입니다.");
+        assertAll(
+            () -> assertThat(findUser1.getUserId()).isEqualTo(savedUser1),
+            () -> assertThat(findUser2.getUserId()).isEqualTo(savedUser2),
+            () -> assertThatThrownBy(() -> userRepository.findByUserId("none"))
+                                                    .isInstanceOf(UserNotFoundException.class)
+                                                    .hasMessage("존재하지 않는 회원입니다."));
     }
 
     @DisplayName("findAll을 통해 모든 user를 List로 가져오는지 확인하는 테스트")
@@ -78,9 +82,10 @@ class JdbcUserRepositoryTest {
         List<User> allUsers = userRepository.findAll();
 
         // then
-        assertThat(allUsers.get(0).getUserId()).isEqualTo(savedUser1);
-        assertThat(allUsers.get(1).getUserId()).isEqualTo(savedUser2);
-        assertThat(allUsers.size()).isEqualTo(2);
+        assertAll(
+            () -> assertThat(allUsers.get(0).getUserId()).isEqualTo(savedUser1),
+            () -> assertThat(allUsers.get(1).getUserId()).isEqualTo(savedUser2),
+            () -> assertThat(allUsers.size()).isEqualTo(2));
     }
 
     @DisplayName("userId를 통해 user가 존재하는지 확인하는 테스트")
@@ -95,8 +100,9 @@ class JdbcUserRepositoryTest {
         boolean exist2 = userRepository.exist("none");
 
         // then
-        assertThat(exist1).isEqualTo(true);
-        assertThat(exist2).isEqualTo(false);
+        assertAll(
+            () -> assertThat(exist1).isEqualTo(true),
+            () -> assertThat(exist2).isEqualTo(false));
     }
 
     @DisplayName("user를 update하면 수정한 정보가 jdbcRepository를 통해 DB에 정상적으로 반영되는지 확인하는 테스트")
@@ -115,12 +121,13 @@ class JdbcUserRepositoryTest {
         // then
         User findUser = userRepository.findByUserId(savedUser1);
 
-        assertThat(findUser.getUserId()).isEqualTo(user.getUserId());
-        assertThat(findUser.getPassword()).isEqualTo(user.getPassword());
-        assertThat(findUser.getName()).isEqualTo(user.getName());
-        assertThat(findUser.getEmail()).isEqualTo(user.getEmail());
+        assertAll(
+            () -> assertThat(findUser.getUserId()).isEqualTo(user.getUserId()),
+            () -> assertThat(findUser.getPassword()).isEqualTo(user.getPassword()),
+            () -> assertThat(findUser.getName()).isEqualTo(user.getName()),
+            () -> assertThat(findUser.getEmail()).isEqualTo(user.getEmail()),
 
-        assertThat(update1).isEqualTo(1);
-        assertThat(update2).isEqualTo(0);
+            () -> assertThat(update1).isEqualTo(1),
+            () -> assertThat(update2).isEqualTo(0));
     }
 }

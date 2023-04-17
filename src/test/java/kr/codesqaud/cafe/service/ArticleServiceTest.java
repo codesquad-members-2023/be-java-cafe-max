@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Transactional
 @SpringBootTest
@@ -42,10 +43,12 @@ class ArticleServiceTest {
 
         // then
         ArticleResponse articleResponse = articleService.findById(id);
-        assertThat(articleResponse.getId()).isEqualTo(id);
-        assertThat(articleResponse.getTitle()).isEqualTo(articleSaveRequest.getTitle());
-        assertThat(articleResponse.getWriter()).isEqualTo(articleSaveRequest.getWriter());
-        assertThat(articleResponse.getContents()).isEqualTo(articleSaveRequest.getContents());
+
+        assertAll(
+            () -> assertThat(articleResponse.getId()).isEqualTo(id),
+            () -> assertThat(articleResponse.getTitle()).isEqualTo(articleSaveRequest.getTitle()),
+            () -> assertThat(articleResponse.getWriter()).isEqualTo(articleSaveRequest.getWriter()),
+            () -> assertThat(articleResponse.getContents()).isEqualTo(articleSaveRequest.getContents()));
     }
 
     @DisplayName("getAllArticles를 통해 모든 article을 List로 가져오는지 확인하는 테스트")
@@ -61,11 +64,12 @@ class ArticleServiceTest {
         List<ArticleResponse> articles = articleService.getAllArticles();
 
         // then
-        assertThat(articles.size()).isEqualTo(2);
-        assertThat(articles.get(0).getId()).isEqualTo(id1);
-        assertThat(articles.get(1).getId()).isEqualTo(id2);
-        assertThat(articles.get(0).getTitle()).isEqualTo("title1");
-        assertThat(articles.get(1).getTitle()).isEqualTo("title2");
+        assertAll(
+            () -> assertThat(articles.size()).isEqualTo(2),
+            () -> assertThat(articles.get(0).getId()).isEqualTo(id1),
+            () -> assertThat(articles.get(1).getId()).isEqualTo(id2),
+            () -> assertThat(articles.get(0).getTitle()).isEqualTo("title1"),
+            () -> assertThat(articles.get(1).getTitle()).isEqualTo("title2"));
     }
 
     @DisplayName("id가 일치하는 article을 찾지 못했을 때 예외가 발생하는지 확인하는 테스트")

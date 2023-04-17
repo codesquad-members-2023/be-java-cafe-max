@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @JdbcTest
 @Sql("classpath:test.sql")
@@ -41,8 +42,9 @@ class JdbcArticleRepositoryTest {
         Long savedArticle2 = articleRepository.save(article2);
 
         // then
-        assertThat(savedArticle1).isEqualTo(1L);
-        assertThat(savedArticle2).isEqualTo(2L);
+        assertAll(
+            () -> assertThat(savedArticle1).isEqualTo(1L),
+            () -> assertThat(savedArticle2).isEqualTo(2L));
     }
 
     @DisplayName("id가 일치하는 article을 가져오는지 확인하는 테스트")
@@ -59,13 +61,14 @@ class JdbcArticleRepositoryTest {
         Article findArticle2 = articleRepository.findById(savedArticle2);
 
         // then
-        assertThat(findArticle2.getId()).isEqualTo(2L);
-        assertThat(findArticle2.getTitle()).isEqualTo("test2");
-        assertThat(findArticle2.getWriter()).isEqualTo("writer2");
-        assertThat(findArticle2.getContents()).isEqualTo("contents2");
-        assertThatThrownBy(() -> articleRepository.findById(3L))
-                .isInstanceOf(ArticleNotFoundException.class)
-                .hasMessage("존재하지 않는 게시글입니다.");
+        assertAll(
+            () -> assertThat(findArticle2.getId()).isEqualTo(2L),
+            () -> assertThat(findArticle2.getTitle()).isEqualTo("test2"),
+            () -> assertThat(findArticle2.getWriter()).isEqualTo("writer2"),
+            () -> assertThat(findArticle2.getContents()).isEqualTo("contents2"),
+            () -> assertThatThrownBy(() -> articleRepository.findById(3L))
+                        .isInstanceOf(ArticleNotFoundException.class)
+                        .hasMessage("존재하지 않는 게시글입니다."));
     }
 
     @DisplayName("findAll을 통해 모든 article을 List로 가져오는지 확인하는 테스트")
@@ -81,9 +84,10 @@ class JdbcArticleRepositoryTest {
         List<Article> articles = articleRepository.findAll();
 
         // then
-        assertThat(articles.size()).isEqualTo(2);
-        assertThat(articles.get(0).getId()).isEqualTo(savedArticle1);
-        assertThat(articles.get(1).getId()).isEqualTo(savedArticle2);
+        assertAll(
+            () -> assertThat(articles.size()).isEqualTo(2),
+            () -> assertThat(articles.get(0).getId()).isEqualTo(savedArticle1),
+            () -> assertThat(articles.get(1).getId()).isEqualTo(savedArticle2));
     }
 
     @DisplayName("id를 통해 article이 존재하는지 확인하는 테스트")
@@ -101,8 +105,9 @@ class JdbcArticleRepositoryTest {
         boolean exists3 = articleRepository.exist(3L);
 
         // then
-        assertThat(exists1).isEqualTo(true);
-        assertThat(exists2).isEqualTo(true);
-        assertThat(exists3).isEqualTo(false);
+        assertAll(
+            () -> assertThat(exists1).isEqualTo(true),
+            () -> assertThat(exists2).isEqualTo(true),
+            () -> assertThat(exists3).isEqualTo(false));
     }
 }

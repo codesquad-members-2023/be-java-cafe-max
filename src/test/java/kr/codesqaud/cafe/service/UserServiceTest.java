@@ -19,6 +19,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @Transactional
 @SpringBootTest
@@ -49,10 +50,11 @@ class UserServiceTest {
         String userId = userService.saveUser(userSaveRequest);
 
         // then
-        assertThat(userId).isEqualTo(userSaveRequest.getUserId());
-        assertThatThrownBy(() -> userService.saveUser(userSaveRequest))
-                .isInstanceOf(AlreadyUserExistenceException.class)
-                .hasMessage("이미 사용 중인 아이디입니다.");
+        assertAll(
+            () -> assertThat(userId).isEqualTo(userSaveRequest.getUserId()),
+            () -> assertThatThrownBy(() -> userService.saveUser(userSaveRequest))
+                        .isInstanceOf(AlreadyUserExistenceException.class)
+                        .hasMessage("이미 사용 중인 아이디입니다."));
     }
 
     @DisplayName("getAllUsers를 통해 모든 user를 List로 가져오는지 확인하는 테스트")
@@ -78,9 +80,10 @@ class UserServiceTest {
         List<UserResponse> users = userService.getAllUsers();
 
         // then
-        assertThat(users.size()).isEqualTo(2);
-        assertThat(users.get(0).getUserId()).isEqualTo(userId1);
-        assertThat(users.get(1).getUserId()).isEqualTo(userId2);
+        assertAll(
+            () -> assertThat(users.size()).isEqualTo(2),
+            () -> assertThat(users.get(0).getUserId()).isEqualTo(userId1),
+            () -> assertThat(users.get(1).getUserId()).isEqualTo(userId2));
     }
 
     @DisplayName("userUpdateRequest를 통해 전달받은 수정 요청 데이터가 정상적으로 DB에 반영되는지 확인하는 테스트")
@@ -112,10 +115,11 @@ class UserServiceTest {
         int count = userService.updateUser(userUpdateRequest);
 
         // then
-        assertThat(count).isEqualTo(1);
-        assertThatThrownBy(() -> userService.updateUser(wrongUserUpdateRequest))
-                .isInstanceOf(MismatchedPasswordException.class)
-                .hasMessage("비밀번호가 일치하지 않습니다.");
+        assertAll(
+            () -> assertThat(count).isEqualTo(1),
+            () -> assertThatThrownBy(() -> userService.updateUser(wrongUserUpdateRequest))
+                        .isInstanceOf(MismatchedPasswordException.class)
+                        .hasMessage("비밀번호가 일치하지 않습니다."));
     }
 
     @DisplayName("userId가 일치하는 user의 정보를 바탕으로 userResponse를 정상적으로 생성하는지 확인하는 테스트")
@@ -133,13 +137,14 @@ class UserServiceTest {
         UserResponse userResponse = userService.findByUserId(userId);
 
         // then
-        assertThat(userResponse.getUserId()).isEqualTo(userSaveRequest.getUserId());
-        assertThat(userResponse.getName()).isEqualTo(userSaveRequest.getName());
-        assertThat(userResponse.getEmail()).isEqualTo(userSaveRequest.getEmail());
-        assertThatThrownBy(() -> userService.findByUserId("none"))
-                .isInstanceOf(UserNotFoundException.class)
-                .hasMessage("존재하지 않는 회원입니다.");
-    }
+        assertAll(
+            () -> assertThat(userResponse.getUserId()).isEqualTo(userSaveRequest.getUserId()),
+            () -> assertThat(userResponse.getName()).isEqualTo(userSaveRequest.getName()),
+            () -> assertThat(userResponse.getEmail()).isEqualTo(userSaveRequest.getEmail()),
+            () -> assertThatThrownBy(() -> userService.findByUserId("none"))
+                        .isInstanceOf(UserNotFoundException.class)
+                        .hasMessage("존재하지 않는 회원입니다."));
+        }
 
     @DisplayName("userId가 일치하는 user의 정보를 바탕으로 userUpdateRequest를 생성하는지 확인하는 테스트")
     @Test
@@ -156,11 +161,12 @@ class UserServiceTest {
         UserUpdateRequest userUpdateRequest = userService.makeUserUpdateRequestByUserId(userId);
 
         // then
-        assertThat(userUpdateRequest.getUserId()).isEqualTo(userSaveRequest.getUserId());
-        assertThat(userUpdateRequest.getName()).isEqualTo(userSaveRequest.getName());
-        assertThat(userUpdateRequest.getEmail()).isEqualTo(userSaveRequest.getEmail());
-        assertThatThrownBy(() -> userService.makeUserUpdateRequestByUserId("none"))
-                .isInstanceOf(UserNotFoundException.class)
-                .hasMessage("존재하지 않는 회원입니다.");
+        assertAll(
+            () -> assertThat(userUpdateRequest.getUserId()).isEqualTo(userSaveRequest.getUserId()),
+            () -> assertThat(userUpdateRequest.getName()).isEqualTo(userSaveRequest.getName()),
+            () -> assertThat(userUpdateRequest.getEmail()).isEqualTo(userSaveRequest.getEmail()),
+            () -> assertThatThrownBy(() -> userService.makeUserUpdateRequestByUserId("none"))
+                    .isInstanceOf(UserNotFoundException.class)
+                    .hasMessage("존재하지 않는 회원입니다."));
     }
 }
