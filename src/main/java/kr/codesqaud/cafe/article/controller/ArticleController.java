@@ -64,8 +64,8 @@ public class ArticleController {
         return "redirect:/articles/" + id;
     }
 
-    @DeleteMapping("/delete")
-    public String deleteArticle(long id, HttpSession session) {
+    @DeleteMapping("/{id}")
+    public String deleteArticle(@PathVariable long id, HttpSession session) {
         ResponseDetail responseDetail = articleService.getArticleDetail(id);
         if (!Session.getUserId(session).equals(responseDetail.getAuthor())) {
             return "articles/forbidden";
