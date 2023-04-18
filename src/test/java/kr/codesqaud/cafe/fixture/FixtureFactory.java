@@ -24,4 +24,8 @@ public class FixtureFactory {
 			new ArticleComment(3L, "댓글3", LocalDateTime.now(), "honux", 1L)
 		);
 	}
+
+	public static ArticleComment createArticleComment() {
+		return new ArticleComment(1L, "content", LocalDateTime.now(), "bruni", 1L);
+	}
 }
