@@ -13,7 +13,7 @@ public class UserResponse {
         this.email = email;
     }
 
-    public static UserResponse fromUser(User user) {
+    public static UserResponse from(User user) {
         return new UserResponse(user.getUserId(), user.getUserName(), user.getEmail());
     }
 

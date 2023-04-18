@@ -24,7 +24,7 @@ public class PostResponse {
         return new BoardPost(writer, title, contents, postId);
     }
 
-    public static PostResponse fromBoardPost(BoardPost boardPost) {
+    public static PostResponse from(BoardPost boardPost) {
         return new PostResponse(boardPost.getPostId(), boardPost.getWriter(), boardPost.getTitle(), boardPost.getContents(), boardPost.getWriteDateTime());
     }
 

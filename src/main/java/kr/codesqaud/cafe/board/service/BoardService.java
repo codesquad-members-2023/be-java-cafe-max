@@ -29,10 +29,10 @@ public class BoardService {
     }
 
     public PostResponse getPost(Long postId) {
-        return PostResponse.fromBoardPost(boardJdbcRepository.findByPostId(postId));
+        return PostResponse.from(boardJdbcRepository.findByPostId(postId));
     }
 
     public List<PostResponse> getPostList() {
-        return boardJdbcRepository.findAll().stream().map(PostResponse::fromBoardPost).collect(Collectors.toList());
+        return boardJdbcRepository.findAll().stream().map(PostResponse::from).collect(Collectors.toList());
     }
 }

@@ -35,14 +35,14 @@ public class UserService {
         if (!userLoginForm.getPassword().equals(user.getPassword())) {
             return Optional.empty();
         }
-        return Optional.ofNullable(UserResponse.fromUser(user));
+        return Optional.ofNullable(UserResponse.from(user));
     }
 
     public UserResponse getUser(String userId) {
-        return UserResponse.fromUser(userRepository.findByUserId(userId));
+        return UserResponse.from(userRepository.findByUserId(userId));
     }
 
     public List<UserResponse> getUserList() {
-        return userRepository.findAll().stream().map(UserResponse::fromUser).collect(Collectors.toList());
+        return userRepository.findAll().stream().map(UserResponse::from).collect(Collectors.toList());
     }
 }
