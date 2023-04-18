@@ -73,17 +73,16 @@ public class QuestionController {
 
 	/**
 	 * Q&A 게시글 상세 보기 페이지로 이동
-	 * @param questionId 조회하고자 하는 Q&A 게시글의 idx
+	 * @param id 조회하고자 하는 Q&A 게시글의 id
 	 * @param errorMessage 없는 게시글 또는 잘못된 입력값이 들어왔을때 받아올 에러 메시지
 	 * @param model `Q&A 게시글 상세 내역` 또는 `에러 메시지`를 전달하기 위한 model
 	 * @return Q&A 게시글 상세 보기 페이지
 	 */
-	@GetMapping("/{questionId}")
-	public String questionDetails(@PathVariable String questionId, @ModelAttribute("errorMessage") String errorMessage,
+	@GetMapping("/{id}")
+	public String questionDetails(@PathVariable String id, @ModelAttribute("errorMessage") String errorMessage,
 		Model model) throws QuestionNotExistException {
 		if (errorMessage.isBlank()) {
-			long id = Long.parseLong(questionId);
-			model.addAttribute("question", service.findById(id));
+			model.addAttribute("question", service.findById(Long.parseLong(id)));
 		}
 
 		return "qna/show";
