@@ -32,7 +32,7 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("")
+    @GetMapping
     public String list(Model model){
         List<UserResponse> users = userService.findUsers();
         model.addAttribute("users", users);
