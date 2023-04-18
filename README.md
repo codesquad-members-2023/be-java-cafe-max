@@ -3,6 +3,7 @@
 
 ## 기능 목록
 - [x] 루트 경로일 때 홈 화면을 출력한다.
+  - 모든 사용자가 게시글의 목록(홈)을 볼 수 있다.
 - [x] 아이디, 비밀번호, 이름, 이메일을 입력받아 회원가입을 한다.
   - 같은 id를 가진 회원이 있다면 중복 회원 예외를 발생시킨다. 
   - 회원가입이 완료되면 회원 목록 조회로 이동한다.
@@ -12,10 +13,13 @@
 - [x] 글쓴이, 제목, 내용을 입력받아 질문글을 생성한다.
   - 질문글을 생성하면 홈 화면(질문 목록 조회)으로 이동한다.
   - 홈 화면에서 게시글 목록을 조회한다.
-  - 모든 사용자는 게시글을 작성할 수 있다.
+  - 로그인 한 사용자만 게시글을 작성할 수 있다. 
+    - 로그인하지 않은 사용자라면 로그인 페이지로 이동한다.
 - [x] 홈 화면에 게시글 목록을 출력한다.
 - [x] 게시글 목록의 제목을 클릭했을 때 게시글 상세 화면으로 이동한다.
   - url에 article index를 넣어서 접근한다.
+  - 로그인 한 사용자만 게시글 상세 화면을 볼 수 있다.
+    - 로그인하지 않은 사용자라면 로그인 페이지로 이동한다.
 - [x] 회원 목록에서 수정 버튼을 누르면 회원 정보 수정 화면으로 이동한다.
   - 사용자의 id 값을 url에 넣어서 이동한다.
 - [x] 이름, 이메일을 수정할 수 있다.
@@ -28,27 +32,39 @@
   - 수정 완료하면 사용자 목록 조회 화면(/users)로 redirect 한다.
 - [x] 아이디, 비밀번호로 로그인을 한다.
 - [x] 로그아웃을 클릭하면 로그아웃을 한다.
+- [x] 게시글 상세화면에서 수정을 클릭하면 게시글 수정하기 화면으로 이동한다.
+  - 로그인 사용자와 글쓴이의 사용자 아이디가 같은 경우에만 가능하다.
+    - 같지 않으면 로그인 유저와 작성자 매치 실패 예외를 발생시킨다.
+- [x] 게시글의 제목과 내용을 수정할 수 있다.
+  - 로그인 사용자와 글쓴이의 사용자 아이디가 같은 경우에만 가능하다.
+    - 같지 않으면 로그인 유저와 작성자 매치 실패 예외를 발생시킨다.
+  - 수정 완료하면 게시글 상세 화면으로 redirect 한다.
+- [x] 게시글 상세화면에서 삭제를 클릭하면 게시글을 삭제한다.
+  - 로그인 사용자와 글쓴이의 사용자 아이디가 같은 경우에만 가능하다.
+    - 같지 않으면 로그인 유저와 작성자 매치 실패 예외를 발생시킨다.
+  - 삭제 완료하면 홈 화면으로 redirect 한다.
 
 ## URL
-|__HTTP Method__| __URL__                | __기능__            |
-|---------------|------------------------|-------------------|
-|GET| /                      | 홈 화면 출력(질문 목록 조회) |
-|GET| /users/join            | 회원 가입 화면 출력       |
-|POST| /users                 | 회원 가입             |
-|GET| /users                 | 회원 목록 조회 화면 출력    |
-|GET| /users/{userId}        | 유저 프로필 화면 조회      |
-|POST| /questions             | 질문하기 게시글 작성       |
-|GET| /questions/form        | 글쓰기 화면 조회         |
-|GET| /articles/{postId}     | 게시글 상세 조회         |
-|GET| /users/{userId}/form   | 회원 정보 수정 화면 출력    |
-|PUT| /users/{userId}/update | 회원 정보 수정          |
-|GET|/users/login| 로그인 화면 출력         |
-|POST|/users/login|로그인|
-|GET|/users/logout|로그아웃|
-
+|__HTTP Method__| __URL__                 | __기능__            |
+|---------------|-------------------------|-------------------|
+|GET| /                       | 홈 화면 출력(질문 목록 조회) |
+|GET| /users/join             | 회원 가입 화면 출력       |
+|POST| /users                  | 회원 가입             |
+|GET| /users                  | 회원 목록 조회 화면 출력    |
+|GET| /users/{userId}         | 유저 프로필 화면 조회      |
+|POST| /questions              | 질문하기 게시글 작성       |
+|GET| /questions/form         | 글쓰기 화면 조회         |
+|GET| /articles/{postId}      | 게시글 상세 조회         |
+|GET| /users/{userId}/form    | 회원 정보 수정 화면 출력    |
+|PUT| /users/{userId}/update  | 회원 정보 수정          |
+|GET| /users/login            | 로그인 화면 출력         |
+|POST| /users/login            | 로그인               |
+|GET| /users/logout           | 로그아웃              |
+|GET| /articles/{postId}/form | 게시글 수정 화면 출력      |
+|PUT| /articles/{postId}      | 게시글 수정            |
+|DELETE| /articles/{postId}      | 게시글 삭제            |
 ## 배포 url
 [codesquad_cafe](http://52.79.232.139:8080/)
-- step1만 배포된 상태
 
 
 ## 동작 화면
@@ -143,4 +159,31 @@
 </div>
 </details>
 
+<details>
+<summary>게시글 수정 화면</summary>
+<div>
 
+![original](https://user-images.githubusercontent.com/57451700/232852271-5134e128-1f35-46ab-a1da-44d63ecfa688.png)
+
+![form](https://user-images.githubusercontent.com/57451700/232852339-b8dbbddb-98ae-435c-9baf-ec30c7ab4c4f.png)
+
+</div>
+</details>
+
+<details>
+<summary>게시글 수정 완료 화면</summary>
+<div>
+
+![success](https://user-images.githubusercontent.com/57451700/232852390-d5177ee3-6187-4bbe-8b36-e3dd166a0ea5.png)
+
+</div>
+</details>
+
+<details>
+<summary>게시글 삭제 완료 화면</summary>
+<div>
+
+![delete](https://user-images.githubusercontent.com/57451700/232852437-2ab0b5aa-b6b4-49ba-bf00-d8cbd3f697c0.png)
+
+</div>
+</details>
