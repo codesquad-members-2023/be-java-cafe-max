@@ -19,6 +19,9 @@ dependencies {
     // h2 db
     runtimeOnly 'com.h2database:h2:2.1.214'
 
+    // mysql
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
     // template engine
     implementation 'org.springframework.boot:spring-boot-starter-mustache'
 
