@@ -14,37 +14,8 @@ public class User {
         this.password = password;
         this.email = email;
     }
-
-    public static int getUserNumFactory() {
-        return userNumFactory;
-    }
-
-    public int getUserNum() {
-        return userNum;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setUserEmail(String email) {
-        this.email = email;
-    }
-
     public String getUserId() {
         return userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getEmail() {
-        return email;
     }
 }
 
