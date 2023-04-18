@@ -31,6 +31,7 @@ public class UserController {
         return "redirect:/users";
     }
 
+
     @GetMapping
     public String getUserList(final Model model) {
         List<UserResponseDto> users = userService.showAllUser();
