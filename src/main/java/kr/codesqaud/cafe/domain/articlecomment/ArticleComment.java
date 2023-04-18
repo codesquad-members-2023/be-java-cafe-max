@@ -47,4 +47,8 @@ public class ArticleComment {
 	public Long getArticleId() {
 		return articleId;
 	}
+
+	public boolean isSameWriter(final String userId) {
+		return writer.equals(userId);
+	}
 }
