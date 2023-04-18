@@ -47,14 +47,18 @@ public class MemberService {
     }
 
     public void update(ProfileEditRequest profileEditRequest, Long accountSessionId) {
-        Member findMember = memberRepository.findById(profileEditRequest.getId())
+        validateUnauthorized(profileEditRequest.getId(), accountSessionId);
+        memberRepository.update(profileEditRequest.toMember());
+    }
+
+    @Transactional(readOnly = true)
+    public void validateUnauthorized(Long id, Long accountSessionId) {
+        Member findMember = memberRepository.findById(id)
             .orElseThrow(MemberNotFoundException::new);
 
         if (!findMember.equalsId(accountSessionId)) {
             throw new UnauthorizedException();
         }
-
-        memberRepository.update(profileEditRequest.toMember());
     }
 
     @Transactional(readOnly = true)

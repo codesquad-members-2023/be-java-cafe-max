@@ -73,10 +73,7 @@ public class MemberController {
     @GetMapping("/{id}/form")
     public String profileEditForm(@PathVariable Long id, Model model,
         @RequestAttribute AccountSession accountSession) {
-        if (!id.equals(accountSession.getId())) {
-            throw new UnauthorizedException();
-        }
-
+        memberService.validateUnauthorized(id, accountSession.getId());
         model.addAttribute("profileEditRequest", ProfileEditRequest.from(memberService.findById(id)));
         return "member/profileEdit";
     }
