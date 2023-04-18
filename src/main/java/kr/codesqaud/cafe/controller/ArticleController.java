@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.ArticleDto;
 import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
@@ -23,8 +24,8 @@ public class ArticleController {
 
     @GetMapping
     public String showIndex(Model model) {
-        List<Article> articles = articleService.findAll();
-        model.addAttribute("articles", articles);
+        List<ArticleDto> articleDtos = articleService.findAll();
+        model.addAttribute("articleDtos", articleDtos);
 
         return "index";
     }
@@ -43,8 +44,8 @@ public class ArticleController {
 
     @GetMapping("/articles/{index}")
     public String findByIndex(@PathVariable("index") long id, Model model) {
-        Article article = articleService.findById(id);
-        model.addAttribute("article", article);
+        ArticleDto articleDto = articleService.findById(id);
+        model.addAttribute("articleDto", articleDto);
 
         return "qna/show";
     }
