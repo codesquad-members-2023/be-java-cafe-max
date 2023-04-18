@@ -7,15 +7,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import kr.codesqaud.cafe.app.user.controller.dto.UserResponse;
 import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.repository.UserRepository;
+import kr.codesqaud.cafe.errors.errorcode.LoginErrorCode;
 import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
 import kr.codesqaud.cafe.errors.response.ErrorResponse;
 import kr.codesqaud.cafe.errors.response.ErrorResponse.ValidationError;
@@ -191,9 +194,10 @@ class UserControllerTest {
         String password = "yonghwan1107";
         String modifiedName = "홍길동";
         String modifiedEmail = "yonghwan1234@naver.com";
-        Long id = userRepository.findByUserId(userId).orElseThrow().getId();
-        String url = "/users/" + id + "/update";
+        User user = userRepository.findByUserId(userId).orElseThrow();
+        String url = "/users/" + user.getId() + "/update";
         UserSavedRequest dto = new UserSavedRequest(userId, password, modifiedName, modifiedEmail);
+        session.setAttribute("user", new UserResponse(user));
         //when
         mockMvc.perform(put(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -211,17 +215,19 @@ class UserControllerTest {
     @DisplayName("회원 수정 이메일 중복으로 인한 테스트")
     public void update_fail() throws Exception {
         //given
-        createSampleUser("user1", "user1user1", "홍길동", "user1@naver.com");
+        createSampleUser("kim1107", "kim1107kim1107", "kim", "kim@naver.com");
         String userId = "yonghwan1107";
-        String modifiedPassword = "yonghwan1107";
+        String password = "yonghwan1107";
         String modifiedName = "김용환";
-        String modifiedEmail = "user1@naver.com";
-        Long id = userRepository.findByUserId(userId).orElseThrow().getId();
-        String url = "/users/" + id + "/update";
-        UserSavedRequest dto = new UserSavedRequest(userId, modifiedPassword, modifiedName,
-            modifiedEmail);
+        String duplicatedEmail = "kim@naver.com";
+        User user = userRepository.findByUserId(userId).orElseThrow();
+        String url = "/users/" + user.getId() + "/update";
+        UserSavedRequest dto =
+            new UserSavedRequest(userId, password, modifiedName, duplicatedEmail);
+        session.setAttribute("user", new UserResponse(user));
         //when
         String jsonErrorResponse = mockMvc.perform(put(url)
+                .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
             .andExpect(status().isConflict())
@@ -234,6 +240,69 @@ class UserControllerTest {
             UserErrorCode.ALREADY_EXIST_EMAIL.getMessage(),
             null);
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("로그인 하지 않는 상태로 회원 정보 수정할때 로그인 페이지로 리다이렉션 하는지 테스트")
+    public void update_fail2() throws Exception {
+        //given
+        String userId = "yonghwan1107";
+        String password = "yonghwan1107";
+        String modifiedName = "홍길동";
+        String modifiedEmail = "yonghwan1234@naver.com";
+        Long id = userRepository.findByUserId(userId).orElseThrow().getId();
+        String url = "/users/" + id + "/update";
+        UserSavedRequest dto = new UserSavedRequest(userId, password, modifiedName, modifiedEmail);
+        //when
+        String jsonError = mockMvc.perform(put(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJSON(dto)))
+            .andExpect(status().isUnauthorized())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        //then
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> errorMap = objectMapper.readValue(jsonError, typeReference);
+        assertThat(errorMap.get("name")).isEqualTo(LoginErrorCode.UNAUTHORIZED.getName());
+        assertThat(errorMap.get("httpStatus")).isEqualTo(
+            LoginErrorCode.UNAUTHORIZED.getHttpStatus().name());
+        assertThat(errorMap.get("errorMessage")).isEqualTo(
+            LoginErrorCode.UNAUTHORIZED.getMessage());
+    }
+
+    @Test
+    @DisplayName("다른 사람으로 로그인하였는데 다른 회원의 정보를 수정하려고 할때 에러 페이지로 리다이렉션 하고 에러 메시지를 받는지 테스트")
+    public void update_fail3() throws Exception {
+        //given
+        createSampleUser("kim1107", "kim1107kim1107", "kim", "kim@naver.com");
+
+        String otherUserId = "kim1107";
+        String userId = "yonghwan1107";
+        String password = "yonghwan1107";
+        String modifiedName = "홍길동";
+        String modifiedEmail = "yonghwan1234@naver.com";
+        User user = userRepository.findByUserId(userId).orElseThrow();
+        User otherUser = userRepository.findByUserId(otherUserId).orElseThrow();
+        String url = "/users/" + user.getId() + "/update";
+        UserSavedRequest dto = new UserSavedRequest(userId, password, modifiedName, modifiedEmail);
+        session.setAttribute("user", new UserResponse(otherUser));
+        //when
+        String jsonError = mockMvc.perform(put(url)
+                .session(session)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJSON(dto)))
+            .andExpect(status().isForbidden())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        //then
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> errorMap = objectMapper.readValue(jsonError, typeReference);
+        assertThat(errorMap.get("name"))
+            .isEqualTo(UserErrorCode.PERMISSION_DENIED.getName());
+        assertThat(errorMap.get("httpStatus"))
+            .isEqualTo(UserErrorCode.PERMISSION_DENIED.getHttpStatus().name());
+        assertThat(errorMap.get("errorMessage"))
+            .isEqualTo(UserErrorCode.PERMISSION_DENIED.getMessage());
     }
 
     private void createSampleUser(String userId, String password, String name, String email)
