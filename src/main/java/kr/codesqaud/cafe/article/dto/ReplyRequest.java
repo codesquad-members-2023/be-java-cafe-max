@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.article.dto;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 public class ReplyRequest {
 
@@ -10,7 +10,7 @@ public class ReplyRequest {
 
 	private String nickName;
 
-	@NotNull
+	@NotBlank
 	private final String content;
 
 	public ReplyRequest(String content) {

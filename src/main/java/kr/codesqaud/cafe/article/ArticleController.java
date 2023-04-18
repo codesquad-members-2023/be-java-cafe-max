@@ -67,7 +67,7 @@ public class ArticleController {
 		return "redirect:/";
 	}
 
-	@PostMapping("/articles/{idx}/rely")
+	@PostMapping("/articles/{idx}/reply")
 	public String reply(@PathVariable Long idx, @ModelAttribute @Valid ReplyRequest replyRequest,
 		HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
@@ -75,5 +75,4 @@ public class ArticleController {
 		articleService.addReply(replyRequest);
 		return "redirect:/articles/" + idx;
 	}
-
 }
