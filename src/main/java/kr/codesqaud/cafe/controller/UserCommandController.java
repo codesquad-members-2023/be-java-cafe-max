@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.controller;
 import java.util.Objects;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -21,13 +22,13 @@ public class UserCommandController {
 	}
 
 	@PostMapping("/user/create")
-	public String createUser(UserDto userDto) {
+	public String createUser(@Valid UserDto userDto) {
 		userService.create(userDto);
 		return "redirect:/users";
 	}
 
 	@PatchMapping("/user/update")
-	public String updateUser(UserDto userDto, HttpSession httpSession) {
+	public String updateUser(@Valid UserDto userDto, HttpSession httpSession) {
 		String original = (userService.findOne(userDto.getUserID())).getNickname();
 		userService.update(userDto);
 		User user = userService.findOne(userDto.getUserID());

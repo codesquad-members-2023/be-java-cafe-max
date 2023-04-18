@@ -1,15 +1,29 @@
-const validSignUpCheck = [false, false, false];
+const validSignUpCheck = [false, false, false, false];
 const validWriteCheck = [false, false];
-const validOutputView = ["올바른 이메일 형식입니다.", "올바른 닉네임입니다.", "올바른 비밀번호 형식입니다."];
-const invalidOutputView = ["잘못된 이메일 형식입니다.", "닉네임은 2글자 이상 64글자 이하여야 합니다."
+const validOutputView = ["올바른 아이디 형식입니다.", "올바른 이메일 형식입니다.", "올바른 닉네임입니다.", "올바른 비밀번호 형식입니다."];
+const invalidOutputView = ["아이디는 2글자 이상 64글자 이하여야 합니다.", "잘못된 이메일 형식입니다.", "닉네임은 2글자 이상 64글자 이하여야 합니다."
 , "비밀번호는 8글자 이상 32글자 이하, 영어 소문자 및 숫자를 반드시 포함해야합니다."
 , "모든 사항을 올바르게 기입해주세요.", "제목은 공란일 수 없고 글 내용은 3글자 이상 1000 글자 이하여야 합니다."];
-const EMAIL_NUM = 0;
-const NICKNAME_NUM = 1;
-const PASSWORD_NUM = 2;
-const ALL_DATA_NUM = 3;
-const WRITING_NUM = 4;
+const USERID_NUM = 0;
+const EMAIL_NUM = 1;
+const NICKNAME_NUM = 2;
+const PASSWORD_NUM = 3;
+const ALL_DATA_NUM = 4;
+const WRITING_NUM = 5;
 let user = {};
+
+function verifyUserID() {
+    const userID = document.getElementById("userID").value;
+
+    if(userID.length >= 2 && userID.length <= 64) {
+        validView('#userIDMessage', USERID_NUM);
+        validSignUpCheck[USERID_NUM] = true;
+        user.userID = userID;
+    } else {
+        invalidView('#userIDMessage', USERID_NUM);
+        validSignUpCheck[USERID_NUM] = false;
+    }
+}
 
 function verifyEmail() {
     const email = document.getElementById("email").value;
@@ -53,11 +67,12 @@ function verifyPassword() {
 }
 
 function validateData() {
-    if(validSignUpCheck[0] && validSignUpCheck[1] && validSignUpCheck[2]) {
+    if(validSignUpCheck[0] && validSignUpCheck[1] && validSignUpCheck[2] && validSignUpCheck[3]) {
         localStorage.setItem(user.email, JSON.stringify(user));
-        window.location.href='signUpCompleted.html?user=' + user.email;
+        return true;
     } else {
         invalidView('#allMessage', ALL_DATA_NUM);
+        return false;
     }
 }
 
