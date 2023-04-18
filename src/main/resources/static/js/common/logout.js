@@ -4,10 +4,10 @@ $(document).ready(function () {
     $.ajax({
       type: "POST",
       url: "/logout"
-    }).done(function () {
-      location.href = "/login"
+    }).done(function (redirectURL) {
+      location.href = redirectURL
     }).fail(function () {
-      alert("로그아웃에 실패하였습니다.")
+      location.href = "/error/server-error"
     })
   })
 })
