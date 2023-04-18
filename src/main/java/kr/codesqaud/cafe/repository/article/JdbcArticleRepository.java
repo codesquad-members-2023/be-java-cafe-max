@@ -26,7 +26,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public long save(Article article) {
-        final String sql = "INSERT INTO articles (title, writer, contents, createdAt) VALUES (:title, :writer, :contents, :createdAt)";
+        final String sql = "INSERT INTO article (title, writer, contents, createdAt) VALUES (:title, :writer, :contents, :createdAt)";
         final GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder);
@@ -39,7 +39,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(Long id) {
-        final String sql = "SELECT id, title, writer, contents, createdAt FROM articles WHERE id = :id AND deleted = false LIMIT 1";
+        final String sql = "SELECT id, title, writer, contents, createdAt FROM article WHERE id = :id AND deleted = false LIMIT 1";
         try (final Stream<Article> result = jdbcTemplate.queryForStream(sql, Map.of("id", id), articleRowMapper)) {
             return result.findFirst();
         }
@@ -47,13 +47,13 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        final String sql = "SELECT id, title, writer, contents, createdAt FROM articles WHERE deleted = false";
+        final String sql = "SELECT id, title, writer, contents, createdAt FROM article WHERE deleted = false";
         return jdbcTemplate.query(sql, articleRowMapper);
     }
 
     @Override
     public boolean exist(Long id) {
-        final String sql = "SELECT EXISTS(SELECT 1 FROM articles WHERE id = :id AND deleted = false LIMIT 1)";
+        final String sql = "SELECT EXISTS(SELECT 1 FROM article WHERE id = :id AND deleted = false LIMIT 1)";
         final int count = jdbcTemplate.queryForObject(sql,
                 Map.of("id", id), Integer.class);
         return count > 0;
@@ -65,7 +65,7 @@ public class JdbcArticleRepository implements ArticleRepository {
                 + " FROM (SELECT id, title, writer, contents, createdAt, deleted, "
                 + " LAG(id, 1, null) OVER(ORDER BY id ASC) AS previousId, "
                 + " LEAD(id, 1, null) OVER(ORDER BY id ASC) AS nextId "
-                + " FROM articles WHERE deleted = false) WHERE id = :id AND deleted = false";
+                + " FROM article WHERE deleted = false) WHERE id = :id AND deleted = false";
 
         try (final Stream<Article> result = jdbcTemplate.queryForStream(sql, Map.of("id", id), articleRowMapper)) {
             return result.findFirst();
@@ -74,7 +74,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public int edit(Article article) {
-        final String sql = "UPDATE articles SET title = :title, contents = :contents WHERE id = :id";
+        final String sql = "UPDATE article SET title = :title, contents = :contents WHERE id = :id";
         Map<String, Object> parameter = Map.of(
                 "id", article.getId(),
                 "title", article.getTitle(),
@@ -84,7 +84,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public int delete(final Long id) {
-        final String sql = "UPDATE articles SET deleted = true WHERE id = :id";
+        final String sql = "UPDATE article SET deleted = true WHERE id = :id";
         Map<String, Object> parameter = Map.of(
                 "id", id);
         return jdbcTemplate.update(sql, parameter);
