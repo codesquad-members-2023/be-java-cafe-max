@@ -3,22 +3,27 @@ package kr.codesqaud.cafe.article.controller;
 import kr.codesqaud.cafe.article.dto.RequestForm;
 import kr.codesqaud.cafe.article.dto.ResponseDetail;
 import kr.codesqaud.cafe.article.service.ArticleService;
+import kr.codesqaud.cafe.comment.domain.Comment;
+import kr.codesqaud.cafe.comment.service.CommentService;
 import kr.codesqaud.cafe.utils.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/articles")
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final CommentService commentService;
 
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, CommentService commentService) {
         this.articleService = articleService;
+        this.commentService = commentService;
     }
 
 
@@ -45,6 +50,8 @@ public class ArticleController {
     @GetMapping("/{id}")
     public String showArticleDetail(Model model, @PathVariable long id, HttpSession session) {
         model.addAttribute("articleDetail", articleService.getArticleDetail(id));
+        List<Comment> comments = commentService.getCommentsForArticle(id);
+        if (!comments.isEmpty()) model.addAttribute("comments", comments);
         return Session.isLoggedIn(session) ? "articles/show-detail" : "redirect:/user/login";
     }
 
