@@ -35,6 +35,8 @@ public class Reply {
 		this.content = rs.getString("content");
 		this.date = rs.getString("date");
 		this.nickName = rs.getString("nickName");
+		this.articleIdx = rs.getLong("article_idx");
+		this.idx = rs.getLong("idx");
 	}
 
 	public Long getArticleIdx() {
@@ -51,5 +53,9 @@ public class Reply {
 
 	public String getContent() {
 		return content;
+	}
+
+	public Long getIdx() {
+		return idx;
 	}
 }

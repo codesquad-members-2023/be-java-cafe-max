@@ -7,10 +7,15 @@ public class ReplyResponse {
 
 	private final String date;
 
-	public ReplyResponse(String nickName, String content, String date) {
+	private final Long articleIdx;
+
+	private final Long replyIdx;
+
+	public ReplyResponse(String nickName, String content, String date, Long articleIdx, Long replyIdx) {
 		this.nickName = nickName;
 		this.content = content;
 		this.date = date;
+		this.articleIdx = articleIdx;
+		this.replyIdx = replyIdx;
 	}
-	
 }

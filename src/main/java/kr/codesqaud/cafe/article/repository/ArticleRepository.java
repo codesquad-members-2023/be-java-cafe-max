@@ -21,4 +21,6 @@ public interface ArticleRepository {
 	void saveReply(Reply reply);
 
 	List<Reply> findAllReply(Long idx);
+
+	void deleteReply(String id, Long replyIdx);
 }

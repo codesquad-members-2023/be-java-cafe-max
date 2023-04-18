@@ -67,12 +67,19 @@ public class ArticleController {
 		return "redirect:/";
 	}
 
-	@PostMapping("/articles/{idx}/reply")
-	public String reply(@PathVariable Long idx, @ModelAttribute @Valid ReplyRequest replyRequest,
+	@PostMapping("/articles/{articleIdx}/reply")
+	public String reply(@PathVariable Long articleIdx, @ModelAttribute @Valid ReplyRequest replyRequest,
 		HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
-		replyRequest.init(session.getId(), session.getNickName(), idx);
+		replyRequest.init(session.getId(), session.getNickName(), articleIdx);
 		articleService.addReply(replyRequest);
-		return "redirect:/articles/" + idx;
+		return "redirect:/articles/" + articleIdx;
+	}
+
+	@DeleteMapping("/articles/{articleIdx}/{replyIdx}")
+	public String deleteReply(@PathVariable Long replyIdx, @PathVariable Long articleIdx, HttpSession httpSession) {
+		Session session = getLoginUser(httpSession);
+		articleService.deleteReply(session.getId(), replyIdx);
+		return "redirect:/articles/" + articleIdx;
 	}
 }

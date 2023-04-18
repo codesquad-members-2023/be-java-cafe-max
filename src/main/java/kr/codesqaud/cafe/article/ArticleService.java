@@ -73,4 +73,8 @@ public class ArticleService {
 			.map(articleMapper::toReplyResponse)
 			.collect(Collectors.toUnmodifiableList());
 	}
+
+	public void deleteReply(String id, Long replyIdx) {
+		articleRepository.deleteReply(id, replyIdx);
+	}
 }

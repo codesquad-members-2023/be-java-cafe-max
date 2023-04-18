@@ -83,7 +83,13 @@ public class JDBCArticleRepository implements ArticleRepository {
 	@Override
 	public List<Reply> findAllReply(Long idx) {
 		return namedParameterJdbcTemplate.query(
-			"SELECT nickName,content,date FROM REPLY WHERE article_Idx = :idx AND is_visible = true",
+			"SELECT nickName,content,date,article_idx,idx FROM REPLY WHERE article_Idx = :idx AND is_visible = true",
 			new MapSqlParameterSource("idx", idx), (rs, rn) -> new Reply(rs));
+	}
+
+	@Override
+	public void deleteReply(String id, Long replyIdx) {
+		namedParameterJdbcTemplate.update("UPDATE REPLY SET is_visible = false WHERE idx = :replyIdx",
+			new MapSqlParameterSource("replyIdx", replyIdx));
 	}
 }

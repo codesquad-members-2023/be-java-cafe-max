@@ -39,6 +39,7 @@ public class ArticleMapper {
 	}
 
 	public ReplyResponse toReplyResponse(Reply reply) {
-		return new ReplyResponse(reply.getNickName(), reply.getContent(), reply.getDate());
+		return new ReplyResponse(reply.getNickName(), reply.getContent(), reply.getDate(), reply.getArticleIdx(),
+			reply.getIdx());
 	}
 }
