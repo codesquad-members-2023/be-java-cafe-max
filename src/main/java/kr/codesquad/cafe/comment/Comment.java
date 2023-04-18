@@ -56,6 +56,10 @@ public class Comment {
         this.content = builder.content;
     }
 
+    public boolean isSameId(Long id) {
+        return user.isSameId(id);
+    }
+
     public static class Builder {
         private Post post;
         private User user;

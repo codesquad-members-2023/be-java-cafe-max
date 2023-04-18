@@ -89,6 +89,12 @@ public class Post {
         comments.add(comment);
     }
 
+    public boolean canDelete() {
+        return getComments().stream()
+                .filter(comment -> !comment.isSameId(user.getId()))
+                .allMatch(Comment::isDeleted);
+    }
+
     public static class Builder {
         private Long id;
 
