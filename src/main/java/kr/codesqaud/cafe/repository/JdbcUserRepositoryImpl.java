@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -33,10 +32,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
         final String sql = "INSERT INTO users (user_id, name, password, email, created_at, updated_at) " +
                 "VALUES (:userId, :name, :password, :email, :createdAt, :updatedAt)";
 
-        final SqlParameterSource param = new BeanPropertySqlParameterSource(user);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        template.update(sql, param, keyHolder);
+        template.update(sql, new BeanPropertySqlParameterSource(user), keyHolder);
 
         return (long) Objects.requireNonNull(keyHolder.getKeys()).get("id");
     }
@@ -85,6 +82,13 @@ public class JdbcUserRepositoryImpl implements UserRepository {
                 .addValue("id", user.getId());
 
         template.update(sql, param);
+    }
+
+    @Override
+    public boolean existUsername(String username) {
+        final String sql = "SELECT EXISTS (SELECT 1 FROM users WHERE user_id = :username)";
+
+        return Boolean.TRUE.equals(template.queryForObject(sql, Map.of("username", username), Boolean.class));
     }
 
     private RowMapper<User> userRowMapper() {

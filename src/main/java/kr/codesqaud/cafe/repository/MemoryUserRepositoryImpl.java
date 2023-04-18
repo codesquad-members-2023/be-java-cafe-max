@@ -52,7 +52,12 @@ public class MemoryUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void update(User toUser) {
+    public void update(User user) {
+        users.put(user.getId(), user);
+    }
 
+    @Override
+    public boolean existUsername(String username) {
+        return users.values().stream().anyMatch(user -> user.getUserId().equals(username));
     }
 }

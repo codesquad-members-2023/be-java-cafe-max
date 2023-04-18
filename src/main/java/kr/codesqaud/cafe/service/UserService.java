@@ -29,10 +29,9 @@ public class UserService {
     }
 
     public Long join(final UserJoinDto userJoinDto) {
-        userRepository.findByEmail(userJoinDto.getEmail())
-                .ifPresent(m -> {throw new UserJoinException(UserExceptionType.DUPLICATED_EMAIL, userJoinDto);});
-        userRepository.findByUserId(userJoinDto.getUserId())
-                .ifPresent(m -> { throw new UserJoinException(UserExceptionType.DUPLICATED_USER_ID, userJoinDto);});
+        if (userRepository.existUsername(userJoinDto.getUserId())) {
+            throw new UserJoinException(UserExceptionType.DUPLICATED_USER_ID, userJoinDto);
+        }
 
         return userRepository.save(userJoinDto.toUser());
     }
@@ -54,9 +53,8 @@ public class UserService {
         final User user = userRepository.findById(userUpdateDto.getId())
                 .orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_RESOURCE));
 
-        if (user.isChangedUserId(userUpdateDto.getUserId())) {
-            userRepository.findByUserId(userUpdateDto.getUserId())
-                    .ifPresent(m -> { throw new UserUpdateException(UserExceptionType.DUPLICATED_USER_ID, userUpdateDto);});
+        if (user.isChangedUserId(userUpdateDto.getUserId()) && userRepository.existUsername(userUpdateDto.getUserId())) {
+            throw new UserUpdateException(UserExceptionType.DUPLICATED_USER_ID, userUpdateDto);
         }
         if (user.isNotMatchedPassword(userUpdateDto.getPassword())) {
             throw new UserUpdateException(UserExceptionType.NOT_MATCHED_PASSWORD, userUpdateDto);

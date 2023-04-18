@@ -17,4 +17,6 @@ public interface UserRepository {
     List<User> findAll();
 
     void update(User toUser);
+
+    boolean existUsername(String username);
 }
