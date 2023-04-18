@@ -24,11 +24,7 @@ class UserServiceTest {
     @DisplayName("회원 가입 성공")
     void join() {
         // given
-        UserForm user1 = new UserForm();
-        user1.setName("springName1");
-        user1.setUserId("springId1");
-        user1.setPassword("1234");
-        user1.setEmail("jian@gmail.com");
+        UserForm user1 = new UserForm("springId1", "1234", "springName1", "test@gmail.com");
 
         // when
         String saveUserId = userService.join(user1);
@@ -42,17 +38,9 @@ class UserServiceTest {
     @DisplayName("중복 회원 이름 예외")
     void userName() {
         // given
-        UserForm user1 = new UserForm();
-        user1.setName("springName1");
-        user1.setUserId("springId1");
-        user1.setPassword("1234");
-        user1.setEmail("jian@gmail.com");
-
-        UserForm user2 = new UserForm();
+        UserForm user1 = new UserForm("springId1", "1234", "springName1", "test@gmail.com");
+        UserForm user2 = new UserForm("springId2", "1234", "springName2", "test@gmail.com");
         user2.setName("springName1");
-        user2.setUserId("springId2");
-        user2.setPassword("1234");
-        user2.setEmail("jian@gmail.com");
 
         userService.join(user1);
 
@@ -66,17 +54,9 @@ class UserServiceTest {
     @DisplayName("중복 회원 아이디 예외")
     void userId() {
         // given
-        UserForm user1 = new UserForm();
-        user1.setName("springName1");
-        user1.setUserId("springId1");
-        user1.setPassword("1234");
-        user1.setEmail("jian@gmail.com");
-
-        UserForm user2 = new UserForm();
-        user2.setName("springName2");
+        UserForm user1 = new UserForm("springId1", "1234", "springName1", "test@gmail.com");
+        UserForm user2 = new UserForm("springId2", "1234", "springName2", "test@gmail.com");
         user2.setUserId("springId1");
-        user2.setPassword("1234");
-        user2.setEmail("jian@gmail.com");
 
 
         // when
