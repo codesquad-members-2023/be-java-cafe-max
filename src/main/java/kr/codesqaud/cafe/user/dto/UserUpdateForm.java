@@ -2,13 +2,13 @@ package kr.codesqaud.cafe.user.dto;
 
 import kr.codesqaud.cafe.user.domain.User;
 
-public class UserAddForm {
+public class UserUpdateForm {
     private final String userId;
     private final String password;
     private final String userName;
     private final String email;
 
-    public UserAddForm(String userId, String password, String userName, String email) {
+    public UserUpdateForm(String userId, String password, String userName, String email) {
         this.userId = userId;
         this.password = password;
         this.userName = userName;
