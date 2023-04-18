@@ -20,7 +20,7 @@ public class UserService {
     }
     // 회원 가입
 
-    @Transactional(rollbackFor = {IllegalStateException.class})
+    public String join(UserForm form){
     public String join(User user){
         // 같은 이름, 같은 아이디가 있는 중복 회원X
         validateDuplicateUserName(user);
