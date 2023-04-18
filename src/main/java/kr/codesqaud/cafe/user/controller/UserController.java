@@ -1,7 +1,7 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.user.controller;
 
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.service.UserService;
+import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +13,7 @@ import java.util.List;
 
 @Controller
 public class UserController {
+
     private final UserService userService;
 
     @GetMapping("/user/form")
@@ -22,7 +23,7 @@ public class UserController {
 
     @GetMapping("/user/list")
     public String list(Model model) {
-        List<User> users = userService.fineUsers();
+        List<kr.codesqaud.cafe.user.domain.User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
@@ -49,14 +50,15 @@ public class UserController {
     }
 
     @PostMapping("/user/form")
-    public String create(UserForm userForm) {
+    public String create(UserCreateRequest userCreateRequest) {
         User user = new User.Builder()
-                .id(userForm.getUserId())
-                .name(userForm.getName())
-                .email(userForm.getEmail())
-                .password(userForm.getPassword())
+                .id(userCreateRequest.getUserId())
+                .name(userCreateRequest.getName())
+                .email(userCreateRequest.getEmail())
+                .password(userCreateRequest.getPassword())
                 .build();
         userService.join(user);
         return "redirect:/";
     }
 }
+

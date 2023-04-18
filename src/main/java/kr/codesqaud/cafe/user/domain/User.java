@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.user.domain;
 
 public class User {
 
@@ -50,7 +50,7 @@ public class User {
         email = builder.email;
     }
 
-    public void setIndex(long index){
+    public void setIndex(long index) {
         this.index = index;
     }
 
@@ -60,5 +60,13 @@ public class User {
 
     public String getId() {
         return id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

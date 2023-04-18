@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.user.repository;
 
-import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.user.domain.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,4 +10,5 @@ public interface UserRepository {
     Optional<User> findById(String id);
     Optional<User> findByName(String name);
     List<User> findAll();
+    void clearStore();
 }
