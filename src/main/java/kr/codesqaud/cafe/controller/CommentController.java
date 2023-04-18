@@ -22,7 +22,7 @@ public class CommentController {
 	public String newComment(@ModelAttribute CommentRequest request, HttpSession session,
 		@PathVariable Long articleId) {
 		Object userId = session.getAttribute("sessionedUser");
-		commentService.CommentSave(request, (String)userId, articleId);
+		commentService.commentSave(request, (String)userId, articleId);
 		return "redirect:/";
 	}
 }

@@ -21,7 +21,7 @@ public class CommentService {
 		this.commentRepository = commentRepository;
 	}
 
-	public void CommentSave(CommentRequest request, String userId, Long articleId) {
+	public void commentSave(CommentRequest request, String userId, Long articleId) {
 		Comment comment = new Comment(userId, request.getContents(), articleId);
 		commentRepository.save(comment);
 	}
