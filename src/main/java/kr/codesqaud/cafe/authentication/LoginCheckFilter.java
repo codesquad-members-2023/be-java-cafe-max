@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class LoginCheckFilter implements Filter {
     // 로그인 하지 않은 사용자에게 보여 줄 페이지
-    private static final String[] whitelist = {"/", "/login", "/logout", "/css/*", "/fonts/*", "/images/*" };
+    private static final String[] whitelist = {"/","/users/create", "/login", "/logout", "/css/*", "/fonts/*", "/images/*" };
 
     // init(), destroy() 는 default 키워드 덕분에 구현 할 필요가 없어진 인터페이스의 method
     @Override
