@@ -13,7 +13,6 @@ CREATE TABLE users
 CREATE TABLE article
 (
     id        bigint auto_increment,
-    writer    varchar(200) not null,
     title     varchar(200) not null,
     contents  text         not null,
     createdAt datetime,

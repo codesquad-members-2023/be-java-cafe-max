@@ -60,11 +60,11 @@ class MemoryArticleRepositoryTest {
     }
 
     private Article createDummyArticle1() {
-        return new Article("sio", "title1", "contents1");
+        return new Article("title1", "contents1");
     }
 
     private Article createDummyArticle2() {
-        return new Article("시오", "title2", "contents2");
+        return new Article("title2", "contents2");
     }
 
 }

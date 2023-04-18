@@ -14,16 +14,14 @@ public class Article {
     private LocalDateTime createdAt;
 
 
-    public Article(final Long id, final String writer, final String title, final String contents, final LocalDateTime createdAt) {
+    public Article(final Long id, final String title, final String contents, final LocalDateTime createdAt) {
         this.id = id;
-        this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.createdAt = createdAt;
     }
 
-    public Article(final String writer, final String title, final String contents) {
-        this.writer = writer;
+    public Article(final String title, final String contents) {
         this.title = title;
         this.contents = contents;
         this.createdAt = LocalDateTime.now();

@@ -21,10 +21,9 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void save(final Article article, final String id) {
-        String sql = "insert into article(writer, title, contents, createdAt, writer_id) " +
-                "values (:writer, :title, :contents, :createdAt, :writer_id) ";
+        String sql = "insert into article(title, contents, createdAt, writer_id) " +
+                "values (:title, :contents, :createdAt, :writer_id) ";
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("writer", article.getWriter());
         params.addValue("title", article.getTitle());
         params.addValue("contents", article.getContents());
         params.addValue("createdAt", article.getCreatedAt());
@@ -38,7 +37,6 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
         return namedParameterJdbcTemplate.query(sql,
                 (rs, rowNum) -> new Article(
                             rs.getLong("id")
-                            , rs.getString("writer")
                             , rs.getString("title")
                             , rs.getString("contents")
                             , rs.getTimestamp("createdAt").toLocalDateTime()));
@@ -52,7 +50,6 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                     (rs, rowNum) -> {
                         Article article = new Article(
                                 rs.getLong("id")
-                                , rs.getString("writer")
                                 , rs.getString("title")
                                 , rs.getString("contents")
                                 , rs.getTimestamp("createdAt").toLocalDateTime());
