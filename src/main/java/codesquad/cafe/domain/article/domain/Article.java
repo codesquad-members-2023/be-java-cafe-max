@@ -1,6 +1,7 @@
 package codesquad.cafe.domain.article.domain;
 
 import codesquad.cafe.domain.article.dto.ArticleResponseDto;
+import codesquad.cafe.domain.article.dto.ArticleUpdateRequestDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -55,5 +56,11 @@ public class Article {
 
     public ArticleResponseDto toDto(String writer) {
         return new ArticleResponseDto(id, writer, title, contents, createdAt.format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm")));
+    }
+
+    public Article update(final ArticleUpdateRequestDto articleUpdateRequestDto) {
+        this.title = articleUpdateRequestDto.getTitle();
+        this.contents = articleUpdateRequestDto.getContents();
+        return this;
     }
 }

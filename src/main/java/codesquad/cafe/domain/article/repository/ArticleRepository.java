@@ -12,4 +12,6 @@ public interface ArticleRepository {
     Article findById(Long id);
 
     String findWriterByUserId(String writerId);
+
+    void update(Article article);
 }

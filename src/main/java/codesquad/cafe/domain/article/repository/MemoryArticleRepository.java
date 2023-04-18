@@ -37,4 +37,8 @@ public class MemoryArticleRepository implements ArticleRepository {
         return null;
     }
 
+    @Override
+    public void update(final Article article) {
+    }
+
 }

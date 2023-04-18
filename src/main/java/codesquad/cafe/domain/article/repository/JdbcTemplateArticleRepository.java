@@ -64,4 +64,15 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
         SqlParameterSource params = new MapSqlParameterSource("writerId", writerId);
         return namedParameterJdbcTemplate.queryForObject(sql, params, String.class);
     }
+
+    @Override
+    public void update(final Article article) {
+        String sql = "update article set title = :title, contents = :contents where id = :id";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", article.getId());
+        params.addValue("title", article.getTitle());
+        params.addValue("contents", article.getContents());
+
+        namedParameterJdbcTemplate.update(sql, params);
+    }
 }

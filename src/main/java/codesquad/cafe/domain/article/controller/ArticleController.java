@@ -2,6 +2,7 @@ package codesquad.cafe.domain.article.controller;
 
 import codesquad.cafe.domain.article.dto.ArticleRequestDto;
 import codesquad.cafe.domain.article.dto.ArticleResponseDto;
+import codesquad.cafe.domain.article.dto.ArticleUpdateRequestDto;
 import codesquad.cafe.domain.article.service.ArticleService;
 import codesquad.cafe.domain.user.domain.User;
 import codesquad.cafe.global.constant.SessionAttributes;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -49,5 +51,19 @@ public class ArticleController {
         ArticleResponseDto post = articleService.findPost(postId);
         model.addAttribute("post", post);
         return "qna/updateForm";
+    }
+
+    @PutMapping("/articles/{postId}")
+    public String updatePost(@PathVariable Long postId,
+                             @Valid ArticleUpdateRequestDto articleUpdateRequestDto,
+                             HttpServletRequest request) {
+        User user = findUserByRequest(request);
+        articleService.updatePost(articleUpdateRequestDto, postId, user);
+        return "redirect:/articles/" + postId;
+    }
+
+    private User findUserByRequest(final HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        return (User) session.getAttribute(SessionAttributes.LOGIN_USER.getValue());
     }
 }
