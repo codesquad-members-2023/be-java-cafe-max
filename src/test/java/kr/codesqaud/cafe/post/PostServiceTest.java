@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.account.UserService;
 import kr.codesqaud.cafe.account.dto.JoinForm;
 import kr.codesqaud.cafe.post.dto.PostForm;
 import kr.codesqaud.cafe.post.exception.IllegalPostIdException;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,11 +77,13 @@ class PostServiceTest {
         Post post = postService.save(new PostForm(TEST_TITLE, TEST_CONTENT), jack);
         List<Post> after = postRepository.findAll();
         int afterSize = after.size();
-        assertThat(afterSize - beforeSize).isEqualTo(1);
-        assertThat(before.stream()
-                .anyMatch(postElement -> Objects.equals(postElement.getId(), post.getId()))).isFalse();
-        assertThat(after.stream()
-                .anyMatch(postElement -> Objects.equals(postElement.getId(), post.getId()))).isTrue();
+        SoftAssertions.assertSoftly(softAssertions -> {
+            assertThat(afterSize - beforeSize).isEqualTo(1);
+            assertThat(before.stream()
+                    .anyMatch(postElement -> Objects.equals(postElement.getId(), post.getId()))).isFalse();
+            assertThat(after.stream()
+                    .anyMatch(postElement -> Objects.equals(postElement.getId(), post.getId()))).isTrue();
+        });
     }
 
     @DisplayName("post 업데이트(성공)")
