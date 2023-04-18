@@ -14,13 +14,13 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @PostMapping("/question")
+    @PostMapping("/article")
     public String post(@ModelAttribute final PostRequest request) {
         articleService.post(request);
         return "redirect:/";
     }
 
-    @GetMapping("/question")
+    @GetMapping("/article")
     public String showArticle(){
         return "qna/form";
     }
