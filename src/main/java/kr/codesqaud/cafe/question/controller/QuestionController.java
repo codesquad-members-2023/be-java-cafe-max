@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kr.codesqaud.cafe.common.web.PageHandler;
 import kr.codesqaud.cafe.question.controller.request.QuestionWriteRequestDTO;
 import kr.codesqaud.cafe.question.controller.response.QuestionBoardResponseDTO;
+import kr.codesqaud.cafe.question.controller.response.QuestionDetailDTO;
 import kr.codesqaud.cafe.question.controller.response.QuestionTitleResponseDTO;
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.question.service.QuestionService;
@@ -79,10 +80,10 @@ public class QuestionController {
 	 * @return Q&A 게시글 상세 보기 페이지
 	 */
 	@GetMapping("/{id}")
-	public String questionDetails(@PathVariable String id, @ModelAttribute("errorMessage") String errorMessage,
+	public String questionDetail(@PathVariable String id, @ModelAttribute("errorMessage") String errorMessage,
 		Model model) throws QuestionNotExistException {
 		if (errorMessage.isBlank()) {
-			model.addAttribute("question", service.findById(Long.parseLong(id)));
+			model.addAttribute("questionDetailDTO", QuestionDetailDTO.from(service.findById(Long.parseLong(id))));
 		}
 
 		return "qna/show";
