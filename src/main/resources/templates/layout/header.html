@@ -68,10 +68,14 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/posts">Posts</a></li>
+                {{#sessionUser}}
+                <li><a href="javascript:post('/users/logout')" role="button">로그아웃</a></li>
+                <li><a href="/users/edit-profile" role="button">개인정보수정</a></li>
+                {{/sessionUser}}
+                {{^sessionUser}}
                 <li><a href="/users/login" role="button">로그인</a></li>
                 <li><a href="/users/register" role="button">회원가입</a></li>
-                <li><a href="/users/logout" role="button">로그아웃</a></li>
-                <li><a href="/users/edit-profile" role="button">개인정보수정</a></li>
+                {{/sessionUser}}
             </ul>
         </div>
     </div>

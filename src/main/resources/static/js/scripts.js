@@ -7,3 +7,18 @@ String.prototype.format = function() {
         ;
   });
 };
+
+function post(path, params = null) {
+  let form = document.createElement("form");
+  form.method = "post";
+  form.action = path;
+  for (let key in params) {
+    let field = document.createElement("input");
+    field.type = "hidden";
+    field.name = key;
+    field.value = params[key];
+    form.appendChild(field);
+  }
+  document.body.appendChild(form);
+  form.submit();
+}
