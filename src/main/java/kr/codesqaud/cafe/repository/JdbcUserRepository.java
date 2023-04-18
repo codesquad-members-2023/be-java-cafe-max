@@ -25,12 +25,12 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> findAll() {
         return jdbcTemplate.query("select * from userTable", userRowMapper());
     }
 
     @Override
-    public User getSpecificUser(String userId) {
+    public User findByUserId(String userId) {
         List<User> result = jdbcTemplate.query("select * from userTable where userId = ?", userRowMapper(), userId);
         return result.stream().findAny().get();
     }

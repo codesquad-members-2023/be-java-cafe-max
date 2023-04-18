@@ -28,10 +28,10 @@ public class UserService {
     }
 
     public List<User> getUserList() {
-        return userRepository.getAllUsers();
+        return userRepository.findAll();
     }
 
     public User findByUserId(String userId) {
-        return userRepository.getSpecificUser(userId);
+        return userRepository.findByUserId(userId);
     }
 }

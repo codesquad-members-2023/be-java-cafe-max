@@ -15,12 +15,12 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> findAll() {
         return new ArrayList<>(repository.values());
     }
 
     @Override
-    public User getSpecificUser(String userId) {
+    public User findByUserId(String userId) {
         return repository.get(userId);
     }
 }

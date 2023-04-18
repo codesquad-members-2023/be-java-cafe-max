@@ -15,7 +15,7 @@ public class LoginService {
     }
 
     public User login(String userId, String password) {
-        User user = userRepository.getSpecificUser(userId);
+        User user = userRepository.findByUserId(userId);
 
         if (user.getPassword().equals(password)) {
             return user;

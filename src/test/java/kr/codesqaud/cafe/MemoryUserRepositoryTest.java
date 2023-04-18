@@ -19,7 +19,7 @@ class MemoryUserRepositoryTest {
         User user = User.builder().build();
 
         memoryUserRepository.save(user);
-        List<User> users = memoryUserRepository.getAllUsers();
+        List<User> users = memoryUserRepository.findAll();
 
         assertThat(users).contains(user);
     }
