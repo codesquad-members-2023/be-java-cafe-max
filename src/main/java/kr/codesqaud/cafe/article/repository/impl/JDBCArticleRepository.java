@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.article.domain.Article;
@@ -14,38 +15,54 @@ import kr.codesqaud.cafe.article.repository.ArticleRepository;
 @Qualifier("jdbcRepository")
 public class JDBCArticleRepository implements ArticleRepository {
 
-	private final JdbcTemplate jdbcTemplate;
+	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	public JDBCArticleRepository(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	public JDBCArticleRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 	}
 
 	@Override
 	public void save(Article article) {
-		jdbcTemplate.update("INSERT INTO ARTICLE (title, content, date, id,nickName) VALUES (?, ?, ?, ?, ?)",
-			article.getTitle(), article.getContent(), article.getDate(), article.getId(), article.getNickName());
+		namedParameterJdbcTemplate.update(
+			"INSERT INTO ARTICLE (title, content, date, id, nickName) VALUES (:title, :content, :date, :id, :nickName)",
+			new MapSqlParameterSource()
+				.addValue("title", article.getTitle())
+				.addValue("content", article.getContent())
+				.addValue("date", article.getDate())
+				.addValue("id", article.getId())
+				.addValue("nickName", article.getNickName())
+		);
+
 	}
 
 	@Override
 	public List<Article> findAll() {
-		return jdbcTemplate.query("SELECT * FROM ARTICLE", (rs, rn) -> new Article(rs));
+		return namedParameterJdbcTemplate.query("SELECT title,content,date,id,nickName,idx FROM ARTICLE",
+			(rs, rn) -> new Article(rs));
 	}
 
 	@Override
 	public Optional<Article> findArticleByIdx(Long idx) {
-		List<Article> article = jdbcTemplate.query("SELECT * FROM ARTICLE WHERE idx = ?", (rs, rn) -> new Article(rs),
-			idx);
+		List<Article> article = namedParameterJdbcTemplate.query(
+			"SELECT title,content,date,id,nickName,idx FROM ARTICLE WHERE idx = :idx",
+			new MapSqlParameterSource("idx", idx),
+			(rs, rn) -> new Article(rs));
 		return article.stream().findFirst();
 	}
 
 	@Override
 	public void updateArticle(Article article) {
-		jdbcTemplate.update("UPDATE ARTICLE SET title = ?, content = ? WHERE idx = ?", article.getTitle(),
-			article.getContent(), article.getIdx());
+		namedParameterJdbcTemplate.update("UPDATE ARTICLE SET title = :title, content = :content WHERE idx = :idx",
+			new MapSqlParameterSource()
+				.addValue("title", article.getTitle())
+				.addValue("content", article.getContent())
+				.addValue("idx", article.getIdx())
+		);
 	}
 
 	@Override
 	public void deleteArticle(Long idx) {
-		jdbcTemplate.update("DELETE FROM ARTICLE WHERE idx = ?", idx);
+		namedParameterJdbcTemplate.update("DELETE FROM ARTICLE WHERE idx = :idx",
+			new MapSqlParameterSource("idx", idx));
 	}
 }

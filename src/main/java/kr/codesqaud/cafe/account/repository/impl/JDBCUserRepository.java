@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.account.domain.User;
@@ -14,16 +15,22 @@ import kr.codesqaud.cafe.account.repository.UserRepository;
 @Qualifier("jdbcRepository")
 public class JDBCUserRepository implements UserRepository {
 
-	private final JdbcTemplate jdbcTemplate;
+	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	public JDBCUserRepository(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	public JDBCUserRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
 	}
 
 	@Override
 	public void save(User user) {
-		jdbcTemplate.update("INSERT INTO \"USER\" (nickName, email,password,id,date) VALUES (?, ?, ?, ?, ?)",
-			user.getNickName(), user.getEmail(), user.getPassword(), user.getId(), user.getDate());
+		namedParameterJdbcTemplate.update(
+			"INSERT INTO \"USER\" (nickName, email,password,id,date) VALUES (:nickName,:email, :password, :id, :date)",
+			new MapSqlParameterSource()
+				.addValue("nickName", user.getNickName())
+				.addValue("email", user.getEmail())
+				.addValue("password", user.getPassword())
+				.addValue("id", user.getId())
+				.addValue("date", user.getDate()));
 	}
 
 	/**
@@ -33,7 +40,8 @@ public class JDBCUserRepository implements UserRepository {
 	 */
 	@Override
 	public boolean exist(String id) {
-		return jdbcTemplate.query("SELECT id FROM \"USER\" WHERE id = ? LIMIT 1 ", (rs, rn) -> rs.getString("id"), id)
+		return namedParameterJdbcTemplate.query("SELECT id FROM \"USER\" WHERE id = :id LIMIT 1 ",
+				new MapSqlParameterSource("id", id), (rs, rn) -> rs.getString("id"))
 			.stream()
 			.findFirst()
 			.isPresent();
@@ -41,18 +49,26 @@ public class JDBCUserRepository implements UserRepository {
 
 	@Override
 	public List<User> findAll() {
-		return jdbcTemplate.query("SELECT * FROM \"USER\"", (rs, rn) -> new User(rs));
+		return namedParameterJdbcTemplate.query("SELECT nickName,email,password,id,date FROM \"USER\"",
+			(rs, rn) -> new User(rs));
 	}
 
 	@Override
 	public Optional<User> findUserById(String id) {
-		List<User> users = jdbcTemplate.query("SELECT * FROM \"USER\" WHERE id = ?", (rs, rn) -> new User(rs), id);
+		List<User> users = namedParameterJdbcTemplate.query("SELECT * FROM \"USER\" WHERE id = :id",
+			new MapSqlParameterSource("id", id), (rs, rn) -> new User(rs));
 		return users.stream().findFirst();
 	}
 
 	@Override
 	public void updateUser(User user) {
-		String sql = "UPDATE \"USER\" SET nickName = ?, email = ?, password = ? WHERE id = ?";
-		jdbcTemplate.update(sql, user.getNickName(), user.getEmail(), user.getPassword(), user.getId());
+		namedParameterJdbcTemplate.update(
+			"UPDATE \"USER\" SET nickName = :nickName, email = :email, password = :password WHERE id = :id",
+			new MapSqlParameterSource()
+				.addValue("nickName", user.getNickName())
+				.addValue("email", user.getEmail())
+				.addValue("password", user.getPassword())
+				.addValue("id", user.getId())
+		);
 	}
 }
