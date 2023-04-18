@@ -9,14 +9,13 @@ import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@RestController
+@Controller
 public class LoginController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -28,25 +27,26 @@ public class LoginController {
 
     // 로그인 페이지
     @GetMapping("/login")
-    public ModelAndView loginForm() {
-        return new ModelAndView("user/login");
+    public String loginForm() {
+        return "user/login";
     }
 
     // 로그인
     @PostMapping("/login")
-    public ModelAndView login(@Valid @RequestBody UserLoginRequest requestDto,
+    public String login(@Valid @RequestBody UserLoginRequest requestDto,
         HttpSession session) {
-        logger.info("login" + requestDto.toString());
         User user = userService.login(requestDto);
         session.setAttribute("user", new UserResponse(user));
-        return new ModelAndView(new RedirectView("/"));
+        return "redirect:/";
     }
 
     // 로그아웃
     @PostMapping("/logout")
-    public ModelAndView logout(HttpSession session) {
-        ModelAndView mav = new ModelAndView("user/login");
-        session.removeAttribute("user");
-        return mav;
+    @ResponseBody
+    public String logout(HttpSession session) {
+        if (session != null) {
+            session.invalidate();
+        }
+        return "/login";
     }
 }
