@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.codesqaud.cafe.user.dto.request.SignUpRequestDTO;
-import kr.codesqaud.cafe.user.dto.response.UserResponseDTO;
+import kr.codesqaud.cafe.user.controller.request.SignUpRequestDTO;
+import kr.codesqaud.cafe.user.controller.response.UserResponseDTO;
 import kr.codesqaud.cafe.user.service.UserService;
 
 @Controller

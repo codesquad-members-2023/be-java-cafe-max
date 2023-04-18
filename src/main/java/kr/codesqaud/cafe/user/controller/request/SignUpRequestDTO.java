@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.user.dto.request;
+package kr.codesqaud.cafe.user.controller.request;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;

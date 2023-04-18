@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.codesqaud.cafe.common.web.PageHandler;
-import kr.codesqaud.cafe.question.dto.request.QuestionWriteRequestDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionBoardResponseDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionTitleResponseDTO;
+import kr.codesqaud.cafe.question.controller.request.QuestionWriteRequestDTO;
+import kr.codesqaud.cafe.question.controller.response.QuestionBoardResponseDTO;
+import kr.codesqaud.cafe.question.controller.response.QuestionTitleResponseDTO;
 import kr.codesqaud.cafe.question.service.QuestionService;
 
 @Controller

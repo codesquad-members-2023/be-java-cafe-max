@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.user.dto.response;
+package kr.codesqaud.cafe.user.controller.response;
 
 import kr.codesqaud.cafe.user.domain.User;
 
