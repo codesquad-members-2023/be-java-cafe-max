@@ -19,8 +19,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void register(User user) {
+    public boolean register(User user) {
+        if (userRepository.findByUserId(user.getUserId()).isPresent()) {
+            return false;
+        }
         userRepository.save(user);
+        return true;
     }
 
     public List<UserListResponse> getUserList() {

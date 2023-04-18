@@ -27,9 +27,14 @@ public class UserController {
     }
 
     @PostMapping("")
-    public String register(UserRegisterRequest userRegisterRequest) {
-        userService.register(userRegisterRequest.toUser());
-        return "redirect:users";
+    public String register(UserRegisterRequest userRegisterRequest, Model model) {
+        boolean isSuccess = userService.register(userRegisterRequest.toUser());
+        if (isSuccess) {
+            return "redirect:users";
+        }
+        model.addAttribute("retry", true);
+        model.addAttribute("error-message", "이미 사용 중인 아이디입니다.");
+        return "users/form";
     }
 
     @GetMapping("")
