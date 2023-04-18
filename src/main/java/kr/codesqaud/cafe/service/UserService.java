@@ -9,6 +9,7 @@ import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -42,7 +43,7 @@ public class UserService {
                     .build();
             userDtos.add(dto);
         }
-        return userDtos;
+        return Collections.unmodifiableList(userDtos);
     }
 
     public UserDto findByUserId(String userId) {
@@ -50,7 +51,6 @@ public class UserService {
 
         return UserDto.builder()
                 .userId(user.getUserId())
-                .userName(user.getUserName())
                 .email(user.getEmail())
                 .build();
     }
