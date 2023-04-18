@@ -81,10 +81,10 @@ public class JDBCArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public List<Reply> findAllReply(Long idx) {
+	public List<Reply> findAllReply(Long replyIdx) {
 		return namedParameterJdbcTemplate.query(
 			"SELECT nickName,content,date,article_idx,idx FROM REPLY WHERE article_Idx = :idx AND is_visible = true",
-			new MapSqlParameterSource("idx", idx), (rs, rn) -> new Reply(rs));
+			new MapSqlParameterSource("idx", replyIdx), (rs, rn) -> new Reply(rs));
 	}
 
 	@Override

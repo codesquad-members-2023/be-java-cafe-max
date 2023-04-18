@@ -9,7 +9,7 @@ public class Reply {
 
 	private String id;
 
-	private Long idx;
+	private Long replyIdx;
 
 	private Long articleIdx;
 
@@ -36,7 +36,7 @@ public class Reply {
 		this.date = rs.getString("date");
 		this.nickName = rs.getString("nickName");
 		this.articleIdx = rs.getLong("article_idx");
-		this.idx = rs.getLong("idx");
+		this.replyIdx = rs.getLong("idx");
 	}
 
 	public Long getArticleIdx() {
@@ -55,7 +55,7 @@ public class Reply {
 		return content;
 	}
 
-	public Long getIdx() {
-		return idx;
+	public Long getReplyIdx() {
+		return replyIdx;
 	}
 }
