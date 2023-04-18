@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.codesqaud.cafe.controller.dto.ArticleCommentRequest;
 import kr.codesqaud.cafe.controller.dto.ArticleDetails;
 import kr.codesqaud.cafe.controller.dto.ArticleRequest;
+import kr.codesqaud.cafe.controller.dto.ArticleWithCommentCount;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.domain.article.Article;
@@ -44,10 +45,9 @@ public class ArticleService {
 			.collect(Collectors.toUnmodifiableList()));
 	}
 
-	public List<ArticleRequest> getArticles() {
-		return articleRepository.findAll()
+	public List<ArticleWithCommentCount> getArticlesWithCommentCount() {
+		return articleRepository.findAllArticleWithCommentCount()
 			.stream()
-			.map(ArticleRequest::from)
 			.collect(Collectors.toUnmodifiableList());
 	}
 

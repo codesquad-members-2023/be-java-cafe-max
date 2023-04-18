@@ -88,7 +88,7 @@ class ArticleServiceTest {
 
 			// when & then
 			assertAll(
-				() -> assertThatCode(() -> articleService.getArticles())
+				() -> assertThatCode(() -> articleService.getArticlesWithCommentCount())
 					.doesNotThrowAnyException(),
 				() -> then(articleRepository).should().findAll()
 			);

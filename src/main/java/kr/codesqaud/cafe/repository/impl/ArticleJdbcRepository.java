@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import kr.codesqaud.cafe.controller.dto.ArticleWithCommentCount;
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 
@@ -32,6 +33,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
 		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		this.jdbcInsert = new SimpleJdbcInsert(dataSource)
 			.withTableName("article")
+			.usingColumns("writer", "title", "content", "created_at")
 			.usingGeneratedKeyColumns("id");
 	}
 
@@ -44,6 +46,24 @@ public class ArticleJdbcRepository implements ArticleRepository {
 	@Override
 	public List<Article> findAll() {
 		return jdbcTemplate.query("SELECT id, writer, title, content, created_at FROM article", articleMapper);
+	}
+
+	@Override
+	public List<ArticleWithCommentCount> findAllArticleWithCommentCount() {
+		return jdbcTemplate.query(
+			"SELECT a.id, a.writer, a.title, a.content, a.created_at, COUNT(ac.id) AS article_comment_count "
+				+ "FROM article AS a "
+				+ "LEFT JOIN article_comment AS ac ON a.id = ac.article_id "
+				+ "WHERE a.is_deleted = FALSE "
+				+ "GROUP BY ac.article_id",
+			(rs, rowNum) -> new ArticleWithCommentCount(rs.getLong("id"),
+														rs.getString("writer"),
+														rs.getString("title"),
+														rs.getString("content"),
+														rs.getTimestamp("created_at")
+															.toLocalDateTime(),
+														rs.getLong(
+															"article_comment_count")));
 	}
 
 	@Override
