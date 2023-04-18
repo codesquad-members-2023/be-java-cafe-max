@@ -28,6 +28,7 @@ public class ArticleCommentService {
 			.orElseThrow(NoAuthorizationException::new);
 	}
 
+	@Transactional
 	public void deleteById(final Long id) {
 		articleCommentRepository.deleteById(id);
 	}
