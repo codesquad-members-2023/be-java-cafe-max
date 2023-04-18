@@ -23,4 +23,6 @@ public interface ArticleRepository {
 	List<Reply> findAllReply(Long idx);
 
 	void deleteReply(String id, Long replyIdx);
+
+	String findReplyIdByIdx(Long replyIdx);
 }

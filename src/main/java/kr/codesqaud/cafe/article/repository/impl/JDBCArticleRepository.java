@@ -92,4 +92,12 @@ public class JDBCArticleRepository implements ArticleRepository {
 		namedParameterJdbcTemplate.update("UPDATE REPLY SET is_visible = false WHERE idx = :replyIdx",
 			new MapSqlParameterSource("replyIdx", replyIdx));
 	}
+
+	@Override
+	public String findReplyIdByIdx(Long replyIdx) {
+		return namedParameterJdbcTemplate.queryForObject(
+			"SELECT id FROM REPLY WHERE idx = :replyIdx", new MapSqlParameterSource("replyIdx", replyIdx),
+			(rs, rowNum) -> rs.getString("id")
+		);
+	}
 }

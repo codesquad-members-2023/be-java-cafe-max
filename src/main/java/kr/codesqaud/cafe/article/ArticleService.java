@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.article;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -75,6 +76,16 @@ public class ArticleService {
 	}
 
 	public void deleteReply(String id, Long replyIdx) {
-		articleRepository.deleteReply(id, replyIdx);
+		if (validSessionIdAndReplyId(id, replyIdx)) {
+			articleRepository.deleteReply(id, replyIdx);
+		}
+	}
+
+	public boolean validSessionIdAndReplyId(String id, Long replyIdx) {
+		return Objects.equals(id, findReplyIdByIdx(replyIdx));
+	}
+
+	public String findReplyIdByIdx(Long replyIdx) {
+		return articleRepository.findReplyIdByIdx(replyIdx);
 	}
 }
