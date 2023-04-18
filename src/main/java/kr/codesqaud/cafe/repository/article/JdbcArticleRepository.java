@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.Repository.article;
+package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.jdbc.core.JdbcTemplate;

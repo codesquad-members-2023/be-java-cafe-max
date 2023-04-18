@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.Repository.user.MemoryUserRepository;
-import kr.codesqaud.cafe.Repository.user.UserRepository;
+import kr.codesqaud.cafe.repository.user.UserRepository;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.user.UserRequestDto;
 import kr.codesqaud.cafe.dto.user.UserResponseDto;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {

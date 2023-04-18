@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.Repository.article.ArticleRepository;
+import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.article.ArticleRequestDto;
 import kr.codesqaud.cafe.dto.article.ArticleResponseDto;
