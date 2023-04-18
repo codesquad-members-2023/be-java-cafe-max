@@ -14,7 +14,6 @@ import kr.codesqaud.annotation.RepositoryTest;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +26,6 @@ class PostRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @BeforeEach
-    void beforeEach() {
-        postRepository.deleteAll();
-        memberRepository.deleteAll();
-    }
 
     @DisplayName("게시글 저장 성공")
     @Test

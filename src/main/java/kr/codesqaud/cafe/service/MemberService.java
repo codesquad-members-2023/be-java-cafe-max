@@ -9,7 +9,6 @@ import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
-import kr.codesqaud.cafe.config.session.AccountSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +33,12 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
+    public MemberResponse findByEmail(String email) {
+        return MemberResponse.from(memberRepository.findByEmail(email)
+            .orElseThrow(MemberNotFoundException::new));
+    }
+
+    @Transactional(readOnly = true)
     public List<MemberResponse> findAll() {
         return memberRepository.findAll()
             .stream()
@@ -54,14 +59,12 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public boolean isDuplicateEmail(String email) {
-        return memberRepository.findByEmail(email).isPresent();
+        return memberRepository.existsByEmail(email);
     }
 
     @Transactional(readOnly = true)
     public boolean isDuplicateEmailAndId(String email, Long id) {
-        return !memberRepository.findByEmail(email)
-            .orElseThrow(MemberNotFoundException::new)
-            .equalsId(id);
+        return memberRepository.existsByEmailAndIdNot(email, id);
     }
 
     @Transactional(readOnly = true)
@@ -69,11 +72,5 @@ public class MemberService {
         return memberRepository.findByEmail(email)
             .map(member -> !member.equalsPassword(password))
             .orElse(true);
-    }
-
-    @Transactional(readOnly = true)
-    public MemberResponse findByEmail(String email) {
-        return MemberResponse.from(memberRepository.findByEmail(email)
-            .orElseThrow(MemberNotFoundException::new));
     }
 }

@@ -52,6 +52,21 @@ public class JdbcMemberRepository implements MemberRepository {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM member WHERE email = :email)";
+        MapSqlParameterSource parameter = new MapSqlParameterSource("email", email);
+        return jdbcTemplate.queryForObject(sql, parameter, Boolean.class);
+    }
+
+    @Override
+    public boolean existsByEmailAndIdNot(String email, Long id) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM member WHERE email = :email AND id != :id)";
+        MapSqlParameterSource parameter = new MapSqlParameterSource("email", email);
+        parameter.addValue("id", id);
+        return jdbcTemplate.queryForObject(sql, parameter, Boolean.class);
+    }
+
+    @Override
     public List<Member> findAll() {
         String sql = "SELECT id, email, password, nickname, create_date "
                      + "FROM member";
@@ -67,12 +82,6 @@ public class JdbcMemberRepository implements MemberRepository {
                     + "WHERE id = :id";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(member);
         jdbcTemplate.update(sql, parameter);
-    }
-
-    @Override
-    public void deleteAll() {
-        String sql = "DELETE FROM member";
-        jdbcTemplate.update(sql, (SqlParameterSource) null);
     }
 
     private final RowMapper<Member> memberRowMapper = (rs, rowNum) ->

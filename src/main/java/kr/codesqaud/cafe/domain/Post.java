@@ -45,10 +45,6 @@ public class Post {
         return views;
     }
 
-    public Post createWithId(Long id) {
-        return new Post(id, title, content, writer, writeDate, views);
-    }
-
     public boolean equalsWriterId(Long writerId) {
         return writer.equalsId(writerId);
     }

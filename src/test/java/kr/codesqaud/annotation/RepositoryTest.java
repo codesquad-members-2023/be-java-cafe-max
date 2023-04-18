@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @Transactional
 @ActiveProfiles("dev")
-@Sql(scripts = "classpath:schema.sql")
 public @interface RepositoryTest {
 
 }

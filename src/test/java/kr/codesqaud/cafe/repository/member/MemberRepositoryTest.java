@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.annotation.RepositoryTest;
 import kr.codesqaud.cafe.domain.Member;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +18,6 @@ class MemberRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
-
-    @BeforeEach
-    void beforeEach() {
-        memberRepository.deleteAll();
-    }
 
     @DisplayName("회원 저장 성공")
     @Test
@@ -123,18 +117,18 @@ class MemberRepositoryTest {
 
     private Member dummyData() {
         return Member.builder()
-            .email("mandu@gmail.com")
+            .email("mandu2@gmail.com")
             .password("Mandu1234")
-            .nickName("mandu")
+            .nickName("mandu2")
             .createDate(LocalDateTime.now())
             .build();
     }
 
     private Member dummyData2() {
         return Member.builder()
-            .email("test@gmail.com")
+            .email("test2@gmail.com")
             .password("Test1234")
-            .nickName("test")
+            .nickName("test2")
             .createDate(LocalDateTime.now())
             .build();
     }

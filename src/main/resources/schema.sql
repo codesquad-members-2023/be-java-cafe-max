@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS member (
     id bigint NOT NULL AUTO_INCREMENT,
-    email varchar(50) NOT NULL,
+    email varchar(50) NOT NULL UNIQUE,
     password varchar(255) NOT NULL,
     nickname varchar(10) NOT NULL,
     create_date	datetime NOT NULL,

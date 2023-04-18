@@ -137,19 +137,12 @@ class MemberServiceTest {
                 "Test1234", "Test1234", "test"), accountSession.getId()));
     }
 
-    @DisplayName("회원 중에 중복 이메일 검사 시 중복이 있는 경우 성공")
+    @DisplayName("이메일로 조회할 때 회원 중에 이메일이 같은 회원이 있다면 true를 반환한다")
     @Test
     void isDuplicateEmail() {
         // given
         String email = "test@gmail.com";
-        Member member = Member.builder()
-            .id(1L)
-            .email(email)
-            .password("Test1234")
-            .nickName("test")
-            .createDate(LocalDateTime.now())
-            .build();
-        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
+        given(memberRepository.existsByEmail(email)).willReturn(true);
 
         // when
         boolean actual = memberService.isDuplicateEmail(email);
@@ -158,12 +151,12 @@ class MemberServiceTest {
         assertTrue(actual);
     }
 
-    @DisplayName("회원 중에 중복 이메일 검사 시 중복이 없는 경우 실패")
+    @DisplayName("이메일로 조회할 때 회원 중에 이메일이 같은 회원이 없다면 false를 반환한다")
     @Test
     void isDuplicateEmailFalse() {
         // given
         String email = "test@gmail.com";
-        given(memberRepository.findByEmail(email)).willReturn(Optional.empty());
+        given(memberRepository.existsByEmail(email)).willReturn(false);
 
         // when
         boolean actual = memberService.isDuplicateEmail(email);
@@ -172,20 +165,13 @@ class MemberServiceTest {
         assertFalse(actual);
     }
 
-    @DisplayName("회원 중에 중복 이메일과 같은 아이디 검사 시 이메일 중복이 있고 중복인 이메일의 회원 아이디가 다를 경우 성공")
+    @DisplayName("이메일과 아이디로 조회할때 회원 중에 이메일이 같고 아이디가 다르면 true를 반환한다")
     @Test
     void isDuplicateEmailAndId() {
         // given
         Long id = 1L;
         String email = "test@gmail.com";
-        Member member = Member.builder()
-            .id(2L)
-            .email(email)
-            .password("Test1234")
-            .nickName("test")
-            .createDate(LocalDateTime.now())
-            .build();
-        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
+        given(memberRepository.existsByEmailAndIdNot(email, id)).willReturn(true);
 
         // when
         boolean actual = memberService.isDuplicateEmailAndId(email, id);
@@ -194,20 +180,13 @@ class MemberServiceTest {
         assertTrue(actual);
     }
 
-    @DisplayName("회원 중에 중복 이메일과 같은 아이디 검사 시 이메일 중복이 있고 중복인 이메일의 회원 아이디가 같을 경우 성공")
+    @DisplayName("이메일과 아이디로 조회할때 회원 중에 이메일이 같고 아이디가 같으면 false를 반환한다")
     @Test
     void isDuplicateEmailAndIdFalse() {
         // given
         Long id = 1L;
         String email = "test@gmail.com";
-        Member member = Member.builder()
-            .id(id)
-            .email(email)
-            .password("Test1234")
-            .nickName("test")
-            .createDate(LocalDateTime.now())
-            .build();
-        given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
+        given(memberRepository.existsByEmailAndIdNot(email, id)).willReturn(false);
 
         // when
         boolean actual = memberService.isDuplicateEmailAndId(email, id);
