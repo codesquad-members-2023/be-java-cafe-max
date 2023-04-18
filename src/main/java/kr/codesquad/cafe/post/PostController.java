@@ -71,9 +71,9 @@ public class PostController {
         return "redirect:/";
     }
 
-    @PostMapping("/posts/{postId}")
-    public String addComment(@RequestParam("commentText") String commentText,@PathVariable("postId") Post post, @SessionAttribute User user) {
-        Comment comment = commentService.from(commentText, post, user);
+    @PostMapping("/posts/{postId}/comments")
+    public String addComment(@RequestParam("commentText") String content,@PathVariable("postId") Post post, @SessionAttribute User user) {
+        Comment comment = commentService.from(content, post, user);
         postService.save(post, comment);
         return "redirect:/posts/{postId}";
     }

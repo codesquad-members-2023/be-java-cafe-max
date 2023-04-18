@@ -18,7 +18,7 @@ public class Comment {
     @ManyToOne
     private User user;
 
-    private String comment;
+    private String content;
 
     private boolean isDeleted;
 
@@ -37,8 +37,8 @@ public class Comment {
         return user;
     }
 
-    public String getComment() {
-        return comment;
+    public String getContent() {
+        return content;
     }
 
     public boolean isDeleted() {
@@ -49,13 +49,13 @@ public class Comment {
     public Comment(Builder builder) {
         this.post = builder.post;
         this.user = builder.user;
-        this.comment = builder.comment;
+        this.content = builder.content;
     }
 
     public static class Builder {
         private Post post;
         private User user;
-        private String comment;
+        private String content;
 
         public Builder post(Post post) {
             this.post = post;
@@ -68,8 +68,8 @@ public class Comment {
             return this;
         }
 
-        public Builder comment(String comment) {
-            this.comment = comment;
+        public Builder content(String content) {
+            this.content = content;
             return this;
         }
 

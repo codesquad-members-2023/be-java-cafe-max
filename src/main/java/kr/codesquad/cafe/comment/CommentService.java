@@ -13,9 +13,9 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public Comment from(String comment, Post post, User user) {
+    public Comment from(String body, Post post, User user) {
         return commentRepository.save(new Comment.Builder()
-                .comment(comment)
+                .content(body)
                 .post(post)
                 .user(user)
                 .build());
