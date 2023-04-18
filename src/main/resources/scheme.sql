@@ -18,3 +18,17 @@ CREATE TABLE IF NOT EXISTS article
     FOREIGN KEY (writer)
     REFERENCES users (userId) ON UPDATE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS reply
+(
+    id bigint NOT NULL AUTO_INCREMENT,
+    article_id bigint NOT NULL,
+    users_id varchar(10) NOT NULL,
+    contents text(1000) NOT NULL,
+    create_dateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (article_id)
+    REFERENCES article (sequence) ON UPDATE CASCADE,
+    FOREIGN KEY (users_id)
+    REFERENCES users (userId) ON UPDATE CASCADE
+);
