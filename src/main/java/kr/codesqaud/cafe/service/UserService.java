@@ -27,18 +27,15 @@ public class UserService {
 	}
 
 	private boolean validateDuplicate(UserDto userDto) {
-		userRepository.findByUserID(userDto.getUserID())
-			.ifPresent(u -> {
-				throw new DuplicateUserException("이미 존재하는 회원입니다.");
-			});
-		userRepository.findByEmail(userDto.getEmail())
-			.ifPresent(u -> {
-				throw new DuplicateUserException("이미 존재하는 회원 이메일입니다.");
-			});
-		userRepository.findByNickname(userDto.getNickname())
-			.ifPresent(u -> {
-				throw new DuplicateUserException("이미 존재하는 회원 닉네임입니다.");
-			});
+		if (userRepository.existUserID(userDto.getUserID())) {
+			throw new DuplicateUserException("이미 존재하는 회원 아이디입니다.");
+		}
+		if (userRepository.existEmail(userDto.getEmail())) {
+			throw new DuplicateUserException("이미 존재하는 회원 이메일입니다.");
+		}
+		if (userRepository.existNickname(userDto.getNickname())) {
+			throw new DuplicateUserException("이미 존재하는 회원 닉네임입니다.");
+		}
 		return true;
 	}
 

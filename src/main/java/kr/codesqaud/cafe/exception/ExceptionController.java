@@ -58,4 +58,19 @@ public class ExceptionController {
 		model.addAttribute("errorMessage", e.getMessage());
 		return "error/error";
 	}
+
+	@ExceptionHandler(DuplicateUserException.class)
+	public String duplicateUserException(DuplicateUserException e, HttpServletRequest request, HttpSession session,
+		Model model) {
+		String requestUri = request.getRequestURI();
+		model.addAttribute("errorMessage", e.getMessage());
+		if (requestUri.contains("/create")) {
+			return "/user/form";
+		} else if (requestUri.contains("/update")) {
+			User user = (User)session.getAttribute("sessionUser");
+			model.addAttribute("user", user);
+			return "/user/updateForm";
+		}
+		return "/";
+	}
 }

@@ -70,6 +70,27 @@ public class JdbcUserRepository implements UserRepository {
 		return namedParameterJdbcTemplate.query(SELECT_ALL_FOR_USER_LIST, userRowMapper());
 	}
 
+	@Override
+	public boolean existUserID(String userID) {
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("userID", userID);
+		return Boolean.TRUE.equals(namedParameterJdbcTemplate.queryForObject(EXISTS_USERID, param, Boolean.class));
+	}
+
+	@Override
+	public boolean existEmail(String email) {
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("email", email);
+		return Boolean.TRUE.equals(namedParameterJdbcTemplate.queryForObject(EXISTS_EMAIL, param, Boolean.class));
+	}
+
+	@Override
+	public boolean existNickname(String nickname) {
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("nickname", nickname);
+		return Boolean.TRUE.equals(namedParameterJdbcTemplate.queryForObject(EXISTS_NICKNAME, param, Boolean.class));
+	}
+
 	private RowMapper<User> userRowMapper() {
 		return (rs, rowNum) -> new User(rs.getLong("index"), rs.getString("userID"), rs.getString("email"),
 			rs.getString("nickname"), rs.getString("password"), rs.getDate("signUpDate").toLocalDate());

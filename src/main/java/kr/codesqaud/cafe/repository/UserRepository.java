@@ -18,4 +18,10 @@ public interface UserRepository {
 	Optional<User> findByNickname(String nickname);
 
 	List<User> findAll();
+
+	boolean existUserID(String userID);
+
+	boolean existEmail(String email);
+
+	boolean existNickname(String nickname);
 }

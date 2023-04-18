@@ -23,4 +23,16 @@ public class UserSql {
 	public static final String CREATE
 		= "INSERT INTO USER_INFO(userID, email, nickname, password, signUpDate) "
 		+ "VALUES (:userID, :email, :nickname, :password, :signUpDate)";
+
+	public static final String EXISTS_USERID
+		= "SELECT EXISTS "
+		+ "(SELECT FROM USER_INFO WHERE userID = :userID)";
+
+	public static final String EXISTS_EMAIL
+		= "SELECT EXISTS "
+		+ "(SELECT FROM USER_INFO WHERE email = :email)";
+
+	public static final String EXISTS_NICKNAME
+		= "SELECT EXISTS "
+		+ "(SELECT FROM USER_INFO WHERE nickname = :nickname)";
 }
