@@ -75,4 +75,11 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
         namedParameterJdbcTemplate.update(sql, params);
     }
+
+    @Override
+    public void deletePostById(final Long postId) {
+        String sql = "DELETE FROM article WHERE id = :id";
+        MapSqlParameterSource params = new MapSqlParameterSource("id", postId);
+        namedParameterJdbcTemplate.update(sql, params);
+    }
 }

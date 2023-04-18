@@ -62,6 +62,13 @@ public class ArticleController {
         return "redirect:/articles/" + postId;
     }
 
+    @DeleteMapping("/articles/{postId}")
+    public String deletePost(@PathVariable Long postId, HttpServletRequest request) {
+        User user = findUserByRequest(request);
+        articleService.deletePost(postId, user);
+        return "redirect:/";
+    }
+
     private User findUserByRequest(final HttpServletRequest request) {
         HttpSession session = request.getSession();
         return (User) session.getAttribute(SessionAttributes.LOGIN_USER.getValue());

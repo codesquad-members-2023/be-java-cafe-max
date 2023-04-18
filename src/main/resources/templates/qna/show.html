@@ -39,7 +39,7 @@
                               <a class="link-modify-article" th:href="@{/articles/{postId}/form(postId=${post.id})}">수정</a>
                           </li>
                           <li>
-                              <form class="form-delete" action="/questions/423" method="POST">
+                              <form class="form-delete" th:action="@{/articles/{postId}(postId=${post.id})}" th:method="delete">
                                   <input type="hidden" name="_method" value="DELETE">
                                   <button class="link-delete-article" type="submit">삭제</button>
                               </form>

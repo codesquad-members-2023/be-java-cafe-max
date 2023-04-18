@@ -51,11 +51,15 @@ public class ArticleService {
         articleRepository.update(article.update(articleUpdateRequestDto));
     }
 
-    private static void validateWriter(final User user, final Article article) {
+    private void validateWriter(final User user, final Article article) {
         if (!article.getWriterId().equals(user.getId())) {
             throw new CustomException(NOT_MATCH_USER_AND_WRITER);
         }
     }
 
-
+    public void deletePost(final Long postId, final User user) {
+        Article article = articleRepository.findById(postId);
+        validateWriter(user, article);
+        articleRepository.deletePostById(postId);
+    }
 }
