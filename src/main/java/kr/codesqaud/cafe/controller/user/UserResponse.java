@@ -16,6 +16,10 @@ public class UserResponse {
         this.email = email;
     }
 
+    public Long getCustomerId(){
+        return customerId;
+    }
+
     public String getUserId() {
         return userId;
     }

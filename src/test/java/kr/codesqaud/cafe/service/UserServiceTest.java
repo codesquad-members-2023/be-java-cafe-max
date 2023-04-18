@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.user.UserForm;
 import kr.codesqaud.cafe.controller.user.UserResponse;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.user.UserRepository;
@@ -24,7 +25,7 @@ class UserServiceTest {
     @DisplayName("회원 가입 성공")
     void join() {
         // given
-        User user1 = new User();
+        UserForm user1 = new UserForm();
         user1.setName("springName1");
         user1.setUserId("springId1");
         user1.setPassword("1234");
@@ -42,13 +43,13 @@ class UserServiceTest {
     @DisplayName("중복 회원 이름 예외")
     void userName() {
         // given
-        User user1 = new User();
+        UserForm user1 = new UserForm();
         user1.setName("springName1");
         user1.setUserId("springId1");
         user1.setPassword("1234");
         user1.setEmail("jian@gmail.com");
 
-        User user2 = new User();
+        UserForm user2 = new UserForm();
         user2.setName("springName1");
         user2.setUserId("springId2");
         user2.setPassword("1234");
@@ -66,13 +67,13 @@ class UserServiceTest {
     @DisplayName("중복 회원 아이디 예외")
     void userId() {
         // given
-        User user1 = new User();
+        UserForm user1 = new UserForm();
         user1.setName("springName1");
         user1.setUserId("springId1");
         user1.setPassword("1234");
         user1.setEmail("jian@gmail.com");
 
-        User user2 = new User();
+        UserForm user2 = new UserForm();
         user2.setName("springName2");
         user2.setUserId("springId1");
         user2.setPassword("1234");
@@ -91,19 +92,19 @@ class UserServiceTest {
     @DisplayName("Transaction 테스트: join()을 실패 하면 AtomicLong()이 올라가지 않는다.")
     void join_transaction() {
         // given
-        User user1 = new User();
+        UserForm user1 = new UserForm();
         user1.setName("springName1");
         user1.setUserId("springId1");
         user1.setPassword("1234");
         user1.setEmail("jian@gmail.com");
 
-        User user2 = new User();
+        UserForm user2 = new UserForm();
         user2.setName("springName2");
         user2.setUserId("springId1");
         user2.setPassword("1234");
         user2.setEmail("jian@gmail.com");
 
-        User user3 = new User();
+        UserForm user3 = new UserForm();
         user3.setName("springName3");
         user3.setUserId("springId3");
         user3.setPassword("1234");
@@ -116,7 +117,10 @@ class UserServiceTest {
         assertThat(e.getMessage()).isEqualTo("이미 존재하는 아이디입니다.");
         userService.join(user3);
 
+        UserResponse findUser3 = userService.findByUserId(user3.getUserId()).get();
+        UserResponse findUser1 = userService.findByUserId(user1.getUserId()).get();
+
         // then
-        assertThat(user3.getCustomerId()).isEqualTo(user1.getCustomerId() + 1L);
+        assertThat(findUser3.getCustomerId()).isEqualTo(findUser1.getCustomerId() + 1L);
     }
 }

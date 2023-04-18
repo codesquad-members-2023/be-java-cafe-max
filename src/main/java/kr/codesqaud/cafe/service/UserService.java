@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.user.UserForm;
 import kr.codesqaud.cafe.controller.user.UserResponse;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.user.UserRepository;
@@ -21,10 +22,13 @@ public class UserService {
     // 회원 가입
 
     public String join(UserForm form){
-    public String join(User user){
+        User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
+
         // 같은 이름, 같은 아이디가 있는 중복 회원X
         validateDuplicateUserName(user);
         validateDuplicateUserId(user);
+
+        System.out.println("확인할래");
 
         return userRepository.save(user).getUserId();
     }
