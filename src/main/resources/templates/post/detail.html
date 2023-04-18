@@ -67,18 +67,24 @@
 <div class="row justify-content-center mb-5">
     <div class="col-6 row text-secondary">
         <ul class="list-group list-group-flush" id="comments">
-            <li class="list-group-item" id="1">
+            <li class="list-group-item" th:if="${post.comments} !=null"   th:each="comment : ${post.comments}">
+                <div class="text-primary justify-content-between row">
+                    <div class="col" th:text="${comment.user.nickname}">user</div>
+                    <button type="button" class="btn-close" aria-label="Close" ></button>
+                </div>
+                <p th:text="${comment.comment}">fdsafsa</p>
+                <p class="text-secondary">2023-3-2 16:32</p>
             </li>
         </ul>
     </div>
 </div>
 <div class="row justify-content-center mb-5">
     <div class="col-6 row text-secondary">
-        <form id="commentForm">
+        <form id="commentForm" th:method="post" th:href="@{/posts/{postId}(postId = ${post.id})}">
             <div class="form-control">
-                <label for="comment" class="fs-5" id="userName">user</label>
-                <textarea class="form-control-plaintext" placeholder="Leave a comment here" id="comment"
-                          style="height: 100px;resize: none;"></textarea>
+                <label for="commentText" class="fs-5" id="userName">user</label>
+                <textarea class="form-control-plaintext" placeholder="Leave a comment here" id="commentText" name="commentText"
+                          style="height: 100px;resize: none;" ></textarea>
                 <div class="row justify-content-end row-cols-auto">
                     <div class="col" onmousemove="commentMouseoverEvent()" onmouseout="commentMouseOutEvent()">
                         <button class="btn btn-primary disabled" type="submit" role="button" id="commentPost">
@@ -96,103 +102,13 @@
 </footer>
 </body>
 <script>
-    const commentPostElement = document.getElementById("commentPost");
-
-    function removeComment(event) {
-        event.preventDefault();
-        let eventId = event.target.id;
-        let targetId = eventId.substring(0, eventId.length - 1);
-        let target = document.getElementById(targetId);
-        let comments = document.getElementById(`comments`);
-        comments.removeChild(target);
-        removeQuantity();
-        event.stopPropagation();
-    }
-
-
     function commentMouseoverEvent() {
         let element = document.getElementById("commentPost");
         element.className = "btn btn-primary";
     }
-
     function commentMouseOutEvent() {
         let element = document.getElementById("commentPost");
         element.className = "btn btn-primary disabled";
-    }
-
-    function validComment(event) {
-        const newComment = document.getElementById(`comment`);
-        event.preventDefault();
-        if (!newComment.checkValidity() || newComment.value < 1) {
-            newComment.className = "form-control is-invalid"
-            event.stopPropagation();
-            return false;
-        }
-        addComment()
-        addQuantity()
-        event.stopPropagation();
-        return true;
-    }
-
-    commentPostElement.addEventListener('click', validComment);
-
-    function addQuantity() {
-        let element = document.getElementById("quantity");
-        element.innerText = (Number(element.innerText) + 1).toString();
-    }
-
-    function removeQuantity() {
-        let element = document.getElementById("quantity");
-        element.innerText = (Number(element.innerText) - 1).toString();
-    }
-
-    function addComment() {
-        let elementById = document.getElementById(`comments`);
-        const newComment = document.getElementById(`comment`);
-
-        newComment.className = "form-control-plaintext";
-
-        let id = Date.now().toString() + Math.random() * 1000;
-
-        const liElement = document.createElement("li");
-        liElement.id = id;
-
-        liElement.setAttribute('class', "list-group-item")
-        let userDiv = document.createElement("div");
-        userDiv.className = "text-primary justify-content-between row";
-        const user = document.createElement("div");
-        const userName = document.getElementById("userName");
-        user.className = "col";
-        user.innerText = userName.textContent
-        const closeButton = document.createElement("button");
-        closeButton.type = "button";
-        closeButton.className = "btn-close";
-        closeButton.setAttribute("aria-label", "Close");
-        closeButton.id = id + "c";
-        closeButton.onclick = event => removeComment(event);
-        userDiv.appendChild(user);
-        userDiv.appendChild(closeButton);
-
-        const commentBody = document.createElement("p");
-        commentBody.innerText = newComment.value;
-        const date = document.createElement("p");
-        date.className = "text-secondary";
-        let today = new Date();
-
-        let fullYear = today.getFullYear();
-        let month = today.getMonth();
-        let day = today.getDay();
-        let hours = today.getHours();
-        let minutes = today.getMinutes();
-
-
-        date.innerText = fullYear + '-' + month + '-' + day + ' ' + hours + ':' + minutes;
-
-        liElement.appendChild(userDiv);
-        liElement.appendChild(commentBody);
-        liElement.appendChild(date);
-        elementById.appendChild(liElement);
-        newComment.value = "";
     }
 </script>
 </html>

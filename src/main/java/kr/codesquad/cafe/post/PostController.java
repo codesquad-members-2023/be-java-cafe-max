@@ -1,5 +1,7 @@
 package kr.codesquad.cafe.post;
 
+import kr.codesquad.cafe.comment.Comment;
+import kr.codesquad.cafe.comment.CommentService;
 import kr.codesquad.cafe.post.annotation.ValidPostIdPath;
 import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.user.User;
@@ -16,8 +18,11 @@ public class PostController {
 
     private final PostService postService;
 
-    public PostController(PostService postService) {
+    private final CommentService commentService;
+
+    public PostController(PostService postService, CommentService commentService) {
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @GetMapping(value = {"/posts/new", "/posts/form"})
@@ -64,5 +69,12 @@ public class PostController {
     public String deletePost(@PathVariable("postId") Post post) {
         postService.delete(post);
         return "redirect:/";
+    }
+
+    @PostMapping("/posts/{postId}")
+    public String addComment(@RequestParam("commentText") String commentText,@PathVariable("postId") Post post, @SessionAttribute User user) {
+        Comment comment = commentService.from(commentText, post, user);
+        postService.save(post, comment);
+        return "redirect:/posts/{postId}";
     }
 }

@@ -1,8 +1,8 @@
 package kr.codesquad.cafe.post;
 
-import kr.codesquad.cafe.user.User;
 import kr.codesquad.cafe.comment.Comment;
 import kr.codesquad.cafe.post.dto.PostForm;
+import kr.codesquad.cafe.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,8 +18,8 @@ public class Post {
     @NotNull
     @ManyToOne
     private User user;
-    @OneToMany
-    private List<Comment> comments;
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "post")
+    protected List<Comment> comments;
 
     private String nickname;
 
@@ -72,6 +72,10 @@ public class Post {
         return isDeleted;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
     public void disable() {
         isDeleted = true;
     }
@@ -79,6 +83,10 @@ public class Post {
     public void setFrom(PostForm postForm) {
         title = postForm.getTitle();
         textContent = postForm.getTextContent();
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
     }
 
     public static class Builder {

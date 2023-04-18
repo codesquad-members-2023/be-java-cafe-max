@@ -1,5 +1,6 @@
 package kr.codesquad.cafe.post;
 
+import kr.codesquad.cafe.comment.Comment;
 import kr.codesquad.cafe.user.User;
 import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.post.dto.SimplePostForm;
@@ -46,6 +47,11 @@ public class PostService {
     @Transactional
     public void delete(Post post) {
         post.disable();
+        postRepository.save(post);
+    }
+    @Transactional
+    public void save(Post post, Comment comment) {
+        post.addComment(comment);
         postRepository.save(post);
     }
 }
