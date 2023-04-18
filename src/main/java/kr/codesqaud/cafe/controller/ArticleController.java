@@ -41,9 +41,9 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/{index}")
-    public String findByIndex(@PathVariable("index") int index, Model model) {
-        Article article = articleService.findArticleIndexOf(index - 1);
+    @GetMapping("/articles/{index}")
+    public String findByIndex(@PathVariable("index") long id, Model model) {
+        Article article = articleService.findById(id);
         model.addAttribute("article", article);
 
         return "qna/show";

@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.service;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.repository.ArticleRepository;
-import kr.codesqaud.cafe.repository.JdbcArticleRepository;
+import kr.codesqaud.cafe.repository.MemoryArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +12,8 @@ import java.util.List;
 public class ArticleService {
     private ArticleRepository articleRepository;
 
-    public ArticleService(JdbcArticleRepository jdbcArticleRepository) {
-        this.articleRepository = jdbcArticleRepository;
+    public ArticleService(MemoryArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 
     public void saveArticle(ArticleForm articleForm) {
@@ -29,7 +29,7 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public Article findArticleIndexOf(int index) {
-        return articleRepository.findById(index);
+    public Article findById(long id) {
+        return articleRepository.findById(id);
     }
 }

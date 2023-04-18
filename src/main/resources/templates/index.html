@@ -15,7 +15,7 @@
                         <div class="main">
                             <strong class="subject">
                                 <a href="/qna/show.html" th:text="${article.getTitle()}"
-                                   th:href="@{/{index}(index = ${articleStat.index} + 1)}"></a>
+                                   th:href="@{/articles/{id}(id = ${article.getId()})}"></a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
