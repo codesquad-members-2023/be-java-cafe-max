@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,7 +12,7 @@ import java.util.stream.Collectors;
 public class MemoryUserRepository implements UserRepository {
 
     private static Long id = 1L;
-    private Map<Long, User> repository = new ConcurrentHashMap<>();
+    private final Map<Long, User> repository = new ConcurrentHashMap<>();
 
     @Override
     public void save(User input) {

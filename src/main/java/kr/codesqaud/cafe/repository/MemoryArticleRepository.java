@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class MemoryArticleRepository implements ArticleRepository{
+public class MemoryArticleRepository implements ArticleRepository {
 
     private static Long id = 1L;
     private final Map<Long, Article> repository = new ConcurrentHashMap();
