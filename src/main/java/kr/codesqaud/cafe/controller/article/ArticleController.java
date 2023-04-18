@@ -30,8 +30,7 @@ public class ArticleController {
     }
     @PostMapping("/questions")
     public String create(ArticleForm form){
-        Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
-        articleService.post(article);
+        articleService.post(form);
         return "redirect:/";
     }
 

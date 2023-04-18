@@ -18,7 +18,8 @@ public class ArticleService {
     }
 
     @Transactional
-    public Long post(Article article){
+    public Long post(ArticleForm form){
+        Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
         return articleRepository.save(article).getId();
     }
 
