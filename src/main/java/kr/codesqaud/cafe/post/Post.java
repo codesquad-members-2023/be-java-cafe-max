@@ -1,11 +1,13 @@
 package kr.codesqaud.cafe.post;
 
 import kr.codesqaud.cafe.account.User;
+import kr.codesqaud.cafe.comment.Comment;
 import kr.codesqaud.cafe.post.dto.PostForm;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Post {
@@ -15,8 +17,9 @@ public class Post {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "account_id", updatable = false)
     private User user;
+    @OneToMany
+    private List<Comment> comments;
 
     private String nickname;
 

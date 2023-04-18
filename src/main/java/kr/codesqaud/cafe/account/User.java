@@ -17,7 +17,6 @@ public class User {
 
     @Id
     @GeneratedValue
-    @Column(name = "account_id")
     private Long id;
     private String nickname;
     private String email;
