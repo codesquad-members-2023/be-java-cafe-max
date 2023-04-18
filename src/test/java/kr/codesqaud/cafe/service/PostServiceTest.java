@@ -20,6 +20,7 @@ import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,13 +41,19 @@ class PostServiceTest {
     @Mock
     private PostRepository postRepository;
 
+    @Mock
+    private MemberRepository memberRepository;
+
     @DisplayName("게시글 저장 성공")
     @Test
     void save() {
         // given
         Long writerId = 1L;
         PostWriteRequest postWriteRequest = new PostWriteRequest("제목", "내용", writerId);
-        given(postRepository.save(any())).willReturn(writerId);
+        given(memberRepository.findById(writerId)).willReturn(Optional.of(Member.builder()
+            .id(writerId)
+            .build()));
+        given(postRepository.save(any())).willReturn(1L);
 
         // when
         Long savedId = postService.write(postWriteRequest);

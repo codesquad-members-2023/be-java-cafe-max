@@ -2,12 +2,15 @@ package kr.codesqaud.cafe.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
+import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final MemberRepository memberRepository;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, MemberRepository memberRepository) {
         this.postRepository = postRepository;
+        this.memberRepository = memberRepository;
     }
 
     public Long write(PostWriteRequest postWriteRequest) {
-        return postRepository.save(postWriteRequest.toPost());
+        Member member = memberRepository.findById(postWriteRequest.getWriterId())
+            .orElseThrow(MemberNotFoundException::new);
+        return postRepository.save(postWriteRequest.toPost(member));
     }
 
     public PostResponse findById(Long id, Long accountSessionId) {
