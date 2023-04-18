@@ -5,12 +5,15 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import kr.codesqaud.cafe.domain.User;
 
@@ -40,7 +43,13 @@ public class ExceptionController {
 				detail.append(error.getDefaultMessage()).append("<br>");
 			}
 		}
-
 		return new ErrorResponse(detail.toString());
+	}
+
+	@ExceptionHandler(NoHandlerFoundException.class)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public String noHandlerException(Model model) {
+		model.addAttribute("errorMessage", "페이지를 찾을 수 없습니다.");
+		return "error/error";
 	}
 }
