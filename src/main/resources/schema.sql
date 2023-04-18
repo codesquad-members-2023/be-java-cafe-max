@@ -16,3 +16,16 @@ CREATE TABLE users (
                             name VARCHAR(255) NOT NULL,
                             email VARCHAR(255) NOT NULL
 );
+
+drop table if exists comments CASCADE;
+
+CREATE TABLE comments (
+                          id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                          article_id VARCHAR(255) NOT NULL,
+                          contents VARCHAR(1000) NOT NULL,
+                          user_id VARCHAR(255) NOT NULL,
+                          created_time DATETIME NOT NULL
+);
+
+
+INSERT INTO users (userid, password, name, email) VALUES ('test', 'Qwer1234', 'testuser', 'test@test.com');
