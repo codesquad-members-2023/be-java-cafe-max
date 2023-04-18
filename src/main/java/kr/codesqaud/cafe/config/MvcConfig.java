@@ -27,7 +27,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		String[] authorizePatterns = new String[] {"/articles/**", "/question/**"};
+		String[] authorizePatterns = new String[] {"/articles/**", "/question/**", "/comments/**"};
 
 		registry
 			.addInterceptor(loginInterceptor)
