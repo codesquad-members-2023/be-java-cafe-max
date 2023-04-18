@@ -11,7 +11,11 @@ public class ArticleController {
     public String introPageEqualToArticlePage(){
         return "/qna/form";
     }
+    @PostMapping("/articles")
+    public String makeNewArticle(){
 
+        return "redirect:/articles";
+    }
     @GetMapping("/articles")
     public String showArticles(){
         return "/qna/show";
