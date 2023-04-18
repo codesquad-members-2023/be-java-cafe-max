@@ -24,7 +24,7 @@ public class JDBCUserRepository implements UserRepository {
 	@Override
 	public void save(User user) {
 		namedParameterJdbcTemplate.update(
-			"INSERT INTO \"USER\" (nickName, email,password,id,date) VALUES (:nickName,:email, :password, :id, :date)",
+			"INSERT INTO `USER` (nickName, email,password,id,date) VALUES (:nickName,:email, :password, :id, :date)",
 			new MapSqlParameterSource()
 				.addValue("nickName", user.getNickName())
 				.addValue("email", user.getEmail())
@@ -40,7 +40,7 @@ public class JDBCUserRepository implements UserRepository {
 	 */
 	@Override
 	public boolean exist(String id) {
-		return namedParameterJdbcTemplate.query("SELECT id FROM \"USER\" WHERE id = :id LIMIT 1 ",
+		return namedParameterJdbcTemplate.query("SELECT id FROM `USER` WHERE id = :id LIMIT 1 ",
 				new MapSqlParameterSource("id", id), (rs, rn) -> rs.getString("id"))
 			.stream()
 			.findFirst()
@@ -49,13 +49,13 @@ public class JDBCUserRepository implements UserRepository {
 
 	@Override
 	public List<User> findAll() {
-		return namedParameterJdbcTemplate.query("SELECT nickName,email,password,id,date FROM \"USER\"",
+		return namedParameterJdbcTemplate.query("SELECT nickName,email,password,id,date FROM `USER`",
 			(rs, rn) -> new User(rs));
 	}
 
 	@Override
 	public Optional<User> findUserById(String id) {
-		List<User> users = namedParameterJdbcTemplate.query("SELECT * FROM \"USER\" WHERE id = :id",
+		List<User> users = namedParameterJdbcTemplate.query("SELECT * FROM `USER` WHERE id = :id",
 			new MapSqlParameterSource("id", id), (rs, rn) -> new User(rs));
 		return users.stream().findFirst();
 	}
@@ -63,7 +63,7 @@ public class JDBCUserRepository implements UserRepository {
 	@Override
 	public void updateUser(User user) {
 		namedParameterJdbcTemplate.update(
-			"UPDATE \"USER\" SET nickName = :nickName, email = :email, password = :password WHERE id = :id",
+			"UPDATE `USER` SET nickName = :nickName, email = :email, password = :password WHERE id = :id",
 			new MapSqlParameterSource()
 				.addValue("nickName", user.getNickName())
 				.addValue("email", user.getEmail())
