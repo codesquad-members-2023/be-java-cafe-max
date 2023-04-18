@@ -30,6 +30,6 @@ public class ArticleService {
     }
 
     public Article findArticleIndexOf(int index) {
-        return articleRepository.findByIndex(index);
+        return articleRepository.findById(index);
     }
 }
