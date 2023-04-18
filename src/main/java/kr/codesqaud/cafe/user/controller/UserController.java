@@ -58,10 +58,16 @@ public class UserController {
     }
 
     @GetMapping("/update")
-    public String updateUser(HttpSession session, Model model) {
+    public String viewUpdateForm(HttpSession session, Model model) {
         String sessionUserId = ((SessionUser) session.getAttribute("sessionUser")).getUserId();
         model.addAttribute("user", userService.getUser(sessionUserId));
         return "user/update";
+    }
+
+    @PutMapping
+    public String updateUser(@ModelAttribute UserAddForm userUpdateForm, Model model) {
+
+        return "redirect:/user/list";
     }
 
 }

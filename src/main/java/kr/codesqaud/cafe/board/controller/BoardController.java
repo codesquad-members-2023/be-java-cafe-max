@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.board.controller;
 import kr.codesqaud.cafe.board.dto.PostResponse;
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
 import kr.codesqaud.cafe.board.service.BoardService;
-import kr.codesqaud.cafe.exception.ResourceNotFoundException;
+import kr.codesqaud.cafe.exception.ForbiddenException;
 import kr.codesqaud.cafe.user.dto.SessionUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,7 +57,7 @@ public class BoardController {
         model.addAttribute("post", postResponse);
 
         if (!isWriter(session, postResponse.getWriter())) {
-            throw new ResourceNotFoundException("접근할 수 없는 페이지입니다.");
+            throw new ForbiddenException("접근할 수 없는 페이지입니다.");
         }
 
         return "board/update";
