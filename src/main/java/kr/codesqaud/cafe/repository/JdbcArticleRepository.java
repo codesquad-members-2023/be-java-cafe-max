@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.ArticleDto;
+import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
@@ -31,11 +32,11 @@ public class JdbcArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public Optional<Article> findByIndex(Long index) {
+	public Article findByIndex(Long index) {
 		SqlParameterSource param = new MapSqlParameterSource()
 			.addValue("index", index);
 		List<Article> articles = namedParameterJdbcTemplate.query(FIND_BY_INDEX, param, articleRowMapper());
-		return OptionalTo(articles);
+		return OptionalTo(articles).orElseThrow(() -> new ArticleNotFoundException("글 정보를 찾을 수 없습니다."));
 	}
 
 	private Optional<Article> OptionalTo(List<Article> articles) {
@@ -49,7 +50,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
 	@Override
 	public boolean increaseHits(Long index) {
-		long newHits = findByIndex(index).get().getHits();
+		long newHits = findByIndex(index).getHits();
 		SqlParameterSource param = new MapSqlParameterSource()
 			.addValue("index", index)
 			.addValue("hits", ++newHits);

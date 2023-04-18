@@ -76,6 +76,15 @@ function validateData() {
     }
 }
 
+function validateUpdateData() {
+    if(validSignUpCheck[1] && validSignUpCheck[2] && validSignUpCheck[3]) {
+        return true;
+    } else {
+        invalidView('#allMessage', ALL_DATA_NUM);
+        return false;
+    }
+}
+
 function verifyTitle() {
     const title = document.getElementById("title").value;
 

@@ -73,4 +73,10 @@ public class ExceptionController {
 		}
 		return "/";
 	}
+
+	@ExceptionHandler(UserNotFoundException.class)
+	public String userNotFoundException(UserNotFoundException e, Model model) {
+		model.addAttribute("errorMessage", e.getMessage());
+		return "user/login";
+	}
 }

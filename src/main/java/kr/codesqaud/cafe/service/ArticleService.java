@@ -32,7 +32,7 @@ public class ArticleService {
 	}
 
 	public Article findByIndex(Long index) {
-		return articleRepository.findByIndex(index).get();
+		return articleRepository.findByIndex(index);
 	}
 
 	public List<Article> findArticles() {

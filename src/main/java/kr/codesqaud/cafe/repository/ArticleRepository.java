@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.ArticleDto;
@@ -9,7 +8,7 @@ import kr.codesqaud.cafe.dto.ArticleDto;
 public interface ArticleRepository {
 	Article create(Article article);
 
-	Optional<Article> findByIndex(Long index);
+	Article findByIndex(Long index);
 
 	List<Article> findAll();
 

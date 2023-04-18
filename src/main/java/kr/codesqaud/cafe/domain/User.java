@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.domain;
 import java.time.LocalDate;
 
 import kr.codesqaud.cafe.exception.DeniedDataModificationException;
+import kr.codesqaud.cafe.exception.UserNotFoundException;
 
 public class User {
 	private Long index;
@@ -56,6 +57,12 @@ public class User {
 	public void validateUserId(String userID) {
 		if (!this.userID.equals(userID)) {
 			throw new DeniedDataModificationException("다른 사람의 정보는 수정할 수 없습니다.");
+		}
+	}
+
+	public void validatePassword(String password) {
+		if (!this.password.equals(password)) {
+			throw new UserNotFoundException("비밀번호가 다릅니다.");
 		}
 	}
 }

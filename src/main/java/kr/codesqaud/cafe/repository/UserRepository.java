@@ -13,10 +13,6 @@ public interface UserRepository {
 
 	Optional<User> findByUserID(String userID);
 
-	Optional<User> findByEmail(String email);
-
-	Optional<User> findByNickname(String nickname);
-
 	List<User> findAll();
 
 	boolean existUserID(String userID);
@@ -24,4 +20,8 @@ public interface UserRepository {
 	boolean existEmail(String email);
 
 	boolean existNickname(String nickname);
+
+	boolean existUpdateEmail(String userID, String email);
+
+	boolean existUpdateNickname(String userID, String nickname);
 }

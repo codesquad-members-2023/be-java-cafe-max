@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserDto;
 import kr.codesqaud.cafe.exception.DuplicateUserException;
+import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 
 @Service
@@ -40,8 +41,18 @@ public class UserService {
 	}
 
 	public boolean update(UserDto userDto) {
+		validateUpdateDuplicate(userDto);
 		userRepository.update(userDto);
 		return true;
+	}
+
+	private void validateUpdateDuplicate(UserDto userDto) {
+		if (userRepository.existUpdateEmail(userDto.getUserID(), userDto.getEmail())) {
+			throw new DuplicateUserException("이미 존재하는 회원 이메일입니다.");
+		}
+		if (userRepository.existUpdateNickname(userDto.getUserID(), userDto.getNickname())) {
+			throw new DuplicateUserException("이미 존재하는 회원 닉네임입니다.");
+		}
 	}
 
 	public List<User> findUsers() {
@@ -49,6 +60,7 @@ public class UserService {
 	}
 
 	public User findOne(String userID) {
-		return userRepository.findByUserID(userID).orElse(null);
+		return userRepository.findByUserID(userID)
+			.orElseThrow(() -> new UserNotFoundException("유저 아이디를 찾을 수 없습니다."));
 	}
 }

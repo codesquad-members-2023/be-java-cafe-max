@@ -45,22 +45,6 @@ public class JdbcUserRepository implements UserRepository {
 		return OptionalTo(users);
 	}
 
-	@Override
-	public Optional<User> findByEmail(String email) {
-		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("email", email);
-		List<User> users = namedParameterJdbcTemplate.query(FIND_BY_EMAIL, param, userRowMapper());
-		return OptionalTo(users);
-	}
-
-	@Override
-	public Optional<User> findByNickname(String nickname) {
-		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("nickname", nickname);
-		List<User> users = namedParameterJdbcTemplate.query(FIND_BY_NICKNAME, param, userRowMapper());
-		return OptionalTo(users);
-	}
-
 	private Optional<User> OptionalTo(List<User> users) {
 		return users.stream().findAny();
 	}
@@ -89,6 +73,24 @@ public class JdbcUserRepository implements UserRepository {
 		SqlParameterSource param = new MapSqlParameterSource()
 			.addValue("nickname", nickname);
 		return Boolean.TRUE.equals(namedParameterJdbcTemplate.queryForObject(EXISTS_NICKNAME, param, Boolean.class));
+	}
+
+	@Override
+	public boolean existUpdateEmail(String userID, String email) {
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("userID", userID)
+			.addValue("email", email);
+		return Boolean.TRUE.equals(
+			namedParameterJdbcTemplate.queryForObject(EXISTS_UPDATE_EMAIL, param, Boolean.class));
+	}
+
+	@Override
+	public boolean existUpdateNickname(String userID, String nickname) {
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("userID", userID)
+			.addValue("nickname", nickname);
+		return Boolean.TRUE.equals(
+			namedParameterJdbcTemplate.queryForObject(EXISTS_UPDATE_NICKNAME, param, Boolean.class));
 	}
 
 	private RowMapper<User> userRowMapper() {

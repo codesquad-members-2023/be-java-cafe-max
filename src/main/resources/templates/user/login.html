@@ -12,7 +12,11 @@
         </div>
         <div id="passwordMessage" class="message"></div>
         <button class="body button" onclick="validateData()">로그인</button>
-        <div id="allMessage" class="message"></div>
+        <div id="errorMessage" class="message" style="color: red">
+            {{#errorMessage}}
+            {{{errorMessage}}}
+            {{/errorMessage}}
+        </div>
     </form>
 </div>
 {{> fragments/footer}}

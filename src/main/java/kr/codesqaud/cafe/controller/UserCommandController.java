@@ -42,9 +42,7 @@ public class UserCommandController {
 	@PostMapping("/login")
 	public String login(String userID, String password, HttpSession session) {
 		User user = userService.findOne(userID);
-		if (user == null) {
-			return "redirect:/user/login";
-		}
+		user.validatePassword(password);
 		if (!Objects.equals(user.getPassword(), password)) {
 			return "redirect:/user/login";
 		}

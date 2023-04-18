@@ -35,4 +35,12 @@ public class UserSql {
 	public static final String EXISTS_NICKNAME
 		= "SELECT EXISTS "
 		+ "(SELECT FROM USER_INFO WHERE nickname = :nickname)";
+
+	public static final String EXISTS_UPDATE_EMAIL
+		= "SELECT EXISTS "
+		+ "(SELECT FROM USER_INFO WHERE (userID NOT IN (:userID)) AND (email = :email))";
+
+	public static final String EXISTS_UPDATE_NICKNAME
+		= "SELECT EXISTS "
+		+ "(SELECT FROM USER_INFO WHERE (userID NOT IN (:userID)) AND (nickname = :nickname))";
 }
