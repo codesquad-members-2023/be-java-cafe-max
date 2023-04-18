@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class UserService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(JdbcUserRepository jdbcUserRepository) {
         this.userRepository = jdbcUserRepository;
