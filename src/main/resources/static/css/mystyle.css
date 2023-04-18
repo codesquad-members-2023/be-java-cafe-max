@@ -31,3 +31,15 @@
     align-items: center;
 }
 
+.logout-button {
+    background: none;
+    border: none;
+    color: whitesmoke;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0.6;
+}
+
+.logout-button:hover {
+    opacity: 0.8;
+}

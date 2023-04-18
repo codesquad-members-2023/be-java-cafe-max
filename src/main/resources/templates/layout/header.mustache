@@ -10,7 +10,7 @@
     <nav class="navbar navbar-expand-sm bg-danger navbar-dark rounded justify-content-between">
         <a href="/index" style="text-decoration:none;"><h1 class="text-white nav-bar-brand">Fresh Tomatoes</h1></a>
         <h3>
-            <ul class="navbar-nav ml-auto">
+            <ul class="navbar-nav ml-auto align-items-center">
                 <li class="nav-item">
                     <a class="nav-link" href="/index">홈</a>
                 </li>
@@ -27,7 +27,9 @@
                 {{/sessionUser}}
                 {{#sessionUser}}
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/session-logout">로그아웃</a>
+                    <form method="post" action="/user/session-logout">
+                        <button type="submit" class="logout-button">로그아웃</button>
+                    </form>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/user/modify">개인정보수정</a>
