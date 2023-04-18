@@ -45,6 +45,10 @@ public class Comment {
         return isDeleted;
     }
 
+    public void delete() {
+        isDeleted = true;
+    }
+
 
     public Comment(Builder builder) {
         this.post = builder.post;

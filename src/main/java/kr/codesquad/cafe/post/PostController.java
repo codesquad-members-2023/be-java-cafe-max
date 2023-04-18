@@ -72,9 +72,15 @@ public class PostController {
     }
 
     @PostMapping("/posts/{postId}/comments")
-    public String addComment(@RequestParam("commentText") String content,@PathVariable("postId") Post post, @SessionAttribute User user) {
+    public String addComment(@RequestParam("commentText") String content, @PathVariable("postId") Post post, @SessionAttribute User user) {
         Comment comment = commentService.from(content, post, user);
         postService.save(post, comment);
+        return "redirect:/posts/{postId}";
+    }
+
+    @DeleteMapping("/posts/{postId}/comments/{commentId}")
+    public String deleteComment(@PathVariable long commentId) {
+        commentService.delete(commentId);
         return "redirect:/posts/{postId}";
     }
 }

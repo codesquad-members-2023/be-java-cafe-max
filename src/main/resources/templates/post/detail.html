@@ -52,7 +52,7 @@
 <div class="row justify-content-center">
     <div class="d-inline-flex col-6  justify-content-between">
         <div>
-            <p class="text-end pe-0 ps-0 ms-1">댓글 <span id="quantity">0</span> 개</p>
+            <p class="text-end pe-0 ps-0 ms-1">댓글 <span id="quantity" th:text="${post.comments.size()}">0</span> 개</p>
         </div>
         <div>
             <div th:if="${post.user} != null">
@@ -67,10 +67,16 @@
 <div class="row justify-content-center mb-5">
     <div class="col-6 row text-secondary">
         <ul class="list-group list-group-flush" id="comments">
-            <li class="list-group-item" th:if="${post.comments} !=null"   th:each="comment : ${post.comments}">
+            <li class="list-group-item" th:each="comment : ${post.comments}" th:if="!${comment.isDeleted}">
                 <div class="text-primary justify-content-between row">
                     <div class="col" th:text="${comment.user.nickname}">user</div>
-                    <button type="button" class="btn-close" aria-label="Close" ></button>
+                    <form class="col-1 justify-content-end"
+                          th:action="@{/posts/{postid}/comments/{commentid}(postid = ${post.id},commentid = ${comment.id})}"
+                          th:method="delete">
+                        <button th:if="${comment.user.id} == ${session.user.id}" type="submit" class="btn-close"
+                                aria-label="Close">
+                        </button>
+                    </form>
                 </div>
                 <p th:text="${comment.content}">body</p>
                 <p class="text-secondary">2023-3-2 16:32</p>
@@ -82,9 +88,10 @@
     <div class="col-6 row text-secondary">
         <form id="commentForm" th:method="post" th:action="@{/posts/{postId}/comments(postId = ${post.id})}">
             <div class="form-control">
-                <label for="content" class="fs-5" id="userName">user</label>
-                <textarea class="form-control-plaintext" placeholder="Leave a comment here" id="content" name="commentText"
-                          style="height: 100px;resize: none;" ></textarea>
+                <label for="content" class="fs-5" id="userName" th:text="${session.user.nickname}">user</label>
+                <textarea class="form-control-plaintext" placeholder="Leave a comment here" id="content"
+                          name="commentText"
+                          style="height: 100px;resize: none;"></textarea>
                 <div class="row justify-content-end row-cols-auto">
                     <div class="col" onmousemove="commentMouseoverEvent()" onmouseout="commentMouseOutEvent()">
                         <button class="btn btn-primary disabled" type="submit" role="button" id="commentPost">
@@ -106,6 +113,7 @@
         let element = document.getElementById("commentPost");
         element.className = "btn btn-primary";
     }
+
     function commentMouseOutEvent() {
         let element = document.getElementById("commentPost");
         element.className = "btn btn-primary disabled";

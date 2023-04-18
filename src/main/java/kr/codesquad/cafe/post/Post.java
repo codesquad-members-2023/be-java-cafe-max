@@ -18,7 +18,7 @@ public class Post {
     @NotNull
     @ManyToOne
     private User user;
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "post")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post")
     protected List<Comment> comments;
 
     private String nickname;
