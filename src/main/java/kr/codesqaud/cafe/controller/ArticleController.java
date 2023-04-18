@@ -2,10 +2,12 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.constant.SessionConst;
+import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.dto.ArticleUpdateForm;
 import kr.codesqaud.cafe.dto.SessionDto;
 import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +21,11 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    public ArticleController(ArticleService articleService) {
+    private final ReplyService replyService;
+
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @GetMapping("qna/form")
@@ -65,8 +70,10 @@ public class ArticleController {
         if (loginUser == null) {
             return "redirect:/user/login";
         }
+        List<Reply> replies = replyService.findReplies(id);
         model.addAttribute("loginUser", loginUser);
         model.addAttribute("article", articleService.findOne(id));
+        model.addAttribute("replies", replies);
         return "qna/show";
     }
 

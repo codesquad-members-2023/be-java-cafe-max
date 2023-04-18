@@ -18,4 +18,16 @@ public class GlobalExceptionHandler {
         model.addAttribute("error", e.getMessage());
         return "error/400";
     }
+
+    @ExceptionHandler(ReplyNotFoundException.class)
+    public String handleReplyNotFound(ReplyNotFoundException e, Model model) {
+        model.addAttribute("error", e.getMessage());
+        return "error/400";
+    }
+
+    @ExceptionHandler(EmptyCommentException.class)
+    public String handleEmptyComment(EmptyCommentException e, Model model) {
+        model.addAttribute("error", e.getMessage());
+        return "";
+    }
 }

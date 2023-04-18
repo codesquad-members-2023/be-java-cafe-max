@@ -31,11 +31,11 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(String id) {
+    public Optional<User> findById(String userId) {
         String sql = "select * from users where userId = ?";
         try {
 
-            User user = jdbcTemplate.queryForObject(sql, userRowMapper(), id);
+            User user = jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
             return Optional.ofNullable(user);
 
         } catch (EmptyResultDataAccessException e) {
