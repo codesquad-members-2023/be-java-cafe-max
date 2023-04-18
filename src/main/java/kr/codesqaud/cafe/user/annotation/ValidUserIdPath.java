@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account.annotation;
+package kr.codesqaud.cafe.user.annotation;
 
 
 import java.lang.annotation.Retention;

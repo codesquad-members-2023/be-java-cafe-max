@@ -1,7 +1,7 @@
-package kr.codesqaud.cafe.account;
+package kr.codesqaud.cafe.user;
 
-import kr.codesqaud.cafe.account.annotation.ValidUserIdPath;
-import kr.codesqaud.cafe.account.dto.*;
+import kr.codesqaud.cafe.user.annotation.ValidUserIdPath;
+import kr.codesqaud.cafe.user.dto.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,13 +37,13 @@ public class UserController {
 
     @GetMapping("/users/login")
     public String viewLoginForm(@ModelAttribute LoginForm loginForm) {
-        return "account/login";
+        return "user/login";
     }
 
     @PostMapping("/users/login")
     public String login(@Valid LoginForm loginForm, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
-            return "account/login";
+            return "user/login";
         }
         User user = userService.checkLoginForm(loginForm);
         session.setAttribute(ATTRIBUTE_USER, user);
@@ -53,18 +53,18 @@ public class UserController {
     @GetMapping("/users/logout")
     public String logout(@ModelAttribute LoginForm loginForm, HttpSession session) {
         session.removeAttribute(ATTRIBUTE_USER);
-        return "account/login";
+        return "user/login";
     }
 
     @GetMapping("/users/join")
     public String viewJoinForm(@ModelAttribute JoinForm joinForm) {
-        return "account/join";
+        return "user/join";
     }
 
     @PostMapping("/users")
     public String saveUser(@Valid JoinForm joinForm, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
-            return "account/join";
+            return "user/join";
         }
         User user = userService.save(joinForm);
         session.setAttribute(ATTRIBUTE_USER, user);
@@ -75,7 +75,7 @@ public class UserController {
     public String viewUsers(Model model) {
         List<UserForm> allUserForm = userService.getAllUsersForm(DEFAULT_PAGE);
         model.addAttribute(USERS, allUserForm);
-        return "account/users";
+        return "user/users";
     }
 
     @ValidUserIdPath
@@ -83,7 +83,7 @@ public class UserController {
     public String viewUser(Model model, @PathVariable Long userId, @SessionAttribute User user) {
         model.addAttribute(PROFILE_FORM, ProfileForm.from(user));
         model.addAttribute(USER_ID, userId);
-        return "account/profile";
+        return "user/profile";
     }
 
     @ValidUserIdPath
@@ -91,7 +91,7 @@ public class UserController {
     public String viewUserProfileEditForm(Model model, @PathVariable Long userId, @SessionAttribute User user) {
         model.addAttribute(USER_ID, userId);
         model.addAttribute(PROFILE_SETTING_FORM, ProfileEditForm.from(user));
-        return "account/profileEditForm";
+        return "user/profileEditForm";
     }
 
 
@@ -103,7 +103,7 @@ public class UserController {
     public String updateUserProfile(@ModelAttribute @Valid ProfileEditForm profileEditForm, BindingResult bindingResult,
                                     @PathVariable Long userId, @SessionAttribute User user, HttpSession httpSession) {
         if (bindingResult.hasErrors()) {
-            return "account/profileEditForm";
+            return "user/profileEditForm";
         }
         userService.checkEditInfo(user, profileEditForm);
         User updateUser = userService.update(user, profileEditForm);

@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.comment;
 
-import kr.codesqaud.cafe.account.User;
+import kr.codesqaud.cafe.user.User;
 import kr.codesqaud.cafe.post.Post;
 
 import javax.persistence.Entity;

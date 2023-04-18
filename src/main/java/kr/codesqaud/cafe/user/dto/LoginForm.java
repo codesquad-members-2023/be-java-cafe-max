@@ -1,7 +1,7 @@
-package kr.codesqaud.cafe.account.dto;
+package kr.codesqaud.cafe.user.dto;
 
-import kr.codesqaud.cafe.account.annotation.ValidEmail;
-import kr.codesqaud.cafe.account.annotation.ValidPassword;
+import kr.codesqaud.cafe.user.annotation.ValidEmail;
+import kr.codesqaud.cafe.user.annotation.ValidPassword;
 
 public class LoginForm {
     @ValidEmail

@@ -1,7 +1,9 @@
-package kr.codesqaud.cafe.account.exception;
+package kr.codesqaud.cafe.user.exception;
 
-import kr.codesqaud.cafe.account.dto.LoginForm;
-import kr.codesqaud.cafe.account.dto.ProfileEditForm;
+import kr.codesqaud.cafe.user.dto.LoginForm;
+import kr.codesqaud.cafe.user.dto.ProfileEditForm;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,7 +12,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ControllerAdvice("kr.codesqaud.cafe.account")
+@Order(value = Ordered.HIGHEST_PRECEDENCE)
+@ControllerAdvice("kr.codesqaud.cafe.user")
 public class UserControllerExceptionHandler {
 
     private static final String EMAIL_ERROR = "emailError";
@@ -30,7 +33,7 @@ public class UserControllerExceptionHandler {
     public String handlerIllegalLoginPasswordException(Model model, IllegalLoginPasswordException e) {
         model.addAttribute(new LoginForm());
         model.addAttribute(PASSWORD_ERROR, e.getMessage());
-        return "account/loginFailed";
+        return "user/loginFailed";
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -38,7 +41,7 @@ public class UserControllerExceptionHandler {
     public String handlerNoSuchLoginEmailException(Model model, NoSuchLoginEmailException e) {
         model.addAttribute(new LoginForm());
         model.addAttribute(EMAIL_ERROR, e.getMessage());
-        return "account/loginFailed";
+        return "user/loginFailed";
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -46,7 +49,7 @@ public class UserControllerExceptionHandler {
     public String handlerIllegalEditEmailException(HttpServletRequest request, Model model, IllegalEditEmailException e) {
         addProfileEditForm(request, model);
         model.addAttribute(EMAIL_ERROR, e.getMessage());
-        return "account/profileEditFormFailed";
+        return "user/profileEditFormFailed";
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -54,6 +57,6 @@ public class UserControllerExceptionHandler {
     public String handlerIllegalEditPasswordException(HttpServletRequest request, Model model, IllegalEditPasswordException e) {
         addProfileEditForm(request, model);
         model.addAttribute(PASSWORD_ERROR, e.getMessage());
-        return "account/profileEditFormFailed";
+        return "user/profileEditFormFailed";
     }
 }

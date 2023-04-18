@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.post;
 
-import kr.codesqaud.cafe.account.User;
+import kr.codesqaud.cafe.user.User;
 import kr.codesqaud.cafe.comment.Comment;
 import kr.codesqaud.cafe.post.dto.PostForm;
 

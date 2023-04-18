@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.post;
 
-import kr.codesqaud.cafe.account.User;
+import kr.codesqaud.cafe.user.User;
 import kr.codesqaud.cafe.post.dto.PostForm;
 import kr.codesqaud.cafe.post.dto.SimplePostForm;
 import kr.codesqaud.cafe.post.exception.IllegalPostIdException;

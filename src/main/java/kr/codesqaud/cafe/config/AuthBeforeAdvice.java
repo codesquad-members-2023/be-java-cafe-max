@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.config;
 
-import kr.codesqaud.cafe.account.User;
+import kr.codesqaud.cafe.user.User;
 import kr.codesqaud.cafe.global.IllegalAccessIdException;
 import kr.codesqaud.cafe.post.Post;
 import org.aspectj.lang.JoinPoint;
@@ -19,7 +19,7 @@ import java.util.Objects;
 @Component
 public class AuthBeforeAdvice {
 
-    @Pointcut("@annotation(kr.codesqaud.cafe.account.annotation.ValidUserIdPath)")
+    @Pointcut("@annotation(kr.codesqaud.cafe.user.annotation.ValidUserIdPath)")
     public void validUserIdPath() {
     }
 

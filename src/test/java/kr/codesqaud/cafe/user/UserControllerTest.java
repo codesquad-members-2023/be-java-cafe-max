@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.account;
+package kr.codesqaud.cafe.user;
 
-import kr.codesqaud.cafe.account.dto.JoinForm;
+import kr.codesqaud.cafe.user.dto.JoinForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -87,7 +87,7 @@ class UserControllerTest {
                             .param(PASSWORD, "12345678").session(session))
                     .andExpect(status().isOk())
                     .andExpect(model().hasErrors())
-                    .andExpect(view().name("account/login"))
+                    .andExpect(view().name("user/login"))
                     .andDo(print());
         }
 
@@ -98,7 +98,7 @@ class UserControllerTest {
                             .param(EMAIL, "jack1@email.com")
                             .param(PASSWORD, "12345ddd").session(session))
                     .andExpect(status().is4xxClientError())
-                    .andExpect(view().name("account/loginFailed"));
+                    .andExpect(view().name("user/loginFailed"));
         }
 
     }
@@ -136,7 +136,7 @@ class UserControllerTest {
                             .param(NICKNAME, nickname)
                             .param(PASSWORD, password))
                     .andExpect(status().isOk())
-                    .andExpect(view().name("account/join"));
+                    .andExpect(view().name("user/join"));
         }
     }
 
@@ -156,7 +156,7 @@ class UserControllerTest {
         mockMvc.perform(get("/users").session(session))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("users"))
-                .andExpect(view().name("account/users"));
+                .andExpect(view().name("user/users"));
     }
 
     @DisplayName("유저 프로필 페이지 테스트")
@@ -168,7 +168,7 @@ class UserControllerTest {
             mockMvc.perform(get("/users/" + jack.getId() + "/profile").session(session))
                     .andExpect(status().isOk())
                     .andExpect(model().attributeExists(USER_ID, PROFILE_FORM))
-                    .andExpect(view().name("account/profile"));
+                    .andExpect(view().name("user/profile"));
         }
 
         @DisplayName("오픈 실패")
@@ -193,7 +193,7 @@ class UserControllerTest {
                 mockMvc.perform(get("/users/" + jack.getId() + "/profile/edit").session(session))
                         .andExpect(status().isOk())
                         .andExpect(model().attributeExists(USER_ID, PROFILE_EDIT_FORM))
-                        .andExpect(view().name("account/profileEditForm"));
+                        .andExpect(view().name("user/profileEditForm"));
             }
 
             @DisplayName("실패")
@@ -237,7 +237,7 @@ class UserControllerTest {
                                 .param(NICKNAME, JERRY)
                                 .session(session))
                         .andExpect(status().is4xxClientError())
-                        .andExpect(view().name("account/profileEditFormFailed"));
+                        .andExpect(view().name("user/profileEditFormFailed"));
             }
 
             @DisplayName("실패(유저 아이디)")
@@ -263,7 +263,7 @@ class UserControllerTest {
                                 .session(session))
                         .andExpect(status().isOk())
                         .andExpect(model().hasErrors())
-                        .andExpect(view().name("account/profileEditForm"));
+                        .andExpect(view().name("user/profileEditForm"));
             }
         }
     }

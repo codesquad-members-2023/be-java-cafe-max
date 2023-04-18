@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.config;
 
-import kr.codesqaud.cafe.account.Role;
-import kr.codesqaud.cafe.account.User;
-import kr.codesqaud.cafe.account.UserRepository;
+import kr.codesqaud.cafe.user.Role;
+import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.user.UserRepository;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;

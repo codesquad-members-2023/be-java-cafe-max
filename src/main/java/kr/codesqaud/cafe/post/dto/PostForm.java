@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.post.dto;
 
-import kr.codesqaud.cafe.account.User;
+import kr.codesqaud.cafe.user.User;
 import kr.codesqaud.cafe.post.Post;
 import kr.codesqaud.cafe.post.annotation.ValidPostTextContent;
 import kr.codesqaud.cafe.post.annotation.ValidPostTitle;

@@ -1,13 +1,13 @@
-package kr.codesqaud.cafe.account;
+package kr.codesqaud.cafe.user;
 
-import kr.codesqaud.cafe.account.dto.JoinForm;
-import kr.codesqaud.cafe.account.dto.LoginForm;
-import kr.codesqaud.cafe.account.dto.ProfileEditForm;
-import kr.codesqaud.cafe.account.dto.UserForm;
-import kr.codesqaud.cafe.account.exception.IllegalEditEmailException;
-import kr.codesqaud.cafe.account.exception.IllegalEditPasswordException;
-import kr.codesqaud.cafe.account.exception.IllegalLoginPasswordException;
-import kr.codesqaud.cafe.account.exception.NoSuchLoginEmailException;
+import kr.codesqaud.cafe.user.dto.JoinForm;
+import kr.codesqaud.cafe.user.dto.LoginForm;
+import kr.codesqaud.cafe.user.dto.ProfileEditForm;
+import kr.codesqaud.cafe.user.dto.UserForm;
+import kr.codesqaud.cafe.user.exception.IllegalEditEmailException;
+import kr.codesqaud.cafe.user.exception.IllegalEditPasswordException;
+import kr.codesqaud.cafe.user.exception.IllegalLoginPasswordException;
+import kr.codesqaud.cafe.user.exception.NoSuchLoginEmailException;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

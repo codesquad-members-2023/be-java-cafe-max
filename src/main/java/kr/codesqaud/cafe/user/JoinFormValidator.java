@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.account;
+package kr.codesqaud.cafe.user;
 
-import kr.codesqaud.cafe.account.dto.JoinForm;
+import kr.codesqaud.cafe.user.dto.JoinForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.post;
 
-import kr.codesqaud.cafe.account.User;
-import kr.codesqaud.cafe.account.UserService;
-import kr.codesqaud.cafe.account.dto.JoinForm;
+import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.user.UserService;
+import kr.codesqaud.cafe.user.dto.JoinForm;
 import kr.codesqaud.cafe.post.dto.PostForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

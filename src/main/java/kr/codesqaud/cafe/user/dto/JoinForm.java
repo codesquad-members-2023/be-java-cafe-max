@@ -1,9 +1,9 @@
-package kr.codesqaud.cafe.account.dto;
+package kr.codesqaud.cafe.user.dto;
 
-import kr.codesqaud.cafe.account.User;
-import kr.codesqaud.cafe.account.annotation.ValidEmail;
-import kr.codesqaud.cafe.account.annotation.ValidNickName;
-import kr.codesqaud.cafe.account.annotation.ValidPassword;
+import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.user.annotation.ValidEmail;
+import kr.codesqaud.cafe.user.annotation.ValidNickName;
+import kr.codesqaud.cafe.user.annotation.ValidPassword;
 import org.jasypt.encryption.StringEncryptor;
 
 public class JoinForm {

@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.account;
+package kr.codesqaud.cafe.user;
 
 public enum Role {
     USER, MANAGER
