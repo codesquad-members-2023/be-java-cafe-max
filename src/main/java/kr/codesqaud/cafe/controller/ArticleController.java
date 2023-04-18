@@ -14,13 +14,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.PostingRequest;
 import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.service.CommentService;
 
 @Controller
 public class ArticleController {
 	private final ArticleService articleService;
+	private final CommentService commentService;
 
-	public ArticleController(ArticleService articleService) {
+	public ArticleController(ArticleService articleService, CommentService commentService) {
 		this.articleService = articleService;
+		this.commentService = commentService;
 	}
 
 	@PostMapping("/qna/form")
@@ -43,6 +46,7 @@ public class ArticleController {
 			return "redirect:/users/login";
 		}
 		model.addAttribute("details", articleService.findById(id));
+		model.addAttribute("contents", commentService.articleComment(id));
 		return "qna/show";
 	}
 

@@ -1,8 +1,12 @@
 package kr.codesqaud.cafe.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.codesqaud.cafe.controller.dto.CommentDto;
 import kr.codesqaud.cafe.controller.dto.CommentRequest;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.repository.CommentRepository;
@@ -22,4 +26,10 @@ public class CommentService {
 		commentRepository.save(comment);
 	}
 
+	public List<CommentDto> articleComment(Long id) {
+		return commentRepository.articleComment(id)
+			.stream()
+			.map(CommentDto::fromEntity)
+			.collect(Collectors.toUnmodifiableList());
+	}
 }
