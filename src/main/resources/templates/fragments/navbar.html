@@ -20,7 +20,7 @@
                 Menu
             </button>
             <ul class="dropdown-menu dropdown-menu-end" th:if="${session.user != null}">
-                <li th:if="${session.user.role == T(kr.codesqaud.cafe.user.Role).MANAGER}">
+                <li th:if="${session.user.role == T(kr.codesquad.cafe.user.Role).MANAGER}">
                     <a class="dropdown-item" th:href="@{/users}">맴버리스트
                     </a>
                 </li>
