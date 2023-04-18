@@ -1,19 +1,21 @@
 package kr.codesqaud.cafe.user.dto.response;
 
+import kr.codesqaud.cafe.user.domain.User;
+
 public class UserResponseDTO {
-	private final int id;
+	private final long id;
 	private final String userId;
 	private final String name;
 	private final String email;
 
-	public UserResponseDTO(int id, String userId, String name, String email) {
+	public UserResponseDTO(long id, String userId, String name, String email) {
 		this.id = id;
 		this.userId = userId;
 		this.name = name;
 		this.email = email;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -27,6 +29,10 @@ public class UserResponseDTO {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public static UserResponseDTO from(User user) {
+		return new UserResponseDTO(user.getId(), user.getUserId(), user.getName(), user.getEmail());
 	}
 
 }

@@ -9,9 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.common.repository.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.question.domain.Question;
-import kr.codesqaud.cafe.question.dto.request.QuestionWriteRequestDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionDetailResponseDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionTitleResponseDTO;
 
 @Repository
 public class CollectionFrameWorkQuestionRepository implements QuestionRepository {
@@ -23,26 +20,25 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 		dummyData.insertQuestionsDummyData(questionTable);
 	}
 
-	public void insert(QuestionWriteRequestDTO dto) {
-		questionTable.insert(dto);
+	public void save(Question question) {
+		questionTable.insert(question);
 	}
 
-	public int countAll() {
-		return questionTable.countAll();
+	public long countBy() {
+		return questionTable.count();
 	}
 
-	public List<QuestionTitleResponseDTO> selectQuestionTitlesByOffset(int postOffset, int pageSize) {
+	public List<Question> findAll(long offset, int pageSize) {
 		return questionTable.select().stream()
 			.sorted(Comparator.comparing(Question::getId).reversed())
-			.skip(postOffset).limit(pageSize)
-			.map(Question::toTitleDto)
+			.skip(offset).limit(pageSize)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public QuestionDetailResponseDTO selectById(int id) throws NoSuchElementException {
+	public Question findById(long id) throws NoSuchElementException {
 		for (Question question : questionTable.select()) {
 			if (question.getId() == id) {
-				return question.toDetailsDto();
+				return question;
 			}
 		}
 		throw new NoSuchElementException("존재하지 않는 개시글 입니다.");

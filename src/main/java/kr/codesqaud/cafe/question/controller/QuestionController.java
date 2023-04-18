@@ -1,5 +1,8 @@
 package kr.codesqaud.cafe.question.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.codesqaud.cafe.common.web.PageHandler;
 import kr.codesqaud.cafe.question.dto.request.QuestionWriteRequestDTO;
+import kr.codesqaud.cafe.question.dto.response.QuestionBoardResponseDTO;
+import kr.codesqaud.cafe.question.dto.response.QuestionTitleResponseDTO;
 import kr.codesqaud.cafe.question.service.QuestionService;
 
 @Controller
@@ -38,7 +44,7 @@ public class QuestionController {
 	 */
 	@PostMapping
 	public String questionAdd(QuestionWriteRequestDTO dto) {
-		service.addQuestion(dto);
+		service.save(dto.toEntity());
 		return "redirect:questions/write-form";
 	}
 
@@ -49,10 +55,17 @@ public class QuestionController {
 	 * @return Q&A 게시글 목록 페이지
 	 */
 	@GetMapping
-	public String questionList(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+	public String questionList(@RequestParam(value = "page", required = false, defaultValue = "1") long page,
 		Model model) {
-
-		model.addAttribute("questionBoardDto", service.makeQuestionBoard(page));
+		PageHandler pageHandler = new PageHandler(service.countBy(), page);
+		List<QuestionTitleResponseDTO> questionTitles =
+			service.findAll(pageHandler.getPostOffset(),
+					pageHandler.getPageSize())
+				.stream()
+				.map(QuestionTitleResponseDTO::from)
+				.collect(Collectors.toUnmodifiableList());
+		model.addAttribute("questionBoardResponseDTO",
+			new QuestionBoardResponseDTO(pageHandler, questionTitles));
 
 		return "index";
 	}
@@ -68,8 +81,8 @@ public class QuestionController {
 	public String questionDetails(@PathVariable String questionId, @ModelAttribute("errorMessage") String errorMessage,
 		Model model) {
 		if (errorMessage.isBlank()) {
-			int id = Integer.parseInt(questionId);
-			model.addAttribute("questionDetails", service.findQuestion(id));
+			long id = Long.parseLong(questionId);
+			model.addAttribute("question", service.findById(id));
 		}
 
 		return "qna/show";

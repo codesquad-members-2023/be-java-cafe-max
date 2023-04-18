@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.question.dto.response;
 
 import java.util.List;
 
-import kr.codesqaud.cafe.common.domain.PageHandler;
+import kr.codesqaud.cafe.common.web.PageHandler;
 
 /**
  * Q&A 게시판 목록과 페이징 정보를 저장할 DTO

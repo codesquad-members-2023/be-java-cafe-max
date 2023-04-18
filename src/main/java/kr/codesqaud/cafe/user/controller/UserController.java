@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.codesqaud.cafe.user.dto.request.SignUpRequestDTO;
+import kr.codesqaud.cafe.user.dto.response.UserResponseDTO;
 import kr.codesqaud.cafe.user.service.UserService;
 
 @Controller
@@ -65,7 +66,7 @@ public class UserController {
 			addAttributeErrorMessages(redirect, collectErrorMessages(result));
 			return "redirect:/users/signup";
 		}
-		service.addUser(dto);
+		service.addUser(dto.toEntity());
 		return "redirect:/users";
 	}
 
@@ -77,10 +78,10 @@ public class UserController {
 	 * @return 회원 프로필 보기 페이지
 	 */
 	@GetMapping("/{userId}")
-	public String userDetails(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
+	public String userDetail(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
 		Model model) {
 		if (errorMessage.isBlank()) {
-			model.addAttribute("userDto", service.findUser(userId));
+			model.addAttribute("userResponseDto", UserResponseDTO.from(service.findByUserId(userId)));
 		}
 
 		return "user/profile";
@@ -97,7 +98,7 @@ public class UserController {
 	public String modifyForm(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
 		Model model) {
 		if (errorMessage.isBlank()) {
-			model.addAttribute("userDto", service.findUser(userId));
+			model.addAttribute("userResponseDto", UserResponseDTO.from(service.findByUserId(userId)));
 		}
 
 		return "user/modify-form";
@@ -127,7 +128,7 @@ public class UserController {
 			return redirectBack(request);
 		}
 
-		service.modifyUser(dto);
+		service.modifyUser(dto.toEntity());
 
 		return "redirect:/users/" + dto.getUserId();
 	}

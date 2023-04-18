@@ -59,8 +59,8 @@ public class SignUpRequestDTO {
 		return email;
 	}
 
-	public User toUser(int id) {
-		return new User(id, userId, password, name, email);
+	public User toEntity() {
+		return new User(userId, password, name, email);
 	}
 
 }

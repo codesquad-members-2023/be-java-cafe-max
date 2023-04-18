@@ -27,7 +27,7 @@ public class QuestionWriteRequestDTO {
 		return contents;
 	}
 
-	public Question toEntity(int id) {
-		return new Question(id, writer, title, contents, LocalDateTime.now());
+	public Question toEntity() {
+		return new Question(-1, writer, title, contents, LocalDateTime.now());
 	}
 }
