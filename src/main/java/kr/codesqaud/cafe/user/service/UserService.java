@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.user.service;
 
 import kr.codesqaud.cafe.exception.DuplicateKeyException;
 import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.dto.SessionUser;
 import kr.codesqaud.cafe.user.dto.UserAddForm;
 import kr.codesqaud.cafe.user.dto.UserLoginForm;
 import kr.codesqaud.cafe.user.dto.UserResponse;
@@ -27,7 +28,7 @@ public class UserService {
         return userRepository.save(userAddForm.toUser());
     }
 
-    public Optional<UserResponse> loginCheck(UserLoginForm userLoginForm) {
+    public Optional<SessionUser> loginCheck(UserLoginForm userLoginForm) {
         if (!userRepository.containsUserId(userLoginForm.getUserId())) {
             return Optional.empty();
         }
@@ -35,7 +36,7 @@ public class UserService {
         if (!userLoginForm.getPassword().equals(user.getPassword())) {
             return Optional.empty();
         }
-        return Optional.ofNullable(UserResponse.from(user));
+        return Optional.ofNullable(SessionUser.from(user));
     }
 
     public UserResponse getUser(String userId) {

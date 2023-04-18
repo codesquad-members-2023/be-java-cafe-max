@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.user.controller;
 
+import kr.codesqaud.cafe.user.dto.SessionUser;
 import kr.codesqaud.cafe.user.dto.UserAddForm;
 import kr.codesqaud.cafe.user.dto.UserLoginForm;
-import kr.codesqaud.cafe.user.dto.UserResponse;
 import kr.codesqaud.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,13 +25,13 @@ public class UserController {
     @PostMapping
     public String addUser(@ModelAttribute UserAddForm userAddForm, HttpSession session) {
         String userId = userService.addUser(userAddForm);
-        session.setAttribute("sessionUser", userAddForm.toUserResponse());
+        session.setAttribute("sessionUser", new SessionUser(userAddForm.getUserId(), userAddForm.getUserName()));
         return "redirect:/user/list";
     }
 
     @PostMapping("/login")
     public String loginUser(@ModelAttribute UserLoginForm userLoginForm, HttpSession session) {
-        Optional<UserResponse> loginResult = userService.loginCheck(userLoginForm);
+        Optional<SessionUser> loginResult = userService.loginCheck(userLoginForm);
         if (!loginResult.isPresent()) {
             return "user/login_failed";
         }
@@ -59,8 +59,8 @@ public class UserController {
 
     @GetMapping("/update")
     public String updateUser(HttpSession session, Model model) {
-        UserResponse user = (UserResponse) session.getAttribute("sessionUser");
-        model.addAttribute("user", user);
+        String sessionUserId = ((SessionUser) session.getAttribute("sessionUser")).getUserId();
+        model.addAttribute("user", userService.getUser(sessionUserId));
         return "user/update";
     }
 

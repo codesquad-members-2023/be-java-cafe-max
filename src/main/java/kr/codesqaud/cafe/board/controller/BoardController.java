@@ -4,7 +4,7 @@ import kr.codesqaud.cafe.board.dto.PostResponse;
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
 import kr.codesqaud.cafe.board.service.BoardService;
 import kr.codesqaud.cafe.exception.ResourceNotFoundException;
-import kr.codesqaud.cafe.user.dto.UserResponse;
+import kr.codesqaud.cafe.user.dto.SessionUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +44,7 @@ public class BoardController {
         PostResponse postResponse = boardService.getPost(postId);
         model.addAttribute("post", postResponse);
 
-        UserResponse user = (UserResponse) session.getAttribute("sessionUser");
-        if (user.getUserName().equals(postResponse.getWriter())) {
+        if (isWriter(session, postResponse.getWriter())) {
             model.addAttribute("isWriter", true);
         }
 
@@ -57,8 +56,7 @@ public class BoardController {
         PostResponse postResponse = boardService.getPost(postId);
         model.addAttribute("post", postResponse);
 
-        UserResponse user = (UserResponse) session.getAttribute("sessionUser");
-        if (!user.getUserName().equals(postResponse.getWriter())) {
+        if (!isWriter(session, postResponse.getWriter())) {
             throw new ResourceNotFoundException("접근할 수 없는 페이지입니다.");
         }
 
@@ -75,6 +73,11 @@ public class BoardController {
     public String deletePost(@PathVariable Long postId) {
         boardService.delete(postId);
         return "redirect:/board/list";
+    }
+
+    private boolean isWriter(HttpSession session, String writer) {
+        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
+        return sessionUser.getUserName().equals(writer);
     }
 
 }
