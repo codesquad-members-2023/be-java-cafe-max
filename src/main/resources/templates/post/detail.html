@@ -57,7 +57,7 @@
         <div>
             <div th:if="${post.user} != null">
                 <button th:if="${post.user.id} == ${session.user.id}"
-                        th:onclick="|location.href='@{/posts/{id}/edit(id = ${postId})}'|" class="btn btn-primary"
+                        th:onclick="|location.href='@{/posts/{id}/edit(id = ${post.id})}'|" class="btn btn-primary"
                         type="submit">수정
                 </button>
             </div>

@@ -45,9 +45,15 @@ public class PostService {
     }
 
     @Transactional
-    public void delete(Post post) {
-        post.disable();
-        postRepository.save(post);
+    public boolean delete(Post post) {
+        boolean canDelete = post.getComments().stream()
+                .filter(comment -> !comment.getUser().isSameId(post.getUser().getId()))
+                .allMatch(Comment::isDeleted);
+        if (canDelete) {
+            post.disable();
+            postRepository.save(post);
+        }
+        return canDelete;
     }
     @Transactional
     public void save(Post post, Comment comment) {

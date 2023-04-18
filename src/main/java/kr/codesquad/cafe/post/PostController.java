@@ -49,7 +49,7 @@ public class PostController {
     @GetMapping("/posts/{postId}/edit")
     public String viewEditPost(@PathVariable("postId") Post post, Model model) {
         model.addAttribute(PostForm.from(post));
-        model.addAttribute(post.getId());
+        model.addAttribute("postId",post.getId());
         return "post/editForm";
     }
 
@@ -66,9 +66,15 @@ public class PostController {
 
     @ValidPostIdPath
     @DeleteMapping("/posts/{postId}")
-    public String deletePost(@PathVariable("postId") Post post) {
-        postService.delete(post);
-        return "redirect:/";
+    public String deletePost(@PathVariable("postId") Post post, Model model) {
+        boolean isDeleted = postService.delete(post);
+        if (isDeleted) {
+            return "redirect:/";
+        }
+        model.addAttribute("error", "다른 맴버가 작성한 댓글이 있어서 삭제할 수 없습니다.");
+        model.addAttribute(PostForm.from(post));
+        model.addAttribute("postId",post.getId());
+        return "post/editForm";
     }
 
     @PostMapping("/posts/{postId}/comments")

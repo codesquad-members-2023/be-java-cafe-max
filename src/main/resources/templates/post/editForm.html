@@ -17,6 +17,7 @@
 <form class="container" id="postForm" th:action="@{/posts/{id}(id = ${postId})}" th:object="${postForm}" method="post"
       novalidate>
     <input type="hidden" name="_method" value="PUT"/>
+    <div th:if="${error} != null" th:text="${error}" class="text-danger text-center"></div>
     <div th:if="${#fields.hasErrors()}">
         <div class="row justify-content-center mt-3 mb-3">
             <h3>글쓰기</h3>
