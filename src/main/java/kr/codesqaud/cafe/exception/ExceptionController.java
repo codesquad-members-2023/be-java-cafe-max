@@ -52,4 +52,10 @@ public class ExceptionController {
 		model.addAttribute("errorMessage", "페이지를 찾을 수 없습니다.");
 		return "error/error";
 	}
+
+	@ExceptionHandler(DeniedDataModificationException.class)
+	public String deniedDataException(DeniedDataModificationException e, Model model) {
+		model.addAttribute("errorMessage", e.getMessage());
+		return "error/error";
+	}
 }

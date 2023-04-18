@@ -36,12 +36,9 @@ public class UserQueryController {
 	}
 
 	@GetMapping("/check/{userID}")
-	public String checkUserID(@PathVariable String userID, HttpSession session, Model model) {
+	public String checkUserID(@PathVariable String userID, HttpSession session) {
 		User user = (User)session.getAttribute("sessionUser");
-		if (!user.getUserID().equals(userID)) {
-			model.addAttribute("errorMessage", "다른 사람의 정보는 수정할 수 없습니다.");
-			return "error/error";
-		}
+		user.validateUserId(userID);
 		return "user/checkForUpdate";
 	}
 

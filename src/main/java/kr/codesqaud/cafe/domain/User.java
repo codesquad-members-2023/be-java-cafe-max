@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDate;
 
+import kr.codesqaud.cafe.exception.DeniedDataModificationException;
+
 public class User {
 	private Long index;
 	private String userID;
@@ -49,5 +51,11 @@ public class User {
 
 	public LocalDate getSignUpDate() {
 		return signUpDate;
+	}
+
+	public void validateUserId(String userID) {
+		if (!this.userID.equals(userID)) {
+			throw new DeniedDataModificationException("다른 사람의 정보는 수정할 수 없습니다.");
+		}
 	}
 }

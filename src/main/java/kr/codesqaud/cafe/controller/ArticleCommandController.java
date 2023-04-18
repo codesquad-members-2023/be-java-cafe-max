@@ -32,10 +32,7 @@ public class ArticleCommandController {
 	public String deleteArticle(@PathVariable Long index, Model model, HttpSession session) {
 		User user = (User)session.getAttribute("sessionUser");
 		Article article = articleService.findByIndex(index);
-		if (!user.getNickname().equals(article.getWriter())) {
-			model.addAttribute("errorMessage", "다른 사람의 글은 삭제할 수 없습니다.");
-			return "error/error";
-		}
+		article.validateWriter(user.getNickname(), "다른 사람의 글은 삭제할 수 없습니다.");
 		articleService.deleteArticle(index);
 		return "redirect:/";
 	}

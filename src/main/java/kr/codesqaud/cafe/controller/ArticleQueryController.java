@@ -53,10 +53,7 @@ public class ArticleQueryController {
 	public String getUpdateForm(@PathVariable Long index, Model model, HttpSession session) {
 		User user = (User)session.getAttribute("sessionUser");
 		Article article = articleService.findByIndex(index);
-		if (!user.getNickname().equals(article.getWriter())) {
-			model.addAttribute("errorMessage", "다른 사람의 글은 수정할 수 없습니다.");
-			return "error/error";
-		}
+		article.validateWriter(user.getNickname(), "다른 사람의 글은 수정할 수 없습니다.");
 		model.addAttribute("article", article);
 		return "qna/updateDetail";
 	}

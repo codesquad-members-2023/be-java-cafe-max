@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.exception.DeniedDataModificationException;
+
 public class Article {
 	private Long index;
 	private String title;
@@ -52,5 +54,11 @@ public class Article {
 	public boolean setHits(long hits) {
 		this.hits = hits;
 		return true;
+	}
+
+	public void validateWriter(String nickname, String message) {
+		if (!writer.equals(nickname)) {
+			throw new DeniedDataModificationException(message);
+		}
 	}
 }
