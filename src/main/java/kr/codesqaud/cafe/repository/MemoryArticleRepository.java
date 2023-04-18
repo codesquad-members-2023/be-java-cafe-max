@@ -16,12 +16,12 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public List<Article> getAllArticle() {
+    public List<Article> findAll() {
         return repository;
     }
 
     @Override
-    public Article getArticleIndexOf(int index) {
+    public Article findByIndex(int index) {
         return repository.get(index);
     }
 }

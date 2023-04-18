@@ -23,12 +23,12 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> getAllArticle() {
+    public List<Article> findAll() {
         return jdbcTemplate.query("select * from article", articleRowMapper());
     }
 
     @Override
-    public Article getArticleIndexOf(int index) {
+    public Article findByIndex(int index) {
         List<Article> result = jdbcTemplate.query("select * from article where id = ?", articleRowMapper(), index + 1);
         return result.stream().findAny().get();
     }

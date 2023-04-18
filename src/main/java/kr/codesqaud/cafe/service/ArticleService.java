@@ -26,10 +26,10 @@ public class ArticleService {
     }
 
     public List<Article> findAll() {
-        return articleRepository.getAllArticle();
+        return articleRepository.findAll();
     }
 
     public Article findArticleIndexOf(int index) {
-        return articleRepository.getArticleIndexOf(index);
+        return articleRepository.findByIndex(index);
     }
 }
