@@ -43,4 +43,11 @@ public class ArticleController {
         model.addAttribute("post", post);
         return "qna/show";
     }
+
+    @GetMapping("/articles/{postId}/form")
+    public String showUpdatePostForm(@PathVariable Long postId, Model model) {
+        ArticleResponseDto post = articleService.findPost(postId);
+        model.addAttribute("post", post);
+        return "qna/updateForm";
+    }
 }
