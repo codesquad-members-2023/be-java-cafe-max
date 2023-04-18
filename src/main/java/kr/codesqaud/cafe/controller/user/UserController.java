@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller.user;
 
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +32,7 @@ public class UserController {
 
     @GetMapping
     public String list(Model model){
-        List<UserResponse> users = userService.findUsers();
+        List<UserDao> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
@@ -41,7 +40,7 @@ public class UserController {
     // 유저 프로필 보기
     @GetMapping("/{userId}")
     public String profile(@PathVariable String userId, Model model){
-        UserResponse userResponse = userService.findByUserId(userId);
+        UserDao userResponse = userService.findByUserId(userId);
         model.addAttribute("user", userResponse);
         return "user/profile";
     }
