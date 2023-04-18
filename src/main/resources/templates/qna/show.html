@@ -81,11 +81,15 @@
                                 </div>
                             </article>
                             {{/articleComments}}
-                            <form class="submit-write">
+                            <form class="submit-write" id="article-comment-form" method="post" action="/comments">
                                 <div class="form-group" style="padding:14px;">
-                                    <textarea class="form-control" placeholder="Update your status"></textarea>
+                                    {{#article}}
+                                    <input name="articleId" value="{{id}}" hidden="hidden"/>
+                                    {{/article}}
+                                    <textarea class="form-control" placeholder="Update your status"
+                                              form="article-comment-form" name="content"></textarea>
                                 </div>
-                                <button class="btn btn-success pull-right" type="button">답변하기</button>
+                                <button class="btn btn-success pull-right" type="submit">답변하기</button>
                                 <div class="clearfix"/>
                             </form>
                         </div>

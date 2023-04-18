@@ -20,6 +20,10 @@ public class ArticleComment {
 		this.articleId = articleId;
 	}
 
+	public static ArticleComment of(final String content, final String writer, Long articleId) {
+		return new ArticleComment(null, content, LocalDateTime.now(), writer, articleId);
+	}
+
 	public Long getId() {
 		return id;
 	}
