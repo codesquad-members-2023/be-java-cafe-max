@@ -3,10 +3,12 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository{
@@ -21,6 +23,7 @@ public class MemoryArticleRepository implements ArticleRepository{
                 .writer(input.getWriter())
                 .title(input.getTitle())
                 .contents(input.getContents())
+                .writtenTime(LocalDateTime.now())
                 .build();
 
         id += 1;
@@ -29,7 +32,10 @@ public class MemoryArticleRepository implements ArticleRepository{
 
     @Override
     public List<Article> findAll() {
-        return repository.values().stream().collect(Collectors.toUnmodifiableList());
+        List<Article> articles = new ArrayList<>(repository.values());
+
+        Collections.reverse(articles);
+        return Collections.unmodifiableList(articles);
     }
 
     @Override

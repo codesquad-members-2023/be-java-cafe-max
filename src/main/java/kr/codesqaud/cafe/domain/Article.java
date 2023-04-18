@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class Article {
 
@@ -8,7 +8,7 @@ public class Article {
     private final String writer;
     private final String title;
     private final String contents;
-    private final LocalTime writtenTime;
+    private final LocalDateTime writtenTime;
 
     public static class Builder {
 
@@ -16,7 +16,7 @@ public class Article {
         private String writer;
         private String title;
         private String contents;
-        private LocalTime writtenTime;
+        private LocalDateTime writtenTime;
 
         public Builder id(Long id) {
             this.id = id;
@@ -38,7 +38,7 @@ public class Article {
             return this;
         }
 
-        public Builder writtenTime(LocalTime writtenTime) {
+        public Builder writtenTime(LocalDateTime writtenTime) {
             this.writtenTime = writtenTime;
             return this;
         }
@@ -53,7 +53,7 @@ public class Article {
         this.writer = builder.writer;
         this.title = builder.title;
         this.contents = builder.contents;
-        this.writtenTime = LocalTime.now();
+        this.writtenTime = builder.writtenTime;
     }
 
     public static Builder builder() {
@@ -76,7 +76,7 @@ public class Article {
         return contents;
     }
 
-    public LocalTime getWrittenTime() {
+    public LocalDateTime getWrittenTime() {
         return writtenTime;
     }
 }
