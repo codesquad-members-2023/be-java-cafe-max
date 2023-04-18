@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.auth;
+package kr.codesqaud.cafe.util;
 
 import org.springframework.util.PatternMatchUtils;
 
