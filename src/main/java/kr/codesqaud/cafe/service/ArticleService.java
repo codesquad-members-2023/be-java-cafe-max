@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -18,8 +19,8 @@ public class ArticleService {
     }
 
     @Transactional
-    public Long post(ArticleForm form){
-        Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
+    public Long post(ArticleForm form, String userId){
+        Article article = new Article(userId, form.getTitle(), form.getContents());
         return articleRepository.save(article).getId();
     }
 
