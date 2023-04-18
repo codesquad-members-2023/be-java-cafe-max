@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
+import kr.codesqaud.cafe.exception.article.PrimaryKeyGenerationException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
@@ -24,19 +25,24 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Long save(Article article) {
+    public long save(Article article) {
         final String sql = "INSERT INTO articles (title, writer, contents, createdAt) VALUES (:title, :writer, :contents, :createdAt)";
         final GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+
         jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder);
-        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+        if (keyHolder.getKey() == null) {
+            throw new PrimaryKeyGenerationException();
+        }
+
+        return keyHolder.getKey().longValue();
     }
 
     @Override
-    public Article findById(Long id) {
+    public Optional<Article> findById(Long id) {
         final String sql = "SELECT id, title, writer, contents, createdAt FROM articles WHERE id = :id AND deleted = false LIMIT 1";
-        return jdbcTemplate.queryForStream(sql, Map.of("id", id), articleRowMapper)
-                .findFirst()
-                .orElseThrow(ArticleNotFoundException::new);
+        try (final Stream<Article> result = jdbcTemplate.queryForStream(sql, Map.of("id", id), articleRowMapper)) {
+            return result.findFirst();
+        }
     }
 
     @Override
@@ -47,24 +53,23 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public boolean exist(Long id) {
-        final String sql = "SELECT count(*) FROM articles WHERE id = :id AND deleted = false LIMIT 1";
-        final Integer count = jdbcTemplate.queryForObject(sql,
-                Map.of("id", id),
-                Integer.class);
+        final String sql = "SELECT EXISTS(SELECT 1 FROM articles WHERE id = :id AND deleted = false LIMIT 1)";
+        final int count = jdbcTemplate.queryForObject(sql,
+                Map.of("id", id), Integer.class);
         return count > 0;
     }
 
     @Override
-    public Article findWithSurroundingArticles(Long id) {
+    public Optional<Article> findWithSurroundingArticles(Long id) {
         final String sql = "SELECT id, title, writer, contents, createdAt, deleted, previousId, nextId "
                 + " FROM (SELECT id, title, writer, contents, createdAt, deleted, "
                 + " LAG(id, 1, 0) OVER(ORDER BY id ASC) AS previousId, "
                 + " LEAD(id, 1, 0) OVER(ORDER BY id ASC) AS nextId "
                 + " FROM articles WHERE deleted = false) WHERE id = :id AND deleted = false";
 
-        return jdbcTemplate.queryForStream(sql, Map.of("id", id), articleRowMapper)
-                .findFirst()
-                .orElseThrow(ArticleNotFoundException::new);
+        try (final Stream<Article> result = jdbcTemplate.queryForStream(sql, Map.of("id", id), articleRowMapper)) {
+            return result.findFirst();
+        }
     }
 
     @Override

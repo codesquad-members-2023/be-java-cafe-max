@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Repository
 public class JdbcUserRepository implements UserRepository {
@@ -30,9 +31,9 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User findByUserId(String userId) {
         final String sql = "SELECT userId, password, name, email FROM users WHERE userId = :userId LIMIT 1";
-        return jdbcTemplate.queryForStream(sql, Map.of("userId", userId), userRowMapper)
-                .findFirst()
-                .orElseThrow(UserNotFoundException::new);
+        try (final Stream<User> result = jdbcTemplate.queryForStream(sql, Map.of("userId", userId), userRowMapper)) {
+            return result.findFirst().orElseThrow(UserNotFoundException::new);
+        }
     }
 
     @Override
@@ -63,8 +64,8 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public boolean existByName(String name) {
-        final String sql = "SELECT count(*) FROM users WHERE name = :name LIMIT 1";
-        final Integer count = jdbcTemplate.queryForObject(sql,
+        final String sql = "SELECT EXISTS(SELECT 1 FROM users WHERE name = :name LIMIT 1)";
+        final int count = jdbcTemplate.queryForObject(sql,
                 Map.of("name", name),
                 Integer.class);
         return count > 0;

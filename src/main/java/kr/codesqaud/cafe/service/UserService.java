@@ -11,7 +11,6 @@ import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +38,6 @@ public class UserService {
         return userRepository.findAll().stream().map(UserResponse::from).collect(Collectors.toUnmodifiableList());
     }
 
-    @Transactional
     public int updateUser(UserUpdateRequest userUpdateRequest) {
         if (!userRepository.findByUserId(userUpdateRequest.getUserId()).isPasswordMatched(userUpdateRequest.getCurrentPassword())) {
             throw new MismatchedPasswordException(userUpdateRequest);
@@ -47,7 +45,6 @@ public class UserService {
         return userRepository.update(userUpdateRequest.toUser());
     }
 
-    @Transactional
     public UserResponse findByUserId(String userId) {
         if (!userRepository.exist(userId)) {
             throw new UserNotFoundException();
@@ -56,12 +53,10 @@ public class UserService {
         return UserResponse.from(userRepository.findByUserId(userId));
     }
 
-    @Transactional
     public UserUpdateRequest makeUserUpdateRequestByUserId(String userId) {
         return UserUpdateRequest.from(userRepository.findByUserId(userId));
     }
 
-    @Transactional
     public UserResponse login(String userId, String password) {
         if (!userRepository.exist(userId)) {
             throw new LoginFailedException();

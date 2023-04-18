@@ -27,7 +27,7 @@ class MemoryArticleRepositoryTest {
 
         // when
         memoryArticleRepository.save(article);
-        Article findArticle = memoryArticleRepository.findById(article.getId());
+        Article findArticle = memoryArticleRepository.findById(article.getId()).get();
 
         // then
         assertThat(findArticle).isEqualTo(article);
