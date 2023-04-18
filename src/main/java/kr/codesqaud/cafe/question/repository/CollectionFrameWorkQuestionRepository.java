@@ -2,13 +2,13 @@ package kr.codesqaud.cafe.question.repository;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.common.repository.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.question.domain.Question;
+import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 
 @Repository
 public class CollectionFrameWorkQuestionRepository implements QuestionRepository {
@@ -35,13 +35,13 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public Question findById(long id) throws NoSuchElementException {
+	public Question findById(long id) throws QuestionNotExistException {
 		for (Question question : questionTable.select()) {
 			if (question.getId() == id) {
 				return question;
 			}
 		}
-		throw new NoSuchElementException("존재하지 않는 개시글 입니다.");
+		throw new QuestionNotExistException(id);
 	}
 
 }

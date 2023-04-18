@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.user.repository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
@@ -9,6 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
+import kr.codesqaud.cafe.user.exception.UserNotExistException;
 
 @Repository
 @Primary
@@ -19,12 +20,12 @@ public class H2UserRepository implements UserRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public void save(User user) throws IllegalArgumentException {
+	public void save(User user) throws UserIdDuplicateException {
 		String sql = "INSERT INTO \"user\"(userId, password, name, email) VALUES (?, ?, ?, ?)";
 		try {
 			jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
 		} catch (DataAccessException e) {
-			throw new IllegalArgumentException("이미 등록된 아이디 입니다.");
+			throw new UserIdDuplicateException(user.getUserId());
 		}
 	}
 
@@ -34,12 +35,12 @@ public class H2UserRepository implements UserRepository {
 	}
 
 	@Override
-	public User findByUserId(String userId) throws NoSuchElementException {
+	public User findByUserId(String userId) throws UserNotExistException {
 		return null;
 	}
 
 	@Override
-	public void modify(User user) throws NoSuchElementException {
+	public void modify(User user) throws UserNotExistException {
 		// TODO document why this method is empty
 	}
 }

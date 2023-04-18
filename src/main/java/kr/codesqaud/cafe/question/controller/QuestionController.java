@@ -16,6 +16,7 @@ import kr.codesqaud.cafe.common.web.PageHandler;
 import kr.codesqaud.cafe.question.controller.request.QuestionWriteRequestDTO;
 import kr.codesqaud.cafe.question.controller.response.QuestionBoardResponseDTO;
 import kr.codesqaud.cafe.question.controller.response.QuestionTitleResponseDTO;
+import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.question.service.QuestionService;
 
 @Controller
@@ -79,7 +80,7 @@ public class QuestionController {
 	 */
 	@GetMapping("/{questionId}")
 	public String questionDetails(@PathVariable String questionId, @ModelAttribute("errorMessage") String errorMessage,
-		Model model) {
+		Model model) throws QuestionNotExistException {
 		if (errorMessage.isBlank()) {
 			long id = Long.parseLong(questionId);
 			model.addAttribute("question", service.findById(id));

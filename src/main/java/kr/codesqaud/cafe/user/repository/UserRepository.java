@@ -1,16 +1,17 @@
 package kr.codesqaud.cafe.user.repository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
+import kr.codesqaud.cafe.user.exception.UserNotExistException;
 
 public interface UserRepository {
-	void save(User user) throws IllegalArgumentException;
+	void save(User user) throws UserIdDuplicateException;
 
 	List<User> findAll();
 
-	User findByUserId(String userId) throws NoSuchElementException;
+	User findByUserId(String userId) throws UserNotExistException;
 
-	void modify(User user) throws NoSuchElementException;
+	void modify(User user) throws UserNotExistException;
 }

@@ -1,11 +1,11 @@
 package kr.codesqaud.cafe.question.service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.question.domain.Question;
+import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.question.repository.QuestionRepository;
 
 @Service
@@ -28,7 +28,7 @@ public class QuestionService {
 		return repository.findAll(offset, pageSize);
 	}
 
-	public Question findById(long id) throws NoSuchElementException {
+	public Question findById(long id) throws QuestionNotExistException {
 		return repository.findById(id);
 	}
 }

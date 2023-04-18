@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.question.repository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
@@ -12,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.question.domain.Question;
+import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 
 @Repository
 @Primary
@@ -52,7 +52,7 @@ public class H2QuestionRepository implements QuestionRepository {
 		return jdbcTemplate.query(sql, parameters, rowMapper);
 	}
 
-	public Question findById(long id) throws NoSuchElementException {
+	public Question findById(long id) throws QuestionNotExistException {
 		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\"  WHERE id = :id";
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("id", id);
@@ -66,7 +66,7 @@ public class H2QuestionRepository implements QuestionRepository {
 		try {
 			return jdbcTemplate.queryForObject(sql, parameters, rowMapper);
 		} catch (DataAccessException e) {
-			throw new NoSuchElementException("존재하지 않는 개시글 입니다.");
+			throw new QuestionNotExistException(id);
 		}
 
 	}

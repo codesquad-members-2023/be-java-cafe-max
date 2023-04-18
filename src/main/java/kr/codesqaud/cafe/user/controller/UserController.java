@@ -21,6 +21,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.codesqaud.cafe.user.controller.request.SignUpRequestDTO;
 import kr.codesqaud.cafe.user.controller.response.UserResponseDTO;
+import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
+import kr.codesqaud.cafe.user.exception.UserNotExistException;
 import kr.codesqaud.cafe.user.service.UserService;
 
 @Controller
@@ -61,7 +63,8 @@ public class UserController {
 	 * @return 회원가입 성공시 회원 목록 보기 페이지, 실패시 회원가입 페이지로 redirect
 	 */
 	@PostMapping
-	public String userAdd(@Valid SignUpRequestDTO dto, BindingResult result, RedirectAttributes redirect) {
+	public String userAdd(@Valid SignUpRequestDTO dto, BindingResult result, RedirectAttributes redirect) throws
+		UserIdDuplicateException {
 		if (result.hasErrors()) {
 			addAttributeErrorMessages(redirect, collectErrorMessages(result));
 			return "redirect:/users/signup";
@@ -79,7 +82,7 @@ public class UserController {
 	 */
 	@GetMapping("/{userId}")
 	public String userDetail(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
-		Model model) {
+		Model model) throws UserNotExistException {
 		if (errorMessage.isBlank()) {
 			model.addAttribute("userResponseDto", UserResponseDTO.from(service.findByUserId(userId)));
 		}
@@ -96,7 +99,7 @@ public class UserController {
 	 */
 	@GetMapping("/{userId}/modify-form")
 	public String modifyForm(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
-		Model model) {
+		Model model) throws UserNotExistException {
 		if (errorMessage.isBlank()) {
 			model.addAttribute("userResponseDto", UserResponseDTO.from(service.findByUserId(userId)));
 		}
@@ -116,7 +119,7 @@ public class UserController {
 	@PutMapping("/{userId}")
 	public String userModify(@PathVariable String userId, @Valid SignUpRequestDTO dto, BindingResult result,
 		RedirectAttributes redirect,
-		HttpServletRequest request) {
+		HttpServletRequest request) throws UserNotExistException {
 
 		if (!userId.equals(dto.getUserId())) {
 			addAttributeErrorMessage(redirect, "잘못된 입력입니다.");

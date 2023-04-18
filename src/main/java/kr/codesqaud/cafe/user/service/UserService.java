@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
+import kr.codesqaud.cafe.user.exception.UserNotExistException;
 import kr.codesqaud.cafe.user.repository.UserRepository;
 
 @Service
@@ -21,7 +23,7 @@ public class UserService {
 	 * @param user 회원 가입 정보
 	 * @throws IllegalArgumentException 이미 등록된 회원 ID을 중복하여 등록한 경우 Exception 발생
 	 */
-	public void addUser(User user) throws IllegalArgumentException {
+	public void addUser(User user) throws UserIdDuplicateException {
 		repository.save(user);
 	}
 
@@ -39,7 +41,7 @@ public class UserService {
 	 * @return ID에 해당하는 회원 정보
 	 * @throws NoSuchElementException 존재하지 않는 회원을 검색한 경우 Exception 발생
 	 */
-	public User findByUserId(String userId) throws NoSuchElementException {
+	public User findByUserId(String userId) throws UserNotExistException {
 		return repository.findByUserId(userId);
 	}
 
@@ -48,7 +50,7 @@ public class UserService {
 	 * @param user 수정할 회원 정보
 	 * @throws NoSuchElementException 존재하지 않는 회원의 정보를 수정하려 한 경우 Exception 발생
 	 */
-	public void modifyUser(User user) throws NoSuchElementException {
+	public void modifyUser(User user) throws UserNotExistException {
 		repository.modify(user);
 	}
 

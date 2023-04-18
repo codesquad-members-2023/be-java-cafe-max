@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.common.repository.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
+import kr.codesqaud.cafe.user.exception.UserNotExistException;
 
 @Repository
 public class CollectionFrameworkUserRepository implements UserRepository {
@@ -18,11 +20,11 @@ public class CollectionFrameworkUserRepository implements UserRepository {
 		dummyData.insertUserDummyData(userTable);
 	}
 
-	public void save(User user) throws IllegalArgumentException {
+	public void save(User user) throws UserIdDuplicateException {
 		String userId = user.getUserId();
 		for (User exgistingUser : userTable.select()) {
 			if (exgistingUser.getUserId().equals(userId)) {
-				throw new IllegalArgumentException("이미 등록된 아이디 입니다.");
+				throw new UserIdDuplicateException(user.getUserId());
 			}
 		}
 		userTable.insert(user);
@@ -38,10 +40,10 @@ public class CollectionFrameworkUserRepository implements UserRepository {
 				return exgistingUser;
 			}
 		}
-		throw new NoSuchElementException("존재하지 않는 유저 입니다.");
+		throw new NoSuchElementException(userId);
 	}
 
-	public void modify(User user) throws NoSuchElementException {
+	public void modify(User user) throws UserNotExistException {
 		String userId = user.getUserId();
 		for (User exgistingUser : userTable.select()) {
 			if (exgistingUser.getUserId().equals(userId)) {
@@ -49,7 +51,7 @@ public class CollectionFrameworkUserRepository implements UserRepository {
 				return;
 			}
 		}
-		throw new NoSuchElementException("존재하지 않는 유저 입니다.");
+		throw new UserNotExistException(user.getUserId());
 	}
 
 }
