@@ -27,13 +27,17 @@ public class ArticleService {
         List<Article> articles = articleRepository.findAll();
         List<ArticleResponseDto> articleResponseDtos = new ArrayList<>();
         for (Article article : articles) {
-            articleResponseDtos.add(article.toDto());
+            articleResponseDtos.add(article.toDto(findWriterName(article)));
         }
         return articleResponseDtos;
     }
 
     public ArticleResponseDto findPost(final Long id) {
         Article article = articleRepository.findById(id);
-        return article.toDto();
+        return article.toDto(findWriterName(article));
+    }
+
+    private String findWriterName(final Article article) {
+        return articleRepository.findWriterByUserId(article.getWriterId());
     }
 }

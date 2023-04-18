@@ -57,6 +57,6 @@ class ArticleControllerTest {
     }
 
     private Article createDummyArticle() {
-        return new Article(1L, "title", "contents", LocalDateTime.of(2023, 4, 7, 3, 42));
+        return new Article(1L, "title", "contents", LocalDateTime.of(2023, 4, 7, 3, 42), "chunghye98");
     }
 }

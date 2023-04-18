@@ -1,7 +1,6 @@
 package codesquad.cafe.domain.article.repository;
 
 import codesquad.cafe.domain.article.domain.Article;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -39,7 +38,8 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                             rs.getLong("id")
                             , rs.getString("title")
                             , rs.getString("contents")
-                            , rs.getTimestamp("createdAt").toLocalDateTime()));
+                            , rs.getTimestamp("createdAt").toLocalDateTime()
+                            ,rs.getString("writer_id")));
     }
 
     @Override
@@ -52,8 +52,16 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                                 rs.getLong("id")
                                 , rs.getString("title")
                                 , rs.getString("contents")
-                                , rs.getTimestamp("createdAt").toLocalDateTime());
+                                , rs.getTimestamp("createdAt").toLocalDateTime()
+                                ,rs.getString("writer_id"));
                     return article;
         });
+    }
+
+    @Override
+    public String findWriterByUserId(final String writerId) {
+        String sql = "SELECT users.name FROM users JOIN article ON users.id = article.writer_id WHERE writer_id = :writerId";
+        SqlParameterSource params = new MapSqlParameterSource("writerId", writerId);
+        return namedParameterJdbcTemplate.queryForObject(sql, params, String.class);
     }
 }

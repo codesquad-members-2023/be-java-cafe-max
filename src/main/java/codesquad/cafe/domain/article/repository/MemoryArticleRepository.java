@@ -1,9 +1,11 @@
 package codesquad.cafe.domain.article.repository;
 
 import codesquad.cafe.domain.article.domain.Article;
+import codesquad.cafe.domain.user.domain.User;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -28,6 +30,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public Article findById(final Long id) {
         return store.get(id);
+    }
+
+    @Override
+    public String findWriterByUserId(final String writerId) {
+        return null;
     }
 
 }

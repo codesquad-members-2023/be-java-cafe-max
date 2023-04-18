@@ -11,4 +11,5 @@ public interface ArticleRepository {
 
     Article findById(Long id);
 
+    String findWriterByUserId(String writerId);
 }
