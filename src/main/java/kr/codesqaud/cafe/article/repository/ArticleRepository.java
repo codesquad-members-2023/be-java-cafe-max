@@ -19,4 +19,6 @@ public interface ArticleRepository {
 	void deleteArticle(Long idx);
 
 	void saveReply(Reply reply);
+
+	List<Reply> findAllReply(Long idx);
 }

@@ -40,6 +40,7 @@ public class ArticleController {
 	@GetMapping("/articles/{idx}")
 	public String showDetailArticle(@PathVariable Long idx, Model model) {
 		model.addAttribute("article", articleService.findArticleByIdx(idx));
+		model.addAttribute("reply", articleService.getReplyListByIdx(idx));
 		return "article/show";
 	}
 

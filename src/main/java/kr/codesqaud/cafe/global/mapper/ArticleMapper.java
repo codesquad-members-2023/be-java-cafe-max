@@ -9,6 +9,7 @@ import kr.codesqaud.cafe.article.dto.ArticleResponse;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 import kr.codesqaud.cafe.article.dto.ReplyRequest;
+import kr.codesqaud.cafe.article.dto.ReplyResponse;
 
 @Component
 public class ArticleMapper {
@@ -35,5 +36,9 @@ public class ArticleMapper {
 	public Reply toReply(ReplyRequest replyRequest) {
 		return new Reply(replyRequest.getId(), replyRequest.getArticleIdx(), replyRequest.getNickName(),
 			replyRequest.getContent());
+	}
+
+	public ReplyResponse toReplyResponse(Reply reply) {
+		return new ReplyResponse(reply.getNickName(), reply.getContent(), reply.getDate());
 	}
 }

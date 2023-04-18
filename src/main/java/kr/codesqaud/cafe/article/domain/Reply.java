@@ -2,6 +2,9 @@ package kr.codesqaud.cafe.article.domain;
 
 import static kr.codesqaud.cafe.global.util.DateUtil.*;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Reply {
 
 	private String id;
@@ -26,6 +29,12 @@ public class Reply {
 
 	public String getId() {
 		return id;
+	}
+
+	public Reply(ResultSet rs) throws SQLException {
+		this.content = rs.getString("content");
+		this.date = rs.getString("date");
+		this.nickName = rs.getString("nickName");
 	}
 
 	public Long getArticleIdx() {
