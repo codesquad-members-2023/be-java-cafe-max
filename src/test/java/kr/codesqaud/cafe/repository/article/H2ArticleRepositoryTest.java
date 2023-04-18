@@ -16,16 +16,16 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @JdbcTest
 @Sql("classpath:test.sql")
-class JdbcArticleRepositoryTest {
+class H2ArticleRepositoryTest {
 
-    JdbcArticleRepository articleRepository;
+    H2ArticleRepository articleRepository;
 
     @Autowired
     NamedParameterJdbcTemplate jdbcTemplate;
 
     @BeforeEach
     void setUp() {
-        this.articleRepository = new JdbcArticleRepository(jdbcTemplate);
+        this.articleRepository = new H2ArticleRepository(jdbcTemplate);
     }
 
     @DisplayName("article을 save하면 jdbcRepository에 정상적으로 저장되는지 확인하는 테스트")

@@ -13,11 +13,11 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @Repository
-public class JdbcUserRepository implements UserRepository {
+public class H2UserRepository implements UserRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final RowMapper<User> userRowMapper = BeanPropertyRowMapper.newInstance(User.class);
 
-    public JdbcUserRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+    public H2UserRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

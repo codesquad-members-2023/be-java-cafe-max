@@ -15,12 +15,12 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Repository
-public class JdbcArticleRepository implements ArticleRepository {
+public class H2ArticleRepository implements ArticleRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final RowMapper<Article> articleRowMapper = BeanPropertyRowMapper.newInstance(Article.class);
 
-    public JdbcArticleRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+    public H2ArticleRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
