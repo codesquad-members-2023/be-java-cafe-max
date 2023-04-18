@@ -47,8 +47,10 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{postId}/form")
-    public String showUpdatePostForm(@PathVariable Long postId, Model model) {
-        ArticleResponseDto post = articleService.findPost(postId);
+    public String showUpdatePostForm(@PathVariable Long postId, Model model,
+                                     HttpServletRequest request) {
+        User user = findUserByRequest(request);
+        ArticleResponseDto post = articleService.findPostByIdAndUser(postId, user);
         model.addAttribute("post", post);
         return "qna/updateForm";
     }

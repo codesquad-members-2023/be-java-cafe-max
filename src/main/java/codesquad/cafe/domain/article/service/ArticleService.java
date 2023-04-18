@@ -62,4 +62,10 @@ public class ArticleService {
         validateWriter(user, article);
         articleRepository.deletePostById(postId);
     }
+
+    public ArticleResponseDto findPostByIdAndUser(final Long postId, final User user) {
+        Article article = articleRepository.findById(postId);
+        validateWriter(user, article);
+        return article.toDto(findWriterName(article));
+    }
 }
