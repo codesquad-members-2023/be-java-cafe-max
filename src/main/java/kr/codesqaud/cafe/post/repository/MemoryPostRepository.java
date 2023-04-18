@@ -1,30 +1,29 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.post.repository;
 
-import kr.codesqaud.cafe.domain.Post;
-import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.post.domain.Post;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public class MemoryPostRepository implements PostRepository{
+
+public class MemoryPostRepository implements PostRepository {
 
     private static List<Post> store = new ArrayList<>();
-    private static long id = 0L;
+    private static long index = 0L;
 
     @Override
     public Post save(Post post) {
-        post.setId(++id);
+        post.setIndex(++index);
         store.add(post);
         return post;
     }
 
     @Override
-    public Optional<Post> findById(long id) {
+    public Optional<Post> findByIndex(long index) {
         return store.stream()
-                .filter(post -> post.getId() == id)
+                .filter(post -> post.getIndex() == index)
                 .findAny();
     }
 

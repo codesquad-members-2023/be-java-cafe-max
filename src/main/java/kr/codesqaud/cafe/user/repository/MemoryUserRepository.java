@@ -1,22 +1,19 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.user.repository;
 
-import kr.codesqaud.cafe.domain.User;
-import org.springframework.stereotype.Repository;
+import kr.codesqaud.cafe.user.domain.User;
 
-import java.rmi.Naming;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class MemoryUserRepository implements UserRepository {
 
     private static List<User> store = new ArrayList<>();
     private static long index = 0L;
-    @Override
-    public User save(User user) {
-        user.setIndex(++index);
-        store.add(user);
+        @Override
+        public User save(User user) {
+            user.setIndex(++index);
+            store.add(user);
         return user;
     }
 
@@ -37,5 +34,10 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return store;
+    }
+
+    @Override
+    public void clearStore(){
+            store.clear();
     }
 }

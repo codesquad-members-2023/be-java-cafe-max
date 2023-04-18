@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.index.controller;
 
-import kr.codesqaud.cafe.service.PostService;
+import kr.codesqaud.cafe.post.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
