@@ -37,14 +37,15 @@ public class JDBCArticleRepository implements ArticleRepository {
 
 	@Override
 	public List<Article> findAll() {
-		return namedParameterJdbcTemplate.query("SELECT title,content,date,id,nickName,idx FROM ARTICLE",
+		return namedParameterJdbcTemplate.query(
+			"SELECT title,content,date,id,nickName,idx FROM ARTICLE WHERE is_visible = true",
 			(rs, rn) -> new Article(rs));
 	}
 
 	@Override
 	public Optional<Article> findArticleByIdx(Long idx) {
 		List<Article> article = namedParameterJdbcTemplate.query(
-			"SELECT title,content,date,id,nickName,idx FROM ARTICLE WHERE idx = :idx",
+			"SELECT title,content,date,id,nickName,idx FROM ARTICLE WHERE idx = :idx AND is_visible = true",
 			new MapSqlParameterSource("idx", idx),
 			(rs, rn) -> new Article(rs));
 		return article.stream().findFirst();
@@ -62,7 +63,7 @@ public class JDBCArticleRepository implements ArticleRepository {
 
 	@Override
 	public void deleteArticle(Long idx) {
-		namedParameterJdbcTemplate.update("DELETE FROM ARTICLE WHERE idx = :idx",
+		namedParameterJdbcTemplate.update("UPDATE ARTICLE SET is_visible = false WHERE idx = :idx",
 			new MapSqlParameterSource("idx", idx));
 	}
 }

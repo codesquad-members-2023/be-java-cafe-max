@@ -14,5 +14,7 @@ CREATE TABLE IF NOT EXISTS ARTICLE
     nickName VARCHAR(12) NOT NULL,
     content VARCHAR(255) NOT NULL,
     title   VARCHAR(3000) NOT NULL,
-    date    VARCHAR(10) NOT NULL
-);
+    date    VARCHAR(10) NOT NULL,
+    is_visible BOOL DEFAULT 1
+    );
+
