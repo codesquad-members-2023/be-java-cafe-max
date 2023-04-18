@@ -28,8 +28,6 @@ public class UserService {
         validateDuplicateUserName(user);
         validateDuplicateUserId(user);
 
-        System.out.println("확인할래");
-
         return userRepository.save(user).getUserId();
     }
 
