@@ -33,12 +33,12 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/write")
-    public String write() {
+    public String getFormToWrite() {
         return "article/write";
     }
 
     @PostMapping("/articles")
-    public String write(@ModelAttribute ArticleSaveRequest articleSaveRequest) {
+    public String writeArticle(@ModelAttribute ArticleSaveRequest articleSaveRequest) {
         articleService.saveArticle(articleSaveRequest);
         return "redirect:/";
     }
@@ -50,7 +50,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}/edit")
-    public String editArticle(@PathVariable Long id, Model model, HttpSession httpSession) {
+    public String getFormToEdit(@PathVariable Long id, Model model, HttpSession httpSession) {
         final ArticleResponse article = articleService.findById(id);
         checkUserPermissions(httpSession, article.getWriter());
         model.addAttribute("article", article);

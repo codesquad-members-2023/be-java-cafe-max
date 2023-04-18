@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/sign-up")
-    public String signUp(Model model) {
+    public String getFormToSignUp(Model model) {
         model.addAttribute("userSaveRequest", new UserSaveRequest());
         return "user/sign-up";
     }
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public String showUserProfile(@PathVariable String userId, Model model) {
+    public String getUserProfile(@PathVariable String userId, Model model) {
         UserResponse userResponse = userService.findByUserId(userId);
         model.addAttribute("user", userResponse);
 
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/update")
-    public String updateUser(@PathVariable String userId, Model model, HttpSession httpSession) {
+    public String getFormToUpdate(@PathVariable String userId, Model model, HttpSession httpSession) {
         checkUserPermissions(httpSession, userId);
         UserUpdateRequest userUpdateRequest = userService.makeUserUpdateRequestByUserId(userId);
         model.addAttribute("user", userUpdateRequest);
@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String getFromToLogin() {
         return "user/login";
     }
 
