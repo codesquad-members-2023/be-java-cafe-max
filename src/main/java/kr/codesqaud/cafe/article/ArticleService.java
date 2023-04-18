@@ -12,6 +12,7 @@ import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
+import kr.codesqaud.cafe.article.dto.ReplyRequest;
 import kr.codesqaud.cafe.article.exception.ArticleIdAndSessionIdMismatchException;
 import kr.codesqaud.cafe.article.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
@@ -60,5 +61,9 @@ public class ArticleService {
 	public void deleteArticleByIdx(Long idx, String id) {
 		validSessionIdAndArticleId(idx, id);
 		articleRepository.deleteArticle(idx);
+	}
+
+	public void addReply(ReplyRequest replyRequest) {
+		articleRepository.saveReply(articleMapper.toReply(replyRequest));
 	}
 }

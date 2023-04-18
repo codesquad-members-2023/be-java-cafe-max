@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
+import kr.codesqaud.cafe.article.dto.ReplyRequest;
 import kr.codesqaud.cafe.global.config.Session;
 
 @Controller
@@ -63,6 +64,15 @@ public class ArticleController {
 		Session session = getLoginUser(httpSession);
 		articleService.deleteArticleByIdx(idx, session.getId());
 		return "redirect:/";
+	}
+
+	@PostMapping("/articles/{idx}/rely")
+	public String reply(@PathVariable Long idx, @ModelAttribute @Valid ReplyRequest replyRequest,
+		HttpSession httpSession) {
+		Session session = getLoginUser(httpSession);
+		replyRequest.init(session.getId(), session.getNickName(), idx);
+		articleService.addReply(replyRequest);
+		return "redirect:/articles/" + idx;
 	}
 
 }

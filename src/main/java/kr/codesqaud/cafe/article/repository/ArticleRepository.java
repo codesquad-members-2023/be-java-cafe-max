@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import kr.codesqaud.cafe.article.domain.Article;
+import kr.codesqaud.cafe.article.domain.Reply;
 
 public interface ArticleRepository {
 
@@ -16,4 +17,6 @@ public interface ArticleRepository {
 	void updateArticle(Article article);
 
 	void deleteArticle(Long idx);
+
+	void saveReply(Reply reply);
 }
