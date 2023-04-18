@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "account")
+@Table(name = "\"user\"")
 public class User {
 
-    private static final String BLANK = "";
+    private static final String EMPTY = "";
 
     @Id
     @GeneratedValue
@@ -80,9 +80,9 @@ public class User {
 
     public static class Builder {
         private Long id = Long.MIN_VALUE;
-        private String nickname = BLANK;
-        private String email = BLANK;
-        private String password = BLANK;
+        private String nickname = EMPTY;
+        private String email = EMPTY;
+        private String password = EMPTY;
         private Role role = Role.USER;
 
         public Builder id(Long id) {
