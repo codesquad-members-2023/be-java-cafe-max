@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@RequestMapping("/members")
 @Controller
 public class MemberController {
 
@@ -56,19 +58,19 @@ public class MemberController {
         dataBinder.addValidators(profileEditRequestValidator);
     }
 
-    @GetMapping("/members")
+    @GetMapping
     public String findAll(Model model) {
         model.addAttribute("memberResponses", memberService.findAll());
         return "member/members";
     }
 
-    @GetMapping("/members/{id}")
+    @GetMapping("/{id}")
     public String profile(@PathVariable Long id, Model model) {
         model.addAttribute("memberResponse", memberService.findById(id));
         return "member/profile";
     }
 
-    @GetMapping("/members/{id}/form")
+    @GetMapping("/{id}/form")
     public String profileEditForm(@PathVariable Long id, Model model,
         @RequestAttribute AccountSession accountSession) {
         if (!id.equals(accountSession.getId())) {
@@ -79,7 +81,7 @@ public class MemberController {
         return "member/profileEdit";
     }
 
-    @PutMapping("/members/{id}")
+    @PutMapping("/{id}")
     public String editProfile(@PathVariable Long id, @Valid ProfileEditRequest profileEditRequest,
         BindingResult bindingResult, @RequestAttribute AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
@@ -91,12 +93,12 @@ public class MemberController {
         return "redirect:/members/{id}";
     }
 
-    @GetMapping("/members/sign-up")
+    @GetMapping("/sign-up")
     public String signUpForm(SignUpRequest signUpRequest) {
         return "member/signUp";
     }
 
-    @PostMapping("/members/sign-up")
+    @PostMapping("/sign-up")
     public String signUp(@Valid SignUpRequest signUpRequest,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -107,12 +109,12 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping("/members/sign-in")
+    @GetMapping("/sign-in")
     public String signInForm(SignInRequest signInRequest) {
         return "member/signIn";
     }
 
-    @PostMapping("/members/sign-in")
+    @PostMapping("/sign-in")
     public String signIn(@Valid SignInRequest signInRequest, BindingResult bindingResult,
         HttpSession httpSession) {
         if (bindingResult.hasErrors()) {
@@ -125,7 +127,7 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @PostMapping("/members/sign-out")
+    @PostMapping("/sign-out")
     public String signOut(HttpSession httpSession) {
         SignInSessionUtil.invalidate(httpSession);
         return "redirect:/";

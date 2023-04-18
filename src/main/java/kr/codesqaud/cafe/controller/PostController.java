@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+@RequestMapping("/posts")
 @Controller
 public class PostController {
 
@@ -24,18 +26,12 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping
-    public String posts(Model model) {
-        model.addAttribute("postResponses", postService.findAll());
-        return "post/posts";
-    }
-
-    @GetMapping("/posts/form")
+    @GetMapping("/form")
     public String writeForm(PostWriteRequest postWriteRequest) {
         return "post/postWrite";
     }
 
-    @PostMapping("/posts")
+    @PostMapping
     public String write(@Valid PostWriteRequest postWriteRequest, BindingResult bindingResult,
         @RequestAttribute AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
@@ -47,20 +43,20 @@ public class PostController {
         return "redirect:/";
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/{id}")
     public String post(@PathVariable Long id, Model model, @RequestAttribute AccountSession accountSession) {
         model.addAttribute("postResponse", postService.findById(id, accountSession.getId()));
         return "post/post";
     }
 
-    @GetMapping("/posts/{id}/form")
+    @GetMapping("/{id}/form")
     public String modifyForm(@PathVariable Long id, Model model, @RequestAttribute AccountSession accountSession) {
         model.addAttribute("postModifyRequest",
             PostModifyRequest.from(postService.findById(id, accountSession.getId())));
         return "post/postModify";
     }
 
-    @PutMapping("/posts/{id}")
+    @PutMapping("/{id}")
     public String modify(@PathVariable Long id, @Valid PostModifyRequest postModifyRequest,
         BindingResult bindingResult, @RequestAttribute AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
@@ -72,7 +68,7 @@ public class PostController {
         return "redirect:/posts/{id}";
     }
 
-    @DeleteMapping("/posts/{id}")
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id, @RequestAttribute AccountSession accountSession) {
         postService.delete(id, accountSession.getId());
         return "redirect:/";

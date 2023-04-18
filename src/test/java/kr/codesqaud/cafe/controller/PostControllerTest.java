@@ -3,11 +3,10 @@ package kr.codesqaud.cafe.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Mockito.mock;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -17,13 +16,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Stream;
-import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
+import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
 import kr.codesqaud.cafe.service.PostService;
 import kr.codesqaud.cafe.util.SignInSessionUtil;
@@ -47,25 +45,6 @@ public class PostControllerTest {
 
     @MockBean
     private PostService postService;
-
-    @DisplayName("게시물 목록 조회")
-    @Test
-    void posts() throws Exception {
-        // given
-        List<PostResponse> postResponses = List.of(createPostResponseDummy(),
-            createPostResponseDummy2());
-        given(postService.findAll()).willReturn(postResponses);
-
-        // when
-
-        // then
-        mockMvc.perform(get("/"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-            .andExpect(view().name("post/posts"))
-            .andExpect(model().attribute("postResponses", postResponses))
-            .andDo(print());
-    }
 
     @DisplayName("게시글 작성 성공")
     @Test
