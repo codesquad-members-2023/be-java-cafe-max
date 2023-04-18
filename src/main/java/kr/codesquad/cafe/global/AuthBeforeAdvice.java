@@ -1,4 +1,4 @@
-package kr.codesquad.cafe.config;
+package kr.codesquad.cafe.global;
 
 import kr.codesquad.cafe.user.User;
 import kr.codesquad.cafe.global.IllegalAccessIdException;

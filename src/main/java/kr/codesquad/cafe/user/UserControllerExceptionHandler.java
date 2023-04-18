@@ -1,7 +1,11 @@
-package kr.codesquad.cafe.user.exception;
+package kr.codesquad.cafe.user;
 
 import kr.codesquad.cafe.user.dto.LoginForm;
 import kr.codesquad.cafe.user.dto.ProfileEditForm;
+import kr.codesquad.cafe.user.exception.IllegalEditEmailException;
+import kr.codesquad.cafe.user.exception.IllegalEditPasswordException;
+import kr.codesquad.cafe.user.exception.IllegalLoginPasswordException;
+import kr.codesquad.cafe.user.exception.NoSuchLoginEmailException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
