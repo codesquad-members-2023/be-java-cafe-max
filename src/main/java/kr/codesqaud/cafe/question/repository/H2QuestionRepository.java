@@ -42,33 +42,30 @@ public class H2QuestionRepository implements QuestionRepository {
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("postOffset", offset)
 			.addValue("pageSize", pageSize);
-		RowMapper<Question> rowMapper = (rs, rowNum) ->
-			new Question(rs.getInt("id"),
-				rs.getString("writer"),
-				rs.getString("title"),
-				rs.getString("contents"),
-				rs.getTimestamp("registrationDateTime").toLocalDateTime());
 
-		return jdbcTemplate.query(sql, parameters, rowMapper);
+		return jdbcTemplate.query(sql, parameters, getQuestionRowMapper());
 	}
 
 	public Question findById(long id) throws QuestionNotExistException {
 		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\"  WHERE id = :id";
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("id", id);
-		RowMapper<Question> rowMapper = (rs, rowNum) ->
+
+		try {
+			return jdbcTemplate.queryForObject(sql, parameters, getQuestionRowMapper());
+		} catch (DataAccessException e) {
+			throw new QuestionNotExistException(id);
+		}
+
+	}
+
+	private RowMapper<Question> getQuestionRowMapper() {
+		return (rs, rowNum) ->
 			new Question(rs.getInt("id"),
 				rs.getString("writer"),
 				rs.getString("title"),
 				rs.getString("contents"),
 				rs.getTimestamp("registrationDateTime").toLocalDateTime());
-
-		try {
-			return jdbcTemplate.queryForObject(sql, parameters, rowMapper);
-		} catch (DataAccessException e) {
-			throw new QuestionNotExistException(id);
-		}
-
 	}
 
 }
