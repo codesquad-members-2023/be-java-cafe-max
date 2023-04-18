@@ -63,8 +63,8 @@ public class JdbcArticleRepository implements ArticleRepository {
     public Optional<Article> findWithSurroundingArticles(Long id) {
         final String sql = "SELECT id, title, writer, contents, createdAt, deleted, previousId, nextId "
                 + " FROM (SELECT id, title, writer, contents, createdAt, deleted, "
-                + " LAG(id, 1, 0) OVER(ORDER BY id ASC) AS previousId, "
-                + " LEAD(id, 1, 0) OVER(ORDER BY id ASC) AS nextId "
+                + " LAG(id, 1, null) OVER(ORDER BY id ASC) AS previousId, "
+                + " LEAD(id, 1, null) OVER(ORDER BY id ASC) AS nextId "
                 + " FROM articles WHERE deleted = false) WHERE id = :id AND deleted = false";
 
         try (final Stream<Article> result = jdbcTemplate.queryForStream(sql, Map.of("id", id), articleRowMapper)) {

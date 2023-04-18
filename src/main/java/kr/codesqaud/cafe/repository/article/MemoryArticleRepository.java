@@ -40,11 +40,11 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findWithSurroundingArticles(Long id) {
-        final Long previousId = STORE.keySet().stream().filter(key -> key > id).max(Comparator.naturalOrder()).orElse(0L);
-        final Long nextId = STORE.keySet().stream().filter(key -> key < id).min(Comparator.naturalOrder()).orElse(0L);
+        Optional<Long> previousId = STORE.keySet().stream().filter(key -> key > id).max(Comparator.naturalOrder());
+        Optional<Long>  nextId = STORE.keySet().stream().filter(key -> key < id).min(Comparator.naturalOrder());
         Article article = STORE.get(id);
-        article.setPreviousId(previousId);
-        article.setNextId(nextId);
+        article.setPreviousId(previousId.orElse(null));
+        article.setNextId(nextId.orElse(null));
         return Optional.of(article);
     }
 
