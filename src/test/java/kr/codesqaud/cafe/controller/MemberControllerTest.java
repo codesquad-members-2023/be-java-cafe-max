@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -17,15 +18,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import kr.codesqaud.cafe.config.session.AccountSession;
-import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.service.MemberService;
 import kr.codesqaud.cafe.util.SignInSessionUtil;
+import kr.codesqaud.cafe.validator.ProfileEditRequestValidator;
+import kr.codesqaud.cafe.validator.SignInRequestValidator;
+import kr.codesqaud.cafe.validator.SignUpRequestValidator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,12 +36,11 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.validation.Errors;
 
 @WebMvcTest(MemberController.class)
-@ComponentScan(basePackages = "kr.codesqaud.cafe.validator")
 class MemberControllerTest {
 
     @Autowired
@@ -46,6 +48,22 @@ class MemberControllerTest {
 
     @MockBean
     private MemberService memberService;
+
+    @MockBean
+    private SignInRequestValidator signInRequestValidator;
+
+    @MockBean
+    private SignUpRequestValidator signUpRequestValidator;
+
+    @MockBean
+    private ProfileEditRequestValidator profileEditRequestValidator;
+
+    @BeforeEach
+    public void beforeEach() {
+        given(signInRequestValidator.supports(any())).willReturn(true);
+        given(signUpRequestValidator.supports(any())).willReturn(true);
+        given(profileEditRequestValidator.supports(any())).willReturn(true);
+    }
 
     @DisplayName("회원 가입 성공")
     @Test
@@ -142,9 +160,13 @@ class MemberControllerTest {
     void signUpFalse4() throws Exception {
         // given
         SignUpRequest signUpRequest = new SignUpRequest("test@gmail.com", "Test1234", "만두");
-        given(memberService.isDuplicateEmail(signUpRequest.getEmail()))
-            .willReturn(true);
-        String email = "test@gmail.com";
+        given(memberService.isDuplicateEmail(signUpRequest.getEmail())).willReturn(true);
+        willAnswer(invocation -> {
+            Errors errors = invocation.getArgument(1);
+            errors.rejectValue("email", "Duplicate");
+            return null;
+        }).given(signUpRequestValidator).validate(any(), any());
+            String email = "test@gmail.com";
         String password = "Test4444";
         String nickName = "만두2";
 
@@ -239,6 +261,11 @@ class MemberControllerTest {
             "Test1234", "Mandu1234", "mandu");
         given(memberService.isDuplicateEmailAndId(profileEditRequest.getEmail(), profileEditRequest.getId()))
             .willReturn(true);
+        willAnswer(invocation -> {
+            Errors errors = invocation.getArgument(1);
+            errors.rejectValue("email", "Duplicate");
+            return null;
+        }).given(profileEditRequestValidator).validate(any(), any());
 
         // when
 
@@ -267,6 +294,11 @@ class MemberControllerTest {
             "Test1234", "Mandu1234", "mandu");
         given(memberService.isNotSamePassword(profileEditRequest.getEmail(), profileEditRequest.getPassword()))
             .willReturn(true);
+        willAnswer(invocation -> {
+            Errors errors = invocation.getArgument(1);
+            errors.rejectValue("password", "NotMatch");
+            return null;
+        }).given(profileEditRequestValidator).validate(any(), any());
 
         // when
 
@@ -354,6 +386,11 @@ class MemberControllerTest {
         String email = "test@gmail.com";
         String password = "Test1234";
         given(memberService.isNotSamePassword(email, password)).willReturn(true);
+        willAnswer(invocation -> {
+            Errors errors = invocation.getArgument(1);
+            errors.rejectValue("password", "NotMatch");
+            return null;
+        }).given(signInRequestValidator).validate(any(), any());
 
         // when
 
