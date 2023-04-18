@@ -1,4 +1,4 @@
-
+package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.user.domain.User;
 import kr.codesqaud.cafe.user.repository.JdbcUserRepository;

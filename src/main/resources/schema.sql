@@ -5,7 +5,7 @@ CREATE TABLE articles (
                          author VARCHAR(255) NOT NULL,
                          title VARCHAR(255) NOT NULL,
                          contents VARCHAR(1000) NOT NULL,
-                         time DATETIME NOT NULL
+                         created_time DATETIME NOT NULL
 );
 
 drop table if exists users CASCADE;

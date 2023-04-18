@@ -25,7 +25,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     //DB에서 id가 생성되기 때문에 저장하는 동시에 생성된 id를 반환한다.(테스트 코드에 쓰임)
     @Override
     public long save(Article article) {
-        String sql = "INSERT INTO articles (author, title, contents, time) VALUES (:author, :title, :contents, :time)";
+        String sql = "INSERT INTO articles (author, title, contents, created_time) VALUES (:author, :title, :contents, :createdTime)";
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(article);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
@@ -35,20 +35,20 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "SELECT id, author, title, contents, time FROM articles";
+        String sql = "SELECT id, author, title, contents, created_time FROM articles";
         return namedParameterJdbcTemplate.query(sql, articleRowMapper());
     }
 
     @Override
     public Article findById(long id) {
-        String sql = "SELECT id, author, title, contents, time FROM articles WHERE id = :id";
+        String sql = "SELECT id, author, title, contents, created_time FROM articles WHERE id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, articleRowMapper());
     }
 
     @Override
     public long modify(Article article) {
-        String sql = "UPDATE articles SET title=:title, contents=:contents, time=:time WHERE id=:id";
+        String sql = "UPDATE articles SET title=:title, contents=:contents, created_time=:createdTime WHERE id=:id";
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(article);
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);
         return article.getId();
@@ -67,7 +67,7 @@ public class JdbcArticleRepository implements ArticleRepository {
                 rs.getString("title"),
                 rs.getString("contents"),
                 rs.getLong("id"),
-                rs.getTimestamp("time").toLocalDateTime()
+                rs.getTimestamp("created_time").toLocalDateTime()
         );
     }
 }
