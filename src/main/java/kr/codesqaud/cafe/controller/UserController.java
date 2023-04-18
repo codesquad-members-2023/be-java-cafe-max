@@ -26,7 +26,7 @@ public class UserController {
     @GetMapping
     public String showList(Model model) {
         List<UserDto> userDtos = userService.findAll();
-        model.addAttribute("users", userDtos);
+        model.addAttribute("userDtos", userDtos);
 
         return "user/list";
     }
@@ -45,8 +45,8 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public String findByUserId(@PathVariable("userId") String userId, Model model) {
-        User user = userService.findByUserId(userId);
-        model.addAttribute("user", user);
+        UserDto userDto = userService.findByUserId(userId);
+        model.addAttribute("userDto", userDto);
 
         return "user/profile";
     }

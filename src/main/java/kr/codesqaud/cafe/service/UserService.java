@@ -45,7 +45,13 @@ public class UserService {
         return userDtos;
     }
 
-    public User findByUserId(String userId) {
-        return userRepository.findByUserId(userId);
+    public UserDto findByUserId(String userId) {
+        User user =  userRepository.findByUserId(userId);
+
+        return UserDto.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .email(user.getEmail())
+                .build();
     }
 }

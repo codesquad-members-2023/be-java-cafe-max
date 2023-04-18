@@ -20,13 +20,13 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user : ${users}">
-                    <th th:text="${userStat.index + 1}"></th>
+                <tr th:each="userDto : ${userDtos}">
+                    <th th:text="${userDtoStat.index + 1}"></th>
                     <td>
-                        <a th:text="${user.getUserId()}" th:href="@{/users/{userId}(userId = ${user.getUserId()})}"></a>
+                        <a th:text="${userDto.getUserId()}" th:href="@{/users/{userId}(userId = ${userDto.getUserId()})}"></a>
                     </td>
-                    <td th:text="${user.getUserName()}"></td>
-                    <td th:text="${user.getEmail()}"></td>
+                    <td th:text="${userDto.getUserName()}"></td>
+                    <td th:text="${userDto.getEmail()}"></td>
                     <td><a href="#" class="btn btn-success" role="button">수정</a></td>
                 </tr>
                 </tbody>
