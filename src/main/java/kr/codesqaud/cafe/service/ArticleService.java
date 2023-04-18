@@ -1,12 +1,12 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.article.ArticleForm;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ArticleService {
@@ -27,7 +27,7 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public Optional<Article> findOne(Long id){
-        return articleRepository.findById(id);
+    public Article findOne(Long id){
+        return articleRepository.findById(id).orElseThrow(() -> new IllegalStateException("찾으시는 게시물은 없는 게시물 입니다."));
     }
 }

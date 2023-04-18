@@ -41,7 +41,7 @@ public class UserController {
     // 유저 프로필 보기
     @GetMapping("/{userId}")
     public String profile(@PathVariable String userId, Model model){
-        UserResponse userResponse = userService.findByUserId(userId).get();
+        UserResponse userResponse = userService.findByUserId(userId);
         model.addAttribute("user", userResponse);
         return "user/profile";
     }

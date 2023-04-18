@@ -55,15 +55,13 @@ public class UserService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public Optional<UserResponse> findByUserId(String userId) {
-        User user = userRepository.findByUserId(userId).get();
-        UserResponse userResponse = new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail());
-        return Optional.ofNullable(userResponse);
+    public UserResponse findByUserId(String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(()->new IllegalStateException("찾으시는 아이디는 없는 아이디 입니다."));
+        return new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail());
     }
 
-    public Optional<UserResponse> findByName(String name){
-        User user = userRepository.findByName(name).get();
-        UserResponse userResponse = new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail());
-        return Optional.ofNullable(userResponse);
+    public UserResponse findByName(String name){
+        User user = userRepository.findByName(name).orElseThrow(()->new IllegalStateException("찾으시는 이름은 없는 이름 입니다."));
+        return new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail());
     }
 }
