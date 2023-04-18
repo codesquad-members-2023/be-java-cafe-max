@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.account.User;
 import kr.codesqaud.cafe.account.annotation.ValidEmail;
 import kr.codesqaud.cafe.account.annotation.ValidNickName;
 import kr.codesqaud.cafe.account.annotation.ValidPassword;
+import org.jasypt.encryption.StringEncryptor;
 
 public class JoinForm {
     @ValidNickName
@@ -39,11 +40,11 @@ public class JoinForm {
         return reconfirmPassword;
     }
 
-    public User toUser() {
+    public User toUser(StringEncryptor encryptor) {
         return new User.Builder()
                 .nickname(nickname)
                 .email(email)
-                .password(password)
+                .password(encryptor.encrypt(password))
                 .build();
     }
 

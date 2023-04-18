@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.account;
 
 
 import kr.codesqaud.cafe.post.Post;
+import org.jasypt.encryption.StringEncryptor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class User {
     public List<Post> getPosts() {
         return posts;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -62,8 +63,8 @@ public class User {
         return role;
     }
 
-    public boolean isSamePassword(String targetPassword) {
-        return targetPassword.equals(password);
+    public boolean isSamePassword(StringEncryptor encryptor, String targetPassword) {
+        return encryptor.decrypt(password).equals(targetPassword);
     }
 
     public boolean isSameEmail(String email) {
