@@ -6,7 +6,7 @@ import codesquad.cafe.domain.user.dto.UserRequestDto;
 import codesquad.cafe.domain.user.dto.UserResponseDto;
 import codesquad.cafe.domain.user.dto.UserUpdateRequestDto;
 import codesquad.cafe.domain.user.service.UserService;
-import codesquad.cafe.global.exception.CustomException;
+import codesquad.cafe.global.constant.SessionAttributes;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -19,13 +19,11 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
-import static codesquad.cafe.global.exception.ErrorCode.*;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
-    private final String LOGIN_USER = "loginUser";
-    private Log log = LogFactory.getLog(UserController.class);
+    private final Log log = LogFactory.getLog(UserController.class);
 
     private final UserService userService;
 
@@ -80,7 +78,7 @@ public class UserController {
         User user = userService.login(userLoginRequestDto);
         log.info("로그인 성공");
         HttpSession session = request.getSession();
-        session.setAttribute(LOGIN_USER, user);
+        session.setAttribute(SessionAttributes.LOGIN_USER.getValue(), user);
         return "redirect:/";
     }
 
@@ -93,10 +91,6 @@ public class UserController {
     }
 
     private User findSessionUser(final HttpSession session) {
-        Object value = session.getAttribute(LOGIN_USER);
-        if (value == null) {
-            throw new CustomException(NOT_FOUND_SESSION);
-        }
-        return (User) value;
+        return (User) session.getAttribute(SessionAttributes.LOGIN_USER.getValue());
     }
 }

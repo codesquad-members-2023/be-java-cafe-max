@@ -4,8 +4,7 @@ import codesquad.cafe.domain.article.dto.ArticleRequestDto;
 import codesquad.cafe.domain.article.dto.ArticleResponseDto;
 import codesquad.cafe.domain.article.service.ArticleService;
 import codesquad.cafe.domain.user.domain.User;
-import codesquad.cafe.global.exception.CustomException;
-import codesquad.cafe.global.exception.ErrorCode;
+import codesquad.cafe.global.constant.SessionAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+
 
 @Controller
 public class ArticleController {
@@ -32,11 +32,8 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String writePost(@ModelAttribute @Valid ArticleRequestDto articleRequestDto, HttpSession session) {
-        Object user = session.getAttribute("loginUser");
-        if (user == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_SESSION);
-        }
-        articleService.createPost(articleRequestDto, (User) user);
+        User user = (User) session.getAttribute(SessionAttributes.LOGIN_USER.getValue());
+        articleService.createPost(articleRequestDto, user);
         return "redirect:/";
     }
 

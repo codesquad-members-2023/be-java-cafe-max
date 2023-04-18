@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 
 public class LoginCheckInterceptor implements HandlerInterceptor {
 
-    private Log log = LogFactory.getLog(LoginCheckInterceptor.class);
+    private final Log log = LogFactory.getLog(LoginCheckInterceptor.class);
 
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
