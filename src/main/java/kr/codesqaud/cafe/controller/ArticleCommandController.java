@@ -1,11 +1,16 @@
 package kr.codesqaud.cafe.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.ArticleDto;
 import kr.codesqaud.cafe.service.ArticleService;
 
@@ -24,7 +29,13 @@ public class ArticleCommandController {
 	}
 
 	@DeleteMapping("/qna/delete/{index}")
-	public String deleteArticle(@PathVariable Long index) {
+	public String deleteArticle(@PathVariable Long index, Model model, HttpSession session) {
+		User user = (User)session.getAttribute("sessionUser");
+		Article article = articleService.findByIndex(index);
+		if (!user.getNickname().equals(article.getWriter())) {
+			model.addAttribute("errorMessage", "다른 사람의 글은 삭제할 수 없습니다.");
+			return "error/error";
+		}
 		articleService.deleteArticle(index);
 		return "redirect:/";
 	}

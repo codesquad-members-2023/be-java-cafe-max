@@ -54,6 +54,7 @@ a {
     background: #afb9ea;
     font-weight: 600;
     min-width: 80px;
+    text-align: center;
 }
 
 .button:hover {
