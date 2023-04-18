@@ -51,8 +51,7 @@ public class PostController {
 
     @GetMapping("/{id}/form")
     public String modifyForm(@PathVariable Long id, Model model, @RequestAttribute AccountSession accountSession) {
-        model.addAttribute("postModifyRequest",
-            PostModifyRequest.from(postService.findById(id, accountSession.getId())));
+        model.addAttribute("postModifyRequest", postService.findById(id, accountSession.getId()));
         return "post/postModify";
     }
 

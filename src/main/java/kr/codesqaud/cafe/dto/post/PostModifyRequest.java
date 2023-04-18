@@ -45,9 +45,4 @@ public class PostModifyRequest {
             .content(content)
             .build();
     }
-
-    public static PostModifyRequest from(PostResponse postResponse) {
-        return new PostModifyRequest(postResponse.getId(), postResponse.getTitle(),
-            postResponse.getContent());
-    }
 }
