@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.article.repository.ArticleRepository;
+import kr.codesqaud.cafe.domain.reply.Reply;
+import kr.codesqaud.cafe.domain.reply.repository.ReplyRepository;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
 import kr.codesqaud.cafe.dto.LoginSessionDto;
 import kr.codesqaud.cafe.exception.DeniedAccessException;
@@ -15,9 +17,11 @@ import java.util.List;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ReplyRepository replyRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository, ReplyRepository replyRepository) {
         this.articleRepository = articleRepository;
+        this.replyRepository = replyRepository;
     }
 
     public void writeArticle(ArticleFormDto dto, HttpSession session) {
@@ -72,5 +76,18 @@ public class ArticleService {
     public void delete(int index) {
         articleRepository.findByIdx(index).orElseThrow(() -> new NotFoundException("게시글 찾을 수 없음"));
         articleRepository.delete(index);
+    }
+
+    public void writeReply(int index, String contents ,String name) {
+        Reply reply = new Reply.Builder()
+                .articleIdx(index)
+                .replyWriter(name)
+                .replyContents(contents)
+                .build();
+        replyRepository.save(reply);
+    }
+
+    public List<Reply> replyList(int index){
+        return replyRepository.findAll(index);
     }
 }

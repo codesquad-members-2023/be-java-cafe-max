@@ -39,6 +39,7 @@ public class ArticleController {
         articleService.checkLogin(sessionDto);
         Article article = articleService.findByIdx(index);
         model.addAttribute("article", article);
+        model.addAttribute("replyList",articleService.replyList(index));
         model.addAttribute("auth", articleService.checkIdentity(article.getUserId(), sessionDto.getId()));
         return "qna/show";
     }
@@ -71,6 +72,14 @@ public class ArticleController {
     public String delete(@PathVariable int index) {
         articleService.delete(index);
         return "redirect:/";
+    }
+
+    @PostMapping("/article/{index}/reply")
+    public String saveReply(@PathVariable int index,@RequestParam String contents,
+                             HttpSession session){
+        LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
+        articleService.writeReply(index,contents, sessionDto.getName());
+        return "redirect:/article/show/"+index;
     }
 
 }
