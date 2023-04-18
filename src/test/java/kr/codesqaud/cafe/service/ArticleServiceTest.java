@@ -83,14 +83,13 @@ class ArticleServiceTest {
 		@Test
 		void givenNothing_whenFindAll_thenReturnsArticleList() {
 			// given
-			given(articleRepository.findAll())
-				.willReturn(List.of(createArticle(), createArticle(), createArticle()));
+			given(articleRepository.findAllArticleWithCommentCount()).willReturn(List.of());
 
 			// when & then
 			assertAll(
 				() -> assertThatCode(() -> articleService.getArticlesWithCommentCount())
 					.doesNotThrowAnyException(),
-				() -> then(articleRepository).should().findAll()
+				() -> then(articleRepository).should().findAllArticleWithCommentCount()
 			);
 		}
 	}
