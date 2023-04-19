@@ -25,9 +25,8 @@ public class CommentService {
                 .build());
     }
 
-    public void delete(long commentId) {
+    public void delete(long commentId,long userId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow();
-        comment.delete();
-        commentRepository.save(comment);
+        comment.delete(userId);
     }
 }

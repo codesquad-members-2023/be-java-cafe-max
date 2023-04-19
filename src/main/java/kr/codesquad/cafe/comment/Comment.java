@@ -48,8 +48,12 @@ public class Comment {
         return isDeleted;
     }
 
-    public void delete() {
-        isDeleted = true;
+    public void delete(long userId) {
+        if (this.user.isSameId(userId)) {
+            isDeleted = true;
+            return;
+        }
+        throw new RuntimeException();
     }
 
 

@@ -26,4 +26,12 @@ public class ApiPostController {
         model.addAttribute("post", save);
         return "post/detail :: #commentsContent";
     }
+
+    @DeleteMapping("/posts/{postId}/comments/{commentId}")
+    public String deleteComment(@PathVariable long commentId, @PathVariable long postId, Model model, @SessionAttribute User user) {
+        commentService.delete(commentId, user.getId());
+        Post post = postService.findById(postId);
+        model.addAttribute(post);
+        return "post/detail :: #commentsContent";
+    }
 }
