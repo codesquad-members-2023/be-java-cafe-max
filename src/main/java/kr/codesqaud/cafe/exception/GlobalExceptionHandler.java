@@ -15,7 +15,12 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DuplicateKeyException.class)
-    public String duplicateKeyExceptionHandler() {
+    public String duplicateKeyExceptionHandler(HttpServletRequest request, DuplicateKeyException e, Model model) {
+        model.addAttribute("userId", request.getParameter("userId"));
+        model.addAttribute("password", request.getParameter("password"));
+        model.addAttribute("userName", request.getParameter("userName"));
+        model.addAttribute("email", request.getParameter("email"));
+        model.addAttribute("error_message", e.getMessage());
         return "user/form_failed";
     }
 
