@@ -32,7 +32,7 @@ class MainControllerTest {
 	void mainPageTest() throws Exception {
 		//given
 		List<ArticleResponse> articleList = new ArrayList<>();
-		given(articleService.getArticleList()).willReturn(articleList);
+		given(articleService.getArticles()).willReturn(articleList);
 
 		//when & then
 		mockMvc.perform(MockMvcRequestBuilders.get("/"))

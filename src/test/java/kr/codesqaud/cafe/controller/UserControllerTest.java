@@ -64,7 +64,7 @@ class UserControllerTest {
 	void userListTest() throws Exception {
 		//given
 		List<UserListResponse> userList = new ArrayList<>();
-		given(userService.getUserList()).willReturn(userList);
+		given(userService.getUsers()).willReturn(userList);
 
 		//when & then
 		mockMvc.perform(MockMvcRequestBuilders.get("/users/list")

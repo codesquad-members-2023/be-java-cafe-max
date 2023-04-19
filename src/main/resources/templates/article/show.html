@@ -13,9 +13,7 @@
             <div class="panel panel-default">
                 <header class="post-header">
                     <p class="post-title">
-                        {{#article}}
-                        {{article.title}}
-                        {{/article}}
+                        {{articles.title}}
                     </p>
                 </header>
 
@@ -24,14 +22,14 @@
                         <div class="article-header">
                             <hr/>
                             <div class="article-header-text">
-                                <p class="article-content">{{article.nickName}}</p>
-                                <p class="article-content">{{article.date}}</p>
+                                <p class="article-content">{{articles.nickName}}</p>
+                                <p class="article-content">{{articles.date}}</p>
                                 <p class="article-content">조회 10</p>
 
-                                <form method="get" action="/articles/update/{{article.idx}}">
+                                <form method="get" action="/articles/update/{{articles.idx}}">
                                     <button class="post-button" type="submit">수정</button>
                                 </form>
-                                <form method="post" action="/articles/{{article.idx}}">
+                                <form method="post" action="/articles/{{articles.idx}}">
                                     <input type="hidden" name="_method" value="DELETE"/>
                                     <button class="post-button" type="submit">삭제</button>
                                 </form>
@@ -40,9 +38,9 @@
                         </div>
 
                         <div class="article-doc">
-                            <p>{{#article}}
-                                {{article.content}}
-                                {{/article}}</p>
+                            <p>
+                                {{articles.content}}
+                            </p>
                         </div>
                     </article>
 
@@ -51,7 +49,7 @@
                             <p class="post-comment-count">댓글 0개</p>
                             <div class="post-comment-slipp-articles">
 
-                                {{#reply}}
+                                {{#replies}}
                                 <article class="comment">
                                     <div class="article-text">
                                         <div id="reply-info-box">
@@ -69,9 +67,9 @@
                                         </div>
                                     </div>
                                 </article>
-                                {{/reply}}
+                                {{/replies}}
 
-                                <form class="submit-write" method="post" action="/articles/{{article.idx}}/reply">
+                                <form class="submit-write" method="post" action="/articles/{{articles.idx}}/reply">
                                     <div class="comment-writer-container">
                                         <input class="comment-writer" id="writer" name="writer"
                                                value={{loginUser.nickName}} readonly/>

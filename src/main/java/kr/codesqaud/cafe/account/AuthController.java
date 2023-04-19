@@ -30,7 +30,7 @@ public class AuthController {
 
 	@PostMapping("/users/sign-up")
 	public String signUp(@ModelAttribute @Valid UserSignUpRequest userSignUpRequest) {
-		userService.addUser(userSignUpRequest);
+		userService.save(userSignUpRequest);
 		return "redirect:/users/list";
 	}
 

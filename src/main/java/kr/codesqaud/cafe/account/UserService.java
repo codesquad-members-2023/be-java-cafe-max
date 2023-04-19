@@ -29,7 +29,7 @@ public class UserService {
 		this.userMapper = userMapper;
 	}
 
-	public void addUser(UserSignUpRequest userSignUpRequest) {
+	public void save(UserSignUpRequest userSignUpRequest) {
 		validateId(userSignUpRequest.getId());
 		userRepository.save(userMapper.toUser(userSignUpRequest));
 	}
@@ -40,7 +40,7 @@ public class UserService {
 		}
 	}
 
-	public List<UserListResponse> getUserList() {
+	public List<UserListResponse> getUsers() {
 		return userRepository.findAll().stream()
 			.map(userMapper::toUserListResponse)
 			.collect(Collectors.toUnmodifiableList());
@@ -52,7 +52,7 @@ public class UserService {
 			.orElseThrow(UserNotFoundException::new);
 	}
 
-	public void updateUser(ProfileEditRequest profileEditRequest) {
+	public void update(ProfileEditRequest profileEditRequest) {
 		UserResponse userResponse = getUserById(profileEditRequest.getId());
 
 		if (!matchPassword(profileEditRequest, userResponse)) {
