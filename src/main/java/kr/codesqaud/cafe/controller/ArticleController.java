@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
-    
+
     public ArticleController(ArticleService articleService){
         this.articleService = articleService;
     }
@@ -25,6 +25,6 @@ public class ArticleController {
     }
     @GetMapping("/articles")
     public String showArticles(){
-        return "/qna/show";
+        return "/qna/index";
     }
 }
