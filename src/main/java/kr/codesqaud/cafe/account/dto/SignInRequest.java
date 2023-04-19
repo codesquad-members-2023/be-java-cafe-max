@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.account.dto;
 
+import java.util.Objects;
+
 public class SignInRequest {
 
 	private final String id;
@@ -17,5 +19,9 @@ public class SignInRequest {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public boolean isMatchWithResponsePassword(String responsePassword) {
+		return Objects.equals(password, responsePassword);
 	}
 }

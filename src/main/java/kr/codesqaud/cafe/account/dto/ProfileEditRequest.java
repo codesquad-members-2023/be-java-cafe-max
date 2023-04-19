@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.account.dto;
 
+import java.util.Objects;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -47,9 +49,8 @@ public class ProfileEditRequest {
 	public String getEmail() {
 		return email;
 	}
-
-	public String getOriPassword() {
-		return oriPassword;
+	
+	public boolean isMatchWithResponsePassword(String responsePassword) {
+		return Objects.equals(oriPassword, responsePassword);
 	}
-
 }
