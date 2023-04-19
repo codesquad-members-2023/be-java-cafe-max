@@ -28,9 +28,24 @@ public class ReplyRepositoryImpl implements ReplyRepository {
         return keyHolder.getKey().longValue();
     }
 
+    /**
+     * @param id 댓글 Id
+     */
+    @Override
+    public long deleteOneByReplyId(long id) {
+        String sql = "DELETE FROM reply WHERE id = :id";
+        SqlParameterSource param = new MapSqlParameterSource("id", id);
+        template.update(sql, param);
+        return id;
+    }
+
     @Override
     public Reply findById(long id) {
-        return null;
+        String sql = "SELECT id, article_id, users_id, contents, create_dateTime"
+                + " FROM reply"
+                + " WHERE id = :id";
+        SqlParameterSource param = new MapSqlParameterSource("id", id);
+        return template.queryForObject(sql, param, replyRowMapper());
     }
 
     /**
@@ -43,10 +58,10 @@ public class ReplyRepositoryImpl implements ReplyRepository {
                 + "INNER JOIN users u ON r.users_id = u.userId "
                 + "WHERE article_id = :id";
         SqlParameterSource param = new MapSqlParameterSource("id", id);
-        return template.query(sql, param, replyResponseDtoRowMapper());
+        return template.query(sql, param, replyRowMapper());
     }
 
-    private RowMapper<Reply> replyResponseDtoRowMapper() {
+    private RowMapper<Reply> replyRowMapper() {
         return (resultSet, rowNumber) -> new Reply.Builder()
                 .id(resultSet.getLong("id"))
                 .articleId(resultSet.getLong("article_id"))
@@ -55,5 +70,4 @@ public class ReplyRepositoryImpl implements ReplyRepository {
                 .createDateTime(resultSet.getString("create_dateTime"))
                 .build();
     }
-
 }
