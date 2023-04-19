@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 @RequestMapping
 public class ArticleController {
-    ArticleService articleService;
+    private final ArticleService articleService;
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;

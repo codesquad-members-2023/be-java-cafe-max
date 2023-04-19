@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
+
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcArticleRepository(DataSource dataSource) {
@@ -18,27 +19,29 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        String sql = "insert into article(writer, title, contents) values(?, ?, ?)";
+        String sql = "insert into articles(writer, title, contents, writtenTime) values(?, ?, ?, current_timestamp)";
         jdbcTemplate.update(sql, article.getWriter(), article.getTitle(), article.getContents());
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from article", articleRowMapper());
+        return jdbcTemplate.query("select * from articles", articleRowMapper());
     }
 
     @Override
     public Article findById(long id) {
-        List<Article> result = jdbcTemplate.query("select * from article where id = ?", articleRowMapper(), id + 1);
+        List<Article> result = jdbcTemplate.query("select * from articles where id = ?", articleRowMapper(), id);
         return result.stream().findAny().get();
     }
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
             return Article.builder()
+                    .id(rs.getLong("id"))
                     .writer(rs.getString("writer"))
                     .title(rs.getString("title"))
                     .contents(rs.getString("contents"))
+                    .writtenTime(rs.getTimestamp("writtenTime").toLocalDateTime())
                     .build();
         };
     }

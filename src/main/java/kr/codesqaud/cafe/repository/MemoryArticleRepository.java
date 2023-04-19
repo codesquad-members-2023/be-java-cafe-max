@@ -4,11 +4,10 @@ import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
@@ -32,10 +31,7 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        List<Article> articles = new ArrayList<>(repository.values());
-
-        Collections.reverse(articles);
-        return Collections.unmodifiableList(articles);
+        return repository.values().stream().collect(Collectors.toUnmodifiableList());
     }
 
     @Override

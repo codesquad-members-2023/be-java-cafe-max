@@ -16,7 +16,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserService(MemoryUserRepository userRepository) {
+    public UserService(JdbcUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
