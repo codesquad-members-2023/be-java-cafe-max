@@ -6,7 +6,7 @@ import kr.codesqaud.cafe.reply.domain.Reply;
 
 public interface ReplyRepository {
 
-	void saveReply(Reply reply);
+	Long saveReply(Reply reply);
 
 	List<Reply> findAllReply(Long idx);
 

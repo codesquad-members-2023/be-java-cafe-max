@@ -13,13 +13,13 @@ public class ReplyRequest {
 	@NotBlank
 	private final String content;
 
-	public ReplyRequest(String content) {
+	public ReplyRequest(String content, String nickName) {
 		this.content = content;
+		this.nickName = nickName;
 	}
 
-	public void init(String id, String nickName, Long articleIdx) {
+	public void init(String id, Long articleIdx) {
 		this.id = id;
-		this.nickName = nickName;
 		this.articleIdx = articleIdx;
 	}
 

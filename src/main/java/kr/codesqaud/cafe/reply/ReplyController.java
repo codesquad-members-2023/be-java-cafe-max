@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.codesqaud.cafe.global.config.Session;
 import kr.codesqaud.cafe.reply.dto.ReplyRequest;
+import kr.codesqaud.cafe.reply.dto.ReplyResponse;
 
 @Controller
 public class ReplyController {
@@ -24,12 +26,12 @@ public class ReplyController {
 	}
 
 	@PostMapping("/articles/{articleIdx}/reply")
-	public String reply(@PathVariable Long articleIdx, @ModelAttribute @Valid ReplyRequest replyRequest,
+	@ResponseBody
+	public ReplyResponse reply(@PathVariable Long articleIdx, @ModelAttribute @Valid ReplyRequest replyRequest,
 		HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
-		replyRequest.init(session.getId(), session.getNickName(), articleIdx);
-		replyService.save(replyRequest);
-		return "redirect:/articles/" + articleIdx;
+		replyRequest.init(session.getId(), articleIdx);
+		return replyService.save(replyRequest);
 	}
 
 	@DeleteMapping("/articles/{articleIdx}/{replyIdx}")

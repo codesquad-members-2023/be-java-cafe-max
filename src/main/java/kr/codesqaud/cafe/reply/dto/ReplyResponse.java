@@ -18,4 +18,24 @@ public class ReplyResponse {
 		this.articleIdx = articleIdx;
 		this.replyIdx = replyIdx;
 	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public Long getArticleIdx() {
+		return articleIdx;
+	}
+
+	public Long getReplyIdx() {
+		return replyIdx;
+	}
 }

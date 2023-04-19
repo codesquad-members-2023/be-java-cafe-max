@@ -19,7 +19,7 @@ public class JDBCReplyRepository implements ReplyRepository {
 	}
 
 	@Override
-	public void saveReply(Reply reply) {
+	public Long saveReply(Reply reply) {
 		namedParameterJdbcTemplate.update(
 			"INSERT INTO REPLY (article_idx,id,nickName,content,date) VALUES (:article_idx, :id, :nickName, :content, :date)"
 			, new MapSqlParameterSource()
@@ -28,6 +28,9 @@ public class JDBCReplyRepository implements ReplyRepository {
 				.addValue("nickName", reply.getNickName())
 				.addValue("content", reply.getContent())
 				.addValue("date", reply.getDate()));
+
+		return namedParameterJdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()",
+			new MapSqlParameterSource(), Long.class);
 	}
 
 	@Override

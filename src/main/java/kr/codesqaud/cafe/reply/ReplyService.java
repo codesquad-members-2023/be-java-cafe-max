@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.global.mapper.ReplyMapper;
+import kr.codesqaud.cafe.reply.domain.Reply;
 import kr.codesqaud.cafe.reply.dto.ReplyRequest;
 import kr.codesqaud.cafe.reply.dto.ReplyResponse;
 import kr.codesqaud.cafe.reply.repository.ReplyRepository;
@@ -22,8 +23,10 @@ public class ReplyService {
 		this.replyMapper = replyMapper;
 	}
 
-	public void save(ReplyRequest replyRequest) {
-		replyRepository.saveReply(replyMapper.toReply(replyRequest));
+	public ReplyResponse save(ReplyRequest replyRequest) {
+		Reply reply = replyMapper.toReply(replyRequest);
+		Long replyIdx = replyRepository.saveReply(reply);
+		return replyMapper.toReplyResponse(reply, replyIdx);
 	}
 
 	public List<ReplyResponse> getRepliesByIdx(Long idx) {
