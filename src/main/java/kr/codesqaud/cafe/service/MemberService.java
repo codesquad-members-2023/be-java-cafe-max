@@ -5,15 +5,17 @@ import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
+import kr.codesqaud.cafe.dto.member.SignInRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
+import kr.codesqaud.cafe.exception.member.MemberDuplicateEmailException;
+import kr.codesqaud.cafe.exception.member.MemberInvalidPassword;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -22,8 +24,30 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional
     public Long signUp(SignUpRequest signUpRequest) {
+        validateDuplicateEmail(signUpRequest);
         return memberRepository.save(signUpRequest.toMember());
+    }
+
+    private void validateDuplicateEmail(SignUpRequest signUpRequest) {
+        if (memberRepository.existsByEmail(signUpRequest.getEmail())) {
+            throw new MemberDuplicateEmailException(signUpRequest);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public MemberResponse signIn(SignInRequest signInRequest) {
+        Member member = memberRepository.findByEmail(signInRequest.getEmail())
+            .orElseThrow(() -> new MemberInvalidPassword(signInRequest));
+        validateSamePassword(member, signInRequest);
+        return MemberResponse.from(member);
+    }
+
+    private void validateSamePassword(Member member, SignInRequest signInRequest) {
+        if (!member.equalsPassword(signInRequest.getPassword())) {
+            throw new MemberInvalidPassword(signInRequest);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -46,35 +70,39 @@ public class MemberService {
             .collect(Collectors.toUnmodifiableList());
     }
 
+    @Transactional
     public void update(ProfileEditRequest profileEditRequest, Long accountSessionId) {
-        validateUnauthorized(profileEditRequest.getId(), accountSessionId);
+        validateUpdateMember(profileEditRequest, accountSessionId);
         memberRepository.update(profileEditRequest.toMember());
     }
 
-    @Transactional(readOnly = true)
-    public void validateUnauthorized(Long id, Long accountSessionId) {
-        Member findMember = memberRepository.findById(id)
-            .orElseThrow(MemberNotFoundException::new);
+    private void validateUpdateMember(ProfileEditRequest profileEditRequest, Long accountSessionId) {
+        Member member = validateUnauthorized(profileEditRequest.getId(), accountSessionId);
 
-        if (!findMember.equalsId(accountSessionId)) {
-            throw new UnauthorizedException();
+        if (memberRepository.existsByEmailAndIdNot(profileEditRequest.getEmail(),
+            profileEditRequest.getId())) {
+            throw new MemberDuplicateEmailException(profileEditRequest);
+        }
+
+        if (!member.equalsPassword(profileEditRequest.getPassword())) {
+            throw new MemberInvalidPassword(profileEditRequest);
         }
     }
 
     @Transactional(readOnly = true)
-    public boolean isDuplicateEmail(String email) {
-        return memberRepository.existsByEmail(email);
+    public ProfileEditRequest findProfileEditById(Long id, Long accountSessionId) {
+        Member member = validateUnauthorized(id, accountSessionId);
+        return new ProfileEditRequest(id, member.getEmail(), null, null, member.getNickname());
     }
 
-    @Transactional(readOnly = true)
-    public boolean isDuplicateEmailAndId(String email, Long id) {
-        return memberRepository.existsByEmailAndIdNot(email, id);
-    }
+    private Member validateUnauthorized(Long id, Long accountSessionId) {
+        Member member = memberRepository.findById(id)
+            .orElseThrow(MemberNotFoundException::new);
 
-    @Transactional(readOnly = true)
-    public boolean isNotSamePassword(String email, String password) {
-        return memberRepository.findByEmail(email)
-            .map(member -> !member.equalsPassword(password))
-            .orElse(true);
+        if (!member.equalsId(accountSessionId)) {
+            throw new UnauthorizedException();
+        }
+
+        return member;
     }
 }

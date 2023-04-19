@@ -97,7 +97,7 @@ public class JdbcPostRepository implements PostRepository {
             .content(rs.getString("content"))
             .writer(Member.builder()
                 .id(rs.getLong("writer_id"))
-                .nickName(rs.getString("writer_name"))
+                .nickname(rs.getString("writer_name"))
                 .build())
             .writeDate(rs.getTimestamp("write_date").toLocalDateTime())
             .views(rs.getLong("views"))

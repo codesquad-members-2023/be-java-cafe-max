@@ -19,7 +19,7 @@ class MemberRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @DisplayName("회원 저장 성공")
+    @DisplayName("이메일, 패스워드, 닉네임, 생성날짜를 입력할 때 저장하면 회원 아이디를 반환한다")
     @Test
     void save() {
         // given
@@ -34,7 +34,7 @@ class MemberRepositoryTest {
             () -> assertEquals(savedId, findMember.get().getId()));
     }
 
-    @DisplayName("아이디로 회원을 조회")
+    @DisplayName("아이디를 입력시 해당 회원이 있을 때 회원을 조회하면 회원을 반환한다.")
     @Test
     void findByID() {
         // given
@@ -48,11 +48,11 @@ class MemberRepositoryTest {
         assertAll(
             () -> assertEquals(member.getEmail(), findMember.getEmail()),
             () -> assertEquals(member.getPassword(), findMember.getPassword()),
-            () -> assertEquals(member.getNickName(), findMember.getNickName()),
+            () -> assertEquals(member.getNickname(), findMember.getNickname()),
             () -> assertEquals(member.getCreateDate(), findMember.getCreateDate()));
     }
 
-    @DisplayName("이메일로 멤버 조회")
+    @DisplayName("이메일를 입력시 해당 회원이 있을 때 회원을 조회하면 회원을 반환한다.")
     @Test
     void findByEmail() {
         // given
@@ -66,11 +66,11 @@ class MemberRepositoryTest {
         assertAll(
             () -> assertEquals(member.getEmail(), findMember.getEmail()),
             () -> assertEquals(member.getPassword(), findMember.getPassword()),
-            () -> assertEquals(member.getNickName(), findMember.getNickName()),
+            () -> assertEquals(member.getNickname(), findMember.getNickname()),
             () -> assertEquals(member.getCreateDate(), findMember.getCreateDate()));
     }
 
-    @DisplayName("모든 회원 조회")
+    @DisplayName("회원이 있을 때 회원 전체조회를 하면 모든 회원을 반환한다")
     @Test
     void findAll() {
         // given
@@ -89,7 +89,7 @@ class MemberRepositoryTest {
             () -> assertEquals(member2.getEmail(), findAll.get(1).getEmail()));
     }
 
-    @DisplayName("회원 정보 수정")
+    @DisplayName("아이디, 이메일, 패스워드, 닉네임 입력시 해당 회원이 있을 때 회원 정보를 수정하면 데이터가 수정된다")
     @Test
     void update() {
         // given
@@ -99,7 +99,7 @@ class MemberRepositoryTest {
             .id(savedId)
             .email("mandu@gmail.com")
             .password("mandu12345")
-            .nickName("manduUpdat")
+            .nickname("manduUpdat")
             .createDate(LocalDateTime.now())
             .build();
 
@@ -112,14 +112,14 @@ class MemberRepositoryTest {
             () -> assertEquals(updateMember.getId(), findMember.getId()),
             () -> assertEquals(updateMember.getPassword(), findMember.getPassword()),
             () -> assertEquals(updateMember.getPassword(), findMember.getPassword()),
-            () -> assertEquals(updateMember.getNickName(), findMember.getNickName()));
+            () -> assertEquals(updateMember.getNickname(), findMember.getNickname()));
     }
 
     private Member dummyData() {
         return Member.builder()
             .email("mandu2@gmail.com")
             .password("Mandu1234")
-            .nickName("mandu2")
+            .nickname("mandu2")
             .createDate(LocalDateTime.now())
             .build();
     }
@@ -128,7 +128,7 @@ class MemberRepositoryTest {
         return Member.builder()
             .email("test2@gmail.com")
             .password("Test1234")
-            .nickName("test2")
+            .nickname("test2")
             .createDate(LocalDateTime.now())
             .build();
     }

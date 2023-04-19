@@ -26,7 +26,7 @@ public class JdbcMemberRepository implements MemberRepository {
     @Override
     public Long save(Member member) {
         String sql = "INSERT INTO member(email, password, nickname, create_date) "
-                   + "VALUES(:email, :password, :nickName, :createDate)";
+                   + "VALUES(:email, :password, :nickname, :createDate)";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(member);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, parameter, keyHolder);
@@ -78,7 +78,7 @@ public class JdbcMemberRepository implements MemberRepository {
         String sql = "UPDATE member "
                       + "SET email = :email, "
                           + "password = :password, "
-                          + "nickname = :nickName "
+                          + "nickname = :nickname "
                     + "WHERE id = :id";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(member);
         jdbcTemplate.update(sql, parameter);
@@ -89,7 +89,7 @@ public class JdbcMemberRepository implements MemberRepository {
             .id(rs.getLong("id"))
             .email(rs.getString("email"))
             .password(rs.getString("password"))
-            .nickName(rs.getString("nickname"))
+            .nickname(rs.getString("nickname"))
             .createDate(rs.getTimestamp("create_date").toLocalDateTime())
             .build();
 }

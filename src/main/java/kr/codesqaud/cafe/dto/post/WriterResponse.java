@@ -21,6 +21,6 @@ public class WriterResponse {
     }
 
     public static WriterResponse from(Member member) {
-        return new WriterResponse(member.getId(), member.getNickName());
+        return new WriterResponse(member.getId(), member.getNickname());
     }
 }

@@ -152,7 +152,7 @@ class PostRepositoryTest {
         return memberRepository.save(Member.builder()
             .email("test@naver.com")
             .password("Test1234")
-            .nickName("만두")
+            .nickname("만두")
             .createDate(LocalDateTime.now())
             .build());
     }
