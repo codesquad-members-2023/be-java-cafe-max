@@ -22,12 +22,12 @@ public class SignInController {
 	}
 
 	@GetMapping("/users/sign-in")
-	public String showUserSignInForm() {
+	public String signInForm() {
 		return "user/sign-in";
 	}
 
 	@PostMapping("/users/sign-in")
-	public String userSignIn(@ModelAttribute SignInRequest signInRequest, HttpSession httpSession) {
+	public String signIn(@ModelAttribute SignInRequest signInRequest, HttpSession httpSession) {
 		String id = signInRequest.getId();
 		userService.matchPassword(signInRequest);
 
@@ -39,13 +39,13 @@ public class SignInController {
 	}
 
 	@GetMapping("/users/sign-in-success/{id}")
-	public String showSingInSuccessForm(@PathVariable String id, Model model) {
+	public String singInSuccess(@PathVariable String id, Model model) {
 		model.addAttribute("user", userService.getUserById(id));
 		return "user/sign-in-success";
 	}
 
 	@PostMapping("/users/sign-out")
-	public String userSignOut(HttpSession request) {
+	public String signOut(HttpSession request) {
 		request.invalidate();
 		return "redirect:/";
 	}

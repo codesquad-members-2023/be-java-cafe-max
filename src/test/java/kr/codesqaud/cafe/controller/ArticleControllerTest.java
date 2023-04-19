@@ -44,9 +44,9 @@ class ArticleControllerTest {
 	}
 
 	@Test
-	@DisplayName("postArticle 메서드를 통해 article을 저장후 메인페이지로 리다이렉트 한다.")
-	void postArticleTest() throws Exception {
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/articles/submit")
+	@DisplayName("post 메서드를 통해 article을 저장후 메인페이지로 리다이렉트 한다.")
+	void postTest() throws Exception {
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/articles")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("title", "title")
@@ -65,8 +65,8 @@ class ArticleControllerTest {
 	}
 
 	@Test
-	@DisplayName("showDetailArticle 메서드를 통해 해당 idx의 게시물 정보를 가져온다.")
-	void showDetailArticleTest() throws Exception {
+	@DisplayName("detail 메서드를 통해 해당 idx의 게시물 정보를 가져온다.")
+	void detailTest() throws Exception {
 
 		//given
 		ArticlePostRequest articlePostRequest = new ArticlePostRequest("제목입니다", "내용입니다");
@@ -89,12 +89,12 @@ class ArticleControllerTest {
 
 	@Test
 	@DisplayName("해당 글을 작성한 사용자는 글의 내용을 업데이트 할수 있는 form으로 이동할수 있다.")
-	void showUpdateFormTest() throws Exception {
+	void updateFormTest() throws Exception {
 		ArticleTitleAndContentResponse articleTitleAndContentResponse = new ArticleTitleAndContentResponse("제목입니다",
 			"내용입니다");
 		given(articleService.validSessionIdAndArticleId(1L, "id")).willReturn(articleTitleAndContentResponse);
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/articles/update-form/1")
+		mockMvc.perform(MockMvcRequestBuilders.get("/articles/update/1")
 				.session(httpSession))
 			.andExpect(status().isOk())
 			.andExpect(view().name("article/updateForm"))
@@ -104,8 +104,8 @@ class ArticleControllerTest {
 
 	@Test
 	@DisplayName("글 수정페이지에서 수정할 제목, 내용을 입력한후 수정버튼을 누르면 글이 수정된후 메인페이지로 이동한다.")
-	void updateArticleTest() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.put("/articles/submit/update-form/1")
+	void updateTest() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.put("/articles/update/1")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("title", "제목입니다")
@@ -116,8 +116,8 @@ class ArticleControllerTest {
 
 	@Test
 	@DisplayName("글 세부 페이지에서 해당 삭제버튼을 누르면 글 삭제후 메인페이지로 이동한다.")
-	void deleteArticleTest() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.delete("/articles/1/delete")
+	void deleteTest() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.delete("/articles/1")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED))
 			.andExpect(status().is3xxRedirection())

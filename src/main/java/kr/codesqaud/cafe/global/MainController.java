@@ -15,7 +15,7 @@ public class MainController {
 	}
 
 	@GetMapping("/")
-	public String showArticleList(Model model) {
+	public String mainPage(Model model) {
 		model.addAttribute("articleList", articleService.getArticleList());
 		return "index";
 	}

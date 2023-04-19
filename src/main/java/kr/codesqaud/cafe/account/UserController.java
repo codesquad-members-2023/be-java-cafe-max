@@ -36,24 +36,24 @@ public class UserController {
 	}
 
 	@GetMapping("/users/list")
-	public String showUserList(Model model) {
+	public String userList(Model model) {
 		model.addAttribute("users", userService.getUserList());
 		return "user/list";
 	}
 
 	@GetMapping("/users/{id}")
-	public String showUserProfile(@PathVariable String id, Model model) {
+	public String userProfile(@PathVariable String id, Model model) {
 		model.addAttribute("user", userService.getUserById(id));
 		return "user/profile";
 	}
 
 	@GetMapping("/users/updateForm")
-	public String userUpdateFormat() {
+	public String updateForm() {
 		return "user/updateForm";
 	}
 
 	@PutMapping("/users/{id}")
-	public String updateUserData(@ModelAttribute @Valid ProfileEditRequest profileEditRequest,
+	public String update(@ModelAttribute @Valid ProfileEditRequest profileEditRequest,
 		HttpSession httpSession) {
 		userService.updateUser(profileEditRequest);
 		Session session = new Session(profileEditRequest.getId(), profileEditRequest.getNickName());

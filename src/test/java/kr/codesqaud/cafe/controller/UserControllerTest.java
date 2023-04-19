@@ -61,7 +61,7 @@ class UserControllerTest {
 
 	@Test
 	@DisplayName("회원가입 성공시 회원들의 list 를 user/list 에서 나열한다.")
-	void showUserListTest() throws Exception {
+	void userListTest() throws Exception {
 		//given
 		List<UserListResponse> userList = new ArrayList<>();
 		given(userService.getUserList()).willReturn(userList);
@@ -77,14 +77,14 @@ class UserControllerTest {
 
 	@Test
 	@DisplayName("유저의 id,nickName,email정보를 db로부터 가져와 user/profile에서 볼수있다.")
-	void showUserProfileTest() throws Exception {
+	void userProfileTest() throws Exception {
 		//given
 		UserResponse userResponse = new UserResponse("nickName", "aaa@naver.com", "password123",
 			"testId");
 		given(userService.getUserById("testId")).willReturn(userResponse);
 
 		//when & then
-		mockMvc.perform(MockMvcRequestBuilders.get("/users/profile/testId")
+		mockMvc.perform(MockMvcRequestBuilders.get("/users/testId")
 				.session(httpSession))
 			.andExpect(status().isOk())
 			.andExpect(view().name("user/profile"))
@@ -95,10 +95,10 @@ class UserControllerTest {
 
 	@Test
 	@DisplayName("유저의 정보를 수정하면 db에 정보를 업데이트후 세션값을 바꾸고 멤버 리스트로 리다이렉트 한다.")
-	void updateUserDataTest() throws Exception {
+	void updateTest() throws Exception {
 
 		//given & when
-		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.put("/users/profile/testId")
+		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.put("/users/testId")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.param("nickName", "nickName")

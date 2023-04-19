@@ -34,7 +34,7 @@ public class ArticleController {
 	}
 
 	@PostMapping("/articles")
-	public String postArticle(@ModelAttribute @Valid ArticlePostRequest articlePostRequest, HttpSession httpSession) {
+	public String post(@ModelAttribute @Valid ArticlePostRequest articlePostRequest, HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
 		articlePostRequest.setId(session.getId());
 		articlePostRequest.setNickName(session.getNickName());
@@ -43,14 +43,14 @@ public class ArticleController {
 	}
 
 	@GetMapping("/articles/{idx}")
-	public String showDetailArticle(@PathVariable Long idx, Model model) {
+	public String detail(@PathVariable Long idx, Model model) {
 		model.addAttribute("article", articleService.findArticleByIdx(idx));
 		model.addAttribute("reply", articleService.getReplyListByIdx(idx));
 		return "article/show";
 	}
 
 	@GetMapping("/articles/update/{idx}")
-	public String showUpdateForm(@PathVariable Long idx, Model model, HttpSession httpSession) {
+	public String updateForm(@PathVariable Long idx, Model model, HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
 		model.addAttribute("article", articleService.validSessionIdAndArticleId(idx, session.getId()));
 		model.addAttribute("idx", idx);
@@ -58,7 +58,7 @@ public class ArticleController {
 	}
 
 	@PutMapping("/articles/update/{idx}")
-	public String updateArticle(@ModelAttribute @Valid ArticleUpdateRequest articleUpdateRequest,
+	public String update(@ModelAttribute @Valid ArticleUpdateRequest articleUpdateRequest,
 		@PathVariable Long idx) {
 		articleUpdateRequest.setIdx(idx);
 		articleService.updateArticle(articleUpdateRequest);
@@ -66,7 +66,7 @@ public class ArticleController {
 	}
 
 	@DeleteMapping("/articles/{idx}")
-	public String deleteArticle(@PathVariable Long idx, HttpSession httpSession) {
+	public String delete(@PathVariable Long idx, HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
 		articleService.deleteArticleByIdx(idx, session.getId());
 		return "redirect:/";

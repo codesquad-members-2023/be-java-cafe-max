@@ -28,8 +28,8 @@ class MainControllerTest {
 	ArticleService articleService;
 
 	@Test
-	@DisplayName("showArticleList메서드를 통해 article의 list를 가져온후 index에 나열한다.")
-	void showArticleList() throws Exception {
+	@DisplayName("mainPage메서드를 통해 article의 list를 가져온후 나열한다.")
+	void mainPageTest() throws Exception {
 		//given
 		List<ArticleResponse> articleList = new ArrayList<>();
 		given(articleService.getArticleList()).willReturn(articleList);

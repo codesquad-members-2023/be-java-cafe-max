@@ -44,7 +44,7 @@ class SignInControllerTest {
 
 	@Test
 	@DisplayName("로그인성공시 id와 nickName을 session에 저장한다.")
-	void userLogin() throws Exception {
+	void signInTest() throws Exception {
 		//given
 		SignInRequest signInRequest = new SignInRequest("id", "user");
 		UserResponse userResponse = new UserResponse("nickName", "aaa@naver.com", "password", "id");
@@ -58,7 +58,7 @@ class SignInControllerTest {
 
 			//then
 			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/users/sign-in/id"));
+			.andExpect(view().name("redirect:/users/sign-in-success/id"));
 
 		MvcResult mvcResult = resultActions.andReturn();
 		MockHttpSession resultSession = (MockHttpSession)mvcResult.getRequest().getSession();
@@ -72,13 +72,13 @@ class SignInControllerTest {
 
 	@Test
 	@DisplayName("로그인성공시 로그인 성공창을 보여준다.")
-	void showLoginSuccessForm() throws Exception {
+	void singInSuccessTest() throws Exception {
 		//given
 		UserResponse userResponse = new UserResponse("nickName", "aaa@naver.com", "password123", "id");
 		given(userService.getUserById(userResponse.getId())).willReturn(userResponse);
 
 		//when
-		mockMvc.perform(MockMvcRequestBuilders.get("/users/sign-in/id")
+		mockMvc.perform(MockMvcRequestBuilders.get("/users/sign-in-success/id")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.session(httpSession))
 			//then
@@ -89,7 +89,7 @@ class SignInControllerTest {
 
 	@Test
 	@DisplayName("로그아웃시 세션을 invalidate 시킨다.")
-	void userSignOut() throws Exception {
+	void signOut() throws Exception {
 		//when
 		mockMvc.perform(MockMvcRequestBuilders.post("/users/sign-out")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
