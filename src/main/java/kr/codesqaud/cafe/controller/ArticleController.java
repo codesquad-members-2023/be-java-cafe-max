@@ -15,7 +15,7 @@ public class ArticleController {
     }
 
     @GetMapping("/question")
-    public String introPageEqualToArticlePage(){
+    public String goToQNAForm(){
         return "/qna/form";
     }
     @PostMapping("/articles")
@@ -24,7 +24,7 @@ public class ArticleController {
         return "redirect:/articles";
     }
     @GetMapping("/articles")
-    public String showArticles(){
-        return "/qna/index";
+    public String getArticleList(){
+        return "index";
     }
 }
