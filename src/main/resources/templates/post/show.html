@@ -23,9 +23,9 @@
                           <div class="article-header">
                               <hr/>
                               <div class="article-header-text">
-                                  <p class="article-content">멋진삼</p>
+                                  <p class="article-content">{{writer}}</p>
                                   <p class="article-content">
-                                      {{dateTime}}}
+                                      {{dateTime}}
                                   </p>
                                   <p class="article-content">조회 4</p>
                               </div>
@@ -44,37 +44,36 @@
                           <div class="post-comment-slipp">
                               <p class="post-comment-count">댓글 2개</p>
                               <div class="post-comment-slipp-articles">
-
-                                  <article class="comment">
-                                      <div class="article-text">
-                                          <p class="comment-content comment-author-name">자바지기</p>
-                                          <div class="comment-content comment-doc">
-                                              <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
-                                          </div>
-                                          <p class="comment-content comment-time">
-                                              2016-01-12 14:06
-                                          </p>
-                                      </div>
-                                  </article>
-
+                                    {{#replies}}
                                   <article class="comment" id="answer-1405">
                                       <div class="article-text">
-                                          <p class="comment-content comment-author-name">자바지기</p>
+                                          <p class="comment-content comment-author-name">{{writer}}</p>
                                           <div class="comment-content comment-doc">
-                                              <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
+                                              <p>{{content}}</p>
                                           </div>
                                           <p class="comment-content comment-time">
-                                              2016-01-12 14:06
+                                              {{dateTime}}
                                           </p>
                                       </div>
+                                      <form method="post" action="/articles/{{#article}}{{article.id}}{{/article}}/replies/{{replyId}}">
+                                          <input type="hidden" name="_method"  value="delete"/>
+                                          <button type="submit">삭제</button>
+                                      </form>
+                                      {{/replies}}
+                                      {{#error}}
+                                      <span style="color: red">{{error}}</span>
+                                      {{/error}}
                                   </article>
 
-                                  <form class="submit-write" method="get" action="../index.html ">
+
+                                  <form class="submit-write" method="post" action="/reply/{{#article}}{{article.id}}{{/article}}">
                                       <div class="comment-writer-container">
-                                          <input class="comment-writer" id="writer" name="writer" value="멋진상" readonly/>
+                                          <input class="comment-writer" id="writer" name="writer" value="{{#loginUserName}}
+                                  {{loginUserName}}
+                                  {{/loginUserName}}" readonly/>
                                       </div>
                                       <div class="form-group">
-                                          <textarea class="form-control" id="comment" name="comment" placeholder="내용을 입력하세요"></textarea>
+                                          <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
                                       </div>
                                       <input class="post-write-btn" type="submit" value="등록"/>
                                   </form>

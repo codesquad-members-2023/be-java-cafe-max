@@ -10,9 +10,23 @@
             </div>
 
             <ul class="nav navbar-nav navbar-right">
+
+                {{#loginUserId}}
                 <li class="active"><a href="/users">멤버 리스트</a></li>
+
+                <form method="get" action="/logout">
+                    <li>
+                        <button class="black-component" type="submit">로그아웃</button>
+                    </li>
+                </form>
+                <li>{{loginUserId}}님</li>
+                <li><a class="black-component" href="/users/updateForm" role="button">개인정보수정</a></li>
+                <li><a class="black-component" href="/users/{{loginUserId}}" role="button">프로필</a></li>
+                {{/loginUserId}}
+                {{^loginUserId}}
                 <li><a class="black-component" href="/user/login" role="button">로그인</a></li>
                 <li><a class="black-component" href="/user/form" role="button">회원가입</a></li>
+                {{/loginUserId}}
             </ul>
         </div>
     </nav>

@@ -16,8 +16,14 @@
 
             <ul class="nav navbar-nav navbar-right">
                 </li><li class="active"><a href="/">메인페이지</a></li>
-                <li><a class="black-component" href="/user/login" role="button">로그인</a></li>
-                <li><a class="black-component" href="/user/form" role="button">회원가입</a></li>
+                <form method="get" action="/logout">
+                    <li>
+                        <button class="black-component" type="submit">로그아웃</button>
+                    </li>
+                </form>
+                <li>{{loginUserId}}님</li>
+                <li><a class="black-component" href="/users/update" role="button">개인정보수정</a></li>
+                <li><a class="black-component" href="/users/{{loginUserId}}" role="button">프로필</a></li>
             </ul>
         </div>
     </nav>
@@ -46,7 +52,7 @@
                     <tbody>
                     {{#users}}
                     <tr>
-                        <td><a href="/users/{{id}}">{{name}}</a></td>
+                        <td><a href="/users/{{loginUserId}}">{{name}}</a></td>
                         <td>{{email}}</td>
                         <td>{{dateTime}}</td>
                     </tr>
