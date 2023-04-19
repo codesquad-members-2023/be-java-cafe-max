@@ -40,10 +40,10 @@ public class GlobalExceptionHandler {
 	public String handleBindException(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
 		if (requestUri.contains("/sign-up")) {
-			return "redirect:/users/sign-up-form";
-		} else if (requestUri.contains("/profile")) {
+			return "redirect:/users/sign-up";
+		} else if (requestUri.contains("/users")) {
 			redirectAttributes.addAttribute("id", request.getParameter("id"));
-			return "redirect:/users/profile/{id}/form";
+			return "redirect:/users/updateForm";
 		}
 		return "redirect:/articles";
 	}
@@ -51,24 +51,24 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(AlreadyUserExistenceException.class)
 	public ModelAndView handleAlreadyUserExistenceException(AlreadyUserExistenceException e,
 		RedirectAttributes redirectAttributes) {
-		return new ModelAndView(handleExceptionWithRedirect(e, "/users/sign-up-form", "id-error", redirectAttributes));
+		return new ModelAndView(handleExceptionWithRedirect(e, "/users/sign-up", "id-error", redirectAttributes));
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)
 	public ModelAndView handleUserNotFoundException(UserNotFoundException e, HttpServletRequest request,
 		RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
-		if (requestUri.contains("/profile")) {
+		if (requestUri.contains("/users")) {
 			return createErrorResponseModelAndView("error/400_bad_request", e);
 		}
-		return new ModelAndView(handleExceptionWithRedirect(e, "/users/sign-in-form", "id-error", redirectAttributes));
+		return new ModelAndView(handleExceptionWithRedirect(e, "/users/sign-in", "id-error", redirectAttributes));
 	}
 
 	@ExceptionHandler(UserUpdateInvalidPasswordException.class)
 	public ModelAndView handleUserUpdateInvalidPasswordException(UserUpdateInvalidPasswordException e,
-		RedirectAttributes redirectAttributes, HttpServletRequest request) {
+		RedirectAttributes redirectAttributes) {
 		ModelAndView mav = new ModelAndView(
-			handleExceptionWithRedirect(e, "/users/profile/" + request.getParameter("id") + "/form", "password-error",
+			handleExceptionWithRedirect(e, "/users/updateForm", "password-error",
 				redirectAttributes));
 		return mav;
 	}
@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
 	public ModelAndView handleLoginInvalidPasswordException(LoginInvalidPasswordException e,
 		RedirectAttributes redirectAttributes) {
 		return new ModelAndView(
-			handleExceptionWithRedirect(e, "/users/sign-in-form", "password-error", redirectAttributes));
+			handleExceptionWithRedirect(e, "/users/sign-in", "password-error", redirectAttributes));
 	}
 
 	@ExceptionHandler(ArticleNotFoundException.class)

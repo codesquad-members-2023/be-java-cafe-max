@@ -17,11 +17,11 @@
                         <button class="black-component" type="submit">로그아웃</button>
                     </li>
                 </form>
-                <li><a class="black-component" href="/users/profile/{{loginUser.id}}/form" role="button">개인정보수정</a></li>
+                <li><a class="black-component" href="/users/updateForm" role="button">개인정보수정</a></li>
                 {{/loginUser}}
                 {{^loginUser}}
-                <li><a class="black-component" href="/users/sign-in-form" role="button">로그인</a></li>
-                <li><a class="black-component" href="/users/sign-up-form" role="button">회원가입</a></li>
+                <li><a class="black-component" href="/users/sign-in" role="button">로그인</a></li>
+                <li><a class="black-component" href="/users/sign-up" role="button">회원가입</a></li>
                 {{/loginUser}}
             </ul>
         </div>

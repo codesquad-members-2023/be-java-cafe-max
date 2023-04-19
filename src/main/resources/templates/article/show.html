@@ -28,10 +28,10 @@
                                 <p class="article-content">{{article.date}}</p>
                                 <p class="article-content">조회 10</p>
 
-                                <form method="get" action="/articles/update-form/{{article.idx}}">
+                                <form method="get" action="/articles/update/{{article.idx}}">
                                     <button class="post-button" type="submit">수정</button>
                                 </form>
-                                <form method="post" action="/articles/{{article.idx}}/delete">
+                                <form method="post" action="/articles/{{article.idx}}">
                                     <input type="hidden" name="_method" value="DELETE"/>
                                     <button class="post-button" type="submit">삭제</button>
                                 </form>

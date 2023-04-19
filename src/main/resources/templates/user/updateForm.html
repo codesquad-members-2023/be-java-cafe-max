@@ -12,7 +12,7 @@
         <header class="post-header">
             <p class="title">회원정보 수정</p>
         </header>
-        <form name="question" class="info-container" method="post" action="/users/profile/{{loginUser.id}}">
+        <form name="question" class="info-container" method="post" action="/users/{{loginUser.id}}">
             <input type="hidden" name="_method" value="PUT"/>
             <div class="form-group updateFormId">
                 <label for="id">사용자 아이디</label>

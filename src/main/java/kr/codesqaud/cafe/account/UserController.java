@@ -24,6 +24,11 @@ public class UserController {
 		this.userService = userService;
 	}
 
+	@GetMapping("/users/sign-up")
+	public String signUpForm() {
+		return "user/form";
+	}
+
 	@PostMapping("/users/sign-up")
 	public String signUp(@ModelAttribute @Valid UserSignUpRequest userSignUpRequest) {
 		userService.addUser(userSignUpRequest);
@@ -36,13 +41,18 @@ public class UserController {
 		return "user/list";
 	}
 
-	@GetMapping("/users/profile/{id}")
+	@GetMapping("/users/{id}")
 	public String showUserProfile(@PathVariable String id, Model model) {
 		model.addAttribute("user", userService.getUserById(id));
 		return "user/profile";
 	}
 
-	@PutMapping("/users/profile/{id}")
+	@GetMapping("/users/updateForm")
+	public String userUpdateFormat() {
+		return "user/updateForm";
+	}
+
+	@PutMapping("/users/{id}")
 	public String updateUserData(@ModelAttribute @Valid ProfileEditRequest profileEditRequest,
 		HttpSession httpSession) {
 		userService.updateUser(profileEditRequest);

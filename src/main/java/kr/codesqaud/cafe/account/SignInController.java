@@ -21,6 +21,11 @@ public class SignInController {
 		this.userService = userService;
 	}
 
+	@GetMapping("/users/sign-in")
+	public String showUserSignInForm() {
+		return "user/sign-in";
+	}
+
 	@PostMapping("/users/sign-in")
 	public String userSignIn(@ModelAttribute SignInRequest signInRequest, HttpSession httpSession) {
 		String id = signInRequest.getId();
@@ -30,10 +35,10 @@ public class SignInController {
 		Session session = new Session(userDto.getId(), userDto.getNickName());
 
 		httpSession.setAttribute(Session.LOGIN_USER, session);
-		return "redirect:/users/sign-in/" + id;
+		return "redirect:/users/sign-in-success/" + id;
 	}
 
-	@GetMapping("/users/sign-in/{id}")
+	@GetMapping("/users/sign-in-success/{id}")
 	public String showSingInSuccessForm(@PathVariable String id, Model model) {
 		model.addAttribute("user", userService.getUserById(id));
 		return "user/sign-in-success";
