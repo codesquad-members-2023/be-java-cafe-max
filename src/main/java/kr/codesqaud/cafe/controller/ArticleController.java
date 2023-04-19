@@ -59,7 +59,7 @@ public class ArticleController {
 		return "qna/form";
 	}
 
-	@GetMapping("/articles/edit/{id}")
+	@GetMapping("/articles/{id}/edit")
 	public String editPost(Model model, @PathVariable Long id, HttpSession session) {
 		Object userId = session.getAttribute("sessionedUser");
 		ArticleDto articleDto = articleService.findById(id);
@@ -70,7 +70,7 @@ public class ArticleController {
 		return "qna/edit_form";
 	}
 
-	@DeleteMapping("/articles/delete/{id}")
+	@DeleteMapping("/articles/{id}/delete") // delete위치 id 뒤로 바꿔주기
 	public String deletePost(@PathVariable Long id, HttpSession session) {
 		Object userId = session.getAttribute("sessionedUser");
 		ArticleDto articleDto = articleService.findById(id);
@@ -81,7 +81,7 @@ public class ArticleController {
 		return "redirect:/";
 	}
 
-	@PutMapping("/articles/edit/{id}")
+	@PutMapping("/articles/{id}/edit")
 	public String updatePost(@ModelAttribute PostingRequest postingRequest, @PathVariable Long id,
 		HttpSession session) {
 		Object writer = session.getAttribute("sessionedUser");

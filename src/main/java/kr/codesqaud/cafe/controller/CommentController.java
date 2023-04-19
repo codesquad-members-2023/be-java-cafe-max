@@ -23,6 +23,6 @@ public class CommentController {
 		@PathVariable Long articleId) {
 		Object userId = session.getAttribute("sessionedUser");
 		commentService.commentSave(request, (String)userId, articleId);
-		return "redirect:/";
+		return "redirect:/articles/{articleId}";
 	}
 }
