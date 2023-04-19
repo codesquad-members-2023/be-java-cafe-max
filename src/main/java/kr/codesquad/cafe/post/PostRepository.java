@@ -1,12 +1,15 @@
 package kr.codesquad.cafe.post;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    Optional<Post> findByIdAndAndIsDeleted(long id, boolean deleted);
+    Optional<Post> findByIdAndIsDeleted(long id, boolean deleted);
 
-    List<Post> findAllByIsDeleted(boolean deleted);
+    List<Post> findAllByIsDeleted(boolean deleted, Pageable pageable);
+
+    int countByIsDeleted(boolean deleted);
 }

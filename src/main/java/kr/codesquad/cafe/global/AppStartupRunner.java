@@ -1,12 +1,18 @@
 package kr.codesquad.cafe.global;
 
+import kr.codesquad.cafe.post.Post;
+import kr.codesquad.cafe.post.PostRepository;
 import kr.codesquad.cafe.user.Role;
 import kr.codesquad.cafe.user.User;
 import kr.codesquad.cafe.user.UserRepository;
 import org.jasypt.encryption.StringEncryptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 
 @Profile("cloud")
 @Component
@@ -15,18 +21,36 @@ public class AppStartupRunner implements CommandLineRunner {
     private final UserRepository userRepository;
     private final StringEncryptor encryptor;
 
-    public AppStartupRunner(UserRepository userRepository, StringEncryptor encryptor) {
+    private final PostRepository postRepository;
+
+    @Autowired
+    EntityManager entityManager;
+
+    public AppStartupRunner(UserRepository userRepository, StringEncryptor encryptor, PostRepository postRepository) {
         this.userRepository = userRepository;
         this.encryptor = encryptor;
+        this.postRepository = postRepository;
     }
 
     @Override
     public void run(String... args) {
-        User build = new User.Builder()
+        User manager = new User.Builder()
                 .password(encryptor.decrypt("W5p8Dbc3f7sOjqaRc7WVp8inlukLB3LJ"))
                 .email(encryptor.decrypt("R9gvxFpZK6xYikAdPrdy1mDtd3O+ag2L"))
                 .nickname("admin")
                 .role(Role.MANAGER).build();
-        userRepository.save(build);
+        User savedManager = userRepository.save(manager);
+
+
+        for (int i = 0; i < 300; i++) {
+            Post test = new Post.Builder()
+                    .createdDateTime(LocalDateTime.now())
+                    .title("test" + i)
+                    .user(savedManager)
+                    .textContent("testContent")
+                    .nickname(manager.getNickname())
+                    .build();
+            postRepository.save(test);
+        }
     }
 }

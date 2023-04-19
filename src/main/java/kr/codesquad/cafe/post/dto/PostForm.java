@@ -42,7 +42,7 @@ public class PostForm {
         return new Post.Builder()
                 .title(title)
                 .nickname(user.getNickname())
-                .User(user)
+                .user(user)
                 .textContent(textContent)
                 .createdDateTime(LocalDateTime.now())
                 .build();

@@ -148,7 +148,7 @@ public class Post {
             return this;
         }
 
-        public Builder User(User user) {
+        public Builder user(User user) {
             this.user = user;
             return this;
         }
