@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.article;
 
 public class ArticleSql {
 	public static final String SELECT_ALL_FOR_WRITE_LIST
@@ -22,8 +22,4 @@ public class ArticleSql {
 	public static final String UPDATE
 		= "UPDATE WRITE_INFO SET title = :title, contents = :contents, writer = :writer "
 		+ "WHERE index = :index";
-
-	public static final String UPDATE_WRITER
-		= "UPDATE WRITE_INFO SET writer = :writer "
-		+ "WHERE writer = :original";
 }

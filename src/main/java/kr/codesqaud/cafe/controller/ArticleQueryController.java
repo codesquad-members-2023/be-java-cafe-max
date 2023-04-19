@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ArticleService;
 
@@ -44,7 +45,9 @@ public class ArticleQueryController {
 		}
 		articleService.increaseHits(index);
 		Article article = articleService.findByIndex(index);
+		List<Comment> comments = articleService.findCommentsByPostIndex(index);
 		model.addAttribute("article", article);
+		model.addAttribute("comments", comments);
 		model.addAttribute("equal", equal);
 		return "qna/detail";
 	}
@@ -56,11 +59,5 @@ public class ArticleQueryController {
 		article.validateWriter(user.getNickname(), "다른 사람의 글은 수정할 수 없습니다.");
 		model.addAttribute("article", article);
 		return "qna/updateDetail";
-	}
-
-	@GetMapping("/article/update/{originalNickname}/{newNickname}")
-	public String updateNickname(@PathVariable String originalNickname, @PathVariable String newNickname) {
-		articleService.updateWriter(originalNickname, newNickname);
-		return "redirect:/users";
 	}
 }

@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.user;
 
 import java.util.List;
 import java.util.Optional;

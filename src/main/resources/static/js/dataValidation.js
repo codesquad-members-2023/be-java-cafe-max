@@ -1,4 +1,5 @@
 const validSignUpCheck = [false, false, false, false];
+const validUpdateCheck = [true, true, true, true];
 const validWriteCheck = [false, false];
 const validOutputView = ["올바른 아이디 형식입니다.", "올바른 이메일 형식입니다.", "올바른 닉네임입니다.", "올바른 비밀번호 형식입니다."];
 const invalidOutputView = ["아이디는 2글자 이상 64글자 이하여야 합니다.", "잘못된 이메일 형식입니다.", "닉네임은 2글자 이상 64글자 이하여야 합니다."
@@ -32,10 +33,12 @@ function verifyEmail() {
     if(regExp.test(email)) {
         validView('#emailMessage', EMAIL_NUM);
         validSignUpCheck[EMAIL_NUM] = true;
+        validUpdateCheck[EMAIL_NUM] = true;
         user.email = email;
     } else {
         invalidView('#emailMessage', EMAIL_NUM);
         validSignUpCheck[EMAIL_NUM] = false;
+        validUpdateCheck[EMAIL_NUM] = false;
     }
 }
 
@@ -45,10 +48,12 @@ function verifyNickname() {
     if(nickname.length >= 2 && nickname.length <= 64) {
         validView('#nicknameMessage', NICKNAME_NUM);
         validSignUpCheck[NICKNAME_NUM] = true;
+        validUpdateCheck[NICKNAME_NUM] = true;
         user.nickname = nickname;
     } else {
         invalidView('#nicknameMessage', NICKNAME_NUM);
         validSignUpCheck[NICKNAME_NUM] = false;
+        validUpdateCheck[NICKNAME_NUM] = false;
     }
 }
 
@@ -59,10 +64,12 @@ function verifyPassword() {
     if(reg.test(password)) {
         validView('#passwordMessage', PASSWORD_NUM);
         validSignUpCheck[PASSWORD_NUM] = true;
+        validUpdateCheck[PASSWORD_NUM] = true;
         user.password = password;
     } else {
         invalidView('#passwordMessage', PASSWORD_NUM);
         validSignUpCheck[PASSWORD_NUM] = false;
+        validUpdateCheck[PASSWORD_NUM] = false;
     }
 }
 
@@ -77,7 +84,7 @@ function validateData() {
 }
 
 function validateUpdateData() {
-    if(validSignUpCheck[1] && validSignUpCheck[2] && validSignUpCheck[3]) {
+    if(validUpdateCheck[1] && validUpdateCheck[2] && validUpdateCheck[3]) {
         return true;
     } else {
         invalidView('#allMessage', ALL_DATA_NUM);

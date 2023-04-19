@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.user;
 
-import static kr.codesqaud.cafe.repository.UserSql.*;
+import static kr.codesqaud.cafe.repository.user.UserSql.*;
 
 import java.util.List;
 import java.util.Optional;

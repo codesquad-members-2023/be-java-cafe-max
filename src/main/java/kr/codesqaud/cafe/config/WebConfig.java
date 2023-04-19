@@ -14,12 +14,16 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addInterceptor(new LoginInterceptor())
 			.addPathPatterns("/**")
 			.excludePathPatterns("/", "/user/login", "/users", "/user/logout", "/user/form", "/login", "/css/**",
-				"/js/**", "/user/create", "/error/**");
+				"/js/**", "/user/create", "/error/**", "/images/**");
 	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/css/**")
 			.addResourceLocations("classpath:/static/css/");
+		registry.addResourceHandler("/js/**")
+			.addResourceLocations("classpath:/static/js/");
+		registry.addResourceHandler("/images/**")
+			.addResourceLocations("classpath:/static/images/");
 	}
 }

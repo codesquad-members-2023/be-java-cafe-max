@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.article;
 
 import java.util.List;
 
@@ -17,6 +17,4 @@ public interface ArticleRepository {
 	boolean delete(Long index);
 
 	boolean update(Long index, ArticleDto articleDto);
-
-	boolean updateWriter(String originalNickname, String newNickname);
 }

@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.user;
 
 public class UserSql {
 	public static final String SELECT_ALL_FOR_USER_LIST

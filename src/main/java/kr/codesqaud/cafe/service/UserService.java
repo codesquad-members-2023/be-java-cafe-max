@@ -9,7 +9,7 @@ import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserDto;
 import kr.codesqaud.cafe.exception.DuplicateUserException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.repository.user.UserRepository;
 
 @Service
 public class UserService {

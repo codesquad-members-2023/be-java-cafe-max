@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.article;
 
-import static kr.codesqaud.cafe.repository.ArticleSql.*;
+import static kr.codesqaud.cafe.repository.article.ArticleSql.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,14 +70,6 @@ public class JdbcArticleRepository implements ArticleRepository {
 			.addValue("writer", articleDto.getWriter())
 			.addValue("contents", articleDto.getContents());
 		namedParameterJdbcTemplate.update(UPDATE, params);
-		return true;
-	}
-
-	@Override
-	public boolean updateWriter(String originalNickname, String newNickname) {
-		SqlParameterSource params = new MapSqlParameterSource("original", originalNickname)
-			.addValue("writer", newNickname);
-		namedParameterJdbcTemplate.update(UPDATE_WRITER, params);
 		return true;
 	}
 

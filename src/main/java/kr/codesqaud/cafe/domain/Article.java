@@ -9,6 +9,18 @@ public class Article {
 	private String contents;
 	private String writeDate;
 	private long hits;
+	private boolean deleted;
+
+	public Article(Long index, String title, String writer, String contents, String writeDate, long hits,
+		boolean deleted) {
+		this.index = index;
+		this.title = title;
+		this.writer = writer;
+		this.contents = contents;
+		this.writeDate = writeDate;
+		this.hits = hits;
+		this.deleted = deleted;
+	}
 
 	public Article(Long index, String title, String writer, String contents, String writeDate, Long hits) {
 		this.index = index;
@@ -54,6 +66,10 @@ public class Article {
 	public boolean setHits(long hits) {
 		this.hits = hits;
 		return true;
+	}
+	
+	public boolean isDeleted() {
+		return deleted;
 	}
 
 	public void validateWriter(String nickname, String message) {
