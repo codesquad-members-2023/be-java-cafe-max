@@ -72,7 +72,7 @@ public class ArticleController {
     }
 
     private void checkUserPermissions(HttpSession httpSession, String writer) {
-        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_NAME).equals(writer)) {
+        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_ID).equals(writer)) {
             throw new AccessDeniedException();
         }
     }

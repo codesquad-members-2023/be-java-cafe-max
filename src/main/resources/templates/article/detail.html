@@ -17,7 +17,7 @@
                 <div>
                     <span class="firstText" th:text="|작성자 : ${article.writer}|">작성자</span><span th:text="|작성일자 : ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|">작성일자</span>
                 </div>
-                <a class="editButton" th:if="${article.writer == session.loginUserName}" th:href="@{/articles/{id}/edit(id=${article.id})}">수정하기</a>
+                <a class="editButton" th:if="${article.writer == session.loginUserId}" th:href="@{/articles/{id}/edit(id=${article.id})}">수정하기</a>
             </div>
             <p th:text="${article.contents}"></p>
             <hr/>
@@ -32,6 +32,22 @@
                 <a th:href="@{/}">목록으로</a>
             </div>
         </div>
+
+        <form id="replyForm">
+            <label for="inputReply" th:text="${session.loginUserId}">작성자</label>
+            <textarea maxlength="400" id="inputReply" name="contents" placeholder="댓글의 내용을 입력하세요"></textarea>
+            <span class="checkContent hide">내용은 3자 이상 400자 이하로 입력해주세요</span>
+            <button type="button" class="button" onclick="validateReply()">댓글 등록</button>
+        </form>
+
+<!--        <div id="replyContainer">-->
+<!--            <span th:text="|댓글 ${#lists.size(replies)}개|">댓글 10개</span>-->
+<!--            <div class="reply" th:each="reply : ${replies}">-->
+<!--                <span class="replyWriter" th:text="${reply.writer}"></span>-->
+<!--                <p th:text="${reply.contents}"></p>-->
+<!--                <span th:text="${#temporals.format(reply.createdAt, 'yyyy-MM-dd HH:mm')}">작성일자</span>-->
+<!--            </div>-->
+<!--        </div>-->
     </section>
 </div>
 

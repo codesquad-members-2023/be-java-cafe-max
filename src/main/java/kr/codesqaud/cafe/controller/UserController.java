@@ -78,7 +78,6 @@ public class UserController {
     public String login(String userId, String password, HttpSession httpSession) {
         final UserResponse loginUser = userService.login(userId, password);
         httpSession.setAttribute(SessionAttributeNames.LOGIN_USER_ID, loginUser.getUserId());
-        httpSession.setAttribute(SessionAttributeNames.LOGIN_USER_NAME, loginUser.getName());
         return "redirect:/";
     }
 

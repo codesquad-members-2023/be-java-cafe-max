@@ -1,11 +1,11 @@
 /* 회원가입 */
 function validateAll() {
     const email = checkEmail();
-    const nickname = checkNickname();
+    const name = checkName();
     const password = checkPassword();
     const userId = checkUserId();
 
-    if (email && nickname && password && userId) {
+    if (email && name && password && userId) {
         return true;
     }
     
@@ -27,11 +27,11 @@ function checkEmail() {
     return true;
 }
 
-function checkNickname() {
-    const nickname = document.getElementById('inputNickname').value;
-    const message = document.querySelector('.checkNickname');
+function checkName() {
+    const name = document.getElementById('inputName').value;
+    const message = document.querySelector('.checkName');
 
-    if (nickname.length < 2 || nickname.length > 12) {
+    if (name.length < 2 || name.length > 12) {
         message.classList.remove('hide');
         signUp.inputPassword.focus();
         return false;
@@ -124,10 +124,10 @@ function checkWriter() {
 /* 회원 정보 수정 */
 function validateUpdate() {
     const email = checkEmail();
-    const nickname = checkNickname();
+    const name = checkName();
     const password = checkNewPassword();
 
-    if (email && nickname && password) {
+    if (email && name && password) {
         return true;
     }
 
