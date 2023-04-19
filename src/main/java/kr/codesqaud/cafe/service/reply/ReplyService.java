@@ -28,7 +28,7 @@ public class ReplyService {
     public List<ReplyTimeForm> findReplies(Long articleId) {
         return replyRepository.findByArticleId(articleId).stream()
                 .map(ReplyTimeForm::from)
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public ReplyTimeForm findReplyId(Long id) {

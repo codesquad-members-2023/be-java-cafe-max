@@ -45,25 +45,21 @@ public class ArticleController {
     @GetMapping("/")
     public String addArticles(Model model) {
         // 현재 시작을 가져오는 목적(now 메서드)으로 DTO 사용
-        List<ArticleTimeForm> articles = articleService.findArticles();
-        model.addAttribute("articles", articles);
+        model.addAttribute("articles", articleService.findArticles());
         return "index";
     }
 
     @GetMapping("/questions/{id}")
-    public String show(@PathVariable("id") Long id, Model model) {
-        ArticleTimeForm article = articleService.findArticleId(id);
-        List<ReplyTimeForm> replies = replyService.findReplies(id);
-        model.addAttribute("article", article);
-        model.addAttribute("replies", replies);
+    public String show(@PathVariable Long id, Model model) {
+        model.addAttribute("article", articleService.findArticleId(id));
+        model.addAttribute("replies", replyService.findReplies(id));
         return "qna/show";
     }
 
     @GetMapping("/questions/{id}/updateForm")
     public String getUpdateArticle(@PathVariable Long id, Model model, HttpSession session) {
         validateUserId(id, (String) session.getAttribute(SessionConst.LOGIN_USER_ID));
-        ArticleUpdateForm article = articleService.findUpdate(id);
-        model.addAttribute("articleUpdated", article);
+        model.addAttribute("articleUpdated", articleService.findUpdate(id));
         return "qna/updateForm";
     }
 
@@ -81,6 +77,7 @@ public class ArticleController {
     @DeleteMapping("/questions/{id}")
     public String deleteArticle(@PathVariable Long id, HttpSession session) {
         validateUserId(id, (String) session.getAttribute(SessionConst.LOGIN_USER_ID));
+
         articleService.delete(id);
         return "redirect:/";
     }
