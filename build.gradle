@@ -18,6 +18,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'com.h2database:h2'
+	implementation 'mysql:mysql-connector-java:8.0.28'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
