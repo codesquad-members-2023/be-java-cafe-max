@@ -3,15 +3,15 @@ package kr.codesqaud.cafe.domain.user.entity;
 import java.time.LocalDateTime;
 
 public class User {
-
+	private String id;
 	private String password;
 	private String name;
 	private String email;
-	private String id;
+	private String loginId;
 	LocalDateTime dateTime;
 
-	public User(String id, String name, String password, String email) {
-		this.id = id;
+	public User(String loginId, String name, String password, String email) {
+		this.loginId = loginId;
 		this.password = password;
 		this.name = name;
 		this.email = email;
@@ -21,7 +21,7 @@ public class User {
 	public User() {
 	}
 
-	public boolean isCorrectPassword(String password) {
+	public boolean matchPassword(String password) {
 		return this.password.equals(password);
 	}
 
@@ -49,14 +49,6 @@ public class User {
 		this.name = name;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getEmail() {
 		return this.email;
 	}
@@ -65,4 +57,19 @@ public class User {
 		return this.dateTime;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getLoginId() {
+		return loginId;
+	}
+
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
+	}
 }
