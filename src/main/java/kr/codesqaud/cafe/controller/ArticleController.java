@@ -70,7 +70,7 @@ public class ArticleController {
 		return "qna/edit_form";
 	}
 
-	@DeleteMapping("/articles/{id}/delete") // delete위치 id 뒤로 바꿔주기
+	@DeleteMapping("/articles/{id}/delete")
 	public String deletePost(@PathVariable Long id, HttpSession session) {
 		Object userId = session.getAttribute("sessionedUser");
 		ArticleDto articleDto = articleService.findById(id);
