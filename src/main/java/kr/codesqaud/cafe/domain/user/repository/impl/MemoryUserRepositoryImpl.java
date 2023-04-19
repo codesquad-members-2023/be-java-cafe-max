@@ -14,19 +14,15 @@ public class MemoryUserRepositoryImpl implements UserRepository {
 	private Map<String, User> users = new ConcurrentHashMap<>();
 
 	public void save(User user) {
-		user.setId(user.getId());
-		users.put(user.getId(), user);
+		users.put(user.getLoginId(), user);
 	}
 
-	public Optional<User> findById(String id) {
-		if (users.get(id) == null) {
-			return Optional.empty();
-		}
-		return Optional.of(users.get(id));
+	public Optional<User> findById(String loginId) {
+		return Optional.ofNullable(users.get(loginId));
 	}
 
 	public void update(User user) {
-		users.put(user.getId(), user);
+		users.put(user.getLoginId(), user);
 	}
 
 	public List<User> findAll() {
