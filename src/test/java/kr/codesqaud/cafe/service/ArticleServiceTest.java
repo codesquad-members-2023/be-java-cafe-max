@@ -27,6 +27,7 @@ import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.articlecomment.ArticleComment;
+import kr.codesqaud.cafe.exception.InvalidOperationException;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import kr.codesqaud.cafe.repository.ArticleCommentRepository;
@@ -217,6 +218,7 @@ class ArticleServiceTest {
 		void givenNothing_whenDeletesArticle_thenDoNothing() {
 			// given
 			given(articleRepository.findById(anyLong())).willReturn(Optional.of(createArticle()));
+			given(articleRepository.isPossibleDeleteById(anyLong())).willReturn(Optional.of(Boolean.TRUE));
 			willDoNothing().given(articleRepository).deleteById(anyLong());
 
 			// when & then
@@ -224,8 +226,8 @@ class ArticleServiceTest {
 				() -> assertThatCode(() -> articleService.deleteArticle(1L))
 					.doesNotThrowAnyException(),
 				() -> then(articleRepository).should().findById(1L),
-				() -> then(articleRepository).should().deleteById(1L)
-			);
+				() -> then(articleRepository).should().isPossibleDeleteById(1L),
+				() -> then(articleRepository).should().deleteById(1L));
 		}
 
 		@DisplayName("존재하지 않는 게시글 아이디가 주어지면 예외를 던진다.")
@@ -239,8 +241,24 @@ class ArticleServiceTest {
 				() -> assertThatThrownBy(() -> articleService.deleteArticle(1L))
 					.isInstanceOf(NotFoundException.class),
 				() -> then(articleRepository).should().findById(1L),
-				() -> then(articleRepository).should(never()).deleteById(1L)
-			);
+				() -> then(articleRepository).should(never()).isPossibleDeleteById(anyLong()),
+				() -> then(articleRepository).should(never()).deleteById(anyLong()));
+		}
+
+		@DisplayName("게시글 작성자와 일치하지 않는 댓글이 존재하면 예외를 던진다.")
+		@Test
+		void givenContainsCommentsThatNotEqualsWriter_whenDeleteArticle_thenThrowsException() {
+			// given
+			given(articleRepository.findById(anyLong())).willReturn(Optional.of(createArticle()));
+			given(articleRepository.isPossibleDeleteById(anyLong())).willReturn(Optional.of(Boolean.FALSE));
+
+			// when & then
+			assertAll(
+				() -> assertThatThrownBy(() -> articleService.deleteArticle(1L))
+					.isInstanceOf(InvalidOperationException.class),
+				() -> then(articleRepository).should().findById(1L),
+				() -> then(articleRepository).should().isPossibleDeleteById(1L),
+				() -> then(articleRepository).should(never()).deleteById(anyLong()));
 		}
 	}
 }
