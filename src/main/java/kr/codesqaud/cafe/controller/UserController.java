@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.UserDto;
 import kr.codesqaud.cafe.dto.UserForm;
 import kr.codesqaud.cafe.service.UserService;
@@ -24,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping
-    public String showList(Model model) {
+    public String findAll(Model model) {
         List<UserDto> userDtos = userService.findAll();
         model.addAttribute("userDtos", userDtos);
 
@@ -32,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/signup")
-    public String showSignup(UserForm userForm) {
+    public String showSignupForm(UserForm userForm) {
         return "user/form";
     }
 

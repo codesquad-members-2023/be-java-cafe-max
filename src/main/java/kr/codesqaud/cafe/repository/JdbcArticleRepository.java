@@ -28,8 +28,8 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findById(int index) {
-        List<Article> result = jdbcTemplate.query("select * from article where id = ?", articleRowMapper(), index + 1);
+    public Article findById(long id) {
+        List<Article> result = jdbcTemplate.query("select * from article where id = ?", articleRowMapper(), id + 1);
         return result.stream().findAny().get();
     }
 

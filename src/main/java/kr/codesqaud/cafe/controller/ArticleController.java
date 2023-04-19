@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.ArticleDto;
 import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.service.ArticleService;
@@ -31,7 +30,7 @@ public class ArticleController {
     }
 
     @GetMapping("/write")
-    public String showWrite(ArticleForm articleForm) {
+    public String showWriteForm(ArticleForm articleForm) {
         return "qna/form";
     }
 
@@ -42,8 +41,8 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{index}")
-    public String findByIndex(@PathVariable("index") long id, Model model) {
+    @GetMapping("/articles/{id}")
+    public String findById(@PathVariable("id") long id, Model model) {
         ArticleDto articleDto = articleService.findById(id);
         model.addAttribute("articleDto", articleDto);
 
