@@ -56,4 +56,12 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
         Map<String, Object> param = Map.of("articleId", articleId);
         return template.query(sql, param, replyRowMapper);
     }
+
+    @Override
+    public void deleteReply(Long id) {
+        String articleDeletedSql = "update REPLIES set deleted=true where id=:id";
+
+        Map<String, Object> param = Map.of("id", id);
+        template.update(articleDeletedSql, param);
+    }
 }

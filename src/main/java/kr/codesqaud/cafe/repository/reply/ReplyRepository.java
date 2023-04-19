@@ -13,4 +13,6 @@ public interface ReplyRepository {
     Optional<Reply> findById(Long id);
 
     List<Reply> findByArticleId(Long articleId);
+
+    void deleteReply(Long id);
 }

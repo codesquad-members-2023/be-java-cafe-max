@@ -39,4 +39,8 @@ public class ReplyService {
         return replyRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("id 없음: " + id));
     }
+
+    public void delete(Long id) {
+        replyRepository.deleteReply(id);
+    }
 }
