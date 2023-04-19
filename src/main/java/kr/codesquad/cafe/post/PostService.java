@@ -1,10 +1,10 @@
 package kr.codesquad.cafe.post;
 
 import kr.codesquad.cafe.comment.Comment;
-import kr.codesquad.cafe.user.User;
 import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.post.dto.SimplePostForm;
 import kr.codesquad.cafe.post.exception.IllegalPostIdException;
+import kr.codesquad.cafe.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,20 +39,20 @@ public class PostService {
     }
 
     @Transactional
-    public Post updateFromPostForm(Post post, PostForm postForm) {
-        post.setFrom(postForm);
-        return postRepository.save(post);
+    public Post updateFromPostForm(long postId, PostForm postForm) {
+        Post post = postRepository.findById(postId).orElseThrow();
+        post.setTextContent(postForm.getTextContent());
+        post.setTitle(postForm.getTitle());
+        return post;
     }
 
     @Transactional
-    public boolean delete(Post post) {
-        boolean canDelete = post.canDelete();
-        if (canDelete) {
-            post.disable();
-            postRepository.save(post);
-        }
-        return canDelete;
+    public Post delete(long postId) {
+        Post post = findById(postId);
+        post.delete();
+        return post;
     }
+
     @Transactional
     public Post save(Post post, Comment comment) {
         post.addComment(comment);

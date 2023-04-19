@@ -52,27 +52,22 @@ public class PostController {
         return "post/editForm";
     }
 
-    @ValidPostIdPath
     @PutMapping("/posts/{postId}")
-    public String editPost(@Valid PostForm postForm, BindingResult bindingResult, @PathVariable("postId") Post post, Model model) {
+    public String editPost(@Valid PostForm postForm, BindingResult bindingResult, @PathVariable long postId, Model model) {
         if (bindingResult.hasErrors()) {
             return "post/editForm";
         }
-        Post editPost = postService.updateFromPostForm(post, postForm);
+        Post editPost = postService.updateFromPostForm(postId, postForm);
         model.addAttribute(editPost);
         return "post/detail";
     }
 
-    @ValidPostIdPath
     @DeleteMapping("/posts/{postId}")
-    public String deletePost(@PathVariable("postId") Post post, Model model) {
-        boolean isDeleted = postService.delete(post);
-        if (isDeleted) {
-            return "redirect:/";
-        }
+    public String deletePost(@PathVariable long postId, Model model) {
+        Post post = postService.delete(postId);
         model.addAttribute("error", "다른 맴버가 작성한 댓글이 있어서 삭제할 수 없습니다.");
         model.addAttribute(PostForm.from(post));
-        model.addAttribute("postId", post.getId());
+        model.addAttribute("postId", postId);
         return "post/editForm";
     }
 

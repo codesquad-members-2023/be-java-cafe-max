@@ -2,12 +2,12 @@ package kr.codesquad.cafe.post;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.codesquad.cafe.comment.Comment;
-import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +20,7 @@ public class Post {
     @ManyToOne
     private User user;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "post")
-    protected List<Comment> comments;
+    protected List<Comment> comments = new ArrayList<>();
 
     private String nickname;
 
@@ -81,19 +81,30 @@ public class Post {
         isDeleted = true;
     }
 
-    public void setFrom(PostForm postForm) {
-        title = postForm.getTitle();
-        textContent = postForm.getTextContent();
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
     }
 
     public void addComment(Comment comment) {
         comments.add(comment);
     }
 
-    public boolean canDelete() {
+    private boolean canDelete() {
         return getComments().stream()
                 .filter(comment -> !comment.isSameId(user.getId()))
                 .allMatch(Comment::isDeleted);
+    }
+
+    public void delete() {
+        if (canDelete()) {
+            disable();
+            return;
+        }
+        throw new IllegalArgumentException();
     }
 
     public static class Builder {
