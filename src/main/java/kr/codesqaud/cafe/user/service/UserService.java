@@ -41,7 +41,9 @@ public class UserService {
     }
 
     public List<UserResponse> getUserList() {
-        return userRepository.findAll().stream().map(UserResponse::from).collect(Collectors.toList());
+        return userRepository.findAll().stream()
+                .map(UserResponse::from)
+                .collect(Collectors.toList());
     }
 
     public boolean checkPassword(UserUpdateForm userUpdateForm) {

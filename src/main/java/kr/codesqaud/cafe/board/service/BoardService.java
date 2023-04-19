@@ -33,6 +33,8 @@ public class BoardService {
     }
 
     public List<PostResponse> getPostList() {
-        return boardJdbcRepository.findAll().stream().map(PostResponse::from).collect(Collectors.toList());
+        return boardJdbcRepository.findAll().stream()
+                .map(PostResponse::from)
+                .collect(Collectors.toList());
     }
 }
