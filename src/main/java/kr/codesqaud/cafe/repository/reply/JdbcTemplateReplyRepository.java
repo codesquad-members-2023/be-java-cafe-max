@@ -51,7 +51,7 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
 
     @Override
     public List<Reply> findByArticleId(Long articleId) {
-        String sql = "select r.id, r.user_id, u.userId, r.reply_content, r.reply_time " +
+        String sql = "select r.id, r.user_id, u.user_id, r.reply_content, r.reply_time " +
                 "from REPLIES r join USERS u on r.user_id = u.id " +
                 "where r.article_id=:articleId";
 

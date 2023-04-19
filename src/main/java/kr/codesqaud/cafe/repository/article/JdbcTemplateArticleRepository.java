@@ -39,7 +39,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(Long id) {
-        String sql = "select id, user_id, title, contents, cur_time from ARTICLES where id = :id";
+        String sql = "select id, user_id, title, contents, currentTime from ARTICLES where id = :id";
 
         try {
             Map<String, Object> param = Map.of("id", id);
@@ -52,7 +52,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select id, user_id, title, contents, cur_time from ARTICLES";
+        String sql = "select id, user_id, title, contents, currentTime from ARTICLES";
         return template.query(sql, articleRowMapper);
     }
 
