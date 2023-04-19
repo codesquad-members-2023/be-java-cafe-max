@@ -44,25 +44,25 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public String post(@PathVariable Long id, Model model, @RequestAttribute AccountSession accountSession) {
-        model.addAttribute("postResponse", postService.findById(id, accountSession.getId()));
+    public String post(@PathVariable Long id, Model model) {
+        model.addAttribute("postResponse", postService.findById(id));
         return "post/post";
     }
 
     @GetMapping("/{id}/form")
     public String modifyForm(@PathVariable Long id, Model model, @RequestAttribute AccountSession accountSession) {
-        model.addAttribute("postModifyRequest", postService.findById(id, accountSession.getId()));
+        postService.validateUnauthorized(id, accountSession.getId());
+        model.addAttribute("postModifyRequest", postService.findById(id));
         return "post/postModify";
     }
 
     @PutMapping("/{id}")
-    public String modify(@PathVariable Long id, @Valid PostModifyRequest postModifyRequest,
-        BindingResult bindingResult, @RequestAttribute AccountSession accountSession) {
+    public String modify(@Valid PostModifyRequest postModifyRequest, BindingResult bindingResult,
+        @RequestAttribute AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
             return "post/postModify";
         }
 
-        postModifyRequest.setId(id);
         postService.modify(postModifyRequest, accountSession.getId());
         return "redirect:/posts/{id}";
     }

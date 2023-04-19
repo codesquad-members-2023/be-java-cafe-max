@@ -129,7 +129,7 @@ public class PostControllerTest {
         // given
         PostResponse postResponse = createPostResponseDummy();
         AccountSession accountSession = new AccountSession(postResponse.getWriter().getId());
-        given(postService.findById(1L, accountSession.getId())).willReturn(postResponse);
+        given(postService.findById(1L)).willReturn(postResponse);
 
         // when
 
@@ -148,7 +148,7 @@ public class PostControllerTest {
     void detailPostFalse() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(1L);
-        given(postService.findById(1L, accountSession.getId())).willThrow(PostNotFoundException.class);
+        given(postService.findById(1L)).willThrow(PostNotFoundException.class);
 
         // when
 
@@ -184,7 +184,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(1L);
-        given(postService.findById(id, accountSession.getId())).willReturn(createPostResponseDummy());
+        given(postService.findById(id)).willReturn(createPostResponseDummy());
 
         // when
 
@@ -203,7 +203,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(2L);
-        given(postService.findById(id, accountSession.getId())).willThrow(new UnauthorizedException());
+        given(postService.findById(id)).willThrow(new UnauthorizedException());
 
         // when
 
@@ -222,7 +222,7 @@ public class PostControllerTest {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(1L);
-        given(postService.findById(id, accountSession.getId())).willThrow(new PostNotFoundException());
+        given(postService.findById(id)).willThrow(new PostNotFoundException());
 
         // when
 

@@ -33,8 +33,7 @@ public class PostService {
         return postRepository.save(postWriteRequest.toPost(member));
     }
 
-    public PostResponse findById(Long id, Long accountSessionId) {
-        validateUnauthorized(id, accountSessionId);
+    public PostResponse findById(Long id) {
         postRepository.increaseViews(id);
         return PostResponse.of(postRepository.findById(id)
             .orElseThrow(PostNotFoundException::new));

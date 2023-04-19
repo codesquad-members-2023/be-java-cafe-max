@@ -78,7 +78,7 @@ class PostServiceTest {
         given(postRepository.findById(post.getId())).willReturn(Optional.of(post));
 
         // when
-        PostResponse findPostResponse = postService.findById(1L, accountSession.getId());
+        PostResponse findPostResponse = postService.findById(1L);
 
         // then
         assertAll(
@@ -98,7 +98,7 @@ class PostServiceTest {
         // when
 
         // then
-        assertThrows(PostNotFoundException.class, () -> postService.findById(1L, 1L));
+        assertThrows(PostNotFoundException.class, () -> postService.findById(1L));
     }
 
     @DisplayName("게시글 작성자의 아이디가 존재하지 않은 회원 아이디일 경우 단건 조회 실패")
@@ -110,21 +110,7 @@ class PostServiceTest {
         // when
 
         // then
-        assertThrows(PostNotFoundException.class, () -> postService.findById(1L, 1L));
-    }
-
-    @DisplayName("비회원일때 게시글 단건 조회를 하면 예외가 발생한다.")
-    @Test
-    void findByIdFalse3() {
-        // given
-        Post post = createPostDummy();
-        willThrow(new UnauthorizedException()).given(postService).validateUnauthorized(post.getId(), null);
-
-        // when
-
-        // then
-        assertThrows(UnauthorizedException.class, () -> postService.findById(post.getId(), null));
-
+        assertThrows(PostNotFoundException.class, () -> postService.findById(1L));
     }
 
     @DisplayName("게시글 전체 조회 성공")
@@ -193,7 +179,7 @@ class PostServiceTest {
         postService.delete(savedId, accountSessionId);
 
         // then
-        assertThrows(PostNotFoundException.class, () -> postService.findById(savedId, accountSessionId));
+        assertThrows(PostNotFoundException.class, () -> postService.findById(savedId));
     }
 
     @DisplayName("게시글 삭제시 해당 게시글이 없는 경우 실패")
