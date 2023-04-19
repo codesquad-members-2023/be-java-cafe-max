@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain;
 
 public class Article {
+    private long articleNum;
     private String writer;
     private String title;
     private String contents;
@@ -9,5 +10,8 @@ public class Article {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+    }
+    public void setArticleNum(long articleNum){
+        this.articleNum = articleNum;
     }
 }

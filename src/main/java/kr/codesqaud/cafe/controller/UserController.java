@@ -13,7 +13,6 @@ import java.util.List;
 @Controller
 public class UserController {
     private final UserService userService;
-
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -28,17 +27,14 @@ public class UserController {
         userService.join(user);
         return "redirect:/users";
     }
-
     @GetMapping("/users")
     public String getUserList(Model model) {
-        List<User> users = userService.getUserList();
-        model.addAttribute("users", users);
+        model.addAttribute("users",  userService.getUserList());
         return "/user/list";
     }
     @GetMapping("/users/{userId}")
     public String userProfile(@PathVariable("userId") String userId, Model model) {
-        User user = userService.getUserByUserId(userId);
-        model.addAttribute("user", user);
+        model.addAttribute("user", userService.getUserByUserId(userId));
         return "user/profile";
     }
 }

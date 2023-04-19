@@ -30,4 +30,4 @@
 - @ComponentScan:
 - @Repository -> @Servic -> @Controller (흐름)
 - @Configuration:     (새로움)
-
+- @ModelAttribute:
