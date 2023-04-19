@@ -27,7 +27,7 @@ class MemoryUserRepositoryTest {
         memoryUserRepository.save(user);
 
         // when
-        User findUser = memoryUserRepository.findByUserId(user.getUserId());
+        User findUser = memoryUserRepository.findByUserId(user.getUserId()).get();
 
         // then
         assertThat(findUser).isEqualTo(user);

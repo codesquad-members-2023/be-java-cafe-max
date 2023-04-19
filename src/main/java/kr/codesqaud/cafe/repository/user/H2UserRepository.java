@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.repository.user;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Repository
@@ -29,10 +29,10 @@ public class H2UserRepository implements UserRepository {
     }
 
     @Override
-    public User findByUserId(String userId) {
+    public Optional<User> findByUserId(String userId) {
         final String sql = "SELECT userId, password, name, email FROM user WHERE userId = :userId LIMIT 1";
         try (final Stream<User> result = jdbcTemplate.queryForStream(sql, Map.of("userId", userId), userRowMapper)) {
-            return result.findFirst().orElseThrow(UserNotFoundException::new);
+            return result.findFirst();
         }
     }
 

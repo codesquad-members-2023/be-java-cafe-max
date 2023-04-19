@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.user.UserResponse;
 import kr.codesqaud.cafe.dto.user.UserSaveRequest;
 import kr.codesqaud.cafe.dto.user.UserUpdateRequest;
@@ -20,7 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
 
 
-    public UserService(@Qualifier("jdbcUserRepository") UserRepository userRepository) {
+    public UserService(@Qualifier("mySqlUserRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -39,22 +40,18 @@ public class UserService {
     }
 
     public int updateUser(UserUpdateRequest userUpdateRequest) {
-        if (!userRepository.findByUserId(userUpdateRequest.getUserId()).isPasswordMatched(userUpdateRequest.getCurrentPassword())) {
+        if (!userRepository.findByUserId(userUpdateRequest.getUserId()).orElseThrow(UserNotFoundException::new).isPasswordMatched(userUpdateRequest.getCurrentPassword())) {
             throw new MismatchedPasswordException(userUpdateRequest);
         }
         return userRepository.update(userUpdateRequest.toUser());
     }
 
     public UserResponse findByUserId(String userId) {
-        if (!userRepository.exist(userId)) {
-            throw new UserNotFoundException();
-        }
-
-        return UserResponse.from(userRepository.findByUserId(userId));
+        return UserResponse.from(userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new));
     }
 
     public UserUpdateRequest makeUserUpdateRequestByUserId(String userId) {
-        return UserUpdateRequest.from(userRepository.findByUserId(userId));
+        return UserUpdateRequest.from(userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new));
     }
 
     public UserResponse login(String userId, String password) {
@@ -62,10 +59,11 @@ public class UserService {
             throw new LoginFailedException();
         }
 
-        if (!userRepository.findByUserId(userId).isPasswordMatched(password)) {
+        final User user = userRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
+        if (!user.isPasswordMatched(password)) {
             throw new LoginFailedException();
         }
 
-        return UserResponse.from(userRepository.findByUserId(userId));
+        return UserResponse.from(user);
     }
 }
