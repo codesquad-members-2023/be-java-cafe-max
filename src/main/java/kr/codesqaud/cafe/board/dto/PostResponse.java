@@ -20,7 +20,7 @@ public class PostResponse {
         this.writeDateTime = writeDateTime;
     }
 
-    public BoardPost toBoardPost() {
+    public BoardPost toEntity() {
         return new BoardPost(writer, title, contents, postId);
     }
 

@@ -23,7 +23,7 @@ public class UserService {
         if (userRepository.containsUserId(userAddForm.getUserId())) {
             throw new DuplicateKeyException("중복된 아이디가 이미 존재합니다.");
         }
-        return userRepository.save(userAddForm.toUser());
+        return userRepository.save(userAddForm.toEntity());
     }
 
     public SessionUser loginCheck(UserLoginForm userLoginForm) {
@@ -52,7 +52,7 @@ public class UserService {
     public void validateAndUpdateUser(UserUpdateForm userUpdateForm) {
         if (checkPassword(userUpdateForm)) {
             if (checkDuplicateName(userUpdateForm.getUserName())) {
-                userRepository.update(userUpdateForm.toUser());
+                userRepository.update(userUpdateForm.toEntity());
             } else {
                 throw new UserUpdateFailedException("중복된 이름이 존재합니다.", "name");
             }

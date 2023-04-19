@@ -17,11 +17,11 @@ public class BoardService {
     }
 
     public void write(PostWriteForm postWriteForm) {
-        boardJdbcRepository.save(postWriteForm.toBoardPost());
+        boardJdbcRepository.save(postWriteForm.toEntity());
     }
 
     public void update(PostResponse postResponse) {
-        boardJdbcRepository.update(postResponse.toBoardPost());
+        boardJdbcRepository.update(postResponse.toEntity());
     }
 
     public void delete(Long postId) {

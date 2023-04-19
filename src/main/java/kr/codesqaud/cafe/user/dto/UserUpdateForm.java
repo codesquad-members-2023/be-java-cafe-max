@@ -15,7 +15,7 @@ public class UserUpdateForm {
         this.email = email;
     }
 
-    public User toUser() {
+    public User toEntity() {
         return new User(userId, password, userName, email);
     }
 

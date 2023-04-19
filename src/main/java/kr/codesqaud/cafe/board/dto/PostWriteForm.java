@@ -12,8 +12,8 @@ public class PostWriteForm {
         this.title = title;
         this.contents = contents;
     }
-    
-    public BoardPost toBoardPost() {
+
+    public BoardPost toEntity() {
         return new BoardPost(writer, title, contents);
     }
 
