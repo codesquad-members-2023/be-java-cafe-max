@@ -71,11 +71,11 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return (resultSet, rowNumber) -> new Article(
-                resultSet.getLong("id"),
-                resultSet.getString("writer"),
-                resultSet.getString("title"),
-                resultSet.getString("contents")
-        );
+        return (resultSet, rowNumber) -> new Article.Builder()
+                .id(resultSet.getLong("id"))
+                .writer(resultSet.getString("writer"))
+                .title(resultSet.getString("title"))
+                .contents(resultSet.getString("contents"))
+                .build();
     }
 }
