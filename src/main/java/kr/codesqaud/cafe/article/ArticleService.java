@@ -43,7 +43,7 @@ public class ArticleService {
      * @return 게시글
      */
     public Optional<Article> findOne(long index) {
-        return articleRepository.findBySequence(index);
+        return articleRepository.findOneById(index);
     }
 
     public Article edit(long index, String requesterId, ArticleDTO articleDTO) {

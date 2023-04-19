@@ -79,7 +79,7 @@ class ArticleServiceTest {
         Article findArticle = articleService.findOne(1).get();
 
         // then
-        String writer = articleRepository.findIdBySequence(findArticle.getSequence());
+        String writer = articleRepository.findIdBySequence(findArticle.getId());
         String title = findArticle.getTitle();
         String contents = findArticle.getContents();
 

@@ -5,13 +5,13 @@ package kr.codesqaud.cafe.article;
  */
 public class Article {
 
-    private long sequence;
+    private long id;
     private String writer;
     private String title;
     private String contents;
 
-    public Article(long sequence, String writer, String title, String contents) {
-        this.sequence = sequence;
+    public Article(long id, String writer, String title, String contents) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -28,12 +28,12 @@ public class Article {
         this.contents = contents;
     }
 
-    public long getSequence() {
-        return sequence;
+    public long getId() {
+        return id;
     }
 
-    public void setSequence(final long sequence) {
-        this.sequence = sequence;
+    public void setId(final long id) {
+        this.id = id;
     }
 
     public String getWriter() {

@@ -34,19 +34,19 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public String findIdBySequence(long sequence) {
-        String sql = "select sequence, writer, title, contents from article where sequence = :sequence";
-        SqlParameterSource param = new MapSqlParameterSource("sequence", sequence);
+    public String findIdBySequence(long id) {
+        String sql = "select id, writer, title, contents from article where id = :id";
+        SqlParameterSource param = new MapSqlParameterSource("id", id);
         return template.queryForObject(sql, param, articleRowMapper()).getWriter();
     }
 
     @Override
-    public Optional<Article> findBySequence(long sequence) {
-        String sql = "select a.sequence, u.name as writer, a.title, a.contents "
-                + "from article a inner join users u on a.writer = u.userId where a.sequence = :sequence";
-        SqlParameterSource param = new MapSqlParameterSource("sequence", sequence);
+    public Optional<Article> findOneById(long id) {
+        String sql = "select a.id, u.name as writer, a.title, a.contents "
+                + "from article a inner join users u on a.writer = u.userId where a.id = :id";
+        SqlParameterSource param = new MapSqlParameterSource("id", id);
         try {
-            return Optional.ofNullable(template.queryForObject(sql, param, articleRowMapper())); // TODO: RowMapper 대신 Article.class를 사용하면 에러 발생
+            return Optional.ofNullable(template.queryForObject(sql, param, articleRowMapper()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -54,16 +54,16 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select a.sequence, u.name as writer, a.title, a.contents "
+        String sql = "select a.id, u.name as writer, a.title, a.contents "
                 + "from article a inner join users u on a.writer = u.userId";
         return template.query(sql, articleRowMapper());
     }
 
     @Override
-    public Article update(long sequence, Article article) {
-        String sql = "UPDATE article SET title = :title, contents = :contents where sequence = :sequence";
+    public Article update(long id, Article article) {
+        String sql = "UPDATE article SET title = :title, contents = :contents where id = :id";
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("sequence", sequence)
+                .addValue("id", id)
                 .addValue("title", article.getTitle())
                 .addValue("contents", article.getContents());
         template.update(sql, param);
@@ -72,7 +72,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     private RowMapper<Article> articleRowMapper() {
         return (resultSet, rowNumber) -> new Article(
-                resultSet.getLong("sequence"),
+                resultSet.getLong("id"),
                 resultSet.getString("writer"),
                 resultSet.getString("title"),
                 resultSet.getString("contents")

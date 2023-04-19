@@ -8,13 +8,15 @@ CREATE TABLE IF NOT EXISTS users
     primary key (sequence, userId)
 );
 
+ALTER TABLE users ADD INDEX(userId);
+
 CREATE TABLE IF NOT EXISTS article
 (
-    sequence bigint NOT NULL AUTO_INCREMENT,
+    id bigint NOT NULL AUTO_INCREMENT,
     writer varchar(10) NOT NULL,
     title varchar(10) NOT NULL,
     contents text(1000) NOT NULL,
-    PRIMARY KEY (sequence),
+    PRIMARY KEY (id),
     FOREIGN KEY (writer)
     REFERENCES users (userId) ON UPDATE CASCADE
 );
@@ -28,7 +30,7 @@ CREATE TABLE IF NOT EXISTS reply
     create_dateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (article_id)
-    REFERENCES article (sequence) ON UPDATE CASCADE,
+    REFERENCES article (id) ON UPDATE CASCADE,
     FOREIGN KEY (users_id)
     REFERENCES users (userId) ON UPDATE CASCADE
 );

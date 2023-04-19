@@ -9,9 +9,9 @@ public interface ArticleRepository {
 
     String findIdBySequence(long sequence);
 
-    Optional<Article> findBySequence(long sequence);
+    Optional<Article> findOneById(long id);
 
     List<Article> findAll();
 
-    Article update(long sequence, Article article);
+    Article update(long id, Article article);
 }

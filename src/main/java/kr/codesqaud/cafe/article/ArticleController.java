@@ -38,30 +38,30 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{index}")
-    public String viewArticle(@PathVariable final long index, final Model model) {
-        Article findArticle = articleService.findOne(index).get();
+    @GetMapping("/articles/{articleId}")
+    public String viewArticle(@PathVariable final long articleId, final Model model) {
+        Article findArticle = articleService.findOne(articleId).get();
         model.addAttribute("article", findArticle);
 
-        List<Reply> findReplies = replyService.findReplies(index);
+        List<Reply> findReplies = replyService.findReplies(articleId);
         model.addAttribute("replies", findReplies);
         return "qna/show";
     }
 
-    @GetMapping("/articles/{index}/edit")
-    public String showEditPage(@PathVariable final long index, final Model model) {
-        Article findArticle = articleService.findOne(index).get();
+    @GetMapping("/articles/{articleId}/edit")
+    public String showEditPage(@PathVariable final long articleId, final Model model) {
+        Article findArticle = articleService.findOne(articleId).get();
         logger.info("게시글 수정 페이지 조회 요청 / " + "제목: " + findArticle.getTitle());
         model.addAttribute("article", findArticle);
         return "qna/edit_form";
     }
 
-    @PutMapping("/articles/{index}")
+    @PutMapping("/articles/{articleId}")
     public String editArticle
-            (@PathVariable final long index, HttpSession session, final ArticleDTO articleDTO) {
+            (@PathVariable final long articleId, HttpSession session, final ArticleDTO articleDTO) {
         String requesterID = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
         logger.info("requesterID: " + requesterID + " / 게시글 수정 요청");
-        articleService.edit(index, requesterID , articleDTO);
-        return "redirect:/articles/" + index;
+        articleService.edit(articleId, requesterID , articleDTO);
+        return "redirect:/articles/" + articleId;
     }
 }
