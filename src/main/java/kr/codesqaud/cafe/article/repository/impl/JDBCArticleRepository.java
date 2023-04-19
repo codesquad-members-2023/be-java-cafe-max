@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.article.domain.Article;
-import kr.codesqaud.cafe.article.domain.Reply;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
 
 @Repository
@@ -66,38 +65,5 @@ public class JDBCArticleRepository implements ArticleRepository {
 	public void deleteArticle(Long idx) {
 		namedParameterJdbcTemplate.update("UPDATE ARTICLE SET is_visible = false WHERE idx = :idx",
 			new MapSqlParameterSource("idx", idx));
-	}
-
-	@Override
-	public void saveReply(Reply reply) {
-		namedParameterJdbcTemplate.update(
-			"INSERT INTO REPLY (article_idx,id,nickName,content,date) VALUES (:article_idx, :id, :nickName, :content, :date)"
-			, new MapSqlParameterSource()
-				.addValue("article_idx", reply.getArticleIdx())
-				.addValue("id", reply.getId())
-				.addValue("nickName", reply.getNickName())
-				.addValue("content", reply.getContent())
-				.addValue("date", reply.getDate()));
-	}
-
-	@Override
-	public List<Reply> findAllReply(Long replyIdx) {
-		return namedParameterJdbcTemplate.query(
-			"SELECT nickName,content,date,article_idx,idx FROM REPLY WHERE article_Idx = :idx AND is_visible = true",
-			new MapSqlParameterSource("idx", replyIdx), (rs, rn) -> new Reply(rs));
-	}
-
-	@Override
-	public void deleteReply(String id, Long replyIdx) {
-		namedParameterJdbcTemplate.update("UPDATE REPLY SET is_visible = false WHERE idx = :replyIdx",
-			new MapSqlParameterSource("replyIdx", replyIdx));
-	}
-
-	@Override
-	public String findReplyIdByIdx(Long replyIdx) {
-		return namedParameterJdbcTemplate.queryForObject(
-			"SELECT id FROM REPLY WHERE idx = :replyIdx", new MapSqlParameterSource("replyIdx", replyIdx),
-			(rs, rowNum) -> rs.getString("id")
-		);
 	}
 }

@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.article.domain;
+package kr.codesqaud.cafe.reply.domain;
 
 import static kr.codesqaud.cafe.global.util.DateUtil.*;
 

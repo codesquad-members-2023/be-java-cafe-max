@@ -16,16 +16,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
-import kr.codesqaud.cafe.article.dto.ReplyRequest;
 import kr.codesqaud.cafe.global.config.Session;
+import kr.codesqaud.cafe.reply.ReplyService;
 
 @Controller
 public class ArticleController {
 
 	private final ArticleService articleService;
 
-	public ArticleController(ArticleService articleService) {
+	private final ReplyService replyService;
+
+	public ArticleController(ArticleService articleService, ReplyService replyService) {
 		this.articleService = articleService;
+		this.replyService = replyService;
 	}
 
 	@GetMapping("articles")
@@ -42,10 +45,11 @@ public class ArticleController {
 		return "redirect:/";
 	}
 
+	//todo join써서 db에 2번접근하지 말고 한번접근해 데이터 가져와보기
 	@GetMapping("/articles/{idx}")
 	public String detail(@PathVariable Long idx, Model model) {
 		model.addAttribute("article", articleService.findArticleByIdx(idx));
-		model.addAttribute("reply", articleService.getReplyListByIdx(idx));
+		model.addAttribute("reply", replyService.getReplyListByIdx(idx));
 		return "article/show";
 	}
 
@@ -70,21 +74,5 @@ public class ArticleController {
 		Session session = getLoginUser(httpSession);
 		articleService.deleteArticleByIdx(idx, session.getId());
 		return "redirect:/";
-	}
-
-	@PostMapping("/articles/{articleIdx}/reply")
-	public String reply(@PathVariable Long articleIdx, @ModelAttribute @Valid ReplyRequest replyRequest,
-		HttpSession httpSession) {
-		Session session = getLoginUser(httpSession);
-		replyRequest.init(session.getId(), session.getNickName(), articleIdx);
-		articleService.addReply(replyRequest);
-		return "redirect:/articles/" + articleIdx;
-	}
-
-	@DeleteMapping("/articles/{articleIdx}/{replyIdx}")
-	public String deleteReply(@PathVariable Long replyIdx, @PathVariable Long articleIdx, HttpSession httpSession) {
-		Session session = getLoginUser(httpSession);
-		articleService.deleteReply(session.getId(), replyIdx);
-		return "redirect:/articles/" + articleIdx;
 	}
 }

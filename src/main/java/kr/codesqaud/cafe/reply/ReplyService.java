@@ -1,0 +1,48 @@
+package kr.codesqaud.cafe.reply;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import kr.codesqaud.cafe.global.mapper.ReplyMapper;
+import kr.codesqaud.cafe.reply.dto.ReplyRequest;
+import kr.codesqaud.cafe.reply.dto.ReplyResponse;
+import kr.codesqaud.cafe.reply.repository.ReplyRepository;
+
+@Service
+public class ReplyService {
+
+	private final ReplyRepository replyRepository;
+	private final ReplyMapper replyMapper;
+
+	public ReplyService(ReplyRepository replyRepository, ReplyMapper replyMapper) {
+		this.replyRepository = replyRepository;
+		this.replyMapper = replyMapper;
+	}
+
+	public void addReply(ReplyRequest replyRequest) {
+		replyRepository.saveReply(replyMapper.toReply(replyRequest));
+	}
+
+	public List<ReplyResponse> getReplyListByIdx(Long idx) {
+		return replyRepository.findAllReply(idx).stream()
+			.map(replyMapper::toReplyResponse)
+			.collect(Collectors.toUnmodifiableList());
+	}
+
+	public void deleteReply(String id, Long replyIdx) {
+		if (validSessionIdAndReplyId(id, replyIdx)) {
+			replyRepository.deleteReply(id, replyIdx);
+		}
+	}
+
+	public boolean validSessionIdAndReplyId(String id, Long replyIdx) {
+		return Objects.equals(id, findReplyIdByIdx(replyIdx));
+	}
+
+	public String findReplyIdByIdx(Long replyIdx) {
+		return replyRepository.findReplyIdByIdx(replyIdx);
+	}
+}

@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.article.dto;
+package kr.codesqaud.cafe.reply.dto;
 
 import javax.validation.constraints.NotBlank;
 

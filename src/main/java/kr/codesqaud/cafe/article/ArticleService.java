@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.article;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,8 +12,6 @@ import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
-import kr.codesqaud.cafe.article.dto.ReplyRequest;
-import kr.codesqaud.cafe.article.dto.ReplyResponse;
 import kr.codesqaud.cafe.article.exception.ArticleIdAndSessionIdMismatchException;
 import kr.codesqaud.cafe.article.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
@@ -63,29 +60,5 @@ public class ArticleService {
 	public void deleteArticleByIdx(Long idx, String id) {
 		validSessionIdAndArticleId(idx, id);
 		articleRepository.deleteArticle(idx);
-	}
-
-	public void addReply(ReplyRequest replyRequest) {
-		articleRepository.saveReply(articleMapper.toReply(replyRequest));
-	}
-
-	public List<ReplyResponse> getReplyListByIdx(Long idx) {
-		return articleRepository.findAllReply(idx).stream()
-			.map(articleMapper::toReplyResponse)
-			.collect(Collectors.toUnmodifiableList());
-	}
-
-	public void deleteReply(String id, Long replyIdx) {
-		if (validSessionIdAndReplyId(id, replyIdx)) {
-			articleRepository.deleteReply(id, replyIdx);
-		}
-	}
-
-	public boolean validSessionIdAndReplyId(String id, Long replyIdx) {
-		return Objects.equals(id, findReplyIdByIdx(replyIdx));
-	}
-
-	public String findReplyIdByIdx(Long replyIdx) {
-		return articleRepository.findReplyIdByIdx(replyIdx);
 	}
 }
