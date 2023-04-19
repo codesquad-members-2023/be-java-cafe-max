@@ -6,16 +6,18 @@ import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.article.entity.Article;
 
 public class ArticleDetailResponseDto {
-	String id;
-	String content;
-	String title;
-	String dateTime;
+	private String id;
+	private String content;
+	private String title;
+	private String dateTime;
+	private String writer;
 
 	public ArticleDetailResponseDto(Article article) {
 		this.title = article.getTitle();
 		this.content = article.getContent();
 		this.id = String.valueOf(article.getId());
 		this.dateTime = setDateTime(article.getDateTime());
+		this.writer = article.getWriter();
 	}
 
 	private String setDateTime(LocalDateTime localDateTime) {
@@ -36,5 +38,9 @@ public class ArticleDetailResponseDto {
 
 	public String getDateTime() {
 		return dateTime;
+	}
+
+	public String getWriter() {
+		return writer;
 	}
 }
