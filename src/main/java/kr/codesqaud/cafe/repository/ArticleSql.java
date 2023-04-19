@@ -14,7 +14,7 @@ public class ArticleSql {
 		+ "VALUES (:title, :writer, :contents, :writeDate, :hits)";
 
 	public static final String INCREASE_HITS
-		= "UPDATE WRITE_INFO SET hits = :hits WHERE index = :index";
+		= "UPDATE WRITE_INFO SET hits = hits + 1 WHERE index = :index";
 
 	public static final String DELETE
 		= "DELETE FROM WRITE_INFO WHERE index = :index";

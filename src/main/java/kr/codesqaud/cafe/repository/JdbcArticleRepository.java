@@ -36,7 +36,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 		SqlParameterSource param = new MapSqlParameterSource()
 			.addValue("index", index);
 		List<Article> articles = namedParameterJdbcTemplate.query(FIND_BY_INDEX, param, articleRowMapper());
-		return OptionalTo(articles).orElseThrow(() -> new ArticleNotFoundException("글 정보를 찾을 수 없습니다."));
+		return OptionalTo(articles).orElseThrow(ArticleNotFoundException::new);
 	}
 
 	private Optional<Article> OptionalTo(List<Article> articles) {
@@ -50,10 +50,8 @@ public class JdbcArticleRepository implements ArticleRepository {
 
 	@Override
 	public boolean increaseHits(Long index) {
-		long newHits = findByIndex(index).getHits();
 		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("index", index)
-			.addValue("hits", ++newHits);
+			.addValue("index", index);
 		namedParameterJdbcTemplate.update(INCREASE_HITS, param);
 		return true;
 	}

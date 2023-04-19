@@ -29,13 +29,13 @@ public class UserService {
 
 	private boolean validateDuplicate(UserDto userDto) {
 		if (userRepository.existUserID(userDto.getUserID())) {
-			throw new DuplicateUserException("이미 존재하는 회원 아이디입니다.");
+			throw new DuplicateUserException("아이디");
 		}
 		if (userRepository.existEmail(userDto.getEmail())) {
-			throw new DuplicateUserException("이미 존재하는 회원 이메일입니다.");
+			throw new DuplicateUserException("이메일");
 		}
 		if (userRepository.existNickname(userDto.getNickname())) {
-			throw new DuplicateUserException("이미 존재하는 회원 닉네임입니다.");
+			throw new DuplicateUserException("닉네임");
 		}
 		return true;
 	}
@@ -48,10 +48,10 @@ public class UserService {
 
 	private void validateUpdateDuplicate(UserDto userDto) {
 		if (userRepository.existUpdateEmail(userDto.getUserID(), userDto.getEmail())) {
-			throw new DuplicateUserException("이미 존재하는 회원 이메일입니다.");
+			throw new DuplicateUserException("이메일");
 		}
 		if (userRepository.existUpdateNickname(userDto.getUserID(), userDto.getNickname())) {
-			throw new DuplicateUserException("이미 존재하는 회원 닉네임입니다.");
+			throw new DuplicateUserException("닉네임");
 		}
 	}
 
