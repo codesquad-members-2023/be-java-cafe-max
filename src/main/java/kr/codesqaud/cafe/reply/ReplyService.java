@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.reply;
 
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,11 @@ public class ReplyService {
     }
 
     public long save(long articleId, String userId, final ReplyRequestDto replyRequestDto) {
-        Reply reply = new Reply(articleId, userId, replyRequestDto.getContents());
+        Reply reply = new Reply.Builder()
+                .articleId(articleId)
+                .userId(userId)
+                .contents(replyRequestDto.getContents())
+                .build();
         long id = replyRepository.save(reply);
         logger.info("댓글 저장 성공, 댓글 id: {}", id);
         return id;
