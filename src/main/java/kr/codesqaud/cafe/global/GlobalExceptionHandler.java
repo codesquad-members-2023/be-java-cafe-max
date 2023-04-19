@@ -12,6 +12,7 @@ import kr.codesqaud.cafe.account.exception.AlreadyUserExistenceException;
 import kr.codesqaud.cafe.account.exception.LoginInvalidPasswordException;
 import kr.codesqaud.cafe.account.exception.UserNotFoundException;
 import kr.codesqaud.cafe.account.exception.UserUpdateInvalidPasswordException;
+import kr.codesqaud.cafe.article.exception.ArticleDeleteFailedException;
 import kr.codesqaud.cafe.article.exception.ArticleIdAndSessionIdMismatchException;
 import kr.codesqaud.cafe.article.exception.ArticleNotFoundException;
 
@@ -87,6 +88,11 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ArticleIdAndSessionIdMismatchException.class)
 	public ModelAndView handleArticleIdAndSessionIdMismatchException(ArticleIdAndSessionIdMismatchException e) {
+		return createErrorResponseModelAndView("error/401_unauthorized", e);
+	}
+
+	@ExceptionHandler(ArticleDeleteFailedException.class)
+	public ModelAndView handleArticleDeleteFailedException(ArticleDeleteFailedException e) {
 		return createErrorResponseModelAndView("error/401_unauthorized", e);
 	}
 }
