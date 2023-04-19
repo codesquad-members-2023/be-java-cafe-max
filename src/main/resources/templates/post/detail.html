@@ -64,7 +64,7 @@
         </div>
     </div>
 </div>
-<div class="row justify-content-center mb-5">
+<div class="row justify-content-center mb-5" id="commentsContent">
     <div class="col-6 row text-secondary">
         <ul class="list-group list-group-flush" id="comments">
             <li class="list-group-item" th:each="comment : ${post.comments}" th:if="!${comment.isDeleted}">
@@ -88,13 +88,14 @@
     <div class="col-6 row text-secondary">
         <form id="commentForm" th:method="post" th:action="@{/posts/{postId}/comments(postId = ${post.id})}">
             <div class="form-control">
-                <label for="content" class="fs-5" id="userName" th:text="${session.user.nickname}">user</label>
-                <textarea class="form-control-plaintext" placeholder="Leave a comment here" id="content"
+                <label for="commentText" class="fs-5" id="userName" th:text="${session.user.nickname}">user</label>
+                <textarea class="form-control-plaintext" placeholder="Leave a comment here" id="commentText"
                           name="commentText"
                           style="height: 100px;resize: none;"></textarea>
                 <div class="row justify-content-end row-cols-auto">
                     <div class="col" onmousemove="commentMouseoverEvent()" onmouseout="commentMouseOutEvent()">
-                        <button class="btn btn-primary disabled" type="submit" role="button" id="commentPost">
+                        <button class="submit-write btn btn-primary disabled" type="submit" role="button"
+                                id="commentPost">
                             제출
                         </button>
                     </div>
@@ -108,7 +109,7 @@
 
 </footer>
 </body>
-<script>
+<script th:inline="javascript">
     function commentMouseoverEvent() {
         let element = document.getElementById("commentPost");
         element.className = "btn btn-primary";
@@ -118,5 +119,28 @@
         let element = document.getElementById("commentPost");
         element.className = "btn btn-primary disabled";
     }
+
+    const commentPostElement = document.getElementById("commentPost");
+
+    commentPostElement.addEventListener('click', addAnswer);
+
+    function addAnswer(e) {
+        e.preventDefault();
+
+        var queryString = $("#commentForm").serialize();
+        console.log(queryString);
+        var url = document.getElementById("commentForm").getAttribute("action");
+        console.log(url);
+
+        $.ajax({
+            type: 'post',
+            url: url,
+            data: queryString,
+        }).done(function (data) {
+            console.log(data);
+            $("#commentsContent").replaceWith(data);
+        })
+    }
+
 </script>
 </html>

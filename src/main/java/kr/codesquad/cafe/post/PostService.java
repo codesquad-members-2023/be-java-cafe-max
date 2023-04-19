@@ -54,8 +54,8 @@ public class PostService {
         return canDelete;
     }
     @Transactional
-    public void save(Post post, Comment comment) {
+    public Post save(Post post, Comment comment) {
         post.addComment(comment);
-        postRepository.save(post);
+        return postRepository.save(post);
     }
 }

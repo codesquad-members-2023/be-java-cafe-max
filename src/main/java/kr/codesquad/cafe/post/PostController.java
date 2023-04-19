@@ -1,6 +1,5 @@
 package kr.codesquad.cafe.post;
 
-import kr.codesquad.cafe.comment.Comment;
 import kr.codesquad.cafe.comment.CommentService;
 import kr.codesquad.cafe.post.annotation.ValidPostIdPath;
 import kr.codesquad.cafe.post.dto.PostForm;
@@ -49,7 +48,7 @@ public class PostController {
     @GetMapping("/posts/{postId}/edit")
     public String viewEditPost(@PathVariable("postId") Post post, Model model) {
         model.addAttribute(PostForm.from(post));
-        model.addAttribute("postId",post.getId());
+        model.addAttribute("postId", post.getId());
         return "post/editForm";
     }
 
@@ -73,16 +72,10 @@ public class PostController {
         }
         model.addAttribute("error", "다른 맴버가 작성한 댓글이 있어서 삭제할 수 없습니다.");
         model.addAttribute(PostForm.from(post));
-        model.addAttribute("postId",post.getId());
+        model.addAttribute("postId", post.getId());
         return "post/editForm";
     }
 
-    @PostMapping("/posts/{postId}/comments")
-    public String addComment(@RequestParam("commentText") String content, @PathVariable("postId") Post post, @SessionAttribute User user) {
-        Comment comment = commentService.from(content, post, user);
-        postService.save(post, comment);
-        return "redirect:/posts/{postId}";
-    }
 
     @DeleteMapping("/posts/{postId}/comments/{commentId}")
     public String deleteComment(@PathVariable long commentId) {

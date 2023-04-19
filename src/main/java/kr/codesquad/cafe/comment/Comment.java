@@ -1,5 +1,6 @@
 package kr.codesquad.cafe.comment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.codesquad.cafe.post.Post;
 import kr.codesquad.cafe.user.User;
 
@@ -13,8 +14,10 @@ public class Comment {
 
     @Id @GeneratedValue
     public Long id;
+    @JsonIgnore
     @ManyToOne
     private Post post;
+    @JsonIgnore
     @ManyToOne
     private User user;
 
