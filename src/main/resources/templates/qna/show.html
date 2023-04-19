@@ -91,7 +91,7 @@
 
                             <form class="submit-write" th:action="@{/articles/{id}/reply(id=${article.id})}" method="post">
                                 <div class="form-group" style="padding:14px;">
-                                    <textarea class="form-control" name="contents" placeholder="댓글을 작성하세요." th:classappend="${emptyComment} ? 'is-invalid' : 'is-valid'"></textarea>
+                                    <textarea class="form-control" name="contents" th:attr="placeholder=${emptyComment} ? '내용을 입력하세요.' : '댓글을 작성하세요.'" th:classappend="${emptyComment} ? 'is-invalid' : 'is-valid'"></textarea>
                                 </div>
                                 <button class="btn btn-success pull-right" type="submit">답변하기</button>
                                 <div class="clearfix" />

@@ -21,7 +21,7 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
 
     @Override
     public boolean save(Reply reply) {
-        if (reply.getContents() == null){
+        if ("".equals(reply.getContents())){
             return false;
         }
         String sql = "insert into reply (userId, writer, articleId, contents) values (?, ?, ?, ?)";
