@@ -29,10 +29,10 @@
                   <div class="article-util">
                       <ul class="article-util-list">
                           <li>
-                              <a class="link-modify-article" href="/articles/edit/{{id}}">수정</a>
+                              <a class="link-modify-article" href="/articles/{{id}}/edit">수정</a>
                           </li>
                           <li>
-                              <form class="form-delete" action="/articles/delete/{{id}}" method="POST">
+                              <form class="form-delete" action="/articles/{{id}}" method="POST">
                                   <input type="hidden" name="_method" value="DELETE">
                                   <button class="link-delete-article" type="submit">삭제</button>
                               </form>
@@ -50,7 +50,7 @@
                       <div class="qna-comment-slipp-articles">
 
                           <article class="article" id="answer-1405">
-                              {{#contents}}
+                              {{#comments}}
                               <div class="article-header">
                                   <div class="article-header-thumb">
                                       <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
@@ -71,7 +71,8 @@
                                           <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
                                       </li>
                                       <li>
-                                          <form class="delete-answer-form" action="/questions/413/answers/1405" method="POST">
+                                          <form class="delete-answer-form" action="/comments/{{id}}/{{userId}}" method="POST">
+                                              <input name="userId" value="{{userId}}" type="hidden">
                                               <input type="hidden" name="_method" value="DELETE">
                                               <button type="submit" class="delete-answer-button">삭제</button>
                                           </form>
@@ -79,9 +80,10 @@
                                   </ul>
                               </div>
                           </article>
-                          {{/contents}}
+                          {{/comments}}
                           {{#details}}
-                          <form class="submit-write" id="article-comment-form" method="POST" action="/articles/{{id}}">
+                          <form class="submit-write" id="article-comment-form" method="POST" action="/comments">
+                              <input name="articleId" value="{{id}}" hidden="hidden">
                               <div class="form-group" style="padding:14px;">
                                   <textarea class="form-control" placeholder="Update your status" form="article-comment-form" name="contents"></textarea>
                               </div>

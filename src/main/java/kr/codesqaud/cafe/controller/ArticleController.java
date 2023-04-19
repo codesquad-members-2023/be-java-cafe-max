@@ -46,7 +46,7 @@ public class ArticleController {
 			return "redirect:/users/login";
 		}
 		model.addAttribute("details", articleService.findById(id));
-		model.addAttribute("contents", commentService.articleComment(id));
+		model.addAttribute("comments", commentService.articleComment(id));
 		return "qna/show";
 	}
 
@@ -70,7 +70,7 @@ public class ArticleController {
 		return "qna/edit_form";
 	}
 
-	@DeleteMapping("/articles/{id}/delete")
+	@DeleteMapping("/articles/{id}")
 	public String deletePost(@PathVariable Long id, HttpSession session) {
 		Object userId = session.getAttribute("sessionedUser");
 		ArticleDto articleDto = articleService.findById(id);
@@ -81,7 +81,7 @@ public class ArticleController {
 		return "redirect:/";
 	}
 
-	@PutMapping("/articles/{id}/edit")
+	@PutMapping("/articles/{id}")
 	public String updatePost(@ModelAttribute PostingRequest postingRequest, @PathVariable Long id,
 		HttpSession session) {
 		Object writer = session.getAttribute("sessionedUser");
