@@ -9,13 +9,11 @@ public class UserDetailResponseDto {
 
 	private String name;
 	private String email;
-	private String id;
 	private String dateTime;
 
 	public UserDetailResponseDto(User user) {
 		this.name = user.getName();
 		this.email = user.getEmail();
-		this.id = String.valueOf(user.getId());
 		this.dateTime = setDateTime(user.getDateTime());
 	}
 
@@ -29,10 +27,6 @@ public class UserDetailResponseDto {
 
 	public String getEmail() {
 		return email;
-	}
-
-	public String getId() {
-		return id;
 	}
 
 	public String getDateTime() {
