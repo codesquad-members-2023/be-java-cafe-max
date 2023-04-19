@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
 		RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
 		if (requestUri.contains("/users")) {
-			return createErrorResponseModelAndView("error/400_bad_request", e);
+			return createErrorResponseModelAndView("error/403-forbidden", e);
 		}
 		return new ModelAndView(handleExceptionWithRedirect(e, "/users/sign-in", "id-error", redirectAttributes));
 	}
@@ -83,16 +83,16 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ArticleNotFoundException.class)
 	public ModelAndView handleArticleNotFoundException(ArticleNotFoundException e) {
-		return createErrorResponseModelAndView("error/400_bad_request", e);
+		return createErrorResponseModelAndView("error/404-not-found", e);
 	}
 
 	@ExceptionHandler(ArticleIdAndSessionIdMismatchException.class)
 	public ModelAndView handleArticleIdAndSessionIdMismatchException(ArticleIdAndSessionIdMismatchException e) {
-		return createErrorResponseModelAndView("error/401_unauthorized", e);
+		return createErrorResponseModelAndView("error/403-forbidden", e);
 	}
 
 	@ExceptionHandler(ArticleDeleteFailedException.class)
 	public ModelAndView handleArticleDeleteFailedException(ArticleDeleteFailedException e) {
-		return createErrorResponseModelAndView("error/401_unauthorized", e);
+		return createErrorResponseModelAndView("error/403-forbidden", e);
 	}
 }
