@@ -1,9 +1,9 @@
 package kr.codesquad.cafe.post;
 
+import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.user.User;
 import kr.codesquad.cafe.user.UserService;
 import kr.codesquad.cafe.user.dto.JoinForm;
-import kr.codesquad.cafe.post.dto.PostForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -40,17 +40,17 @@ class PostControllerTest {
     public static final String EDIT_TEXT_CONTENT = "editTextContent";
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    PostService postService;
+    private PostService postService;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    MockHttpSession session;
+    private MockHttpSession session;
 
-    User jack;
+    private User jack;
 
 
     @BeforeEach

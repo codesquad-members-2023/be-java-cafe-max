@@ -90,9 +90,12 @@ class PostServiceTest {
     @Test
     void updateFromPostFormSuccess() {
         Post post = postService.save(new PostForm(TEST_TITLE, TEST_CONTENT), jack);
-        Post savePost = postService.updateFromPostForm(post, new PostForm(TARGET_TITLE, TARGET_CONTENT));
+        Post savePost = postService.updateFromPostForm(post.getId(), new PostForm(TARGET_TITLE, TARGET_CONTENT));
         assertThat(savePost.getTitle()).isEqualTo(TARGET_TITLE);
         assertThat(savePost.getTextContent()).isEqualTo(TARGET_CONTENT);
+        Post DBpost = postService.findById(post.getId());
+        assertThat(DBpost.getTitle()).isEqualTo(TARGET_TITLE);
+        assertThat(DBpost.getTextContent()).isEqualTo(TARGET_CONTENT);
     }
 
     @DisplayName("Post를 삭제")
@@ -100,7 +103,7 @@ class PostServiceTest {
     void delete() {
         Post post = postService.save(new PostForm(TEST_TITLE, TEST_CONTENT), jack);
         assertThatCode(() -> postService.findById(post.getId())).doesNotThrowAnyException();
-        postService.delete(post);
+        postService.delete(post.getId());
         assertThatThrownBy(() -> postService.findById(post.getId())).isInstanceOf(IllegalPostIdException.class);
     }
 }
