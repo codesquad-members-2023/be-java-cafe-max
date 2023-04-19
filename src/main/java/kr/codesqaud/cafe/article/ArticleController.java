@@ -44,7 +44,8 @@ public class ArticleController {
     @GetMapping("/articles/{articleId}")
     public String viewArticle(@PathVariable final long articleId, final Model model) {
         Article findArticle = articleService.findOne(articleId).get();
-        model.addAttribute("article", findArticle);
+        ArticleResponseDto articleResponseDto = new ArticleResponseDto().fromEntity(findArticle);
+        model.addAttribute("article", articleResponseDto);
 
         List<Reply> findReplies = replyService.findReplies(articleId);
         model.addAttribute("replies", findReplies);
