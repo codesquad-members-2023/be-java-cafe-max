@@ -144,6 +144,6 @@ class ArticleServiceTest {
 		articleService.deleteArticleByIdx(idx, id);
 
 		//then
-		verify(articleRepository, times(1)).deleteArticle(idx);
+		verify(articleRepository, times(1)).deleteArticle(idx, id);
 	}
 }

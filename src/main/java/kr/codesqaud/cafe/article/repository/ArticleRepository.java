@@ -15,5 +15,5 @@ public interface ArticleRepository {
 
 	void updateArticle(Article article);
 
-	void deleteArticle(Long idx);
+	boolean deleteArticle(Long idx, String id);
 }
