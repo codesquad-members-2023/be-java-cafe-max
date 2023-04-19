@@ -32,4 +32,8 @@ public class CommentService {
 			.map(CommentDto::fromEntity)
 			.collect(Collectors.toUnmodifiableList());
 	}
+
+	public void commentDelete(Long id) {
+		commentRepository.delete(id);
+	}
 }

@@ -3,7 +3,9 @@ package kr.codesqaud.cafe.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.codesqaud.cafe.controller.dto.CommentRequest;
@@ -22,5 +24,15 @@ public class CommentController {
 		Object userId = session.getAttribute("sessionedUser");
 		commentService.commentSave(request, (String)userId, request.getArticleId());
 		return "redirect:/articles/" + request.getArticleId();
+	}
+
+	@DeleteMapping("/comments/{id}/{userId}")
+	public String deleteComment(@PathVariable Long id, HttpSession session, @PathVariable String userId) {
+		Object user = session.getAttribute("sessionedUser");
+		if (!user.equals(userId)) {
+			return "user/error";
+		}
+		commentService.commentDelete(id);
+		return "redirect:/";
 	}
 }
