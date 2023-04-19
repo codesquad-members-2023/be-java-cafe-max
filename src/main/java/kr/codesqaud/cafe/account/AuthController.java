@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.account;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,14 +12,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.codesqaud.cafe.account.dto.SignInRequest;
 import kr.codesqaud.cafe.account.dto.UserResponse;
+import kr.codesqaud.cafe.account.dto.UserSignUpRequest;
 import kr.codesqaud.cafe.global.config.Session;
 
 @Controller
-public class SignInController {
+public class AuthController {
 	private final UserService userService;
 
-	public SignInController(UserService userService) {
+	public AuthController(UserService userService) {
 		this.userService = userService;
+	}
+
+	@GetMapping("/users/sign-up")
+	public String signUpForm() {
+		return "user/form";
+	}
+
+	@PostMapping("/users/sign-up")
+	public String signUp(@ModelAttribute @Valid UserSignUpRequest userSignUpRequest) {
+		userService.addUser(userSignUpRequest);
+		return "redirect:/users/list";
 	}
 
 	@GetMapping("/users/sign-in")

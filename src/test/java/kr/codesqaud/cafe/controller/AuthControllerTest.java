@@ -18,14 +18,14 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import kr.codesqaud.cafe.account.SignInController;
+import kr.codesqaud.cafe.account.AuthController;
 import kr.codesqaud.cafe.account.UserService;
 import kr.codesqaud.cafe.account.dto.SignInRequest;
 import kr.codesqaud.cafe.account.dto.UserResponse;
 import kr.codesqaud.cafe.global.config.Session;
 
-@WebMvcTest(SignInController.class)
-class SignInControllerTest {
+@WebMvcTest(AuthController.class)
+class AuthControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;

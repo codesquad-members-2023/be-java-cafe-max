@@ -8,11 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import kr.codesqaud.cafe.account.dto.ProfileEditRequest;
-import kr.codesqaud.cafe.account.dto.UserSignUpRequest;
 import kr.codesqaud.cafe.global.config.Session;
 
 @Controller
@@ -22,17 +20,6 @@ public class UserController {
 
 	public UserController(UserService userService) {
 		this.userService = userService;
-	}
-
-	@GetMapping("/users/sign-up")
-	public String signUpForm() {
-		return "user/form";
-	}
-
-	@PostMapping("/users/sign-up")
-	public String signUp(@ModelAttribute @Valid UserSignUpRequest userSignUpRequest) {
-		userService.addUser(userSignUpRequest);
-		return "redirect:/users/list";
 	}
 
 	@GetMapping("/users/list")
