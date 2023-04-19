@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.reply;
 
 import java.util.List;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -35,7 +37,23 @@ public class ReplyRepositoryImpl implements ReplyRepository {
      * @param id 게시글 id
      */
     @Override
-    public List<Reply> findAllOfArticle(long id) {
-        return null;
+    public List<Reply> findAllByArticleId(long id) {
+        String sql = "SELECT r.id, r.article_id, u.name as users_id, r.contents, r.create_dateTime "
+                + "FROM reply r "
+                + "INNER JOIN users u ON r.users_id = u.userId "
+                + "WHERE article_id = :id";
+        SqlParameterSource param = new MapSqlParameterSource("id", id);
+        return template.query(sql, param, replyResponseDtoRowMapper());
     }
+
+    private RowMapper<Reply> replyResponseDtoRowMapper() {
+        return (resultSet, rowNumber) -> new Reply.Builder()
+                .id(resultSet.getLong("id"))
+                .articleId(resultSet.getLong("article_id"))
+                .userId(resultSet.getString("users_id"))
+                .contents(resultSet.getString("contents"))
+                .createDateTime(resultSet.getString("create_dateTime"))
+                .build();
+    }
+
 }

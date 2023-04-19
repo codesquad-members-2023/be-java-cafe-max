@@ -25,4 +25,11 @@ public class ReplyService {
         logger.info("댓글 저장 성공, 댓글 id: {}", id);
         return id;
     }
+
+    /**
+     * @param id : article id
+     */
+    public List<Reply> findReplies(long id) {
+        return replyRepository.findAllByArticleId(id);
+    }
 }

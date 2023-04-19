@@ -1,6 +1,9 @@
 package kr.codesqaud.cafe.article;
 
+import java.util.List;
 import javax.servlet.http.HttpSession;
+import kr.codesqaud.cafe.reply.Reply;
+import kr.codesqaud.cafe.reply.ReplyService;
 import kr.codesqaud.cafe.web.SessionConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +18,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ReplyService replyService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @GetMapping("/articles/new")
@@ -37,6 +42,9 @@ public class ArticleController {
     public String viewArticle(@PathVariable final long index, final Model model) {
         Article findArticle = articleService.findOne(index).get();
         model.addAttribute("article", findArticle);
+
+        List<Reply> findReplies = replyService.findReplies(index);
+        model.addAttribute("replies", findReplies);
         return "qna/show";
     }
 

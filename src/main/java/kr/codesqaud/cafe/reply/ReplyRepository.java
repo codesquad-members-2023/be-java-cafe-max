@@ -8,6 +8,6 @@ public interface ReplyRepository {
 
     Reply findById(long id);
 
-    List<Reply> findAllOfArticle(long id);
+    List<Reply> findAllByArticleId(long id);
 
 }
