@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.servlet.http.HttpServletRequest;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -19,5 +21,13 @@ public class GlobalExceptionHandler {
     public String resourceNotFoundException(ResourceNotFoundException e, Model model) {
         model.addAttribute("error_message", e.getMessage());
         return "error/error_page";
+    }
+
+    @ExceptionHandler(LoginFailedException.class)
+    public String failedLoginException(HttpServletRequest request, LoginFailedException e, Model model) {
+        model.addAttribute("userId", request.getParameter("userId"));
+        model.addAttribute("password", request.getParameter("password"));
+        model.addAttribute("error_message", e.getMessage());
+        return "user/login_failed";
     }
 }

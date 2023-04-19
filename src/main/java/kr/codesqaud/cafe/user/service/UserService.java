@@ -1,13 +1,13 @@
 package kr.codesqaud.cafe.user.service;
 
 import kr.codesqaud.cafe.exception.DuplicateKeyException;
+import kr.codesqaud.cafe.exception.LoginFailedException;
 import kr.codesqaud.cafe.user.domain.User;
 import kr.codesqaud.cafe.user.dto.*;
 import kr.codesqaud.cafe.user.repository.UserJdbcRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,15 +25,17 @@ public class UserService {
         return userRepository.save(userAddForm.toUser());
     }
 
-    public Optional<SessionUser> loginCheck(UserLoginForm userLoginForm) {
-        if (!userRepository.containsUserId(userLoginForm.getUserId())) {
-            return Optional.empty();
+    public SessionUser loginCheck(UserLoginForm userLoginForm) {
+        if (userRepository.containsUserId(userLoginForm.getUserId())) {
+            User user = userRepository.findByUserId(userLoginForm.getUserId());
+            if (userLoginForm.getPassword().equals(user.getPassword())) {
+                return SessionUser.from(user);
+            } else {
+                throw new LoginFailedException("비밀번호가 틀렸습니다.");
+            }
+        } else {
+            throw new LoginFailedException("존재하지 않는 아이디입니다.");
         }
-        User user = userRepository.findByUserId(userLoginForm.getUserId());
-        if (!userLoginForm.getPassword().equals(user.getPassword())) {
-            return Optional.empty();
-        }
-        return Optional.ofNullable(SessionUser.from(user));
     }
 
     public UserResponse getUser(String userId) {

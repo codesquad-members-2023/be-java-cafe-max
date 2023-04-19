@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 
 @Controller
@@ -32,11 +31,7 @@ public class UserController {
 
     @PostMapping("/login")
     public String loginUser(@ModelAttribute UserLoginForm userLoginForm, HttpSession session) {
-        Optional<SessionUser> loginResult = userService.loginCheck(userLoginForm);
-        if (!loginResult.isPresent()) {
-            return "user/login_failed";
-        }
-        session.setAttribute("sessionUser", loginResult.get());
+        session.setAttribute("sessionUser", userService.loginCheck(userLoginForm));
         return "redirect:/board/list";
     }
 
