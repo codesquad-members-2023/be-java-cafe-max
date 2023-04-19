@@ -42,6 +42,13 @@ public class UserJdbcRepository {
         return countOfUser.orElse(0) > 0;
     }
 
+    public boolean containsUserName(String userName) {
+        Map<String, String> namedParameters = Collections.singletonMap("user_name", userName);
+        Optional<Integer> countOfUser = Optional.ofNullable(jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM users WHERE user_name = :user_name", namedParameters, Integer.class));
+        return countOfUser.orElse(0) > 0;
+    }
+
     public User findByUserId(String userId) {
         Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
         try {

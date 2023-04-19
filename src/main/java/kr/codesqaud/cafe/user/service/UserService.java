@@ -2,10 +2,7 @@ package kr.codesqaud.cafe.user.service;
 
 import kr.codesqaud.cafe.exception.DuplicateKeyException;
 import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.dto.SessionUser;
-import kr.codesqaud.cafe.user.dto.UserAddForm;
-import kr.codesqaud.cafe.user.dto.UserLoginForm;
-import kr.codesqaud.cafe.user.dto.UserResponse;
+import kr.codesqaud.cafe.user.dto.*;
 import kr.codesqaud.cafe.user.repository.UserJdbcRepository;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +42,18 @@ public class UserService {
 
     public List<UserResponse> getUserList() {
         return userRepository.findAll().stream().map(UserResponse::from).collect(Collectors.toList());
+    }
+
+    public boolean checkPassword(UserUpdateForm userUpdateForm) {
+        User user = userRepository.findByUserId(userUpdateForm.getUserId());
+        return userUpdateForm.getPassword().equals(user.getPassword());
+    }
+
+    public boolean updateUser(UserUpdateForm userUpdateForm) {
+        if (userRepository.containsUserName(userUpdateForm.getUserName())) {
+            return false;
+        }
+        userRepository.update(userUpdateForm.toUser());
+        return true;
     }
 }
