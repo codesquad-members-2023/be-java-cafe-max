@@ -17,7 +17,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
-    public ArticleService(@Qualifier("jdbcArticleRepository") ArticleRepository articleRepository) {
+    public ArticleService(@Qualifier("mySqlArticleRepository") ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
