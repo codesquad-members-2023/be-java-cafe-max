@@ -23,9 +23,8 @@ public class ArticleService {
     /**
      * 게시글 저장
      */
-    public Article save(ArticleDTO articleDTO, String writer) {
+    public Article save(Article article) {
         // TODO: title/content 비어있는지 등 유효성 검증
-        Article article = new Article(writer, articleDTO.getTitle(), articleDTO.getContents());
         return articleRepository.save(article);
     }
 
@@ -34,27 +33,31 @@ public class ArticleService {
      * @return 저장소 내 전체 게시글
      */
     public List<Article> findArticles() {
-        return articleRepository.findAll();
+        return articleRepository.findAll(); // TODO: 불변값으로 수정
     }
 
     /**
-     * index 로 특정 게시글 조회
-     * @param index 게시글 index
+     * @param id Article id
      * @return 게시글
      */
-    public Optional<Article> findOne(long index) {
-        return articleRepository.findOneById(index);
+    public Optional<Article> findOne(long id) {
+        return articleRepository.findOneById(id);
     }
 
-    public Article edit(long index, String requesterId, ArticleDTO articleDTO) {
-        String originWriter = articleRepository.findIdBySequence(index);
-        if (!originWriter.equals(requesterId)) {
+    /**
+     *
+     * @param id Article id
+     * @param requesterId User userId
+     */
+    public Article edit(long id, Article article) {
+        String originWriter = articleRepository.findIdBySequence(id);
+        if (!originWriter.equals(article.getWriter())) {
             logger.info("게시글 수정 요청 ID와 기존 게시글 ID 불일치");
             throw new InvalidRequesterIdException();
         }
-        Article article = new Article(articleDTO.getTitle(), articleDTO.getContents());
+
         logger.info("게시글 수정 성공");
-        return articleRepository.update(index, article);
+        return articleRepository.update(id, article);
     }
 
 }

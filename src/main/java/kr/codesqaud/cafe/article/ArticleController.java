@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.article;
 
 import java.util.List;
 import javax.servlet.http.HttpSession;
+import kr.codesqaud.cafe.article.dto.ArticleRequestDto;
+import kr.codesqaud.cafe.article.dto.ArticleResponseDto;
 import kr.codesqaud.cafe.reply.Reply;
 import kr.codesqaud.cafe.reply.ReplyService;
 import kr.codesqaud.cafe.web.SessionConstant;
@@ -32,9 +34,10 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public String write(final ArticleDTO articleDTO, HttpSession session) {
+    public String write(final ArticleRequestDto articleRequestDto, HttpSession session) {
         String writer = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
-        articleService.save(articleDTO, writer);
+        Article article = articleRequestDto.toEntity(writer);
+        articleService.save(article);
         return "redirect:/";
     }
 
@@ -51,17 +54,23 @@ public class ArticleController {
     @GetMapping("/articles/{articleId}/edit")
     public String showEditPage(@PathVariable final long articleId, final Model model) {
         Article findArticle = articleService.findOne(articleId).get();
+        ArticleResponseDto articleResponseDto = new ArticleResponseDto().fromEntity(findArticle);
+
         logger.info("게시글 수정 페이지 조회 요청 / " + "제목: " + findArticle.getTitle());
-        model.addAttribute("article", findArticle);
+
+        model.addAttribute("article", articleResponseDto);
         return "qna/edit_form";
     }
 
     @PutMapping("/articles/{articleId}")
     public String editArticle
-            (@PathVariable final long articleId, HttpSession session, final ArticleDTO articleDTO) {
+            (@PathVariable final long articleId, HttpSession session, final ArticleRequestDto articleRequestDto) {
         String requesterID = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
+
         logger.info("requesterID: " + requesterID + " / 게시글 수정 요청");
-        articleService.edit(articleId, requesterID , articleDTO);
-        return "redirect:/articles/" + articleId;
+
+        Article article = articleRequestDto.toEntity(requesterID);
+        articleService.edit(articleId, article);
+        return "redirect:/articles/{articleId}";
     }
 }
