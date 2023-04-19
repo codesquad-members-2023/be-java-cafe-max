@@ -13,7 +13,9 @@
             <div class="panel panel-default">
                 <header class="post-header">
                     <p class="post-title">
-                        {{articles.title}}
+                        {{#article}}
+                        {{article.title}}
+                        {{/article}}
                     </p>
                 </header>
 
@@ -22,14 +24,14 @@
                         <div class="article-header">
                             <hr/>
                             <div class="article-header-text">
-                                <p class="article-content">{{articles.nickName}}</p>
-                                <p class="article-content">{{articles.date}}</p>
+                                <p class="article-content">{{article.nickName}}</p>
+                                <p class="article-content">{{article.date}}</p>
                                 <p class="article-content">조회 10</p>
 
-                                <form method="get" action="/articles/update/{{articles.idx}}">
+                                <form method="get" action="/articles/update/{{article.idx}}">
                                     <button class="post-button" type="submit">수정</button>
                                 </form>
-                                <form method="post" action="/articles/{{articles.idx}}">
+                                <form method="post" action="/articles/{{article.idx}}">
                                     <input type="hidden" name="_method" value="DELETE"/>
                                     <button class="post-button" type="submit">삭제</button>
                                 </form>
@@ -38,9 +40,9 @@
                         </div>
 
                         <div class="article-doc">
-                            <p>
-                                {{articles.content}}
-                            </p>
+                            <p>{{#article}}
+                                {{article.content}}
+                                {{/article}}</p>
                         </div>
                     </article>
 
@@ -48,30 +50,31 @@
                         <div class="post-comment-slipp">
                             <p class="post-comment-count">댓글 0개</p>
                             <div class="post-comment-slipp-articles">
-
-                                {{#replies}}
-                                <article class="comment">
-                                    <div class="article-text">
-                                        <div id="reply-info-box">
-                                            <p class="comment-content comment-author-name">{{nickName}}</p>
-                                            <p class="comment-content comment-time">
-                                                {{date}}
-                                            </p>
-                                            <form method="post" action="/articles/{{articleIdx}}/{{replyIdx}}">
-                                                <input type="hidden" name="_method" value="DELETE"/>
-                                                <button class="post-button reply-button" type="submit">삭제</button>
-                                            </form>
+                                <div id="comment-box">
+                                    {{#replies}}
+                                    <article id="replyTemplate" class="comment">
+                                        <div class="article-text">
+                                            <div id="reply-info-box">
+                                                <p class="comment-content comment-author-name">{{nickName}}</p>
+                                                <p class="comment-content comment-time">
+                                                    {{date}}
+                                                </p>
+                                                <form method="post" action="/articles/{{articleIdx}}/{{replyIdx}}">
+                                                    <input type="hidden" name="_method" value="DELETE"/>
+                                                    <button class="post-button reply-button" type="submit">삭제</button>
+                                                </form>
+                                            </div>
+                                            <div class="comment-content comment-doc">
+                                                <p>{{content}}</p>
+                                            </div>
                                         </div>
-                                        <div class="comment-content comment-doc">
-                                            <p>{{content}}</p>
-                                        </div>
-                                    </div>
-                                </article>
-                                {{/replies}}
-
-                                <form class="submit-write" method="post" action="/articles/{{articles.idx}}/reply">
+                                    </article>
+                                    {{/replies}}
+                                </div>
+                                <form id="reply-form" class="submit-write" method="post"
+                                      action="/articles/{{article.idx}}/reply">
                                     <div class="comment-writer-container">
-                                        <input class="comment-writer" id="writer" name="writer"
+                                        <input class="comment-writer" id="writer" name="nickName"
                                                value={{loginUser.nickName}} readonly/>
                                     </div>
                                     <div class="form-group">
@@ -89,4 +92,6 @@
     </div>
 </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/reply.js"></script>
 </html>
