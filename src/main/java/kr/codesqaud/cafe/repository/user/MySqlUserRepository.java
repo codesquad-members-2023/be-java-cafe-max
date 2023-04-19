@@ -23,14 +23,14 @@ public class MySqlUserRepository implements UserRepository {
 
     @Override
     public String save(User user) {
-        final String sql = "INSERT INTO user (userId, password, name, email) VALUES (:userId, :password, :name, :email)";
+        final String sql = "INSERT INTO User (userId, password, name, email) VALUES (:userId, :password, :name, :email)";
         jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(user));
         return user.getUserId();
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        final String sql = "SELECT userId, password, name, email FROM user WHERE userId = :userId LIMIT 1";
+        final String sql = "SELECT userId, password, name, email FROM User WHERE userId = :userId LIMIT 1";
         try (final Stream<User> result = jdbcTemplate.queryForStream(sql, Map.of("userId", userId), userRowMapper)) {
             return result.findFirst();
         }
@@ -38,22 +38,21 @@ public class MySqlUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        final String sql = "SELECT userId, password, name, email FROM user";
+        final String sql = "SELECT userId, password, name, email FROM User";
         return jdbcTemplate.query(sql, userRowMapper);
     }
 
     @Override
     public boolean exist(String userId) {
-        final String sql = "SELECT count(*) FROM user WHERE userId = :userId LIMIT 1";
-        final Integer count = jdbcTemplate.queryForObject(sql,
+        final String sql = "SELECT count(*) FROM User WHERE userId = :userId LIMIT 1";
+        return jdbcTemplate.queryForObject(sql,
                 Map.of("userId", userId),
-                Integer.class);
-        return count > 0;
+                Boolean.class);
     }
 
     @Override
     public int update(User user) {
-        final String sql = "UPDATE user SET name = :name, email = :email, password = :password WHERE userId = :userId";
+        final String sql = "UPDATE User SET name = :name, email = :email, password = :password WHERE userId = :userId";
         Map<String, Object> parameter = Map.of(
                 "name", user.getName(),
                 "email", user.getEmail(),
@@ -64,10 +63,9 @@ public class MySqlUserRepository implements UserRepository {
 
     @Override
     public boolean existByName(String name) {
-        final String sql = "SELECT EXISTS(SELECT 1 FROM user WHERE name = :name LIMIT 1)";
-        final int count = jdbcTemplate.queryForObject(sql,
+        final String sql = "SELECT EXISTS(SELECT 1 FROM User WHERE name = :name LIMIT 1)";
+        return jdbcTemplate.queryForObject(sql,
                 Map.of("name", name),
-                Integer.class);
-        return count > 0;
+                Boolean.class);
     }
 }

@@ -54,9 +54,8 @@ public class H2ArticleRepository implements ArticleRepository {
     @Override
     public boolean exist(Long id) {
         final String sql = "SELECT EXISTS(SELECT 1 FROM article WHERE id = :id AND deleted = false LIMIT 1)";
-        final int count = jdbcTemplate.queryForObject(sql,
-                Map.of("id", id), Integer.class);
-        return count > 0;
+        return jdbcTemplate.queryForObject(sql,
+                Map.of("id", id), Boolean.class);
     }
 
     @Override

@@ -45,10 +45,9 @@ public class H2UserRepository implements UserRepository {
     @Override
     public boolean exist(String userId) {
         final String sql = "SELECT count(*) FROM user WHERE userId = :userId LIMIT 1";
-        final Integer count = jdbcTemplate.queryForObject(sql,
+        return jdbcTemplate.queryForObject(sql,
                 Map.of("userId", userId),
-                Integer.class);
-        return count > 0;
+                Boolean.class);
     }
 
     @Override
@@ -65,9 +64,8 @@ public class H2UserRepository implements UserRepository {
     @Override
     public boolean existByName(String name) {
         final String sql = "SELECT EXISTS(SELECT 1 FROM user WHERE name = :name LIMIT 1)";
-        final int count = jdbcTemplate.queryForObject(sql,
+        return jdbcTemplate.queryForObject(sql,
                 Map.of("name", name),
-                Integer.class);
-        return count > 0;
+                Boolean.class);
     }
 }
