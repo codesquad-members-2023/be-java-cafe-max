@@ -18,27 +18,24 @@ import java.util.Optional;
 @Repository
 public class JdbcTemplateReplyRepository implements ReplyRepository {
     private final NamedParameterJdbcTemplate template;
-    private final SimpleJdbcInsert simpleJdbcInsert;
     private final RowMapper<Reply> replyRowMapper = BeanPropertyRowMapper.newInstance(Reply.class);
 
     public JdbcTemplateReplyRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
-        this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-                .withTableName("REPLIES")
-                .usingGeneratedKeyColumns("id");
     }
 
     @Override
     public Reply save(Reply reply) {
+        String sql = "insert into REPLIES (article_id, user_id, reply_content, reply_time, deleted) " +
+                "values (:articleId, :userId, :replyContent, :replyTime, false)";
         SqlParameterSource param = new BeanPropertySqlParameterSource(reply);
-        Number key = simpleJdbcInsert.executeAndReturnKey(param);
-        reply.setId(key.longValue());
+        template.update(sql, param);
         return reply;
     }
 
     @Override
     public Optional<Reply> findById(Long id) {
-        String sql = "select id, article_id, user_id, reply_content, reply_time from REPLIES where id = :id";
+        String sql = "select id, article_id, user_id, reply_content, reply_time from REPLIES where id = :id and deleted=false";
 
         try {
             Map<String, Object> param = Map.of("id", id);
@@ -54,9 +51,9 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
         // 1차: articleId -> 2차: userId
         String sql = "select r.id, r.user_id, u.user_id, r.reply_content, r.reply_time " +
                 "from REPLIES r join USERS u on r.user_id = u.user_id " +
-                "where r.article_id=:articleId";
+                "where r.article_id=:articleId and r.deleted=false";
 
-            Map<String, Object> param = Map.of("articleId", articleId);
-            return template.query(sql, param, replyRowMapper);
-        }
+        Map<String, Object> param = Map.of("articleId", articleId);
+        return template.query(sql, param, replyRowMapper);
+    }
 }

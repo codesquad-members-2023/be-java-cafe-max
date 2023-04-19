@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -19,27 +18,24 @@ import java.util.Optional;
 @Repository
 public class JdbcTemplateArticleRepository implements ArticleRepository {
     private final NamedParameterJdbcTemplate template;
-    private final SimpleJdbcInsert simpleJdbcInsert;
     private final RowMapper<Article> articleRowMapper = BeanPropertyRowMapper.newInstance(Article.class);
 
     public JdbcTemplateArticleRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
-        this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-                .withTableName("ARTICLES")
-                .usingGeneratedKeyColumns("id");
     }
 
     @Override
     public Article save(Article article) {
+        String sql = "insert into ARTICLES (user_id, title, contents, currentTime, deleted) " +
+                "values (:userId, :title, :contents, :currentTime, false)";
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
-        Number key = simpleJdbcInsert.executeAndReturnKey(param);
-        article.setId(key.longValue());
+        template.update(sql, param);
         return article;
     }
 
     @Override
     public Optional<Article> findById(Long id) {
-        String sql = "select id, user_id, title, contents, currentTime from ARTICLES where id = :id";
+        String sql = "select id, user_id, title, contents, currentTime, deleted from ARTICLES where id = :id and deleted=false";
 
         try {
             Map<String, Object> param = Map.of("id", id);
@@ -52,7 +48,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select id, user_id, title, contents, currentTime from ARTICLES";
+        String sql = "select id, user_id, title, contents, currentTime, deleted from ARTICLES where deleted=false";
         return template.query(sql, articleRowMapper);
     }
 
@@ -72,9 +68,9 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void deleteArticle(Long id) {
-        String sql = "delete from ARTICLES where id=:id";
+        String articleDeletedSql = "update ARTICLES set deleted=true where id=:id";
 
         Map<String, Object> param = Map.of("id", id);
-        template.update(sql, param);
+        template.update(articleDeletedSql, param);
     }
 }
