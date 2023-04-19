@@ -24,7 +24,7 @@ public class UserController {
 
 	@GetMapping("/users/list")
 	public String userList(Model model) {
-		model.addAttribute("users", userService.getUsers());
+		model.addAttribute("users", userService.getUserList());
 		return "user/list";
 	}
 
@@ -42,7 +42,7 @@ public class UserController {
 	@PutMapping("/users/{id}")
 	public String update(@ModelAttribute @Valid ProfileEditRequest profileEditRequest,
 		HttpSession httpSession) {
-		userService.update(profileEditRequest);
+		userService.updateUser(profileEditRequest);
 		Session session = new Session(profileEditRequest.getId(), profileEditRequest.getNickName());
 		httpSession.setAttribute(Session.LOGIN_USER, session);
 		return "redirect:/users/list";

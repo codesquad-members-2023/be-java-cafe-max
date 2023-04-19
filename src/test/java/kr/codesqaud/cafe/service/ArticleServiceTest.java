@@ -75,7 +75,7 @@ class ArticleServiceTest {
 		given(articleMapper.toArticleResponse(article2)).willReturn(articleResponse2);
 
 		//when
-		List<ArticleResponse> result = articleService.getArticles();
+		List<ArticleResponse> result = articleService.getArticleList();
 
 		//then
 		Assertions.assertAll(
@@ -96,7 +96,7 @@ class ArticleServiceTest {
 		given(articleMapper.toArticleResponse(article)).willReturn(articleResponse);
 
 		//when
-		ArticleResponse result = articleService.findByIdx(idx);
+		ArticleResponse result = articleService.findArticleByIdx(idx);
 
 		//then
 		org.junit.jupiter.api.Assertions.assertAll(
@@ -114,7 +114,7 @@ class ArticleServiceTest {
 		given(articleMapper.toArticle(articleUpdateRequest)).willReturn(article);
 
 		//when
-		articleService.update(articleUpdateRequest);
+		articleService.updateArticle(articleUpdateRequest);
 
 		//then
 		verify(articleRepository, times(1)).updateArticle(article);
@@ -141,7 +141,7 @@ class ArticleServiceTest {
 		given(articleMapper.toArticleTitleAndContentResponse(article)).willReturn(articleTitleAndContentResponse);
 
 		//when
-		articleService.deleteByIdx(idx, id);
+		articleService.deleteArticleByIdx(idx, id);
 
 		//then
 		verify(articleRepository, times(1)).deleteArticle(idx, id);

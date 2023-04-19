@@ -76,7 +76,7 @@ class ArticleControllerTest {
 
 		ArticleResponse articleResponse = new ArticleResponse(articlePostRequest.getTitle(),
 			articlePostRequest.getContent(), 1L, "2023-4-17", "nickName");
-		given(articleService.findByIdx(1L)).willReturn(articleResponse);
+		given(articleService.findArticleByIdx(1L)).willReturn(articleResponse);
 
 		//when & then
 		mockMvc.perform(MockMvcRequestBuilders.get("/articles/1")

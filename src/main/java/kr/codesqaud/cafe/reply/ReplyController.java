@@ -28,14 +28,14 @@ public class ReplyController {
 		HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
 		replyRequest.init(session.getId(), session.getNickName(), articleIdx);
-		replyService.addReply(replyRequest);
+		replyService.save(replyRequest);
 		return "redirect:/articles/" + articleIdx;
 	}
 
 	@DeleteMapping("/articles/{articleIdx}/{replyIdx}")
 	public String deleteReply(@PathVariable Long replyIdx, @PathVariable Long articleIdx, HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
-		replyService.deleteReply(session.getId(), replyIdx);
+		replyService.delete(session.getId(), replyIdx);
 		return "redirect:/articles/" + articleIdx;
 	}
 }

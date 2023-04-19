@@ -48,8 +48,8 @@ public class ArticleController {
 	//todo join써서 db에 2번접근하지 말고 한번접근해 데이터 가져와보기
 	@GetMapping("/articles/{idx}")
 	public String detail(@PathVariable Long idx, Model model) {
-		model.addAttribute("articles", articleService.findByIdx(idx));
-		model.addAttribute("replies", replyService.getReplyListByIdx(idx));
+		model.addAttribute("article", articleService.findArticleByIdx(idx));
+		model.addAttribute("replies", replyService.getRepliesByIdx(idx));
 		return "article/show";
 	}
 
@@ -65,14 +65,14 @@ public class ArticleController {
 	public String update(@ModelAttribute @Valid ArticleUpdateRequest articleUpdateRequest,
 		@PathVariable Long idx) {
 		articleUpdateRequest.setIdx(idx);
-		articleService.update(articleUpdateRequest);
+		articleService.updateArticle(articleUpdateRequest);
 		return "redirect:/";
 	}
 
 	@DeleteMapping("/articles/{idx}")
 	public String delete(@PathVariable Long idx, HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
-		articleService.deleteByIdx(idx, session.getId());
+		articleService.deleteArticleByIdx(idx, session.getId());
 		return "redirect:/";
 	}
 }

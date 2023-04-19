@@ -34,20 +34,20 @@ public class ArticleService {
 		articleRepository.save(article);
 	}
 
-	public List<ArticleResponse> getArticles() {
+	public List<ArticleResponse> getArticleList() {
 		return articleRepository.findAll().stream()
 			.sorted(Comparator.comparing(Article::getIdx).reversed())
 			.map(articleMapper::toArticleResponse)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public ArticleResponse findByIdx(Long idx) {
+	public ArticleResponse findArticleByIdx(Long idx) {
 		return articleRepository.findArticleByIdx(idx)
 			.map(articleMapper::toArticleResponse)
 			.orElseThrow(ArticleNotFoundException::new);
 	}
 
-	public void update(ArticleUpdateRequest articleUpdateRequest) {
+	public void updateArticle(ArticleUpdateRequest articleUpdateRequest) {
 		articleRepository.updateArticle(articleMapper.toArticle(articleUpdateRequest));
 	}
 
@@ -58,7 +58,7 @@ public class ArticleService {
 			.orElseThrow(ArticleIdAndSessionIdMismatchException::new);
 	}
 
-	public void deleteByIdx(Long idx, String id) {
+	public void deleteArticleByIdx(Long idx, String id) {
 		validSessionIdAndArticleId(idx, id);
 		if (!articleRepository.deleteArticle(idx, id)) {
 			throw new ArticleDeleteFailedException();

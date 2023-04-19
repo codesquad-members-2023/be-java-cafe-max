@@ -22,27 +22,27 @@ public class ReplyService {
 		this.replyMapper = replyMapper;
 	}
 
-	public void addReply(ReplyRequest replyRequest) {
+	public void save(ReplyRequest replyRequest) {
 		replyRepository.saveReply(replyMapper.toReply(replyRequest));
 	}
 
-	public List<ReplyResponse> getReplyListByIdx(Long idx) {
+	public List<ReplyResponse> getRepliesByIdx(Long idx) {
 		return replyRepository.findAllReply(idx).stream()
 			.map(replyMapper::toReplyResponse)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public void deleteReply(String id, Long replyIdx) {
+	public void delete(String id, Long replyIdx) {
 		if (validSessionIdAndReplyId(id, replyIdx)) {
 			replyRepository.deleteReply(id, replyIdx);
 		}
 	}
 
 	public boolean validSessionIdAndReplyId(String id, Long replyIdx) {
-		return Objects.equals(id, findReplyIdByIdx(replyIdx));
+		return Objects.equals(id, findIdByIdx(replyIdx));
 	}
 
-	public String findReplyIdByIdx(Long replyIdx) {
+	public String findIdByIdx(Long replyIdx) {
 		return replyRepository.findReplyIdByIdx(replyIdx);
 	}
 }
