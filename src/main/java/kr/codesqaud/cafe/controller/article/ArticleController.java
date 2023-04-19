@@ -3,7 +3,9 @@ package kr.codesqaud.cafe.controller.article;
 import kr.codesqaud.cafe.domain.dto.article.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleTimeForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleUpdateForm;
+import kr.codesqaud.cafe.domain.dto.reply.ReplyTimeForm;
 import kr.codesqaud.cafe.service.article.ArticleService;
+import kr.codesqaud.cafe.service.reply.ReplyService;
 import kr.codesqaud.cafe.session.SessionConst;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +19,11 @@ import java.util.List;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @GetMapping("/questions/add")
@@ -49,7 +53,9 @@ public class ArticleController {
     @GetMapping("/questions/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         ArticleTimeForm article = articleService.findArticleId(id);
+        List<ReplyTimeForm> replies = replyService.findReplies(id);
         model.addAttribute("article", article);
+        model.addAttribute("replies", replies);
         return "qna/show";
     }
 
