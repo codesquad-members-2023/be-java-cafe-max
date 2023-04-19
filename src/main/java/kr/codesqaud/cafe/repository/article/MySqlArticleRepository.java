@@ -60,11 +60,11 @@ public class MySqlArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findWithSurroundingArticles(Long id) {
-        final String sql = "SELECT id, title, writer, contents, createdAt, deleted, previousId, nextId "
+        final String sql = "SELECT a.id, a.title, a.writer, a.contents, a.createdAt, a.deleted, a.previousId, a.nextId "
                 + " FROM (SELECT id, title, writer, contents, createdAt, deleted, "
                 + " LAG(id, 1, null) OVER(ORDER BY id ASC) AS previousId, "
                 + " LEAD(id, 1, null) OVER(ORDER BY id ASC) AS nextId "
-                + " FROM Article WHERE deleted = false) WHERE id = :id AND deleted = false";
+                + " FROM Article WHERE deleted = false) AS a WHERE id = :id AND deleted = false";
 
         try (final Stream<Article> result = jdbcTemplate.queryForStream(sql, Map.of("id", id), articleRowMapper)) {
             return result.findFirst();
