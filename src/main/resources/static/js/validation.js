@@ -194,3 +194,17 @@ function validateDelete() {
         document.getElementById("posting").submit();
     }
 }
+
+/* 댓글 등록 */
+function validateReply() {
+    const content = document.getElementById('inputReply').value;
+    const message = document.querySelector('.checkReply');
+
+    if (content.length < 3 || content.length > 400) {
+        message.classList.remove('hide');
+        return false;
+    }
+
+    message.classList.add('hide');
+    return true;
+}
