@@ -1,6 +1,5 @@
 package kr.codesquad.cafe.post;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.codesquad.cafe.comment.Comment;
 import kr.codesquad.cafe.user.User;
 
@@ -15,11 +14,12 @@ public class Post {
     @Id
     @GeneratedValue
     private Long id;
-    @JsonIgnore
+
     @NotNull
     @ManyToOne
     private User user;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post")
+
+    @OneToMany(mappedBy = "post")
     protected List<Comment> comments = new ArrayList<>();
 
     private String nickname;
