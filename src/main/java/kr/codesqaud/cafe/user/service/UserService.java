@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.user.service;
 
 import kr.codesqaud.cafe.exception.DuplicateKeyException;
 import kr.codesqaud.cafe.exception.LoginFailedException;
+import kr.codesqaud.cafe.exception.UserUpdateFailedException;
 import kr.codesqaud.cafe.user.domain.User;
 import kr.codesqaud.cafe.user.dto.*;
 import kr.codesqaud.cafe.user.repository.UserJdbcRepository;
@@ -48,16 +49,24 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public boolean checkPassword(UserUpdateForm userUpdateForm) {
-        User user = userRepository.findByUserId(userUpdateForm.getUserId());
-        return userUpdateForm.getPassword().equals(user.getPassword());
+    public void validateAndUpdateUser(UserUpdateForm userUpdateForm) {
+        if (checkPassword(userUpdateForm)) {
+            if (checkDuplicateName(userUpdateForm.getUserName())) {
+                userRepository.update(userUpdateForm.toUser());
+            } else {
+                throw new UserUpdateFailedException("중복된 이름이 존재합니다.", "name");
+            }
+        } else {
+            throw new UserUpdateFailedException("비밀번호가 틀렸습니다.", "password");
+        }
     }
 
-    public boolean updateUser(UserUpdateForm userUpdateForm) {
-        if (userRepository.containsUserName(userUpdateForm.getUserName())) {
-            return false;
-        }
-        userRepository.update(userUpdateForm.toUser());
-        return true;
+    private boolean checkPassword(UserUpdateForm userUpdateForm) {
+        String password = userRepository.findByUserId(userUpdateForm.getUserId()).getPassword();
+        return userUpdateForm.getPassword().equals(password);
+    }
+
+    private boolean checkDuplicateName(String userName) {
+        return !userRepository.containsUserName(userName);
     }
 }

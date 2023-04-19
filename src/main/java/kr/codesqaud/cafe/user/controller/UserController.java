@@ -62,18 +62,7 @@ public class UserController {
 
     @PutMapping
     public String updateUser(@ModelAttribute UserUpdateForm userUpdateForm, Model model) {
-        if (!userService.checkPassword(userUpdateForm)) {
-            model.addAttribute("error_password", true);
-            model.addAttribute("user", userUpdateForm);
-            return "user/update";
-        }
-
-        if (!userService.updateUser(userUpdateForm)) {
-            model.addAttribute("error_duplicateName", true);
-            model.addAttribute("user", userUpdateForm);
-            return "user/update";
-        }
-
+        userService.validateAndUpdateUser(userUpdateForm);
         return "redirect:/user/list";
     }
 
