@@ -14,6 +14,7 @@ import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.articlecomment.ArticleComment;
+import kr.codesqaud.cafe.exception.InvalidOperationException;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import kr.codesqaud.cafe.repository.ArticleCommentRepository;
@@ -70,6 +71,15 @@ public class ArticleService {
 	public void deleteArticle(final Long articleId) {
 		articleRepository.findById(articleId)
 			.orElseThrow(() -> new NotFoundException(String.format("%d번 게시글을 찾을 수 없습니다.", articleId)));
-		articleRepository.deleteById(articleId);
+		articleRepository.isPossibleDeleteById(articleId)
+			.ifPresentOrElse(isExists -> {
+				if (isExists) {
+					articleRepository.deleteById(articleId);
+					return;
+				}
+				throw new InvalidOperationException(articleId);
+			}, () -> {
+				throw new InvalidOperationException(articleId);
+			});
 	}
 }

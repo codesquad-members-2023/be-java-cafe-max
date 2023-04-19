@@ -53,9 +53,9 @@ public class ArticleJdbcRepository implements ArticleRepository {
 		return jdbcTemplate.query(
 			"SELECT a.id, a.writer, a.title, a.content, a.created_at, COUNT(ac.id) AS article_comment_count "
 				+ "FROM article AS a "
-				+ "LEFT JOIN article_comment AS ac ON a.id = ac.article_id "
+				+ "LEFT JOIN article_comment AS ac ON a.id = ac.article_id AND ac.is_deleted = FALSE "
 				+ "WHERE a.is_deleted = FALSE "
-				+ "GROUP BY ac.article_id",
+				+ "GROUP BY a.id, a.writer, a.title, a.content, a.created_at",
 			(rs, rowNum) -> new ArticleWithCommentCount(rs.getLong("id"),
 														rs.getString("writer"),
 														rs.getString("title"),
@@ -87,6 +87,24 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
 	@Override
 	public void deleteById(final Long id) {
-		jdbcTemplate.update("DELETE FROM article WHERE id=:id", Map.of("id", id));
+		jdbcTemplate.update("UPDATE article AS a "
+								+ "LEFT JOIN article_comment AS ac ON a.id = ac.article_id "
+								+ "SET a.is_deleted = TRUE, ac.is_deleted = TRUE "
+								+ "WHERE a.id = :id",
+							Map.of("id", id));
+	}
+
+	@Override
+	public Optional<Boolean> isPossibleDeleteById(final Long id) {
+		try {
+			return Optional.of(Boolean.FALSE.equals(
+				jdbcTemplate.queryForObject("SELECT EXISTS ("    // 댓글 작성자 중 게시글 작성자와 일치하지 않은 사용자가 존재할 경우 TRUE 반환
+												+ "SELECT a.id FROM article AS a "
+												+ "LEFT JOIN article_comment AS ac ON a.id = ac.article_id AND ac.is_deleted = FALSE "
+												+ "WHERE a.id = :id AND a.writer NOT LIKE ac.writer)",
+											Map.of("id", id), Boolean.class)));
+		} catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
 	}
 }
