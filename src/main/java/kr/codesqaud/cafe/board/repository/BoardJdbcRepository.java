@@ -4,12 +4,14 @@ import kr.codesqaud.cafe.board.domain.BoardPost;
 import kr.codesqaud.cafe.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +21,6 @@ import java.util.Optional;
 public class BoardJdbcRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
-    private final BeanPropertyRowMapper<BoardPost> postRowMapper = BeanPropertyRowMapper.newInstance(BoardPost.class);
 
     @Autowired
     public BoardJdbcRepository(DataSource dataSource) {
@@ -63,4 +64,17 @@ public class BoardJdbcRepository {
     public List<BoardPost> findAll() {
         return jdbcTemplate.query("SELECT post_id, writer, title, contents, write_date_time FROM post ORDER BY write_date_time DESC", postRowMapper);
     }
+
+    public RowMapper<BoardPost> postRowMapper = new RowMapper<BoardPost>() {
+        @Override
+        public BoardPost mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new BoardPost.Builder()
+                    .postId(rs.getLong("post_id"))
+                    .writer(rs.getString("writer"))
+                    .title(rs.getString("title"))
+                    .contents(rs.getString("contents"))
+                    .writeDateTime(rs.getTimestamp("write_date_time").toLocalDateTime())
+                    .build();
+        }
+    };
 }

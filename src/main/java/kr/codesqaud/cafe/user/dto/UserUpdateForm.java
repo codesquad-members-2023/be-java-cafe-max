@@ -16,7 +16,12 @@ public class UserUpdateForm {
     }
 
     public User toEntity() {
-        return new User(userId, password, userName, email);
+        return new User.Builder()
+                .userId(userId)
+                .password(password)
+                .userName(userName)
+                .email(email)
+                .build();
     }
 
     public String getUserId() {

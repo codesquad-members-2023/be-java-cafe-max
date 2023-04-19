@@ -14,7 +14,11 @@ public class PostWriteForm {
     }
 
     public BoardPost toEntity() {
-        return new BoardPost(writer, title, contents);
+        return new BoardPost.Builder()
+                .writer(writer)
+                .title(title)
+                .contents(contents)
+                .build();
     }
 
     public String getWriter() {
