@@ -32,7 +32,7 @@ public class ArticleController {
         return "article/main";
     }
 
-    @GetMapping("/articles/write")
+    @GetMapping("/articles/write-form")
     public String getFormToWrite() {
         return "article/write";
     }
@@ -49,7 +49,7 @@ public class ArticleController {
         return "article/detail";
     }
 
-    @GetMapping("/articles/{id}/edit")
+    @GetMapping("/articles/{id}/edit-form")
     public String getFormToEdit(@PathVariable Long id, Model model, HttpSession httpSession) {
         final ArticleResponse article = articleService.findById(id);
         checkUserPermissions(httpSession, article.getWriter());
