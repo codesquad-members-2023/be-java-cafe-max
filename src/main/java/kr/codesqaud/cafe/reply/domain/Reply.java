@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.reply.domain;
 
-import static kr.codesqaud.cafe.global.util.DateUtil.*;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -22,7 +20,6 @@ public class Reply {
 	public Reply(String userId, Long articleIdx, String nickName, String content) {
 		this.userId = userId;
 		this.articleIdx = articleIdx;
-		this.date = getCurrentDate();
 		this.nickName = nickName;
 		this.content = content;
 	}

@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `USER`
     nickName VARCHAR(12)             NOT NULL,
     email    VARCHAR(255)            NOT NULL,
     password VARCHAR(255)            NOT NULL,
-    date     VARCHAR(10)             NOT NULL
+    date     DATE DEFAULT (CURRENT_DATE)
 );
 
 CREATE TABLE IF NOT EXISTS `ARTICLE`
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `ARTICLE`
     user_id     VARCHAR(12)   NOT NULL,
     content     VARCHAR(3000) NOT NULL,
     title       VARCHAR(255)  NOT NULL,
-    date        VARCHAR(10)   NOT NULL,
+    date        DATE DEFAULT (CURRENT_DATE),
     is_visible  BOOL DEFAULT 1
 );
 
@@ -23,6 +23,6 @@ CREATE TABLE IF NOT EXISTS `REPLY`
     article_idx BIGINT       NOT NULL,
     user_id     VARCHAR(12)  NOT NULL,
     content     VARCHAR(255) NOT NULL,
-    date        VARCHAR(10)  NOT NULL,
-    is_visible  BOOL DEFAULT 1
+    date        DATETIME DEFAULT (CURRENT_TIME),
+    is_visible  BOOL     DEFAULT 1
 );

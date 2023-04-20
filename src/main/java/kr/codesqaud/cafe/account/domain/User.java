@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.account.domain;
 
-import static kr.codesqaud.cafe.global.util.DateUtil.*;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -18,7 +16,6 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.userId = userId;
-		this.date = getCurrentDate();
 	}
 
 	public User(ResultSet rs) throws SQLException {

@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.article.domain;
 
-import static kr.codesqaud.cafe.global.util.DateUtil.*;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -16,7 +14,6 @@ public class Article {
 	public Article(String title, String content, String userId, String nickName) {
 		this.title = title;
 		this.content = content;
-		this.date = getCurrentDate();
 		this.userId = userId;
 		this.nickName = nickName;
 	}
