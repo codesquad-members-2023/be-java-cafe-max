@@ -59,10 +59,10 @@ public class GlobalExceptionHandler {
 	public ModelAndView handleUserNotFoundException(UserNotFoundException e, HttpServletRequest request,
 		RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
-		if (requestUri.contains("/users")) {
-			return createErrorResponseModelAndView("error/403-forbidden", e);
+		if (requestUri.contains("/sign-in")) {
+			return new ModelAndView(handleExceptionWithRedirect(e, "/users/sign-in", "id-error", redirectAttributes));
 		}
-		return new ModelAndView(handleExceptionWithRedirect(e, "/users/sign-in", "id-error", redirectAttributes));
+		return createErrorResponseModelAndView("error/403-forbidden", e);
 	}
 
 	@ExceptionHandler(UserUpdateInvalidPasswordException.class)
