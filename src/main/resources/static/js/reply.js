@@ -11,7 +11,7 @@ const replyTemplate = `
             <div id="reply-info-box">
                 <p class="comment-content comment-author-name">{{nickName}}</p>
                 <p class="comment-content comment-time">{{date}}</p>
-                <form method="post" action="/articles/{{articleIdx}}/{{replyIdx}}">
+                <form class = "reply-delete" method="post" action="/articles/{{articleIdx}}/{{replyIdx}}">
                     <input type="hidden" name="_method" value="DELETE"/>
                     <button class="post-button reply-button" type="submit">삭제</button>
                 </form>
@@ -60,6 +60,40 @@ function handleSubmit(e) {
             });
             $("#comment-box").append(template);
             $("textarea[name=content]").val("");
+        },
+    });
+}
+
+
+// 삭제버튼
+
+const replyDelete = document.querySelectorAll(".reply-delete");
+
+replyDelete.forEach(btn => btn.addEventListener("submit", handleDelete));
+
+
+function handleDelete(e) {
+
+    e.preventDefault();
+
+    let deleteBtn = $(this);
+    const deleteUrl = deleteBtn.attr("action");
+
+    console.log("url : " + deleteUrl);
+
+    // jquery에서 제공하는 ajax기능을사용하여 서버에 HTTP요청을 보내고 서버로부터 응답을 받는다.(비동기)
+    $.ajax({
+        type: 'delete',
+        url: deleteUrl,
+        dataType: "json",
+        error: function () {
+            console.log('failure');
+        },
+        success: function (data, status) {
+            console.log(data);
+            if (data.ok) {
+                deleteBtn.closest(".comment").remove()
+            }
         },
     });
 }

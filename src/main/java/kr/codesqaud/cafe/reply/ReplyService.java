@@ -10,6 +10,7 @@ import kr.codesqaud.cafe.global.mapper.ReplyMapper;
 import kr.codesqaud.cafe.reply.domain.Reply;
 import kr.codesqaud.cafe.reply.dto.ReplyRequest;
 import kr.codesqaud.cafe.reply.dto.ReplyResponse;
+import kr.codesqaud.cafe.reply.dto.Result;
 import kr.codesqaud.cafe.reply.repository.ReplyRepository;
 
 @Service
@@ -35,10 +36,12 @@ public class ReplyService {
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public void delete(String id, Long replyIdx) {
+	public Result delete(String id, Long replyIdx) {
 		if (validSessionIdAndReplyId(id, replyIdx)) {
 			replyRepository.deleteReply(id, replyIdx);
+			return Result.ok();
 		}
+		return Result.fail("삭제불가");
 	}
 
 	public boolean validSessionIdAndReplyId(String id, Long replyIdx) {

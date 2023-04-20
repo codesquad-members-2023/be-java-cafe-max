@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.codesqaud.cafe.global.config.Session;
 import kr.codesqaud.cafe.reply.dto.ReplyRequest;
 import kr.codesqaud.cafe.reply.dto.ReplyResponse;
+import kr.codesqaud.cafe.reply.dto.Result;
 
 @Controller
 public class ReplyController {
@@ -35,9 +36,9 @@ public class ReplyController {
 	}
 
 	@DeleteMapping("/articles/{articleIdx}/{replyIdx}")
-	public String deleteReply(@PathVariable Long replyIdx, @PathVariable Long articleIdx, HttpSession httpSession) {
+	@ResponseBody
+	public Result deleteReply(@PathVariable Long replyIdx, @PathVariable Long articleIdx, HttpSession httpSession) {
 		Session session = getLoginUser(httpSession);
-		replyService.delete(session.getId(), replyIdx);
-		return "redirect:/articles/" + articleIdx;
+		return replyService.delete(session.getId(), replyIdx);
 	}
 }
