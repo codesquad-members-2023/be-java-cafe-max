@@ -1,6 +1,5 @@
 package kr.codesquad.cafe.post.controller;
 
-import kr.codesquad.cafe.comment.CommentService;
 import kr.codesquad.cafe.post.Post;
 import kr.codesquad.cafe.post.PostService;
 import kr.codesquad.cafe.post.annotation.ValidPostIdPath;
@@ -19,11 +18,9 @@ public class PostController {
 
     private final PostService postService;
 
-    private final CommentService commentService;
 
-    public PostController(PostService postService, CommentService commentService) {
+    public PostController(PostService postService) {
         this.postService = postService;
-        this.commentService = commentService;
     }
 
     @GetMapping(value = {"/posts/new", "/posts/form"})

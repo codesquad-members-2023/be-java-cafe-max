@@ -1,9 +1,9 @@
 package kr.codesquad.cafe.user.dto;
 
-import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.annotation.ValidEmail;
 import kr.codesquad.cafe.user.annotation.ValidNickName;
 import kr.codesquad.cafe.user.annotation.ValidPassword;
+import kr.codesquad.cafe.user.domain.User;
 import org.jasypt.encryption.StringEncryptor;
 
 public class JoinForm {
@@ -34,10 +34,6 @@ public class JoinForm {
 
     public String getPassword() {
         return password;
-    }
-
-    public String getReconfirmPassword() {
-        return reconfirmPassword;
     }
 
     public User toUser(StringEncryptor encryptor) {
