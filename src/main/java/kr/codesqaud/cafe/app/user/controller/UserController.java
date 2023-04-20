@@ -34,7 +34,7 @@ public class UserController {
 
     // 전체 회원 조회
     @GetMapping("/users")
-    public ModelAndView list() {
+    public ModelAndView listUser() {
         ModelAndView mav = new ModelAndView("user/list");
         List<UserResponse> userResponses =
             userService.getAllUsers().stream()
@@ -44,58 +44,65 @@ public class UserController {
         return mav;
     }
 
-    // 특정 회원 조회
-    @GetMapping("/users/{id}")
-    public ModelAndView profile(@PathVariable(value = "id") Long id) {
-        ModelAndView mav = new ModelAndView("user/profile");
-        mav.addObject("user", new UserResponse(userService.findUser(id)));
-        return mav;
-    }
-
     // 특정 회원 추가
     @PostMapping("/users")
-    public UserResponse create(@Valid @RequestBody UserSavedRequest requestDto) {
-        logger.info("create : " + requestDto.toString());
+    public UserResponse addUser(@Valid @RequestBody UserSavedRequest requestDto) {
         User user = userService.signUp(requestDto);
         return new UserResponse(user);
     }
 
-    // 회원수정 페이지
-    @GetMapping("/user/form/{id}")
-    public ModelAndView modifyForm(@PathVariable(value = "id") Long id) {
-        ModelAndView mav = new ModelAndView("user/updateForm");
-        User user = userService.findUser(id);
-        UserModifiedResponse userResponse = new UserModifiedResponse(user);
-        mav.addObject("user", userResponse);
+    // 특정 회원 조회
+    @GetMapping("/users/{id}")
+    public ModelAndView detailUser(@PathVariable(value = "id") Long id) {
+        ModelAndView mav = new ModelAndView("user/detail");
+        mav.addObject("user", new UserResponse(userService.findUser(id)));
         return mav;
     }
 
     // 특정 회원 수정
-    @PutMapping("/users/{id}/update")
-    public UserResponse modify(@PathVariable(value = "id") Long id,
+    @PutMapping("/users/{id}")
+    public UserResponse modifyUser(@PathVariable(value = "id") Long id,
         @Valid @RequestBody UserSavedRequest requestDto, HttpSession session) {
-        logger.info(requestDto.toString());
-        UserResponse user = (UserResponse) session.getAttribute("user");
+        UserResponse loginUser = (UserResponse) session.getAttribute("user");
         // 비 로그인 상태인 경우
-        if (user == null) {
+        if (loginUser == null) {
             throw new RestApiException(LoginErrorCode.UNAUTHORIZED);
         }
-
         // 다른 사용자의 정보를 수정하려는 경우
-        if (!user.getId().equals(id)) {
+        if (!loginUser.getId().equals(id)) {
             throw new RestApiException(UserErrorCode.PERMISSION_DENIED);
         }
-        User modifiedUser = userService.modifyUser(id, requestDto);
 
+        User modifiedUser = userService.modifyUser(id, requestDto);
         // 회원정보 수정시 기존 세션에 저장되어 있는 유저 정보 제거
         session.removeAttribute("user");
         return new UserResponse(modifiedUser);
     }
 
     // 회원가입 페이지
-    @GetMapping("/user/form")
-    public ModelAndView createForm() {
-        return new ModelAndView("user/form");
+    @GetMapping("/users/new")
+    public ModelAndView addUserForm() {
+        return new ModelAndView("user/new");
     }
 
+    // 회원수정 페이지
+    @GetMapping("/users/{id}/edit")
+    public ModelAndView modifyUserForm(@PathVariable(value = "id") Long id, HttpSession session) {
+        UserResponse loginUser = (UserResponse) session.getAttribute("user");
+        // 비 로그인 상태인 경우
+        if (loginUser == null) {
+            throw new RestApiException(LoginErrorCode.UNAUTHORIZED);
+        }
+
+        // 다른 사용자의 정보를 수정하려는 경우
+        if (!loginUser.getId().equals(id)) {
+            throw new RestApiException(UserErrorCode.PERMISSION_DENIED);
+        }
+
+        ModelAndView mav = new ModelAndView("user/edit");
+        User user = userService.findUser(id);
+        UserModifiedResponse userResponse = new UserModifiedResponse(user);
+        mav.addObject("user", userResponse);
+        return mav;
+    }
 }
