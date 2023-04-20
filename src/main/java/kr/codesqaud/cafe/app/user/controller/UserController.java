@@ -9,7 +9,6 @@ import kr.codesqaud.cafe.app.user.controller.dto.UserResponse;
 import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.service.UserService;
-import kr.codesqaud.cafe.errors.errorcode.LoginErrorCode;
 import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
 import kr.codesqaud.cafe.errors.exception.RestApiException;
 import org.slf4j.Logger;
@@ -63,13 +62,9 @@ public class UserController {
     @PutMapping("/users/{id}")
     public UserResponse modifyUser(@PathVariable(value = "id") Long id,
         @Valid @RequestBody UserSavedRequest requestDto, HttpSession session) {
+        // 현재 로그인한 사용자의 id와 url로 받은 id가 동일하지 않으면 예외 발생
         UserResponse loginUser = (UserResponse) session.getAttribute("user");
-        // 비 로그인 상태인 경우
-        if (loginUser == null) {
-            throw new RestApiException(LoginErrorCode.UNAUTHORIZED);
-        }
-        // 다른 사용자의 정보를 수정하려는 경우
-        if (!loginUser.getId().equals(id)) {
+        if (!id.equals(loginUser.getId())) {
             throw new RestApiException(UserErrorCode.PERMISSION_DENIED);
         }
 
@@ -87,18 +82,7 @@ public class UserController {
 
     // 회원수정 페이지
     @GetMapping("/users/{id}/edit")
-    public ModelAndView modifyUserForm(@PathVariable(value = "id") Long id, HttpSession session) {
-        UserResponse loginUser = (UserResponse) session.getAttribute("user");
-        // 비 로그인 상태인 경우
-        if (loginUser == null) {
-            throw new RestApiException(LoginErrorCode.UNAUTHORIZED);
-        }
-
-        // 다른 사용자의 정보를 수정하려는 경우
-        if (!loginUser.getId().equals(id)) {
-            throw new RestApiException(UserErrorCode.PERMISSION_DENIED);
-        }
-
+    public ModelAndView modifyUserForm(@PathVariable(value = "id") Long id) {
         ModelAndView mav = new ModelAndView("user/edit");
         User user = userService.findUser(id);
         UserModifiedResponse userResponse = new UserModifiedResponse(user);
