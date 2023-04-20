@@ -75,7 +75,6 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public Optional<Article> update(Long id, ArticleForm form) {
-        // 수정 날짜 modifiedAt 넣
         jdbcTemplate.update("update articles set title = ? where id = ?", form.getTitle(), id);
         jdbcTemplate.update("update articles set contents = ? where id = ?", form.getContents(), id);
         jdbcTemplate.update("update articles set modifiedAt = ? where id = ?", LocalDateTime.now(), id);
