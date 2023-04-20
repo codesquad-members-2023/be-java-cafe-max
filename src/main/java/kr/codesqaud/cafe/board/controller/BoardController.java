@@ -1,8 +1,10 @@
 package kr.codesqaud.cafe.board.controller;
 
+import kr.codesqaud.cafe.board.dto.CommentResponse;
 import kr.codesqaud.cafe.board.dto.PostResponse;
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
 import kr.codesqaud.cafe.board.service.BoardService;
+import kr.codesqaud.cafe.board.service.CommentService;
 import kr.codesqaud.cafe.exception.ForbiddenException;
 import kr.codesqaud.cafe.user.dto.SessionUser;
 import org.springframework.stereotype.Controller;
@@ -10,15 +12,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequestMapping("/board")
 public class BoardController {
 
     private final BoardService boardService;
+    private final CommentService commentService;
 
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService, CommentService commentService) {
         this.boardService = boardService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/form")
@@ -47,6 +52,9 @@ public class BoardController {
         if (isWriter(session, postResponse.getWriter())) {
             model.addAttribute("isWriter", true);
         }
+
+        List<CommentResponse> commentList = commentService.getCommentListByPostId(postId);
+        model.addAttribute("comments", commentList);
 
         return "board/detail";
     }

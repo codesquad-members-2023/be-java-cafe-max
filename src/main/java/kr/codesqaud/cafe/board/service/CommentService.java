@@ -17,10 +17,10 @@ public class CommentService {
         this.commentJdbcRepository = commentJdbcRepository;
     }
 
-    public void write(CommentWriteForm commentWriteForm, String userId) {
+    public void write(CommentWriteForm commentWriteForm, String userName) {
         Comment comment = new Comment.Builder()
                 .postId(commentWriteForm.getPostId())
-                .writer(userId)
+                .writer(userName)
                 .contents(commentWriteForm.getContents())
                 .build();
         commentJdbcRepository.save(comment);
