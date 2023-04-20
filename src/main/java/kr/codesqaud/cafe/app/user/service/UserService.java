@@ -10,6 +10,7 @@ import kr.codesqaud.cafe.app.user.validator.UserValidator;
 import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
 import kr.codesqaud.cafe.errors.exception.RestApiException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -29,6 +30,7 @@ public class UserService {
     }
 
     // 회원가입
+    @Transactional
     public User signUp(UserSavedRequest requestDto) {
         validateDuplicatedUserId(requestDto.getUserId());
         validateDuplicatedUserEmail(requestDto.getEmail());
@@ -74,6 +76,7 @@ public class UserService {
     }
 
     // 회원 정보 수정
+    @Transactional
     public User modifyUser(Long id, UserSavedRequest requestDto) {
         User requestUser = requestDto.toEntity(id);
         User currentUser = findUser(id);
@@ -84,12 +87,5 @@ public class UserService {
         validator.validateEqualConfirmPassword(requestUser.getPassword(),
             currentUser.getPassword());
         return userRepository.modify(requestUser);
-    }
-
-    // 비밀번호 확인
-    public void confirmPassword(Long id, UserSavedRequest requestDto) {
-        String requestPassword = requestDto.getPassword();
-        String password = findUser(id).getPassword();
-        validator.validateEqualConfirmPassword(requestPassword, password);
     }
 }
