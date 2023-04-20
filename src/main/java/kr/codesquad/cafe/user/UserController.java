@@ -1,6 +1,7 @@
 package kr.codesquad.cafe.user;
 
 import kr.codesquad.cafe.user.annotation.ValidUserIdPath;
+import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.dto.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

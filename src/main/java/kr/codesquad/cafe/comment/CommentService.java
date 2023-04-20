@@ -1,7 +1,7 @@
 package kr.codesquad.cafe.comment;
 
 import kr.codesquad.cafe.post.Post;
-import kr.codesquad.cafe.user.User;
+import kr.codesquad.cafe.user.domain.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

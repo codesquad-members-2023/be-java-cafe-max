@@ -2,7 +2,7 @@ package kr.codesquad.cafe.comment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.codesquad.cafe.post.Post;
-import kr.codesquad.cafe.user.User;
+import kr.codesquad.cafe.user.domain.User;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

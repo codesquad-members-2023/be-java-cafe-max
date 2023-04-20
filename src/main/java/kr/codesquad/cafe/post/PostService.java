@@ -5,7 +5,7 @@ import kr.codesquad.cafe.global.PagesInfo;
 import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.post.dto.SimplePostForm;
 import kr.codesquad.cafe.post.exception.IllegalPostIdException;
-import kr.codesquad.cafe.user.User;
+import kr.codesquad.cafe.user.domain.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

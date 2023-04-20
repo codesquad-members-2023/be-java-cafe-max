@@ -3,7 +3,7 @@ package kr.codesquad.cafe.post.dto;
 import kr.codesquad.cafe.post.Post;
 import kr.codesquad.cafe.post.annotation.ValidPostTextContent;
 import kr.codesquad.cafe.post.annotation.ValidPostTitle;
-import kr.codesquad.cafe.user.User;
+import kr.codesquad.cafe.user.domain.User;
 
 import java.time.LocalDateTime;
 

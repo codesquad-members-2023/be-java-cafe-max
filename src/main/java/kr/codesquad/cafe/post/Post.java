@@ -1,7 +1,7 @@
 package kr.codesquad.cafe.post;
 
 import kr.codesquad.cafe.comment.Comment;
-import kr.codesquad.cafe.user.User;
+import kr.codesquad.cafe.user.domain.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

@@ -1,6 +1,6 @@
-package kr.codesquad.cafe.global;
+package kr.codesquad.cafe.global.auth;
 
-import kr.codesquad.cafe.user.User;
+import kr.codesquad.cafe.user.domain.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;

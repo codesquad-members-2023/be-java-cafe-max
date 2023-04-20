@@ -1,8 +1,10 @@
-package kr.codesquad.cafe.post;
+package kr.codesquad.cafe.post.controller;
 
 import kr.codesquad.cafe.comment.Comment;
 import kr.codesquad.cafe.comment.CommentService;
-import kr.codesquad.cafe.user.User;
+import kr.codesquad.cafe.post.Post;
+import kr.codesquad.cafe.post.PostService;
+import kr.codesquad.cafe.user.domain.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

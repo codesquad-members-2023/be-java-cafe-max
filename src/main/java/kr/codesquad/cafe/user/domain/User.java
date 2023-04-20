@@ -1,4 +1,4 @@
-package kr.codesquad.cafe.user;
+package kr.codesquad.cafe.user.domain;
 
 
 import kr.codesquad.cafe.post.Post;

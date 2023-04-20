@@ -2,16 +2,14 @@ package kr.codesquad.cafe.global;
 
 import kr.codesquad.cafe.post.Post;
 import kr.codesquad.cafe.post.PostRepository;
-import kr.codesquad.cafe.user.Role;
-import kr.codesquad.cafe.user.User;
+import kr.codesquad.cafe.user.domain.Role;
+import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.UserRepository;
 import org.jasypt.encryption.StringEncryptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 
 @Profile("cloud")
@@ -22,9 +20,6 @@ public class AppStartupRunner implements CommandLineRunner {
     private final StringEncryptor encryptor;
 
     private final PostRepository postRepository;
-
-    @Autowired
-    EntityManager entityManager;
 
     public AppStartupRunner(UserRepository userRepository, StringEncryptor encryptor, PostRepository postRepository) {
         this.userRepository = userRepository;

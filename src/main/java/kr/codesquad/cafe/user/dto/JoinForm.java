@@ -1,6 +1,6 @@
 package kr.codesquad.cafe.user.dto;
 
-import kr.codesquad.cafe.user.User;
+import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.annotation.ValidEmail;
 import kr.codesquad.cafe.user.annotation.ValidNickName;
 import kr.codesquad.cafe.user.annotation.ValidPassword;

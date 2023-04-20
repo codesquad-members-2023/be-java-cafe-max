@@ -1,7 +1,8 @@
-package kr.codesquad.cafe.global;
+package kr.codesquad.cafe.global.auth;
 
+import kr.codesquad.cafe.global.exception.IllegalAccessIdException;
 import kr.codesquad.cafe.post.Post;
-import kr.codesquad.cafe.user.User;
+import kr.codesquad.cafe.user.domain.User;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

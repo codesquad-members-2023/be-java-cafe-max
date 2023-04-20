@@ -1,6 +1,7 @@
-package kr.codesquad.cafe.post;
+package kr.codesquad.cafe.post.controller;
 
 import kr.codesquad.cafe.global.PagesInfo;
+import kr.codesquad.cafe.post.PostService;
 import kr.codesquad.cafe.post.dto.SimplePostForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

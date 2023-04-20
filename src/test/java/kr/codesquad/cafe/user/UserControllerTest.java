@@ -1,5 +1,7 @@
 package kr.codesquad.cafe.user;
 
+import kr.codesquad.cafe.user.domain.Role;
+import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.dto.JoinForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

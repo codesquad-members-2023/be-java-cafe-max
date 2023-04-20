@@ -1,6 +1,6 @@
 package kr.codesquad.cafe.user.dto;
 
-import kr.codesquad.cafe.user.User;
+import kr.codesquad.cafe.user.domain.User;
 
 public class ProfileForm {
     private final String nickname;

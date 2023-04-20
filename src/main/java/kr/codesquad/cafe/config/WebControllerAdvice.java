@@ -1,4 +1,4 @@
-package kr.codesquad.cafe.global;
+package kr.codesquad.cafe.config;
 
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,6 +1,6 @@
 package kr.codesquad.cafe.post;
 
-import kr.codesquad.cafe.user.User;
+import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.UserService;
 import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.post.dto.PostForm;

@@ -1,5 +1,6 @@
 package kr.codesquad.cafe.user;
 
+import kr.codesquad.cafe.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
