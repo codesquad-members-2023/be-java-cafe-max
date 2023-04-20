@@ -55,6 +55,7 @@ public class BoardController {
 
         List<CommentResponse> commentList = commentService.getCommentListByPostId(postId);
         model.addAttribute("comments", commentList);
+        model.addAttribute("commentCount", commentList.size());
 
         return "board/detail";
     }

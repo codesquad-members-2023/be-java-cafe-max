@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.board.dto;
 import kr.codesqaud.cafe.board.domain.Comment;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class CommentResponse {
     private Long commentId;
@@ -39,7 +40,7 @@ public class CommentResponse {
         return contents;
     }
 
-    public LocalDateTime getWriteDateTime() {
-        return writeDateTime;
+    public String getWriteDateTime() {
+        return writeDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }
