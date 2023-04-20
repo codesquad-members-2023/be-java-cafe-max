@@ -51,7 +51,7 @@ public class JdbcPostRepository implements PostRepository {
                          + " p.write_date, p.views "
                     + "FROM post p "
               + "INNER JOIN member m on m.id = p.writer_id "
-                   + "ORDER BY id DESC"; // 교집합
+                   + "ORDER BY id DESC";
         return jdbcTemplate.query(sql, postRowMapper);
     }
 

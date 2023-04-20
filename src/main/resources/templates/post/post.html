@@ -28,17 +28,13 @@
         </div>
         <div class="comments">
             <div>
-                <span>댓글 2개</span>
+                <span>댓글 [[${commentResponses.size()}]]개</span>
             </div>
-            <div class="comment">
-                <strong class="comment-writer">자바지기</strong>
-                <p class="comment-content">이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
-                <span class="comment-date">2015-12-30 01:47</span>
-            </div>
-            <div class="comment">
-                <strong class="comment-writer">자바지기</strong>
-                <p class="comment-content">이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
-                <span class="comment-date">2015-12-30 01:47</span>
+            <div class="comment" >
+            <div class="comment" th:each="commentResponse : ${commentResponses}">
+                <strong class="comment-writer" th:text="${commentResponse.writer.nickname}">자바지기</strong>
+                <pre class="comment-content" th:text="${commentResponse.content}">이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</pre>
+                <span class="comment-date" th:text="${commentResponse.getWriteDateFormat()}">2015-12-30 01:47</span>
             </div>
         </div>
         <form>

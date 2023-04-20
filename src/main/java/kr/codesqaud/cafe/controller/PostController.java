@@ -4,6 +4,7 @@ import javax.validation.Valid;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
+import kr.codesqaud.cafe.service.CommentService;
 import kr.codesqaud.cafe.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PostController {
 
     private final PostService postService;
+    private final CommentService commentService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, CommentService commentService) {
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/form")
@@ -46,6 +49,7 @@ public class PostController {
     @GetMapping("/{id}")
     public String post(@PathVariable Long id, Model model) {
         model.addAttribute("postResponse", postService.findById(id));
+        model.addAttribute("commentResponses", commentService.findAllByPostId(id));
         return "post/post";
     }
 

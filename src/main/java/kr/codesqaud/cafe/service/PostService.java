@@ -8,45 +8,42 @@ import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
-import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
-import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class PostService {
 
     private final PostRepository postRepository;
-    private final MemberRepository memberRepository;
 
-    public PostService(PostRepository postRepository, MemberRepository memberRepository) {
+    public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
-        this.memberRepository = memberRepository;
     }
 
+    @Transactional
     public Long write(PostWriteRequest postWriteRequest) {
-        Member member = memberRepository.findById(postWriteRequest.getWriterId())
-            .orElseThrow(MemberNotFoundException::new);
-        return postRepository.save(postWriteRequest.toPost(member));
+        return postRepository.save(postWriteRequest.toPost(Member.builder()
+            .id(postWriteRequest.getWriterId())
+            .build()));
     }
 
+    @Transactional
     public PostResponse findById(Long id) {
         postRepository.increaseViews(id);
-        return PostResponse.of(postRepository.findById(id)
-            .orElseThrow(PostNotFoundException::new));
+        return PostResponse.from(postRepository.findById(id).orElseThrow(PostNotFoundException::new));
     }
 
     @Transactional(readOnly = true)
     public List<PostResponse> findAll() {
         return postRepository.findAll()
             .stream()
-            .map(PostResponse::of)
+            .map(PostResponse::from)
             .collect(Collectors.toUnmodifiableList());
     }
 
+    @Transactional
     public void modify(PostModifyRequest postModifyRequest, Long accountSessionId) {
         validateUnauthorized(postModifyRequest.getId(), accountSessionId);
         postRepository.update(postModifyRequest.toPost());
@@ -62,6 +59,7 @@ public class PostService {
         }
     }
 
+    @Transactional
     public void delete(Long id, Long accountSessionId) {
         validateUnauthorized(id, accountSessionId);
         postRepository.delete(id);

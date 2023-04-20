@@ -17,3 +17,15 @@ CREATE TABLE IF NOT EXISTS post (
     PRIMARY KEY (id),
     FOREIGN KEY (writer_id) references member(id)
 );
+
+CREATE TABLE IF NOT EXISTS comment (
+    id bigint NOT NULL AUTO_INCREMENT,
+    post_id bigint NOT NULL,
+    writer_id bigint NOT NULL,
+    content varchar(3000) NOT NULL,
+    write_date	datetime NOT NULL,
+    is_deleted BOOLEAN NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (post_id) references post(id),
+    FOREIGN KEY (writer_id) references member(id)
+);
