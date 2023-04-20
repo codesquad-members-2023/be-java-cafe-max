@@ -22,13 +22,12 @@ public class UserProfileController {
     private static final String USER_ID = "userId";
     private static final String PROFILE_FORM = "profileForm";
     private static final String PROFILE_SETTING_FORM = "profileEditForm";
-
     private static final String ATTRIBUTE_USER = "user";
     private static final String SIMPLE_FORMS = "simpleForms";
     private static final int DEFAULT_PAGE = 1;
+    private static final String PAGES_INFO = "pagesInfo";
 
     private final UserService userService;
-
     private final PostService postService;
 
     public UserProfileController(UserService userService, PostService postService) {
@@ -42,6 +41,18 @@ public class UserProfileController {
     @ValidUserIdPath
     @GetMapping("/users/{userId}")
     public String ViewUserPage(Model model, @PathVariable long userId, @SessionAttribute User user, @RequestParam("page") Optional<Integer> page) {
+        addAttributeForUserPage(model, userId, user, page);
+        return "user/info";
+    }
+
+    @ValidUserIdPath
+    @GetMapping(value = "/users/{userId}", params = "page")
+    public String sendUserOfPostsAjax(Model model, @PathVariable long userId, @SessionAttribute User user, @RequestParam("page") Optional<Integer> page) {
+        addAttributeForUserPage(model, userId, user, page);
+        return "user/info :: #postsPage";
+    }
+
+    private void addAttributeForUserPage(Model model, long userId, User user, Optional<Integer> page) {
         model.addAttribute(PROFILE_FORM, ProfileForm.from(user));
 
         int currentPage = page.orElse(DEFAULT_PAGE);
@@ -49,24 +60,8 @@ public class UserProfileController {
         model.addAttribute(SIMPLE_FORMS, simpleForms);
 
         PagesInfo pagesInfo = postService.getPagesInfo(currentPage);
-        model.addAttribute("pagesInfo", pagesInfo);
-        model.addAttribute("simpleForms", simpleForms);
-        return "user/info";
-    }
-
-    @ValidUserIdPath
-    @GetMapping(value = "/users/{userId}", params = "page")
-    public String ViewUserPageAndPageParm(Model model, @PathVariable long userId, @SessionAttribute User user, @RequestParam("page") Optional<Integer> page) {
-        model.addAttribute(PROFILE_FORM, ProfileForm.from(user));
-
-        int currentPage = page.orElse(DEFAULT_PAGE);
-        List<SimplePostForm> simpleForms = postService.getAllSimplePostFormByUserId(userId, currentPage);
+        model.addAttribute(PAGES_INFO, pagesInfo);
         model.addAttribute(SIMPLE_FORMS, simpleForms);
-
-        PagesInfo pagesInfo = postService.getPagesInfoByUser(currentPage, userId);
-        model.addAttribute("pagesInfo", pagesInfo);
-        model.addAttribute("simpleForms", simpleForms);
-        return "user/info :: #postsPage";
     }
 
 

@@ -3,8 +3,8 @@ package kr.codesquad.cafe.user;
 import kr.codesquad.cafe.user.dto.LoginForm;
 import kr.codesquad.cafe.user.dto.ProfileEditForm;
 import kr.codesquad.cafe.user.exception.DuplicateEmailException;
-import kr.codesquad.cafe.user.exception.InvalidPasswordException;
 import kr.codesquad.cafe.user.exception.IncorrectPasswordException;
+import kr.codesquad.cafe.user.exception.InvalidPasswordException;
 import kr.codesquad.cafe.user.exception.UserNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -32,7 +32,7 @@ public class UserControllerExceptionHandler {
         model.addAttribute(new ProfileEditForm(nickName, email, EMPTY_PASSWORD));
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
     @ExceptionHandler(IncorrectPasswordException.class)
     public String handlerIllegalLoginPasswordException(Model model, IncorrectPasswordException e) {
         model.addAttribute(new LoginForm());
@@ -40,7 +40,7 @@ public class UserControllerExceptionHandler {
         return "user/loginFailed";
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     public String handlerNoSuchLoginEmailException(Model model, UserNotFoundException e) {
         model.addAttribute(new LoginForm());
@@ -48,7 +48,7 @@ public class UserControllerExceptionHandler {
         return "user/loginFailed";
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
     @ExceptionHandler(DuplicateEmailException.class)
     public String handlerIllegalEditEmailException(HttpServletRequest request, Model model, DuplicateEmailException e) {
         addProfileEditForm(request, model);
@@ -56,7 +56,7 @@ public class UserControllerExceptionHandler {
         return "user/profileEditFormFailed";
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
     @ExceptionHandler(InvalidPasswordException.class)
     public String handlerIllegalEditPasswordException(HttpServletRequest request, Model model, InvalidPasswordException e) {
         addProfileEditForm(request, model);

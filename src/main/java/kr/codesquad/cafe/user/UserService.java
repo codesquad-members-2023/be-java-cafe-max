@@ -39,8 +39,8 @@ public class UserService {
     }
 
     public List<UserForm> getAllUsersForm(int page) {
-        Pageable limit = PageRequest.of(page, POST_DEFAULT_PAGE_SIZE);
-        return userRepository.findAll(limit).stream()
+        Pageable pageable = PageRequest.of(page, POST_DEFAULT_PAGE_SIZE);
+        return userRepository.findAll(pageable).stream()
                 .map(UserForm::from)
                 .collect(Collectors.toList());
     }
@@ -76,6 +76,9 @@ public class UserService {
         return user;
     }
 
+    /**
+     * 프로필 수정과 로그인에서 다른 페이지를 반환하여야 2개의 PasswordException 구현
+     */
     public void checkEditInfo(User user, ProfileEditForm profileEditForm) {
         if (!user.isSameEmail(profileEditForm.getEmail()) && existsByEmail(profileEditForm.getEmail())) {
             throw new DuplicateEmailException();
