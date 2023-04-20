@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller.reply;
 
 import kr.codesqaud.cafe.domain.dto.reply.ReplyForm;
+import kr.codesqaud.cafe.domain.dto.reply.ReplyTimeForm;
 import kr.codesqaud.cafe.service.reply.ReplyService;
 import kr.codesqaud.cafe.session.SessionConst;
 import org.springframework.stereotype.Controller;
@@ -25,11 +26,18 @@ public class ReplyController {
     }
 
     @DeleteMapping("/replies/{id}")
-    public String deleteArticle(@PathVariable Long id, Long articleId) {
-        // TODO: validate 추가하기
+    public String deleteArticle(@PathVariable Long id, Long articleId, HttpSession session) {
+        validateReplyId(id, (String) session.getAttribute(SessionConst.LOGIN_USER_ID));
 
         replyService.delete(id);
-        // TODO: 아래와 같이 쓰면 왜 String으로 들어오는지 알아내기
         return "redirect:/questions/" + articleId;
+    }
+
+    private void validateReplyId(Long id, String loginUserId) {
+        ReplyTimeForm replyId = replyService.findReplyId(id);
+
+        if (!loginUserId.equals(replyId.getUserId())) {
+            throw new IllegalArgumentException("자신이 작성한 댓글이어야 합니다.");
+        }
     }
 }
