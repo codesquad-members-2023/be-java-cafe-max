@@ -1,6 +1,7 @@
 package kr.codesquad.cafe.post;
 
 import kr.codesquad.cafe.comment.Comment;
+import kr.codesquad.cafe.global.exception.IllegalAccessIdException;
 import kr.codesquad.cafe.post.exception.DeletionFailedException;
 import kr.codesquad.cafe.user.domain.User;
 
@@ -102,6 +103,12 @@ public class Post {
             return;
         }
         throw new DeletionFailedException();
+    }
+
+    public void checkPermission(long userId) {
+        if (!user.getId().equals(userId)) {
+            throw new IllegalAccessIdException();
+        }
     }
 
     public static class Builder {

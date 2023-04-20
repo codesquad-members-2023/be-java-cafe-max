@@ -39,6 +39,7 @@ class UserControllerTest {
     private static final String PROFILE_FORM = "profileForm";
     private static final String JOIN_FORM = "joinForm";
     private static final int NON_EXISTING_USER_ID = 200;
+    private static final int NOT_EXIST_PAGE = 2000;
 
     @Autowired
     MockMvc mockMvc;
@@ -78,7 +79,7 @@ class UserControllerTest {
                             .param(EMAIL, JACK_EMAIL)
                             .param(PASSWORD, TEST_PASSWORD))
                     .andExpect(status().is3xxRedirection())
-                    .andExpect(redirectedUrl("/users/" + jack.getId() + "/profile"));
+                    .andExpect(redirectedUrl("/users/" + jack.getId()));
         }
 
         @DisplayName("비밀번호 실패")
@@ -176,7 +177,8 @@ class UserControllerTest {
         @DisplayName("오픈 실패")
         @Test
         void viewUserFailed() throws Exception {
-            mockMvc.perform(get("/users/20"))
+            mockMvc.perform(get("/users/"+ NOT_EXIST_PAGE)
+                            .session(session))
                     .andExpect(status().is4xxClientError());
         }
     }

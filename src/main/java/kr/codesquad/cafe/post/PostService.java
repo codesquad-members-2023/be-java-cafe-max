@@ -56,16 +56,18 @@ public class PostService {
     }
 
     @Transactional
-    public Post updateFromPostForm(long postId, PostForm postForm) {
+    public Post updateFromPostForm(long postId, PostForm postForm, long userId) {
         Post post = postRepository.findById(postId).orElseThrow();
+        post.checkPermission(userId);
         post.setTextContent(postForm.getTextContent());
         post.setTitle(postForm.getTitle());
         return post;
     }
 
     @Transactional
-    public void delete(long postId) {
+    public void delete(long postId, long userId) {
         Post post = findById(postId);
+        post.checkPermission(userId);
         post.delete();
     }
 

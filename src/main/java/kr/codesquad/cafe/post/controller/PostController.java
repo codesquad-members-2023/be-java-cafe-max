@@ -53,18 +53,18 @@ public class PostController {
     }
 
     @PutMapping("/posts/{postId}")
-    public String editPost(@Valid PostForm postForm, BindingResult bindingResult, @PathVariable long postId, Model model) {
+    public String editPost(@Valid PostForm postForm, BindingResult bindingResult, @PathVariable long postId,@SessionAttribute User user, Model model) {
         if (bindingResult.hasErrors()) {
             return "post/editForm";
         }
-        Post editPost = postService.updateFromPostForm(postId, postForm);
+        Post editPost = postService.updateFromPostForm(postId, postForm, user.getId());
         model.addAttribute(editPost);
         return "post/detail";
     }
 
     @DeleteMapping("/posts/{postId}")
-    public String deletePost(@PathVariable long postId) {
-        postService.delete(postId);
+    public String deletePost(@PathVariable long postId, @SessionAttribute User user) {
+        postService.delete(postId, user.getId());
         return "redirect:/";
     }
 }

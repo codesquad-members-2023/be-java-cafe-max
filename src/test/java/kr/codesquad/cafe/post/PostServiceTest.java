@@ -90,7 +90,7 @@ class PostServiceTest {
     @Test
     void updateFromPostFormSuccess() {
         Post post = postService.save(new PostForm(TEST_TITLE, TEST_CONTENT), jack);
-        Post savePost = postService.updateFromPostForm(post.getId(), new PostForm(TARGET_TITLE, TARGET_CONTENT));
+        Post savePost = postService.updateFromPostForm(post.getId(), new PostForm(TARGET_TITLE, TARGET_CONTENT), jack.getId());
         assertThat(savePost.getTitle()).isEqualTo(TARGET_TITLE);
         assertThat(savePost.getTextContent()).isEqualTo(TARGET_CONTENT);
         Post DBpost = postService.findById(post.getId());
@@ -103,7 +103,7 @@ class PostServiceTest {
     void delete() {
         Post post = postService.save(new PostForm(TEST_TITLE, TEST_CONTENT), jack);
         assertThatCode(() -> postService.findById(post.getId())).doesNotThrowAnyException();
-        postService.delete(post.getId());
+        postService.delete(post.getId(), jack.getId());
         assertThatThrownBy(() -> postService.findById(post.getId())).isInstanceOf(PostNotFoundException.class);
     }
 }
