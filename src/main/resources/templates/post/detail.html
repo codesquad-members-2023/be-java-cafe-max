@@ -50,10 +50,7 @@
     </div>
 </div>
 <div class="row justify-content-center">
-    <div class="d-inline-flex col-6  justify-content-between">
-        <div>
-            <p class="text-end pe-0 ps-0 ms-1">댓글 <span id="quantity" th:text="${post.comments.size()}">0</span> 개</p>
-        </div>
+    <div class="d-inline-flex col-6  justify-content-end">
         <div>
             <div th:if="${post.user} != null">
                 <button class="btn btn-primary"
@@ -65,24 +62,32 @@
         </div>
     </div>
 </div>
-<div class="row justify-content-center mb-5" id="commentsContent">
-    <div class="col-6 row text-secondary">
-        <ul class="list-group list-group-flush" id="comments">
-            <li class="list-group-item" th:each="comment : ${post.comments}" th:if="!${comment.isDeleted}">
-                <div class="text-primary justify-content-between row">
-                    <div class="col" th:text="${comment.user.nickname}">user</div>
-                    <form class="col-1 justify-content-end"
-                          th:action="@{/posts/{postid}/comments/{commentid}(postid = ${post.id},commentid = ${comment.id})}"
-                          th:method="delete">
-                        <button aria-label="Close" class="btn-close" th:if="${comment.user.id} == ${session.user.id}"
-                                type="submit">
-                        </button>
-                    </form>
-                </div>
-                <p class="text-break" th:text="${comment.content}">body</p>
-                <p class="text-secondary">2023-3-2 16:32</p>
-            </li>
-        </ul>
+<div class="container justify-content-center mb-5" id="commentsContent">
+    <div class="row justify-content-center">
+        <div class="col-7 justify-content-center">
+            <p class="text-start pe-0 ps-0 ms-1">댓글 <span id="quantity" th:text="${post.comments.size()}">0</span> 개</p>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-7 justify-content-center">
+            <ul class="list-group list-group-flush" id="comments">
+                <li class="list-group-item" th:each="comment : ${post.comments}" th:if="!${comment.isDeleted}">
+                    <div class="text-primary justify-content-between row">
+                        <div class="col" th:text="${comment.user.nickname}">user</div>
+                        <form class="col-1 justify-content-end"
+                              th:action="@{/posts/{postid}/comments/{commentid}(postid = ${post.id},commentid = ${comment.id})}"
+                              th:method="delete">
+                            <button aria-label="Close" class="btn-close"
+                                    th:if="${comment.user.id} == ${session.user.id}"
+                                    type="submit">
+                            </button>
+                        </form>
+                    </div>
+                    <p class="text-break" th:text="${comment.content}">body</p>
+                    <p class="text-secondary">2023-3-2 16:32</p>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 <div class="row justify-content-center mb-5">

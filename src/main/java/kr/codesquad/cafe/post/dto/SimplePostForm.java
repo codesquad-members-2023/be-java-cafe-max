@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 public class SimplePostForm {
     public static final int MAX_LENGTH = 150;
     public static final int BEGIN_INDEX = 0;
-    private final Long id;
+    private final long id;
+
+    private final long commentCount;
 
     private final String nickname;
 
@@ -23,14 +25,16 @@ public class SimplePostForm {
         title = builder.title;
         textContent = builder.textContent;
         createdDateTime = builder.createdDateTime;
+        commentCount = builder.commentCount;
     }
 
     public static SimplePostForm from(Post post) {
-        return new SimplePostForm.Builder()
+        return new Builder()
                 .id(post.getId())
                 .nickname(post.getNickname())
                 .textContent(getSimpleTextContent(post))
                 .title(post.getTitle())
+                .commentCount(post.getComments().size())
                 .createdDateTime(post.getCreatedDateTime())
                 .build();
     }
@@ -59,8 +63,14 @@ public class SimplePostForm {
         return createdDateTime;
     }
 
+    public long getCommentCount() {
+        return commentCount;
+    }
+
     public static class Builder {
-        private Long id;
+        private long id;
+
+        private long commentCount;
 
         private String nickname;
 
@@ -70,8 +80,13 @@ public class SimplePostForm {
 
         private LocalDateTime createdDateTime;
 
-        public Builder id(Long id) {
+        public Builder id(long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder commentCount(long commentCount) {
+            this.commentCount = commentCount;
             return this;
         }
 
