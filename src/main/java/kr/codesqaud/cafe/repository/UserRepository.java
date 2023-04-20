@@ -25,8 +25,8 @@ public class UserRepository {
     public List<User> getUserList() {
         return userList;
     }
-
     public User getUserByUserId(String userId) {
         return dataBase.get(userId);
     }
+
 }

@@ -17,4 +17,8 @@ public class ArticleService {
     public List<Article> getArticleList(){
         return articleRepository.getArticleList();
     }
+
+    public Article getArticleByArticleNum(Long articleNum){
+        return articleRepository.getArticleByArticleNum(articleNum).get(); // Optional 때문에 끝에 .get()추가 -> 'Optional 안의 값 반환'이란 뜻(인 듯..)
+    }
 }

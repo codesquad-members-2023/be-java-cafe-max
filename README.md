@@ -23,11 +23,15 @@
 - bean:
 - @AutoWired ->
 - Service 클래스 하는 역할: ?? -> 비지니스 로직(무슨 뜻인지 아직 잘 모름)
-- Model: .addAttribute로 컨트롤러에서 데이터를 받아서 view(mustache)에 전달(ui 구성 역할)
+- Model.addAttribute: ("amumal", amumal.get()) ---mustache--> {{#amumal}} .. {{/amumal}}
 - @Repository -> 저장소<br>
 - @RequestBody -> POST API인데 Json일때 필요(아직 잘 모름)
 - Ioc 컨테이너:
 - @ComponentScan:
-- @Repository -> @Servic -> @Controller (흐름)
+- @Repository -> @Service -> @Controller (흐름)
 - @Configuration:     (새로움)
 - @ModelAttribute:
+
+<4월 20일>
+- long과 Long
+- 자료구조 선택방법
