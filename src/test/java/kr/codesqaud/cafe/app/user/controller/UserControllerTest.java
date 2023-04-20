@@ -72,7 +72,7 @@ class UserControllerTest {
         String password = "kim1107kim1107";
         String name = "김용일";
         String email = "kim1107@naver.com";
-        String url = "/users";
+        String url = "/users/new";
         UserSavedRequest dto = new UserSavedRequest(userId, password, name, email);
         //when
         mockMvc.perform(post(url)
@@ -95,7 +95,7 @@ class UserControllerTest {
         String password = "yonghwan1107";
         String name = "김용환";
         String email = "yonghwan1107@naver.com";
-        String url = "/users";
+        String url = "/users/new";
         UserSavedRequest dto = new UserSavedRequest(duplicateUserId, password, name, email);
         //when
         String jsonErrorResponse = mockMvc.perform(post(url)
@@ -122,7 +122,7 @@ class UserControllerTest {
         String password = "yonghwan1107";
         String name = "김용환";
         String duplicatedEmail = "yonghwan1107@naver.com";
-        String url = "/users";
+        String url = "/users/new";
         UserSavedRequest dto = new UserSavedRequest(userId, password, name, duplicatedEmail);
         //when
         String jsonErrorResponse = mockMvc.perform(post(url)
@@ -150,7 +150,7 @@ class UserControllerTest {
         String name = "김용일!@#$";
         String email = "user1";
         UserSavedRequest dto = new UserSavedRequest(userId, password, name, email);
-        String url = "/users";
+        String url = "/users/new";
         //when
         String jsonErrors = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)

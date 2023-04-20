@@ -12,7 +12,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: "POST",
-      url: "/users",
+      url: "/users/new",
       data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8',
     }).done(function () {

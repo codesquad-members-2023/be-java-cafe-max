@@ -158,7 +158,7 @@ class LoginControllerTest {
 
     private void createSampleUser(String userId, String password, String name, String email)
         throws Exception {
-        String url = "/users";
+        String url = "/users/new";
         UserSavedRequest dto = new UserSavedRequest(userId, password, name, email);
         mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
