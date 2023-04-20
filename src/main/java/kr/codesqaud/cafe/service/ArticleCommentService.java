@@ -18,8 +18,8 @@ public class ArticleCommentService {
 	}
 
 	@Transactional
-	public void reply(final ReplyRequest request, final String userId) {
-		articleCommentRepository.save(request.toEntity(userId));
+	public Long reply(final ReplyRequest request, final String userId) {
+		return articleCommentRepository.save(request.toEntity(userId));
 	}
 
 	public void validateHasAuthorization(final Long id, final String userId) {

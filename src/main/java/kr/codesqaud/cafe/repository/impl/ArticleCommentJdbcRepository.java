@@ -38,9 +38,8 @@ public class ArticleCommentJdbcRepository implements ArticleCommentRepository {
 	}
 
 	@Override
-	public Optional<ArticleComment> save(final ArticleComment articleComment) {
-		jdbcInsert.execute(new BeanPropertySqlParameterSource(articleComment));
-		return Optional.of(articleComment);
+	public Long save(final ArticleComment articleComment) {
+		return jdbcInsert.executeAndReturnKey(new BeanPropertySqlParameterSource(articleComment)).longValue();
 	}
 
 	@Override

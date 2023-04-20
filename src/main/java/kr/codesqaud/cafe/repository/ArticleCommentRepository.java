@@ -7,7 +7,7 @@ import kr.codesqaud.cafe.domain.articlecomment.ArticleComment;
 
 public interface ArticleCommentRepository {
 
-	Optional<ArticleComment> save(ArticleComment articleComment);
+	Long save(ArticleComment articleComment);
 
 	Optional<ArticleComment> findById(Long id);
 

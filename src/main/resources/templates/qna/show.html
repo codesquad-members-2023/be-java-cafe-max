@@ -73,10 +73,9 @@
                                         <li>
                                             <form class="delete-answer-form" action="/comments/{{id}}" method="POST">
                                                 <input type="hidden" name="_method" value="DELETE"/>
-                                                {{#article}}
-                                                <input name="articleId" value="{{id}}" hidden="hidden"/>
-                                                {{/article}}
-                                                <button type="submit" class="delete-answer-button">삭제</button>
+                                                <button type="button" class="delete-answer-button"
+                                                        id="comment-btn-delete">삭제
+                                                </button>
                                             </form>
                                         </li>
                                     </ul>
@@ -86,12 +85,13 @@
                             <form class="submit-write" id="article-comment-form" method="post" action="/comments">
                                 <div class="form-group" style="padding:14px;">
                                     {{#article}}
-                                    <input name="articleId" value="{{id}}" hidden="hidden"/>
+                                    <input id="article-id" name="articleId" value="{{id}}" hidden="hidden"/>
                                     {{/article}}
-                                    <textarea class="form-control" placeholder="Update your status"
+                                    <textarea class="form-control" id="comment-content" placeholder="Update your status"
                                               form="article-comment-form" name="content"></textarea>
                                 </div>
-                                <button class="btn btn-success pull-right" type="submit">답변하기</button>
+                                <button class="btn btn-success pull-right" id="comment-btn-save" type="button">답변하기
+                                </button>
                                 <div class="clearfix"/>
                             </form>
                         </div>
@@ -131,4 +131,5 @@
         </div>
     </article>
 </script>
+<script src="/js/articleComment.js"></script>
 {{> fragments/footer}}

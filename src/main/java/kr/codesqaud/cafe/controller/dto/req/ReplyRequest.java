@@ -4,8 +4,11 @@ import kr.codesqaud.cafe.domain.articlecomment.ArticleComment;
 
 public class ReplyRequest {
 
-	private final Long articleId;
-	private final String content;
+	private Long articleId;
+	private String content;
+
+	public ReplyRequest() {
+	}
 
 	public ReplyRequest(Long articleId, String content) {
 		this.articleId = articleId;
