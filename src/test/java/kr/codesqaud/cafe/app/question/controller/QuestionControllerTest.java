@@ -78,9 +78,7 @@ class QuestionControllerTest {
         User user = userService.findUser("yonghwan1107");
         String title = "제목1";
         String content = "내용1";
-        LocalDateTime writeDate = LocalDateTime.now();
-        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, writeDate,
-            user.getUserId());
+        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, user.getUserId());
         return questionService.write(dto.toEntity(user.getId())).getId();
     }
 
@@ -94,8 +92,7 @@ class QuestionControllerTest {
         String writer = user.getName();
         String title = "제목1";
         String content = "내용1";
-        LocalDateTime writeDate = LocalDateTime.now();
-        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, writeDate, userId);
+        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, userId);
         String url = "/qna";
         //when
         String jsonArticle =
@@ -122,9 +119,8 @@ class QuestionControllerTest {
         User user = userService.findUser(userId);
         String title = "";
         String content = "내용1";
-        LocalDateTime writeDate = LocalDateTime.now();
         String userId = user.getUserId();
-        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, writeDate, userId);
+        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, userId);
         String url = "/qna";
         //when
         String jsonErrors =
@@ -193,8 +189,8 @@ class QuestionControllerTest {
         String str_userId = userService.findUser(userId).getUserId();
         String modifiedTitle = "변경된 제목1";
         String modifiedContent = "변경된 내용1";
-        QuestionSavedRequest dto = new QuestionSavedRequest(modifiedTitle,
-            modifiedContent, LocalDateTime.now(), str_userId);
+        QuestionSavedRequest dto = new QuestionSavedRequest(modifiedTitle, modifiedContent,
+            str_userId);
         String url = "/qna/" + questionId;
         //when
         String json = mockMvc.perform(put(url)
@@ -217,8 +213,7 @@ class QuestionControllerTest {
         //given
         login("yonghwan1107", "yonghwan1107");
         Long id = write("제목1", "내용1");
-        QuestionSavedRequest dto = new QuestionSavedRequest("", "변경된 내용1",
-            LocalDateTime.now(), "yonghwan1107");
+        QuestionSavedRequest dto = new QuestionSavedRequest("", "변경된 내용1", "yonghwan1107");
         String url = "/qna/" + id;
         //when
         String json = mockMvc.perform(put(url)
@@ -277,7 +272,8 @@ class QuestionControllerTest {
 
     private Long write(String title, String content) {
         return questionService.write(
-            new Question(null, title, content, LocalDateTime.now(), userId)).getId();
+                new Question(null, title, content, LocalDateTime.now(), LocalDateTime.now(), userId))
+            .getId();
     }
 
     private <T> String toJSON(T data) throws JsonProcessingException {

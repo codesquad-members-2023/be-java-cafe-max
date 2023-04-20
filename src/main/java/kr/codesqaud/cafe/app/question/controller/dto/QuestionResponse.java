@@ -9,7 +9,7 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
     private final Long id;
     private final String title;
     private final String content;
-    private final LocalDateTime writeDate;
+    private final LocalDateTime createTime;
     private final Long userId;
     private final String writer;
 
@@ -17,7 +17,7 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
         this.id = question.getId();
         this.title = question.getTitle();
         this.content = question.getContent();
-        this.writeDate = question.getWriteDate();
+        this.createTime = question.getCreateTime();
         this.userId = user.getId();
         this.writer = user.getName();
     }
@@ -34,8 +34,8 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
         return content;
     }
 
-    public LocalDateTime getWriteDate() {
-        return writeDate;
+    public LocalDateTime getCreateTime() {
+        return createTime;
     }
 
     public Long getUserId() {
@@ -50,11 +50,11 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
     public String toString() {
         return String.format(
             "ArticleResponseDto{id=%d, writer=%s, title=%s, content=%s, writeDate=%s, user_id=%d}",
-            id, writer, title, content, writeDate, userId);
+            id, writer, title, content, createTime, userId);
     }
 
     @Override
     public int compareTo(QuestionResponse dto) {
-        return dto.getWriteDate().compareTo(this.writeDate);
+        return dto.getCreateTime().compareTo(this.createTime);
     }
 }

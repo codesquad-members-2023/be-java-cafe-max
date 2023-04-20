@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.app.question.repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +30,8 @@ public class MemoryQuestionRepository implements QuestionRepository {
             new Question(nextId(),
                 question.getTitle(),
                 question.getContent(),
-                question.getWriteDate(),
+                LocalDateTime.now(),
+                LocalDateTime.now(),
                 question.getUserId());
         store.add(newQuestion);
         return newQuestion;
@@ -37,9 +39,16 @@ public class MemoryQuestionRepository implements QuestionRepository {
 
     @Override
     public Question modify(Question question) {
+        Question modifiedQuestion =
+            new Question(nextId(),
+                question.getTitle(),
+                question.getContent(),
+                question.getCreateTime(),
+                LocalDateTime.now(),
+                question.getUserId());
         store.remove(question);
-        store.add(question);
-        return question;
+        store.add(modifiedQuestion);
+        return modifiedQuestion;
     }
 
     @Override

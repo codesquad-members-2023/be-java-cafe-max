@@ -40,7 +40,8 @@ public class QuestionService {
             new Question(original.getId(),
                 requestQuestion.getTitle(),
                 requestQuestion.getContent(),
-                original.getWriteDate(),
+                original.getCreateTime(),
+                original.getUpdateTime(),
                 original.getUserId());
         return repository.modify(modifiedQuestion);
     }

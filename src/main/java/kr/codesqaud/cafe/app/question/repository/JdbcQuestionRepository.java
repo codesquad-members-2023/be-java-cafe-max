@@ -40,7 +40,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
 
     @Override
     public Question save(Question question) {
-        String sql = "INSERT INTO question(title, content, writeDate, userId) VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO question(title, content, userId) VALUES(?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         template.update(con -> getPreparedStatement(question, con, sql), keyHolder);
         Long id = keyHolder.getKeyAs(Long.class);
@@ -59,8 +59,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
         PreparedStatement pstmt = con.prepareStatement(sql, new String[]{"ID"});
         pstmt.setString(1, question.getTitle());
         pstmt.setString(2, question.getContent());
-        pstmt.setString(3, question.getWriteDate().toString());
-        pstmt.setLong(4, question.getUserId());
+        pstmt.setLong(3, question.getUserId());
         return pstmt;
     }
 
@@ -68,7 +67,8 @@ public class JdbcQuestionRepository implements QuestionRepository {
         return (rs, rowNum) -> new Question(rs.getLong("id"),
             rs.getString("title"),
             rs.getString("content"),
-            rs.getTimestamp("writeDate").toLocalDateTime(),
+            rs.getTimestamp("createTime").toLocalDateTime(),
+            rs.getTimestamp("updateTime").toLocalDateTime(),
             rs.getLong("userId"));
     }
 
