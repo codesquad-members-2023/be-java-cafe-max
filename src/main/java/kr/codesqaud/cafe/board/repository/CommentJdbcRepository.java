@@ -1,0 +1,56 @@
+package kr.codesqaud.cafe.board.repository;
+
+import kr.codesqaud.cafe.board.domain.Comment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
+
+@Repository
+public class CommentJdbcRepository {
+
+    private final NamedParameterJdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public CommentJdbcRepository(DataSource dataSource) {
+        this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
+
+    public void save(Comment comment) {
+        jdbcTemplate.update(
+                "INSERT INTO comment (post_id, writer, contents) VALUES (:postId, :writer, :contents)",
+                new BeanPropertySqlParameterSource(comment));
+    }
+
+    public void delete(Long commentId) {
+        jdbcTemplate.update("UPDATE comment SET deleted = TRUE WHERE comment_id = :commentId", Collections.singletonMap("commentId", commentId));
+    }
+
+    public List<Comment> findAllByPostId(Long postId) {
+        return jdbcTemplate.query("SELECT comment_id, post_id, writer, contents, write_date_time " +
+                        "FROM comment " +
+                        "WHERE post_id = :postId AND deleted = FALSE " +
+                        "ORDER BY write_date_time",
+                Collections.singletonMap("postId", postId), commentRowMapper);
+    }
+
+    public RowMapper<Comment> commentRowMapper = new RowMapper<Comment>() {
+        @Override
+        public Comment mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new Comment.Builder()
+                    .commentId(rs.getLong("comment_id"))
+                    .postId(rs.getLong("post_id"))
+                    .writer(rs.getString("writer"))
+                    .contents(rs.getString("contents"))
+                    .writeDateTime(rs.getTimestamp("write_date_time").toLocalDateTime())
+                    .build();
+        }
+    };
+}
