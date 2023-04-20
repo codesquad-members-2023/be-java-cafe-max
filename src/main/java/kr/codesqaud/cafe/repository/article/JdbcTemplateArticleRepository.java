@@ -35,7 +35,11 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(Long id) {
-        String sql = "select id, user_id, title, contents, currentTime, deleted from ARTICLES where id = :id and deleted=false";
+//        String sql = "select id, user_id, title, contents, currentTime, deleted from ARTICLES where id = :id and deleted=false";
+        String sql = "select a.id, a.title, a.contents, a.currentTime, a.user_id, u.user_id, " +
+                "(select count(*) from REPLIES r where a.id=r.article_id and r.deleted=false) as replyCount " +
+                "from ARTICLES a join USERS u on a.user_id=u.user_id " +
+                "where a.id=:id and a.deleted=false";
 
         try {
             Map<String, Object> param = Map.of("id", id);
@@ -48,7 +52,12 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select id, user_id, title, contents, currentTime, deleted from ARTICLES where deleted=false";
+//        String sql = "select id, user_id, title, contents, currentTime, deleted from ARTICLES where deleted=false";
+        String sql = "select a.id, a.title, a.contents, a.currentTime, a.user_id, u.user_id, " +
+                "(select count(*) from REPLIES r where a.id=r.article_id and r.deleted=false) as replyCount " +
+                "from ARTICLES a join USERS u on a.user_id=u.user_id " +
+                "where a.deleted=false";
+
         return template.query(sql, articleRowMapper);
     }
 
