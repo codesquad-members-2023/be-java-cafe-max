@@ -40,7 +40,7 @@ public class BoardJdbcRepository {
     }
 
     public void delete(Long postId) {
-        jdbcTemplate.update("DELETE FROM post WHERE post_id = :postId", Collections.singletonMap("postId", postId));
+        jdbcTemplate.update("UPDATE post SET deleted = 1 WHERE post_id = :postId", Collections.singletonMap("postId", postId));
     }
 
     public boolean containsPostId(Long postId) {
