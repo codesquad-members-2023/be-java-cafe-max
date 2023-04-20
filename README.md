@@ -15,10 +15,10 @@
 ~~- readme에 url 정리~~[show.html](src%2Fmain%2Fresources%2Ftemplates%2Fqna%2Fshow.html)
 - 테스트 코드 수정 (Repository 자동 주입 받게)
 - 로그아웃 post로 받게 수정
-- Controller에서 세션으로 받아 오는 User를 UserDao로 수정하기
+- Controller에서 세션으로 받아 오는 User를 UserResponse로 수정하기
 ~~- PUT, DELETE 제대로 사용한 게 맞는지 확인~~
 - 게시글 삭제(DELETE) 상태 변경
-- 
+- 다른 사람의 글을 수정하려고 했을 때, 버튼을 누르면 원래의 게시글로 돌아가게 하도록 수정
 
 **추가 공부**
 
