@@ -21,7 +21,7 @@ public class ApiPostController {
 
     @PostMapping("/posts/{postId}/comments")
     public String addComment(@RequestParam("commentText") String content, @PathVariable("postId") Post post, @SessionAttribute User user, Model model) {
-        Comment comment = commentService.from(content, post, user);
+        Comment comment = commentService.save(content, post, user);
         Post save = postService.save(post, comment);
         model.addAttribute("post", save);
         return "post/detail :: #commentsContent";

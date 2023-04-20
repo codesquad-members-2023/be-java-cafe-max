@@ -15,12 +15,8 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public Comment from(String body, Post post, User user) {
-        return commentRepository.save(new Comment.Builder()
-                .content(body)
-                .post(post)
-                .user(user)
-                .build());
+    public Comment save(String body, Post post, User user) {
+        return commentRepository.save(Comment.from(body,post,user));
     }
 
     public void delete(long commentId, long userId) {

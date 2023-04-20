@@ -35,6 +35,14 @@ public class Comment {
         this.content = builder.content;
     }
 
+    public static Comment from(String body, Post post, User user) {
+        return new Comment.Builder()
+                .content(body)
+                .post(post)
+                .user(user)
+                .build();
+    }
+
     public Long getId() {
         return id;
     }
