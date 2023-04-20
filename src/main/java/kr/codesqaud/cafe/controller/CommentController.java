@@ -26,13 +26,13 @@ public class CommentController {
 		return "redirect:/articles/" + request.getArticleId();
 	}
 
-	@DeleteMapping("/comments/{id}/{userId}")
-	public String deleteComment(@PathVariable Long id, HttpSession session, @PathVariable String userId) {
+	@DeleteMapping("/comments/{id}")
+	public String deleteComment(@PathVariable Long id, HttpSession session, String userId, Long articleId) {
 		Object user = session.getAttribute("sessionedUser");
 		if (!user.equals(userId)) {
 			return "user/error";
 		}
 		commentService.commentDelete(id);
-		return "redirect:/";
+		return "redirect:/articles/" + articleId;
 	}
 }
