@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.comment.CommentDeleteResponse;
 import kr.codesqaud.cafe.dto.comment.CommentResponse;
 import kr.codesqaud.cafe.dto.comment.CommentWriteRequest;
+import kr.codesqaud.cafe.exception.comment.CommentNotFoundException;
+import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.repository.comment.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,5 +37,19 @@ public class CommentService {
             .stream()
             .map(CommentResponse::from)
             .collect(Collectors.toUnmodifiableList());
+    }
+
+    public CommentDeleteResponse delete(Long id, Long accountSessionId) {
+        validateUnauthorized(id, accountSessionId);
+        return new CommentDeleteResponse(commentRepository.delete(id) != 0);
+    }
+
+    private void validateUnauthorized(Long id, Long accountSessionId) {
+        Comment comment = commentRepository.findById(id)
+            .orElseThrow(CommentNotFoundException::new);
+
+        if (!comment.isSameWriterId(accountSessionId)) {
+            throw new UnauthorizedException();
+        }
     }
 }

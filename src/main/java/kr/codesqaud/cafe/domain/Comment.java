@@ -46,7 +46,11 @@ public class Comment {
     }
 
     public void injectionAutoIncrement(Long autoIncrement) {
-        this.id = id;
+        this.id = autoIncrement;
+    }
+
+    public boolean isSameWriterId(Long writerId) {
+        return writer.equalsId(writerId);
     }
 
     public static CommentBuilder builder() {

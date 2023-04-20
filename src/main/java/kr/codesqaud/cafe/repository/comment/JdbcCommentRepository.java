@@ -2,8 +2,10 @@ package kr.codesqaud.cafe.repository.comment;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.domain.Member;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -34,22 +36,33 @@ public class JdbcCommentRepository implements CommentRepository {
     }
 
     @Override
-    public void delete(Long id) {
-        String sql = "UPDATE comment SET is_deleted = TRUE "
-                    + "WHERE id = :id";
+    public Optional<Comment> findById(Long id) {
+        String sql = "SELECT c.id, c.post_id, c.writer_id, m.nickname, c.content, c.write_date "
+                    + "FROM comment c "
+                    + "INNER JOIN member m ON m.id = c.writer_id "
+                    + "WHERE c.id = :id "
+                    + "AND is_deleted = false ";
         SqlParameterSource param = new MapSqlParameterSource("id", id);
-        jdbcTemplate.update(sql, param);
+        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, param, commentRowMapper)));
     }
 
     @Override
     public List<Comment> findAllByPostId(Long postId) {
         String sql = "SELECT c.id, c.post_id, c.writer_id, m.nickname, c.content, c.write_date "
-                     + "FROM comment c "
-               + "INNER JOIN member m ON m.id = c.writer_id "
+                    + "FROM comment c "
+                    + "INNER JOIN member m ON m.id = c.writer_id "
                     + "WHERE c.post_id = :postId "
-                      + "AND is_deleted = false ";
+                    + "AND is_deleted = false ";
         SqlParameterSource param = new MapSqlParameterSource("postId", postId);
         return jdbcTemplate.query(sql, param, commentRowMapper);
+    }
+
+    @Override
+    public int delete(Long id) {
+        String sql = "UPDATE comment SET is_deleted = true "
+                    + "WHERE id = :id";
+        SqlParameterSource param = new MapSqlParameterSource("id", id);
+        return jdbcTemplate.update(sql, param);
     }
 
     private final RowMapper<Comment> commentRowMapper = (rs, rowNum) ->

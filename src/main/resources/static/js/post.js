@@ -1,10 +1,20 @@
-function write(e) {
-    console.log('asdfasd');
+function addComment(data) {
+    return `<div class="comment">
+                <strong class="comment-writer">${data.writer.nickname}</strong>
+                <pre class="comment-content">${data.content}</pre>
+                <span class="comment-date">${data.writeDate}</span>
+                <form class="comment-delete" action="/api/posts/${data.postId}/comments/${data.id}">
+                     <button class="btn btn-primary btn-sm" type="submit">삭제</button>
+                </form>
+            </div>`;
+}
+
+function writeAjax(e) {
     e.preventDefault();
     e.stopPropagation();
 
     const formSerializeArray = $('.comment-submit').serializeArray();
-    const  object = {};
+    const object = {};
 
     for (let i = 0; i < formSerializeArray.length; i++){
         object[formSerializeArray[i]['name']] = formSerializeArray[i]['value'];
@@ -29,14 +39,33 @@ function write(e) {
     });
 }
 
-function addComment(data) {
-    return `<div class="comment">
-                <strong class="comment-writer">${data.writer.nickname}</strong>
-                <pre class="comment-content">${data.content}</pre>
-                <span class="comment-date">${data.writeDate}</span>
-            </div>`;
+function deleteAjax(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const form = $(this).closest(".comment-delete");
+
+    $.ajax({
+        type: 'delete',
+        url: form.attr("action"),
+        dataType: 'json',
+        contentType: 'application/json; charset=UTF-8',
+        error: function () {
+            alert("에러가 발생하였습니다.");
+        },
+        success: function (data, status) {
+            if (data.valid) {
+                form.closest('.comment').remove();
+                return;
+            }
+
+            alert("에러가 발생하였습니다.");
+        },
+    });
 }
 
+
 document.addEventListener("DOMContentLoaded", function () {
-    document.querySelector(".comment-submit button[type='submit']").addEventListener('click', write);
+    $(".comment-submit button[type='submit']").on("click", writeAjax);
+    $(document).on("click", ".comment-delete button[type='submit']", deleteAjax);
 });

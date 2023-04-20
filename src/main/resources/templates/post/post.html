@@ -35,6 +35,9 @@
                 <strong class="comment-writer" th:text="${commentResponse.writer.nickname}">자바지기</strong>
                 <pre class="comment-content" th:text="${commentResponse.content}">이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</pre>
                 <span class="comment-date" th:text="${commentResponse.getWriteDateFormat()}">2015-12-30 01:47</span>
+                <form class="comment-delete" th:action="@{/api/posts/{postId}/comments/{id}(postId= __${id}__ ,id = ${commentResponse.id})}">
+                    <button class="btn btn-primary btn-sm" type="submit">삭제</button>
+                </form>
             </div>
         </div>
         <form class="comment-submit" th:action="@{/api/posts/{postId}/comments(postId = __${id}__)}" th:method="post">

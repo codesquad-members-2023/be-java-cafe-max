@@ -9,27 +9,33 @@ import kr.codesqaud.cafe.domain.Member;
 public class CommentResponse {
 
     private final Long id;
+    private final Long postId;
     private final Member writer;
     private final String content;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime writeDate;
 
-    public CommentResponse(Long id, Member writer, String content,
+    public CommentResponse(Long id, Long postId, Member writer, String content,
         LocalDateTime writeDate) {
         this.id = id;
+        this.postId = postId;
         this.writer = writer;
         this.content = content;
         this.writeDate = writeDate;
     }
 
     public static CommentResponse from(Comment comment) {
-        return new CommentResponse(comment.getId(), comment.getWriter(), comment.getContent(),
-            comment.getWriteDate());
+        return new CommentResponse(comment.getId(), comment.getPostId(), comment.getWriter(),
+            comment.getContent(), comment.getWriteDate());
     }
 
     public Long getId() {
         return id;
+    }
+
+    public Long getPostId() {
+        return postId;
     }
 
     public Member getWriter() {
