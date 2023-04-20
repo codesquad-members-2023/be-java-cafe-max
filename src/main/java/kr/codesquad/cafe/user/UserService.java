@@ -5,10 +5,10 @@ import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.user.dto.LoginForm;
 import kr.codesquad.cafe.user.dto.ProfileEditForm;
 import kr.codesquad.cafe.user.dto.UserForm;
-import kr.codesquad.cafe.user.exception.IllegalEditEmailException;
-import kr.codesquad.cafe.user.exception.IllegalEditPasswordException;
-import kr.codesquad.cafe.user.exception.IllegalLoginPasswordException;
-import kr.codesquad.cafe.user.exception.NoSuchLoginEmailException;
+import kr.codesquad.cafe.user.exception.DuplicateEmailException;
+import kr.codesquad.cafe.user.exception.InvalidPasswordException;
+import kr.codesquad.cafe.user.exception.IncorrectPasswordException;
+import kr.codesquad.cafe.user.exception.UserNotFoundException;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class UserService {
+    private static final int POST_DEFAULT_PAGE_SIZE = 10;
     private final StringEncryptor encryptor;
     private final UserRepository userRepository;
 
@@ -38,7 +39,7 @@ public class UserService {
     }
 
     public List<UserForm> getAllUsersForm(int page) {
-        Pageable limit = PageRequest.of(page, 10);
+        Pageable limit = PageRequest.of(page, POST_DEFAULT_PAGE_SIZE);
         return userRepository.findAll(limit).stream()
                 .map(UserForm::from)
                 .collect(Collectors.toList());
@@ -68,19 +69,19 @@ public class UserService {
 
 
     public User checkLoginForm(LoginForm loginForm) {
-        User user = findByEmail(loginForm.getEmail()).orElseThrow(NoSuchLoginEmailException::new);
+        User user = findByEmail(loginForm.getEmail()).orElseThrow(UserNotFoundException::new);
         if (!isSamePassword(user, loginForm.getPassword())) {
-            throw new IllegalLoginPasswordException();
+            throw new IncorrectPasswordException();
         }
         return user;
     }
 
     public void checkEditInfo(User user, ProfileEditForm profileEditForm) {
         if (!user.isSameEmail(profileEditForm.getEmail()) && existsByEmail(profileEditForm.getEmail())) {
-            throw new IllegalEditEmailException();
+            throw new DuplicateEmailException();
         }
         if (!isSamePassword(user, profileEditForm.getPassword())) {
-            throw new IllegalEditPasswordException();
+            throw new InvalidPasswordException();
         }
     }
 }

@@ -5,10 +5,10 @@ import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.user.dto.LoginForm;
 import kr.codesquad.cafe.user.dto.ProfileEditForm;
 import kr.codesquad.cafe.user.dto.UserForm;
-import kr.codesquad.cafe.user.exception.IllegalEditEmailException;
-import kr.codesquad.cafe.user.exception.IllegalEditPasswordException;
-import kr.codesquad.cafe.user.exception.IllegalLoginPasswordException;
-import kr.codesquad.cafe.user.exception.NoSuchLoginEmailException;
+import kr.codesquad.cafe.user.exception.DuplicateEmailException;
+import kr.codesquad.cafe.user.exception.InvalidPasswordException;
+import kr.codesquad.cafe.user.exception.IncorrectPasswordException;
+import kr.codesquad.cafe.user.exception.UserNotFoundException;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -103,8 +103,8 @@ class UserServiceTest {
     void checkLoginForm() {
         User jack = userService.save(new JoinForm(JACK, JACK_EMAIL, TEST_PASSWORD, TEST_PASSWORD));
         SoftAssertions.assertSoftly(softly -> {
-            assertThatThrownBy(() -> userService.checkLoginForm(new LoginForm(JERRY_EMAIL, TEST_PASSWORD))).isInstanceOf(NoSuchLoginEmailException.class);
-            assertThatThrownBy(() -> userService.checkLoginForm(new LoginForm(JACK_EMAIL, NO_MATCH_PASSWORD))).isInstanceOf(IllegalLoginPasswordException.class);
+            assertThatThrownBy(() -> userService.checkLoginForm(new LoginForm(JERRY_EMAIL, TEST_PASSWORD))).isInstanceOf(UserNotFoundException.class);
+            assertThatThrownBy(() -> userService.checkLoginForm(new LoginForm(JACK_EMAIL, NO_MATCH_PASSWORD))).isInstanceOf(IncorrectPasswordException.class);
             assertThat(userService.checkLoginForm(new LoginForm(JACK_EMAIL, TEST_PASSWORD))).isSameAs(jack);
         });
     }
@@ -115,8 +115,8 @@ class UserServiceTest {
         User jack = userService.save(new JoinForm(JACK, JACK_EMAIL, TEST_PASSWORD, TEST_PASSWORD));
         userService.save(new JoinForm(JERRY, JERRY_EMAIL, TEST_PASSWORD, TEST_PASSWORD));
         SoftAssertions.assertSoftly(softly -> {
-            assertThatThrownBy(() -> userService.checkEditInfo(jack, new ProfileEditForm(JACK, JERRY_EMAIL, TEST_PASSWORD))).isInstanceOf(IllegalEditEmailException.class);
-            assertThatThrownBy(() -> userService.checkEditInfo(jack, new ProfileEditForm(JACK, JACK_EMAIL, NO_MATCH_PASSWORD))).isInstanceOf(IllegalEditPasswordException.class);
+            assertThatThrownBy(() -> userService.checkEditInfo(jack, new ProfileEditForm(JACK, JERRY_EMAIL, TEST_PASSWORD))).isInstanceOf(DuplicateEmailException.class);
+            assertThatThrownBy(() -> userService.checkEditInfo(jack, new ProfileEditForm(JACK, JACK_EMAIL, NO_MATCH_PASSWORD))).isInstanceOf(InvalidPasswordException.class);
             assertThatCode(() -> userService.checkEditInfo(jack, new ProfileEditForm(JACK, JACK_EMAIL, TEST_PASSWORD))).doesNotThrowAnyException();
         });
     }

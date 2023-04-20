@@ -1,10 +1,9 @@
 package kr.codesquad.cafe.user.exception;
 
-public class NoSuchLoginEmailException extends RuntimeException {
+public class IncorrectPasswordException extends RuntimeException {
     private static final String MESSAGE = "이메일이 존재하지 않습니다";
 
-    public NoSuchLoginEmailException() {
+    public IncorrectPasswordException() {
         super(MESSAGE);
     }
-
 }

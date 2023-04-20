@@ -2,10 +2,10 @@ package kr.codesquad.cafe.user;
 
 import kr.codesquad.cafe.user.dto.LoginForm;
 import kr.codesquad.cafe.user.dto.ProfileEditForm;
-import kr.codesquad.cafe.user.exception.IllegalEditEmailException;
-import kr.codesquad.cafe.user.exception.IllegalEditPasswordException;
-import kr.codesquad.cafe.user.exception.IllegalLoginPasswordException;
-import kr.codesquad.cafe.user.exception.NoSuchLoginEmailException;
+import kr.codesquad.cafe.user.exception.DuplicateEmailException;
+import kr.codesquad.cafe.user.exception.InvalidPasswordException;
+import kr.codesquad.cafe.user.exception.IncorrectPasswordException;
+import kr.codesquad.cafe.user.exception.UserNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -33,32 +33,32 @@ public class UserControllerExceptionHandler {
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalLoginPasswordException.class)
-    public String handlerIllegalLoginPasswordException(Model model, IllegalLoginPasswordException e) {
+    @ExceptionHandler(IncorrectPasswordException.class)
+    public String handlerIllegalLoginPasswordException(Model model, IncorrectPasswordException e) {
         model.addAttribute(new LoginForm());
         model.addAttribute(PASSWORD_ERROR, e.getMessage());
         return "user/loginFailed";
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NoSuchLoginEmailException.class)
-    public String handlerNoSuchLoginEmailException(Model model, NoSuchLoginEmailException e) {
+    @ExceptionHandler(UserNotFoundException.class)
+    public String handlerNoSuchLoginEmailException(Model model, UserNotFoundException e) {
         model.addAttribute(new LoginForm());
         model.addAttribute(EMAIL_ERROR, e.getMessage());
         return "user/loginFailed";
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalEditEmailException.class)
-    public String handlerIllegalEditEmailException(HttpServletRequest request, Model model, IllegalEditEmailException e) {
+    @ExceptionHandler(DuplicateEmailException.class)
+    public String handlerIllegalEditEmailException(HttpServletRequest request, Model model, DuplicateEmailException e) {
         addProfileEditForm(request, model);
         model.addAttribute(EMAIL_ERROR, e.getMessage());
         return "user/profileEditFormFailed";
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalEditPasswordException.class)
-    public String handlerIllegalEditPasswordException(HttpServletRequest request, Model model, IllegalEditPasswordException e) {
+    @ExceptionHandler(InvalidPasswordException.class)
+    public String handlerIllegalEditPasswordException(HttpServletRequest request, Model model, InvalidPasswordException e) {
         addProfileEditForm(request, model);
         model.addAttribute(PASSWORD_ERROR, e.getMessage());
         return "user/profileEditFormFailed";
