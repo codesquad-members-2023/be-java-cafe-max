@@ -46,12 +46,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void updateTitle(Long id, String updateTitle) {
-
-    }
-
-    @Override
-    public void updateContents(Long id, String updateContents) {
+    public void updateArticle(Article article) {
 
     }
 

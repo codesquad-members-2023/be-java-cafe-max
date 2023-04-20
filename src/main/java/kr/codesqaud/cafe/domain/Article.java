@@ -64,4 +64,10 @@ public class Article {
     public boolean isAuthor(String userId) {
         return this.userId.equals(userId);
     }
+
+    public Article updateTitleAndContents(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+        return this;
+    }
 }

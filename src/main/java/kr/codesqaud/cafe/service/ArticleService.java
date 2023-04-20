@@ -32,8 +32,9 @@ public class ArticleService {
     }
 
     public void update(Long id, String updateTitle, String updateContents) {
-        articleRepository.updateTitle(id, updateTitle);
-        articleRepository.updateContents(id, updateContents);
+        Article article = articleRepository.findById(id).orElseThrow(ArticleNotFoundException::new);
+        Article updateArticle = article.updateTitleAndContents(updateTitle, updateContents);
+        articleRepository.updateArticle(updateArticle);
     }
 
     public void delete(Long id) {

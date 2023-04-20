@@ -17,9 +17,7 @@ public interface ArticleRepository {
 
     void updateWriter(String name, String updateName);
 
-    void updateTitle(Long id, String updateTitle);
-
-    void updateContents(Long id, String updateContents);
+    void updateArticle(Article article);
 
     void delete(Long id);
 }
