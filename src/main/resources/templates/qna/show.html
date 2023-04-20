@@ -92,9 +92,10 @@
                                             </li>
                                             <li>
                                                 <form class="delete-answer-form" action="#"
-                                                      th:action="@{/questions/{articleId}(articleId=${reply.articleId})/replies/{id}(id=${reply.id})}"
+                                                      th:action="@{/replies/{id}(id=${reply.id})}"
                                                       method="POST">
                                                     <input type="hidden" name="_method" value="DELETE">
+                                                    <input type="hidden" name="articleId" th:value="*{reply.articleId}">
                                                     <button type="submit" class="delete-answer-button">삭제</button>
                                                 </form>
                                             </li>

@@ -24,13 +24,12 @@ public class ReplyController {
         return "redirect:/questions/{articleId}";
     }
 
-    @DeleteMapping("/questions/{articleId}/replies/{id}")
-    public String deleteArticle(@PathVariable Long id) {
+    @DeleteMapping("/replies/{id}")
+    public String deleteArticle(@PathVariable Long id, Long articleId) {
         // TODO: validate 추가하기
 
         replyService.delete(id);
-        return "redirect:/";
         // TODO: 아래와 같이 쓰면 왜 String으로 들어오는지 알아내기
-//        return "redirect:/questions/{articleId}";
+        return "redirect:/questions/" + articleId;
     }
 }
