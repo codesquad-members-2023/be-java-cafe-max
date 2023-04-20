@@ -14,6 +14,7 @@ CREATE TABLE post(
     title VARCHAR(255) NOT NULL,
     contents VARCHAR(255) NOT NULL,
     write_date_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (post_id),
     FOREIGN KEY (writer) REFERENCES users(user_name)
 );
@@ -25,6 +26,7 @@ CREATE TABLE comment(
     writer VARCHAR(50) NOT NULL,
     contents VARCHAR(255) NOT NULL,
     write_date_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (comment_id),
     FOREIGN KEY (post_id) REFERENCES post(post_id),
     FOREIGN KEY (writer) REFERENCES users(user_name)
