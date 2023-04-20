@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.repository.article;
 
+import kr.codesqaud.cafe.controller.article.ArticleForm;
 import kr.codesqaud.cafe.domain.Article;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class MemoryArticleRepository implements ArticleRepository{
     public Article save(Article article) {
         article.setId(articleId.incrementAndGet());
         store.put(article.getId(), article);
-        return article;
+        return store.get(article.getId());
     }
 
     @Override
@@ -27,6 +28,16 @@ public class MemoryArticleRepository implements ArticleRepository{
     @Override
     public List<Article> findAll() {
         return store.values().stream().collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public Optional<Article> update(Long id, ArticleForm form) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Long delete(Long id) {
+        return null;
     }
 
     @Override

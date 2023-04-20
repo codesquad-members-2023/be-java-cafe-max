@@ -6,9 +6,7 @@ import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.util.SessionConst;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -44,10 +42,47 @@ public class ArticleController {
     }
 
     // 게시글 상세보기
-    @GetMapping("/articles/{id}")
+    @GetMapping("/questions/{id}")
     public String findArticle(@PathVariable Long id, Model model){
         Article article = articleService.findOne(id);
         model.addAttribute("article", article);
         return "qna/show";
     }
+
+    // 게시글 수정
+    @GetMapping("/questions/edit/{id}")
+    public String editArticleForm(@PathVariable Long id, Model model, HttpSession session) {
+        Article article = articleService.findOne(id);
+        User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
+
+        if (!article.getWriter().equals(user.getUserId())){
+            return "qna/edit_failed";
+        }
+
+        model.addAttribute("article", article);
+        return "qna/edit";
+    }
+
+    @PutMapping("/questions/edit/{id}")
+    public String updateArticle(@PathVariable Long id, ArticleForm form, HttpSession session){
+//        User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
+        System.out.println(id);
+        articleService.update(id, form);
+        return "redirect:/";
+    }
+
+    // 게시글 삭제
+    @DeleteMapping ("/questions/delete/{id}")
+    public String deleteArticle(@PathVariable Long id, HttpSession session){
+        Article article = articleService.findOne(id);
+        User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
+
+        if (!article.getWriter().equals(user.getUserId())){
+            return "qna/edit_failed";
+        }
+
+        articleService.deleteArticle(id);
+        return "redirect:/";
+    }
+    
 }

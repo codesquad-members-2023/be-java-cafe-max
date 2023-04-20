@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.repository.article;
 
+import kr.codesqaud.cafe.controller.article.ArticleForm;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -8,6 +9,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -68,5 +71,20 @@ public class JdbcArticleRepository implements ArticleRepository{
             article.setPoints(rs.getLong("points"));
             return article;
         };
+    }
+
+    @Override
+    public Optional<Article> update(Long id, ArticleForm form) {
+        // 수정 날짜 modifiedAt 넣
+        jdbcTemplate.update("update articles set title = ? where id = ?", form.getTitle(), id);
+        jdbcTemplate.update("update articles set contents = ? where id = ?", form.getContents(), id);
+        jdbcTemplate.update("update articles set modifiedAt = ? where id = ?", LocalDateTime.now(), id);
+        return findById(id);
+    }
+
+    @Override
+    public Long delete(Long id) {
+        jdbcTemplate.update("delete from articles where id=?", id);
+        return id;
     }
 }
