@@ -11,28 +11,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
-    public ArticleController(ArticleService articleService){
+
+    public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
     @GetMapping("/ask")
-    public String getArticleForm(){
+    public String getArticleForm() {
         return "/qna/form";
     }
+
     @PostMapping("/articles")
-    public String makeNewArticle(Article article){
+    public String makeNewArticle(Article article) {
         articleService.join(article);
         return "redirect:/articles";
     }
+
     @GetMapping("/articles")
-    public String getArticleList(Model model){
+    public String getArticleList(Model model) {
         model.addAttribute("articles", articleService.getArticleList());
         return "index";
     }
 
     @GetMapping("/articles/{articleNum}")
-    public String articleProfile(@PathVariable Long articleNum, Model model){
-            model.addAttribute("article", articleService.getArticleByArticleNum(articleNum));
+    public String articleProfile(@PathVariable long articleNum, Model model) {
+        Article article = articleService.getArticleByArticleNum(articleNum);
+        model.addAttribute("article", article);
         return "qna/show";
     }
 }

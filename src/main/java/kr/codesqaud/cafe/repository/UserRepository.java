@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class UserRepository {
     public List<User> getUserList() {
         return userList;
     }
+
     public User getUserByUserId(String userId) {
         return dataBase.get(userId);
     }
