@@ -42,7 +42,7 @@ public class AppStartupRunner implements CommandLineRunner {
                     .createdDateTime(LocalDateTime.now())
                     .title("test" + i)
                     .user(savedManager)
-                    .textContent("testContent")
+                    .textContent("testContent"+i)
                     .nickname(manager.getNickname())
                     .build();
             postRepository.save(test);
