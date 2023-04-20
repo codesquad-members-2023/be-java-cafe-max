@@ -47,9 +47,9 @@
             <div class="reply" th:each="reply : ${replies}">
                 <div>
                     <div class="replyInfo">
-                        <span class="replyWriter" th:text="${reply.userId}">yeon</span><span th:text="${#temporals.format(article.createdAt, 'yyyy. MM. dd. a hh:mm')}">2023-04-19</span>
+                        <span class="replyWriter" th:text="${reply.userId}">yeon</span><span th:text="${#temporals.format(reply.createdAt, 'yyyy. MM. dd. a hh:mm')}">2023-04-19</span>
                     </div>
-                    <a class="editButton">삭제</a>
+                    <a th:if="${reply.userId == session.loginUserId}" class="editButton">삭제</a>
                 </div>
                 <p th:text="${reply.contents}">댓글 내용</p>
             </div>
@@ -57,6 +57,7 @@
     </section>
 
     <script src="/js/validation.js"></script>
+    <script src="/js/reply.js"></script>
     <script type="text/template" id="answerTemplate">
         <div class="reply">
             <div>
