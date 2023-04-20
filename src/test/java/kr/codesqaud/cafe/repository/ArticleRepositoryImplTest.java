@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import kr.codesqaud.cafe.article.Article;
 import kr.codesqaud.cafe.article.ArticleRepository;
@@ -12,21 +12,23 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @JdbcTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class ArticleRepositoryImplTest {
 
     ArticleRepository articleRepository;
     UserRepository userRepository;
 
+    @Autowired
+    NamedParameterJdbcTemplate template;
+
     Article article1;
     Article article2;
     Article article3;
-
-    @Autowired
-    NamedParameterJdbcTemplate template;
 
     @BeforeEach
     void beforeEach() {
@@ -44,34 +46,38 @@ class ArticleRepositoryImplTest {
         userRepository.save(user3);
 
         // 게시글 데이터
-        article1 = new Article("tester1", "title1", "contents1");
-        article2 = new Article("tester2", "title2", "contents2");
-        article3 = new Article("tester3", "title3", "contents3");
+        article1 = new Article.Builder()
+                .writer("tester1")
+                .title("title1")
+                .contents("contents1")
+                .build();
+
+        article2 = new Article.Builder()
+                .writer("tester2")
+                .title("title2")
+                .contents("contents2")
+                .build();
+
+        article3 = new Article.Builder()
+                .writer("tester3")
+                .title("title3")
+                .contents("contents3")
+                .build();
     }
 
     @Test
-    @DisplayName("게시글 객체를 받으면 저장소에 저장한다.")
-    void save() {
+    @DisplayName("게시글을 저장하고 게시글 번호로 게시글 정보를 불러올 수 있다.")
+    void savaAndFindOneById() {
         // when
-        Article savedArticle = articleRepository.save(article1);
+        long id = articleRepository.save(article1); // TODO: 반환값을 추가해 ID로 일치 여부를 확인한다.? 객체에 equals/hashcode 오버라이딩해서 비교?
 
         // then
-        assertThat(savedArticle).isNotNull(); // TODO: NotNull로 체크하는 것이 맞을지 모르겠다.
-    }
-
-    @Test
-    @DisplayName("게시글 번호로 게시글 정보를 불러올 수 있다.")
-    void findBySequence() {
-        // when
-        articleRepository.save(article1); // TODO: 반환값을 추가해 ID로 일치 여부를 확인한다.? 객체에 equals/hashcode 오버라이딩해서 비교?
-
-        // then
-        Article findArticle = articleRepository.findBySequence(1L).get();
-        String writer = articleRepository.findIdBySequence(1L);
+        Article findArticle = articleRepository.findOneById(id).get(); // TODO: 전체적으로 테스트 돌리면 오류 발생// 계속 삭제하고 추가되면서 오토 인크리먼트 값이 변하는 것 같다.
+        String writer = findArticle.getWriter();
         String title = findArticle.getTitle();
         String contents = findArticle.getContents();
 
-        assertThat(writer).isEqualTo("tester1");
+        assertThat(writer).isEqualTo("test1"); // TODO: 현재는 username을 갖고 오는데 id로 리팩터링 예정
         assertThat(title).isEqualTo("title1");
         assertThat(contents).isEqualTo("contents1");
     }
@@ -87,5 +93,23 @@ class ArticleRepositoryImplTest {
         // then
         int repositorySize = articleRepository.findAll().size();
         assertThat(repositorySize).isEqualTo(3);
+    }
+
+    @Test
+    @DisplayName("사용자 ID가 동일하면 게시물 정보를 수정할 수 있다.")
+    void update() {
+        // when
+        long id = articleRepository.save(article1);
+
+        Article article = new Article.Builder()
+                .writer("tester1")
+                .title("title1")
+                .contents("new contents")
+                .build();
+        articleRepository.update(id, article);
+
+        // then
+        Article findArticle = articleRepository.findOneById(id).get();
+        assertThat(findArticle.getContents()).isEqualTo("new contents");
     }
 }
