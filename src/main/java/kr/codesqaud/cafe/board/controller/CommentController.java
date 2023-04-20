@@ -4,10 +4,7 @@ import kr.codesqaud.cafe.board.dto.CommentWriteForm;
 import kr.codesqaud.cafe.board.service.CommentService;
 import kr.codesqaud.cafe.user.dto.SessionUser;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class CommentController {
@@ -23,4 +20,11 @@ public class CommentController {
         commentService.write(commentWriteForm, sessionUser.getUserName());
         return "redirect:/board/" + postId;
     }
+
+    @DeleteMapping("/board/{postId}/comment/{commentId}")
+    public String deleteComment(@PathVariable Long postId, @PathVariable Long commentId, @SessionAttribute("sessionUser") SessionUser sessionUser) {
+        commentService.delete(commentId, sessionUser.getUserName());
+        return "redirect:/board/" + postId;
+    }
+
 }

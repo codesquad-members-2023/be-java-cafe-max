@@ -49,7 +49,7 @@ public class BoardController {
         PostResponse postResponse = boardService.getPost(postId);
         model.addAttribute("post", postResponse);
 
-        if (isWriter(session, postResponse.getWriter())) {
+        if (isSameWriter(session, postResponse.getWriter())) {
             model.addAttribute("isWriter", true);
         }
 
@@ -65,7 +65,7 @@ public class BoardController {
         PostResponse postResponse = boardService.getPost(postId);
         model.addAttribute("post", postResponse);
 
-        if (!isWriter(session, postResponse.getWriter())) {
+        if (!isSameWriter(session, postResponse.getWriter())) {
             throw new ForbiddenException("접근할 수 없는 페이지입니다.");
         }
 
@@ -84,7 +84,7 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    private boolean isWriter(HttpSession session, String writer) {
+    private boolean isSameWriter(HttpSession session, String writer) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
         return sessionUser.getUserName().equals(writer);
     }

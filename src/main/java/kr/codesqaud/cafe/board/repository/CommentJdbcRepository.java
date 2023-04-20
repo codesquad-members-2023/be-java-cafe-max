@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.board.repository;
 
 import kr.codesqaud.cafe.board.domain.Comment;
+import kr.codesqaud.cafe.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -31,6 +33,17 @@ public class CommentJdbcRepository {
 
     public void delete(Long commentId) {
         jdbcTemplate.update("UPDATE comment SET deleted = TRUE WHERE comment_id = :commentId", Collections.singletonMap("commentId", commentId));
+    }
+
+    public Comment findByCommentId(Long commentId) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT comment_id, post_id, writer, contents, write_date_time " +
+                            "FROM comment " +
+                            "WHERE comment_id = :commentId",
+                    Collections.singletonMap("commentId", commentId), commentRowMapper);
+        } catch (DataRetrievalFailureException e) {
+            throw new ResourceNotFoundException("요청한 데이터가 존재하지 않습니다.");
+        }
     }
 
     public List<Comment> findAllByPostId(Long postId) {
