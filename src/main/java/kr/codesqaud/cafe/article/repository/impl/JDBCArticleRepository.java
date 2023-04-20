@@ -36,7 +36,7 @@ public class JDBCArticleRepository implements ArticleRepository {
 	@Override
 	public List<Article> findAll() {
 		return namedParameterJdbcTemplate.query(
-			"SELECT A.nickName, B.* FROM USER A INNER JOIN ARTICLE B ON A.user_id = B.user_id;",
+			"SELECT A.nickName, B.* FROM USER A INNER JOIN ARTICLE B ON A.user_id = B.user_id WHERE is_visible = true",
 			(rs, rn) -> new Article(rs));
 	}
 

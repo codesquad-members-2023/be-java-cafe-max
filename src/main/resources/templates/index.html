@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <p class="total_num">전체 글 10명</p>
+    <p class="total_num">전체 글 {{countOfArticles}} 개</p>
 
     <div class="container" id="main">
         <div class="col-md-10 col-md-offset-1">
@@ -32,14 +32,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {{#articleList}}
+                    {{#articles}}
                     <tr>
                         <td><a href="/articles/{{articleIdx}}">{{title}}</a></td>
                         <td>{{nickName}}</td>
                         <td>{{date}}</td>
                         <td>10</td>
                     </tr>
-                    {{/articleList}}
+                    {{/articles}}
                     </tbody>
                 </table>
             </div>
