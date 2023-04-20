@@ -54,6 +54,21 @@ public class JdbcUserRepository implements UserRepository {
         return jdbcTemplate.query(sql, rowMapper());
     }
 
+    @Override
+    public User update(User currUser, User newUser) {
+        String sql = "update `user` set password = ?, name = ?, email = ? where id = ?";
+        long id = currUser.getId();
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, newUser.getPassword());
+            ps.setString(2, newUser.getName());
+            ps.setString(3, newUser.getEmail());
+            ps.setLong(4, id);
+            return ps;
+        });
+        return newUser.create(id);
+    }
+
     private RowMapper<User> rowMapper() {
         return (rs, rowNum) -> new User(
                 rs.getLong("id"),

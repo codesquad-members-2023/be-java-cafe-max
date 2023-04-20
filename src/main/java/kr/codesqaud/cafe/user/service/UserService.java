@@ -45,4 +45,14 @@ public class UserService {
         }
         return user;
     }
+
+    public boolean updateUser(User currentUser, User newProfile, String currPassword) {
+        boolean isIdMatch = newProfile.getUserId().equals(currentUser.getUserId());
+        boolean isPasswordMatch = currPassword.equals(currentUser.getPassword());
+        boolean success = isIdMatch && isPasswordMatch;
+        if (success) {
+            userRepository.update(currentUser, newProfile);
+        }
+        return success;
+    }
 }
