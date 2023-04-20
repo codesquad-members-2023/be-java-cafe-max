@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static codesquad.cafe.global.exception.ErrorCode.NOT_MATCH_USER_AND_WRITER;
+import static codesquad.cafe.global.exception.ErrorCode.NOT_MATCH_USER_AND_ARTICLE;
 
 @Service
 public class ArticleService {
@@ -53,7 +53,7 @@ public class ArticleService {
 
     private void validateWriter(final User user, final Article article) {
         if (!article.getWriterId().equals(user.getId())) {
-            throw new CustomException(NOT_MATCH_USER_AND_WRITER);
+            throw new CustomException(NOT_MATCH_USER_AND_ARTICLE);
         }
     }
 

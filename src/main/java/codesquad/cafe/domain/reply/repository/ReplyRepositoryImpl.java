@@ -1,6 +1,7 @@
 package codesquad.cafe.domain.reply.repository;
 
 import codesquad.cafe.domain.reply.domain.Reply;
+import codesquad.cafe.domain.user.domain.User;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -44,5 +45,24 @@ public class ReplyRepositoryImpl implements ReplyRepository {
         String sql = "SELECT name FROM reply JOIN users ON users.id = reply.user_id WHERE reply.id = :id";
         MapSqlParameterSource params = new MapSqlParameterSource("id", reply.getId());
         return namedParameterJdbcTemplate.queryForObject(sql, params, String.class);
+    }
+
+    @Override
+    public User findUserById(final Long replyId) {
+        String sql = "SELECT * FROM users JOIN reply ON reply.user_id = users.id WHERE reply.id = :replyId";
+        MapSqlParameterSource params = new MapSqlParameterSource("replyId", replyId);
+        return namedParameterJdbcTemplate.queryForObject(sql, params,
+                (rs, rowNum) -> new User(
+                        rs.getString("id")
+                        , rs.getString("password")
+                        , rs.getString("name")
+                        , rs.getString("email")));
+    }
+
+    @Override
+    public void delete(final Long replyId) {
+        String sql = "DELETE FROM reply WHERE id = :id";
+        MapSqlParameterSource params = new MapSqlParameterSource("id", replyId);
+        namedParameterJdbcTemplate.update(sql, params);
     }
 }

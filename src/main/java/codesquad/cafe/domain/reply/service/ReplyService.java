@@ -5,10 +5,13 @@ import codesquad.cafe.domain.reply.dto.ReplyRequestDto;
 import codesquad.cafe.domain.reply.dto.ReplyResponseDto;
 import codesquad.cafe.domain.reply.repository.ReplyRepository;
 import codesquad.cafe.domain.user.domain.User;
+import codesquad.cafe.global.exception.CustomException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static codesquad.cafe.global.exception.ErrorCode.NOT_MATCH_USER_AND_REPLY;
 
 @Service
 public class ReplyService {
@@ -30,5 +33,17 @@ public class ReplyService {
             replyResponseDtos.add(reply.toDto(userName));
         }
         return replyResponseDtos;
+    }
+
+    public void deleteReply(final User user, final Long replyId) {
+        User replyUser = replyRepository.findUserById(replyId);
+        validateReplyUser(user, replyUser);
+        replyRepository.delete(replyId);
+    }
+
+    private void validateReplyUser(final User user, final User replyUser) {
+        if (!user.getId().equals(replyUser.getId())) {
+            throw new CustomException(NOT_MATCH_USER_AND_REPLY);
+        }
     }
 }

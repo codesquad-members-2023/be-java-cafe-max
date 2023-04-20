@@ -66,8 +66,8 @@
                                       <a th:text="${reply.createdAt}" class="article-header-time" title="퍼머링크"></a>
                                   </div>
                               </div>
-                              <div class="article-doc comment-doc" th:text="${reply.contents}">
-                                  <p>이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
+                              <div class="article-doc comment-doc" >
+                                  <p th:text="${reply.contents}"></p>
                               </div>
                               <div class="article-util">
                                   <ul class="article-util-list">
@@ -75,7 +75,7 @@
                                           <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
                                       </li>
                                       <li>
-                                          <form class="delete-answer-form" action="/questions/413/answers/1405" method="POST">
+                                          <form class="delete-answer-form" th:action="@{/reply/{postId}/{replyId}(postId=${post.id},replyId=${reply.id})}" th:method="delete">
                                               <input type="hidden" name="_method" value="DELETE">
                                               <button type="submit" class="delete-answer-button">삭제</button>
                                           </form>
