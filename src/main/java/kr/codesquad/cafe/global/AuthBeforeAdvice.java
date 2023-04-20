@@ -1,8 +1,7 @@
 package kr.codesquad.cafe.global;
 
-import kr.codesquad.cafe.user.User;
-import kr.codesquad.cafe.global.IllegalAccessIdException;
 import kr.codesquad.cafe.post.Post;
+import kr.codesquad.cafe.user.User;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -18,6 +17,25 @@ import java.util.Objects;
 @Aspect
 @Component
 public class AuthBeforeAdvice {
+
+    private static User getUser() {
+        HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest().getSession();
+        return (User) session.getAttribute("user");
+    }
+
+    private static Post getPost(JoinPoint joinPoint) {
+        return Arrays.stream(joinPoint.getArgs()).filter(Post.class::isInstance)
+                .map(Post.class::cast)
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
+    }
+
+    private static Long getPathId(JoinPoint joinPoint) {
+        return Arrays.stream(joinPoint.getArgs()).filter(Long.class::isInstance)
+                .map(Long.class::cast)
+                .findFirst()
+                .orElseThrow();
+    }
 
     @Pointcut("@annotation(kr.codesquad.cafe.user.annotation.ValidUserIdPath)")
     public void validUserIdPath() {
@@ -43,24 +61,5 @@ public class AuthBeforeAdvice {
         if (!Objects.equals(post.getUser().getId(), user.getId())) {
             throw new IllegalAccessIdException();
         }
-    }
-
-    private static User getUser() {
-        HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest().getSession();
-        return (User) session.getAttribute("user");
-    }
-
-    private static Post getPost(JoinPoint joinPoint) {
-        return Arrays.stream(joinPoint.getArgs()).filter(Post.class::isInstance)
-                .map(Post.class::cast)
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
-    }
-
-    private static Long getPathId(JoinPoint joinPoint) {
-        return Arrays.stream(joinPoint.getArgs()).filter(Long.class::isInstance)
-                .map(Long.class::cast)
-                .findFirst()
-                .orElseThrow();
     }
 }

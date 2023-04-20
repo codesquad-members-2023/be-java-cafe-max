@@ -19,7 +19,7 @@
                                 card title and make up the bulk of the card's content.</p>
                         </div>
                         <ol class="list-group">
-                            <button type="button" class="list-group-item btn btn-warning p-1 mb-1">NickName:
+                            <button class="list-group-item btn btn-warning p-1 mb-1" type="button">NickName:
                                 <span th:text="${simpleForm.nickname}"></span>
                             </button>
                             <button class="list-group-item btn btn-info p-1 mb-1">
@@ -34,7 +34,7 @@
                                 <span th:text="${#temporals.format(simpleForm.createdDateTime,'yyyy-MM-dd HH:mm')}"></span>
                             </button>
                         </ol>
-                        <a th:href="@{/posts/{id}(id = ${simpleForm.id})}" class="btn btn-primary mb-2">자세히 보기</a>
+                        <a class="btn btn-primary mb-2" th:href="@{/posts/{id}(id = ${simpleForm.id})}">자세히 보기</a>
                     </div>
                 </li>
             </ol>
@@ -43,21 +43,24 @@
             <div class="col">
                 <ul class="pagination col-5">
                     <li class="page-item">
-                        <a th:if="${pagesInfo.previous}" class="page-link" th:href="@{/(page = ${pagesInfo.previousPages})}" aria-label="Previous">
+                        <a aria-label="Previous" class="page-link"
+                           th:href="@{/(page = ${pagesInfo.previousPages})}" th:if="${pagesInfo.previous}">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
-                        <a th:if="!${pagesInfo.previous}" class="page-link" href="#" aria-label="Previous" disabled>
+                        <a aria-label="Previous" class="page-link" disabled href="#" th:if="!${pagesInfo.previous}">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
                     <li class="page-item" th:each="pageNumber : ${pagesInfo.pageNumbers}">
-                        <a class="page-link" th:text="${pageNumber}" th:href="@{/(page=${pageNumber})}">1</a>
+                        <a class="page-link" th:href="@{/(page=${pageNumber})}" th:text="${pageNumber}">1</a>
                     </li>
                     <li class="page-item">
-                        <a th:if="${pagesInfo.next}" class="page-link" href="#" aria-label="Next" th:href="@{/(page = ${pagesInfo.nextPages})}">
+                        <a aria-label="Next" class="page-link" href="#" th:href="@{/(page = ${pagesInfo.nextPages})}"
+                           th:if="${pagesInfo.next}">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
-                        <a th:if="!${pagesInfo.next}" class="page-link" href="#" aria-label="Next" th:href="@{/(page = ${pagesInfo.nextPages})}" disabled>
+                        <a aria-label="Next" class="page-link" disabled href="#"
+                           th:href="@{/(page = ${pagesInfo.nextPages})}" th:if="!${pagesInfo.next}">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

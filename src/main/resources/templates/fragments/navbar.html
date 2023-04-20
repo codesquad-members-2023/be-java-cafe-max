@@ -1,22 +1,22 @@
-<nav th:fragment="common" class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary" th:fragment="common">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/}">CodeNote</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+                data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <button th:if="${session.user == null && #httpServletRequest.requestURI != '/users/login'}"
-                    th:onclick="|location.href='@{/users/login}'|"
-                    class="d-flex btn btn-outline-success me-2 nav-item">로그인
+            <button class="d-flex btn btn-outline-success me-2 nav-item"
+                    th:if="${session.user == null && #httpServletRequest.requestURI != '/users/login'}"
+                    th:onclick="|location.href='@{/users/login}'|">로그인
             </button>
-            <button th:if="${session.user == null && #httpServletRequest.requestURI != '/users/join'}"
-                    th:onclick="|location.href='@{/users/join}'|"
-                    class="d-flex btn btn-outline-success me-2 nav-item">회원가입
+            <button class="d-flex btn btn-outline-success me-2 nav-item"
+                    th:if="${session.user == null && #httpServletRequest.requestURI != '/users/join'}"
+                    th:onclick="|location.href='@{/users/join}'|">회원가입
             </button>
-            <button th:if="${session.user != null}" class="btn btn-secondary dropdown-toggle" type="button"
-                    aria-expanded="false"
-                    data-bs-toggle="dropdown">
+            <button aria-expanded="false" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
+                    th:if="${session.user != null}"
+                    type="button">
                 Menu
             </button>
             <ul class="dropdown-menu dropdown-menu-end" th:if="${session.user != null}">

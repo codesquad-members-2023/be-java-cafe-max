@@ -51,8 +51,8 @@
                     <div class="col-2 align-self-center text-break" th:text="${userForm.nickname}"></div>
                     <div class="col-2">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-primary" type="submit"
-                                    th:onclick="|location.href='@{/users/{id}/update(id = ${userForm.id})}'|">수정
+                            <button class="btn btn-primary" th:onclick="|location.href='@{/users/{id}/update(id = ${userForm.id})}'|"
+                                    type="submit">수정
                             </button>
                         </div>
                     </div>
@@ -64,7 +64,7 @@
             <div class="col">
                 <ul class="pagination col-5">
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
+                        <a aria-label="Previous" class="page-link" href="#">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -72,7 +72,7 @@
                     <li class="page-item"><a class="page-link" href="#">2</a></li>
                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                     <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
+                        <a aria-label="Next" class="page-link" href="#">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -81,7 +81,7 @@
             <div class="col row justify-content-end">
                 <div class="col-5">
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="검색어를 입력하세요" aria-label="Search">
+                        <input aria-label="Search" class="form-control me-2" placeholder="검색어를 입력하세요" type="search">
                         <button class="btn btn-outline-success" type="submit">
                             <i class="bi bi-search"></i>
                         </button>

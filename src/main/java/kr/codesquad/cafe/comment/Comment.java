@@ -12,7 +12,8 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Comment {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     public Long id;
     @JsonIgnore
     @ManyToOne
@@ -26,6 +27,12 @@ public class Comment {
     private boolean isDeleted;
 
     public Comment() {
+    }
+
+    public Comment(Builder builder) {
+        this.post = builder.post;
+        this.user = builder.user;
+        this.content = builder.content;
     }
 
     public Long getId() {
@@ -54,13 +61,6 @@ public class Comment {
             return;
         }
         throw new RuntimeException();
-    }
-
-
-    public Comment(Builder builder) {
-        this.post = builder.post;
-        this.user = builder.user;
-        this.content = builder.content;
     }
 
     public boolean isSameId(Long id) {

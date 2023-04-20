@@ -27,6 +27,17 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
+    private static List<SimplePostForm> toSimplePostForm(List<Post> posts) {
+        return posts
+                .stream()
+                .map(SimplePostForm::from)
+                .collect(Collectors.toList());
+    }
+
+    private static Pageable getPageable(int currentPage) {
+        return PageRequest.of(currentPage, PAGE_SIZE, Sort.by(Sort.Direction.DESC, "createdDateTime")).previous();
+    }
+
     @Transactional
     public Post save(PostForm postForm, User user) {
         Post post = postForm.toPost(user);
@@ -40,17 +51,6 @@ public class PostService {
     public List<SimplePostForm> getAllSimplePostForm(int currentPage) {
         List<Post> posts = postRepository.findAllByIsDeleted(false, getPageable(currentPage));
         return toSimplePostForm(posts);
-    }
-
-    private static List<SimplePostForm> toSimplePostForm(List<Post> posts) {
-        return posts
-                .stream()
-                .map(SimplePostForm::from)
-                .collect(Collectors.toList());
-    }
-
-    private static Pageable getPageable(int currentPage) {
-        return PageRequest.of(currentPage, PAGE_SIZE, Sort.by(Sort.Direction.DESC, "createdDateTime")).previous();
     }
 
     @Transactional

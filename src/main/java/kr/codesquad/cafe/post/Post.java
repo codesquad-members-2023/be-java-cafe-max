@@ -11,6 +11,9 @@ import java.util.List;
 
 @Entity
 public class Post {
+    @OneToMany(mappedBy = "post")
+    protected List<Comment> comments = new ArrayList<>();
+
     @Id
     @GeneratedValue
     private Long id;
@@ -18,9 +21,6 @@ public class Post {
     @NotNull
     @ManyToOne
     private User user;
-
-    @OneToMany(mappedBy = "post")
-    protected List<Comment> comments = new ArrayList<>();
 
     private String nickname;
 
@@ -61,8 +61,16 @@ public class Post {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getTextContent() {
         return textContent;
+    }
+
+    public void setTextContent(String textContent) {
+        this.textContent = textContent;
     }
 
     public LocalDateTime getCreatedDateTime() {
@@ -79,14 +87,6 @@ public class Post {
 
     public void disable() {
         isDeleted = true;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setTextContent(String textContent) {
-        this.textContent = textContent;
     }
 
     public void addComment(Comment comment) {

@@ -42,6 +42,7 @@ public class UserService {
                 .map(UserForm::from)
                 .collect(Collectors.toList());
     }
+
     @Transactional
     public User update(User user, ProfileEditForm profileEditForm) {
         User changedUser = profileEditForm.setUser(user);

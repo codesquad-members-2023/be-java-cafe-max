@@ -6,7 +6,7 @@
 </nav>
 <div class="row justify-content-center">
     <div class="col-6 row row-cols-auto mt-5 mb-5">
-        <p type="text" class="fs-3" id="title" th:text="${post.title}">
+        <p class="fs-3" id="title" th:text="${post.title}" type="text">
             자바 웹개발 교육 홈페이지 디자인 개발1
         </p>
     </div>
@@ -56,8 +56,8 @@
         </div>
         <div>
             <div th:if="${post.user} != null">
-                <button th:if="${post.user.id} == ${session.user.id}"
-                        th:onclick="|location.href='@{/posts/{id}/edit(id = ${post.id})}'|" class="btn btn-primary"
+                <button class="btn btn-primary"
+                        th:if="${post.user.id} == ${session.user.id}" th:onclick="|location.href='@{/posts/{id}/edit(id = ${post.id})}'|"
                         type="submit">수정
                 </button>
             </div>
@@ -73,12 +73,12 @@
                     <form class="col-1 justify-content-end"
                           th:action="@{/posts/{postid}/comments/{commentid}(postid = ${post.id},commentid = ${comment.id})}"
                           th:method="delete">
-                        <button th:if="${comment.user.id} == ${session.user.id}" type="submit" class="btn-close"
-                                aria-label="Close">
+                        <button aria-label="Close" class="btn-close" th:if="${comment.user.id} == ${session.user.id}"
+                                type="submit">
                         </button>
                     </form>
                 </div>
-                <p th:text="${comment.content}" class="text-break">body</p>
+                <p class="text-break" th:text="${comment.content}">body</p>
                 <p class="text-secondary">2023-3-2 16:32</p>
             </li>
         </ul>
@@ -86,16 +86,16 @@
 </div>
 <div class="row justify-content-center mb-5">
     <div class="col-6 row text-secondary">
-        <form id="commentForm" th:method="post" th:action="@{/posts/{postId}/comments(postId = ${post.id})}">
+        <form id="commentForm" th:action="@{/posts/{postId}/comments(postId = ${post.id})}" th:method="post">
             <div class="form-control">
-                <label for="commentText" class="fs-5" id="userName" th:text="${session.user.nickname}">user</label>
-                <textarea class="form-control-plaintext" placeholder="Leave a comment here" id="commentText"
-                          name="commentText"
+                <label class="fs-5" for="commentText" id="userName" th:text="${session.user.nickname}">user</label>
+                <textarea class="form-control-plaintext" id="commentText" name="commentText"
+                          placeholder="Leave a comment here"
                           style="height: 100px;resize: none;"></textarea>
                 <div class="row justify-content-end row-cols-auto">
                     <div class="col" onmousemove="commentMouseoverEvent()" onmouseout="commentMouseOutEvent()">
-                        <button class="submit-write btn btn-primary disabled" type="submit" role="button"
-                                id="commentPost">
+                        <button class="submit-write btn btn-primary disabled" id="commentPost" role="button"
+                                type="submit">
                             제출
                         </button>
                     </div>

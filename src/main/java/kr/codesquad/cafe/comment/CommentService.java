@@ -5,8 +5,6 @@ import kr.codesquad.cafe.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 @Transactional
 public class CommentService {
@@ -25,7 +23,7 @@ public class CommentService {
                 .build());
     }
 
-    public void delete(long commentId,long userId) {
+    public void delete(long commentId, long userId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow();
         comment.delete(userId);
     }

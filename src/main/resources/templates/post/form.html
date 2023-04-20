@@ -4,14 +4,14 @@
 <body>
 <nav th:replace="fragments/navbar.html :: common">
 </nav>
-<form class="container" id="postForm" th:action="@{/posts}" th:object="${postForm}" method="post" novalidate>
+<form class="container" id="postForm" method="post" novalidate th:action="@{/posts}" th:object="${postForm}">
     <div th:if="${#fields.hasErrors()}">
         <div class="row justify-content-center mt-3 mb-3">
             <h3>글쓰기</h3>
         </div>
         <div class="row justify-content-center" th:if="${errors}">
             <div class="col-6">
-                <div  class="alert alert-danger" role="alert">
+                <div class="alert alert-danger" role="alert">
                     잘못 입력했습니다.
                 </div>
             </div>
@@ -19,11 +19,11 @@
         <div class="row justify-content-center">
             <div class="mb-3 col-6">
                 <div class="form-floating">
-                    <input type="text" th:if="${#fields.hasErrors('title')}" class="form-control is-invalid"
-                           th:field="*{title}" id="title" placeholder="글의 제목을 입력하세요">
-                    <input type="text" th:if="!${#fields.hasErrors('title')}" class="form-control is-valid"
+                    <input class="form-control is-invalid" id="title" placeholder="글의 제목을 입력하세요"
+                           th:field="*{title}" th:if="${#fields.hasErrors('title')}" type="text">
+                    <input class="form-control is-valid" id="title" placeholder="글의 제목을 입력하세요"
                            th:field="*{title}"
-                           id="title" placeholder="글의 제목을 입력하세요">
+                           th:if="!${#fields.hasErrors('title')}" type="text">
                     <label for="title">제목</label>
                     <div class="invalid-feedback" th:errors="*{title}">
                         공란일 수 없다.
@@ -34,13 +34,13 @@
         <div class="row justify-content-center">
             <div class="mb-3 col-6 ">
                 <div class="form-floating">
-                <textarea class="form-control is-invalid" th:if="${#fields.hasErrors('textContent')}" id="textContent"
-                          th:field="*{textContent}" placeholder="글의 내용을 입력하세요"
-                          style="height: 500px;resize: none"></textarea>
-                    <textarea class="form-control is-valid" th:if="!${#fields.hasErrors('textContent')}"
-                              id="textContent"
-                              th:field="*{textContent}" placeholder="글의 내용을 입력하세요"
-                              style="height: 500px;resize: none"></textarea>
+                <textarea class="form-control is-invalid" id="textContent" placeholder="글의 내용을 입력하세요"
+                          style="height: 500px;resize: none" th:field="*{textContent}"
+                          th:if="${#fields.hasErrors('textContent')}"></textarea>
+                    <textarea class="form-control is-valid" id="textContent"
+                              placeholder="글의 내용을 입력하세요"
+                              style="height: 500px;resize: none" th:field="*{textContent}"
+                              th:if="!${#fields.hasErrors('textContent')}"></textarea>
                     <label for="textContent">내용</label>
                     <div class="invalid-feedback" th:errors="*{textContent}">
                         3글자 이상 1000 글자 이하여야 한다
@@ -51,7 +51,7 @@
         <div class="row justify-content-center col">
             <div class="col-6 mb-3 row row-cols-auto justify-content-end">
                 <div class="col">
-                    <button class="btn btn-primary" type="submit" role="button">작성완료</button>
+                    <button class="btn btn-primary" role="button" type="submit">작성완료</button>
                 </div>
             </div>
         </div>
@@ -63,8 +63,8 @@
         <div class="row justify-content-center">
             <div class="mb-3 col-6">
                 <div class="form-floating">
-                    <input type="text" class="form-control" th:field="*{title}"
-                           id="title" placeholder="글의 제목을 입력하세요">
+                    <input class="form-control" id="title" placeholder="글의 제목을 입력하세요"
+                           th:field="*{title}" type="text">
                     <label for="title">제목</label>
                 </div>
             </div>
@@ -73,8 +73,8 @@
             <div class="mb-3 col-6 ">
                 <div class="form-floating">
                 <textarea class="form-control" id="textContent"
-                          th:field="*{textContent}" placeholder="글의 내용을 입력하세요"
-                          style="height: 500px;resize: none"></textarea>
+                          placeholder="글의 내용을 입력하세요" style="height: 500px;resize: none"
+                          th:field="*{textContent}"></textarea>
                     <label for="textContent">내용</label>
                 </div>
             </div>
@@ -82,7 +82,7 @@
         <div class="row justify-content-center col">
             <div class="col-6 mb-3 row row-cols-auto justify-content-end">
                 <div class="col">
-                    <button class="btn btn-primary" type="submit" role="button">작성완료</button>
+                    <button class="btn btn-primary" role="button" type="submit">작성완료</button>
                 </div>
             </div>
         </div>

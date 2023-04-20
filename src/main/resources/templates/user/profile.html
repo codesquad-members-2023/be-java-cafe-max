@@ -4,30 +4,30 @@
 <body>
 <nav th:replace="fragments/navbar.html :: common">
 </nav>
-<form class="container" id="postingForm" th:action="@{/users/{userId}/profile/edit(userId = ${userId})}" novalidate>
+<form class="container" id="postingForm" novalidate th:action="@{/users/{userId}/profile/edit(userId = ${userId})}">
     <div class="row justify-content-center mt-5">
         <div class="card mb-3" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
                     <div class="row justify-content-center mt-2">
-                        <svg width="120" height="120" data-jdenticon-value="user127"
-                             th:data-jdenticon-value="${profileForm.nickname}"></svg>
+                        <svg data-jdenticon-value="user127" height="120" th:data-jdenticon-value="${profileForm.nickname}"
+                             width="120"></svg>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
                         <div class="input-group mb-3">
                             <span class="input-group-text col-5" id="nickname">Nickname</span>
-                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                   aria-describedby="nickname" readonly value="nickname"
-                                   th:value="${profileForm.nickname}"
-                                   disabled>
+                            <input aria-describedby="nickname" aria-label="Sizing example input" class="form-control"
+                                   disabled readonly th:value="${profileForm.nickname}"
+                                   type="text"
+                                   value="nickname">
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text col-5" id="email">Email</span>
-                            <input type="text" class="form-control" aria-label="Sizing example input"
-                                   aria-describedby="nickname" readonly value="email" th:value="${profileForm.email}"
-                                   disabled>
+                            <input aria-describedby="nickname" aria-label="Sizing example input" class="form-control"
+                                   disabled readonly th:value="${profileForm.email}" type="text"
+                                   value="email">
                         </div>
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -40,8 +40,8 @@
 </form>
 <footer class="container-fluid mt-auto bg-light py-3"></footer>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/jdenticon@3.2.0/dist/jdenticon.min.js" async
+<script async crossorigin="anonymous"
         integrity="sha384-yBhgDqxM50qJV5JPdayci8wCfooqvhFYbIKhv0hTtLvfeeyJMJCscRfFNKIxt43M"
-        crossorigin="anonymous">
+        src="https://cdn.jsdelivr.net/npm/jdenticon@3.2.0/dist/jdenticon.min.js">
 </script>
 </html>
