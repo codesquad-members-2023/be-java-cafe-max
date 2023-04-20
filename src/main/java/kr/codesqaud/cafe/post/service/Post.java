@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.post.service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Post {
 
@@ -40,5 +41,22 @@ public class Post {
 
     public LocalDateTime getWritingTime() {
         return writingTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(id, post.id)
+                && writer.equals(post.writer)
+                && title.equals(post.title)
+                && contents.equals(post.contents)
+                && writingTime.equals(post.writingTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, writer, title, contents, writingTime);
     }
 }

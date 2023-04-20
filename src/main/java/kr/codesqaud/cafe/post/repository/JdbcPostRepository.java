@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.post.repository;
 
 import kr.codesqaud.cafe.post.service.Post;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -40,12 +41,16 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public Optional<Post> findById(long id) {
         String sql = "select id, writer, title, contents, writing_time from post where id = ?";
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), id));
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), id));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<Post> findAll() {
-        String sql = "select id, writer, title, contents, writing_time from post";
+        String sql = "select id, writer, title, contents, writing_time from post order by writing_time desc";
         return jdbcTemplate.query(sql, rowMapper());
     }
 

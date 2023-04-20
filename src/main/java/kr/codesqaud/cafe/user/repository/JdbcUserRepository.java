@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.user.repository;
 
 import kr.codesqaud.cafe.user.service.User;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -40,13 +41,32 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public Optional<User> findByUserId(String userId) {
         String sql = "select id, user_id, password, name, email from `user` where user_id = ?";
-        return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), userId));
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), userId));
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<User> findAll() {
         String sql = "select id, user_id, password, name, email from `user`";
         return jdbcTemplate.query(sql, rowMapper());
+    }
+
+    @Override
+    public User update(User currUser, User newUser) {
+        String sql = "update `user` set password = ?, name = ?, email = ? where id = ?";
+        long id = currUser.getId();
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, newUser.getPassword());
+            ps.setString(2, newUser.getName());
+            ps.setString(3, newUser.getEmail());
+            ps.setLong(4, id);
+            return ps;
+        });
+        return newUser.create(id);
     }
 
     private RowMapper<User> rowMapper() {

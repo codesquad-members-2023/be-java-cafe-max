@@ -28,7 +28,7 @@ public class PostController {
         return "post/form";
     }
 
-    @PostMapping("/write")
+    @PostMapping("")
     public String writePost(PostWriteRequest postWriteRequest) {
         postService.writePost(postWriteRequest.toPost());
         return "redirect:";

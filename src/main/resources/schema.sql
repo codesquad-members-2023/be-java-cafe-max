@@ -14,6 +14,6 @@ create table if not exists post
     writer       varchar(255) not null,
     title        varchar(255) not null,
     contents     varchar(255) not null,
-    writing_time datetime not null,
+    writing_time timestamp(9) not null,
     primary key (id)
 );
