@@ -12,5 +12,5 @@ public interface QuestionRepository {
 
     Question save(Question question);
 
-    int deleteAll();
+    Question modify(Question question);
 }

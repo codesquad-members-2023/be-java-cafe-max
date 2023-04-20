@@ -36,11 +36,10 @@ public class MemoryQuestionRepository implements QuestionRepository {
     }
 
     @Override
-    public synchronized int deleteAll() {
-        int deleteArticleCount = store.size();
-        store.clear();
-        sequence = 0;
-        return deleteArticleCount;
+    public Question modify(Question question) {
+        store.remove(question);
+        store.add(question);
+        return question;
     }
 
     private synchronized Long nextId() {

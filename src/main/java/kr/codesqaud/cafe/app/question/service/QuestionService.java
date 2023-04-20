@@ -7,6 +7,7 @@ import kr.codesqaud.cafe.app.question.repository.QuestionRepository;
 import kr.codesqaud.cafe.errors.errorcode.QuestionErrorCode;
 import kr.codesqaud.cafe.errors.exception.RestApiException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class QuestionService {
@@ -17,6 +18,7 @@ public class QuestionService {
         this.repository = repository;
     }
 
+    @Transactional
     public Question write(Question question) {
         return repository.save(question);
     }
@@ -30,5 +32,16 @@ public class QuestionService {
         return repository.findById(id).orElseThrow(() -> {
             throw new RestApiException(QuestionErrorCode.NOT_FOUND_ARTICLE);
         });
+    }
+
+    public Question modifyQuestion(Long id, Question requestQuestion) {
+        Question original = findQuestion(id);
+        Question modifiedQuestion =
+            new Question(original.getId(),
+                requestQuestion.getTitle(),
+                requestQuestion.getContent(),
+                original.getWriteDate(),
+                original.getUserId());
+        return repository.modify(modifiedQuestion);
     }
 }

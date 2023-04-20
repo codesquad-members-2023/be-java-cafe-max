@@ -43,6 +43,13 @@ public class JdbcQuestionRepository implements QuestionRepository {
         return findById(id).orElseThrow();
     }
 
+    @Override
+    public Question modify(Question question) {
+        template.update("UPDATE question SET title = ?, content = ? WHERE id = ?",
+            question.getTitle(), question.getContent(), question.getId());
+        return question;
+    }
+
     private PreparedStatement getPreparedStatementForSave(Question question, Connection con)
         throws SQLException {
         String sql = "INSERT INTO question(title, content, writeDate, userId) VALUES(?, ?, ?, ?)";
@@ -52,11 +59,6 @@ public class JdbcQuestionRepository implements QuestionRepository {
         pstmt.setString(3, question.getWriteDate().toString());
         pstmt.setLong(4, question.getUserId());
         return pstmt;
-    }
-
-    @Override
-    public int deleteAll() {
-        return template.update("DELETE FROM question");
     }
 
     private RowMapper<Question> questionRowMapper() {
