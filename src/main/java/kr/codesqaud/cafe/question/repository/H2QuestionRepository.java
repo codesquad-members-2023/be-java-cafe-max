@@ -38,7 +38,7 @@ public class H2QuestionRepository implements QuestionRepository {
 	}
 
 	public List<Question> findAll(long offset, int pageSize) {
-		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\" ORDER BY id ASC LIMIT :pageSize OFFSET :postOffset";
+		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\" ORDER BY id DESC LIMIT :pageSize OFFSET :postOffset";
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("postOffset", offset)
 			.addValue("pageSize", pageSize);
