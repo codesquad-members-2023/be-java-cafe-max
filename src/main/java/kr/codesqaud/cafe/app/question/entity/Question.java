@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.app.question.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Question {
 
@@ -37,5 +38,29 @@ public class Question {
 
     public Long getUserId() {
         return userId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Question)) {
+            return false;
+        }
+        Question question = (Question) o;
+        return Objects.equals(getId(), question.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Question={id=%d, title=%s, content=%s, writeDate=%s, userId=%d}", id,
+            title,
+            content, writeDate, userId);
     }
 }
