@@ -17,6 +17,7 @@ CREATE TABLE post(
     deleted BOOLEAN NOT NULL DEFAULT FALSE,
     PRIMARY KEY (post_id),
     FOREIGN KEY (writer) REFERENCES users(user_name)
+    ON UPDATE CASCADE
 );
 
 DROP TABLE IF EXISTS comment;
@@ -30,4 +31,5 @@ CREATE TABLE comment(
     PRIMARY KEY (comment_id),
     FOREIGN KEY (post_id) REFERENCES post(post_id),
     FOREIGN KEY (writer) REFERENCES users(user_name)
+    ON UPDATE CASCADE
 );
