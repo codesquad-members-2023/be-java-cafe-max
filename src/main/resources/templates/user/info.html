@@ -40,7 +40,10 @@
     </div>
 </form>
 <div class="container-fluid justify-content-center" id="postsPage">
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row d-inline mt-4 ms-3 text-black" th:if="${simpleForms.size() != 0}">
+        <span class="text-danger-emphasis" th:text="${simpleForms.size()}"></span>개
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4" th:if="${simpleForms.size() != 0}">
         <div class="col" th:each="simpleForm : ${simpleForms}">
             <div class="card h-100">
                 <div class="card-body">
@@ -65,9 +68,6 @@
         <div class="row justify-content-between">
             <div class="col">
                 <ul class="pagination col-5" th:if="${simpleForms.size() != 0}">
-                    <div class="row d-inline mt-4 ms-3 text-black">
-                        <span class="text-danger-emphasis" th:text="${pagesInfo.currentPage}"></span>번 페이지
-                    </div>
                     <li class="page-item">
                         <a aria-label="Previous" class="page-link"
                            th:href="@{/users/{userId}(userId = ${userId},page = ${pagesInfo.previousPages})}" th:if="${pagesInfo.previous}">
@@ -78,7 +78,7 @@
                         </p>
                     </li>
                     <li class="page-item" th:each="pageNumber : ${pagesInfo.pageNumbers}">
-                        <a class="page-link" th:href="@{/users/{userId}(userId = ${userId},page=${pageNumber})}" th:text="${pageNumber}">1</a>
+                        <a class="page-link" th:class="${pageNumber == pagesInfo.currentPage ? 'page-link active' : 'page-link'}" th:href="@{/users/{userId}(userId = ${userId},page=${pageNumber})}" th:text="${pageNumber}">1</a>
                     </li>
                     <li class="page-item">
                         <a aria-label="Next" class="page-link" href="#" th:href="@{/users/{userId}(userId = ${userId},page = ${pagesInfo.nextPages})}"

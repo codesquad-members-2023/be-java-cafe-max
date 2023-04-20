@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row justify-content-center text-light-emphasis">
         <div class="row d-inline mt-4 ms-3 text-black">
-            <span class="text-danger-emphasis" th:text="${pagesInfo.currentPage}"></span>번 페이지
+            <span class="text-danger-emphasis" th:text="${simpleForms.size()}"></span>개
         </div>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col" th:each="simpleForm : ${simpleForms}">
@@ -42,7 +42,7 @@
                         </p>
                     </li>
                     <li class="page-item" th:each="pageNumber : ${pagesInfo.pageNumbers}">
-                        <a class="page-link" th:href="@{/(page=${pageNumber})}" th:text="${pageNumber}">1</a>
+                        <a class="page-link"  th:class="${pageNumber == pagesInfo.currentPage ? 'page-link active' : 'page-link'}"  th:href="@{/(page=${pageNumber})}" th:text="${pageNumber}">1</a>
                     </li>
                     <li class="page-item">
                         <a aria-label="Next" class="page-link" href="#" th:href="@{/(page = ${pagesInfo.nextPages})}"
