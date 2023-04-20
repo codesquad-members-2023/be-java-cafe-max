@@ -1,15 +1,15 @@
 package kr.codesqaud.cafe.controller.user;
 
-public class UserDao {
+public class UserResponse {
     private Long customerId; // 회원 번호
     private String userId;
     private String name;
     private String email;
 
-    public UserDao() {
+    public UserResponse() {
     }
 
-    public UserDao(Long customerId, String userId, String name, String email) {
+    public UserResponse(Long customerId, String userId, String name, String email) {
         this.customerId = customerId;
         this.userId = userId;
         this.name = name;

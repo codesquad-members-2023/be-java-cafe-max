@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.user.UserForm;
-import kr.codesqaud.cafe.controller.user.UserDao;
+import kr.codesqaud.cafe.controller.user.UserResponse;
 import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class UserServiceTest {
         String saveUserId = userService.join(user1);
 
         // then
-        UserDao findUser = userService.findByUserId(saveUserId);
+        UserResponse findUser = userService.findByUserId(saveUserId);
         assertThat(user1.getName()).isEqualTo(findUser.getName());
     }
 

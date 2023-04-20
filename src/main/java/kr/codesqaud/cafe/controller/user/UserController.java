@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping
     public String list(Model model){
-        List<UserDao> users = userService.findUsers();
+        List<UserResponse> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
@@ -40,7 +40,7 @@ public class UserController {
     // 유저 프로필 보기
     @GetMapping("/{userId}")
     public String profile(@PathVariable String userId, Model model){
-        UserDao userResponse = userService.findByUserId(userId);
+        UserResponse userResponse = userService.findByUserId(userId);
         model.addAttribute("user", userResponse);
         return "user/profile";
     }
