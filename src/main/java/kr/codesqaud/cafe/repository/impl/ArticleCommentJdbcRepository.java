@@ -47,7 +47,7 @@ public class ArticleCommentJdbcRepository implements ArticleCommentRepository {
 		try {
 			return Optional.ofNullable(
 				jdbcTemplate.queryForObject(
-					"SELECT id, content, created_at, writer, article_id FROM article_comment WHERE id = :id",
+					"SELECT id, content, created_at, writer, article_id FROM article_comment WHERE id = :id AND is_deleted = FALSE",
 					Map.of("id", id), articleCommentRowMapper));
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();

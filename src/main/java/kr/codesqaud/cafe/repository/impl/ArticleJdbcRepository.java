@@ -70,8 +70,9 @@ public class ArticleJdbcRepository implements ArticleRepository {
 	public Optional<Article> findById(final Long id) {
 		try {
 			return Optional.ofNullable(
-				jdbcTemplate.queryForObject("SELECT id, writer, title, content, created_at FROM article WHERE id = :id",
-											Map.of("id", id), articleMapper));
+				jdbcTemplate.queryForObject(
+					"SELECT id, writer, title, content, created_at FROM article WHERE id = :id AND is_deleted = FALSE",
+					Map.of("id", id), articleMapper));
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
 		}
