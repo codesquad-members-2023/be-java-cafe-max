@@ -19,7 +19,7 @@ create table users
     password varchar(32) not null,
     name varchar(16) not null,
     email varchar(64) not null,
-    primary key (userId)
+    primary key (customerId)
 );
 
 
