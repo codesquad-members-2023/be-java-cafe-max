@@ -192,7 +192,7 @@ class UserControllerTest {
             @Test
             void viewUserProfileSuccess() throws Exception {
                 session.setAttribute("user", jack);
-                mockMvc.perform(get("/users/" + jack.getId() + "/profile/edit").session(session))
+                mockMvc.perform(get("/users/" + jack.getId() + "/profile/editForm").session(session))
                         .andExpect(status().isOk())
                         .andExpect(model().attributeExists(USER_ID, PROFILE_EDIT_FORM))
                         .andExpect(view().name("user/profileEditForm"));
@@ -201,7 +201,7 @@ class UserControllerTest {
             @DisplayName("실패")
             @Test
             void viewUserProfileFailed() throws Exception {
-                mockMvc.perform(get("/users/" + (jack.getId() + 1) + "/profile/edit").session(session))
+                mockMvc.perform(get("/users/" + (jack.getId() + 1) + "/profile/editForm").session(session))
                         .andExpect(status().is4xxClientError())
                         .andExpect(view().name("error/4xx"));
             }

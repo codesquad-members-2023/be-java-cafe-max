@@ -88,7 +88,7 @@ public class UserController {
     }
 
     @ValidUserIdPath
-    @GetMapping("/users/{userId}/profile/edit")
+    @GetMapping("/users/{userId}/profile/editForm")
     public String viewUserProfileEditForm(Model model, @PathVariable Long userId, @SessionAttribute User user) {
         model.addAttribute(USER_ID, userId);
         model.addAttribute(PROFILE_SETTING_FORM, ProfileEditForm.from(user));
