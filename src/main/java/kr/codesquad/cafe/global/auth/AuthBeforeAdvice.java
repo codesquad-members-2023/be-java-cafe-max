@@ -8,20 +8,27 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes;
+
 @Aspect
 @Component
 public class AuthBeforeAdvice {
 
+    public static final String USER = "user";
+
     private static User getUser() {
-        HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest().getSession();
-        return (User) session.getAttribute("user");
+        HttpSession session = getSession();
+        return (User) session.getAttribute(USER);
+    }
+
+    private static HttpSession getSession() {
+        return ((ServletRequestAttributes) currentRequestAttributes()).getRequest().getSession();
     }
 
     private static Post getPost(JoinPoint joinPoint) {
