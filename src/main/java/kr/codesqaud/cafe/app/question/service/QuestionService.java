@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.app.question.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
 import kr.codesqaud.cafe.app.question.entity.Question;
 import kr.codesqaud.cafe.app.question.repository.QuestionRepository;
 import kr.codesqaud.cafe.errors.errorcode.QuestionErrorCode;
@@ -34,7 +35,7 @@ public class QuestionService {
         });
     }
 
-    public Question modifyQuestion(Long id, Question requestQuestion) {
+    public Question modifyQuestion(Long id, QuestionSavedRequest requestQuestion) {
         Question original = findQuestion(id);
         Question modifiedQuestion =
             new Question(original.getId(),

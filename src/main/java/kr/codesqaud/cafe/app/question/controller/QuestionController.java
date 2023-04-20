@@ -80,13 +80,12 @@ public class QuestionController {
         @Valid @RequestBody QuestionSavedRequest requestDto) {
         logger.info("{}, {}", id, requestDto.toString());
         User writer = userService.findUser(requestDto.getUserId());
-        Question requestQuestion = requestDto.toEntity(writer.getId());
-        Question modifiedQuestion = questionService.modifyQuestion(id, requestQuestion);
+        Question modifiedQuestion = questionService.modifyQuestion(id, requestDto);
         return new QuestionResponse(modifiedQuestion, writer);
     }
 
     @DeleteMapping("/qna/{id}")
-    public ResponseEntity<?> deleteQuestion(@PathVariable(value = "id") Long id,
+    public ResponseEntity<Object> deleteQuestion(@PathVariable(value = "id") Long id,
         HttpSession session) {
         logger.info(id.toString());
         UserResponse user = (UserResponse) session.getAttribute("user");
