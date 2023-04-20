@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.dto.ReplyForm;
 import kr.codesqaud.cafe.dto.SessionDto;
 import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -29,5 +30,17 @@ public class ReplyController {
         }
 
         return "redirect:/articles/{id}";
+    }
+
+    @DeleteMapping("articles/{articleId}/reply/{id}")
+    public String delete(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                             SessionDto loginUser, @PathVariable Long articleId, @PathVariable Long id) {
+
+        if (replyService.isCreateBy(loginUser.getUserId(), id)) {
+            replyService.delete(id);
+            return "redirect:/articles/{articleId}";
+        }
+
+        return "error/404";
     }
 }

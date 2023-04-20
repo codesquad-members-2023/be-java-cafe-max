@@ -1,15 +1,12 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Reply;
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.ReplyForm;
-import kr.codesqaud.cafe.exception.EmptyCommentException;
 import kr.codesqaud.cafe.exception.ReplyNotFoundException;
 import kr.codesqaud.cafe.repository.ReplyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ReplyService {
@@ -30,18 +27,11 @@ public class ReplyService {
     }
 
     public List<Reply> findReplies(Long articleId) {
-        return replyRepository.findByArticleId(articleId)
-                .stream()
-                .filter(reply -> !reply.isDeleted())
-                .collect(Collectors.toList());
+        return replyRepository.findByArticleId(articleId);
     }
 
     public Reply findOne(Long id) {
-        Reply reply = replyRepository.findById(id).orElseThrow(ReplyNotFoundException::new);
-        if (reply.isDeleted()) {
-            throw new ReplyNotFoundException();
-        }
-        return reply;
+        return replyRepository.findById(id).orElseThrow(ReplyNotFoundException::new);
     }
 
     public void update(Long id, String contents) {
@@ -50,5 +40,10 @@ public class ReplyService {
 
     public void delete(Long id) {
         replyRepository.delete(id);
+    }
+
+    public boolean isCreateBy(String userId, Long replyId) {
+        Reply reply = findOne(replyId);
+        return reply.isAuthor(userId);
     }
 }

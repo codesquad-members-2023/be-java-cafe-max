@@ -35,14 +35,14 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
 
     @Override
     public List<Reply> findByArticleId(Long articleId) {
-        String sql = "select * from reply where articleId = ?";
+        String sql = "select * from reply where articleId = ? AND deleted = false";
         List<Reply> replies = jdbcTemplate.query(sql, replyRowMapper(), articleId);
         return replies;
     }
 
     @Override
     public Optional<Reply> findById(Long id) {
-        String sql = "select * from reply where id = ?";
+        String sql = "select * from reply where id = ? AND deleted = false";
         try {
 
             Reply reply = jdbcTemplate.queryForObject(sql, replyRowMapper(), id);
