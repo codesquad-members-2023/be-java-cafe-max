@@ -3,7 +3,6 @@ package kr.codesquad.cafe.post;
 import kr.codesquad.cafe.comment.Comment;
 import kr.codesquad.cafe.post.exception.DeletionFailedException;
 import kr.codesquad.cafe.user.domain.User;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -77,10 +76,6 @@ public class Post {
 
     public LocalDateTime getCreatedDateTime() {
         return createdDateTime;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
     }
 
     public List<Comment> getComments() {
