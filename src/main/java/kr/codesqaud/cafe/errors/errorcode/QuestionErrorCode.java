@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.errors.errorcode;
 import org.springframework.http.HttpStatus;
 
 public enum QuestionErrorCode implements ErrorCode {
-    NOT_FOUND_ARTICLE(HttpStatus.OK, "게시물을 찾을 수 없습니다.");
+    NOT_FOUND_QUESTION(HttpStatus.OK, "게시물을 찾을 수 없습니다.");
 
     private HttpStatus httpStatus;
     private String message;

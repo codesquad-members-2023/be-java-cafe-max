@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.app.question.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
+import kr.codesqaud.cafe.app.question.entity.Question;
 import kr.codesqaud.cafe.app.question.service.QuestionService;
 import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequest;
 import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
@@ -28,6 +30,7 @@ import kr.codesqaud.cafe.app.user.service.UserService;
 import kr.codesqaud.cafe.errors.errorcode.CommonErrorCode;
 import kr.codesqaud.cafe.errors.response.ErrorResponse;
 import kr.codesqaud.cafe.errors.response.ErrorResponse.ValidationError;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,17 +69,10 @@ class QuestionControllerTest {
     public void setup() {
         objectMapper.registerModule(new JavaTimeModule());
         httpSession = new MockHttpSession();
-        userId = signUp();
+        userId = signUp("yonghwan1107", "yonghwan1107", "김용환", "yonghwan1107@gmail.com");
         questionId = writeQuestion();
     }
 
-    public Long signUp() {
-        String userId = "yonghwan1107";
-        String password = "yonghwan1107";
-        String name = "김용환";
-        String email = "yonghwan1107@gmail.com";
-        return userService.signUp(new UserSavedRequest(userId, password, name, email)).getId();
-    }
 
     public Long writeQuestion() {
         User user = userService.findUser("yonghwan1107");
@@ -191,7 +187,7 @@ class QuestionControllerTest {
 
     @Test
     @DisplayName("수정된 제목과 내용이 주어질때 질문 게시글 수정 요청시 수정이 되는지 테스트")
-    public void modify_success() throws Exception {
+    public void edit_success() throws Exception {
         //given
         login("yonghwan1107", "yonghwan1107");
         String str_userId = userService.findUser(userId).getUserId();
@@ -215,11 +211,73 @@ class QuestionControllerTest {
         assertThat(questionMap.get("content")).isEqualTo("변경된 내용1");
     }
 
+    @Test
+    @DisplayName("부적절한 제목 입력 형식이 주어지고 질문 수정 요청시 에러 응답하는지 테스트")
+    public void edit_fail1() throws Exception {
+        //given
+        login("yonghwan1107", "yonghwan1107");
+        Long id = write("제목1", "내용1");
+        QuestionSavedRequest dto = new QuestionSavedRequest("", "변경된 내용1",
+            LocalDateTime.now(), "yonghwan1107");
+        String url = "/qna/" + id;
+        //when
+        String json = mockMvc.perform(put(url)
+                .content(toJSON(dto))
+                .contentType(MediaType.APPLICATION_JSON)
+                .session(httpSession))
+            .andExpect(status().isBadRequest())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        //then
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> errorMap = objectMapper.readValue(json, typeReference);
+        Assertions.assertThat(errorMap.get("httpStatus")).isEqualTo("BAD_REQUEST");
+        Assertions.assertThat(errorMap.get("name")).isEqualTo("INVALID_INPUT_FORMAT");
+        Assertions.assertThat(errorMap.get("errorMessage")).isEqualTo("유효하지 않은 입력 형식입니다.");
+    }
+
+    @Test
+    @DisplayName("본인의 질문 게시글을 삭제 요청시 삭제되고 삭제된 질문 데이터를 응답받는지 테스트")
+    public void delete_success() throws Exception {
+        //given
+        login("yonghwan1107", "yonghwan1107");
+        Long id = write("제목1", "내용1");
+        String url = "/qna/" + id;
+        //when & then
+        mockMvc.perform(delete(url)
+                .session(httpSession))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("다른 사람으로 로그인 후 다른 사람의 질문 게시글을 삭제 요청할때 에러 응답을 받는지 테스트")
+    public void delete_fail1() throws Exception {
+        //given
+        Long id = write("제목1", "내용1");
+        signUp("kim1107", "kim1107kim1107", "kim", "kim1107@naver.com");
+        login("kim1107", "kim1107kim1107");
+        String url = "/qna/" + id;
+        //when
+        mockMvc.perform(delete(url)
+                .session(httpSession))
+            .andExpect(status().isForbidden());
+        //then
+    }
+
+    private Long signUp(String userId, String password, String name, String email) {
+        return userService.signUp(new UserSavedRequest(userId, password, name, email)).getId();
+    }
+
     private void login(String userId, String password) throws Exception {
         mockMvc.perform(post("/login")
             .content(toJSON(new UserLoginRequest(userId, password)))
             .contentType(MediaType.APPLICATION_JSON)
             .session(httpSession));
+    }
+
+    private Long write(String title, String content) {
+        return questionService.write(
+            new Question(null, title, content, LocalDateTime.now(), userId)).getId();
     }
 
     private <T> String toJSON(T data) throws JsonProcessingException {

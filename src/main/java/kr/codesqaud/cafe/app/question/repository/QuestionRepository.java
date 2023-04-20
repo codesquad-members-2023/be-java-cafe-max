@@ -13,4 +13,7 @@ public interface QuestionRepository {
     Question save(Question question);
 
     Question modify(Question question);
+
+    int deleteById(Long id);
+
 }

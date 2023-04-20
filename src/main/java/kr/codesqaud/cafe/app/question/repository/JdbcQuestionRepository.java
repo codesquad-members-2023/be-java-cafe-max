@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.app.question.entity.Question;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JdbcQuestionRepository implements QuestionRepository {
 
+    private static final Logger logger = LoggerFactory.getLogger(JdbcQuestionRepository.class);
     private final JdbcTemplate template;
 
     public JdbcQuestionRepository(JdbcTemplate template) {
@@ -37,8 +40,9 @@ public class JdbcQuestionRepository implements QuestionRepository {
 
     @Override
     public Question save(Question question) {
+        String sql = "INSERT INTO question(title, content, writeDate, userId) VALUES(?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        template.update(con -> getPreparedStatementForSave(question, con), keyHolder);
+        template.update(con -> getPreparedStatement(question, con, sql), keyHolder);
         Long id = keyHolder.getKeyAs(Long.class);
         return findById(id).orElseThrow();
     }
@@ -50,9 +54,8 @@ public class JdbcQuestionRepository implements QuestionRepository {
         return question;
     }
 
-    private PreparedStatement getPreparedStatementForSave(Question question, Connection con)
+    private PreparedStatement getPreparedStatement(Question question, Connection con, String sql)
         throws SQLException {
-        String sql = "INSERT INTO question(title, content, writeDate, userId) VALUES(?, ?, ?, ?)";
         PreparedStatement pstmt = con.prepareStatement(sql, new String[]{"ID"});
         pstmt.setString(1, question.getTitle());
         pstmt.setString(2, question.getContent());
@@ -67,5 +70,10 @@ public class JdbcQuestionRepository implements QuestionRepository {
             rs.getString("content"),
             rs.getTimestamp("writeDate").toLocalDateTime(),
             rs.getLong("userId"));
+    }
+
+    @Override
+    public int deleteById(Long id) {
+        return template.update("DELETE FROM question WHERE id = ?", id);
     }
 }

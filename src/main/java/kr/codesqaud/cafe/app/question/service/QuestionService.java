@@ -30,7 +30,7 @@ public class QuestionService {
 
     public Question findQuestion(Long id) {
         return repository.findById(id).orElseThrow(() -> {
-            throw new RestApiException(QuestionErrorCode.NOT_FOUND_ARTICLE);
+            throw new RestApiException(QuestionErrorCode.NOT_FOUND_QUESTION);
         });
     }
 
@@ -43,5 +43,9 @@ public class QuestionService {
                 original.getWriteDate(),
                 original.getUserId());
         return repository.modify(modifiedQuestion);
+    }
+
+    public int delete(Long id) {
+        return repository.deleteById(id);
     }
 }
