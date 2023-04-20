@@ -16,6 +16,7 @@ public class MainController {
 
     private static final String SIMPLE_FORMS = "simpleForms";
     private static final int DEFAULT_PAGE = 1;
+    private static final String PAGES_INFO = "pagesInfo";
     private final PostService postService;
 
     public MainController(PostService postService) {
@@ -29,7 +30,7 @@ public class MainController {
         model.addAttribute(SIMPLE_FORMS, simpleForms);
 
         PagesInfo pagesInfo = postService.getPagesInfo(currentPage);
-        model.addAttribute("pagesInfo", pagesInfo);
+        model.addAttribute(PAGES_INFO, pagesInfo);
         return "index";
     }
 

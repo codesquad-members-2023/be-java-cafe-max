@@ -1,7 +1,9 @@
 package kr.codesquad.cafe.post;
 
 import kr.codesquad.cafe.comment.Comment;
+import kr.codesquad.cafe.post.exception.DeletionFailedException;
 import kr.codesquad.cafe.user.domain.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -104,7 +106,7 @@ public class Post {
             disable();
             return;
         }
-        throw new IllegalArgumentException();
+        throw new DeletionFailedException();
     }
 
     public static class Builder {

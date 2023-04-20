@@ -16,6 +16,7 @@ import javax.validation.Valid;
 @Controller
 public class PostController {
 
+    public static final String POST_ID = "postId";
     private final PostService postService;
 
 
@@ -38,16 +39,16 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public String viewPost(@PathVariable("postId") Post post, Model model) {
+    public String viewPost(@PathVariable(POST_ID) Post post, Model model) {
         model.addAttribute(post);
         return "post/detail";
     }
 
     @ValidPostIdPath
     @GetMapping("/posts/{postId}/edit")
-    public String viewEditPost(@PathVariable("postId") Post post, Model model) {
+    public String viewEditPost(@PathVariable(POST_ID) Post post, Model model) {
         model.addAttribute(PostForm.from(post));
-        model.addAttribute("postId", post.getId());
+        model.addAttribute(POST_ID, post.getId());
         return "post/editForm";
     }
 
@@ -62,13 +63,8 @@ public class PostController {
     }
 
     @DeleteMapping("/posts/{postId}")
-    public String deletePost(@PathVariable long postId, Model model) {
-        Post post = postService.delete(postId);
-        model.addAttribute("error", "다른 맴버가 작성한 댓글이 있어서 삭제할 수 없습니다.");
-        model.addAttribute(PostForm.from(post));
-        model.addAttribute("postId", postId);
-        return "post/editForm";
+    public String deletePost(@PathVariable long postId) {
+        postService.delete(postId);
+        return "redirect:/";
     }
-
-
 }

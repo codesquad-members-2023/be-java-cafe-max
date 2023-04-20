@@ -40,26 +40,25 @@ public class UserProfileController {
      */
     @ValidUserIdPath
     @GetMapping("/users/{userId}")
-    public String ViewUserPage(Model model, @PathVariable long userId, @SessionAttribute User user, @RequestParam("page") Optional<Integer> page) {
-        addAttributeForUserPage(model, userId, user, page);
+    public String ViewUserPage(Model model, @PathVariable long userId, @SessionAttribute User user) {
+        addAttributeForUserPage(model, userId, user, DEFAULT_PAGE);
         return "user/info";
     }
 
     @ValidUserIdPath
     @GetMapping(value = "/users/{userId}", params = "page")
     public String sendUserOfPostsAjax(Model model, @PathVariable long userId, @SessionAttribute User user, @RequestParam("page") Optional<Integer> page) {
-        addAttributeForUserPage(model, userId, user, page);
+        addAttributeForUserPage(model, userId, user, page.orElse(0));
         return "user/info :: #postsPage";
     }
 
-    private void addAttributeForUserPage(Model model, long userId, User user, Optional<Integer> page) {
+    private void addAttributeForUserPage(Model model, long userId, User user, Integer currentPage) {
         model.addAttribute(PROFILE_FORM, ProfileForm.from(user));
 
-        int currentPage = page.orElse(DEFAULT_PAGE);
-        List<SimplePostForm> simpleForms = postService.getAllSimplePostFormByUserId(userId, currentPage);
+        List<SimplePostForm> simpleForms = postService.getAllSimplePostFormByUser(userId, currentPage);
         model.addAttribute(SIMPLE_FORMS, simpleForms);
 
-        PagesInfo pagesInfo = postService.getPagesInfo(currentPage);
+        PagesInfo pagesInfo = postService.getPagesInfoByUser(currentPage, userId);
         model.addAttribute(PAGES_INFO, pagesInfo);
         model.addAttribute(SIMPLE_FORMS, simpleForms);
     }

@@ -4,7 +4,7 @@ import kr.codesquad.cafe.comment.Comment;
 import kr.codesquad.cafe.global.PagesInfo;
 import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.post.dto.SimplePostForm;
-import kr.codesquad.cafe.post.exception.IllegalPostIdException;
+import kr.codesquad.cafe.post.exception.PostNotFoundException;
 import kr.codesquad.cafe.user.domain.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +22,7 @@ public class PostService {
 
     public static final int MAIN_PAGE_SIZE = 15;
     public static final int PROFILE_PAGE_SIZE = 4;
+    public static final String CREATED_DATE_TIME = "createdDateTime";
     private final PostRepository postRepository;
 
     public PostService(PostRepository postRepository) {
@@ -36,7 +37,7 @@ public class PostService {
     }
 
     private static Pageable getPageable(int currentPage, int pageSize) {
-        return PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.DESC, "createdDateTime")).previous();
+        return PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.DESC, CREATED_DATE_TIME)).previous();
     }
 
     @Transactional
@@ -46,7 +47,7 @@ public class PostService {
     }
 
     public Post findById(long postId) {
-        return postRepository.findByIdAndIsDeleted(postId, false).orElseThrow(IllegalPostIdException::new);
+        return postRepository.findByIdAndIsDeleted(postId, false).orElseThrow(PostNotFoundException::new);
     }
 
     public List<SimplePostForm> getAllSimplePostForm(int currentPage) {
@@ -63,10 +64,9 @@ public class PostService {
     }
 
     @Transactional
-    public Post delete(long postId) {
+    public void delete(long postId) {
         Post post = findById(postId);
         post.delete();
-        return post;
     }
 
     @Transactional
@@ -76,27 +76,29 @@ public class PostService {
     }
 
     public PagesInfo getPagesInfo(int currentPage) {
-        int totalPages = getAllPages();
-        return PagesInfo.of(currentPage, totalPages);
+        return PagesInfo.of(currentPage, countTotalPages());
     }
 
-    private int getAllPages() {
+    private int countTotalPages() {
         int allCount = postRepository.countByIsDeleted(false);
-        return (int) Math.ceil((double) allCount / MAIN_PAGE_SIZE);
+        return getPages(allCount);
     }
 
-    public List<SimplePostForm> getAllSimplePostFormByUserId(long userId, int currentPage) {
+    private static int getPages(double allCount) {
+        return (int) Math.ceil(allCount / MAIN_PAGE_SIZE);
+    }
+
+    public List<SimplePostForm> getAllSimplePostFormByUser(long userId, int currentPage) {
         List<Post> posts = postRepository.findAllByUserId(userId, getPageable(currentPage, PROFILE_PAGE_SIZE));
         return toSimplePostForm(posts);
     }
 
     public PagesInfo getPagesInfoByUser(int currentPage, long userId) {
-        int totalPages = getAllPagesByUser(userId);
-        return PagesInfo.of(currentPage, totalPages);
+        return PagesInfo.of(currentPage, countTotalPagesOfUser(userId));
     }
 
-    private int getAllPagesByUser(long userId) {
+    private int countTotalPagesOfUser(long userId) {
         int allCount = postRepository.countByIsDeletedAndUserId(false, userId);
-        return (int) Math.ceil((double) allCount / MAIN_PAGE_SIZE);
+        return getPages(allCount);
     }
 }

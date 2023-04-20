@@ -4,7 +4,7 @@ import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.UserService;
 import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.post.dto.PostForm;
-import kr.codesquad.cafe.post.exception.IllegalPostIdException;
+import kr.codesquad.cafe.post.exception.PostNotFoundException;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -63,10 +63,10 @@ class PostServiceTest {
     @Test
     void findById() {
         Post post = postService.save(new PostForm(TEST_TITLE, TEST_CONTENT), jack);
-        assertThatThrownBy(() -> postService.findById(NO_EXIST_ID)).isInstanceOf(IllegalPostIdException.class);
+        assertThatThrownBy(() -> postService.findById(NO_EXIST_ID)).isInstanceOf(PostNotFoundException.class);
         assertThatCode(() -> postService.findById(post.getId())).doesNotThrowAnyException();
         post.disable();
-        assertThatThrownBy(() -> postService.findById(post.getId())).isInstanceOf(IllegalPostIdException.class);
+        assertThatThrownBy(() -> postService.findById(post.getId())).isInstanceOf(PostNotFoundException.class);
     }
 
     @DisplayName("모든 Post 찾기")
@@ -104,6 +104,6 @@ class PostServiceTest {
         Post post = postService.save(new PostForm(TEST_TITLE, TEST_CONTENT), jack);
         assertThatCode(() -> postService.findById(post.getId())).doesNotThrowAnyException();
         postService.delete(post.getId());
-        assertThatThrownBy(() -> postService.findById(post.getId())).isInstanceOf(IllegalPostIdException.class);
+        assertThatThrownBy(() -> postService.findById(post.getId())).isInstanceOf(PostNotFoundException.class);
     }
 }
