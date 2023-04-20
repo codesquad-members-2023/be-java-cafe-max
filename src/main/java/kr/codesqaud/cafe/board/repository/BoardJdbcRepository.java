@@ -40,13 +40,13 @@ public class BoardJdbcRepository {
     }
 
     public void delete(Long postId) {
-        jdbcTemplate.update("UPDATE post SET deleted = 1 WHERE post_id = :postId", Collections.singletonMap("postId", postId));
+        jdbcTemplate.update("UPDATE post SET deleted = TRUE WHERE post_id = :postId", Collections.singletonMap("postId", postId));
     }
 
     public boolean containsPostId(Long postId) {
         Map<String, Long> namedParameters = Collections.singletonMap("post_id", postId);
         Optional<Integer> countOfPost = Optional.ofNullable(jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM post WHERE post_id = :post_id", namedParameters, Integer.class));
+                "SELECT COUNT(*) FROM post WHERE post_id = :post_id AND deleted = FALSE", namedParameters, Integer.class));
         return countOfPost.orElse(0) > 0;
     }
 
@@ -54,7 +54,9 @@ public class BoardJdbcRepository {
         Map<String, Long> namedParameters = Collections.singletonMap("postId", postId);
         try {
             return jdbcTemplate.queryForObject(
-                    "SELECT post_id, writer, title, contents, write_date_time FROM post WHERE post_id = :postId",
+                    "SELECT post_id, writer, title, contents, write_date_time " +
+                            "FROM post " +
+                            "WHERE post_id = :postId AND deleted = FALSE",
                     namedParameters, postRowMapper);
         } catch (DataRetrievalFailureException e) {
             throw new ResourceNotFoundException("요청한 데이터가 존재하지 않습니다.");
@@ -62,7 +64,10 @@ public class BoardJdbcRepository {
     }
 
     public List<BoardPost> findAll() {
-        return jdbcTemplate.query("SELECT post_id, writer, title, contents, write_date_time FROM post ORDER BY write_date_time DESC", postRowMapper);
+        return jdbcTemplate.query("SELECT post_id, writer, title, contents, write_date_time " +
+                "FROM post " +
+                "WHERE deleted = FALSE " +
+                "ORDER BY write_date_time DESC", postRowMapper);
     }
 
     public RowMapper<BoardPost> postRowMapper = new RowMapper<BoardPost>() {
