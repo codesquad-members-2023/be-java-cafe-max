@@ -24,6 +24,7 @@ import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.global.config.Session;
+import kr.codesqaud.cafe.reply.ReplyService;
 
 @WebMvcTest(ArticleController.class)
 class ArticleControllerTest {
@@ -33,6 +34,9 @@ class ArticleControllerTest {
 
 	@MockBean
 	ArticleService articleService;
+
+	@MockBean
+	ReplyService replyService;
 
 	private MockHttpSession httpSession;
 

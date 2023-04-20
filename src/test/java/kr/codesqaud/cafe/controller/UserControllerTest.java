@@ -46,20 +46,6 @@ class UserControllerTest {
 	}
 
 	@Test
-	@DisplayName("회원가입시 db에 회원을 저장한후 user/list 로 리다이렉트한다.")
-	void signUpTest() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/users/sign-up")
-				.session(httpSession)
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("nickName", "nickName")
-				.param("email", "aaaa@naver.com")
-				.param("password", "password123")
-				.param("id", "charlie"))
-			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/users/list"));
-	}
-
-	@Test
 	@DisplayName("회원가입 성공시 회원들의 list 를 user/list 에서 나열한다.")
 	void userListTest() throws Exception {
 		//given

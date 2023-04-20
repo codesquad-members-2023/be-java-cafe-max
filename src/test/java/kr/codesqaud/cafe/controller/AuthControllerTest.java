@@ -43,6 +43,20 @@ class AuthControllerTest {
 	}
 
 	@Test
+	@DisplayName("회원가입시 db에 회원을 저장한후 user/list 로 리다이렉트한다.")
+	void signUpTest() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.post("/users/sign-up")
+				.session(httpSession)
+				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.param("nickName", "nickName")
+				.param("email", "aaaa@naver.com")
+				.param("password", "password123")
+				.param("userId", "charlie"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(view().name("redirect:/users/list"));
+	}
+
+	@Test
 	@DisplayName("로그인성공시 id와 nickName을 session에 저장한다.")
 	void signInTest() throws Exception {
 		//given
@@ -53,7 +67,7 @@ class AuthControllerTest {
 		//when
 		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/users/sign-in")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("id", "id")
+				.param("userId", "id")
 				.param("password", "password123"))
 
 			//then

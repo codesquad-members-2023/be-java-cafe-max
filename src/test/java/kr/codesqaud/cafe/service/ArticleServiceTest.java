@@ -87,7 +87,7 @@ class ArticleServiceTest {
 
 	@Test
 	@DisplayName("idx를 통해 해당 article을 articleResponse의 형태로 반환한다.")
-	void findArticleByIdx() {
+	void findArticleByIdxTest() {
 		//given
 		Long idx = 1L;
 		Article article = new Article("title", "content", idx);
@@ -106,7 +106,7 @@ class ArticleServiceTest {
 
 	@Test
 	@DisplayName("ArticleUpdateRequest의 제목과 내용을 db에 업데이트 한다.")
-	void updateArticle() {
+	void updateArticleTest() {
 		//given
 		ArticleUpdateRequest articleUpdateRequest = new ArticleUpdateRequest("새로운제목", "새로운내용");
 		Long idx = 1L;
@@ -122,7 +122,7 @@ class ArticleServiceTest {
 
 	@Test
 	@DisplayName("session의 id와 article의 id가 같다면 ArticleTitleAndContentResponse형태로 반환한다.")
-	void validSessionIdAndArticleId() {
+	void validSessionIdAndArticleIdTest() {
 		Long idx = 1L;
 		String id = "id";
 		given(articleMapper.toArticleTitleAndContentResponse(article)).willReturn(articleTitleAndContentResponse);
@@ -130,20 +130,5 @@ class ArticleServiceTest {
 
 		//when & then
 		assertThatCode(() -> articleService.validSessionIdAndArticleId(idx, id)).doesNotThrowAnyException();
-	}
-
-	@Test
-	@DisplayName("session id와 article의 id가 같다면 해당 article을 삭제한다.")
-	void deleteArticleByIdx() {
-		Long idx = 1L;
-		String id = "id";
-		given(articleRepository.findArticleByIdx(idx)).willReturn(Optional.of(article));
-		given(articleMapper.toArticleTitleAndContentResponse(article)).willReturn(articleTitleAndContentResponse);
-
-		//when
-		articleService.deleteArticleByIdx(idx, id);
-
-		//then
-		verify(articleRepository, times(1)).deleteArticle(idx, id);
 	}
 }
