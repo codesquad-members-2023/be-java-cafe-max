@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.article;
 
 import static kr.codesqaud.cafe.global.config.Session.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
@@ -37,8 +37,8 @@ public class ArticleController {
 	}
 
 	@PostMapping("/articles")
-	public String post(@ModelAttribute @Valid ArticlePostRequest articlePostRequest, HttpSession httpSession) {
-		Session session = getLoginUser(httpSession);
+	public String post(@ModelAttribute @Valid ArticlePostRequest articlePostRequest,
+		@SessionAttribute(LOGIN_USER) Session session) {
 		articlePostRequest.setId(session.getId());
 		articlePostRequest.setNickName(session.getNickName());
 		articleService.post(articlePostRequest);
@@ -54,8 +54,7 @@ public class ArticleController {
 	}
 
 	@GetMapping("/articles/update/{idx}")
-	public String updateForm(@PathVariable Long idx, Model model, HttpSession httpSession) {
-		Session session = getLoginUser(httpSession);
+	public String updateForm(@PathVariable Long idx, Model model, @SessionAttribute(LOGIN_USER) Session session) {
 		model.addAttribute("article", articleService.validSessionIdAndArticleId(idx, session.getId()));
 		model.addAttribute("idx", idx);
 		return "article/updateForm";
@@ -70,8 +69,7 @@ public class ArticleController {
 	}
 
 	@DeleteMapping("/articles/{idx}")
-	public String delete(@PathVariable Long idx, HttpSession httpSession) {
-		Session session = getLoginUser(httpSession);
+	public String delete(@PathVariable Long idx, @SessionAttribute(LOGIN_USER) Session session) {
 		articleService.deleteArticleByIdx(idx, session.getId());
 		return "redirect:/";
 	}

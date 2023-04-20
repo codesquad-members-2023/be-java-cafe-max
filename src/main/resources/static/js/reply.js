@@ -10,7 +10,7 @@ const replyTemplate = `
             <div id="reply-info-box">
                 <p class="comment-content comment-author-name">{{nickName}}</p>
                 <p class="comment-content comment-time">{{date}}</p>
-                <form class = "reply-delete" method="post" action="/articles/{{articleIdx}}/{{replyIdx}}">
+                <form class = "reply-delete" method="post" action="/articles/reply/{{replyIdx}}">
                     <input type="hidden" name="_method" value="DELETE"/>
                     <button class="post-button reply-button" type="submit">삭제</button>
                 </form>

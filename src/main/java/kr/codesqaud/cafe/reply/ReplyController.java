@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.reply;
 
 import static kr.codesqaud.cafe.global.config.Session.*;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.codesqaud.cafe.global.config.Session;
 import kr.codesqaud.cafe.reply.dto.ReplyRequest;
@@ -26,19 +26,17 @@ public class ReplyController {
 		this.replyService = replyService;
 	}
 
-	@PostMapping("/articles/{articleIdx}/reply")
+	@PostMapping("/articles/reply/{articleIdx}")
 	@ResponseBody
 	public ReplyResponse reply(@PathVariable Long articleIdx, @ModelAttribute @Valid ReplyRequest replyRequest,
-		HttpSession httpSession) {
-		Session session = getLoginUser(httpSession);
+		@SessionAttribute(LOGIN_USER) Session session) {
 		replyRequest.init(session.getId(), articleIdx);
 		return replyService.save(replyRequest);
 	}
 
-	@DeleteMapping("/articles/{articleIdx}/{replyIdx}")
+	@DeleteMapping("/articles/reply/{replyIdx}")
 	@ResponseBody
-	public Result deleteReply(@PathVariable Long replyIdx, @PathVariable Long articleIdx, HttpSession httpSession) {
-		Session session = getLoginUser(httpSession);
+	public Result deleteReply(@PathVariable Long replyIdx, @SessionAttribute(LOGIN_USER) Session session) {
 		return replyService.delete(session.getId(), replyIdx);
 	}
 }
