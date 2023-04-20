@@ -59,10 +59,11 @@ public class ArticleService {
 		return true;
 	}
 
-	public void createComment(CommentDto commentDto) {
+	public List<Comment> createComment(CommentDto commentDto) {
 		Comment comment = new Comment(commentDto.getPostIndex(), commentDto.getAuthor(), commentDto.getComment(),
 			writeDate(), false);
 		commentRepository.create(comment);
+		return commentRepository.findByPostIndex(commentDto.getPostIndex());
 	}
 
 	public List<Comment> findCommentsByPostIndex(long postIndex) {
@@ -79,5 +80,9 @@ public class ArticleService {
 
 	public void deleteAllComment(Long postIndex) {
 		commentRepository.deleteAll(postIndex);
+	}
+
+	public List<Comment> showComments(Long postIndex) {
+		return commentRepository.findByPostIndex(postIndex);
 	}
 }

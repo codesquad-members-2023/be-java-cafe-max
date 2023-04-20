@@ -16,7 +16,6 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.ArticleDto;
-import kr.codesqaud.cafe.dto.CommentDto;
 import kr.codesqaud.cafe.service.ArticleService;
 
 @Controller
@@ -53,11 +52,11 @@ public class ArticleCommandController {
 		return "redirect:/";
 	}
 
-	@PostMapping("/comment/create/{writer}")
+	/*@PostMapping("/comment/create/{writer}")
 	public String createComment(@PathVariable String writer, CommentDto commentDto) {
 		articleService.createComment(commentDto);
 		return "redirect:/article/" + commentDto.getPostIndex() + "/" + writer;
-	}
+	}*/
 
 	@DeleteMapping("/comment/delete/{postIndex}/{index}/{writer}")
 	public String deleteComment(@PathVariable Long postIndex, @PathVariable Long index, @PathVariable String writer,

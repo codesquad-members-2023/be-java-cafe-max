@@ -400,6 +400,7 @@ input:focus, textarea:focus {
     justify-content: center;
     font-size: 15px;
     color: #afb9ea;
+    margin-top: 10px;
 }
 
 .comment {
