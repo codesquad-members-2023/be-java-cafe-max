@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,7 +21,6 @@ import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.repository.UserRepository;
 import kr.codesqaud.cafe.app.user.service.UserService;
-import kr.codesqaud.cafe.errors.errorcode.LoginErrorCode;
 import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
 import kr.codesqaud.cafe.errors.response.ErrorResponse;
 import kr.codesqaud.cafe.errors.response.ErrorResponse.ValidationError;
@@ -176,11 +176,14 @@ class UserControllerTest {
     @DisplayName("특정 회원의 id가 주어지고 회원의 프로필이 검색되는지 테스트")
     public void profile() throws Exception {
         //given
+        login("yonghwan1107", "yonghwan1107");
         String url = "/users/" + id;
         //when
-        UserResponse actual = (UserResponse) Objects.requireNonNull(mockMvc.perform(get(url))
-            .andExpect(status().isOk())
-            .andReturn().getModelAndView()).getModelMap().get("user");
+        UserResponse actual =
+            (UserResponse) Objects.requireNonNull(mockMvc.perform(get(url)
+                    .session(session))
+                .andExpect(status().isOk())
+                .andReturn().getModelAndView()).getModelMap().get("user");
         //then
         assertThat(actual.getId()).isEqualTo(id);
         assertThat(actual.getUserId()).isEqualTo("yonghwan1107");
@@ -243,30 +246,14 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 하지 않는 상태로 회원 정보 수정할때 로그인 페이지로 리다이렉션 하는지 테스트")
+    @DisplayName("로그인 하지 않는 상태로 회원 정보 수정 페이지 접근할때 로그인 페이지로 리다이렉션 하는지 테스트")
     public void update_fail2() throws Exception {
         //given
-        String userId = "yonghwan1107";
-        String password = "yonghwan1107";
-        String modifiedName = "홍길동";
-        String modifiedEmail = "yonghwan1234@naver.com";
         String url = "/users/" + id;
-        UserSavedRequest dto = new UserSavedRequest(userId, password, modifiedName, modifiedEmail);
-        //when
-        String jsonError = mockMvc.perform(put(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJSON(dto)))
-            .andExpect(status().isUnauthorized())
-            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        //then
-        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
-        };
-        HashMap<String, Object> errorMap = objectMapper.readValue(jsonError, typeReference);
-        assertThat(errorMap.get("name")).isEqualTo(LoginErrorCode.UNAUTHORIZED.getName());
-        assertThat(errorMap.get("httpStatus")).isEqualTo(
-            LoginErrorCode.UNAUTHORIZED.getHttpStatus().name());
-        assertThat(errorMap.get("errorMessage")).isEqualTo(
-            LoginErrorCode.UNAUTHORIZED.getMessage());
+        //when & then
+        mockMvc.perform(put(url)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(redirectedUrl("/login"));
     }
 
     @Test
