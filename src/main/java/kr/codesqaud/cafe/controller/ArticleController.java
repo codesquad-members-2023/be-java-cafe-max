@@ -108,8 +108,7 @@ public class ArticleController {
 
         model.addAttribute("loginUser", loginUser);
 
-        Article article = articleService.findOne(id);
-        if (article.isAuthor(loginUser.getUserId())) {
+        if (articleService.isCreatedBy(loginUser.getUserId(), id)) {
             articleService.delete(id);
             return "redirect:/";
         }

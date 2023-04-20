@@ -40,4 +40,9 @@ public class ArticleService {
 
         articleRepository.delete(id);
     }
+
+    public boolean isCreatedBy(String userId, Long id) {
+        Article article = findOne(id);
+        return article.isAuthor(userId);
+    }
 }
