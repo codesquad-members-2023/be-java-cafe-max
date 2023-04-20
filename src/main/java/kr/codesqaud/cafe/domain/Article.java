@@ -8,6 +8,7 @@ public class Article {
     private String title;
     private String contents;
     private LocalDateTime currentTime;
+    private Long replyCount;
 
     public Article() {
     }
@@ -57,5 +58,13 @@ public class Article {
 
     public String getContents() {
         return contents;
+    }
+
+    public Long getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(Long replyCount) {
+        this.replyCount = replyCount;
     }
 }
