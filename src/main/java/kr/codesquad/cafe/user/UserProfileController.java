@@ -55,7 +55,7 @@ public class UserProfileController {
     }
 
     @ValidUserIdPath
-    @GetMapping(value = "/users/{userId}",params = "page")
+    @GetMapping(value = "/users/{userId}", params = "page")
     public String ViewUserPageAndPageParm(Model model, @PathVariable long userId, @SessionAttribute User user, @RequestParam("page") Optional<Integer> page) {
         model.addAttribute(PROFILE_FORM, ProfileForm.from(user));
 
@@ -63,7 +63,7 @@ public class UserProfileController {
         List<SimplePostForm> simpleForms = postService.getAllSimplePostFormByUserId(userId, currentPage);
         model.addAttribute(SIMPLE_FORMS, simpleForms);
 
-        PagesInfo pagesInfo = postService.getPagesInfoByUser(currentPage,userId);
+        PagesInfo pagesInfo = postService.getPagesInfoByUser(currentPage, userId);
         model.addAttribute("pagesInfo", pagesInfo);
         model.addAttribute("simpleForms", simpleForms);
         return "user/info :: #postsPage";

@@ -2,9 +2,9 @@ package kr.codesquad.cafe.global;
 
 import kr.codesquad.cafe.post.Post;
 import kr.codesquad.cafe.post.PostRepository;
+import kr.codesquad.cafe.user.UserRepository;
 import kr.codesquad.cafe.user.domain.Role;
 import kr.codesquad.cafe.user.domain.User;
-import kr.codesquad.cafe.user.UserRepository;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;

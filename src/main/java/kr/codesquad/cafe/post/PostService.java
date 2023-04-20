@@ -35,7 +35,7 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    private static Pageable getPageable(int currentPage,int pageSize) {
+    private static Pageable getPageable(int currentPage, int pageSize) {
         return PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.DESC, "createdDateTime")).previous();
     }
 
@@ -50,7 +50,7 @@ public class PostService {
     }
 
     public List<SimplePostForm> getAllSimplePostForm(int currentPage) {
-        List<Post> posts = postRepository.findAllByIsDeleted(false, getPageable(currentPage,MAIN_PAGE_SIZE));
+        List<Post> posts = postRepository.findAllByIsDeleted(false, getPageable(currentPage, MAIN_PAGE_SIZE));
         return toSimplePostForm(posts);
     }
 
@@ -96,7 +96,7 @@ public class PostService {
     }
 
     private int getAllPagesByUser(long userId) {
-        int allCount = postRepository.countByIsDeletedAndUserId(false,userId);
+        int allCount = postRepository.countByIsDeletedAndUserId(false, userId);
         return (int) Math.ceil((double) allCount / MAIN_PAGE_SIZE);
     }
 }

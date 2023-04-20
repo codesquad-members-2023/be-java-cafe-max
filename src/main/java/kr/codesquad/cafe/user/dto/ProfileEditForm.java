@@ -1,8 +1,8 @@
 package kr.codesquad.cafe.user.dto;
 
-import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.annotation.ValidNickName;
 import kr.codesquad.cafe.user.annotation.ValidPassword;
+import kr.codesquad.cafe.user.domain.User;
 
 import javax.validation.constraints.Email;
 

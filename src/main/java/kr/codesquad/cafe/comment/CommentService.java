@@ -16,7 +16,7 @@ public class CommentService {
     }
 
     public Comment save(String body, Post post, User user) {
-        return commentRepository.save(Comment.from(body,post,user));
+        return commentRepository.save(Comment.from(body, post, user));
     }
 
     public void delete(long commentId, long userId) {
