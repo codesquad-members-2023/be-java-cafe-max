@@ -1,0 +1,14 @@
+<script src="/js/jquery-2.2.0.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script>
+    function submit(){
+        $.ajax({
+            url: "/user/logout",
+            type: "POST"
+        }).done(function (){
+            alert("로그아웃되었습니다.")
+            location.href="/";
+        })
+    }
+
+</script>
