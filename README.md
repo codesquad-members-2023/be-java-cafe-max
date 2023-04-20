@@ -4,7 +4,7 @@
 
 ## 배포 url
 
-[Spring-cafe](http://ec2-3-34-194-155.ap-northeast-2.compute.amazonaws.com:8080/)
+[Spring-cafe](http://ec2-54-180-8-15.ap-northeast-2.compute.amazonaws.com:8080/)
 
 ## 로그인
 
