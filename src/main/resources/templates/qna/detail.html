@@ -26,7 +26,7 @@
                 <a class="article-author-name" th:href="@{/users/{id}(id=${question.userId})}"
                    th:text="${question.writer}"></a>
                 <a class="article-header-time" href="/questions/413"
-                   th:text="${#temporals.format(question.writeDate, 'YYYY-MM-dd HH:mm')}"
+                   th:text="${#temporals.format(question.createTime, 'YYYY-MM-dd HH:mm')}"
                    title="퍼머링크">
                   <i class="icon-link"></i>
                 </a>

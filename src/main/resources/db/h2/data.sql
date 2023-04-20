@@ -9,5 +9,5 @@ VALUES ('user4', 'user4user4', '김용사', 'user4@naver.com');
 INSERT INTO users(userId, password, name, email)
 VALUES ('user5', 'user5user5', '김용오', 'user5@naver.com');
 
-INSERT INTO question(title, content, writeDate, userId)
-VALUES ('제목1', '내용1', now(), 1);
+INSERT INTO question(title, content, userId)
+VALUES ('제목1', '내용1', 1);
