@@ -30,7 +30,7 @@ public class UserQueryController {
 		return "user/login";
 	}
 
-	@GetMapping("/checkForUpdate")
+	@GetMapping("/user/checkForUpdate")
 	public String checkForUpdate() {
 		return "user/checkForUpdate";
 	}
@@ -55,9 +55,9 @@ public class UserQueryController {
 		return "user/list";
 	}
 
-	@GetMapping("/users/{userID}")
-	public String getProfileByUserID(@PathVariable String userID, Model model) {
-		User user = userService.findOne(userID);
+	@GetMapping("/users/{nickname}")
+	public String getProfileByUserID(@PathVariable String nickname, Model model) {
+		User user = userService.findByNickname(nickname);
 		model.addAttribute("user", user);
 		return "user/profile";
 	}

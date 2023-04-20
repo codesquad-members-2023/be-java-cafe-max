@@ -18,11 +18,11 @@
                     <div class="article-index">{{hits}}</div>
                     <div class="column">
                         <strong class="article-title">
-                            <a href="/articles/{{index}}/{{writer}}">{{title}}</a>
+                            <a href="/article/{{index}}/{{writer}}">{{title}}</a>
                         </strong>
                         <div class="article-writer">
                             <span class="time">{{writeDate}}</span>
-                            <a href="./user/profile.html" class="writer">{{writer}}</a>
+                            <a href="/users/{{writer}}" class="writer">{{writer}}</a>
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
             <div class="write">
                 <input type="text" id="searchInput">
                 <a id="search" class="body button" href="#">검색</a>
-                <a id="button-write" class="body button" href="/questions/form">글쓰기</a>
+                <a id="button-write" class="body button" href="/article/form">글쓰기</a>
             </div>
         </div>
     </div>

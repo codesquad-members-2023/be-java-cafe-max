@@ -1,6 +1,7 @@
 const validSignUpCheck = [false, false, false, false];
 const validUpdateCheck = [true, true, true, true];
 const validWriteCheck = [false, false];
+const validWriteUpdateCheck = [true, true];
 const validOutputView = ["올바른 아이디 형식입니다.", "올바른 이메일 형식입니다.", "올바른 닉네임입니다.", "올바른 비밀번호 형식입니다."];
 const invalidOutputView = ["아이디는 2글자 이상 64글자 이하여야 합니다.", "잘못된 이메일 형식입니다.", "닉네임은 2글자 이상 64글자 이하여야 합니다."
 , "비밀번호는 8글자 이상 32글자 이하, 영어 소문자 및 숫자를 반드시 포함해야합니다."
@@ -97,8 +98,10 @@ function verifyTitle() {
 
     if(title.length > 0) {
         validWriteCheck[0] = true;
+        validWriteUpdateCheck[0] = true;
     } else {
         validWriteCheck[0] = false;
+        validWriteUpdateCheck[0] = false;
     }
 }
 
@@ -107,27 +110,28 @@ function verifyContent() {
 
     if(title.length >= 3 && title.length <= 1000) {
         validWriteCheck[1] = true;
+        validWriteUpdateCheck[1] = true;
     } else {
         validWriteCheck[1] = false;
+        validWriteUpdateCheck[1] = false;
     }
 }
 
 function validateWriting() {
     if(validWriteCheck[0] && validWriteCheck[1]) {
-        const write = createWriteObject();
-        const commentArrayData = [];
-        const commentData = createCommentDataObject();
-
-        const board = JSON.parse(localStorage.getItem("board"));
-        const comment = JSON.parse(localStorage.getItem("comment"));
-
-        board.push(write);
-        commentArrayData.push(comment);
-        comment.push(commentArrayData);
-
-        saveDataToLocalStorage(board, comment);
+        return true;
     } else {
-        invalidView('#writingMessage', WRITING_NUM);
+        invalidView('#allMessage', WRITING_NUM);
+        return false;
+    }
+}
+
+function validateWritingUpdate() {
+    if(validWriteCheck[0] && validWriteCheck[1]) {
+        return true;
+    } else {
+        invalidView('#allMessage', WRITING_NUM);
+        return false;
     }
 }
 

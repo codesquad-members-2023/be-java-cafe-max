@@ -63,4 +63,9 @@ public class UserService {
 		return userRepository.findByUserID(userID)
 			.orElseThrow(() -> new UserNotFoundException("유저 아이디를 찾을 수 없습니다."));
 	}
+
+	public User findByNickname(String nickname) {
+		return userRepository.findByNickname(nickname)
+			.orElseThrow(() -> new UserNotFoundException("유저 닉네임을 찾을 수 없습니다."));
+	}
 }

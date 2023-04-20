@@ -93,6 +93,14 @@ public class JdbcUserRepository implements UserRepository {
 			namedParameterJdbcTemplate.queryForObject(EXISTS_UPDATE_NICKNAME, param, Boolean.class));
 	}
 
+	@Override
+	public Optional<User> findByNickname(String nickname) {
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("nickname", nickname);
+		List<User> users = namedParameterJdbcTemplate.query(FIND_BY_NICKNAME, param, userRowMapper());
+		return OptionalTo(users);
+	}
+
 	private RowMapper<User> userRowMapper() {
 		return (rs, rowNum) -> new User(rs.getLong("index"), rs.getString("userID"), rs.getString("email"),
 			rs.getString("nickname"), rs.getString("password"), rs.getDate("signUpDate").toLocalDate());

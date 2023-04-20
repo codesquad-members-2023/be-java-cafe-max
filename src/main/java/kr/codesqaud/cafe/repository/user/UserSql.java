@@ -9,12 +9,8 @@ public class UserSql {
 		= "SELECT index, userID, email, nickname, password, signUpDate "
 		+ "FROM USER_INFO WHERE userID = :userID";
 
-	public static final String FIND_BY_EMAIL
-		= "SELECT email "
-		+ "FROM USER_INFO WHERE email = :email";
-
 	public static final String FIND_BY_NICKNAME
-		= "SELECT nickname "
+		= "SELECT index, userID, email, nickname, password, signUpDate "
 		+ "FROM USER_INFO WHERE nickname = :nickname";
 
 	public static final String UPDATE

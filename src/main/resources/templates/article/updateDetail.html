@@ -1,7 +1,8 @@
 {{> fragments/header}}
 <div></div>
 <div class="wrap">
-    <form name="question" id="question" method="post" action="/qna/update/{{article.index}}">
+    <form name="question" id="question" method="post" action="/article/update/{{article.index}}"
+          onsubmit="return validateWritingUpdate()">
         <input type="hidden" name="_method" value="PATCH"/>
         <input type="hidden" name="writer" value="{{article.writer}}"/>
         <div class="h3">
@@ -16,8 +17,12 @@
             <input type="text" name="contents" id="content" value="{{article.contents}}" onkeyup="verifyContent()"/>
         </div>
         <div class="write-complete">
-            <div id="writingMessage" class="message"></div>
-            <button class="button complete" type="submit" onclick="validateWriting()">수정완료</button>
+            <div id="allMessage" class="message" style="color: red">
+                {{#errorMessage}}
+                {{{errorMessage}}}
+                {{/errorMessage}}
+            </div>
+            <button class="button complete" type="submit">수정완료</button>
         </div>
     </form>
 </div>

@@ -1,7 +1,7 @@
 {{> fragments/header}}
 <div></div>
 <div class="wrap">
-    <form name="question" id="question" method="post" action="/qna/write">
+    <form name="question" id="question" method="post" action="/article/write" onsubmit="return validateWriting()">
         <input type="hidden" name="writer" value="{{writer}}"/>
         <div class="h3">
             <h3>글쓰기</h3>
@@ -15,8 +15,12 @@
             <textarea name="contents" id="content" placeholder="글의 내용을 입력하세요." onkeyup="verifyContent()"></textarea>
         </div>
         <div class="write-complete">
-            <div id="writingMessage" class="message"></div>
-            <button class="button complete" type="submit" onclick="validateWriting()">작성완료</button>
+            <div id="allMessage" class="message" style="color: red">
+                {{#errorMessage}}
+                {{{errorMessage}}}
+                {{/errorMessage}}
+            </div>
+            <button class="button complete" type="submit">작성완료</button>
         </div>
     </form>
 </div>

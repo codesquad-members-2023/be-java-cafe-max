@@ -21,13 +21,13 @@
             <label for="password">비밀번호</label>
             <input type="password" id="password" name="password" value="{{user.password}}" onkeyup="verifyPassword()">
         </div>
-        <div id="passwordMessage" class="message" style="color: red">
+        <div id="passwordMessage" class="message"></div>
+        <button class="body button">수정 완료</button>
+        <div id="allMessage" class="message" style="color: red">
             {{#errorMessage}}
             {{{errorMessage}}}
             {{/errorMessage}}
         </div>
-        <button class="body button">수정 완료</button>
-        <div id="allMessage" class="message"></div>
     </form>
 </div>
 <script src="/js/dataValidation.js"></script>

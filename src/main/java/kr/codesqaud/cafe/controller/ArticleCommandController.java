@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,13 +25,13 @@ public class ArticleCommandController {
 		this.articleService = articleService;
 	}
 
-	@PostMapping("/qna/write")
-	public String writeArticle(ArticleDto articleDto) {
+	@PostMapping("/article/write")
+	public String writeArticle(@Valid ArticleDto articleDto) {
 		articleService.createArticle(articleDto);
 		return "redirect:/";
 	}
 
-	@DeleteMapping("/qna/delete/{index}")
+	@DeleteMapping("/article/delete/{index}")
 	public String deleteArticle(@PathVariable Long index, Model model, HttpSession session) {
 		User user = (User)session.getAttribute("sessionUser");
 		Article article = articleService.findByIndex(index);
@@ -39,8 +40,8 @@ public class ArticleCommandController {
 		return "redirect:/";
 	}
 
-	@PatchMapping("/qna/update/{index}")
-	public String updateArticle(@PathVariable Long index, ArticleDto articleDto) {
+	@PatchMapping("/article/update/{index}")
+	public String updateArticle(@PathVariable Long index, @Valid ArticleDto articleDto) {
 		articleService.updateArticle(index, articleDto);
 		return "redirect:/";
 	}

@@ -29,14 +29,14 @@ public class ArticleQueryController {
 		return "index";
 	}
 
-	@GetMapping("/questions/form")
+	@GetMapping("/article/form")
 	public String getArticleForm(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("sessionUser");
 		model.addAttribute("writer", user.getNickname());
-		return "qna/form";
+		return "article/form";
 	}
 
-	@GetMapping("/articles/{index}/{writer}")
+	@GetMapping("/article/{index}/{writer}")
 	public String showArticle(@PathVariable long index, @PathVariable String writer, HttpSession session, Model model) {
 		String equal = null;
 		User user = (User)session.getAttribute("sessionUser");
@@ -49,15 +49,15 @@ public class ArticleQueryController {
 		model.addAttribute("article", article);
 		model.addAttribute("comments", comments);
 		model.addAttribute("equal", equal);
-		return "qna/detail";
+		return "article/detail";
 	}
 
-	@GetMapping("/qna/update/{index}")
+	@GetMapping("/article/update/{index}")
 	public String getUpdateForm(@PathVariable Long index, Model model, HttpSession session) {
 		User user = (User)session.getAttribute("sessionUser");
 		Article article = articleService.findByIndex(index);
 		article.validateWriter(user.getNickname(), "다른 사람의 글은 수정할 수 없습니다.");
 		model.addAttribute("article", article);
-		return "qna/updateDetail";
+		return "article/updateDetail";
 	}
 }

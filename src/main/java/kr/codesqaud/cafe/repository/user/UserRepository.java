@@ -24,4 +24,6 @@ public interface UserRepository {
 	boolean existUpdateEmail(String userID, String email);
 
 	boolean existUpdateNickname(String userID, String nickname);
+
+	Optional<User> findByNickname(String nickname);
 }
