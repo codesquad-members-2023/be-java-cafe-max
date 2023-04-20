@@ -23,9 +23,11 @@ public class ArticleService {
     /**
      * 게시글 저장
      */
-    public Article save(Article article) {
+    public long save(Article article) {
         // TODO: title/content 비어있는지 등 유효성 검증
-        return articleRepository.save(article);
+        long id = articleRepository.save(article);
+        logger.info("게시글 저장 성공, 게시글 id: {}", id);
+        return id;
     }
 
     /**
@@ -45,19 +47,20 @@ public class ArticleService {
     }
 
     /**
-     *
      * @param id Article id
-     * @param requesterId User userId
      */
-    public Article edit(long id, Article article) {
+    public long edit(long id, Article article) {
         String originWriter = articleRepository.findIdBySequence(id);
-        if (!originWriter.equals(article.getWriter())) {
-            logger.info("게시글 수정 요청 ID와 기존 게시글 ID 불일치");
+        String requesterId = article.getWriter();
+
+        if (!originWriter.equals(requesterId)) {
+            logger.info("게시글 수정 요청 ID와 기존 게시글 ID 불일치, requesterId: {}, originId: {}", requesterId, originWriter);
             throw new InvalidRequesterIdException();
         }
 
-        logger.info("게시글 수정 성공");
-        return articleRepository.update(id, article);
+        articleRepository.update(id, article);
+        logger.info("게시글 수정 성공, 게시글 id: {}", id);
+        return id;
     }
 
 }

@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface ArticleRepository {
 
-    Article save(Article article);
+    long save(Article article);
 
     String findIdBySequence(long sequence);
 
@@ -13,5 +13,5 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
-    Article update(long id, Article article);
+    long update(long id, Article article);
 }

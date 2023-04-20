@@ -37,8 +37,8 @@ public class ArticleController {
     public String write(final ArticleRequestDto articleRequestDto, HttpSession session) {
         String writer = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
         Article article = articleRequestDto.toEntity(writer);
-        articleService.save(article);
-        return "redirect:/";
+        long id = articleService.save(article);
+        return "redirect:/articles/" + id;
     }
 
     @GetMapping("/articles/{articleId}")
