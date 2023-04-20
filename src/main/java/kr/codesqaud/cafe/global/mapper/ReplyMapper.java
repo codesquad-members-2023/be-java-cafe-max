@@ -14,11 +14,6 @@ public class ReplyMapper {
 			replyRequest.getContent());
 	}
 
-	public ReplyResponse toReplyResponse(Reply reply, Long replyIdx) {
-		return new ReplyResponse(reply.getNickName(), reply.getContent(), reply.getDate(), reply.getArticleIdx(),
-			replyIdx);
-	}
-
 	public ReplyResponse toReplyResponse(Reply reply) {
 		return new ReplyResponse(reply.getNickName(), reply.getContent(), reply.getDate(), reply.getArticleIdx(),
 			reply.getReplyIdx());

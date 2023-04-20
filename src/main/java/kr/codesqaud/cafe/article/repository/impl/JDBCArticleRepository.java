@@ -24,11 +24,10 @@ public class JDBCArticleRepository implements ArticleRepository {
 	@Override
 	public void save(Article article) {
 		namedParameterJdbcTemplate.update(
-			"INSERT INTO ARTICLE (title, content, date, user_id) VALUES (:title, :content, :date, :userId)",
+			"INSERT INTO ARTICLE (title, content, user_id) VALUES (:title, :content, :userId)",
 			new MapSqlParameterSource()
 				.addValue("title", article.getTitle())
 				.addValue("content", article.getContent())
-				.addValue("date", article.getDate())
 				.addValue("userId", article.getUserId())
 		);
 

@@ -26,8 +26,7 @@ public class ReplyService {
 
 	public ReplyResponse save(ReplyRequest replyRequest) {
 		Reply reply = replyMapper.toReply(replyRequest);
-		Long replyIdx = replyRepository.saveReply(reply);
-		return replyMapper.toReplyResponse(reply, replyIdx);
+		return replyMapper.toReplyResponse(replyRepository.saveReply(reply));
 	}
 
 	public List<ReplyResponse> getRepliesByIdx(Long articleIdx) {

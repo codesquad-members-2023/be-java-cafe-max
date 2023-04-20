@@ -24,13 +24,12 @@ public class JDBCUserRepository implements UserRepository {
 	@Override
 	public void save(User user) {
 		namedParameterJdbcTemplate.update(
-			"INSERT INTO `USER` (nickName, email,password,user_id,date) VALUES (:nickName,:email, :password, :userId, :date)",
+			"INSERT INTO `USER` (nickName, email,password,user_id) VALUES (:nickName,:email, :password, :userId)",
 			new MapSqlParameterSource()
 				.addValue("nickName", user.getNickName())
 				.addValue("email", user.getEmail())
 				.addValue("password", user.getPassword())
-				.addValue("userId", user.getUserId())
-				.addValue("date", user.getDate()));
+				.addValue("userId", user.getUserId()));
 	}
 
 	/**

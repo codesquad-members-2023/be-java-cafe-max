@@ -19,17 +19,21 @@ public class JDBCReplyRepository implements ReplyRepository {
 	}
 
 	@Override
-	public Long saveReply(Reply reply) {
+	public Reply saveReply(Reply reply) {
 		namedParameterJdbcTemplate.update(
-			"INSERT INTO REPLY (article_idx,user_id,content,date) VALUES (:article_idx, :userId, :content, :date)"
+			"INSERT INTO REPLY (article_idx,user_id,content) VALUES (:article_idx, :userId, :content)"
 			, new MapSqlParameterSource()
 				.addValue("article_idx", reply.getArticleIdx())
 				.addValue("userId", reply.getUserId())
-				.addValue("content", reply.getContent())
-				.addValue("date", reply.getDate()));
+				.addValue("content", reply.getContent()));
 
-		return namedParameterJdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()",
-			new MapSqlParameterSource(), Long.class);
+		return findReplyByReplyIdx();
+	}
+
+	private Reply findReplyByReplyIdx() {
+		return namedParameterJdbcTemplate.queryForObject("SELECT A.nickName,B.* FROM USER A INNER JOIN REPLY B "
+				+ "ON A.user_id = B.user_id WHERE reply_idx = LAST_INSERT_ID()",
+			new MapSqlParameterSource(), (rs, rn) -> new Reply(rs));
 	}
 
 	@Override
