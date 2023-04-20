@@ -52,10 +52,6 @@ public class Member {
         return this.password.equals(password);
     }
 
-    public Member createWithId(Long id) {
-        return new Member(id, email, password, nickname, createDate);
-    }
-
     public static MemberBuilder builder() {
         return new MemberBuilder();
     }

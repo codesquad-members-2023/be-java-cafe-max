@@ -106,9 +106,15 @@ class MemberServiceTest {
     void findById() {
         // given
         Long savedId = 1L;
-        SignUpRequest memberCreateRequest = createRequestDummy2();
+        Member member = Member.builder()
+            .id(savedId)
+            .email("mandu@gmail.com")
+            .password("Mandu1234")
+            .nickname("mandu")
+            .createDate(LocalDateTime.now())
+            .build();
         given(memberRepository.findById(any()))
-            .willReturn(Optional.of(memberCreateRequest.toMember().createWithId(savedId)));
+            .willReturn(Optional.of(member));
 
         // when
         MemberResponse memberResponse = memberService.findById(savedId);
@@ -171,8 +177,20 @@ class MemberServiceTest {
     @Test
     void findAll() {
         // given
-        Member member = createRequestDummy().toMember().createWithId(1L);
-        Member member2 = createRequestDummy2().toMember().createWithId(2L);
+        Member member = Member.builder()
+            .id(1L)
+            .email("test@naver.com")
+            .password("Test1234")
+            .nickname("test")
+            .createDate(LocalDateTime.now())
+            .build();
+        Member member2 = Member.builder()
+            .id(2L)
+            .email("mandu@gmail.com")
+            .password("Mandu1234")
+            .nickname("mandu")
+            .createDate(LocalDateTime.now())
+            .build();
         given(memberRepository.findAll()).willReturn(List.of(member, member2));
 
         // when
@@ -190,8 +208,15 @@ class MemberServiceTest {
         AccountSession accountSession = new AccountSession(memberId, "만두");
         ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(memberId, "mandu@gmail.com"
             , "Test1234", "Mandu1234", "mandu");
+        Member member = Member.builder()
+            .id(memberId)
+            .email("mandu@gmail.com")
+            .password("Test1234")
+            .nickname("mandu")
+            .createDate(LocalDateTime.now())
+            .build();
         given(memberRepository.findById(any()))
-            .willReturn(Optional.of(createRequestDummy().toMember().createWithId(memberId)))
+            .willReturn(Optional.of(member))
             .willReturn(Optional.of(memberUpdateRequest.toMember()));
 
         // when
