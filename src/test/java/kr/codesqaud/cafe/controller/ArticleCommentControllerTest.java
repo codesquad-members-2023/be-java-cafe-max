@@ -16,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kr.codesqaud.cafe.controller.dto.req.ReplyRequest;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.service.ArticleCommentService;
@@ -26,6 +28,9 @@ public class ArticleCommentControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	@Autowired
+	private ObjectMapper mapper;
+
 	@MockBean
 	private ArticleCommentService articleCommentService;
 
@@ -33,19 +38,16 @@ public class ArticleCommentControllerTest {
 	@Test
 	void givenReplyRequest_whenReply_thenRedirectsArticleDetailsPage() throws Exception {
 		// given
-		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-		body.add("articleId", "1");
-		body.add("content", "댓글의 내용이랍니다~");
-
-		willDoNothing().given(articleCommentService).reply(any(ReplyRequest.class), anyString());
+		ReplyRequest request = new ReplyRequest(1L, "댓글의 내용이랍니다~");
+		given(articleCommentService.reply(any(ReplyRequest.class), anyString())).willReturn(1L);
 
 		// when & then
 		mockMvc.perform(post("/comments")
-							.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-							.params(body)
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(mapper.writeValueAsString(request))
 							.sessionAttr("sessionedUser", "bruni"))
-			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/articles/1"))
+			.andExpect(status().isCreated())
+			.andExpect(content().string("1"))
 			.andDo(print());
 
 		then(articleCommentService).should().reply(any(ReplyRequest.class), anyString());
@@ -55,16 +57,14 @@ public class ArticleCommentControllerTest {
 	@Test
 	void givenNoSession_whenReply_thenRedirectsLoginPage() throws Exception {
 		// given
-		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-		body.add("articleId", "1");
-		body.add("content", "댓글의 내용이랍니다~");
+		ReplyRequest request = new ReplyRequest(1L, "댓글의 내용이랍니다~");
 
-		willDoNothing().given(articleCommentService).reply(any(ReplyRequest.class), anyString());
+		given(articleCommentService.reply(any(ReplyRequest.class), anyString())).willReturn(1L);
 
 		// when & then
 		mockMvc.perform(post("/comments")
 							.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-							.params(body))
+							.content(mapper.writeValueAsString(request)))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/user/login"))
 			.andDo(print());
@@ -76,19 +76,14 @@ public class ArticleCommentControllerTest {
 	@Test
 	void givenArticleId_whenDelete_thenRedirectsArticleDetailsPage() throws Exception {
 		// given
-		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-		body.add("articleId", "1");
-
 		willDoNothing().given(articleCommentService).validateHasAuthorization(anyLong(), anyString());
 		willDoNothing().given(articleCommentService).deleteById(anyLong());
 
 		// when & then
 		mockMvc.perform(delete("/comments/1")
-							.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-							.params(body)
+							.contentType(MediaType.APPLICATION_JSON)
 							.sessionAttr("sessionedUser", "bruni"))
-			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/articles/1"))
+			.andExpect(status().isOk())
 			.andDo(print());
 
 		assertAll(

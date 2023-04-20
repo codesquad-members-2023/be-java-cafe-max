@@ -38,8 +38,7 @@ class ArticleCommentServiceTest {
 		void givenReplyRequest_whenReply_thenReturnsNothing() {
 			// given
 			ReplyRequest replyRequest = new ReplyRequest(1L, "댓글 등록 테스트~");
-			given(articleCommentRepository.save(any(ArticleComment.class))).willReturn(
-				Optional.of(createArticleComment()));
+			given(articleCommentRepository.save(any(ArticleComment.class))).willReturn(1L);
 
 			// when
 			articleCommentService.reply(replyRequest, "bruni");
