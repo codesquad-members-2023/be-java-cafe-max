@@ -51,7 +51,7 @@ public class PostControllerTest {
     void write() throws Exception {
         // given
         Long writerId = 1L;
-        AccountSession accountSession = new AccountSession(writerId);
+        AccountSession accountSession = new AccountSession(writerId, "만두");
         PostWriteRequest postWriteRequest = new PostWriteRequest("게시글 제목", "게시글 내용", writerId);
         given(postService.write(any())).willReturn(writerId);
 
@@ -75,7 +75,7 @@ public class PostControllerTest {
     void writeFalse(String title, String error) throws Exception {
         // given
         Long writerId = 1L;
-        AccountSession accountSession = new AccountSession(writerId);
+        AccountSession accountSession = new AccountSession(writerId, "만두");
         PostWriteRequest postWriteRequest = new PostWriteRequest(title, "게시글 내용", writerId);
 
         // when
@@ -105,7 +105,7 @@ public class PostControllerTest {
     void writeFalse2(String content, String error) throws Exception {
         // given
         Long writerId = 1L;
-        AccountSession accountSession = new AccountSession(writerId);
+        AccountSession accountSession = new AccountSession(writerId, "만두");
         PostWriteRequest postWriteRequest = new PostWriteRequest("게시글 제목", content, writerId);
 
         // when
@@ -128,7 +128,7 @@ public class PostControllerTest {
     void detailPost() throws Exception {
         // given
         PostResponse postResponse = createPostResponseDummy();
-        AccountSession accountSession = new AccountSession(postResponse.getWriter().getId());
+        AccountSession accountSession = new AccountSession(postResponse.getWriter().getId(), "만두");
         given(postService.findById(1L)).willReturn(postResponse);
 
         // when
@@ -147,7 +147,7 @@ public class PostControllerTest {
     @Test
     void detailPostFalse() throws Exception {
         // given
-        AccountSession accountSession = new AccountSession(1L);
+        AccountSession accountSession = new AccountSession(1L, "만두");
         given(postService.findById(1L)).willThrow(PostNotFoundException.class);
 
         // when
@@ -165,7 +165,7 @@ public class PostControllerTest {
     @Test
     void writeForm() throws Exception {
         // given
-        AccountSession accountSession = new AccountSession(1L);
+        AccountSession accountSession = new AccountSession(1L, "만두");
 
         // when
 
@@ -183,7 +183,7 @@ public class PostControllerTest {
     void modifyForm() throws Exception {
         // given
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(1L);
+        AccountSession accountSession = new AccountSession(1L, "만두");
         given(postService.findById(id)).willReturn(createPostResponseDummy());
 
         // when
@@ -202,7 +202,7 @@ public class PostControllerTest {
     void modifyFormFalse() throws Exception {
         // given
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(2L);
+        AccountSession accountSession = new AccountSession(2L, "만두");
         given(postService.findById(id)).willThrow(new UnauthorizedException());
 
         // when
@@ -221,7 +221,7 @@ public class PostControllerTest {
     void modifyFormFalse2() throws Exception {
         // given
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(1L);
+        AccountSession accountSession = new AccountSession(1L, "만두");
         given(postService.findById(id)).willThrow(new PostNotFoundException());
 
         // when
@@ -240,7 +240,7 @@ public class PostControllerTest {
     void modify() throws Exception {
         // given
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(1L);
+        AccountSession accountSession = new AccountSession(1L, "만두");
 
         // when
 
@@ -259,7 +259,7 @@ public class PostControllerTest {
     void modifyFalse() throws Exception {
         // given
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(1L);
+        AccountSession accountSession = new AccountSession(1L, "만두");
         willThrow(new PostNotFoundException()).given(postService).modify(any(), any());
 
         // when
@@ -280,7 +280,7 @@ public class PostControllerTest {
     void modifyFalse2() throws Exception {
         // given
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(2L);
+        AccountSession accountSession = new AccountSession(2L, "만두");
         willThrow(new UnauthorizedException()).given(postService).modify(any(), any());
 
         // when
@@ -301,7 +301,7 @@ public class PostControllerTest {
     void deletePost() throws Exception {
         // given
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(1L);
+        AccountSession accountSession = new AccountSession(1L, "만두");
 
         // when
 
@@ -318,7 +318,7 @@ public class PostControllerTest {
     void deleteFalse() throws Exception {
         // given
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(1L);
+        AccountSession accountSession = new AccountSession(1L, "만두");
         willThrow(new PostNotFoundException()).given(postService).delete(id, accountSession.getId());
 
         // when
@@ -337,7 +337,7 @@ public class PostControllerTest {
     void deleteFalse2() throws Exception {
         // given
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(1L);
+        AccountSession accountSession = new AccountSession(1L, "만두");
         willThrow(new UnauthorizedException()).given(postService).delete(id, accountSession.getId());
 
         // when

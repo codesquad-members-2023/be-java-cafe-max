@@ -28,7 +28,7 @@
                 <tr th:each="postResponse : ${postResponses}">
                     <td class="title"><a class="nav-link" th:text="${postResponse.title}"
                         th:href="@{/posts/{id}(id = ${postResponse.id})}">게시판 테스트 1</a></td>
-                    <td class="writer" th:text="${postResponse.writer.nickName}">만두</td>
+                    <td class="writer" th:text="${postResponse.writer.nickname}">만두</td>
                     <td class="writeDate" th:text="${postResponse.getWriteDateFormat()}">2023-03-28</td>
                     <td class="views" th:text="${postResponse.views}">0</td>
                 </tr>

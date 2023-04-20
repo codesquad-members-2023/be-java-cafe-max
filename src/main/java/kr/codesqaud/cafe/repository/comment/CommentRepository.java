@@ -5,7 +5,7 @@ import kr.codesqaud.cafe.domain.Comment;
 
 public interface CommentRepository {
 
-    Long save(Comment comment);
+    Comment save(Comment comment);
 
     void delete(Long id);
 

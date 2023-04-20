@@ -54,7 +54,7 @@ class MemberControllerTest {
     void findAll() throws Exception {
         // given
         Long savedId = 1L;
-        AccountSession accountSession = new AccountSession(savedId);
+        AccountSession accountSession = new AccountSession(savedId, "만두");
         List<MemberResponse> memberResponses = List.of(new MemberResponse(savedId, "test@nave.com",
             "만두", LocalDateTime.now()));
         given(memberService.findAll()).willReturn(memberResponses);
@@ -90,7 +90,7 @@ class MemberControllerTest {
     void profileEditForm() throws Exception {
         // given
         Long savedId = 1L;
-        AccountSession accountSession = new AccountSession(savedId);
+        AccountSession accountSession = new AccountSession(savedId, "만두");
         given(memberService.findProfileEditById(savedId, accountSession.getId()))
             .willReturn(new ProfileEditRequest(savedId, "test@nave.com", null, null, "만두"));
 
@@ -126,7 +126,7 @@ class MemberControllerTest {
     void profileEditFormFalse2() throws Exception {
         // given
         Long savedId = 1L;
-        AccountSession accountSession = new AccountSession(2L);
+        AccountSession accountSession = new AccountSession(2L, "만두");
         given(memberService.findProfileEditById(savedId, accountSession.getId()))
             .willThrow(UnauthorizedException.class);
 
@@ -146,7 +146,7 @@ class MemberControllerTest {
     void editProfile() throws Exception {
         // given
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(id);
+        AccountSession accountSession = new AccountSession(id, "만두");
 
         // when
 
@@ -169,7 +169,7 @@ class MemberControllerTest {
     void editProfileFalse() throws Exception {
         // given
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(id);
+        AccountSession accountSession = new AccountSession(id, "만두");
         ProfileEditRequest profileEditRequest = new ProfileEditRequest(id, "test@gmail.com",
             "Test1234", "Mandu1234", "mandu");
         willThrow(new MemberDuplicateEmailException(profileEditRequest)).given(memberService).update(any(), any());
@@ -197,7 +197,7 @@ class MemberControllerTest {
     void editProfileFalse2() throws Exception {
         // given
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(id);
+        AccountSession accountSession = new AccountSession(id, "만두");
         ProfileEditRequest profileEditRequest = new ProfileEditRequest(id, "test@gmail.com",
             "Test1234", "Mandu1234", "mandu");
         willThrow(new MemberInvalidPassword(profileEditRequest)).given(memberService).update(any(), any());
@@ -223,7 +223,7 @@ class MemberControllerTest {
     @Test
     void editProfileFalse3() throws Exception {
         Long id = 1L;
-        AccountSession accountSession = new AccountSession(2L);
+        AccountSession accountSession = new AccountSession(2L, "만두");
         willThrow(new UnauthorizedException()).given(memberService).update(any(), any());
 
         // when
@@ -423,7 +423,7 @@ class MemberControllerTest {
     @Test
     void signOut() throws Exception {
         // given
-        AccountSession accountSession = new AccountSession(1L);
+        AccountSession accountSession = new AccountSession(1L, "만두");
 
         // when
 

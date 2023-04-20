@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.dto.comment;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.Comment;
@@ -10,6 +11,8 @@ public class CommentResponse {
     private final Long id;
     private final Member writer;
     private final String content;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime writeDate;
 
     public CommentResponse(Long id, Member writer, String content,

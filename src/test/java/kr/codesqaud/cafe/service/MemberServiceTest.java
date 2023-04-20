@@ -187,7 +187,7 @@ class MemberServiceTest {
     void update() {
         // given
         Long memberId = 1L;
-        AccountSession accountSession = new AccountSession(memberId);
+        AccountSession accountSession = new AccountSession(memberId, "만두");
         ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(memberId, "mandu@gmail.com"
             , "Test1234", "Mandu1234", "mandu");
         given(memberRepository.findById(any()))
@@ -211,7 +211,7 @@ class MemberServiceTest {
     void updateFalse() {
         // given
         Long memberId = 1L;
-        AccountSession accountSession = new AccountSession(memberId);
+        AccountSession accountSession = new AccountSession(memberId, "만두");
         ProfileEditRequest profileEditRequest = new ProfileEditRequest(memberId, "est@naver.com",
             "Test1234", "Test1234", "test");
         given(memberRepository.findById(any())).willReturn(Optional.empty());
@@ -228,7 +228,7 @@ class MemberServiceTest {
     void updateFalse2() {
         // given
         Long memberId = 1L;
-        AccountSession accountSession = new AccountSession(2L);
+        AccountSession accountSession = new AccountSession(2L, "만두");
         ProfileEditRequest profileEditRequest = new ProfileEditRequest(memberId, "est@naver.com",
             "Test1234", "Test1234", "test");
         given(memberRepository.findById(any())).willReturn(Optional.of(profileEditRequest.toMember()));
@@ -245,7 +245,7 @@ class MemberServiceTest {
     void updateFalse3() {
         // given
         Long memberId = 1L;
-        AccountSession accountSession = new AccountSession(1L);
+        AccountSession accountSession = new AccountSession(1L, "만두");
         ProfileEditRequest profileEditRequest = new ProfileEditRequest(memberId, "est@naver.com",
             "Test1234", "Test1234", "test");
         given(memberRepository.findById(any())).willReturn(Optional.of(profileEditRequest.toMember()));
@@ -263,7 +263,7 @@ class MemberServiceTest {
     void updateFalse4() {
         // given
         Long memberId = 1L;
-        AccountSession accountSession = new AccountSession(1L);
+        AccountSession accountSession = new AccountSession(1L, "만두");
         ProfileEditRequest profileEditRequest = new ProfileEditRequest(memberId, "est@naver.com",
             "Test1234", "Test1234", "test");
         Member member = Member.builder()

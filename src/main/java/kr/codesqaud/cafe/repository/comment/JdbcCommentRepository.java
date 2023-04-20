@@ -23,13 +23,14 @@ public class JdbcCommentRepository implements CommentRepository {
     }
 
     @Override
-    public Long save(Comment comment) {
+    public Comment save(Comment comment) {
         String sql = "INSERT INTO comment(post_id, writer_id, content, write_date, is_deleted) "
-                   + "VALUES(:postId, :writer.id, :content, :writerDate, :isDeleted)";
+                   + "VALUES(:postId, :writer.id, :content, :writeDate, :isDeleted)";
         SqlParameterSource param = new BeanPropertySqlParameterSource(comment);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, param, keyHolder);
-        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+        comment.injectionAutoIncrement(Objects.requireNonNull(keyHolder.getKey()).longValue());
+        return comment;
     }
 
     @Override

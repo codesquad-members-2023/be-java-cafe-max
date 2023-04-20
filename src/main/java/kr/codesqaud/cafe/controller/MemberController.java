@@ -88,7 +88,7 @@ public class MemberController {
         }
 
         MemberResponse memberResponse = memberService.signIn(signInRequest);
-        SignInSessionUtil.create(httpSession, new AccountSession(memberResponse.getId()));
+        SignInSessionUtil.create(httpSession, new AccountSession(memberResponse.getId(), memberResponse.getNickname()));
         return "redirect:/";
     }
 

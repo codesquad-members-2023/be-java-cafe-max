@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Comment {
 
-    private final Long id;
+    private Long id;
     private final Long postId;
     private final Member writer;
     private final String content;
@@ -43,6 +43,10 @@ public class Comment {
 
     public Boolean isDeleted() {
         return isDeleted;
+    }
+
+    public void injectionAutoIncrement(Long autoIncrement) {
+        this.id = id;
     }
 
     public static CommentBuilder builder() {

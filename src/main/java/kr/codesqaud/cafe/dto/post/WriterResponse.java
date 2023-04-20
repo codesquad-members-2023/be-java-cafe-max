@@ -5,19 +5,19 @@ import kr.codesqaud.cafe.domain.Member;
 public class WriterResponse {
 
     private final Long id;
-    private final String nickName;
+    private final String nickname;
 
-    public WriterResponse(Long id, String nickName) {
+    public WriterResponse(Long id, String nickname) {
         this.id = id;
-        this.nickName = nickName;
+        this.nickname = nickname;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
     public static WriterResponse from(Member member) {

@@ -74,7 +74,6 @@ class PostServiceTest {
             .writeDate(LocalDateTime.now())
             .views(1L)
             .build();
-        AccountSession accountSession = new AccountSession(1L);
         given(postRepository.findById(post.getId())).willReturn(Optional.of(post));
 
         // when
