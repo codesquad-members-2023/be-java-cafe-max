@@ -22,9 +22,7 @@ CREATE TABLE IF NOT EXISTS `REPLY`
     reply_idx   BIGINT PRIMARY KEY AUTO_INCREMENT,
     article_idx BIGINT       NOT NULL,
     user_id     VARCHAR(12)  NOT NULL,
-    nickName    VARCHAR(12)  NOT NULL,
     content     VARCHAR(255) NOT NULL,
     date        VARCHAR(10)  NOT NULL,
-    is_visible  BOOL DEFAULT 1,
-    FOREIGN KEY (article_idx) REFERENCES `ARTICLE` (article_idx)
+    is_visible  BOOL DEFAULT 1
 );

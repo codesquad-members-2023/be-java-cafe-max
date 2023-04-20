@@ -21,11 +21,10 @@ public class JDBCReplyRepository implements ReplyRepository {
 	@Override
 	public Long saveReply(Reply reply) {
 		namedParameterJdbcTemplate.update(
-			"INSERT INTO REPLY (article_idx,user_id,nickName,content,date) VALUES (:article_idx, :userId, :nickName, :content, :date)"
+			"INSERT INTO REPLY (article_idx,user_id,content,date) VALUES (:article_idx, :userId, :content, :date)"
 			, new MapSqlParameterSource()
 				.addValue("article_idx", reply.getArticleIdx())
 				.addValue("userId", reply.getUserId())
-				.addValue("nickName", reply.getNickName())
 				.addValue("content", reply.getContent())
 				.addValue("date", reply.getDate()));
 
@@ -36,7 +35,7 @@ public class JDBCReplyRepository implements ReplyRepository {
 	@Override
 	public List<Reply> findAllReply(Long articleIdx) {
 		return namedParameterJdbcTemplate.query(
-			"SELECT nickName,content,date,article_idx,reply_idx FROM REPLY WHERE article_Idx = :articleIdx AND is_visible = true",
+			"SELECT A.nickName, B.* FROM USER A INNER JOIN REPLY B ON A.user_id = B.user_id WHERE article_Idx = :articleIdx AND is_visible = true",
 			new MapSqlParameterSource("articleIdx", articleIdx), (rs, rn) -> new Reply(rs));
 	}
 
