@@ -25,7 +25,7 @@ public class PagesInfo {
 
     private final int nextPages;
 
-    private PagesInfo(List<Integer> pageNumbers, boolean previous, boolean next, int previousPages, int nextPages,int currentPage) {
+    private PagesInfo(List<Integer> pageNumbers, boolean previous, boolean next, int previousPages, int nextPages, int currentPage) {
         this.pageNumbers = pageNumbers;
         this.previous = previous;
         this.next = next;
@@ -38,7 +38,7 @@ public class PagesInfo {
         int startPage = getStartPage(currentPage);
         int endPage = getEndPage(totalPages, startPage);
         List<Integer> pageNumbers = getPageNumbers(startPage, endPage);
-        return new PagesInfo(pageNumbers, hasPrevious(startPage), hasNext(endPage, totalPages), getPreviousPages(currentPage), getNextPages(endPage, totalPages),currentPage);
+        return new PagesInfo(pageNumbers, hasPrevious(startPage), hasNext(endPage, totalPages), getPreviousPages(currentPage), getNextPages(endPage, totalPages), currentPage);
     }
 
     private static int getNextPages(int endPage, int totalPages) {

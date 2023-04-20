@@ -10,13 +10,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "\"user\"")
 public class User {
 
     private static final String EMPTY = "";
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nickname;
     private String email;
@@ -25,7 +24,7 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user")
-    private List<Post> posts = new ArrayList<>();
+    private final List<Post> posts = new ArrayList<>();
 
     public User() {
     }

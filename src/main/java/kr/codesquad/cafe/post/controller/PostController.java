@@ -53,7 +53,7 @@ public class PostController {
     }
 
     @PutMapping("/posts/{postId}")
-    public String editPost(@Valid PostForm postForm, BindingResult bindingResult, @PathVariable long postId,@SessionAttribute User user, Model model) {
+    public String editPost(@Valid PostForm postForm, BindingResult bindingResult, @PathVariable long postId, @SessionAttribute User user, Model model) {
         if (bindingResult.hasErrors()) {
             return "post/editForm";
         }

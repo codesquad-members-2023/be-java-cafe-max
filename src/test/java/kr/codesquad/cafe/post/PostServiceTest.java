@@ -1,10 +1,10 @@
 package kr.codesquad.cafe.post;
 
-import kr.codesquad.cafe.user.domain.User;
-import kr.codesquad.cafe.user.UserService;
-import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.post.exception.PostNotFoundException;
+import kr.codesquad.cafe.user.UserService;
+import kr.codesquad.cafe.user.domain.User;
+import kr.codesquad.cafe.user.dto.JoinForm;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,15 +22,14 @@ import static org.assertj.core.api.Assertions.*;
 @Transactional
 class PostServiceTest {
 
-    private static final String JACK = "jack";
-    private static final String JACK_EMAIL = "jack@email.com";
-    private static final String TEST_PASSWORD = "123456789a";
     public static final long NO_EXIST_ID = 100L;
     public static final String TEST_TITLE = "test_title";
     public static final String TEST_CONTENT = "test_content";
     public static final String TARGET_TITLE = "target_title";
     public static final String TARGET_CONTENT = "target_content";
-
+    private static final String JACK = "jack";
+    private static final String JACK_EMAIL = "jack@email.com";
+    private static final String TEST_PASSWORD = "123456789a";
     @Autowired
     PostService postService;
 

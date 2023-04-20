@@ -51,7 +51,8 @@
                     <div class="col-2 align-self-center text-break" th:text="${userForm.nickname}"></div>
                     <div class="col-2">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-primary" th:onclick="|location.href='@{/users/{id}/update(id = ${userForm.id})}'|"
+                            <button class="btn btn-primary"
+                                    th:onclick="|location.href='@{/users/{id}/update(id = ${userForm.id})}'|"
                                     type="submit">수정
                             </button>
                         </div>

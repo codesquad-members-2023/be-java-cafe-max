@@ -16,14 +16,18 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice("kr.codesquad.cafe.post")
 public class PostControllerExceptionHandler {
     public static final String SLASH = "/";
-    private static final String ERROR = "error";
     public static final String POST_ID = "postId";
     public static final int OFFSET = 1;
-
+    private static final String ERROR = "error";
     private final PostService postService;
 
     public PostControllerExceptionHandler(PostService postService) {
         this.postService = postService;
+    }
+
+    private static long getPostId(HttpServletRequest request) {
+        StringBuffer url = request.getRequestURL();
+        return Long.parseLong(url.substring(url.lastIndexOf(SLASH) + OFFSET));
     }
 
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
@@ -35,11 +39,6 @@ public class PostControllerExceptionHandler {
         model.addAttribute(POST_ID, postId);
         model.addAttribute(ERROR, e.getMessage());
         return "post/editForm";
-    }
-
-    private static long getPostId(HttpServletRequest request) {
-        StringBuffer url = request.getRequestURL();
-        return Long.parseLong(url.substring(url.lastIndexOf(SLASH) + OFFSET));
     }
 
 }

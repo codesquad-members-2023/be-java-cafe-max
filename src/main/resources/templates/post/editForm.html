@@ -48,11 +48,13 @@
             <div class="mb-3 col-6 ">
                 <div class="form-floating">
                 <textarea class="form-control is-invalid" id="textContent" placeholder="글의 내용을 입력하세요"
-                          style="height: 500px;resize: none" th:field="*{textContent}" th:if="${#fields.hasErrors('textContent')}"
+                          style="height: 500px;resize: none" th:field="*{textContent}"
+                          th:if="${#fields.hasErrors('textContent')}"
                           th:value="*{textContent}"></textarea>
                     <textarea class="form-control is-valid" id="textContent"
                               placeholder="글의 내용을 입력하세요"
-                              style="height: 500px;resize: none" th:field="*{textContent}" th:if="!${#fields.hasErrors('textContent')}"
+                              style="height: 500px;resize: none" th:field="*{textContent}"
+                              th:if="!${#fields.hasErrors('textContent')}"
                               th:value="*{textContent}"></textarea>
                     <label for="textContent">내용</label>
                     <div class="invalid-feedback" th:errors="*{textContent}">

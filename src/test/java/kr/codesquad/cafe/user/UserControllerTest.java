@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 class UserControllerTest {
+    public static final String RECONFIRM_PASSWORD = "reconfirmPassword";
     private static final String JACK = "jack";
     private static final String JACK_EMAIL = "jack@email.com";
     private static final String TEST_PASSWORD = "123456789a";
@@ -34,7 +35,6 @@ class UserControllerTest {
     private static final String NICKNAME = "nickname";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
-    public static final String RECONFIRM_PASSWORD = "reconfirmPassword";
     private static final String PROFILE_EDIT_FORM = "profileEditForm";
     private static final String PROFILE_FORM = "profileForm";
     private static final String JOIN_FORM = "joinForm";
@@ -61,6 +61,23 @@ class UserControllerTest {
         session.setAttribute("user", jack);
     }
 
+    @DisplayName("맴버 리스트 페이지 오픈 테스트")
+    @Test
+    void viewUsers() throws Exception {
+        User target = new User.Builder()
+                .id(jack.getId())
+                .role(Role.MANAGER)
+                .email(jack.getEmail())
+                .nickname(jack.getNickname())
+                .password(jack.getPassword())
+                .build();
+
+        session.setAttribute("user", target);
+        mockMvc.perform(get("/users").session(session))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("users"))
+                .andExpect(view().name("user/users"));
+    }
 
     @DisplayName("로그인 페이지 테스트")
     @Nested
@@ -143,25 +160,6 @@ class UserControllerTest {
         }
     }
 
-
-    @DisplayName("맴버 리스트 페이지 오픈 테스트")
-    @Test
-    void viewUsers() throws Exception {
-        User target = new User.Builder()
-                .id(jack.getId())
-                .role(Role.MANAGER)
-                .email(jack.getEmail())
-                .nickname(jack.getNickname())
-                .password(jack.getPassword())
-                .build();
-
-        session.setAttribute("user", target);
-        mockMvc.perform(get("/users").session(session))
-                .andExpect(status().isOk())
-                .andExpect(model().attributeExists("users"))
-                .andExpect(view().name("user/users"));
-    }
-
     @DisplayName("유저 프로필 페이지 테스트")
     @Nested
     class UserProfilePageTest {
@@ -177,7 +175,7 @@ class UserControllerTest {
         @DisplayName("오픈 실패")
         @Test
         void viewUserFailed() throws Exception {
-            mockMvc.perform(get("/users/"+ NOT_EXIST_PAGE)
+            mockMvc.perform(get("/users/" + NOT_EXIST_PAGE)
                             .session(session))
                     .andExpect(status().is4xxClientError());
         }
@@ -212,8 +210,6 @@ class UserControllerTest {
         @DisplayName("세팅")
         @Nested
         class SettingTest {
-
-
 
 
             @DisplayName("성공")

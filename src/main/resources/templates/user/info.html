@@ -70,7 +70,8 @@
                 <ul class="pagination col-5" th:if="${simpleForms.size() != 0}">
                     <li class="page-item">
                         <a aria-label="Previous" class="page-link"
-                           th:href="@{/users/{userId}(userId = ${userId},page = ${pagesInfo.previousPages})}" th:if="${pagesInfo.previous}">
+                           th:href="@{/users/{userId}(userId = ${userId},page = ${pagesInfo.previousPages})}"
+                           th:if="${pagesInfo.previous}">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                         <p aria-label="Previous" class="page-link disabled" th:if="!${pagesInfo.previous}">
@@ -78,15 +79,19 @@
                         </p>
                     </li>
                     <li class="page-item" th:each="pageNumber : ${pagesInfo.pageNumbers}">
-                        <a class="page-link" th:class="${pageNumber == pagesInfo.currentPage ? 'page-link active' : 'page-link'}" th:href="@{/users/{userId}(userId = ${userId},page=${pageNumber})}" th:text="${pageNumber}">1</a>
+                        <a class="page-link"
+                           th:class="${pageNumber == pagesInfo.currentPage ? 'page-link active' : 'page-link'}"
+                           th:href="@{/users/{userId}(userId = ${userId},page=${pageNumber})}"
+                           th:text="${pageNumber}">1</a>
                     </li>
                     <li class="page-item">
-                        <a aria-label="Next" class="page-link" href="#" th:href="@{/users/{userId}(userId = ${userId},page = ${pagesInfo.nextPages})}"
+                        <a aria-label="Next" class="page-link" href="#"
+                           th:href="@{/users/{userId}(userId = ${userId},page = ${pagesInfo.nextPages})}"
                            th:if="${pagesInfo.next}">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                         <p aria-label="Next" class="page-link disabled"
-                            th:if="!${pagesInfo.next}">
+                           th:if="!${pagesInfo.next}">
                             <span aria-hidden="true">&raquo;</span>
                         </p>
                     </li>

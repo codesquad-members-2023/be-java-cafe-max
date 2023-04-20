@@ -21,7 +21,7 @@ public class Post {
     protected List<Comment> comments = new ArrayList<>();
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull

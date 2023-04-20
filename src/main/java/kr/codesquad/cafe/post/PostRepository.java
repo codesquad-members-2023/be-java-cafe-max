@@ -9,10 +9,12 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findByIdAndIsDeleted(long id, boolean deleted);
+
     @EntityGraph("Post.withComments")
     List<Post> findAllByIsDeleted(boolean deleted, Pageable pageable);
 
     int countByIsDeleted(boolean deleted);
+
     @EntityGraph("Post.withComments")
     List<Post> findAllByUserId(long userId, Pageable pageable);
 

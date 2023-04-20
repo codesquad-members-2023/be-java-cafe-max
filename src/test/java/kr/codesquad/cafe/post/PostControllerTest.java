@@ -1,8 +1,8 @@
 package kr.codesquad.cafe.post;
 
 import kr.codesquad.cafe.post.dto.PostForm;
-import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.UserService;
+import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.dto.JoinForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 class PostControllerTest {
 
+    public static final int NON_EXISTING_POST_ID = 300;
+    public static final String EDIT_TITLE = "editTitle";
+    public static final String EDIT_TEXT_CONTENT = "editTextContent";
     private static final String JACK = "jack";
     private static final String JACK_EMAIL = "jack@email.com";
     private static final String JERRY = "jerry";
@@ -35,10 +38,6 @@ class PostControllerTest {
     private static final String TEXT_CONTENT = "textContent";
     private static final String TEST_TITLE = "testTitle";
     private static final String TEST_CONTENT = "testContent";
-    public static final int NON_EXISTING_POST_ID = 300;
-    public static final String EDIT_TITLE = "editTitle";
-    public static final String EDIT_TEXT_CONTENT = "editTextContent";
-
     @Autowired
     private MockMvc mockMvc;
 

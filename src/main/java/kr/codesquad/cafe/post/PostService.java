@@ -40,6 +40,10 @@ public class PostService {
         return PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.DESC, CREATED_DATE_TIME)).previous();
     }
 
+    private static int getPages(double allCount) {
+        return (int) Math.ceil(allCount / MAIN_PAGE_SIZE);
+    }
+
     @Transactional
     public Post save(PostForm postForm, User user) {
         Post post = postForm.toPost(user);
@@ -84,10 +88,6 @@ public class PostService {
     private int countTotalPages() {
         int allCount = postRepository.countByIsDeleted(false);
         return getPages(allCount);
-    }
-
-    private static int getPages(double allCount) {
-        return (int) Math.ceil(allCount / MAIN_PAGE_SIZE);
     }
 
     public List<SimplePostForm> getAllSimplePostFormByUser(long userId, int currentPage) {

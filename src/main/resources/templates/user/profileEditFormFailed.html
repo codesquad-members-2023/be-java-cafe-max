@@ -14,7 +14,8 @@
             <div class="row g-0">
                 <div class="col-md-4">
                     <div class="row justify-content-center mt-2">
-                        <svg data-jdenticon-value="user127" height="120" th:data-jdenticon-value="${profileEditForm.getNickname()}"
+                        <svg data-jdenticon-value="user127" height="120"
+                             th:data-jdenticon-value="${profileEditForm.getNickname()}"
                              width="120"></svg>
                     </div>
                 </div>
@@ -30,11 +31,13 @@
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text col-5">Email</span>
-                            <input aria-describedby="email" aria-label="Sizing example input" class="form-control is-invalid"
+                            <input aria-describedby="email" aria-label="Sizing example input"
+                                   class="form-control is-invalid"
                                    id="email" th:field="*{email}"
                                    th:if="${emailError} != null" th:value="${profileEditForm.email}" type="email"
                                    value="email">
-                            <input aria-describedby="email" aria-label="Sizing example input" class="form-control" id="email"
+                            <input aria-describedby="email" aria-label="Sizing example input" class="form-control"
+                                   id="email"
                                    th:field="*{email}"
                                    th:if="${emailError} == null" th:value="${profileEditForm.email}" type="email"
                                    value="email">
@@ -44,7 +47,8 @@
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text col-5">Password</span>
-                            <input aria-describedby="password" aria-label="Sizing example input" class="form-control is-invalid"
+                            <input aria-describedby="password" aria-label="Sizing example input"
+                                   class="form-control is-invalid"
                                    id="password" th:field="*{password}"
                                    th:if="${passowrdError} != null" type="password">
                             <input aria-describedby="password" aria-label="Sizing example input" class="form-control"

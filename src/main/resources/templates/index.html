@@ -42,7 +42,9 @@
                         </p>
                     </li>
                     <li class="page-item" th:each="pageNumber : ${pagesInfo.pageNumbers}">
-                        <a class="page-link"  th:class="${pageNumber == pagesInfo.currentPage ? 'page-link active' : 'page-link'}"  th:href="@{/(page=${pageNumber})}" th:text="${pageNumber}">1</a>
+                        <a class="page-link"
+                           th:class="${pageNumber == pagesInfo.currentPage ? 'page-link active' : 'page-link'}"
+                           th:href="@{/(page=${pageNumber})}" th:text="${pageNumber}">1</a>
                     </li>
                     <li class="page-item">
                         <a aria-label="Next" class="page-link" href="#" th:href="@{/(page = ${pagesInfo.nextPages})}"
