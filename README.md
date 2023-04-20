@@ -17,6 +17,8 @@
 - 로그아웃 post로 받게 수정
 - Controller에서 세션으로 받아 오는 User를 UserDao로 수정하기
 ~~- PUT, DELETE 제대로 사용한 게 맞는지 확인~~
+- 게시글 삭제(DELETE) 상태 변경
+- 
 
 **추가 공부**
 
