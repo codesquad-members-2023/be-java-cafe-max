@@ -36,14 +36,14 @@
               <p th:text="${question.content}"></p>
             </div>
             <div class="article-util">
-              <ul class="article-util-list">
+              <ul class="article-util-list" th:if="${session.user.id eq question.userId}">
                 <li>
                   <a class="link-modify-article"
                      th:href="@{/qna/{id}/edit(id=${question.id})}">수정</a>
                 </li>
                 <li>
-                  <form action="/questions/423" class="form-delete" method="POST">
-                    <input name="_method" type="hidden" value="DELETE">
+                  <form class="form-delete" id="form">
+                    <input class="hidden" id="id" name="id" th:value="${question.id}">
                     <button class="link-delete-article" type="submit">삭제</button>
                   </form>
                 </li>
@@ -170,6 +170,10 @@
         </ul>
       </div>
     </article>
+  </script>
+</th:block>
+<th:block layout:fragment="pageCustomScript">
+  <script src="/js/qna/detail.js" type="text/javascript">
   </script>
 </th:block>
 </body>
