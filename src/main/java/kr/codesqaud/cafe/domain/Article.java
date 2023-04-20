@@ -5,6 +5,7 @@ public class Article {
     private final String writer;
     private String title;
     private String contents;
+    private String createdTime;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
@@ -15,6 +16,8 @@ public class Article {
     public void setArticleNum(long articleNum) {
         this.articleNum = articleNum;
     }
+    public void setCreatedTime(String createdTime) { this.createdTime = createdTime; }
+
 
     public long getArticleNum() {
         return articleNum;

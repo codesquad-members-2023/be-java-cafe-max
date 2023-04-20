@@ -3,6 +3,8 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +21,8 @@ public class ArticleRepository {
     public void save(Article article) {
         ++articleNumFactory; // 전위연산자...!
         article.setArticleNum(articleNumFactory);
+        String cutCreatedTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE); // 밑엣 줄에 '함수를 매개변수로 사용'하려고 했는데 안 됨(이유 모름)
+        article.setCreatedTime(cutCreatedTime);
         articleList.add(article);
     }
 
