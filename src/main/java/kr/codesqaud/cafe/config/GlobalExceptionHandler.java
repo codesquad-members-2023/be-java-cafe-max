@@ -1,18 +1,29 @@
 package kr.codesqaud.cafe.config;
 
+import kr.codesqaud.cafe.dto.error.ErrorResponse;
+import kr.codesqaud.cafe.exception.common.ApiException;
 import kr.codesqaud.cafe.exception.common.BadRequestException;
 import kr.codesqaud.cafe.exception.common.NotFoundException;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ResponseBody
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ErrorResponse> handleApiException(ApiException e) {
+        return ResponseEntity.status(e.getStatus())
+            .body(new ErrorResponse(e.getStatus(), e.getMessage()));
+    }
 
     @ExceptionHandler(BadRequestException.class)
     public String handleBadRequestException(BadRequestException e, Model model) {

@@ -1,12 +1,15 @@
 package kr.codesqaud.cafe.exception.comment;
 
-import kr.codesqaud.cafe.exception.common.NotFoundException;
+import kr.codesqaud.cafe.exception.common.ApiException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-public class CommentNotFoundException extends NotFoundException {
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class CommentNotFoundException extends ApiException {
 
-    private static final String ERROR_MASSAGE = "해당 댓글을 찾을 수 없습니다.";
+    private static final String ERROR_MESSAGE = "해당 댓글을 찾을 수 없습니다.";
 
     public CommentNotFoundException() {
-        super(ERROR_MASSAGE);
+        super(HttpStatus.NOT_FOUND.value(), ERROR_MESSAGE);
     }
 }

@@ -26,8 +26,8 @@ function writeAjax(e) {
         data : JSON.stringify(object),
         dataType : 'json',
         contentType : 'application/json; charset=UTF-8',
-        error: function () {
-            alert("에러가 발생하였습니다.");
+        error: function (request, status, error) {
+            alert(`에러 상태 코드 : ${request.responseJSON.status}\n에러 메시지 : ${request.responseJSON.message}`);
         },
         success : function(data, status) {
             const text = $("#comments-size").text();
@@ -50,8 +50,8 @@ function deleteAjax(e) {
         url: form.attr("action"),
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8',
-        error: function () {
-            alert("에러가 발생하였습니다.");
+        error: function (request, status, error) {
+            alert(`에러 상태 코드 : ${request.responseJSON.status}\n에러 메시지 : ${request.responseJSON.message}`);
         },
         success: function (data, status) {
             if (data.valid) {

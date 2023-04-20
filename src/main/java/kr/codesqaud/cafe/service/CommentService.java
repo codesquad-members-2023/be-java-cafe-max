@@ -7,8 +7,8 @@ import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.comment.CommentDeleteResponse;
 import kr.codesqaud.cafe.dto.comment.CommentResponse;
 import kr.codesqaud.cafe.dto.comment.CommentWriteRequest;
+import kr.codesqaud.cafe.exception.comment.ApiUnauthorizedException;
 import kr.codesqaud.cafe.exception.comment.CommentNotFoundException;
-import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.repository.comment.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +49,7 @@ public class CommentService {
             .orElseThrow(CommentNotFoundException::new);
 
         if (!comment.isSameWriterId(accountSessionId)) {
-            throw new UnauthorizedException();
+            throw new ApiUnauthorizedException();
         }
     }
 }
