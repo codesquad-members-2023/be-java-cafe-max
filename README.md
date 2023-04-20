@@ -132,3 +132,28 @@
 ## ERD
 
 ![](https://lh3.googleusercontent.com/pw/AJFCJaX1UoZ5jdJMJwDiDhO9EiosHEKQFmXe7iRDzTr86gQ_o3uTDbf8guc501C8vvIFAThz7pBGQrYaE4dZZWVQP1OVZw7-25k3nmmOcSvGBtgdEsEw_3peBtlGsrtb28ecTIoapRc2YYcz0CAaZyKnPGnF=w714-h507-s-no?authuser=0)
+
+## 6단계 미션
+
+### 구현할 기능 목록
+
+- 로그인한 사용자는 게시글 상세보기 화면에서 댓글들을 볼 수 있다.
+- 로그인한 사용자만 게시글에 댓글을 추가할 수 있다.
+- 게시글 삭제시 데이터의 상태를 삭제 상태로 변경한다.
+  - 댓글이 없는 경우 삭제가 가능하다
+  - 게시글 작성자와 댓글 작성자가 다를 경우 삭제는 불가능하다
+  - 게시글 작성자와 댓글 작성자가 모두 같은 경우는 삭제가 가능하다
+- 댓글 삭제도 데이터의 상태를 삭제 상태로 변경한다.
+  - 로그인 사용자와 댓글 작성자가 같은 경우에만 댓글을 삭제할 수 있다.
+
+## 7단계 미션
+
+### 학습 계획
+
+- Mysql 설치
+- ajax
+
+### 구현할 기능목록
+
+- 댓글 기능들을 AJAX와 RestController로 구현한다.
+- 데이터베이스는 MySQL.8.0으로 변경한다.
