@@ -9,35 +9,36 @@ import static java.lang.Math.min;
 
 public class PagesInfo {
 
-    public static final int PREVIOUS_PAGES_OFFSET = 5;
-    public static final int START_PAGE = 1;
-    public static final int END_PAGE_OFFSET = 4;
-    public static final int START_PAGE_OFFSET = 2;
-    public static final int NEXT_PAGES_OFFSET = 3;
+    private static final int PREVIOUS_PAGES_OFFSET = 5;
+    private static final int START_PAGE = 1;
+    private static final int END_PAGE_OFFSET = 4;
+    private static final int START_PAGE_OFFSET = 2;
+    private static final int NEXT_PAGES_OFFSET = 3;
     private final List<Integer> pageNumbers;
 
     private final boolean previous;
 
     private final boolean next;
 
-
+    private final int currentPage;
     private final int previousPages;
 
     private final int nextPages;
 
-    private PagesInfo(List<Integer> pageNumbers, boolean previous, boolean next, int previousPages, int nextPages) {
+    private PagesInfo(List<Integer> pageNumbers, boolean previous, boolean next, int previousPages, int nextPages,int currentPage) {
         this.pageNumbers = pageNumbers;
         this.previous = previous;
         this.next = next;
         this.previousPages = previousPages;
         this.nextPages = nextPages;
+        this.currentPage = currentPage;
     }
 
     public static PagesInfo of(int currentPage, int totalPages) {
         int startPage = getStartPage(currentPage);
         int endPage = getEndPage(totalPages, startPage);
         List<Integer> pageNumbers = getPageNumbers(startPage, endPage);
-        return new PagesInfo(pageNumbers, hasPrevious(startPage), hasNext(endPage, totalPages), getPreviousPages(currentPage), getNextPages(endPage, totalPages));
+        return new PagesInfo(pageNumbers, hasPrevious(startPage), hasNext(endPage, totalPages), getPreviousPages(currentPage), getNextPages(endPage, totalPages),currentPage);
     }
 
     private static int getNextPages(int endPage, int totalPages) {
@@ -68,6 +69,10 @@ public class PagesInfo {
 
     private static boolean hasPrevious(int startPage) {
         return startPage != START_PAGE;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
     }
 
     public List<Integer> getPageNumbers() {

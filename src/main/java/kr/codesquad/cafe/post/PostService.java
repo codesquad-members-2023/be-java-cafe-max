@@ -21,7 +21,7 @@ public class PostService {
 
 
     public static final int MAIN_PAGE_SIZE = 15;
-    public static final int PROFILE_PAGE_SIZE = 4;
+    public static final int PROFILE_PAGE_SIZE = 6;
     public static final String CREATED_DATE_TIME = "createdDateTime";
     private final PostRepository postRepository;
 
