@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-devtools:2.7.10'
@@ -21,8 +22,10 @@ dependencies {
 	// jdbc
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	// h2 db
-//	implementation 'com.h2database:h2' // 읽을 .sql 파일 경로를 application.properties에 직접 입력해서 추가
-	runtimeOnly 'com.h2database:h2' // 파일 경로를 입력하지 않아도 됨.
+//	runtimeOnly 'com.h2database:h2' // 파일 경로를 입력하지 않아도 됨.
+	// mysql
+	implementation 'mysql:mysql-connector-java:8.0.28'
+//	runtimeOnly 'mysql:mysql-connector-j'
 }
 
 tasks.named('test') {
