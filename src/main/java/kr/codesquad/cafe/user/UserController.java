@@ -97,7 +97,7 @@ public class UserController {
 
 
     /**
-     * @param userId AuthBeforeAdvice 에서 접근 제한을 확인하기 위하여 사용합니다.
+     * @param userId AuthBeforeAdvice 에서 접근 권한을 확인하기 위하여 사용합니다.
      */
     @ValidUserIdPath
     @PutMapping("/users/{userId}/profile")
