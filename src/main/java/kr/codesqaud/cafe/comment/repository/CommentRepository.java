@@ -39,6 +39,7 @@ public class CommentRepository {
 
     private RowMapper<Comment> commentRowMapper() {
         return (rs, rowNum) -> new Comment(
+                rs.getLong("id"),
                 rs.getLong("article_id"),
                 rs.getString("contents"),
                 rs.getString("user_id"),
