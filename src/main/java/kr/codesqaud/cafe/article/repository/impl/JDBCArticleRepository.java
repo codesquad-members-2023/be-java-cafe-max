@@ -24,13 +24,12 @@ public class JDBCArticleRepository implements ArticleRepository {
 	@Override
 	public void save(Article article) {
 		namedParameterJdbcTemplate.update(
-			"INSERT INTO ARTICLE (title, content, date, user_id, nickName) VALUES (:title, :content, :date, :userId, :nickName)",
+			"INSERT INTO ARTICLE (title, content, date, user_id) VALUES (:title, :content, :date, :userId)",
 			new MapSqlParameterSource()
 				.addValue("title", article.getTitle())
 				.addValue("content", article.getContent())
 				.addValue("date", article.getDate())
 				.addValue("userId", article.getUserId())
-				.addValue("nickName", article.getNickName())
 		);
 
 	}
@@ -38,14 +37,14 @@ public class JDBCArticleRepository implements ArticleRepository {
 	@Override
 	public List<Article> findAll() {
 		return namedParameterJdbcTemplate.query(
-			"SELECT title,content,date,user_id,nickName,article_idx FROM ARTICLE WHERE is_visible = true",
+			"SELECT A.nickName, B.* FROM USER A INNER JOIN ARTICLE B ON A.user_id = B.user_id;",
 			(rs, rn) -> new Article(rs));
 	}
 
 	@Override
 	public Optional<Article> findArticleByIdx(Long articleIdx) {
 		List<Article> article = namedParameterJdbcTemplate.query(
-			"SELECT title,content,date,user_id,nickName,article_idx FROM ARTICLE WHERE article_idx = :articleIdx AND is_visible = true",
+			"SELECT A.nickName, B.* FROM USER A JOIN ARTICLE B ON A.user_id = B.user_id WHERE B.article_idx = :articleIdx AND B.is_visible = true",
 			new MapSqlParameterSource("articleIdx", articleIdx),
 			(rs, rn) -> new Article(rs));
 		return article.stream().findFirst();
