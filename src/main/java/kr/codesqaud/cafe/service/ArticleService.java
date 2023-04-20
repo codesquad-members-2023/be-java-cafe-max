@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.article.ArticleResponse;
 import kr.codesqaud.cafe.dto.article.ArticleSaveRequest;
 import kr.codesqaud.cafe.dto.article.ArticleUpdateRequest;
@@ -9,6 +10,7 @@ import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +28,9 @@ public class ArticleService {
     }
 
     public List<ArticleResponse> getAllArticles() {
-        return articleRepository.findAll().stream().map(ArticleResponse::from).collect(Collectors.toUnmodifiableList());
+        final List<Article> articles = articleRepository.findAll();
+        Collections.reverse(articles);
+        return articles.stream().map(ArticleResponse::from).collect(Collectors.toUnmodifiableList());
     }
 
     public ArticleResponse findById(Long id) {

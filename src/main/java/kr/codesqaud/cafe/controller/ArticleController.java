@@ -4,7 +4,9 @@ import kr.codesqaud.cafe.config.SessionAttributeNames;
 import kr.codesqaud.cafe.dto.article.ArticleResponse;
 import kr.codesqaud.cafe.dto.article.ArticleSaveRequest;
 import kr.codesqaud.cafe.dto.article.ArticleUpdateRequest;
+import kr.codesqaud.cafe.dto.reply.ReplyResponse;
 import kr.codesqaud.cafe.exception.user.AccessDeniedException;
+import kr.codesqaud.cafe.repository.reply.MySqlReplyRepository;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,14 +18,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.stream.Collectors;
 
 @Controller
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final MySqlReplyRepository replyRepository;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, MySqlReplyRepository replyRepository) {
         this.articleService = articleService;
+        this.replyRepository = replyRepository;
     }
 
     @GetMapping
@@ -46,6 +51,7 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String getArticle(@PathVariable Long id, Model model) {
         model.addAttribute("article", articleService.getArticleWithSurrounding(id));
+        model.addAttribute("replies", replyRepository.findByArticleId(id).stream().map(ReplyResponse::from).collect(Collectors.toList()));
         return "article/detail";
     }
 
