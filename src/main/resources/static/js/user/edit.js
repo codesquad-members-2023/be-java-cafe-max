@@ -4,17 +4,16 @@ $(document).ready(function () {
     await clearErrorMessage()
 
     const data = {
-      "userId": $("#userId").val(),
-      "password": $("#password").val(),
-      "name": $("#name").val(),
-      "email": $("#email").val()
+      userId: $("#userId").val(),
+      password: $("#password").val(),
+      name: $("#name").val(),
+      email: $("#email").val()
     }
     const id = $("#id").val()
-    const urlPath = "/users/" + id + "/update"
 
     $.ajax({
       type: 'put',
-      url: urlPath,
+      url: `/users/${id}`,
       data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8',
     }).done(function () {
