@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.user.controller;
 
+import kr.codesqaud.cafe.user.controller.request.UserLoginRequest;
 import kr.codesqaud.cafe.user.controller.request.UserRegisterRequest;
 import kr.codesqaud.cafe.user.controller.response.UserListResponse;
 import kr.codesqaud.cafe.user.controller.response.UserProfileResponse;
@@ -30,7 +31,7 @@ public class UserController {
     public String register(UserRegisterRequest userRegisterRequest, Model model) {
         boolean isSuccess = userService.register(userRegisterRequest.toUser());
         if (isSuccess) {
-            return "redirect:users";
+            return "redirect:/users";
         }
         model.addAttribute("retry", true);
         model.addAttribute("error-message", "이미 사용 중인 아이디입니다.");
@@ -58,14 +59,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(String userId, String password, HttpSession session) {
-        Optional<User> user = userService.login(userId, password);
+    public String login(UserLoginRequest userLoginRequest, HttpSession session) {
+        Optional<User> user = userService.login(userLoginRequest.getUserId(), userLoginRequest.getPassword());
         if (user.isPresent()) {
             session.setAttribute("sessionUser", user.get());
             return "redirect:/";
-        } else {
-            return "users/login_failed";
         }
+        return "users/login_failed";
     }
 
     @PostMapping("/logout")
