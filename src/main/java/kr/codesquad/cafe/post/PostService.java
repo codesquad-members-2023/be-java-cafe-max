@@ -20,22 +20,23 @@ import java.util.stream.Collectors;
 public class PostService {
 
 
-    public static final int PAGE_SIZE = 15;
+    public static final int MAIN_PAGE_SIZE = 15;
+    public static final int PROFILE_PAGE_SIZE = 4;
     private final PostRepository postRepository;
 
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
 
-    private static List<SimplePostForm> toSimplePostForm(List<Post> posts) {
+    public static List<SimplePostForm> toSimplePostForm(List<Post> posts) {
         return posts
                 .stream()
                 .map(SimplePostForm::from)
                 .collect(Collectors.toList());
     }
 
-    private static Pageable getPageable(int currentPage) {
-        return PageRequest.of(currentPage, PAGE_SIZE, Sort.by(Sort.Direction.DESC, "createdDateTime")).previous();
+    private static Pageable getPageable(int currentPage,int pageSize) {
+        return PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.DESC, "createdDateTime")).previous();
     }
 
     @Transactional
@@ -49,7 +50,7 @@ public class PostService {
     }
 
     public List<SimplePostForm> getAllSimplePostForm(int currentPage) {
-        List<Post> posts = postRepository.findAllByIsDeleted(false, getPageable(currentPage));
+        List<Post> posts = postRepository.findAllByIsDeleted(false, getPageable(currentPage,MAIN_PAGE_SIZE));
         return toSimplePostForm(posts);
     }
 
@@ -81,6 +82,21 @@ public class PostService {
 
     private int getAllPages() {
         int allCount = postRepository.countByIsDeleted(false);
-        return (int) Math.ceil((double) allCount / PAGE_SIZE);
+        return (int) Math.ceil((double) allCount / MAIN_PAGE_SIZE);
+    }
+
+    public List<SimplePostForm> getAllSimplePostFormByUserId(long userId, int currentPage) {
+        List<Post> posts = postRepository.findAllByUserId(userId, getPageable(currentPage, PROFILE_PAGE_SIZE));
+        return toSimplePostForm(posts);
+    }
+
+    public PagesInfo getPagesInfoByUser(int currentPage, long userId) {
+        int totalPages = getAllPagesByUser(userId);
+        return PagesInfo.of(currentPage, totalPages);
+    }
+
+    private int getAllPagesByUser(long userId) {
+        int allCount = postRepository.countByIsDeletedAndUserId(false,userId);
+        return (int) Math.ceil((double) allCount / MAIN_PAGE_SIZE);
     }
 }

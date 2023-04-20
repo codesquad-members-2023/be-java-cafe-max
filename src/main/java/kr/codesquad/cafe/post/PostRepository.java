@@ -12,4 +12,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByIsDeleted(boolean deleted, Pageable pageable);
 
     int countByIsDeleted(boolean deleted);
+
+    List<Post> findAllByUserId(long userId, Pageable pageable);
+
+    int countByIsDeletedAndUserId(boolean deleted, long userId);
 }

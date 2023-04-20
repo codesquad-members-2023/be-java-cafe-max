@@ -14,8 +14,8 @@ import java.util.Optional;
 @Controller
 public class MainController {
 
-    public static final String SIMPLE_FORMS = "simpleForms";
-    public static final int DEFAULT_PAGE = 1;
+    private static final String SIMPLE_FORMS = "simpleForms";
+    private static final int DEFAULT_PAGE = 1;
     private final PostService postService;
 
     public MainController(PostService postService) {

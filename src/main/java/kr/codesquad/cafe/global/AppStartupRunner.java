@@ -30,7 +30,7 @@ public class AppStartupRunner implements CommandLineRunner {
     @Override
     public void run(String... args) {
         User manager = new User.Builder()
-                .password(encryptor.decrypt("W5p8Dbc3f7sOjqaRc7WVp8inlukLB3LJ"))
+                .password("W5p8Dbc3f7sOjqaRc7WVp8inlukLB3LJ")
                 .email(encryptor.decrypt("R9gvxFpZK6xYikAdPrdy1mDtd3O+ag2L"))
                 .nickname("admin")
                 .role(Role.MANAGER).build();

@@ -57,7 +57,8 @@
         <div>
             <div th:if="${post.user} != null">
                 <button class="btn btn-primary"
-                        th:if="${post.user.id} == ${session.user.id}" th:onclick="|location.href='@{/posts/{id}/edit(id = ${post.id})}'|"
+                        th:if="${post.user.id} == ${session.user.id}"
+                        th:onclick="|location.href='@{/posts/{id}/edit(id = ${post.id})}'|"
                         type="submit">수정
                 </button>
             </div>
@@ -120,9 +121,8 @@
         element.className = "btn btn-primary disabled";
     }
 
-    $("#commentPost").click(addAnswer);
-
     $(document).on("click", ".btn-close", deleteAnswer);
+
 
     function deleteAnswer(e) {
         e.preventDefault();
@@ -139,6 +139,8 @@
             $("#commentsContent").replaceWith(data);
         })
     }
+
+    $("#commentPost").click(addAnswer);
 
     function addAnswer(e) {
         e.preventDefault();

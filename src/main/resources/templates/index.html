@@ -8,7 +8,7 @@
         <div class="col-10">
             전체 글 <span th:text="${simpleForms.size()}"></span>개
         </div>
-        <div class="row col-10">
+        <div class="row">
             <ol class="d-flex flex-wrap justify-content-start" id="bookList">
                 <li class="text-center mt-1 list-unstyled p-1" th:each="simpleForm : ${simpleForms}">
                     <div class="card p-1 m-1" style="width: 18rem;height: 30rem">

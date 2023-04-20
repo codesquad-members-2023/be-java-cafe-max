@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: header"></head>
+<body>
+<nav th:replace="fragments/navbar.html :: common">
+</nav>
+<form class="container" id="postingForm" novalidate th:action="@{/users/{userId}/profile(userId = ${userId})}">
+    <div class="row justify-content-center mt-5">
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <div class="row justify-content-center mt-2">
+                        <svg data-jdenticon-value="user127" height="120"
+                             th:data-jdenticon-value="${profileForm.nickname}"
+                             width="120"></svg>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text col-5" id="nickname">Nickname</span>
+                            <input aria-describedby="nickname" aria-label="Sizing example input" class="form-control"
+                                   disabled readonly th:value="${profileForm.nickname}"
+                                   type="text"
+                                   value="nickname">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text col-5" id="email">Email</span>
+                            <input aria-describedby="nickname" aria-label="Sizing example input" class="form-control"
+                                   disabled readonly th:value="${profileForm.email}" type="text"
+                                   value="email">
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button class="btn btn-primary" type="submit">개인 프로필</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="container-fluid justify-content-center" id="postsPage">
+    <div class="row justify-content-center" >
+        <ol class="d-flex flex-wrap justify-content-start col-10" id="bookList">
+            <li class="text-center mt-1 list-unstyled p-1" th:each="simpleForm : ${simpleForms}">
+                <div class="card p-1 m-1" style="width: 18rem;height: 30rem">
+                    <div class="card-body">
+                        <p class="card-title text-primary fw-bold fs-5" th:text="${simpleForm.title}">Card title</p>
+                        <p class="card-text" th:text="${simpleForm.textContent}">Some quick example text to build on
+                            the
+                            card title and make up the bulk of the card's content.</p>
+                    </div>
+                    <ol class="list-group">
+                        <button class="list-group-item btn btn-warning p-1 mb-1" type="button">NickName:
+                            <span th:text="${simpleForm.nickname}"></span>
+                        </button>
+                        <button class="list-group-item btn btn-info p-1 mb-1">
+                            Views:<span>20</span> 댓글수:<span>20</span>
+                        </button>
+                        <button class="list-group-item btn btn-info p-1 mb-1">
+                            Tag:
+                            <span>20</span>
+                        </button>
+                        <button class="list-group-item btn btn-success p-1 mb-1">
+                            CreateTime:
+                            <span th:text="${#temporals.format(simpleForm.createdDateTime,'yyyy-MM-dd HH:mm')}"></span>
+                        </button>
+                    </ol>
+                    <a class="btn btn-primary mb-2" th:href="@{/posts/{id}(id = ${simpleForm.id})}">자세히 보기</a>
+                </div>
+            </li>
+        </ol>
+    </div>
+    <div class="row justify-content-center text-light-emphasis">
+        <div class="col-10 row justify-content-between">
+            <div class="col">
+                <ul class="pagination col-5" th:if="${simpleForms.size() != 0}">
+                    <li class="page-item">
+                        <a aria-label="Previous" class="page-link"
+                           th:href="@{/users/{userId}(userId = ${userId},page = ${pagesInfo.previousPages})}" th:if="${pagesInfo.previous}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                        <a aria-label="Previous" class="page-link" disabled href="#" th:if="!${pagesInfo.previous}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:each="pageNumber : ${pagesInfo.pageNumbers}">
+                        <a class="page-link" th:href="@{/users/{userId}(userId = ${userId},page=${pageNumber})}" th:text="${pageNumber}">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a aria-label="Next" class="page-link" href="#" th:href="@{/users/{userId}(userId = ${userId},page = ${pagesInfo.nextPages})}"
+                           th:if="${pagesInfo.next}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                        <a aria-label="Next" class="page-link" disabled href="#"
+                           th:href="@{/users/{userId}(userId = ${userId},page = ${pagesInfo.nextPages})}" th:if="!${pagesInfo.next}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col row justify-content-end">
+                <div class="col-2">
+                    <button class="btn btn-primary" th:if="${session.user != null}"
+                            th:onclick="|location.href='@{/posts/form}'|"
+                            type="submit">글쓰기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="container-fluid mt-auto bg-light py-3"></footer>
+</body>
+<script async crossorigin="anonymous"
+        integrity="sha384-yBhgDqxM50qJV5JPdayci8wCfooqvhFYbIKhv0hTtLvfeeyJMJCscRfFNKIxt43M"
+        src="https://cdn.jsdelivr.net/npm/jdenticon@3.2.0/dist/jdenticon.min.js">
+</script>
+<script>
+    $(document).on("click", ".page-link", nextPage);
+
+
+    function nextPage(e) {
+        e.preventDefault();
+        let pagBtn = $(this);
+        const url = pagBtn.attr("href");
+
+        $.ajax({
+            type: 'get',
+            url: url,
+        }).done(function (data) {
+            console.log(data);
+            $("#postsPage").replaceWith(data);
+        })
+    }
+</script>
+</html>
