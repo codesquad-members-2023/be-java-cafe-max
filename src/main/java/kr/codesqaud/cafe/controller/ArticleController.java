@@ -16,11 +16,6 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/ask")
-    public String getArticleForm() {
-        return "/qna/form";
-    }
-
     @PostMapping("/articles")
     public String makeNewArticle(Article article) {
         articleService.join(article);

@@ -16,11 +16,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/join")
-    public String getUserForm() {
-        return "/user/form";
-    }
-
     @PostMapping("/users")
     public String joinUser(User user) {
         userService.join(user);

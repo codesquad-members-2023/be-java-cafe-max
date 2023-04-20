@@ -32,7 +32,7 @@
 - Ioc 컨테이너:
 - @ComponentScan:
 - @Repository -> @Service -> @Controller (흐름)
-- @Configuration:  -> '스프링 MVC 자동구성 설정' java파일 만드는데 사용(?)
+- @Configuration:  '설정 클래스를 선언'<<<
 - @ModelAttribute:
 - wrapper 클래스!: '원시 타입 자체를 객체로 만들어주는' 것인데(아직 정확히 이해하지 못함 -> 몇 번 예제로 연습을...)
 - 자료구조 선택기준!: 성능 스펙이 다 있으므로 생각을 해서 선택(!)

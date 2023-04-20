@@ -10,9 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //  ===> 쓰임새가 사라진 WebMvcConfigurerAdapter 클래스는 스프링 부트 2.0에서 제외(Deprecated)되었다. -> (....!!!!!??)
 public class MvcConfig implements WebMvcConfigurer {
     @Override
-    public void addViewControllers(ViewControllerRegistry registry){
+    public void addViewControllers(ViewControllerRegistry registry) {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);  // ( = Integer.MIN_VALUE  ....)
-//        registry.addViewController("/questions/form").setViewName("qna/form");
-//        일종의 GetMapping 구현
+        registry.addViewController("/ask").setViewName("/qna/form");  // article 등록 폼 가기
+        registry.addViewController("/join").setViewName("/user/form"); // user 등록 폼 가기
+//        (일종의 GetMapping 구현)
     }
 }
