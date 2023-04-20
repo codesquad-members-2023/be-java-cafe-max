@@ -16,4 +16,8 @@ public class CommentSql {
 	public static final String DELETE_COMMENT
 		= "UPDATE COMMENT_INFO SET deleted = true "
 		+ "WHERE postIndex = :postIndex AND index = :index";
+
+	public static final String DELETE_ALL_COMMENT
+		= "UPDATE COMMENT_INFO SET deleted = true "
+		+ "WHERE postIndex = :postIndex";
 }

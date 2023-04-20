@@ -46,6 +46,7 @@ public class ArticleQueryController {
 		articleService.increaseHits(index);
 		Article article = articleService.findByIndex(index);
 		List<Comment> comments = articleService.findCommentsByPostIndex(index);
+		model.addAttribute("user", user);
 		model.addAttribute("article", article);
 		model.addAttribute("comments", comments);
 		model.addAttribute("equal", equal);

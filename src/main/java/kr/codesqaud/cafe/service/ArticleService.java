@@ -76,4 +76,8 @@ public class ArticleService {
 	public void deleteComment(Long postIndex, Long index) {
 		commentRepository.delete(postIndex, index);
 	}
+
+	public void deleteAllComment(Long postIndex) {
+		commentRepository.deleteAll(postIndex);
+	}
 }

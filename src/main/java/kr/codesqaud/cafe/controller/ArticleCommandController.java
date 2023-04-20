@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -36,7 +38,12 @@ public class ArticleCommandController {
 		User user = (User)session.getAttribute("sessionUser");
 		Article article = articleService.findByIndex(index);
 		article.validateWriter(user.getNickname(), "다른 사람의 글은 삭제할 수 없습니다.");
+		List<Comment> comments = articleService.findCommentsByPostIndex(index);
+		for (Comment comment : comments) {
+			comment.validateAuthors(user.getNickname());
+		}
 		articleService.deleteArticle(index);
+		articleService.deleteAllComment(index);
 		return "redirect:/";
 	}
 
@@ -49,7 +56,7 @@ public class ArticleCommandController {
 	@PostMapping("/comment/create/{writer}")
 	public String createComment(@PathVariable String writer, CommentDto commentDto) {
 		articleService.createComment(commentDto);
-		return "redirect:/articles/" + commentDto.getPostIndex() + "/" + writer;
+		return "redirect:/article/" + commentDto.getPostIndex() + "/" + writer;
 	}
 
 	@DeleteMapping("/comment/delete/{postIndex}/{index}/{writer}")
@@ -59,6 +66,6 @@ public class ArticleCommandController {
 		Comment comment = articleService.findCommentByIndex(postIndex, index);
 		comment.validateAuthor(user.getNickname());
 		articleService.deleteComment(postIndex, index);
-		return "redirect:/articles/" + postIndex + "/" + writer;
+		return "redirect:/article/" + postIndex + "/" + writer;
 	}
 }

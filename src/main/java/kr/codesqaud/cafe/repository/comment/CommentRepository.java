@@ -12,4 +12,6 @@ public interface CommentRepository {
 	Comment findOne(Long postIndex, Long index);
 
 	void delete(Long postIndex, Long index);
+
+	void deleteAll(Long postIndex);
 }

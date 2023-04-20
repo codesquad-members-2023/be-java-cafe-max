@@ -59,6 +59,13 @@ public class JdbcCommentRepository implements CommentRepository {
 		namedParameterJdbcTemplate.update(DELETE_COMMENT, params);
 	}
 
+	@Override
+	public void deleteAll(Long postIndex) {
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("postIndex", postIndex);
+		namedParameterJdbcTemplate.update(DELETE_ALL_COMMENT, param);
+	}
+
 	private Optional<Comment> OptionalTo(List<Comment> comments) {
 		return comments.stream().findAny();
 	}
