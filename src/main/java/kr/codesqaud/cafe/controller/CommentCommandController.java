@@ -2,12 +2,16 @@ package kr.codesqaud.cafe.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.codesqaud.cafe.domain.Comment;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.CommentDto;
 import kr.codesqaud.cafe.service.ArticleService;
 
@@ -27,5 +31,14 @@ public class CommentCommandController {
 	@PostMapping("/comment/create/{author}")
 	public List<Comment> create(CommentDto commentDto) {
 		return articleService.createComment(commentDto);
+	}
+
+	@DeleteMapping("/comment/delete/{postIndex}/{index}")
+	public List<Comment> delete(@PathVariable Long postIndex, @PathVariable Long index, HttpSession session) {
+		User user = (User)session.getAttribute("sessionUser");
+		Comment comment = articleService.findCommentByIndex(postIndex, index);
+		comment.validateAuthor(user.getNickname(), "다른 사람의 댓글은 삭제할 수 없습니다.");
+		articleService.deleteComment(postIndex, index);
+		return articleService.showComments(postIndex);
 	}
 }

@@ -39,7 +39,7 @@ public class ArticleCommandController {
 		article.validateWriter(user.getNickname(), "다른 사람의 글은 삭제할 수 없습니다.");
 		List<Comment> comments = articleService.findCommentsByPostIndex(index);
 		for (Comment comment : comments) {
-			comment.validateAuthors(user.getNickname());
+			comment.validateAuthor(user.getNickname(), "다른 사람의 댓글이 있으면 게시글을 삭제할 수 없습니다.");
 		}
 		articleService.deleteArticle(index);
 		articleService.deleteAllComment(index);
@@ -50,21 +50,5 @@ public class ArticleCommandController {
 	public String updateArticle(@PathVariable Long index, @Valid ArticleDto articleDto) {
 		articleService.updateArticle(index, articleDto);
 		return "redirect:/";
-	}
-
-	/*@PostMapping("/comment/create/{writer}")
-	public String createComment(@PathVariable String writer, CommentDto commentDto) {
-		articleService.createComment(commentDto);
-		return "redirect:/article/" + commentDto.getPostIndex() + "/" + writer;
-	}*/
-
-	@DeleteMapping("/comment/delete/{postIndex}/{index}/{writer}")
-	public String deleteComment(@PathVariable Long postIndex, @PathVariable Long index, @PathVariable String writer,
-		HttpSession session) {
-		User user = (User)session.getAttribute("sessionUser");
-		Comment comment = articleService.findCommentByIndex(postIndex, index);
-		comment.validateAuthor(user.getNickname());
-		articleService.deleteComment(postIndex, index);
-		return "redirect:/article/" + postIndex + "/" + writer;
 	}
 }

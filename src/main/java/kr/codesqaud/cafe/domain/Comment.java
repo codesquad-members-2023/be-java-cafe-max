@@ -51,17 +51,9 @@ public class Comment {
 		return deleted;
 	}
 
-	public void validateAuthor(String nickname) {
+	public void validateAuthor(String nickname, String message) {
 		if (!author.equals(nickname)) {
-			throw new DeniedDataModificationException("다른 사람의 댓글은 삭제할 수 없습니다.");
-		}
-	}
-
-	public void validateAuthors(String nickname) {
-		if (!author.equals(nickname)) {
-			System.out.println(nickname);
-			System.out.println(author);
-			throw new DeniedDataModificationException("다른 사람의 댓글이 있으면 게시글을 삭제할 수 없습니다.");
+			throw new DeniedDataModificationException(message);
 		}
 	}
 }

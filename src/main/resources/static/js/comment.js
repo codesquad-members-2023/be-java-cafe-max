@@ -1,7 +1,8 @@
 showComments();
-$("#comment-write").click(addAnswer);
+$("#comment-write").click(addComment);
+$(document).on("click", "form[name=comment-delete-form]", deleteComment);
 
-function addAnswer(e) {
+function addComment() {
       var queryString = $("form[name=comment-form]").serialize();
 
       var url = $("#comment").attr("action");
@@ -26,12 +27,12 @@ function addAnswer(e) {
 }
 
 function createComment(comment) {
-    let button = "<form name='question' method='post' action='/comment/update/" + comment.postIndex + "/" + comment.index + "'>"
+    let button = "<form name='comment-update-form' method='post' action='/comment/update/" + comment.postIndex + "/" + comment.index + "'>"
         + "<input type='hidden' name='_method' value='PATCH'/>"
-        + "<button class='button next-writing' type='button' style='border: none;'>수정</button>"
-        + "<form name='question' method='post' action='/comment/delete/" + comment.postIndex + "/" + comment.index + "'>"
+        + "<button class='updateComment button next-writing' type='button' style='border: none;'>수정</button></form>"
+        + "<form name='comment-delete-form' method='post' action='/comment/delete/" + comment.postIndex + "/" + comment.index + "'>"
         + "<input type='hidden' name='_method' value='DELETE'/>"
-        + "<button class='button next-writing' type='button' style='border: none;'>삭제</button>";
+        + "<button class='deleteComment button next-writing' type='button' style='border: none;'>삭제</button></form>";
 
     var content = "<div class='comment-detail'>"
                     + "<div class='comment-in-wrap'>"
@@ -71,3 +72,24 @@ function format(data) {
     });
     return comments;
 };
+
+function deleteComment() {
+    var url = $(this).attr("action");
+
+    $.ajax({
+      type : 'delete',
+      url : url,
+      dataType : 'json',
+      error: function () {
+          alert("다른 사람의 댓글은 삭제할 수 없습니다.");
+      },
+      success : function (data, status) {
+          $('#comment_count').text(data.length);
+
+          var template = format(data);
+          $(".comment-box").html(template);
+
+          $("textarea[name=comment]").val("");
+      }
+    });
+}
