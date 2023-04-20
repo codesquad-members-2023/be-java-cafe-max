@@ -10,6 +10,7 @@ public class Article {
     private String title;
     private String contents;
     private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
     private Long points;
 
     public Article(){}
@@ -19,6 +20,7 @@ public class Article {
         this.title = title;
         this.contents = contents;
         this.createdAt = LocalDateTime.now();
+        this.modifiedAt = null;
         this.points = 1L;
     }
 
@@ -60,6 +62,14 @@ public class Article {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(LocalDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
     public Long getPoints() {

@@ -62,6 +62,9 @@ public class JdbcArticleRepository implements ArticleRepository{
             article.setTitle(rs.getString("title"));
             article.setContents(rs.getString("contents"));
             article.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
+            if (rs.getTimestamp("modifiedAt") != null) {
+                article.setModifiedAt(rs.getTimestamp("modifiedAt").toLocalDateTime());
+            }
             article.setPoints(rs.getLong("points"));
             return article;
         };

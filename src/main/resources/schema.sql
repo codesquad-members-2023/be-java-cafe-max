@@ -6,6 +6,7 @@ create table articles
     title varchar(32) not null,
     contents varchar(255) not null,
     createdAt datetime not null,
+    modifiedAt datetime null,
     points bigint not null,
     primary key (id)
 );

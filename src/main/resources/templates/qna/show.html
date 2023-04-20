@@ -18,7 +18,8 @@
                       <div class="article-header-text">
                           <a href="/users/{{writer}}" class="article-author-name">{{writer}}</a>
                           <a href="/articles/{{id}}" class="article-header-time" title="퍼머링크">
-                              {{createdAt}}
+                                {{^modifiedAt}} 생성: {{createdAt}} {{/modifiedAt}}
+                                {{#modifiedAt}} 수정: {{modifiedAt}} {{/modifiedAt}}
                               <i class="icon-link"></i>
                           </a>
                       </div>
