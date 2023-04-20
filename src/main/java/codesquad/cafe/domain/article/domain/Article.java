@@ -55,7 +55,7 @@ public class Article {
     }
 
     public ArticleResponseDto toDto(String writer) {
-        return new ArticleResponseDto(id, writer, title, contents, createdAt.format(DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm")));
+        return new ArticleResponseDto(id, writer, title, contents, createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
     }
 
     public Article update(final ArticleUpdateRequestDto articleUpdateRequestDto) {

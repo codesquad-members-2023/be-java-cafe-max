@@ -4,6 +4,8 @@ import codesquad.cafe.domain.article.dto.ArticleRequestDto;
 import codesquad.cafe.domain.article.dto.ArticleResponseDto;
 import codesquad.cafe.domain.article.dto.ArticleUpdateRequestDto;
 import codesquad.cafe.domain.article.service.ArticleService;
+import codesquad.cafe.domain.reply.dto.ReplyResponseDto;
+import codesquad.cafe.domain.reply.service.ReplyService;
 import codesquad.cafe.domain.user.domain.User;
 import codesquad.cafe.global.constant.SessionAttributes;
 import org.springframework.stereotype.Controller;
@@ -20,9 +22,11 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
-    public ArticleController(final ArticleService articleService) {
+    public ArticleController(final ArticleService articleService, final ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @GetMapping
@@ -42,7 +46,9 @@ public class ArticleController {
     @GetMapping("/articles/{postId}")
     public String showDetailPost(@PathVariable Long postId, Model model) {
         ArticleResponseDto post = articleService.findPost(postId);
+        List<ReplyResponseDto> replies = replyService.findReplies(postId);
         model.addAttribute("post", post);
+        model.addAttribute("replies", replies);
         return "qna/show";
     }
 
