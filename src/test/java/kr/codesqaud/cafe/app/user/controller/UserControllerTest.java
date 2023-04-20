@@ -14,16 +14,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequest;
 import kr.codesqaud.cafe.app.user.controller.dto.UserResponse;
 import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.repository.UserRepository;
+import kr.codesqaud.cafe.app.user.service.UserService;
 import kr.codesqaud.cafe.errors.errorcode.LoginErrorCode;
 import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
 import kr.codesqaud.cafe.errors.response.ErrorResponse;
 import kr.codesqaud.cafe.errors.response.ErrorResponse.ValidationError;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,9 +35,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
+@Transactional
 @AutoConfigureMockMvc
+@SpringBootTest
 class UserControllerTest {
 
     @Autowired
@@ -45,30 +48,30 @@ class UserControllerTest {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
+
     private MockHttpSession session;
 
+    @Autowired
     private ObjectMapper objectMapper;
 
-    @BeforeEach
-    public void beforeEach() throws Exception {
-        objectMapper = new ObjectMapper();
-        session = new MockHttpSession();
-        createSampleUser("yonghwan1107", "yonghwan1107", "김용환", "yonghwan1107@naver.com");
-    }
+    private Long id;
 
-    @AfterEach
-    public void clean() {
-        userRepository.deleteAll();
+    @BeforeEach
+    public void setup() {
+        session = new MockHttpSession();
+        id = signup("yonghwan1107", "yonghwan1107", "김용환", "yonghwan1107@naver.com");
     }
 
     @Test
     @DisplayName("올바른 회원정보가 주어지고 회원가입 요청시 회원가입이 되는지 테스트")
     public void signup_success() throws Exception {
         //given
-        String userId = "user1";
-        String password = "user1user1";
+        String userId = "kim1107";
+        String password = "kim1107kim1107";
         String name = "김용일";
-        String email = "user1@naver.com";
+        String email = "kim1107@naver.com";
         String url = "/users";
         UserSavedRequest dto = new UserSavedRequest(userId, password, name, email);
         //when
@@ -112,6 +115,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("중복된 이메일이 주어지고 회원가입 요청시 에러 응답을 받는지 테스트")
+    @Transactional
     public void signup_fail2() throws Exception {
         //given
         String userId = "kimyonghwan1107";
@@ -172,8 +176,6 @@ class UserControllerTest {
     @DisplayName("특정 회원의 id가 주어지고 회원의 프로필이 검색되는지 테스트")
     public void profile() throws Exception {
         //given
-        String userId = "yonghwan1107";
-        Long id = userRepository.findByUserId(userId).orElseThrow().getId();
         String url = "/users/" + id;
         //when
         UserResponse actual = (UserResponse) Objects.requireNonNull(mockMvc.perform(get(url))
@@ -190,14 +192,13 @@ class UserControllerTest {
     @DisplayName("비밀번호, 이름, 이메일이 주어지고 유저아이디가 주어질때 회원정보 수정이 되는지 테스트")
     public void update_success() throws Exception {
         //given
+        login("yonghwan1107", "yonghwan1107");
         String userId = "yonghwan1107";
         String password = "yonghwan1107";
         String modifiedName = "홍길동";
         String modifiedEmail = "yonghwan1234@naver.com";
-        User user = userRepository.findByUserId(userId).orElseThrow();
-        String url = "/users/" + user.getId() + "/update";
+        String url = "/users/" + id;
         UserSavedRequest dto = new UserSavedRequest(userId, password, modifiedName, modifiedEmail);
-        session.setAttribute("user", new UserResponse(user));
         //when
         mockMvc.perform(put(url)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -205,7 +206,7 @@ class UserControllerTest {
                 .session(session))
             .andExpect(status().isOk());
         //then
-        User actual = userRepository.findByUserId(userId).orElseThrow();
+        User actual = userService.findUser(id);
         assertThat(actual.getName()).isEqualTo(modifiedName);
         assertThat(actual.getPassword()).isEqualTo(password);
         assertThat(actual.getEmail()).isEqualTo(modifiedEmail);
@@ -215,16 +216,15 @@ class UserControllerTest {
     @DisplayName("회원 수정 이메일 중복으로 인한 테스트")
     public void update_fail() throws Exception {
         //given
-        createSampleUser("kim1107", "kim1107kim1107", "kim", "kim@naver.com");
+        signup("kim1107", "kim1107kim1107", "kim", "kim@naver.com");
+        login("yonghwan1107", "yonghwan1107");
         String userId = "yonghwan1107";
         String password = "yonghwan1107";
         String modifiedName = "김용환";
         String duplicatedEmail = "kim@naver.com";
-        User user = userRepository.findByUserId(userId).orElseThrow();
-        String url = "/users/" + user.getId() + "/update";
+        String url = "/users/" + id;
         UserSavedRequest dto =
             new UserSavedRequest(userId, password, modifiedName, duplicatedEmail);
-        session.setAttribute("user", new UserResponse(user));
         //when
         String jsonErrorResponse = mockMvc.perform(put(url)
                 .session(session)
@@ -250,8 +250,7 @@ class UserControllerTest {
         String password = "yonghwan1107";
         String modifiedName = "홍길동";
         String modifiedEmail = "yonghwan1234@naver.com";
-        Long id = userRepository.findByUserId(userId).orElseThrow().getId();
-        String url = "/users/" + id + "/update";
+        String url = "/users/" + id;
         UserSavedRequest dto = new UserSavedRequest(userId, password, modifiedName, modifiedEmail);
         //when
         String jsonError = mockMvc.perform(put(url)
@@ -274,18 +273,14 @@ class UserControllerTest {
     @DisplayName("다른 사람으로 로그인하였는데 다른 회원의 정보를 수정하려고 할때 에러 페이지로 리다이렉션 하고 에러 메시지를 받는지 테스트")
     public void update_fail3() throws Exception {
         //given
-        createSampleUser("kim1107", "kim1107kim1107", "kim", "kim@naver.com");
-
-        String otherUserId = "kim1107";
+        signup("kim1107", "kim1107kim1107", "kim", "kim@naver.com");
+        login("kim1107", "kim1107kim1107");
         String userId = "yonghwan1107";
         String password = "yonghwan1107";
         String modifiedName = "홍길동";
         String modifiedEmail = "yonghwan1234@naver.com";
-        User user = userRepository.findByUserId(userId).orElseThrow();
-        User otherUser = userRepository.findByUserId(otherUserId).orElseThrow();
-        String url = "/users/" + user.getId() + "/update";
+        String url = "/users/" + id;
         UserSavedRequest dto = new UserSavedRequest(userId, password, modifiedName, modifiedEmail);
-        session.setAttribute("user", new UserResponse(otherUser));
         //when
         String jsonError = mockMvc.perform(put(url)
                 .session(session)
@@ -305,17 +300,16 @@ class UserControllerTest {
             .isEqualTo(UserErrorCode.PERMISSION_DENIED.getMessage());
     }
 
-    private void createSampleUser(String userId, String password, String name, String email)
-        throws Exception {
-        String url = "/users";
-        UserSavedRequest dto = new UserSavedRequest(userId, password, name, email);
-        mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(toJSON(dto)))
-            .andExpect(status().isOk());
+    private Long signup(String userId, String password, String name, String email) {
+        return userService.signUp(new UserSavedRequest(userId, password, name, email)).getId();
     }
 
-    // TODO: 비로그인 상태에서 /user/form/1 입장시 들어가지는 문제
+    private void login(String userId, String password) throws Exception {
+        mockMvc.perform(post("/login")
+            .content(toJSON(new UserLoginRequest(userId, password)))
+            .contentType(MediaType.APPLICATION_JSON)
+            .session(session));
+    }
 
     private <T> String toJSON(T data) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(data);
