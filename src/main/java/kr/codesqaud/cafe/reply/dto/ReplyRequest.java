@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 
 public class ReplyRequest {
 
-	private String id;
+	private String userId;
 
 	private Long articleIdx;
 
@@ -18,13 +18,13 @@ public class ReplyRequest {
 		this.nickName = nickName;
 	}
 
-	public void init(String id, Long articleIdx) {
-		this.id = id;
+	public void init(String userId, Long articleIdx) {
+		this.userId = userId;
 		this.articleIdx = articleIdx;
 	}
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
 	public Long getArticleIdx() {

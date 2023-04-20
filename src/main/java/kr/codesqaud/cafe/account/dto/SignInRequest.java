@@ -4,17 +4,17 @@ import java.util.Objects;
 
 public class SignInRequest {
 
-	private final String id;
+	private final String userId;
 
 	private final String password;
 
-	public SignInRequest(String id, String password) {
-		this.id = id;
+	public SignInRequest(String userId, String password) {
+		this.userId = userId;
 		this.password = password;
 	}
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
 	public String getPassword() {

@@ -36,13 +36,13 @@ public class ArticleService {
 
 	public List<ArticleResponse> getArticleList() {
 		return articleRepository.findAll().stream()
-			.sorted(Comparator.comparing(Article::getIdx).reversed())
+			.sorted(Comparator.comparing(Article::getArticleIdx).reversed())
 			.map(articleMapper::toArticleResponse)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public ArticleResponse findArticleByIdx(Long idx) {
-		return articleRepository.findArticleByIdx(idx)
+	public ArticleResponse findArticleByIdx(Long articleIdx) {
+		return articleRepository.findArticleByIdx(articleIdx)
 			.map(articleMapper::toArticleResponse)
 			.orElseThrow(ArticleNotFoundException::new);
 	}
@@ -51,16 +51,16 @@ public class ArticleService {
 		articleRepository.updateArticle(articleMapper.toArticle(articleUpdateRequest));
 	}
 
-	public ArticleTitleAndContentResponse validSessionIdAndArticleId(Long idx, String id) {
-		return articleRepository.findArticleByIdx(idx)
-			.filter(article -> id.equals(article.getId()))
+	public ArticleTitleAndContentResponse validSessionIdAndArticleId(Long articleIdx, String userId) {
+		return articleRepository.findArticleByIdx(articleIdx)
+			.filter(article -> userId.equals(article.getUserId()))
 			.map(articleMapper::toArticleTitleAndContentResponse)
 			.orElseThrow(ArticleIdAndSessionIdMismatchException::new);
 	}
 
-	public void deleteArticleByIdx(Long idx, String id) {
-		validSessionIdAndArticleId(idx, id);
-		if (!articleRepository.deleteArticle(idx, id)) {
+	public void deleteArticleByIdx(Long articleIdx, String userId) {
+		validSessionIdAndArticleId(articleIdx, userId);
+		if (!articleRepository.deleteArticle(articleIdx, userId)) {
 			throw new ArticleDeleteFailedException();
 		}
 	}

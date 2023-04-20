@@ -39,38 +39,39 @@ public class ArticleController {
 	@PostMapping("/articles")
 	public String post(@ModelAttribute @Valid ArticlePostRequest articlePostRequest,
 		@SessionAttribute(LOGIN_USER) Session session) {
-		articlePostRequest.setId(session.getId());
+		articlePostRequest.setUserId(session.getId());
 		articlePostRequest.setNickName(session.getNickName());
 		articleService.post(articlePostRequest);
 		return "redirect:/";
 	}
 
 	//todo join써서 db에 2번접근하지 말고 한번접근해 데이터 가져와보기
-	@GetMapping("/articles/{idx}")
-	public String detail(@PathVariable Long idx, Model model) {
-		model.addAttribute("article", articleService.findArticleByIdx(idx));
-		model.addAttribute("replies", replyService.getRepliesByIdx(idx));
+	@GetMapping("/articles/{articleIdx}")
+	public String detail(@PathVariable Long articleIdx, Model model) {
+		model.addAttribute("article", articleService.findArticleByIdx(articleIdx));
+		model.addAttribute("replies", replyService.getRepliesByIdx(articleIdx));
 		return "article/show";
 	}
 
-	@GetMapping("/articles/update/{idx}")
-	public String updateForm(@PathVariable Long idx, Model model, @SessionAttribute(LOGIN_USER) Session session) {
-		model.addAttribute("article", articleService.validSessionIdAndArticleId(idx, session.getId()));
-		model.addAttribute("idx", idx);
+	@GetMapping("/articles/update/{articleIdx}")
+	public String updateForm(@PathVariable Long articleIdx, Model model,
+		@SessionAttribute(LOGIN_USER) Session session) {
+		model.addAttribute("article", articleService.validSessionIdAndArticleId(articleIdx, session.getId()));
+		model.addAttribute("idx", articleIdx);
 		return "article/updateForm";
 	}
 
-	@PutMapping("/articles/update/{idx}")
+	@PutMapping("/articles/update/{articleIdx}")
 	public String update(@ModelAttribute @Valid ArticleUpdateRequest articleUpdateRequest,
-		@PathVariable Long idx) {
-		articleUpdateRequest.setIdx(idx);
+		@PathVariable Long articleIdx) {
+		articleUpdateRequest.setArticleIdx(articleIdx);
 		articleService.updateArticle(articleUpdateRequest);
 		return "redirect:/";
 	}
 
-	@DeleteMapping("/articles/{idx}")
-	public String delete(@PathVariable Long idx, @SessionAttribute(LOGIN_USER) Session session) {
-		articleService.deleteArticleByIdx(idx, session.getId());
+	@DeleteMapping("/articles/{articleIdx}")
+	public String delete(@PathVariable Long articleIdx, @SessionAttribute(LOGIN_USER) Session session) {
+		articleService.deleteArticleByIdx(articleIdx, session.getId());
 		return "redirect:/";
 	}
 }

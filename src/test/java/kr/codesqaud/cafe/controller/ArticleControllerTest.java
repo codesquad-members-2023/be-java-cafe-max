@@ -71,7 +71,7 @@ class ArticleControllerTest {
 		//given
 		ArticlePostRequest articlePostRequest = new ArticlePostRequest("제목입니다", "내용입니다");
 		Session session = (Session)httpSession.getAttribute(Session.LOGIN_USER);
-		articlePostRequest.setId(session.getId());
+		articlePostRequest.setUserId(session.getId());
 		articlePostRequest.setNickName(session.getNickName());
 
 		ArticleResponse articleResponse = new ArticleResponse(articlePostRequest.getTitle(),

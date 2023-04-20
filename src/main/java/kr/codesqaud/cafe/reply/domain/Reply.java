@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class Reply {
 
-	private String id;
+	private String userId;
 
 	private Long replyIdx;
 
@@ -19,16 +19,12 @@ public class Reply {
 
 	private String content;
 
-	public Reply(String id, Long articleIdx, String nickName, String content) {
-		this.id = id;
+	public Reply(String userId, Long articleIdx, String nickName, String content) {
+		this.userId = userId;
 		this.articleIdx = articleIdx;
 		this.date = getCurrentDate();
 		this.nickName = nickName;
 		this.content = content;
-	}
-
-	public String getId() {
-		return id;
 	}
 
 	public Reply(ResultSet rs) throws SQLException {
@@ -36,7 +32,11 @@ public class Reply {
 		this.date = rs.getString("date");
 		this.nickName = rs.getString("nickName");
 		this.articleIdx = rs.getLong("article_idx");
-		this.replyIdx = rs.getLong("idx");
+		this.replyIdx = rs.getLong("reply_idx");
+	}
+
+	public String getUserId() {
+		return userId;
 	}
 
 	public Long getArticleIdx() {

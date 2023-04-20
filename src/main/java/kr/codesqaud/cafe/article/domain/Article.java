@@ -8,31 +8,31 @@ import java.sql.SQLException;
 public class Article {
 	private String title;
 	private String content;
-	private Long idx;
+	private Long articleIdx;
 	private String date;
-	private String id;
+	private String userId;
 	private String nickName;
 
-	public Article(String title, String content, String id, String nickName) {
+	public Article(String title, String content, String userId, String nickName) {
 		this.title = title;
 		this.content = content;
 		this.date = getCurrentDate();
-		this.id = id;
+		this.userId = userId;
 		this.nickName = nickName;
 	}
 
-	public Article(String title, String content, Long idx) {
+	public Article(String title, String content, Long articleIdx) {
 		this.title = title;
 		this.content = content;
-		this.idx = idx;
+		this.articleIdx = articleIdx;
 	}
 
 	public Article(ResultSet rs) throws SQLException {
 		this.title = rs.getString("title");
 		this.content = rs.getString("content");
-		this.idx = rs.getLong("idx");
+		this.articleIdx = rs.getLong("article_idx");
 		this.date = rs.getString("date");
-		this.id = rs.getString("id");
+		this.userId = rs.getString("user_id");
 		this.nickName = rs.getString("nickName");
 	}
 
@@ -48,12 +48,12 @@ public class Article {
 		return content;
 	}
 
-	public Long getIdx() {
-		return idx;
+	public Long getArticleIdx() {
+		return articleIdx;
 	}
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
 	public String getNickName() {

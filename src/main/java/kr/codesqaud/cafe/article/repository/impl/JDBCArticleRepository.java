@@ -24,12 +24,12 @@ public class JDBCArticleRepository implements ArticleRepository {
 	@Override
 	public void save(Article article) {
 		namedParameterJdbcTemplate.update(
-			"INSERT INTO ARTICLE (title, content, date, id, nickName) VALUES (:title, :content, :date, :id, :nickName)",
+			"INSERT INTO ARTICLE (title, content, date, user_id, nickName) VALUES (:title, :content, :date, :userId, :nickName)",
 			new MapSqlParameterSource()
 				.addValue("title", article.getTitle())
 				.addValue("content", article.getContent())
 				.addValue("date", article.getDate())
-				.addValue("id", article.getId())
+				.addValue("userId", article.getUserId())
 				.addValue("nickName", article.getNickName())
 		);
 
@@ -38,37 +38,38 @@ public class JDBCArticleRepository implements ArticleRepository {
 	@Override
 	public List<Article> findAll() {
 		return namedParameterJdbcTemplate.query(
-			"SELECT title,content,date,id,nickName,idx FROM ARTICLE WHERE is_visible = true",
+			"SELECT title,content,date,user_id,nickName,article_idx FROM ARTICLE WHERE is_visible = true",
 			(rs, rn) -> new Article(rs));
 	}
 
 	@Override
-	public Optional<Article> findArticleByIdx(Long idx) {
+	public Optional<Article> findArticleByIdx(Long articleIdx) {
 		List<Article> article = namedParameterJdbcTemplate.query(
-			"SELECT title,content,date,id,nickName,idx FROM ARTICLE WHERE idx = :idx AND is_visible = true",
-			new MapSqlParameterSource("idx", idx),
+			"SELECT title,content,date,user_id,nickName,article_idx FROM ARTICLE WHERE article_idx = :articleIdx AND is_visible = true",
+			new MapSqlParameterSource("articleIdx", articleIdx),
 			(rs, rn) -> new Article(rs));
 		return article.stream().findFirst();
 	}
 
 	@Override
 	public void updateArticle(Article article) {
-		namedParameterJdbcTemplate.update("UPDATE ARTICLE SET title = :title, content = :content WHERE idx = :idx",
+		namedParameterJdbcTemplate.update(
+			"UPDATE ARTICLE SET title = :title, content = :content WHERE article_idx = :articleIdx",
 			new MapSqlParameterSource()
 				.addValue("title", article.getTitle())
 				.addValue("content", article.getContent())
-				.addValue("idx", article.getIdx())
+				.addValue("articleIdx", article.getArticleIdx())
 		);
 	}
 
 	@Override
-	public boolean deleteArticle(Long idx, String id) {
+	public boolean deleteArticle(Long articleIdx, String userId) {
 		int rowsAffected = namedParameterJdbcTemplate.update(
-			"UPDATE ARTICLE A SET A.is_visible = FALSE WHERE A.idx = :idx "
-				+ "AND NOT EXISTS (SELECT 1 FROM REPLY B WHERE B.article_idx = A.idx AND B.is_visible = TRUE AND B.id != :id)",
+			"UPDATE ARTICLE A SET A.is_visible = FALSE WHERE A.article_idx = :articleIdx "
+				+ "AND NOT EXISTS (SELECT 1 FROM REPLY B WHERE B.article_idx = A.article_idx AND B.is_visible = TRUE AND B.user_id != :userId)",
 			new MapSqlParameterSource()
-				.addValue("idx", idx)
-				.addValue("id", id)
+				.addValue("articleIdx", articleIdx)
+				.addValue("userId", userId)
 		);
 		return (rowsAffected > 0);
 	}

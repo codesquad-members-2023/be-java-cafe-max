@@ -10,7 +10,7 @@ public interface ReplyRepository {
 
 	List<Reply> findAllReply(Long idx);
 
-	void deleteReply(String id, Long replyIdx);
+	void deleteReply(String userId, Long replyIdx);
 
 	String findReplyIdByIdx(Long replyIdx);
 }

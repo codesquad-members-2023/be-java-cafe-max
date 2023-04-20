@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 public class ProfileEditRequest {
 
-	private final String id;
+	private final String userId;
 
 	@NotBlank
 	@Length(min = 2, max = 12)
@@ -26,16 +26,16 @@ public class ProfileEditRequest {
 	@NotBlank
 	private final String oriPassword;
 
-	public ProfileEditRequest(String nickName, String email, String newPassword, String oriPassword, String id) {
+	public ProfileEditRequest(String nickName, String email, String newPassword, String oriPassword, String userId) {
 		this.nickName = nickName;
 		this.email = email;
 		this.newPassword = newPassword;
 		this.oriPassword = oriPassword;
-		this.id = id;
+		this.userId = userId;
 	}
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
 	public String getNewPassword() {
@@ -49,7 +49,7 @@ public class ProfileEditRequest {
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public boolean isMatchWithResponsePassword(String responsePassword) {
 		return Objects.equals(oriPassword, responsePassword);
 	}

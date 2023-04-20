@@ -24,24 +24,24 @@ public class JDBCUserRepository implements UserRepository {
 	@Override
 	public void save(User user) {
 		namedParameterJdbcTemplate.update(
-			"INSERT INTO `USER` (nickName, email,password,id,date) VALUES (:nickName,:email, :password, :id, :date)",
+			"INSERT INTO `USER` (nickName, email,password,user_id,date) VALUES (:nickName,:email, :password, :userId, :date)",
 			new MapSqlParameterSource()
 				.addValue("nickName", user.getNickName())
 				.addValue("email", user.getEmail())
 				.addValue("password", user.getPassword())
-				.addValue("id", user.getId())
+				.addValue("userId", user.getUserId())
 				.addValue("date", user.getDate()));
 	}
 
 	/**
 	 * db에 같은 id가 존재한다면 return true;
-	 * @param id
+	 * @param userId
 	 * @return
 	 */
 	@Override
-	public boolean exist(String id) {
-		return namedParameterJdbcTemplate.query("SELECT id FROM `USER` WHERE id = :id LIMIT 1 ",
-				new MapSqlParameterSource("id", id), (rs, rn) -> rs.getString("id"))
+	public boolean exist(String userId) {
+		return namedParameterJdbcTemplate.query("SELECT user_id FROM `USER` WHERE user_id = :userId LIMIT 1 ",
+				new MapSqlParameterSource("userId", userId), (rs, rn) -> rs.getString("userId"))
 			.stream()
 			.findFirst()
 			.isPresent();
@@ -49,26 +49,26 @@ public class JDBCUserRepository implements UserRepository {
 
 	@Override
 	public List<User> findAll() {
-		return namedParameterJdbcTemplate.query("SELECT nickName,email,password,id,date FROM `USER`",
+		return namedParameterJdbcTemplate.query("SELECT nickName,email,password,user_id,date FROM `USER`",
 			(rs, rn) -> new User(rs));
 	}
 
 	@Override
-	public Optional<User> findUserById(String id) {
-		List<User> users = namedParameterJdbcTemplate.query("SELECT * FROM `USER` WHERE id = :id",
-			new MapSqlParameterSource("id", id), (rs, rn) -> new User(rs));
+	public Optional<User> findUserById(String userId) {
+		List<User> users = namedParameterJdbcTemplate.query("SELECT * FROM `USER` WHERE user_id = :userId",
+			new MapSqlParameterSource("userId", userId), (rs, rn) -> new User(rs));
 		return users.stream().findFirst();
 	}
 
 	@Override
 	public void updateUser(User user) {
 		namedParameterJdbcTemplate.update(
-			"UPDATE `USER` SET nickName = :nickName, email = :email, password = :password WHERE id = :id",
+			"UPDATE `USER` SET nickName = :nickName, email = :email, password = :password WHERE user_id = :userId",
 			new MapSqlParameterSource()
 				.addValue("nickName", user.getNickName())
 				.addValue("email", user.getEmail())
 				.addValue("password", user.getPassword())
-				.addValue("id", user.getId())
+				.addValue("userId", user.getUserId())
 		);
 	}
 }

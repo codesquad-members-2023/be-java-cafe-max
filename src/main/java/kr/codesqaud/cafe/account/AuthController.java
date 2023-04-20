@@ -41,19 +41,19 @@ public class AuthController {
 
 	@PostMapping("/users/sign-in")
 	public String signIn(@ModelAttribute SignInRequest signInRequest, HttpSession httpSession) {
-		String id = signInRequest.getId();
+		String userId = signInRequest.getUserId();
 		userService.matchPassword(signInRequest);
 
-		UserResponse userDto = userService.getUserById(id);
-		Session session = new Session(userDto.getId(), userDto.getNickName());
+		UserResponse userDto = userService.getUserById(userId);
+		Session session = new Session(userDto.getUserId(), userDto.getNickName());
 
 		httpSession.setAttribute(Session.LOGIN_USER, session);
-		return "redirect:/users/sign-in-success/" + id;
+		return "redirect:/users/sign-in-success/" + userId;
 	}
 
-	@GetMapping("/users/sign-in-success/{id}")
-	public String singInSuccess(@PathVariable String id, Model model) {
-		model.addAttribute("user", userService.getUserById(id));
+	@GetMapping("/users/sign-in-success/{userId}")
+	public String singInSuccess(@PathVariable String userId, Model model) {
+		model.addAttribute("user", userService.getUserById(userId));
 		return "user/sign-in-success";
 	}
 

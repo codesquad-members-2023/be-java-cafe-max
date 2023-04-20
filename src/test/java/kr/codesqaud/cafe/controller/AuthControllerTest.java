@@ -48,7 +48,7 @@ class AuthControllerTest {
 		//given
 		SignInRequest signInRequest = new SignInRequest("id", "user");
 		UserResponse userResponse = new UserResponse("nickName", "aaa@naver.com", "password", "id");
-		given(userService.getUserById(signInRequest.getId())).willReturn(userResponse);
+		given(userService.getUserById(signInRequest.getUserId())).willReturn(userResponse);
 
 		//when
 		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/users/sign-in")
@@ -65,7 +65,7 @@ class AuthControllerTest {
 		Session session = (Session)resultSession.getAttribute(Session.LOGIN_USER);
 
 		assertAll(
-			() -> Assertions.assertThat(session.getId().equals(userResponse.getId())).isTrue(),
+			() -> Assertions.assertThat(session.getId().equals(userResponse.getUserId())).isTrue(),
 			() -> Assertions.assertThat(session.getNickName().equals(userResponse.getNickName())).isTrue()
 		);
 	}
@@ -75,7 +75,7 @@ class AuthControllerTest {
 	void singInSuccessTest() throws Exception {
 		//given
 		UserResponse userResponse = new UserResponse("nickName", "aaa@naver.com", "password123", "id");
-		given(userService.getUserById(userResponse.getId())).willReturn(userResponse);
+		given(userService.getUserById(userResponse.getUserId())).willReturn(userResponse);
 
 		//when
 		mockMvc.perform(MockMvcRequestBuilders.get("/users/sign-in-success/id")

@@ -28,9 +28,9 @@ public class UserController {
 		return "user/list";
 	}
 
-	@GetMapping("/users/{id}")
-	public String userProfile(@PathVariable String id, Model model) {
-		model.addAttribute("user", userService.getUserById(id));
+	@GetMapping("/users/{userId}")
+	public String userProfile(@PathVariable String userId, Model model) {
+		model.addAttribute("user", userService.getUserById(userId));
 		return "user/profile";
 	}
 
@@ -39,11 +39,11 @@ public class UserController {
 		return "user/updateForm";
 	}
 
-	@PutMapping("/users/{id}")
+	@PutMapping("/users/{userId}")
 	public String update(@ModelAttribute @Valid ProfileEditRequest profileEditRequest,
 		HttpSession httpSession) {
 		userService.updateUser(profileEditRequest);
-		Session session = new Session(profileEditRequest.getId(), profileEditRequest.getNickName());
+		Session session = new Session(profileEditRequest.getUserId(), profileEditRequest.getNickName());
 		httpSession.setAttribute(Session.LOGIN_USER, session);
 		return "redirect:/users/list";
 	}

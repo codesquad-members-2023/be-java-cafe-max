@@ -13,15 +13,15 @@ public class ArticleUpdateRequest {
 	@Pattern(regexp = "^[\\s\\S]{3,1000}$")
 	private final String content;
 
-	private Long idx;
+	private Long articleIdx;
 
 	public ArticleUpdateRequest(String title, String content) {
 		this.title = title;
 		this.content = content;
 	}
 
-	public void setIdx(Long idx) {
-		this.idx = idx;
+	public void setArticleIdx(Long articleIdx) {
+		this.articleIdx = articleIdx;
 	}
 
 	public String getTitle() {
@@ -32,7 +32,7 @@ public class ArticleUpdateRequest {
 		return content;
 	}
 
-	public Long getIdx() {
-		return idx;
+	public Long getArticleIdx() {
+		return articleIdx;
 	}
 }

@@ -10,9 +10,9 @@ public interface UserRepository {
 
 	List<User> findAll();
 
-	Optional<User> findUserById(String id);
+	Optional<User> findUserById(String userId);
 
-	boolean exist(String id);
+	boolean exist(String userId);
 
 	void updateUser(User User);
 }

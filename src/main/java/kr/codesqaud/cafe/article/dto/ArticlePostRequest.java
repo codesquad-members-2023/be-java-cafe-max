@@ -12,7 +12,7 @@ public class ArticlePostRequest {
 	@Pattern(regexp = "^[\\s\\S]{3,1000}$")
 	private final String content;
 
-	private String id;
+	private String userId;
 
 	private String nickName;
 
@@ -29,16 +29,16 @@ public class ArticlePostRequest {
 		return content;
 	}
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
 	public String getNickName() {
 		return nickName;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public void setNickName(String nickName) {

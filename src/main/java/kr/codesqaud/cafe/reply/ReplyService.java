@@ -30,22 +30,22 @@ public class ReplyService {
 		return replyMapper.toReplyResponse(reply, replyIdx);
 	}
 
-	public List<ReplyResponse> getRepliesByIdx(Long idx) {
-		return replyRepository.findAllReply(idx).stream()
+	public List<ReplyResponse> getRepliesByIdx(Long articleIdx) {
+		return replyRepository.findAllReply(articleIdx).stream()
 			.map(replyMapper::toReplyResponse)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public Result delete(String id, Long replyIdx) {
-		if (validSessionIdAndReplyId(id, replyIdx)) {
-			replyRepository.deleteReply(id, replyIdx);
+	public Result delete(String userId, Long replyIdx) {
+		if (validSessionIdAndReplyId(userId, replyIdx)) {
+			replyRepository.deleteReply(userId, replyIdx);
 			return Result.ok();
 		}
 		return Result.fail("삭제불가");
 	}
 
-	public boolean validSessionIdAndReplyId(String id, Long replyIdx) {
-		return Objects.equals(id, findIdByIdx(replyIdx));
+	public boolean validSessionIdAndReplyId(String userId, Long replyIdx) {
+		return Objects.equals(userId, findIdByIdx(replyIdx));
 	}
 
 	public String findIdByIdx(Long replyIdx) {

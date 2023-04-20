@@ -11,18 +11,19 @@ import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 @Component
 public class ArticleMapper {
 	public Article toArticle(ArticlePostRequest articlePostRequest) {
-		return new Article(articlePostRequest.getTitle(), articlePostRequest.getContent(), articlePostRequest.getId(),
+		return new Article(articlePostRequest.getTitle(), articlePostRequest.getContent(),
+			articlePostRequest.getUserId(),
 			articlePostRequest.getNickName());
 	}
 
 	public Article toArticle(ArticleUpdateRequest articleUpdateRequest) {
 		return new Article(articleUpdateRequest.getTitle(), articleUpdateRequest.getContent(),
-			articleUpdateRequest.getIdx());
+			articleUpdateRequest.getArticleIdx());
 	}
 
 	public ArticleResponse toArticleResponse(Article article) {
 		ArticleResponse articlePostRequest = new ArticleResponse(article.getTitle(), article.getContent(),
-			article.getIdx(), article.getDate(), article.getNickName());
+			article.getArticleIdx(), article.getDate(), article.getNickName());
 		return articlePostRequest;
 	}
 

@@ -10,14 +10,14 @@ public class User {
 	private String nickName;
 	private String email;
 	private String password;
-	private String id;
+	private String userId;
 	private String date;
 
-	public User(String nickName, String email, String password, String id) {
+	public User(String nickName, String email, String password, String userId) {
 		this.nickName = nickName;
 		this.email = email;
 		this.password = password;
-		this.id = id;
+		this.userId = userId;
 		this.date = getCurrentDate();
 	}
 
@@ -25,7 +25,7 @@ public class User {
 		this.nickName = rs.getString("nickName");
 		this.email = rs.getString("email");
 		this.password = rs.getString("password");
-		this.id = rs.getString("id");
+		this.userId = rs.getString("user_id");
 		this.date = rs.getString("date");
 	}
 
@@ -41,8 +41,8 @@ public class User {
 		return email;
 	}
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
 	public String getPassword() {

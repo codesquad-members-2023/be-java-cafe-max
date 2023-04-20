@@ -10,7 +10,7 @@ import kr.codesqaud.cafe.reply.dto.ReplyResponse;
 public class ReplyMapper {
 
 	public Reply toReply(ReplyRequest replyRequest) {
-		return new Reply(replyRequest.getId(), replyRequest.getArticleIdx(), replyRequest.getNickName(),
+		return new Reply(replyRequest.getUserId(), replyRequest.getArticleIdx(), replyRequest.getNickName(),
 			replyRequest.getContent());
 	}
 

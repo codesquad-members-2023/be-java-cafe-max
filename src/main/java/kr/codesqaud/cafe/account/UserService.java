@@ -30,12 +30,12 @@ public class UserService {
 	}
 
 	public void addUser(UserSignUpRequest userSignUpRequest) {
-		validateId(userSignUpRequest.getId());
+		validateId(userSignUpRequest.getUserId());
 		userRepository.save(userMapper.toUser(userSignUpRequest));
 	}
 
-	private void validateId(String id) {
-		if (userRepository.exist(id)) {
+	private void validateId(String userId) {
+		if (userRepository.exist(userId)) {
 			throw new AlreadyUserExistenceException();
 		}
 	}
@@ -46,14 +46,14 @@ public class UserService {
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public UserResponse getUserById(String id) {
-		return userRepository.findUserById(id)
+	public UserResponse getUserById(String userId) {
+		return userRepository.findUserById(userId)
 			.map(userMapper::toUserResponse)
 			.orElseThrow(UserNotFoundException::new);
 	}
 
 	public void updateUser(ProfileEditRequest profileEditRequest) {
-		UserResponse userResponse = getUserById(profileEditRequest.getId());
+		UserResponse userResponse = getUserById(profileEditRequest.getUserId());
 
 		if (!matchPassword(profileEditRequest, userResponse)) {
 			throw new UserUpdateInvalidPasswordException();
@@ -67,7 +67,7 @@ public class UserService {
 	}
 
 	public void matchPassword(SignInRequest signInRequest) {
-		UserResponse userResponse = getUserById(signInRequest.getId());
+		UserResponse userResponse = getUserById(signInRequest.getUserId());
 		if (!signInRequest.isMatchWithResponsePassword(userResponse.getPassword())) {
 			throw new LoginInvalidPasswordException();
 		}

@@ -5,16 +5,16 @@ public class ArticleResponse {
 
 	private final String content;
 
-	private final Long idx;
+	private final Long articleIdx;
 
 	private final String date;
 
 	private String nickName;
 
-	public ArticleResponse(String title, String content, Long idx, String date, String nickName) {
+	public ArticleResponse(String title, String content, Long articleIdx, String date, String nickName) {
 		this.title = title;
 		this.content = content;
-		this.idx = idx;
+		this.articleIdx = articleIdx;
 		this.date = date;
 		this.nickName = nickName;
 	}

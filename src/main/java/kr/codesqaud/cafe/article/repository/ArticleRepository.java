@@ -11,9 +11,9 @@ public interface ArticleRepository {
 
 	List<Article> findAll();
 
-	Optional<Article> findArticleByIdx(Long idx);
+	Optional<Article> findArticleByIdx(Long articleIdx);
 
 	void updateArticle(Article article);
 
-	boolean deleteArticle(Long idx, String id);
+	boolean deleteArticle(Long articleIdx, String userId);
 }
