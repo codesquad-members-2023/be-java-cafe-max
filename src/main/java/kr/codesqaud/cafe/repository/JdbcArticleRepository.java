@@ -25,14 +25,14 @@ public class JdbcArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Optional<Article> save(Article article) {
+    public Article save(Article article) {
         jdbcTemplate.update("insert into articles(writer, title, content, created_at) values(?, ?, ?, ?)",
                 article.getWriter(),
                 article.getTitle(),
                 article.getContent(),
                 article.getCreatedAt()
         );
-        return Optional.of(article);
+        return article;
     }
 
     @Override
