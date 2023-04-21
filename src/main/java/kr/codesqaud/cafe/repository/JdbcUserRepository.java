@@ -13,6 +13,7 @@ import java.util.Optional;
 public class JdbcUserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<User> userMapper = (rs, rowNum) -> new User(
+            rs.getLong("id"),
             rs.getString("user_id"),
             rs.getString("password"),
             rs.getString("user_name"),
@@ -35,10 +36,20 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findById(Long id) {
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject("SELECT * FROM users WHERE id = ?", userMapper, id));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Optional<User> findByUserId(String userId) {
         try {
             return Optional.ofNullable(
-                    jdbcTemplate.queryForObject("SELECT * FROM users WHERE user_id = ?", userMapper, userId));
+                    jdbcTemplate.queryForObject("SELECT * FROM users WHERE user_Id = ?", userMapper, userId));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -51,8 +62,8 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public void update(User user) {
-        jdbcTemplate.update("UPDATE users SET password = ?, user_name = ?, user_email = ? WHERE user_id = ?",
-                user.getPassword(), user.getUserName(), user.getUserEmail(), user.getUserId());
+        jdbcTemplate.update("UPDATE users SET password = ?, user_name = ?, user_email = ? WHERE id = ?",
+                user.getPassword(), user.getUserName(), user.getUserEmail(), user.getId());
 
     }
 }

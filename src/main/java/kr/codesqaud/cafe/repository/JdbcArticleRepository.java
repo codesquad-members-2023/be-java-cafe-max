@@ -25,14 +25,14 @@ public class JdbcArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Optional<Article> save(Article article) {
+    public Article save(Article article) {
         jdbcTemplate.update("insert into articles(writer, title, content, created_at) values(?, ?, ?, ?)",
                 article.getWriter(),
                 article.getTitle(),
                 article.getContent(),
                 article.getCreatedAt()
         );
-        return Optional.of(article);
+        return article;
     }
 
     @Override
@@ -48,5 +48,16 @@ public class JdbcArticleRepository implements ArticleRepository{
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public void delete(Long id) {
+        jdbcTemplate.update("DELETE FROM articles WHERE id = ?", id);
+    }
+
+    @Override
+    public void update(Article article) {
+        jdbcTemplate.update("UPDATE articles SET title = ?, content = ? WHERE id = ?",
+                article.getTitle(), article.getContent(), article.getId());
     }
 }

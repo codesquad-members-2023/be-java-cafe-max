@@ -24,4 +24,16 @@ public class ArticleDto {
     public static ArticleDto from(final Article article) {
         return new ArticleDto(article.getId(), article.getWriter(), article.getTitle(), article.getContent(), article.getCreatedAt());
     }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
 }
