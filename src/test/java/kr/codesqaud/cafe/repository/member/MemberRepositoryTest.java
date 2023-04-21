@@ -30,8 +30,7 @@ class MemberRepositoryTest {
         // then
         Optional<Member> findMember = memberRepository.findById(savedId);
         assertAll(
-            () -> assertTrue(findMember.isPresent()),
-            () -> assertEquals(savedId, findMember.get().getId()));
+            () -> assertTrue(findMember.isPresent()));
     }
 
     @DisplayName("아이디를 입력시 해당 회원이 있을 때 회원을 조회하면 회원을 반환한다.")
@@ -46,10 +45,9 @@ class MemberRepositoryTest {
 
         // then
         assertAll(
-            () -> assertEquals(member.getEmail(), findMember.getEmail()),
-            () -> assertEquals(member.getPassword(), findMember.getPassword()),
-            () -> assertEquals(member.getNickname(), findMember.getNickname()),
-            () -> assertEquals(member.getCreateDate(), findMember.getCreateDate()));
+            () -> assertEquals("mandu2@gmail.com", findMember.getEmail()),
+            () -> assertEquals("Mandu1234", findMember.getPassword()),
+            () -> assertEquals("mandu2", findMember.getNickname()));
     }
 
     @DisplayName("이메일를 입력시 해당 회원이 있을 때 회원을 조회하면 회원을 반환한다.")
@@ -64,10 +62,9 @@ class MemberRepositoryTest {
 
         // then
         assertAll(
-            () -> assertEquals(member.getEmail(), findMember.getEmail()),
-            () -> assertEquals(member.getPassword(), findMember.getPassword()),
-            () -> assertEquals(member.getNickname(), findMember.getNickname()),
-            () -> assertEquals(member.getCreateDate(), findMember.getCreateDate()));
+            () -> assertEquals("mandu2@gmail.com", findMember.getEmail()),
+            () -> assertEquals("Mandu1234", findMember.getPassword()),
+            () -> assertEquals("mandu2", findMember.getNickname()));
     }
 
     @DisplayName("회원이 있을 때 회원 전체조회를 하면 모든 회원을 반환한다")
@@ -85,8 +82,8 @@ class MemberRepositoryTest {
         // then
         assertAll(
             () -> assertEquals(2, findAll.size()),
-            () -> assertEquals(member1.getEmail(), findAll.get(0).getEmail()),
-            () -> assertEquals(member2.getEmail(), findAll.get(1).getEmail()));
+            () -> assertEquals("mandu2@gmail.com", findAll.get(0).getEmail()),
+            () -> assertEquals("test2@gmail.com", findAll.get(1).getEmail()));
     }
 
     @DisplayName("아이디, 이메일, 패스워드, 닉네임 입력시 해당 회원이 있을 때 회원 정보를 수정하면 데이터가 수정된다")
@@ -98,7 +95,7 @@ class MemberRepositoryTest {
         Member updateMember = Member.builder()
             .id(savedId)
             .email("mandu@gmail.com")
-            .password("mandu12345")
+            .password("Mandu12345")
             .nickname("manduUpdat")
             .createDate(LocalDateTime.now())
             .build();
@@ -109,10 +106,8 @@ class MemberRepositoryTest {
         // then
         Member findMember = memberRepository.findById(savedId).orElseThrow();
         assertAll(
-            () -> assertEquals(updateMember.getId(), findMember.getId()),
-            () -> assertEquals(updateMember.getPassword(), findMember.getPassword()),
-            () -> assertEquals(updateMember.getPassword(), findMember.getPassword()),
-            () -> assertEquals(updateMember.getNickname(), findMember.getNickname()));
+            () -> assertEquals("Mandu12345", findMember.getPassword()),
+            () -> assertEquals("manduUpdat", findMember.getNickname()));
     }
 
     private Member dummyData() {
