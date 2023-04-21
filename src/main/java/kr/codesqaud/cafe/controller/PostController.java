@@ -57,7 +57,7 @@ public class PostController {
     }
 
     @GetMapping("/writer/{writerEmail}")
-    public String findPostBywriterEmail(@PathVariable String writerEmail, Model model) {
+    public String findPostByWriterEmail(@PathVariable String writerEmail, Model model) {
         List<Post> posts = postService.findPostByWriterEmail(writerEmail);
         model.addAttribute("postResponses", posts);
         return "post/all";
