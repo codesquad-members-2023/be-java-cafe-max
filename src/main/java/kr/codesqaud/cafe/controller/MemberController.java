@@ -36,7 +36,7 @@ public class MemberController {
     }
 
     @GetMapping
-    public String readMember(Model model) {
+    public String readMembers(Model model) {
         model.addAttribute("memberResponsesDto", memberService.findAll());
         return "member/members";
     }
