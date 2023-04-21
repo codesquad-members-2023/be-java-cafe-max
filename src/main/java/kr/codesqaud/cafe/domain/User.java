@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.domain;
 import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
 
 public class User {
-    private Long id;
+    private final Long id;
     private final String userId;
     private String password;
     private String userName;
@@ -27,10 +27,6 @@ public class User {
                 joinRequest.getPassword(),
                 joinRequest.getUserName(),
                 joinRequest.getUserEmail());
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getId() {
