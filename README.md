@@ -36,4 +36,6 @@
 - @ModelAttribute:
 - wrapper 클래스!: '원시 타입 자체를 객체로 만들어주는' 것인데(아직 정확히 이해하지 못함 -> 몇 번 예제로 연습을...)
 - 자료구조 선택기준!: 성능 스펙이 다 있으므로 생각을 해서 선택(!)
-- WebMVCConfigurer(인터페이스): ~를 구현한 클래스로 ....
+- WebMVCConfigurer(인터페이스): ~를 구현한 클래스로 .... (이 것으로 할 수 있는 것들을 더 찾아봐야 겠다는)
+- Data Access 0bject: @Repository <<< 
+- Persistence Layer: (DB)
