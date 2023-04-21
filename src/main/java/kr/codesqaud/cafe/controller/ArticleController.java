@@ -45,7 +45,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/edit/{articleId}")
-    public String editArticle(@PathVariable final Long articleId, HttpServletRequest httpRequest, Model model) {
+    public String showArticleEditForm(@PathVariable final Long articleId, HttpServletRequest httpRequest, Model model) {
         HttpSession session = httpRequest.getSession(false);
         ArticleDto article = articleService.findById(articleId);
 
