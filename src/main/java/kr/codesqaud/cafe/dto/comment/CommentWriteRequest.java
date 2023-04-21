@@ -1,10 +1,12 @@
 package kr.codesqaud.cafe.dto.comment;
 
 import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
+import org.hibernate.validator.constraints.Length;
 
 public class CommentWriteRequest {
 
@@ -12,6 +14,8 @@ public class CommentWriteRequest {
 
     private WriterResponse writer;
 
+    @NotBlank(message = "내용은 필수입니다.")
+    @Length(min = 2, max = 3000, message = "최소 {min}글자, 최대 {max}글자입니다.")
     private String content;
 
     private LocalDateTime writeDate;

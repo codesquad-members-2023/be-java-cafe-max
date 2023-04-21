@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,10 +20,23 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class GlobalExceptionHandler {
 
     @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
+        MethodArgumentNotValidException e) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value());
+        e.getFieldErrors()
+            .forEach(error -> errorResponse.addMessage(error.getField(), error.getDefaultMessage()));
+        return ResponseEntity.badRequest().body(errorResponse);
+    }
+
+    @ResponseBody
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<ErrorResponse> handleApiException(ApiException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getStatus());
+        errorResponse.addMessage("errorMessage", e.getMessage());
         return ResponseEntity.status(e.getStatus())
-            .body(new ErrorResponse(e.getStatus(), e.getMessage()));
+            .body(errorResponse);
     }
 
     @ExceptionHandler(BadRequestException.class)

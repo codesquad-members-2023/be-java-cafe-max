@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import javax.validation.Valid;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.comment.CommentDeleteResponse;
 import kr.codesqaud.cafe.dto.comment.CommentResponse;
@@ -27,7 +28,7 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<CommentResponse> write(@PathVariable Long postId,
-        @RequestBody CommentWriteRequest commentWriteRequest,
+        @RequestBody @Valid CommentWriteRequest commentWriteRequest,
         @RequestAttribute AccountSession accountSession) {
         commentWriteRequest.initializeWriterAndPostId(accountSession, postId);
         return new ResponseEntity<>(commentService.write(commentWriteRequest), HttpStatus.CREATED);
