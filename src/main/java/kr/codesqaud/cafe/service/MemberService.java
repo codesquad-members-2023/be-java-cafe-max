@@ -44,7 +44,7 @@ public class MemberService {
     }
 
     public MemberResponseDto findById(Long memberId) {
-        return MemberResponseDto.of(memberRepository.findById(memberId).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_MEMBER)));
+        return MemberResponseDto.of(memberRepository.findById(memberId).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND)));
     }
 
     public Member findByEmail(String email) {
@@ -52,7 +52,7 @@ public class MemberService {
     }
 
     public void update(ProfileEditRequestDto profileEditRequestDto) {
-        Member findMember = memberRepository.findByEmail(profileEditRequestDto.getEmail()).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_MEMBER));
+        Member findMember = memberRepository.findById(profileEditRequestDto.getMemberId()).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND));
 
         if (findMember.isChangedMemberNickName(profileEditRequestDto.getNickName())) {
             memberRepository.findByNickName(profileEditRequestDto.getNickName())
