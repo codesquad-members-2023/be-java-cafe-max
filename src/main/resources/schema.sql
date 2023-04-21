@@ -28,3 +28,7 @@ CREATE TABLE IF NOT EXISTS article_comment
     article_id BIGINT       NOT NULL,
     PRIMARY KEY (id)
 );
+
+ALTER TABLE article_comment
+    DROP INDEX article_id_idx;
+CREATE INDEX article_id_idx ON article_comment (article_id);
