@@ -118,22 +118,22 @@ class PostServiceTest {
         WriterResponse writerResponse = postService.getWriterResponse(post);
 
         // then
-        assertEquals(writer.getNickName(), writerResponse.getNickName());
+        assertEquals(writer.getNickname(), writerResponse.getNickname());
     }
 
 
     private MemberJoinRequestDto basicMemberData() {
         String email = "test@gmail.com";
         String password = "testtest";
-        String nickName = "chacha";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "차차";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 
     private MemberJoinRequestDto dummyMemberData() {
         String email = "dummy@gmail.com";
         String password = "dummydummy";
-        String nickName = "피오니";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "피오니";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 
     private Post basicPostData(Member member) {

@@ -109,7 +109,7 @@ class MemberServiceTest {
     void update() {
         //given
         Long saveId = memberService.join(basicMemberData());
-        ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(saveId, basicMemberData().getEmail(), dummyMemberData().getPassword(), dummyMemberData().getNickName());
+        ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(saveId, basicMemberData().getEmail(), dummyMemberData().getPassword(), dummyMemberData().getNickname());
 
         //when
         memberService.update(profileEditRequestDto);
