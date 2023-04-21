@@ -1,47 +1,48 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.constant.SessionConst;
-import kr.codesqaud.cafe.dto.ReplyForm;
+import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.dto.Answer;
+import kr.codesqaud.cafe.dto.Result;
 import kr.codesqaud.cafe.dto.SessionDto;
+import kr.codesqaud.cafe.exception.ReplyNotFoundException;
+import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import kr.codesqaud.cafe.service.UserService;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 public class ReplyController {
 
     private final ReplyService replyService;
+    private final UserService userService;
+    private final ArticleService articleService;
 
-    public ReplyController(ReplyService replyService) {
+    public ReplyController(ReplyService replyService, UserService userService, ArticleService articleService) {
         this.replyService = replyService;
+        this.userService = userService;
+        this.articleService = articleService;
     }
 
     @PostMapping("articles/{id}/reply")
-    public String write(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                            SessionDto loginUser, ReplyForm form, @PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public Answer write(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+                            SessionDto loginUser, @RequestParam String contents, @PathVariable Long id) {
 
-        boolean isWriteReplySuccess = replyService.write(loginUser.getUserId(), loginUser.getName(), id, form);
+        Long replyId = replyService.write(loginUser.getUserId(), loginUser.getName(), id, contents);
 
-        if (!isWriteReplySuccess) {
-            redirectAttributes.addFlashAttribute("emptyComment", true);
-        }
+        return new Answer(replyId,loginUser.getUserId(), id, contents);
 
-        return "redirect:/articles/{id}";
     }
 
     @DeleteMapping("articles/{articleId}/reply/{id}")
-    public String delete(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
+    public Result delete(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                              SessionDto loginUser, @PathVariable Long articleId, @PathVariable Long id) {
 
         if (replyService.isCreateBy(loginUser.getUserId(), id)) {
             replyService.delete(id);
-            return "redirect:/articles/{articleId}";
+            return new Result("success");
         }
-
-        return "error/404";
+        throw new ReplyNotFoundException();
     }
 }

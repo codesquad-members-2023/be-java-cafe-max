@@ -4,6 +4,10 @@ import kr.codesqaud.cafe.domain.Reply;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -20,17 +24,15 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
     }
 
     @Override
-    public boolean save(Reply reply) {
-        if ("".equals(reply.getContents())){
-            return false;
-        }
+    public Long save(Reply reply) {
+
         String sql = "insert into reply (userId, writer, articleId, contents) values (?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                reply.getUserId(),
-                reply.getWriter(),
-                reply.getArticleId(),
-                reply.getContents());
-        return true;
+
+        SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(reply);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(sql, sqlParameterSource, keyHolder);
+        return keyHolder.getKey().longValue();
     }
 
     @Override

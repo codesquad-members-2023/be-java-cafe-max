@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Reply;
-import kr.codesqaud.cafe.dto.ReplyForm;
 import kr.codesqaud.cafe.exception.ReplyNotFoundException;
 import kr.codesqaud.cafe.repository.ReplyRepository;
 import org.springframework.stereotype.Service;
@@ -17,13 +16,14 @@ public class ReplyService {
         this.replyRepository = replyRepository;
     }
 
-    public boolean write(String userId, String writer, Long articleId, ReplyForm form) {
+    public Long write(String userId, String writer, Long articleId, String contents) {
+
         Reply reply = new Reply.ReplyBuilder(userId, articleId)
-                        .setContents(form.getContents())
+                        .setContents(contents)
                         .setWriter(writer)
                         .build();
-        return replyRepository.save(reply);
-
+        Long id = replyRepository.save(reply);
+        return id;
     }
 
     public List<Reply> findReplies(Long articleId) {

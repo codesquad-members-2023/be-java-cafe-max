@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ReplyRepository {
 
-    boolean save(Reply reply);
+    Long save(Reply reply);
 
     List<Reply> findByArticleId(Long articleId);
 

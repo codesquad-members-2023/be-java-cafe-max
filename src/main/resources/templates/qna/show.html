@@ -80,7 +80,9 @@
                                         </li>
                                         <li>
                                             <form class="delete-answer-form" th:action="@{/articles/{articleId}/reply/{id}(articleId=${article.id}, id=${reply.id})}" method="POST">
+<!--                                            <form class="delete-answer-form" method="POST">-->
                                                 <input type="hidden" name="_method" value="DELETE">
+                                                <input type="hidden" id="replyId" name="replyId" th:value="${reply.id}" />
                                                 <button type="submit" class="delete-answer-button">삭제</button>
                                             </form>
                                         </li>
@@ -89,11 +91,12 @@
                                    </span>
                             </article>
 
-                            <form class="submit-write" th:action="@{/articles/{id}/reply(id=${article.id})}" method="post">
+<!--                            <form class="submit-write" th:action="@{/articles/{id}/reply(id=${article.id})}" method="post">-->
+                            <form class="submit-write">
                                 <div class="form-group" style="padding:14px;">
-                                    <textarea class="form-control" name="contents" th:attr="placeholder=${emptyComment} ? '내용을 입력하세요.' : '댓글을 작성하세요.'" th:classappend="${emptyComment} ? 'is-invalid' : 'is-valid'"></textarea>
+                                    <textarea class="form-control" name="contents" placeholder="댓글을 작성해주세요."></textarea>
                                 </div>
-                                <button class="btn btn-success pull-right" type="submit">답변하기</button>
+                                <button id="btn-save" class="btn btn-success pull-right" type="submit">답변하기</button>
                                 <div class="clearfix" />
                             </form>
                         </div>
