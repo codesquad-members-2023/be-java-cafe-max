@@ -41,8 +41,8 @@ public class MemberController {
         return "member/members";
     }
 
-    @GetMapping("/join")
-    public String joinMember(Model model) {
+    @GetMapping("/register")
+    public String registerMember(@ModelAttribute MemberJoinRequestDto memberJoinRequestDto,Model model) {
         model.addAttribute("memberJoinRequestDto", new MemberJoinRequestDto());
         return "member/register";
     }
@@ -85,7 +85,7 @@ public class MemberController {
         return "member/profile";
     }
 
-    @PutMapping("/{email}")
+    @PutMapping("/{email}/profile")
     public String editProfile(@ModelAttribute @Valid ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "member/profiledEdit";
@@ -96,7 +96,7 @@ public class MemberController {
         return "redirect:/members/{email}";
     }
 
-    @GetMapping("/{email}/edit")
+    @GetMapping("/{email}/profile")
     public String profileEditForm(@PathVariable String email, Model model, @SessionAttribute("loginMember") LoginMemberSession longinMemberSession) {
         if (longinMemberSession.isNotEqualMember(email)) {
             throw new CommonException(CommonExceptionType.ACCESS_DENIED);
