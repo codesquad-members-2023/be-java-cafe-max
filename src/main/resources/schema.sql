@@ -18,5 +18,6 @@ create table post
     title        varchar(255) not null,
     contents     varchar(255) not null,
     writing_time timestamp(9) not null,
+    deleted      boolean default false,
     primary key (id)
 );

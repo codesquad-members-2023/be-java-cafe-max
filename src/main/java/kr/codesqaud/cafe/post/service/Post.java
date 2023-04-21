@@ -11,18 +11,20 @@ public class Post {
     private final String title;
     private final String contents;
     private final LocalDateTime writingTime;
+    private final boolean isDeleted;
 
-    public Post(Long id, String writerId, String writerName, String title, String contents, LocalDateTime writingTime) {
+    public Post(Long id, String writerId, String writerName, String title, String contents, LocalDateTime writingTime, boolean isDeleted) {
         this.id = id;
         this.writerId = writerId;
         this.writerName = writerName;
         this.title = title;
         this.contents = contents;
         this.writingTime = writingTime;
+        this.isDeleted = isDeleted;
     }
 
     public Post create(long id) {
-        return new Post(id, this.writerId, this.writerName, this.title, this.contents, this.writingTime);
+        return new Post(id, this.writerId, this.writerName, this.title, this.contents, this.writingTime, this.isDeleted);
     }
 
     public long getId() {

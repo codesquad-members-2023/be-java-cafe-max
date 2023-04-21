@@ -54,8 +54,14 @@ public class JdbcPostRepository implements PostRepository {
     }
 
     @Override
+    public void delete(long id) {
+        String sql = "update `post` set deleted = true where id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
+    @Override
     public Optional<Post> findById(long id) {
-        String sql = "select id, writer_id, writer_name, title, contents, writing_time from post where id = ?";
+        String sql = "select id, writer_id, writer_name, title, contents, writing_time, deleted from post where id = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), id));
         } catch (DataAccessException e) {
@@ -65,7 +71,8 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        String sql = "select id, writer_id, writer_name, title, contents, writing_time from post order by writing_time desc";
+        String sql = "select id, writer_id, writer_name, title, contents, writing_time, deleted from post " +
+                "where deleted = false order by writing_time desc";
         return jdbcTemplate.query(sql, rowMapper());
     }
 
@@ -76,7 +83,8 @@ public class JdbcPostRepository implements PostRepository {
                 rs.getString("writer_name"),
                 rs.getString("title"),
                 rs.getString("contents"),
-                rs.getTimestamp("writing_time").toLocalDateTime()
+                rs.getTimestamp("writing_time").toLocalDateTime(),
+                rs.getBoolean("deleted")
         );
     }
 }

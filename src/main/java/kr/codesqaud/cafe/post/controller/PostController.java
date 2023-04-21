@@ -9,6 +9,7 @@ import kr.codesqaud.cafe.post.service.PostService;
 import kr.codesqaud.cafe.user.service.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,6 +69,16 @@ public class PostController {
         }
         postService.updatePost(id, postUpdateRequest.toPost(writer));
         return "redirect:/posts/" + id;
+    }
+
+    @DeleteMapping("/{id}")
+    public String deletePost(@PathVariable("id") long id, HttpSession session, PostUpdateRequest postUpdateRequest) {
+        User writer = (User) session.getAttribute("sessionUser");
+        if (writer == null) {
+            return "users/login";
+        }
+        postService.deletePost(id, writer);
+        return "redirect:/posts";
     }
 
     @GetMapping("")

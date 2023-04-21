@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.post.controller.response.PostDetailResponse;
 import kr.codesqaud.cafe.post.controller.response.PostListResponse;
 import kr.codesqaud.cafe.post.controller.response.SimplePostResponse;
 import kr.codesqaud.cafe.post.repository.PostRepository;
+import kr.codesqaud.cafe.user.service.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,14 @@ public class PostService {
         boolean isWriterMatch = postRepository.findById(id).orElseThrow().getWriterId().equals(post.getWriterId());
         if (isWriterMatch) {
             postRepository.update(id, post);
+        }
+        return isWriterMatch;
+    }
+
+    public boolean deletePost(long id, User user) {
+        boolean isWriterMatch = postRepository.findById(id).orElseThrow().getWriterId().equals(user.getUserId());
+        if (isWriterMatch) {
+            postRepository.delete(id);
         }
         return isWriterMatch;
     }

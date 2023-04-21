@@ -16,6 +16,6 @@ public class PostWriteRequest {
     }
 
     public Post toPost(User writer) {
-        return new Post(null, writer.getUserId(), writer.getName(), title, contents, LocalDateTime.now());
+        return new Post(null, writer.getUserId(), writer.getName(), title, contents, LocalDateTime.now(), false);
     }
 }

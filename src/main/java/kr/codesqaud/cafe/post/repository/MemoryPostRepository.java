@@ -28,6 +28,11 @@ public class MemoryPostRepository implements PostRepository {
     }
 
     @Override
+    public void delete(long id) {
+        posts.remove(id);
+    }
+
+    @Override
     public Optional<Post> findById(long id) {
         return Optional.ofNullable(posts.get(id));
     }
