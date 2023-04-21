@@ -20,7 +20,7 @@ CREATE TABLE users (
 drop table if exists comments CASCADE;
 
 CREATE TABLE comments (
-                          id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                          comment_id BIGINT PRIMARY KEY AUTO_INCREMENT,
                           article_id VARCHAR(255) NOT NULL,
                           contents VARCHAR(1000) NOT NULL,
                           user_id VARCHAR(255) NOT NULL,

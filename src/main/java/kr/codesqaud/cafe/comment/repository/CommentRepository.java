@@ -32,14 +32,14 @@ public class CommentRepository {
     }
 
     public Comment findById(long id) {
-        String sql = "SELECT article_id, contents, user_id, created_time FROM comments WHERE id = :id";
+        String sql = "SELECT comment_id, article_id, contents, user_id, created_time FROM comments WHERE comment_id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, commentRowMapper());
     }
 
     private RowMapper<Comment> commentRowMapper() {
         return (rs, rowNum) -> new Comment(
-                rs.getLong("id"),
+                rs.getLong("comment_id"),
                 rs.getLong("article_id"),
                 rs.getString("contents"),
                 rs.getString("user_id"),
@@ -48,7 +48,7 @@ public class CommentRepository {
     }
 
     public List<Comment> findByArticleId(long id) {
-        String sql = "SELECT article_id, contents, user_id, created_time FROM comments WHERE article_id = :id";
+        String sql = "SELECT comment_id, article_id, contents, user_id, created_time FROM comments WHERE article_id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.query(sql, namedParameters, commentRowMapper());
     }
