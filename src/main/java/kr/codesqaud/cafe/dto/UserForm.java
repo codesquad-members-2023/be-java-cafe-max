@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.dto;
 
 public class UserForm {
     private String userId;

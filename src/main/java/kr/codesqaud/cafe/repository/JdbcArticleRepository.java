@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
+
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcArticleRepository(DataSource dataSource) {
@@ -18,27 +19,30 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        String sql = "insert into article(writer, title, contents) values(?, ?, ?)";
+        String sql = "insert into articles(writer, title, contents, writtenTime) values(?, ?, ?, current_timestamp)";
         jdbcTemplate.update(sql, article.getWriter(), article.getTitle(), article.getContents());
     }
 
     @Override
-    public List<Article> getAllArticle() {
-        return jdbcTemplate.query("select * from article", articleRowMapper());
+    public List<Article> findAll() {
+        return jdbcTemplate.query("select * from articles", articleRowMapper());
     }
 
     @Override
-    public Article getArticleIndexOf(int index) {
-        List<Article> result = jdbcTemplate.query("select * from article where id = ?", articleRowMapper(), index + 1);
+    public Article findById(long id) {
+        List<Article> result = jdbcTemplate.query("select * from articles where id = ?", articleRowMapper(), id);
         return result.stream().findAny().get();
     }
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
-            return new Article(rs.getString("writer"),
-                    rs.getString("title"),
-                    rs.getString("contents")
-            );
+            return Article.builder()
+                    .id(rs.getLong("id"))
+                    .writer(rs.getString("writer"))
+                    .title(rs.getString("title"))
+                    .contents(rs.getString("contents"))
+                    .writtenTime(rs.getTimestamp("writtenTime").toLocalDateTime())
+                    .build();
         };
     }
 }

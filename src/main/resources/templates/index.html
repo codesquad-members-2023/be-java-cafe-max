@@ -10,18 +10,18 @@
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default qna-list">
             <ul class="list">
-                <li th:each="article : ${articles}">
+                <li th:each="articleDto : ${articleDtos}">
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a href="/qna/show.html" th:text="${article.getTitle()}"
-                                   th:href="@{/{index}(index = ${articleStat.index} + 1)}"></a>
+                                <a href="/qna/show.html" th:text="${articleDto.getTitle()}"
+                                   th:href="@{/articles/{id}(id = ${articleDto.getId()})}"></a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
                                 <span class="time"
-                                      th:text="${#temporals.format(article.getWrittenTime(), 'yyyy-MM-dd HH:mm')}"></span>
-                                <a href="user/profile.html" class="author" th:text="${article.getWriter()}"></a>
+                                      th:text="${#temporals.format(articleDto.getWrittenTime(), 'yyyy-MM-dd HH:mm')}"></span>
+                                <a href="user/profile.html" class="author" th:text="${articleDto.getWriter()}"></a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>

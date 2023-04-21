@@ -10,7 +10,7 @@
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
             <header class="qna-header">
-                <h2 class="qna-title" th:text="${article.getTitle()}"></h2>
+                <h2 class="qna-title" th:text="${articleDto.getTitle()}"></h2>
             </header>
             <div class="content-main">
                 <article class="article">
@@ -21,14 +21,14 @@
                         </div>
                         <div class="article-header-text">
                             <a href="/users/92/kimmunsu" class="article-author-name"
-                               th:text="${article.getWriter()}"></a>
+                               th:text="${articleDto.getWriter()}"></a>
                             <a href="/questions/413" class="article-header-time" title="퍼머링크"
-                               th:text="${#temporals.format(article.getWrittenTime(), 'yyyy-MM-dd HH:mm')}">
+                               th:text="${#temporals.format(articleDto.getWrittenTime(), 'yyyy-MM-dd HH:mm')}">
                                 <i class="icon-link"></i>
                             </a>
                         </div>
                     </div>
-                    <div class="article-doc" th:text="${article.getContents()}"></div>
+                    <div class="article-doc" th:text="${articleDto.getContents()}"></div>
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>

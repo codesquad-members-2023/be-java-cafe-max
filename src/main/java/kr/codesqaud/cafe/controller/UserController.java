@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.domain.UserForm;
+import kr.codesqaud.cafe.dto.UserDto;
+import kr.codesqaud.cafe.dto.UserForm;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +15,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -22,15 +23,15 @@ public class UserController {
     }
 
     @GetMapping
-    public String showList(Model model) {
-        List<User> users = userService.getUserList();
-        model.addAttribute("users", users);
+    public String findAll(Model model) {
+        List<UserDto> userDtos = userService.findAll();
+        model.addAttribute("userDtos", userDtos);
 
         return "user/list";
     }
 
     @GetMapping("/signup")
-    public String showSignup(UserForm userForm) {
+    public String showSignupForm(UserForm userForm) {
         return "user/form";
     }
 
@@ -43,8 +44,8 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public String findByUserId(@PathVariable("userId") String userId, Model model) {
-        User user = userService.findByUserId(userId);
-        model.addAttribute("user", user);
+        UserDto userDto = userService.findByUserId(userId);
+        model.addAttribute("userDto", userDto);
 
         return "user/profile";
     }

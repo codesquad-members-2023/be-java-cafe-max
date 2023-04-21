@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.ArticleForm;
+import kr.codesqaud.cafe.dto.ArticleDto;
+import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 @RequestMapping
 public class ArticleController {
-    ArticleService articleService;
+    private final ArticleService articleService;
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
@@ -23,14 +23,14 @@ public class ArticleController {
 
     @GetMapping
     public String showIndex(Model model) {
-        List<Article> articles = articleService.findAll();
-        model.addAttribute("articles", articles);
+        List<ArticleDto> articleDtos = articleService.findAll();
+        model.addAttribute("articleDtos", articleDtos);
 
         return "index";
     }
 
     @GetMapping("/write")
-    public String showWrite(ArticleForm articleForm) {
+    public String showWriteForm(ArticleForm articleForm) {
         return "qna/form";
     }
 
@@ -41,10 +41,10 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/{index}")
-    public String findByIndex(@PathVariable("index") int index, Model model) {
-        Article article = articleService.findArticleIndexOf(index - 1);
-        model.addAttribute("article", article);
+    @GetMapping("/articles/{id}")
+    public String showArticleById(@PathVariable("id") long id, Model model) {
+        ArticleDto articleDto = articleService.findById(id);
+        model.addAttribute("articleDto", articleDto);
 
         return "qna/show";
     }

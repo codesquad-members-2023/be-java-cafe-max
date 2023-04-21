@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class JdbcUserRepository implements UserRepository{
@@ -20,27 +19,31 @@ public class JdbcUserRepository implements UserRepository{
 
     @Override
     public void save(User user) {
-        String sql = "insert into userTable(userId, password, userName, email) values(?, ?, ?, ?)";
+        String sql = "insert into users(userId, password, userName, email) values(?, ?, ?, ?)";
         jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getUserName(), user.getEmail());
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return jdbcTemplate.query("select * from userTable", userRowMapper());
+    public List<User> findAll() {
+        return jdbcTemplate.query("select * from users", userRowMapper());
     }
 
     @Override
-    public User getSpecificUser(String userId) {
-        List<User> result = jdbcTemplate.query("select * from userTable where userId = ?", userRowMapper(), userId);
+    public User findByUserId(String userId) {
+        List<User> result = jdbcTemplate.query("select * from users where userId = ?", userRowMapper(), userId);
+
         return result.stream().findAny().get();
     }
 
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
-            return new User(rs.getString("userId"),
-                    rs.getString("password"),
-                    rs.getString("userName"),
-                    rs.getString("email"));
+            return User.builder()
+                    .id(rs.getLong("id"))
+                    .userId(rs.getString("userId"))
+                    .password(rs.getString("password"))
+                    .userName(rs.getString("userName"))
+                    .email(rs.getString("email"))
+                    .build();
         };
     }
 }

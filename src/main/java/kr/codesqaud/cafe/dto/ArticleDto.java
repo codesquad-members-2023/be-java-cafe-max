@@ -1,8 +1,8 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.dto;
 
 import java.time.LocalDateTime;
 
-public class Article {
+public class ArticleDto {
 
     private final Long id;
     private final String writer;
@@ -43,12 +43,12 @@ public class Article {
             return this;
         }
 
-        public Article build() {
-            return new Article(this);
+        public ArticleDto build() {
+            return new ArticleDto(this);
         }
     }
 
-    private Article(Builder builder) {
+    private ArticleDto(Builder builder) {
         this.id = builder.id;
         this.writer = builder.writer;
         this.title = builder.title;
