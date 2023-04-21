@@ -1,7 +1,13 @@
 {{>layout/header}}
 {{>layout/navbarHeader}}
 <div class="container" id="main">
-    <div class="col-md-6 col-md-offset-2">
+    <div class="col-md-8 col-md-offset-2">
+        <div>
+            <h2>[ERROR]</h2>
+            <h3>{{error_message}}</h3>
+        </div>
+        <button type="button" class="btn btn-primary clearfix" style="margin:5px;" onclick="history.back()">뒤로가기
+        </button>
         <img src="/images/403-error.jpg">
     </div>
 </div>

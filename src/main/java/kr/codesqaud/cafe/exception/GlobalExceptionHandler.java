@@ -24,12 +24,21 @@ public class GlobalExceptionHandler {
         return "user/form_failed";
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public String resourceNotFoundException(ResourceNotFoundException e, Model model) {
         model.addAttribute("error_message", e.getMessage());
         return "error/error_page";
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(ForbiddenException.class)
+    public String AccessDeniedOrForbiddenException(ForbiddenException e, Model model) {
+        model.addAttribute("error_message", e.getMessage());
+        return "error/403";
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(LoginFailedException.class)
     public String failedLoginException(HttpServletRequest request, LoginFailedException e, Model model) {
         model.addAttribute("userId", request.getParameter("userId"));
@@ -38,6 +47,7 @@ public class GlobalExceptionHandler {
         return "user/login_failed";
     }
 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(UserUpdateFailedException.class)
     public String userUpdateFailedException(HttpServletRequest request, UserUpdateFailedException e, Model model) {
         Map<String, String> userInput = new HashMap<>();

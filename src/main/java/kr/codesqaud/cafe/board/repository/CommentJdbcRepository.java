@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class CommentJdbcRepository {
@@ -33,6 +35,10 @@ public class CommentJdbcRepository {
 
     public void delete(Long commentId) {
         jdbcTemplate.update("UPDATE comment SET deleted = TRUE WHERE comment_id = :commentId", Collections.singletonMap("commentId", commentId));
+    }
+
+    public void deleteAllByPostId(Long postId) {
+        jdbcTemplate.update("UPDATE comment SET deleted = TRUE WHERE post_id = :postId", Collections.singletonMap("postId", postId));
     }
 
     public Comment findByCommentId(Long commentId) {
@@ -66,4 +72,16 @@ public class CommentJdbcRepository {
                     .build();
         }
     };
+
+    public int getCommentCountByOtherWriter(Long postId) {
+        Map<String, Long> namedParameters = Collections.singletonMap("postId", postId);
+        Optional<Integer> countOfPost = Optional.ofNullable(jdbcTemplate.queryForObject(
+                "SELECT COUNT(*)\n" +
+                        "FROM comment a\n" +
+                        "JOIN post b ON a.post_id = b.post_id AND a.writer != b.writer\n" +
+                        "WHERE a.post_id = :postId\n" +
+                        "AND a.deleted = FALSE",
+                namedParameters, Integer.class));
+        return countOfPost.orElse(0);
+    }
 }
