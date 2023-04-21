@@ -16,8 +16,9 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public void save(RequestForm requestForm, String userId) {
-        commentRepository.save(CommentDtoMapper.INSTANCE.toComment(requestForm, userId));
+    public Comment save(RequestForm requestForm, String userId) {
+        long savedId = commentRepository.save(CommentDtoMapper.INSTANCE.toComment(requestForm, userId));
+        return commentRepository.findById(savedId);
     }
 
     public List<Comment> getCommentsForArticle(long id){
