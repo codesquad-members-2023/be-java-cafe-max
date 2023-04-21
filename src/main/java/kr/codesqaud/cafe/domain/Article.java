@@ -11,7 +11,7 @@ public class Article {
     private String contents;  // 생각해보니 왠지 final을 해도 set은 될 듯하여 final 처리 -> jdbc 코딩 중 기본 생성자 생성 -> final에 빨간 줄 -> 롤백..
     private LocalDateTime createdTime;
 
-    public Article(){}
+    public Article(){}  // 그러고보니 이제 생성자 2개 됐는데 AutoWired 없어도 문제 안 생기나 궁금(!)
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;

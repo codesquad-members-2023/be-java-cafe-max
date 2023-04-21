@@ -26,7 +26,7 @@ public class JdbcArticleRepository {
         jdbcInsert.withTableName("articles_squad").usingGeneratedKeyColumns("id");
         // 방금 만든(h2) articles_squad 테이블에 insert를 하겠다 + (pk 알려주기)인 것으로 추정...
 
-        Map<String, Object> parameters = new ConcurrentHashMap<>();  // 이것은 무엇?
+        Map<String, Object> parameters = new ConcurrentHashMap<>();  // 이것은 무엇인지 짐작이 될 것 같으면서도 안 되는...?
 
         parameters.put("writer", article.getWriter());
         parameters.put("title", article.getTitle());
@@ -35,13 +35,13 @@ public class JdbcArticleRepository {
         parameters.put("articleNum", article.getArticleNum());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-        // Number 타입이 어디서 나온 것인지 몰라 당황(;;)
+        // Number 타입이 어디서 나온 것인지 몰라 (-> 처음 보는 것이라) 당황(;;)
         article.setArticleId(key.longValue()); //  여기서 Id속성을 새로 만들어야 했는데 기존에 있던 articleNum으로 할 수 있지 않았을지 사소하고 소심한 궁금증이...
         return article;
     }
 
     //        @Override
-    public Optional<Article> findById(Long id) {
+    public Optional<Article> findById(Long id) { // 왜 Long 인지(도) 그러고보니 모름!
         // import java.awt.List 하면 <T>밑에 빨간줄 있었던 <<<
         List<Article> result = jdbcTemplate.query("select * from articles_squad where id = ?",
                 articleRowMapper(), id);
