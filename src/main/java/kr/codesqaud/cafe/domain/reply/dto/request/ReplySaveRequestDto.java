@@ -13,7 +13,7 @@ public class ReplySaveRequestDto {
 		this.content = content;
 	}
 
-	ReplySaveRequestDto(String content) {
+	public ReplySaveRequestDto(String content) {
 		this.content = content;
 	}
 
