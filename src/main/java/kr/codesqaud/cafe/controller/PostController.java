@@ -54,9 +54,9 @@ public class PostController {
     }
 
     @GetMapping("/{id}/form")
-    public String modifyForm(@PathVariable Long id, Model model, @RequestAttribute AccountSession accountSession) {
-        postService.validateUnauthorized(id, accountSession.getId());
-        model.addAttribute("postModifyRequest", postService.findById(id));
+    public String modifyForm(@PathVariable Long id, Model model,
+        @RequestAttribute AccountSession accountSession) {
+        model.addAttribute("postModifyRequest", postService.findPostModifyById(id, accountSession.getId()));
         return "post/postModify";
     }
 

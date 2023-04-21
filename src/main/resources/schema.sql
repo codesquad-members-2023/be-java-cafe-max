@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS post (
     writer_id bigint NOT NULL,
     write_date	datetime NOT NULL,
     views bigint NOT NULL,
+    is_deleted BOOLEAN NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (writer_id) references member(id)
 );

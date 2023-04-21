@@ -9,16 +9,13 @@ public class Comment {
     private final Member writer;
     private final String content;
     private final LocalDateTime writeDate;
-    private final Boolean isDeleted;
 
-    public Comment(Long id, Long postId, Member writer, String content, LocalDateTime writeDate,
-        Boolean isDeleted) {
+    public Comment(Long id, Long postId, Member writer, String content, LocalDateTime writeDate) {
         this.id = id;
         this.postId = postId;
         this.writer = writer;
         this.content = content;
         this.writeDate = writeDate;
-        this.isDeleted = isDeleted;
     }
 
     public Long getId() {
@@ -41,10 +38,6 @@ public class Comment {
         return writeDate;
     }
 
-    public Boolean isDeleted() {
-        return isDeleted;
-    }
-
     public void injectionAutoIncrement(Long autoIncrement) {
         this.id = autoIncrement;
     }
@@ -64,7 +57,6 @@ public class Comment {
         private Member writer;
         private String content;
         private LocalDateTime writeDate;
-        private Boolean isDeleted;
 
         public CommentBuilder() {
 
@@ -95,13 +87,8 @@ public class Comment {
             return this;
         }
 
-        public Comment.CommentBuilder isDeleted(Boolean isDeleted) {
-            this.isDeleted = isDeleted;
-            return this;
-        }
-
         public Comment build() {
-            return new Comment(id, postId, writer, content, writeDate, isDeleted);
+            return new Comment(id, postId, writer, content, writeDate);
         }
     }
 }

@@ -26,8 +26,8 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Long save(Post post) {
-        String sql = "INSERT INTO post(title, content, writer_id, write_date, views) "
-                   + "VALUES(:title, :content, :writer.id, :writeDate, :views)";
+        String sql = "INSERT INTO post(title, content, writer_id, write_date, views, is_deleted) "
+                   + "VALUES(:title, :content, :writer.id, :writeDate, :views, false)";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(post);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, parameter, keyHolder);
@@ -40,7 +40,8 @@ public class JdbcPostRepository implements PostRepository {
                           + "p.write_date, p.views "
                      + "FROM post p "
                + "INNER JOIN member m on m.id = p.writer_id "
-            + "        WHERE p.id = :id";
+            + "        WHERE p.id = :id "
+                      + "AND p.is_deleted = false ";
         SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, postRowMapper)));
     }
@@ -51,6 +52,7 @@ public class JdbcPostRepository implements PostRepository {
                          + " p.write_date, p.views "
                     + "FROM post p "
               + "INNER JOIN member m on m.id = p.writer_id "
+                   + "WHERE p.is_deleted = false "
                    + "ORDER BY id DESC";
         return jdbcTemplate.query(sql, postRowMapper);
     }
@@ -78,16 +80,11 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public void delete(Long id) {
-        String sql = "DELETE FROM post "
-                   + "WHERE id = :id";
+        String sql = "UPDATE post "
+                      + "SET is_deleted = true "
+                    + "WHERE id = :id";
         SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         jdbcTemplate.update(sql, parameter);
-    }
-
-    @Override
-    public void deleteAll() {
-        String sql = "DELETE FROM post";
-        jdbcTemplate.update(sql, (SqlParameterSource) null);
     }
 
     private final RowMapper<Post> postRowMapper = (rs, rowNum) ->

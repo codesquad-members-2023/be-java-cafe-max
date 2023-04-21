@@ -16,18 +16,14 @@ public class CommentWriteRequest {
 
     private LocalDateTime writeDate;
 
-    private Boolean isDeleted;
-
     private CommentWriteRequest() {
         this.writeDate = LocalDateTime.now();
-        this.isDeleted = false;
     }
 
     public CommentWriteRequest(Long postId, String content) {
         this.postId = postId;
         this.content = content;
         this.writeDate = LocalDateTime.now();
-        this.isDeleted = false;
     }
 
     public Long getPostId() {
@@ -46,10 +42,6 @@ public class CommentWriteRequest {
         return writeDate;
     }
 
-    public Boolean isDeleted() {
-        return isDeleted;
-    }
-
     public void initializeWriterAndPostId(AccountSession accountSession, Long postId) {
         this.writer = new WriterResponse(accountSession.getId(), accountSession.getName());
         this.postId = postId;
@@ -61,7 +53,6 @@ public class CommentWriteRequest {
             .writer(member)
             .content(content)
             .writeDate(writeDate)
-            .isDeleted(isDeleted)
             .build();
     }
 }
