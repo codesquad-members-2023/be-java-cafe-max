@@ -39,6 +39,6 @@ public class JdbcCommentRepository implements CommentRepository {
 
 	@Override
 	public void delete(Long id) {
-		jdbcTemplate.update("DELETE FROM ARTICLE_COMMENT WHERE id = ?", id);
+		jdbcTemplate.update("DELETE FROM article_comment WHERE id = ?", id);
 	}
 }
