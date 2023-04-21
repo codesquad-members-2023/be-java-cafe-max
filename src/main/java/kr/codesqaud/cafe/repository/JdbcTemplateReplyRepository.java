@@ -11,6 +11,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,11 +29,16 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
     public Long save(Reply reply) {
 
         String sql = "insert into reply (userId, writer, articleId, contents) values (?, ?, ?, ?)";
-
-        SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(reply);
-
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(sql, sqlParameterSource, keyHolder);
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, reply.getUserId());
+            ps.setString(2, reply.getWriter());
+            ps.setLong(3, reply.getArticleId());
+            ps.setString(4, reply.getContents());
+            return ps;
+        }, keyHolder);
         return keyHolder.getKey().longValue();
     }
 
