@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -15,6 +14,7 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 
 //todo : JdbcTemplate vs NamedParameterJdbcTemplate 비교해보기
@@ -35,17 +35,17 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     public void save(Article article) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
         Number key = simpleJdbcInsert.executeAndReturnKey(param);
-        article.setId(key.longValue());
+        article.create(key.longValue(), article);
     }
 
     @Override
     public void update(Article updatedArticle) {
-        String sql = "UPDATE ARTICLE_TB SET TITLE = :TITLE, CONTENT = :CONTENT, CREATED_TIME = :CREATED_TIME WHERE ID = :ID";
+        String sql = "UPDATE ARTICLE_TB SET TITLE = :TITLE, CONTENT = :CONTENT, CREATE_TIME = :CREATE_TIME WHERE ID = :ID";
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("TITLE", updatedArticle.getTitle())
                 .addValue("CONTENT", updatedArticle.getContent())
-                .addValue("CREATED_TIME", updatedArticle.getCreatedTime())
+                .addValue("CREATE_TIME", updatedArticle.getCreate_Time())
                 .addValue("ID", updatedArticle.getId());
 
         template.update(sql, param);
@@ -60,14 +60,9 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     @Override
     public Optional<Article> findById(long id) {
         String sql = "SELECT * FROM ARTICLE_TB WHERE ID = :ID";
-
-        try {
-            Map<String, Object> param = Map.of("ID", id);
-            Article article = template.queryForObject(sql, param, articleRowMapper());
-            assert article != null;
-            return Optional.of(article);
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
+        Map<String, Object> param = Map.of("ID", id);
+        try (Stream<Article> result = template.queryForStream(sql, param, articleRowMapper())) {
+            return result.findFirst();
         }
     }
 
