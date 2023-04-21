@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.user.repository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.context.annotation.Primary;
@@ -33,7 +35,12 @@ public class H2UserRepository implements UserRepository {
 
 	@Override
 	public List<User> findAll() {
-		return null;
+		String sql = "SELECT id, userId, password, name, email FROM \"user\"";
+		try {
+			return Collections.unmodifiableList(jdbcTemplate.query(sql, getUserRowMapper()));
+		} catch (DataAccessException e) {
+			return Collections.unmodifiableList(new ArrayList<>());
+		}
 	}
 
 	@Override
