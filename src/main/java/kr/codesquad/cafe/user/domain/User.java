@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "\"user\"")
 public class User {
 
     private static final String EMPTY = "";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nickname;
     private String email;
