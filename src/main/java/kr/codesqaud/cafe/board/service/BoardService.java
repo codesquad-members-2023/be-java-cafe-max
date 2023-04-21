@@ -30,8 +30,8 @@ public class BoardService {
 
     public void delete(Long postId) {
         if (commentJdbcRepository.getCommentCountByOtherWriter(postId) == 0) {
-            boardJdbcRepository.delete(postId);
             commentJdbcRepository.deleteAllByPostId(postId);
+            boardJdbcRepository.delete(postId);
         } else {
             throw new ForbiddenException("작성자와 다른 댓글 작성자가 존재하여 삭제할 수 없습니다.");
         }
