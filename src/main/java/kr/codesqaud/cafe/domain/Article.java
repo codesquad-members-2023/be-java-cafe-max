@@ -21,7 +21,7 @@ public class Article {
 //        this.createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
-    public void setArticleId(long id){
+    public void setArticleId(long id){ // 이건 아무 문제 없는데...????
         this.articleId = id;
     }
     public void setArticleNum(long articleNum) {

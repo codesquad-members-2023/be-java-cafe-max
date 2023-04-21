@@ -31,14 +31,13 @@ public class JdbcUserRepository {
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-        User.setUserId(key.longValue()); // 지금 가서 userId 속성 + setter 만들기 (기존의 userId는 userLoginId로 변경)
+        user.setUserId(key.longValue()); // 지금 가서 userId 속성 + setter 만들기 (기존의 userId는 userLoginId로 변경)
         //빨간줄: 'Make User.userId static'이라는데 Article에서는 안 이랬는데 (영문을 모르는 중)
         return user;
     }
     //        @Override
     public Optional<User> findById(Long id) {
-        List<User> result = jdbcTemplate.query("select * from user_squad where id = ?",
-                userRowMapper(), id);
+        List<User> result = jdbcTemplate.query("select * from user_squad where id = ?", userRowMapper(), id);
         return result.stream().findAny();
     }
     //        @Override
