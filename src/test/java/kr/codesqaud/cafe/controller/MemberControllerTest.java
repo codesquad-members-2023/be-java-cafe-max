@@ -64,13 +64,13 @@ class MemberControllerTest {
     @DisplayName("/post 요청시 db에 회원이 저장이 된다.(회원가입)")
     void joinMember() throws Exception {
         //when,then
-        mockMvc.perform(post("/members/join")
+        mockMvc.perform(post("/members")
                         .param("email", basicMemberData().getEmail())
                         .param("password", basicMemberData().getPassword())
                         .param("nickname", basicMemberData().getNickname())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/join"))
+                .andExpect(redirectedUrl("/register"))
                 .andDo(print());
 
         Member member = memberService.findByEmail(basicMemberData().getEmail());
@@ -87,12 +87,12 @@ class MemberControllerTest {
     void joinForm() throws Exception {
         MemberJoinRequestDto memberJoinRequestDto = basicMemberJoinRequestDtoData();
 
-        mockMvc.perform(post("/members/join")
+        mockMvc.perform(post("/members")
                 .param("email", memberJoinRequestDto.getEmail())
                 .param("nickname", memberJoinRequestDto.getNickname())
                 .param("password", memberJoinRequestDto.getPassword()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/join"))
+                .andExpect(redirectedUrl("/register"))
                 .andExpect(model().attributeExists("memberJoinRequestDto"));
     }
 
@@ -153,13 +153,13 @@ class MemberControllerTest {
         Long memberId = memberService.join(basicMemberJoinRequestDtoData());
         ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(memberId,basicMemberJoinRequestDtoData().getEmail(),basicMemberJoinRequestDtoData().getPassword(),basicMemberJoinRequestDtoData().getNickName());
         //when
-        mockMvc.perform(put("/members/{email}", basicMemberData().getEmail())
+        mockMvc.perform(put("/members/{email}/profile", basicMemberData().getEmail())
                         .param("memberId",String.valueOf(profileEditRequestDto.getMemberId()))
                         .param("email", profileEditRequestDto.getEmail())
                         .param("password", profileEditRequestDto.getPassword())
                         .param("nickname",profileEditRequestDto.getNickname()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/members/{email}"));
+                .andExpect(redirectedUrlPattern("/members/{email}/profile"));
     }
 
     @Test
@@ -168,8 +168,8 @@ class MemberControllerTest {
         Long savedId = memberRepository.save(basicMemberData());
 
         // when,then
-        mockMvc.perform(get("/members/{email}/edit", basicMemberData().getEmail())
-                        .sessionAttr("loginMember", new LoginMemberSession(savedId, "test@test.com")))
+        mockMvc.perform(get("/members/{email}/profile", basicMemberData().getEmail())
+                        .sessionAttr("loginMember", new LoginMemberSession("test@test.com")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("member/profileEdit"))
                 .andDo(print());
