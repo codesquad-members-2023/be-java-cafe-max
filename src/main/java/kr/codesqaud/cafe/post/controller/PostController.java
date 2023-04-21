@@ -58,7 +58,7 @@ public class PostController {
         SimplePostResponse simplePostResponse = postService.getSimplePostById(id);
         model.addAttribute("title", simplePostResponse.getTitle());
         model.addAttribute("contents", simplePostResponse.getContents());
-        return "/post/update";
+        return "post/update";
     }
 
     @PutMapping("/{id}")
@@ -72,7 +72,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public String deletePost(@PathVariable("id") long id, HttpSession session, PostUpdateRequest postUpdateRequest) {
+    public String deletePost(@PathVariable("id") long id, HttpSession session) {
         User writer = (User) session.getAttribute("sessionUser");
         if (writer == null) {
             return "users/login";
