@@ -37,8 +37,9 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String writePost(@ModelAttribute @Valid ArticleRequestDto articleRequestDto, HttpSession session) {
-        User user = (User) session.getAttribute(SessionAttributes.LOGIN_USER.getValue());
+    public String writePost(@ModelAttribute @Valid ArticleRequestDto articleRequestDto,
+                            HttpServletRequest request) {
+        User user = findUserByRequest(request);
         articleService.createPost(articleRequestDto, user);
         return "redirect:/";
     }

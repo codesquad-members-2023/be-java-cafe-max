@@ -1,5 +1,6 @@
 package codesquad.cafe.global.interceptor;
 
+import codesquad.cafe.global.constant.SessionAttributes;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -15,7 +16,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("loginUser") == null) {
+        if (session == null || SessionAttributes.LOGIN_USER.getValue() == null) {
             log.info("[미인증 사용자 요청]");
             response.sendRedirect("/users/login");
             return false;
