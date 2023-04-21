@@ -47,6 +47,11 @@ exists를 사용하면 존재 여부만 판별하니까 리프 노드에서 체�
 
 ---
 
+- URL
+  - [GET] "/articles/{id}/update-form"  
+  - [PUT] "/articles/{id}"  
+- 세션 id와 해당 게시글의 작성자 id를 비교하여 일치하면 수정 버튼이 보임  
+
 <br>
 
 ### 4. 댓글 기능
@@ -59,5 +64,11 @@ exists를 사용하면 존재 여부만 판별하니까 리프 노드에서 체�
 ### 5. 조회수
 
 ---
+
+동시성 고려
+- 상품 재고 같은 중요한 값이 아니면 잃는 것이 더 클수도 있음  
+- 중복 조회수 -> 쿠키(?)  
+- https://www.inflearn.com/course/동시성이슈-재고시스템#curriculum  
+- https://zzang9ha.tistory.com/443
 
 <br>
