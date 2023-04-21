@@ -76,6 +76,6 @@ public class MemberService {
         if (member.isNotMatchedPassword(memberLoginRequestDto.getPassword())) {
             throw new MemberLoginException(MemberExceptionType.NOT_FOUND, memberLoginRequestDto);
         }
-        return new LoginMemberSession(member);
+        return new LoginMemberSession(member.getEmail());
     }
 }
