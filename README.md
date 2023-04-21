@@ -146,6 +146,33 @@
 - 댓글 삭제도 데이터의 상태를 삭제 상태로 변경한다.✅
   - 로그인 사용자와 댓글 작성자가 같은 경우에만 댓글을 삭제할 수 있다.✅
 
+### URL
+
+| HTTP Method |                URL                |         기능         |
+| :---------: | :-------------------------------: | :------------------: |
+|     GET     |             /members              |    회원 목록 조회    |
+|     GET     |           /members/{id}           |     프로필 조회      |
+|     PUT     |           /members/{id}           |   회원 프로필 수정   |
+|     GET     |        /members/{id}/form         | 회원 프로필 수정 폼  |
+|     GET     |         /members/sign-up          |     회원가입 폼      |
+|    POST     |         /members/sign-up          |      회원 가입       |
+|     GET     |         /members/sign-in          |      로그인 폼       |
+|    POST     |         /members/sign-in          |        로그인        |
+|    POST     |         /members/sign-out         |       로그아웃       |
+|     GET     |                 /                 | 홈 화면(게시글 목록) |
+|    POST     |              /posts               |     게시글 생성      |
+|     GET     |            /posts/{id}            |   게시글 상세 조회   |
+|     PUT     |            /posts/{id}            |     게시글 수정      |
+|   DELETE    |            /posts/{id}            |     게시글 삭제      |
+|     GET     |            /posts/form            |    게시글 작성 폼    |
+|     GET     |         /posts/{id}/form          |    게시글 수정 폼    |
+|    POST     |   /api/posts/{postId}/comments    |      댓글 작성       |
+|   DELETE    | /api/posts/{postId}/comments/{id} |      댓글 삭제       |
+
+### ERD
+
+![](https://lh3.googleusercontent.com/pw/AJFCJaWlkMzu68-V2V-eY0o0fm332TG4h3egUnN-rDhEsJc3m-4cJglqwF-zXC67lAw2D3WKNhooU94-xGJCRMQrNozUY3UoQ2-gfFB_8MC8tk7WJSU7K4w_uybbI0HIh8qNxY5i-e8Y8lvDuOeeCSXXUHhl=w1327-h1071-s-no?authuser=0)
+
 ## 7단계 미션
 
 ### 학습 계획
