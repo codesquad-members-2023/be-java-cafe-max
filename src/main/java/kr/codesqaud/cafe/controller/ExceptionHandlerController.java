@@ -38,7 +38,7 @@ public class ExceptionHandlerController {
         MemberExceptionType memberExceptionType = memberJoinException.getMemberExceptionType();
         model.addAttribute("member");
         model.addAttribute(memberExceptionType.getCategory(), memberExceptionType.getMessage());
-        return "member/memberForm";
+        return "member/register";
     }
 
     @ExceptionHandler(MemberProfileEditException.class)
@@ -58,7 +58,7 @@ public class ExceptionHandlerController {
         model.addAttribute("loginMember");
         model.addAttribute(memberExceptionType.getCategory(), memberExceptionType.getMessage());
 
-        return "user/login";
+        return "member/login";
     }
 
 
