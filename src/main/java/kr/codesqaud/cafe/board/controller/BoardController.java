@@ -66,9 +66,9 @@ public class BoardController {
                              Model model, HttpSession session) {
         PostResponse postResponse = boardService.getPost(postId);
         model.addAttribute("post", postResponse);
-        
+
         String sessionUserName = sessionUser.getUserName();
-        if (sessionUserName.equals(postResponse.getWriter())) {
+        if (!sessionUserName.equals(postResponse.getWriter())) {
             throw new ForbiddenException("접근할 수 없는 페이지입니다.");
         }
 
