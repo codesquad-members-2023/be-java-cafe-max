@@ -1,4 +1,5 @@
-create table if not exists `user`
+drop table if exists `user`;
+create table `user`
 (
     id       bigint       not null auto_increment,
     user_id  varchar(255) not null,
@@ -8,10 +9,12 @@ create table if not exists `user`
     primary key (id)
 );
 
-create table if not exists post
+drop table if exists post;
+create table post
 (
     id           bigint       not null auto_increment,
-    writer       varchar(255) not null,
+    writer_id    varchar(255) not null,
+    writer_name  varchar(255) not null,
     title        varchar(255) not null,
     contents     varchar(255) not null,
     writing_time timestamp(9) not null,

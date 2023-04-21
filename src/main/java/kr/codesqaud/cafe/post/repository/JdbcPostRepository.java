@@ -23,14 +23,15 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Post save(Post post) {
-        String sql = "insert into post (writer, title, contents, writing_time) values (?, ?, ?, ?)";
+        String sql = "insert into post (writer_id, writer_name, title, contents, writing_time) values (?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
-            ps.setString(1, post.getWriter());
-            ps.setString(2, post.getTitle());
-            ps.setString(3, post.getContents());
-            ps.setTimestamp(4, java.sql.Timestamp.valueOf(post.getWritingTime()));
+            ps.setString(1, post.getWriterId());
+            ps.setString(2, post.getWriterName());
+            ps.setString(3, post.getTitle());
+            ps.setString(4, post.getContents());
+            ps.setTimestamp(5, java.sql.Timestamp.valueOf(post.getWritingTime()));
             return ps;
         }, keyHolder);
 
@@ -40,7 +41,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Optional<Post> findById(long id) {
-        String sql = "select id, writer, title, contents, writing_time from post where id = ?";
+        String sql = "select id, writer_id, writer_name, title, contents, writing_time from post where id = ?";
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper(), id));
         } catch (DataAccessException e) {
@@ -50,14 +51,15 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public List<Post> findAll() {
-        String sql = "select id, writer, title, contents, writing_time from post order by writing_time desc";
+        String sql = "select id, writer_id, writer_name, title, contents, writing_time from post order by writing_time desc";
         return jdbcTemplate.query(sql, rowMapper());
     }
 
     private RowMapper<Post> rowMapper() {
         return (rs, rowNum) -> new Post(
                 rs.getLong("id"),
-                rs.getString("writer"),
+                rs.getString("writer_id"),
+                rs.getString("writer_name"),
                 rs.getString("title"),
                 rs.getString("contents"),
                 rs.getTimestamp("writing_time").toLocalDateTime()
