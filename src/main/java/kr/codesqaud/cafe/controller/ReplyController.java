@@ -25,6 +25,7 @@ public class ReplyController {
                             SessionDto loginUser, ReplyForm form, @PathVariable Long id, RedirectAttributes redirectAttributes) {
 
         boolean isWriteReplySuccess = replyService.write(loginUser.getUserId(), loginUser.getName(), id, form);
+
         if (!isWriteReplySuccess) {
             redirectAttributes.addFlashAttribute("emptyComment", true);
         }

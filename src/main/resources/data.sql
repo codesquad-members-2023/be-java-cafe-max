@@ -4,4 +4,4 @@ insert into users(userId, password, name, email) values ('kim', '1234', 'kim', '
 
 insert into article(writer, userId, title, contents ) values ('Joy', 'Joy', 'welcome','환영합니당')
 insert into article(writer, userId, title, contents ) values ('spring', 'abc','봄이다','스프링 어려웡')
-insert into article(writer, userId, title, contents ) values ('kim', 'kim','김김','김')
+insert into article(writer, userId, title, contents ) values ('kim', 'kim','ajax','가 뭐지?')
