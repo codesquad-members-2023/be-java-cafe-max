@@ -38,8 +38,8 @@ class MainControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.get("/"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("index"))
-			.andExpect(model().attributeExists("articleList"))//객체 검증
-			.andExpect(model().attribute("articleList", articleList));
+			.andExpect(model().attributeExists("articles"))//객체 검증
+			.andExpect(model().attribute("articles", articleList));
 	}
 
 }
