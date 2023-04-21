@@ -44,7 +44,7 @@ public class UserController {
     }
 
     // 특정 회원 추가
-    @PostMapping("/users/new")
+    @PostMapping("/users")
     public UserResponse addUser(@Valid @RequestBody UserSavedRequest requestDto) {
         User user = userService.signUp(requestDto);
         return new UserResponse(user);

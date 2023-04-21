@@ -49,7 +49,7 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
     @Override
     public String toString() {
         return String.format(
-            "ArticleResponseDto{id=%d, writer=%s, title=%s, content=%s, writeDate=%s, user_id=%d}",
+            "ArticleResponseDto{id=%d, writer=%s, title=%s, content=%s, createTime=%s, user_id=%d}",
             id, writer, title, content, createTime, userId);
     }
 

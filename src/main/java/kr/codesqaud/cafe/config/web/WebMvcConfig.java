@@ -14,6 +14,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
             .order(Ordered.HIGHEST_PRECEDENCE)
             .addPathPatterns("/qna/**", "/users/**")
-            .excludePathPatterns("/users/new");
+            .excludePathPatterns("/users");
     }
 }
