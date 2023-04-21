@@ -24,4 +24,9 @@ public class GlobalExceptionHandler {
         model.addAttribute("error", e.getMessage());
         return "error/400";
     }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public String handleUnauthorized(UnauthorizedException e) {
+        return "error/404";
+    }
 }

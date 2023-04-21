@@ -7,6 +7,7 @@ import kr.codesqaud.cafe.dto.Answer;
 import kr.codesqaud.cafe.dto.Result;
 import kr.codesqaud.cafe.dto.SessionDto;
 import kr.codesqaud.cafe.exception.ReplyNotFoundException;
+import kr.codesqaud.cafe.exception.UnauthorizedException;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;
 import kr.codesqaud.cafe.service.UserService;
@@ -43,6 +44,6 @@ public class ReplyController {
             replyService.delete(id);
             return new Result("success");
         }
-        throw new ReplyNotFoundException();
+        throw new UnauthorizedException();
     }
 }
