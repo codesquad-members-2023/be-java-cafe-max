@@ -80,4 +80,11 @@ public class JdbcPostRepository implements PostRepository {
         String sql = "DELETE FROM post";
         jdbcTemplate.update(sql, (SqlParameterSource) null);
     }
+
+    @Override
+    public void deletePostId(Long postId) {
+        String sql = "DELETE FROM post WHERE postId = :postId";
+        SqlParameterSource parameter = new MapSqlParameterSource("postId", postId);
+        jdbcTemplate.update(sql, parameter);
+    }
 }
