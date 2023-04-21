@@ -7,12 +7,14 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -25,12 +27,13 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
     }
 
     @Override
-    public Reply save(Reply reply) {
+    public Long save(Reply reply) {
         String sql = "insert into REPLIES (article_id, user_id, reply_content, reply_time, deleted) " +
                 "values (:articleId, :userId, :replyContent, :replyTime, false)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource param = new BeanPropertySqlParameterSource(reply);
-        template.update(sql, param);
-        return reply;
+        template.update(sql, param, keyHolder);
+        return (Objects.requireNonNull(keyHolder.getKey())).longValue();
     }
 
     @Override
@@ -51,7 +54,7 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
         // 1차: articleId -> 2차: userId
         String sql = "select r.id, r.user_id, r.article_id, u.user_id, r.reply_content, r.reply_time " +
                 "from REPLIES r join USERS u on r.user_id = u.user_id " +
-                "where r.article_id=:articleId and r.deleted=false";
+                "where r.article_id=:articleId and r.deleted=false order by r.id";
 
         Map<String, Object> param = Map.of("articleId", articleId);
         return template.query(sql, param, replyRowMapper);

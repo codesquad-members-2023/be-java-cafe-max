@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface ReplyRepository {
-    Reply save(Reply reply);
+    Long save(Reply reply);
 
     Optional<Reply> findById(Long id);
 
