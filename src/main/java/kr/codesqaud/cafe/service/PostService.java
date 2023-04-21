@@ -67,4 +67,8 @@ public class PostService {
                 .map(WriterResponse::from)
                 .orElseThrow(() -> new NoSuchElementException("해당 id를 가진 글쓴이를 찾을 수 없습니다."));
     }
+
+    public void deletePostId(Long postId) {
+        postRepository.deletePostId(postId);
+    }
 }
