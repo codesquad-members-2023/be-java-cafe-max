@@ -69,6 +69,10 @@ public class JDBCArticleRepository implements ArticleRepository {
 				.addValue("articleIdx", articleIdx)
 				.addValue("userId", userId)
 		);
+		if (rowsAffected > 0) {
+			namedParameterJdbcTemplate.update("UPDATE REPLY SET is_visible = FALSE WHERE article_idx = :articleIdx"
+				, new MapSqlParameterSource("articleIdx", articleIdx));
+		}
 		return (rowsAffected > 0);
 	}
 }
