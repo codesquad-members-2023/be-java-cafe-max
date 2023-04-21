@@ -1,10 +1,15 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.controller.dto.ArticleDto;
+import kr.codesqaud.cafe.controller.dto.request.PostEditRequest;
 import kr.codesqaud.cafe.controller.dto.request.PostRequest;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class ArticleController {
@@ -15,14 +20,22 @@ public class ArticleController {
     }
 
     @PostMapping("/article")
-    public String post(@ModelAttribute final PostRequest request) {
-        articleService.post(request);
+    public String post(@ModelAttribute final PostRequest request, HttpServletRequest httpRequest) {
+        articleService.post(request, httpRequest);
         return "redirect:/";
     }
 
     @GetMapping("/article")
-    public String showArticle(){
+    public String showArticle() {
         return "qna/form";
+    }
+
+    @PutMapping("/articles/{articleId}")
+    public String edit(@PathVariable final Long articleId, @ModelAttribute final PostEditRequest request, Model model) {
+        articleService.editArticle(articleId, request);
+        ArticleDto article = articleService.findById(articleId);
+        model.addAttribute("article", article);
+        return "qna/show";
     }
 
     @GetMapping("/articles/{articleId}")
@@ -30,4 +43,36 @@ public class ArticleController {
         model.addAttribute("article", articleService.findById(articleId));
         return "qna/show";
     }
+
+    @GetMapping("/articles/edit/{articleId}")
+    public String editArticle(@PathVariable final Long articleId, HttpServletRequest httpRequest, Model model) {
+        HttpSession session = httpRequest.getSession(false);
+        ArticleDto article = articleService.findById(articleId);
+
+        model.addAttribute("article", article);
+        model.addAttribute("title", article.getTitle());
+        model.addAttribute("content", article.getContent());
+
+        if (session.getAttribute("userId").equals(article.getWriter())) {
+            return "qna/edit_form";
+        }
+
+        return "qna/failed";
+    }
+
+    @RequestMapping(value = "/articles/delete/{articleId}", method = {RequestMethod.GET, RequestMethod.DELETE})
+    // get or post
+    public String deleteArticle(@PathVariable final Long articleId, HttpServletRequest httpRequest, Model model) {
+        HttpSession session = httpRequest.getSession(false);
+        ArticleDto article = articleService.findById(articleId);
+
+        if (session.getAttribute("userId").equals(article.getWriter())) {
+            articleService.deleteArticle(articleId);
+            return "redirect:/";
+        }
+
+        model.addAttribute("article", article);
+        return "qna/failed";
+    }
+
 }
