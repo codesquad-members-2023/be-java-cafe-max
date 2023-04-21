@@ -20,9 +20,10 @@ public class ReplyService {
         this.replyRepository = replyRepository;
     }
 
-    public Reply add(Long articleId, ReplyForm form, String userId) {
+    public ReplyTimeForm saveReply(Long articleId, ReplyForm form, String userId) {
         Reply reply = new Reply(articleId, userId, form.getReplyContent());
-        return replyRepository.save(reply);
+        Long replyId = replyRepository.save(reply);
+        return ReplyTimeForm.from(replyId, reply);
     }
 
     public List<ReplyTimeForm> findReplies(Long articleId) {
