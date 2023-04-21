@@ -20,16 +20,16 @@
     </div>
     <table>
       <thead>
-      <th class="nickName">닉네임</th>
+      <th class="nickname">닉네임</th>
       <th class="email">이메일</th>
       <th class="signUpDate">회원가입일</th>
       </thead>
       <tbody>
       <tr th:each="memberResponse : ${memberResponsesDto}">
-        <td class="nickName" >
-          <a class="nav-link" th:href="@{/members/{memberId}(memberId = ${memberResponse.memberId})}" th:text="${memberResponse.nickName}">차차</a>
+        <td class="nickname" >
+          <a class="nav-link" th:href="@{/members/{memberId}(memberId = ${memberResponse.getMemberId()})}" th:text="${memberResponse.getNickname()}">차차</a>
         </td>
-        <td class="email" th:text="${memberResponse.email}">test@gmail.com</td>
+        <td class="email" th:text="${memberResponse.getEmail()}">test@gmail.com</td>
         <td class="signUpDate" th:text="${memberResponse.convertLocalDateTime()}">2023-04-30</td>
       </tr>
       </tbody>

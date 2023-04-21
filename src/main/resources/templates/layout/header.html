@@ -6,12 +6,12 @@
         <div id="endHeader" class="col-3  text-end">
             <th:block th:if="${session.loginMember == null}">
                 <a th:href="@{/members/login}" class="btn btn-primary btn-sm">로그인</a>
-                <a th:href="@{/members/join}" class="btn btn-primary btn-sm">회원가입</a>
+                <a th:href="@{/members/register}" class="btn btn-primary btn-sm">회원가입</a>
             </th:block>
             <form th:if="${session.loginMember != null}" th:action="@{/members/logout}" th:method="post">
                 <a th:href="@{/members}" class="btn">멤버 리스트</a>
                 <button class="btn btn-primary btn-sm" type="submit">로그아웃</button>
-                <a th:href="@{/members/{email}/edit(email = ${session.loginMember.getMemberEmail()})}" class="btn btn-primary btn-sm">개인정보수정</a>
+                <a th:href="@{/members/{email}/profile(email = ${session.loginMember.getMemberEmail()})}" class="btn btn-primary btn-sm">개인정보수정</a>
             </form>
         </div>
     </header>
