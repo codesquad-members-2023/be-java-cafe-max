@@ -19,7 +19,9 @@
     <header class="post-header">
       <p class="title">글 수정하기</p>
     </header>
-    <form class="submit-write" method="post" th:action="@{/post/modify/{id}(id=${articleDTO.id})}">
+    <form class="submit-write" method="post" th:action="@{/posts/{id}/revision-try(id=${articleDTO.id})}">
+      <!-- put 메서드 사용을 위해 hidden input 요소 추가 -->
+      <input type="hidden" name="_method" value="PUT"/>
       <div class="text-box">
         <div class="comment-writer-container">
           <p class="post-title">제목</p>

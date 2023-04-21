@@ -25,8 +25,9 @@
                     <article class="article">
                         <div class="article-header">
                             <div class="article-header-text">
-                                <p class="article-content" th:text="${wantedPost.getAuthor()}"></p>
-                                <p class="article-content" th:text="${wantedPost.createdTime}"></p>
+                                <p class="article-content" th:text="${wantedPost.userId}"></p>
+                                <p class="article-content" th:text="${wantedPost.create_Time}"></p>
+
                                 <!--조회 횟수 쓰는 곳-->
                                 <p class="article-content"></p>
                             </div>
@@ -76,7 +77,7 @@
                                 </form>
 
                                 <div class="post-actions">
-                                    <a class="post-action-btn btn-modify" th:href="@{/posts/{id}/modify(id=${wantedPost.id})}">수정</a>
+                                    <a class="post-action-btn btn-modify" th:href="@{/posts/{id}/revision(id=${wantedPost.id})}">수정</a>
                                     <a class="post-action-btn btn-modify">삭제</a>
                                     <a class="post-action-btn btn-list" href="/">글목록</a>
                                 </div>
