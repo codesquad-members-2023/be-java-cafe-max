@@ -52,11 +52,11 @@ class PostServiceTest {
 
         //then
         assertAll(
-                () -> assertEquals(basicPostData(member).getTitle(), postResponse.getTitle()),
-                () -> assertEquals(basicPostData(member).getContent(), postResponse.getContent()),
-                () -> assertEquals(basicPostData(member).getWriterEmail(), postResponse.getWriter().getWriterEmail()),
+                () -> assertEquals("피에스타", postResponse.getTitle()),
+                () -> assertEquals("내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게", postResponse.getContent()),
+                () -> assertEquals("test@gmail.com", postResponse.getWriter().getWriterEmail()),
                 () -> assertEquals(basicPostData(member).getWriteDate().withNano(0), postResponse.getWriteDate().withNano(0)),
-                () -> assertEquals(basicPostData(member).getViews() + 1, postResponse.getViews()),
+                () -> assertEquals(0L, postResponse.getViews()),
                 () -> assertNotNull(savedPostId));
     }
 
@@ -74,7 +74,7 @@ class PostServiceTest {
 
         //then
         assertEquals(postId, postResponse.getPostId());
-        assertEquals(basicPostData(member).getWriterEmail(), postResponse.getWriter().getWriterEmail());
+        assertEquals("test@gmail.com", postResponse.getWriter().getWriterEmail());
     }
 
     @Test
@@ -101,8 +101,8 @@ class PostServiceTest {
                 () -> assertFalse(result.contains(null)),
                 () -> assertEquals(post1Id, result.get(1).getPostId()),
                 () -> assertEquals(post2Id, result.get(0).getPostId()),
-                () -> assertEquals(member1.getNickName(), result.get(1).getWriter().getNickName()),
-                () -> assertEquals(member2.getNickName(), result.get(0).getWriter().getNickName())
+                () -> assertEquals("차차", result.get(1).getWriter().getNickname()),
+                () -> assertEquals("피오니", result.get(0).getWriter().getNickname())
         );
     }
 

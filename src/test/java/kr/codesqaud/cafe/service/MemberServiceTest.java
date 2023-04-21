@@ -45,9 +45,9 @@ class MemberServiceTest {
         //then
         Member targetMember = memberRepository.findById(savedMemberId).orElseThrow();
         assertAll(() -> assertEquals(savedMemberId, targetMember.getMemberId()),
-                () -> assertEquals(memberLoginRequestDto.getEmail(), targetMember.getEmail()),
-                () -> assertEquals(memberLoginRequestDto.getPassword(), targetMember.getPassword()),
-                () -> assertEquals(memberLoginRequestDto.getNickName(), targetMember.getNickName()));
+                () -> assertEquals("test@gmail.com", targetMember.getEmail()),
+                () -> assertEquals("testtest", targetMember.getPassword()),
+                () -> assertEquals("차차", targetMember.getNickname()));
     }
 
 
