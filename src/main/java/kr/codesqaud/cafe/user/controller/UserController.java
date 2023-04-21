@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.user.controller;
 
 import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.service.LoginService;
 import kr.codesqaud.cafe.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,12 +10,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
+    private final LoginService loginService;
+
+    @Autowired
+    public UserController(UserService userService, LoginService loginService) {
+        this.userService = userService;
+        this.loginService = loginService;
+    }
 
     @GetMapping("/user/form")
     public String form() {
@@ -29,8 +39,22 @@ public class UserController {
     }
 
     @GetMapping("/user/login")
-    public String login() {
+    public String loginForm() {
         return "user/login";
+    }
+
+    @PostMapping("/user/login")
+    public String loginSubmit(LoginForm loginForm, HttpSession httpSession) {
+        try{
+            User requestUser = userService.findById(loginForm.getUserId());
+            loginService.validationRequestPassword(requestUser.getPassword(),loginForm.getPassword());
+            httpSession.setAttribute("sessionUser", requestUser);
+        }
+        catch(AccessDeniedException | NullPointerException e){
+            System.out.println(e.getMessage());
+            return "user/login_failed";
+        }
+        return "redirect:/";
     }
 
     @GetMapping("/user/login_failed")
@@ -42,11 +66,6 @@ public class UserController {
     public String profile(@PathVariable String id, Model model) {
         model.addAttribute("user", userService.findById(id));
         return "user/profile";
-    }
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
     }
 
     @PostMapping("/user/form")
