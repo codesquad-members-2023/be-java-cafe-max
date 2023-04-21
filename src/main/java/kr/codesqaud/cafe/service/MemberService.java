@@ -48,7 +48,7 @@ public class MemberService {
     }
 
     public Member findByEmail(String email) {
-        return memberRepository.findByEmail(email).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_EMAIL));
+        return memberRepository.findByEmail(email).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND));
     }
 
     public void update(ProfileEditRequestDto profileEditRequestDto) {
@@ -70,9 +70,9 @@ public class MemberService {
     }
 
     public LoginMemberSession login(MemberLoginRequestDto memberLoginRequestDto) {
-        Member member = memberRepository.findByEmail(memberLoginRequestDto.getEmail()).orElseThrow(() -> new MemberLoginException(MemberExceptionType.INVALID_USER_ID, memberLoginRequestDto));
+        Member member = memberRepository.findByEmail(memberLoginRequestDto.getEmail()).orElseThrow(() -> new MemberLoginException(MemberExceptionType.NOT_FOUND, memberLoginRequestDto));
         if (member.isNotMatchedPassword(memberLoginRequestDto.getPassword())) {
-            throw new MemberLoginException(MemberExceptionType.NOT_MATCHED_PASSWORD, memberLoginRequestDto);
+            throw new MemberLoginException(MemberExceptionType.NOT_FOUND, memberLoginRequestDto);
         }
         return new LoginMemberSession(member);
     }
