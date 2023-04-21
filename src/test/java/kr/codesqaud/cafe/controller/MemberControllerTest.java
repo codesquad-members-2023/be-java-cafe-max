@@ -195,8 +195,8 @@ class MemberControllerTest {
         Member updatedMember = memberRepository.findById(savedMemberId).orElse(null);
         assertAll(
                 ()-> assertNotNull(updatedMember),
-                ()-> assertEquals(newPassword, updatedMember.getPassword()),
-                ()-> assertEquals(newNickname, updatedMember.getNickname())
+                ()-> assertEquals("testtesttest", updatedMember.getPassword()),
+                ()-> assertEquals("피오니", updatedMember.getNickname())
         );
     }
 
