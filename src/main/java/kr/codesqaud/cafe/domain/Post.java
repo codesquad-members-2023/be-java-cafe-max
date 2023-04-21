@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 public class Post {
     private Long postId;
-    private final String title;
-    private final String content;
+    private String title;
+    private String content;
     private final String writerEmail;
     private final LocalDateTime writeDate;
     private Long views;
@@ -57,5 +57,10 @@ public class Post {
 
     public void setPostId(Long postId) {
         this.postId = postId;
+    }
+
+    public void editPost(final String title, final String content) {
+        this.title = title;
+        this.content = content;
     }
 }
