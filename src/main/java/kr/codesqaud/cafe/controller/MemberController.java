@@ -114,9 +114,8 @@ public class MemberController {
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest httpServletRequest) {
-        HttpSession httpSession = httpServletRequest.getSession();
-        httpSession.removeAttribute("loginMember");
+    public String logout(HttpSession httpSession) {
+        httpSession.invalidate();
         return "redirect:/posts";
     }
 }
