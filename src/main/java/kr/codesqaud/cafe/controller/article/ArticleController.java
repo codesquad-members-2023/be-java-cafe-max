@@ -65,8 +65,6 @@ public class ArticleController {
 
     @PutMapping("/questions/edit/{id}")
     public String updateArticle(@PathVariable Long id, ArticleForm form, HttpSession session){
-//        User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
-        System.out.println(id);
         articleService.update(id, form);
         return "redirect:/";
     }
