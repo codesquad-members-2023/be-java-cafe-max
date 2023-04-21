@@ -67,7 +67,7 @@ class PostControllerTest {
         Long savedPostId = postRepository.save(dummyPostData(member), member);
         PostResponse postResponse = postService.findById(savedPostId);
 
-        LoginMemberSession loginMemberSession = new LoginMemberSession(memberId,dummyMemberData().getEmail());
+        LoginMemberSession loginMemberSession = new LoginMemberSession(dummyMemberData().getEmail());
 
         //when,then
         mockMvc.perform(post("/posts/write/")

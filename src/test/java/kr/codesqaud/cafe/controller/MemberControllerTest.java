@@ -152,7 +152,7 @@ class MemberControllerTest {
     @Test
     void profile() throws Exception {
         Long memberId = memberService.join(basicMemberJoinRequestDtoData());
-        ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(memberId,basicMemberJoinRequestDtoData().getEmail(),basicMemberJoinRequestDtoData().getPassword(),basicMemberJoinRequestDtoData().getNickName());
+        ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(memberId,basicMemberJoinRequestDtoData().getEmail(),basicMemberJoinRequestDtoData().getPassword(),basicMemberJoinRequestDtoData().getNickname());
         //when
         mockMvc.perform(put("/members/{email}/profile", basicMemberData().getEmail())
                         .param("memberId",String.valueOf(profileEditRequestDto.getMemberId()))
@@ -182,15 +182,12 @@ class MemberControllerTest {
     void editProfile() throws Exception {
         //given
         Member savedMember = basicMemberData();
-        Long saveMemberId = memberRepository.save(savedMember);
-
-        String newPassword = "testtesttest";
-        String newNickname = "피오니";
+        Long savedMemberId = memberRepository.save(savedMember);
 
         //when
-        mockMvc.perform(put("/members/{memberId}", saveMemberId)
-                        .param("password", newPassword)
-                        .param("nickname", newNickname)
+        mockMvc.perform(put("/members/{memberId}", savedMemberId)
+                        .param("password", "testtesttest")
+                        .param("nickname", "피오니")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().isOk());
 
