@@ -23,6 +23,25 @@
 
 ![image](https://user-images.githubusercontent.com/118447769/233598483-32efd7dc-662d-452b-a7a8-24d5a83a86ae.png)  
 
+### 글 작성 메서드
+
+```java
+public void post(PostRequest postRequest, HttpServletRequest httpRequest) {
+    Article article = Article.from(getUserIdFromSession(httpRequest), postRequest);
+    articleRepository.save(article);
+}
+
+public String getUserIdFromSession(HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
+    if (session != null) {
+        return (String) session.getAttribute("userId");
+    }
+    return null;
+}
+```
+
+- 기존 DTO 에서의 writer input 을 삭제했으니 현재 로그인 중인 사용자의 userId를 넣어준다.
+- 현내 로그인 된 사용자는 HttpServletRequest 를 통해 세션의 userId 값으로 알 수 있다.
 
 ## 4. 게시글 수정하기
 
