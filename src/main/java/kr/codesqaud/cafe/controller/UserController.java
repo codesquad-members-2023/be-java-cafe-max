@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping("/create")
     public String postSignUp(@Valid @ModelAttribute SignUpFormDto signUpFormDto) {
-        userService.duplicatedId(signUpFormDto.getUserId());
+        userService.duplicatedId(signUpFormDto);
         userService.signUp(signUpFormDto);
         return "redirect:/user";
     }

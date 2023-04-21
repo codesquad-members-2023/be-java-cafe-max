@@ -32,6 +32,14 @@ public class UserJdbcRepository implements UserRepository {
         return users.stream().findFirst();
     }
 
+    @Override
+    public boolean exist(String name) {
+
+        final String sql = "SELECT EXISTS(SELECT 1 FROM USERS WHERE NAME = ? LIMIT 1)";
+        final int count = jdbcTemplate.queryForObject(sql, Integer.class, name);
+        return count > 0;
+    }
+
     private RowMapper<User> rowMapper() {
         return (rs, rowNum) ->
                 new User(rs.getInt("IDX"), rs.getString("ID"),

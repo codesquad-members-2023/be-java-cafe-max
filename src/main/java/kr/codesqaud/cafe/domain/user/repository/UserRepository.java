@@ -13,6 +13,8 @@ public interface UserRepository {
 
     Optional<User> findById(String id);
 
+    boolean exist(String name);
+
     default void update(User user) {
     }
 

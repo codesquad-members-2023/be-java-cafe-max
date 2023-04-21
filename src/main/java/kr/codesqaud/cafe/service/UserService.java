@@ -35,11 +35,15 @@ public class UserService {
 
     public void update(User user, UpdateFormDto dto) {
         User current = user;
+        if (userRepository.exist(dto.getName())) {
+            throw new DuplicatedIdException("중복된 닉네임으로는 변경 할 수 없습니다.");
+        }
         if (current.checkPassword(dto.getPassword())) {
             userRepository.update(new User(user.getUserId(), dto.getNewPassword(), dto.getName(), dto.getEmail()));
             return;
         }
         throw new NotFoundException("비밀번호입력 오류");
+
     }
 
     public void login(User loginUser, String password) {
@@ -54,10 +58,14 @@ public class UserService {
         }
     }
 
-    public void duplicatedId(String id) {
-        userRepository.findById(id).filter(u -> {
+    public void duplicatedId(SignUpFormDto dto) {
+        userRepository.findById(dto.getUserId()).filter(u -> {
             throw new DuplicatedIdException("중복된 아이디 입니다.");
         });
+        if (userRepository.exist(dto.getName())) {
+            throw new DuplicatedIdException("중복된 닉네임");
+        }
+
     }
 
 

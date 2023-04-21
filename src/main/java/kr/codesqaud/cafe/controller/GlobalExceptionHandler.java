@@ -55,9 +55,15 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DuplicatedIdException.class)
-    public String DuplicatedIdException(DuplicatedIdException e, RedirectAttributes model) {
+    public String DuplicatedIdException(DuplicatedIdException e, RedirectAttributes model, HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        String[] uriSplit = uri.split("/");
         model.addFlashAttribute("idError", e.getMessage());
-        return "redirect:/user/signup";
+        if (uriSplit[1].equals("signup")) {
+            return "redirect:/user/signup";
+        } else {
+            return "redirect:/user/update/" + uri.split("/")[3];
+        }
     }
 
 }

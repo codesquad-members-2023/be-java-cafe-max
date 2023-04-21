@@ -26,5 +26,10 @@ public class UserMemoryRepository implements UserRepository {
                 .findFirst().orElseThrow(() -> new NotFoundException("존재하지 않는 id")));
     }
 
+    @Override
+    public boolean exist(String name) {
+        return false;
+    }
+
 }
 
