@@ -76,7 +76,11 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public String updateUser(@ModelAttribute("user") UserUpdateDto userUpdateDto) {
+    public String updateUser(@ModelAttribute("user") UserUpdateDto userUpdateDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "user/update";
+        }
+
         userService.update(userUpdateDto);
 
         return "redirect:/users";

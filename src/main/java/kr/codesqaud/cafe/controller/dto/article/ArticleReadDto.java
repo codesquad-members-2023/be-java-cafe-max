@@ -6,14 +6,16 @@ import java.time.LocalDateTime;
 
 public class ArticleReadDto {
     private final Long id;
+    private final Long userId;
     private final String title;
     private final String writer;
     private final String contents;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    private ArticleReadDto(Long id, String title, String writer, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private ArticleReadDto(Long id, Long userId, String title, String writer, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
+        this.userId = userId;
         this.title = title;
         this.writer = writer;
         this.contents = contents;
@@ -22,7 +24,7 @@ public class ArticleReadDto {
     }
 
     public ArticleReadDto(Article article) {
-        this(article.getId(), article.getTitle(), article.getWriter(), article.getContents(), article.getCreatedAt(), article.getUpdatedAt());
+        this(article.getId(), article.getUserId(), article.getTitle(), article.getWriter(), article.getContents(), article.getCreatedAt(), article.getUpdatedAt());
     }
 
     public Long getId() {
@@ -47,5 +49,9 @@ public class ArticleReadDto {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -61,6 +62,22 @@ public class JdbcArticleRepositoryImpl implements ArticleRepository {
                 "JOIN users ON article.user_id = users.id";
 
         return template.query(sql, articleRowMapper());
+    }
+
+    @Override
+    public void update(Article article) {
+        final String sql = "" +
+                "UPDATE article " +
+                "SET title = :title, contents = :contents, updated_at = :updatedAt " +
+                "WHERE id = :id";
+
+        final MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("title", article.getTitle())
+                .addValue("contents", article.getContents())
+                .addValue("updatedAt", article.getUpdatedAt())
+                .addValue("id", article.getId());
+
+        template.update(sql, params);
     }
 
     private RowMapper<Article> articleRowMapper() {

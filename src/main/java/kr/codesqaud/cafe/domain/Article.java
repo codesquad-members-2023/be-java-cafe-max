@@ -25,6 +25,10 @@ public class Article {
         this(null, userId, writer, title, contents, null, null);
     }
 
+    public Article(Long id, String title, String contents) {
+        this(id, null, null, title, contents, null, LocalDateTime.now());
+    }
+
     public Long getUserId() {
         return userId;
     }
