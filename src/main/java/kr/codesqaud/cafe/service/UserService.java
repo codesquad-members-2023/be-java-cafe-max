@@ -51,13 +51,13 @@ public class UserService {
 	@Transactional
 	public boolean userLogin(LoginRequest loginRequest) {
 		User user = userRepository.findUser(loginRequest.getUserId());
-		return user.getPassword().equals(loginRequest.getPassword());
+		return user.isSamePassword(loginRequest.getPassword());
 	}
 
 	@Transactional
 	public boolean userModify(ModifyRequest modifyRequest) {
 		User user = userRepository.findUser(modifyRequest.getUserId());
-		if (user.getPassword().equals(modifyRequest.getOriPassword())) {
+		if (user.isSamePassword(modifyRequest.getOriPassword())) {
 			User newUser = new User(
 				modifyRequest.getUserId(), modifyRequest.getNewPassword(),
 				modifyRequest.getName(), modifyRequest.getEmail()

@@ -9,17 +9,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.PostingRequest;
 import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.service.CommentService;
 
 @Controller
 public class ArticleController {
 	private final ArticleService articleService;
+	private final CommentService commentService;
 
-	public ArticleController(ArticleService articleService) {
+	public ArticleController(ArticleService articleService, CommentService commentService) {
 		this.articleService = articleService;
+		this.commentService = commentService;
 	}
 
 	@PostMapping("/qna/form")
@@ -36,8 +40,13 @@ public class ArticleController {
 	}
 
 	@GetMapping("/articles/{id}")
-	public String postDetails(Model model, @PathVariable Long id) {
+	public String postDetails(Model model, @PathVariable Long id, HttpSession session) {
+		Object user = session.getAttribute("sessionedUser");
+		if (user == null) {
+			return "redirect:/users/login";
+		}
 		model.addAttribute("details", articleService.findById(id));
+		model.addAttribute("comments", commentService.articleComment(id));
 		return "qna/show";
 	}
 
@@ -50,7 +59,7 @@ public class ArticleController {
 		return "qna/form";
 	}
 
-	@GetMapping("/articles/edit/{id}")
+	@GetMapping("/articles/{id}/edit")
 	public String editPost(Model model, @PathVariable Long id, HttpSession session) {
 		Object userId = session.getAttribute("sessionedUser");
 		ArticleDto articleDto = articleService.findById(id);
@@ -61,7 +70,7 @@ public class ArticleController {
 		return "qna/edit_form";
 	}
 
-	@DeleteMapping("/articles/delete/{id}")
+	@DeleteMapping("/articles/{id}")
 	public String deletePost(@PathVariable Long id, HttpSession session) {
 		Object userId = session.getAttribute("sessionedUser");
 		ArticleDto articleDto = articleService.findById(id);
@@ -69,6 +78,14 @@ public class ArticleController {
 			return "qna/access_error";
 		}
 		articleService.deleteRequest(id);
+		return "redirect:/";
+	}
+
+	@PutMapping("/articles/{id}")
+	public String updatePost(@ModelAttribute PostingRequest postingRequest, @PathVariable Long id,
+		HttpSession session) {
+		Object writer = session.getAttribute("sessionedUser");
+		articleService.updateRequest(postingRequest, id, (String)writer);
 		return "redirect:/";
 	}
 }

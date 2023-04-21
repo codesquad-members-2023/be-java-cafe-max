@@ -47,4 +47,10 @@ public class ArticleService {
 	public void deleteRequest(Long id) {
 		articleRepository.delete(id);
 	}
+
+	@Transactional
+	public void updateRequest(PostingRequest postingRequest, Long id, String writer) {
+		Article article = postingRequest.getArticleEntity(writer);
+		articleRepository.update(article, id);
+	}
 }

@@ -27,7 +27,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
 	@Override
 	public List<Article> findAllPosting() {
-		return jdbcTemplate.query("SELECT * FROM ARTICLE", (rs, rowNum) -> new Article(
+		return jdbcTemplate.query("SELECT * FROM article", (rs, rowNum) -> new Article(
 			rs.getString("writer"),
 			rs.getString("title"),
 			rs.getString("contents"),
@@ -38,7 +38,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
 	@Override
 	public Article findPosting(Long id) {
-		return jdbcTemplate.queryForObject("SELECT * FROM ARTICLE WHERE id = ?", (rs, rowNum) -> new Article(
+		return jdbcTemplate.queryForObject("SELECT * FROM article WHERE id = ?", (rs, rowNum) -> new Article(
 			rs.getString("writer"),
 			rs.getString("title"),
 			rs.getString("contents"),
@@ -49,6 +49,14 @@ public class JdbcArticleRepository implements ArticleRepository {
 
 	@Override
 	public void delete(Long id) {
-		jdbcTemplate.update("DELETE FROM ARTICLE WHERE id = ?", id);
+		jdbcTemplate.update("DELETE FROM article WHERE id = ?", id);
+	}
+
+	@Override
+	public void update(Article article, Long id) {
+		jdbcTemplate.update("UPDATE article SET title = ? ,contents = ? WHERE id = ?",
+			article.getTitle(),
+			article.getContents(),
+			id);
 	}
 }
