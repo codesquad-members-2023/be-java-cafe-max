@@ -23,4 +23,8 @@ public class CommentService {
     public List<Comment> getCommentsForArticle(long id){
         return commentRepository.findByArticleId(id);
     }
+
+    public void delete(long commentId) {
+        commentRepository.deleteById(commentId);
+    }
 }

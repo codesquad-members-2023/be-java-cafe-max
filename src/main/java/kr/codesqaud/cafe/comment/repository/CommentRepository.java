@@ -52,4 +52,10 @@ public class CommentRepository {
         SqlParameterSource namedParameters = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.query(sql, namedParameters, commentRowMapper());
     }
+
+    public void deleteById(long commentId) {
+        String sql = "DELETE FROM comments WHERE comment_id = :commentId";
+        SqlParameterSource namedParameters = new MapSqlParameterSource("commentId", commentId);
+        namedParameterJdbcTemplate.update(sql, namedParameters);
+    }
 }
