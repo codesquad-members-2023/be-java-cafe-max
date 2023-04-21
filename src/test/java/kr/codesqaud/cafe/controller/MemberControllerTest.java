@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -191,8 +192,15 @@ class MemberControllerTest {
                         .param("password", newPassword)
                         .param("nickname", newNickname)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
+
+        //then
+        Member updatedMember = memberRepository.findById(savedMemberId).orElse(null);
+        assertAll(
+                ()-> assertNotNull(updatedMember),
+                ()-> assertEquals(newPassword, updatedMember.getPassword()),
+                ()-> assertEquals(newNickname, updatedMember.getNickname())
+        );
     }
 
 
