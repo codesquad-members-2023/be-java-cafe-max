@@ -32,10 +32,9 @@ public class UserService {
 
     //중복 확인(중복이 들어오면 에러 페이지로 감)
     private void validateDuplicateMember(User user) {
-        userRepository.findById(user.getUserId())
-                .ifPresent(m -> {
-                    throw new IllegalStateException("이미 존재하는 회원입니다.");
-                });
+        userRepository.findById(user.getUserId()).ifPresent(m-> {
+            throw new  IllegalStateException("이미 존재하는 회원입니다.");
+        });
     }
 
 
