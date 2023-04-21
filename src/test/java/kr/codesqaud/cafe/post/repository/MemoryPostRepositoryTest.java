@@ -26,14 +26,14 @@ class MemoryPostRepositoryTest {
     void save() {
         // given
         LocalDateTime dateTime = LocalDateTime.now();
-        postRepository.save(new Post(null, "writer", "title", "contents", dateTime));
+        postRepository.save(new Post(null, "writer", "name", "title", "contents", dateTime));
 
         // when
         List<Post> posts = postRepository.findAll();
 
         // then
         assertEquals(1, posts.size());
-        assertEquals(posts.get(0), new Post(1L, "writer", "title", "contents", dateTime));
+        assertEquals(posts.get(0), new Post(1L, "writer", "name", "title", "contents", dateTime));
     }
 
     @Test
@@ -41,8 +41,8 @@ class MemoryPostRepositoryTest {
     void save_many() {
         // given
         LocalDateTime dateTime = LocalDateTime.now();
-        postRepository.save(new Post(null, "writer", "title", "contents", dateTime));
-        postRepository.save(new Post(null, "writer", "title2", "contents", dateTime.plusHours(1)));
+        postRepository.save(new Post(null, "writer", "name", "title", "contents", dateTime));
+        postRepository.save(new Post(null, "writer", "name", "title2", "contents", dateTime.plusHours(1)));
 
         // when
         List<Post> posts = postRepository.findAll();
@@ -53,8 +53,8 @@ class MemoryPostRepositoryTest {
         assertEquals(2, posts.size());
         assertTrue(post1.isPresent());
         assertTrue(post2.isPresent());
-        assertEquals(post1.get(), new Post(1L, "writer", "title", "contents", dateTime));
-        assertEquals(post2.get(), new Post(2L, "writer", "title2", "contents", dateTime.plusHours(1)));
+        assertEquals(post1.get(), new Post(1L, "writer", "name", "title", "contents", dateTime));
+        assertEquals(post2.get(), new Post(2L, "writer", "name", "title2", "contents", dateTime.plusHours(1)));
     }
 
     @Test
@@ -62,7 +62,7 @@ class MemoryPostRepositoryTest {
     void findById() {
         // given
         LocalDateTime dateTime = LocalDateTime.now();
-        postRepository.save(new Post(null, "writer", "title", "contents", dateTime));
+        postRepository.save(new Post(null, "writer", "name", "title", "contents", dateTime));
 
         // when
         Optional<Post> post = postRepository.findById(2);
@@ -76,15 +76,15 @@ class MemoryPostRepositoryTest {
     void findAll() {
         // given
         LocalDateTime dateTime = LocalDateTime.now();
-        postRepository.save(new Post(null, "writer", "title", "contents", dateTime));
-        postRepository.save(new Post(null, "writer", "title2", "contents", dateTime.plusHours(1)));
+        postRepository.save(new Post(null, "writer", "name", "title", "contents", dateTime));
+        postRepository.save(new Post(null, "writer", "name", "title2", "contents", dateTime.plusHours(1)));
 
         // when
         List<Post> posts = postRepository.findAll();
 
         // then
         assertEquals(2, posts.size());
-        assertEquals(posts.get(0), new Post(2L, "writer", "title2", "contents", dateTime.plusHours(1)));
-        assertEquals(posts.get(1), new Post(1L, "writer", "title", "contents", dateTime));
+        assertEquals(posts.get(0), new Post(2L, "writer", "name", "title2", "contents", dateTime.plusHours(1)));
+        assertEquals(posts.get(1), new Post(1L, "writer", "name", "title", "contents", dateTime));
     }
 }
