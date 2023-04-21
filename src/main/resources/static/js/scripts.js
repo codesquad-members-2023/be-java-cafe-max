@@ -73,14 +73,12 @@ function getInfo(){
 }
 $(document).on("click", ".delete-answer-button", deleteReply)
   function deleteReply() {
-    alert("Ddd")
     const url = $(this).parent().attr("action");
     $.ajax({
-      url : url,
-      type : 'delete' ,
-      success(result){
-        alert(result)
-        if(result){
+      url: url,
+      type: 'delete',
+      success: function(result) {
+        if (result) {
           getInfo();
           return;
         }

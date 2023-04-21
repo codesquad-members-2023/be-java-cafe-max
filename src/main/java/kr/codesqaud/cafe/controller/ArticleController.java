@@ -92,8 +92,9 @@ public class ArticleController {
 
     @DeleteMapping("/article/{articleIndex}/delete/{index}")
     @ResponseBody
-    boolean deleteReply(@PathVariable int articleIndex, @PathVariable int index) {
-        return articleService.deleteReply(index);
+    public boolean deleteReply(@PathVariable int articleIndex, @PathVariable int index, HttpSession session) {
+        LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
+        return articleService.deleteReply(articleIndex,index,sessionDto);
     }
 
 }

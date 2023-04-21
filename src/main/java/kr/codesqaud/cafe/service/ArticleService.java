@@ -78,7 +78,7 @@ public class ArticleService {
         articleRepository.delete(index);
     }
 
-    public Reply writeReply(int index, String contents ,String name) {
+    public Reply writeReply(int index, String contents, String name) {
         Reply reply = new Reply.Builder()
                 .articleIdx(index)
                 .replyWriter(name)
@@ -88,16 +88,23 @@ public class ArticleService {
         return reply;
     }
 
-    public List<Reply> replyList(int index){
+    public List<Reply> replyList(int index) {
         return replyRepository.findAll(index);
     }
 
-    public boolean deleteReply(int index){
-//        replyRepository.findByIdx(index).orElseThrow(() -> new NotFoundException("댓글 찾을 수 없음"));
-       if(replyRepository.exist(index)){
-           replyRepository.delete(index);
-           return true;
-       }
-       throw new NotFoundException("댓글을 찾을 수 없음");
+    public boolean deleteReply(int articleIndex, int index, LoginSessionDto dto) {
+        if (replyRepository.exist(index) && deleteAuth(articleIndex, dto)) {
+            replyRepository.delete(index);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deleteAuth(int index, LoginSessionDto dto) {
+        List<Reply> list = replyRepository.findAll(index);
+        for (Reply temp : list) {
+            return temp.validateAuthor(dto.getName());
+        }
+        return true;
     }
 }

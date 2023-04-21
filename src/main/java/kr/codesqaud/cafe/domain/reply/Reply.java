@@ -73,4 +73,11 @@ public class Reply {
     public String getDate() {
         return date;
     }
+
+    public boolean validateAuthor(String nickName) {
+        if (replyWriter.equals(nickName)) {
+            return true;
+        }
+        return false;
+    }
 }
