@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,6 +30,7 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional
     public Long join(MemberJoinRequestDto memberJoinRequestDto) {
         Member member = memberJoinRequestDto.toUser();
         memberRepository.findByEmail(memberJoinRequestDto.getEmail()).ifPresent(m -> {
