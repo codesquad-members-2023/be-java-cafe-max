@@ -5,7 +5,7 @@ function handleDelete(e) {
 
     e.preventDefault();
 
-    let deleteBtn = $(this);
+    const deleteBtn = $(this);
     const deleteUrl = deleteBtn.attr("action");
 
     $.ajax({
@@ -18,9 +18,16 @@ function handleDelete(e) {
         success: function (data) {
             if (data.ok) {
                 deleteBtn.closest(".comment").remove()
+                decreaseCommentCount();
             } else {
                 alert(data.errorMessage);
             }
         },
     });
+}
+
+function decreaseCommentCount() {
+    const preCountOfReply = countOfReply.textContent;
+    const postCountOfReply = parseInt(preCountOfReply.replace(/[^0-9]/g, "")) - 1;
+    countOfReply.textContent = "댓글 " + postCountOfReply + "개";
 }

@@ -1,9 +1,6 @@
 const replyForm = document.getElementById("reply-form");
-
 replyForm.addEventListener("submit", handleSubmit);
-
 const actionUrl = replyForm.getAttribute("action");
-
 const replyTemplate = `
 <article id="replyTemplate" class="comment">
         <div class="article-text">
@@ -31,7 +28,7 @@ String.prototype.formatUnicorn = function (replacements) {
 function handleSubmit(e) {
     e.preventDefault();
 
-    let queryString = $("#reply-form").serialize();
+    const queryString = $("#reply-form").serialize();
 
     $.ajax({
         type: 'post',
@@ -49,10 +46,26 @@ function handleSubmit(e) {
                 articleIdx: data.articleIdx,
                 replyIdx: data.replyIdx,
             });
+            increaseCommentCount();
             $("#comment-box").append(template);
             $("textarea[name=content]").val("");
         },
     });
 }
 
+
+const countOfReply = document.getElementById("count-of-reply");
+
+document.addEventListener('DOMContentLoaded', function () {
+    const commentBox = document.getElementById('comment-box');
+    const articles = commentBox.querySelectorAll('article');
+    const articleCount = articles.length;
+    countOfReply.textContent = "댓글 " + articleCount + "개";
+});
+
+function increaseCommentCount() {
+    let preCountOfReply = countOfReply.textContent;
+    let postCountOfReply = parseInt(preCountOfReply.replace(/[^0-9]/g, "")) + 1;
+    countOfReply.textContent = "댓글 " + postCountOfReply + "개";
+}
 
