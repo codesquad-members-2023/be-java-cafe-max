@@ -12,11 +12,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.codesqaud.cafe.domain.article.entity.Article;
 import kr.codesqaud.cafe.domain.article.repository.ArticleRepository;
 
 @Repository
+@Transactional(readOnly = true)
 public class JdbcArticleRepositoryImpl implements ArticleRepository {
 
 	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -26,6 +28,7 @@ public class JdbcArticleRepositoryImpl implements ArticleRepository {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
+	@Transactional
 	public void save(Article article) {
 		final String SQL = "INSERT INTO Article (title, content, dateTime, writer) VALUES (:title, :content, :dateTime,:writer)";
 		namedParameterJdbcTemplate.update(SQL, new BeanPropertySqlParameterSource(article));
