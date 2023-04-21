@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -24,7 +25,7 @@ public class ArticleService {
     }
 
     public List<Article> findArticles(){
-        return articleRepository.findAll();
+        return articleRepository.findAll().stream().collect(Collectors.toUnmodifiableList());
     }
 
     public Article findOne(Long id){
