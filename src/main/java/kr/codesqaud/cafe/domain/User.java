@@ -9,16 +9,21 @@ public class User {
     private String userName;
     private String userEmail;
 
-
-    public User(String userId, String password, String userName, String userEmail) {
+    public User(Long id, String userId, String password, String userName, String userEmail) {
+        this.id = id;
         this.userId = userId;
         this.password = password;
         this.userName = userName;
         this.userEmail = userEmail;
     }
 
+    private User(String userId, String password, String userName, String userEmail) {
+        this(null, userId, password, userName, userEmail);
+    }
+
     public static User from(final JoinRequest joinRequest) {
-        return new User(joinRequest.getUserId(),
+        return new User(
+                joinRequest.getUserId(),
                 joinRequest.getPassword(),
                 joinRequest.getUserName(),
                 joinRequest.getUserEmail());
