@@ -8,6 +8,9 @@ import codesquad.cafe.domain.reply.dto.ReplyResponseDto;
 import codesquad.cafe.domain.reply.service.ReplyService;
 import codesquad.cafe.domain.user.domain.User;
 import codesquad.cafe.global.constant.SessionAttributes;
+import codesquad.cafe.global.interceptor.LoginCheckInterceptor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,7 @@ import java.util.List;
 
 @Controller
 public class ArticleController {
+    private final Log log = LogFactory.getLog(ArticleController.class);
 
     private final ArticleService articleService;
     private final ReplyService replyService;
@@ -33,6 +37,7 @@ public class ArticleController {
     public String showHome(Model model) {
         List<ArticleResponseDto> posts = articleService.findPosts();
         model.addAttribute("posts", posts);
+        log.info("run showHome");
         return "index";
     }
 
