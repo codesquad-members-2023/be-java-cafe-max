@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
+import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
 import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
 import kr.codesqaud.cafe.user.exception.UserNotExistException;
 
@@ -41,6 +42,14 @@ public class ControllerExceptionHandler {
 		}
 
 		return "error/400-bad-request";
+	}
+
+	@ExceptionHandler(UserDoesNotMatchException.class)
+	public String catchUserDoesNotMatchException(RedirectAttributes redirect,
+		Exception e) {
+		redirect.addFlashAttribute(ERROR_MESSAGE_NAME, e.getMessage());
+
+		return "redirect:/users/signin";
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -19,8 +20,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.codesqaud.cafe.user.controller.request.SignInRequestDTO;
 import kr.codesqaud.cafe.user.controller.request.SignUpRequestDTO;
+import kr.codesqaud.cafe.user.controller.response.AuthSession;
 import kr.codesqaud.cafe.user.controller.response.UserResponseDTO;
+import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
 import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
 import kr.codesqaud.cafe.user.exception.UserNotExistException;
 import kr.codesqaud.cafe.user.service.UserService;
@@ -42,6 +46,20 @@ public class UserController {
 	@GetMapping("/signup")
 	public String signup(Model model) {
 		return "user/form";
+	}
+
+	@GetMapping("/signin")
+	public String signIn(Model model) {
+		return "user/signin";
+	}
+
+	@PostMapping("/signin")
+	public String signIn(SignInRequestDTO dto, HttpServletRequest request) throws UserDoesNotMatchException {
+		HttpSession session = request.getSession();
+		session.setAttribute("authSession",
+			AuthSession.from(service.performSignIn(dto.getUserId(), dto.getPassword())));
+
+		return "redirect:/questions";
 	}
 
 	/**

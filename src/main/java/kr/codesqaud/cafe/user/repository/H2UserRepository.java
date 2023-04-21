@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.user.domain.User;
@@ -36,11 +37,25 @@ public class H2UserRepository implements UserRepository {
 
 	@Override
 	public User findByUserId(String userId) throws UserNotExistException {
-		return null;
+		String sql = "SELECT id, userId, password, name, email FROM \"user\" WHERE userId = ?";
+		try {
+			return jdbcTemplate.queryForObject(sql, getUserRowMapper(), userId);
+		} catch (DataAccessException e) {
+			throw new UserNotExistException(userId);
+		}
 	}
 
 	@Override
 	public void modify(User user) throws UserNotExistException {
 		// TODO document why this method is empty
+	}
+
+	private RowMapper<User> getUserRowMapper() {
+		return (rs, rowNum) ->
+			new User(rs.getLong("id"),
+				rs.getString("userId"),
+				rs.getString("password"),
+				rs.getString("name"),
+				rs.getString("email"));
 	}
 }

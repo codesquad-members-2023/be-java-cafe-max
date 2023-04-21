@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
 import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
 import kr.codesqaud.cafe.user.exception.UserNotExistException;
 import kr.codesqaud.cafe.user.repository.UserRepository;
@@ -25,6 +26,18 @@ public class UserService {
 	 */
 	public void addUser(User user) throws UserIdDuplicateException {
 		repository.save(user);
+	}
+
+	public User performSignIn(String userId, String password) throws UserDoesNotMatchException {
+		try {
+			User user = findByUserId(userId);
+			if (password.equals(user.getPassword())) {
+				return user;
+			}
+		} catch (UserNotExistException e) {
+			throw new UserDoesNotMatchException();
+		}
+		throw new UserDoesNotMatchException();
 	}
 
 	/**
