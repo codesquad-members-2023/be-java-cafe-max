@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.session;
 
-import kr.codesqaud.cafe.domain.Member;
 
 public class LoginMemberSession {
     private final Long memberId;
