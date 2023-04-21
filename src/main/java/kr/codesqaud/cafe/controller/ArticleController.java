@@ -20,7 +20,7 @@ public class ArticleController {
     }
 
     @PostMapping("/article")
-    public String post(@ModelAttribute final PostRequest request, HttpServletRequest httpRequest) {
+    public String postArticle(@ModelAttribute final PostRequest request, HttpServletRequest httpRequest) {
         articleService.post(request, httpRequest);
         return "redirect:/";
     }
@@ -28,14 +28,6 @@ public class ArticleController {
     @GetMapping("/article")
     public String showArticle() {
         return "qna/form";
-    }
-
-    @PutMapping("/articles/{articleId}")
-    public String edit(@PathVariable final Long articleId, @ModelAttribute final PostEditRequest request, Model model) {
-        articleService.editArticle(articleId, request);
-        ArticleDto article = articleService.findById(articleId);
-        model.addAttribute("article", article);
-        return "qna/show";
     }
 
     @GetMapping("/articles/{articleId}")
@@ -58,6 +50,14 @@ public class ArticleController {
         }
 
         return "qna/failed";
+    }
+
+    @PutMapping("/articles/{articleId}")
+    public String editArticle(@PathVariable final Long articleId, @ModelAttribute final PostEditRequest request, Model model) {
+        articleService.editArticle(articleId, request);
+        ArticleDto article = articleService.findById(articleId);
+        model.addAttribute("article", article);
+        return "qna/show";
     }
 
     @RequestMapping(value = "/articles/delete/{articleId}", method = {RequestMethod.GET, RequestMethod.DELETE})
