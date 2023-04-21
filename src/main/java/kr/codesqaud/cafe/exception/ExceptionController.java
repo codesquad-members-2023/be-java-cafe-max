@@ -14,22 +14,24 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.codesqaud.cafe.domain.User;
 
 @ControllerAdvice
 public class ExceptionController {
 	@ExceptionHandler(BindException.class)
-	public String invalidException(BindException e, HttpServletRequest request, HttpSession session, Model model) {
+	public String invalidException(BindException e, HttpServletRequest request, HttpSession session,
+		RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
 		ErrorResponse errorResponse = makeErrorResponse(e.getBindingResult());
-		model.addAttribute("errorMessage", errorResponse.getDetail());
+		redirectAttributes.addFlashAttribute("errorMessage", errorResponse.getDetail());
 		if (requestUri.contains("/create")) {
-			return "/user/form";
+			return "redirect:/user/form";
 		} else if (requestUri.contains("/update")) {
 			User user = (User)session.getAttribute("sessionUser");
-			model.addAttribute("user", user);
-			return "/user/updateForm";
+			redirectAttributes.addFlashAttribute("user", user);
+			return "redirect:/user/updateForm";
 		}
 		return "/";
 	}
@@ -61,22 +63,39 @@ public class ExceptionController {
 
 	@ExceptionHandler(DuplicateUserException.class)
 	public String duplicateUserException(DuplicateUserException e, HttpServletRequest request, HttpSession session,
-		Model model) {
+		RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
-		model.addAttribute("errorMessage", e.getMessage());
+		redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
 		if (requestUri.contains("/create")) {
-			return "/user/form";
+			return "redirect:/user/form";
 		} else if (requestUri.contains("/update")) {
 			User user = (User)session.getAttribute("sessionUser");
-			model.addAttribute("user", user);
-			return "/user/updateForm";
+			redirectAttributes.addFlashAttribute("user", user);
+			return "redirect:/user/updateForm";
 		}
 		return "/";
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)
-	public String userNotFoundException(UserNotFoundException e, Model model) {
-		model.addAttribute("errorMessage", e.getMessage());
-		return "user/login";
+	public String userNotFoundException(UserNotFoundException e, HttpServletRequest request,
+		RedirectAttributes redirectAttributes) {
+		String requestUri = request.getRequestURI();
+		redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+		if (requestUri.contains("/create")) {
+			return "redirect:/user/form";
+		}
+		return "redirect:user/login";
+	}
+
+	@ExceptionHandler(InvalidPasswordException.class)
+	public String invalidPasswordException(InvalidPasswordException e, HttpServletRequest request,
+		RedirectAttributes redirectAttributes) {
+		String requestUri = request.getRequestURI();
+		redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+		if (requestUri.contains("/form")) {
+			String userId = requestUri.split("/")[3];
+			return "redirect:/check/" + userId;
+		}
+		return "redirect:user/login";
 	}
 }

@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import java.util.Objects;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -40,19 +38,16 @@ public class UserCommandController {
 	public String login(String userID, String password, HttpSession session) {
 		User user = userService.findOne(userID);
 		user.validatePassword(password);
-		if (!Objects.equals(user.getPassword(), password)) {
-			return "redirect:/user/login";
-		}
 		session.setAttribute("sessionUser", user);
 		return "redirect:/";
 	}
 
-	@PostMapping("/user/form")
+	@PostMapping("/user/form/{userId}")
 	public String getUpdateForm(String password, HttpSession session) {
 		User user = (User)session.getAttribute("sessionUser");
-		if (!password.equals(user.getPassword())) {
-			return "redirect:/checkForUpdate";
-		}
+		user.validatePassword(password);
+		boolean passwordCheck = true;
+		session.setAttribute("passwordCheck", passwordCheck);
 		return "redirect:/user/updateForm";
 	}
 }

@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.domain;
 import java.time.LocalDate;
 
 import kr.codesqaud.cafe.exception.DeniedDataModificationException;
-import kr.codesqaud.cafe.exception.UserNotFoundException;
+import kr.codesqaud.cafe.exception.InvalidPasswordException;
 
 public class User {
 	private Long userIndex;
@@ -62,7 +62,7 @@ public class User {
 
 	public void validatePassword(String password) {
 		if (!this.password.equals(password)) {
-			throw new UserNotFoundException("비밀번호가 다릅니다.");
+			throw new InvalidPasswordException();
 		}
 	}
 }

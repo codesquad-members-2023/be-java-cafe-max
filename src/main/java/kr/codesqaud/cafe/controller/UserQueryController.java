@@ -31,21 +31,11 @@ public class UserQueryController {
 		return "user/login";
 	}
 
-	@GetMapping("/user/checkForUpdate")
-	public String checkForUpdate(HttpSession session) {
-		boolean passwordCheck = true;
-		session.setAttribute("passwordCheck", passwordCheck);
-		return "user/checkForUpdate";
-	}
-
 	@GetMapping("/check/{userID}")
-	public String checkUserID(@PathVariable String userID, HttpSession session) {
+	public String checkUserID(@PathVariable String userID, HttpSession session, Model model) {
 		User user = (User)session.getAttribute("sessionUser");
 		user.validateUserId(userID);
-		if (session.getAttribute("passwordCheck") == null) {
-			throw new DeniedDataModificationException("잘못된 접근입니다.");
-		}
-		session.removeAttribute("passwordCheck");
+		model.addAttribute("userId", user.getUserID());
 		return "user/checkForUpdate";
 	}
 
@@ -73,6 +63,10 @@ public class UserQueryController {
 	public String updateForm(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("sessionUser");
 		model.addAttribute("user", user);
+		if (session.getAttribute("passwordCheck") == null) {
+			throw new DeniedDataModificationException("잘못된 접근입니다.");
+		}
+		session.removeAttribute("passwordCheck");
 		return "user/updateForm";
 	}
 }
