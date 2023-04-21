@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.user.controller;
 
-public class loginForm {
+public class LoginForm {
     private String userId;
     private String password;
 
