@@ -1,23 +1,18 @@
 package kr.codesqaud.cafe.controller.dto;
 
 public class ModifiedUserDTO {
-    private final String userId;
     private final String originPassword;
     private final String newPassword;
-    private final String name;
-    private final String email;
+    private final String newName;
+    private final String newEmail;
 
-    public ModifiedUserDTO(String userId, String originPassword, String newPassword, String name, String email) {
-        this.userId = userId;
+    public ModifiedUserDTO(String originPassword, String newPassword, String newName, String newEmail) {
         this.originPassword = originPassword;
         this.newPassword = newPassword;
-        this.name = name;
-        this.email = email;
+        this.newName = newName;
+        this.newEmail = newEmail;
     }
 
-    public String getUserId() {
-        return userId;
-    }
 
     public String getOriginPassword() {
         return originPassword;
@@ -27,11 +22,11 @@ public class ModifiedUserDTO {
         return newPassword;
     }
 
-    public String getName() {
-        return name;
+    public String getNewName() {
+        return newName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getNewEmail() {
+        return newEmail;
     }
 }
