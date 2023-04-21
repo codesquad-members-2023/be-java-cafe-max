@@ -28,7 +28,7 @@ public class ExceptionHandlerController {
         CommonExceptionType commonExceptionType = commonException.getCommonExceptionType();
 
         modelAndView.setViewName("error/error_page");
-        modelAndView.addObject("error", new ErrorDto(commonExceptionType.getStatusValue(), commonExceptionType.getErrorMessage()));
+        modelAndView.addObject("error");
         modelAndView.setStatus(commonExceptionType.getStatus());
         return modelAndView;
     }
@@ -36,16 +36,16 @@ public class ExceptionHandlerController {
     @ExceptionHandler(MemberJoinException.class)
     public String userJoinExceptionHandler(MemberJoinException memberJoinException, Model model) {
         MemberExceptionType memberExceptionType = memberJoinException.getMemberExceptionType();
-        model.addAttribute("member", memberJoinException.getMemberJoinRequestDto());
+        model.addAttribute("member");
         model.addAttribute(memberExceptionType.getCategory(), memberExceptionType.getMessage());
         return "member/memberForm";
     }
 
     @ExceptionHandler(MemberProfileEditException.class)
-    public String userJoinDuplicatedExceptionHandler(MemberProfileEditException memberProfileEditException, Model model) {
+    public String userDuplicatedInfoExceptionHandler(MemberProfileEditException memberProfileEditException, Model model) {
         MemberExceptionType memberExceptionType = memberProfileEditException.getMemberExceptionType();
 
-        model.addAttribute("member", memberProfileEditException.getProfileEditRequestDto());
+        model.addAttribute("profileEditRequestDto");
         model.addAttribute(memberExceptionType.getCategory(), memberExceptionType.getMessage());
 
         return "user/update";
@@ -55,7 +55,7 @@ public class ExceptionHandlerController {
     public String userLoginFailedExceptionHandler(MemberLoginException memberLoginException, Model model) {
         MemberExceptionType memberExceptionType = memberLoginException.getMemberExceptionType();
 
-        model.addAttribute("loginMember", memberLoginException.getMemberLoginRequestDto());
+        model.addAttribute("loginMember");
         model.addAttribute(memberExceptionType.getCategory(), memberExceptionType.getMessage());
 
         return "user/login";
