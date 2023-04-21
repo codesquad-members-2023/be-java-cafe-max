@@ -11,6 +11,10 @@
         <div>
             <div>
                 <h2 class="post-title" th:text="${postResponse.title}">자바 웹개발 교육 홈페이지 디자인 개발</h2>
+                <form th:action="@{/posts/{id}(id = ${postResponse.postId})}" th:method="delete" th:if="${session.loginMember.getMemberEmail() == postResponse.writer.writerEmail}">
+                    <a class="btn btn-primary btn-sm" th:href="@{/posts/{postId}/edit-form (postId = ${postResponse.postId})}">수정</a>
+                    <button class="btn btn-primary btn-sm" type="submit">삭제</button>
+                </form>
             </div>
             <div class="row row-cols-3 post-detail">
                 <span class="col-sm-2" th:text="${postResponse.writer.nickname}">비회원</span>
