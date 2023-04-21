@@ -2,16 +2,16 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.common.exception.CommonException;
 import kr.codesqaud.cafe.common.exception.CommonExceptionType;
+import kr.codesqaud.cafe.common.exception.user.UserExceptionType;
 import kr.codesqaud.cafe.common.exception.user.UserJoinException;
 import kr.codesqaud.cafe.common.exception.user.UserLoginException;
+import kr.codesqaud.cafe.common.exception.user.UserUpdateException;
 import kr.codesqaud.cafe.controller.dto.user.LoginUserSession;
 import kr.codesqaud.cafe.controller.dto.user.UserJoinDto;
 import kr.codesqaud.cafe.controller.dto.user.UserLoginDto;
 import kr.codesqaud.cafe.controller.dto.user.UserReadDto;
 import kr.codesqaud.cafe.controller.dto.user.UserUpdateDto;
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.common.exception.user.UserExceptionType;
-import kr.codesqaud.cafe.common.exception.user.UserUpdateException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

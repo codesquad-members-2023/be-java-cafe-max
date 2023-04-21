@@ -57,15 +57,6 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByEmail(final String email) {
-        final String sql  = "SELECT * FROM users WHERE email = :email";
-
-        try (final Stream<User> result = template.queryForStream(sql, Map.of("email", email), userRowMapper())) {
-            return result.findFirst();
-        }
-    }
-
-    @Override
     public List<User> findAll() {
         final String sql = "SELECT * FROM users";
 
