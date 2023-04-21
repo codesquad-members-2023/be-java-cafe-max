@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragment/layout/head :: common_head}"></head>
+<body>
+<div th:replace="~{/fragment/layout/nav :: common_nav}"></div>
+<div class="container" id="main">
+    <div class="py-5 text-center">
+        <h2>Error</h2>
+        <h4 th:text="${error.errorStatus} + ' ' + ${error.errorMessage}"></h4>
+    </div>
+</div>
+<footer th:replace="~{fragment/layout/footer :: common_footer}"></footer>
+</body>
+</html>
