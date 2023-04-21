@@ -9,6 +9,12 @@ function addComment(data) {
             </div>`;
 }
 
+function updateCommentsSize(plus) {
+    const text = $("#comments-size").text();
+    const contentsSize = Number(text.replace(/[^0-9]/g, "")) + plus;
+    $("#comments-size").text(`댓글 ${contentsSize}개`);
+}
+
 function writeAjax(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -30,9 +36,7 @@ function writeAjax(e) {
             alert(`에러 상태 코드 : ${request.responseJSON.status}\n에러 메시지 : ${request.responseJSON.message}`);
         },
         success : function(data, status) {
-            const text = $("#comments-size").text();
-            const contentsSize = Number(text.replace(/[^0-9]/g, "")) + 1;
-            $("#comments-size").text(`댓글 ${contentsSize}개`);
+            updateCommentsSize(+1);
             $(".comments").append(addComment(data));
             $("#content").val('');
         },
@@ -55,6 +59,7 @@ function deleteAjax(e) {
         },
         success: function (data, status) {
             if (data.valid) {
+                updateCommentsSize(-1);
                 form.closest('.comment').remove();
                 return;
             }
