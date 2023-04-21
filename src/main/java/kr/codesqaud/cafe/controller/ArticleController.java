@@ -45,7 +45,8 @@ public class ArticleController {
         model.addAttribute("title", article.getTitle());
         model.addAttribute("content", article.getContent());
 
-        if (session.getAttribute("userId").equals(article.getWriter())) {
+        if(session == null) return "qna/failed";
+        else if (session.getAttribute("userId").equals(article.getWriter())) {
             return "qna/edit_form";
         }
 
@@ -65,13 +66,13 @@ public class ArticleController {
     public String deleteArticle(@PathVariable final Long articleId, HttpServletRequest httpRequest, Model model) {
         HttpSession session = httpRequest.getSession(false);
         ArticleDto article = articleService.findById(articleId);
-
-        if (session.getAttribute("userId").equals(article.getWriter())) {
+        model.addAttribute("article", article);
+        if(session == null) return "qna/failed";
+        else if (session.getAttribute("userId").equals(article.getWriter())) {
             articleService.deleteArticle(articleId);
             return "redirect:/";
         }
 
-        model.addAttribute("article", article);
         return "qna/failed";
     }
 
