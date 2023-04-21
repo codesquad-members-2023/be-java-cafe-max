@@ -5,14 +5,13 @@ import javax.validation.constraints.NotBlank;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.post.WriterResponse;
 import org.hibernate.validator.constraints.Length;
 
 public class CommentWriteRequest {
 
     private Long postId;
 
-    private WriterResponse writer;
+    private WriterRequest writer;
 
     @NotBlank(message = "내용은 필수입니다.")
     @Length(min = 2, max = 3000, message = "최소 {min}글자, 최대 {max}글자입니다.")
@@ -24,8 +23,9 @@ public class CommentWriteRequest {
         this.writeDate = LocalDateTime.now();
     }
 
-    public CommentWriteRequest(Long postId, String content) {
+    public CommentWriteRequest(Long postId, WriterRequest writer, String content) {
         this.postId = postId;
+        this.writer = writer;
         this.content = content;
         this.writeDate = LocalDateTime.now();
     }
@@ -34,7 +34,7 @@ public class CommentWriteRequest {
         return postId;
     }
 
-    public WriterResponse getWriter() {
+    public WriterRequest getWriter() {
         return writer;
     }
 
@@ -47,7 +47,7 @@ public class CommentWriteRequest {
     }
 
     public void initializeWriterAndPostId(AccountSession accountSession, Long postId) {
-        this.writer = new WriterResponse(accountSession.getId(), accountSession.getName());
+        this.writer = new WriterRequest(accountSession.getId(), accountSession.getName());
         this.postId = postId;
     }
 

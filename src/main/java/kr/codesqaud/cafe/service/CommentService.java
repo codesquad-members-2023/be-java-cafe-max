@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Comment;
-import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.comment.CommentDeleteResponse;
 import kr.codesqaud.cafe.dto.comment.CommentResponse;
 import kr.codesqaud.cafe.dto.comment.CommentWriteRequest;
@@ -24,10 +23,8 @@ public class CommentService {
 
     @Transactional
     public CommentResponse write(CommentWriteRequest commentWriteRequest) {
-        Comment comment = commentWriteRequest.toComment(Member.builder()
-            .id(commentWriteRequest.getWriter().getId())
-            .nickname(commentWriteRequest.getWriter().getNickname())
-            .build());
+        Comment comment = commentWriteRequest.toComment(commentWriteRequest.getWriter()
+            .toMember());
         return CommentResponse.from(commentRepository.save(comment));
     }
 

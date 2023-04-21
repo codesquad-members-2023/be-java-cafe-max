@@ -1,19 +1,15 @@
-package kr.codesqaud.cafe.dto.post;
+package kr.codesqaud.cafe.dto.comment;
 
 import kr.codesqaud.cafe.domain.Member;
 
-public class WriterResponse {
+public class WriterRequest {
 
     private final Long id;
     private final String nickname;
 
-    public WriterResponse(Long id, String nickname) {
+    public WriterRequest(Long id, String nickname) {
         this.id = id;
         this.nickname = nickname;
-    }
-
-    public static WriterResponse from(Member member) {
-        return new WriterResponse(member.getId(), member.getNickname());
     }
 
     public Long getId() {
@@ -22,5 +18,12 @@ public class WriterResponse {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public Member toMember() {
+        return Member.builder()
+            .id(id)
+            .nickname(nickname)
+            .build();
     }
 }

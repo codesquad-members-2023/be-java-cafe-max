@@ -4,19 +4,19 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.Comment;
-import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.post.WriterResponse;
 
 public class CommentResponse {
 
     private final Long id;
     private final Long postId;
-    private final Member writer;
+    private final WriterResponse writer;
     private final String content;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime writeDate;
 
-    public CommentResponse(Long id, Long postId, Member writer, String content,
+    public CommentResponse(Long id, Long postId, WriterResponse writer, String content,
         LocalDateTime writeDate) {
         this.id = id;
         this.postId = postId;
@@ -26,7 +26,7 @@ public class CommentResponse {
     }
 
     public static CommentResponse from(Comment comment) {
-        return new CommentResponse(comment.getId(), comment.getPostId(), comment.getWriter(),
+        return new CommentResponse(comment.getId(), comment.getPostId(), WriterResponse.from(comment.getWriter()),
             comment.getContent(), comment.getWriteDate());
     }
 
@@ -38,7 +38,7 @@ public class CommentResponse {
         return postId;
     }
 
-    public Member getWriter() {
+    public WriterResponse getWriter() {
         return writer;
     }
 
