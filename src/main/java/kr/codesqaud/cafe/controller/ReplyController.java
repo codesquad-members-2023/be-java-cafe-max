@@ -1,12 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.constant.SessionConst;
-import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.dto.Answer;
 import kr.codesqaud.cafe.dto.Result;
 import kr.codesqaud.cafe.dto.SessionDto;
-import kr.codesqaud.cafe.exception.ReplyNotFoundException;
 import kr.codesqaud.cafe.exception.UnauthorizedException;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;

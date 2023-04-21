@@ -46,11 +46,15 @@ function deleteAnswer(e) {
   $.ajax({
     type: "DELETE",
     url: url,
-    dataType: "json",
+    dataType: "text",
   }).done((data) => {
-    alert("댓글이 삭제되었습니다.");
-    e.target.closest("article").remove();
+    if (data == "success") {
+      alert("댓글이 삭제되었습니다.");
+      e.target.closest("article").remove();
+    } else {
+      alert("다시 시도해주세요.");
+    }
   }).fail((error) => {
-    alert("다시 시도해주세요.");
+    alert("[에러발생]다시 시도해주세요.");
   })
 }
