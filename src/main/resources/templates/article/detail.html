@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <form class="submitReply" th:action="@{/articles/{articleId}/replies(articleId=${article.id})}" method="post">
+        <form name="submitReply" class="submitReply" th:action="@{/articles/{articleId}/replies(articleId=${article.id})}" method="post">
             <div id="replyForm">
                 <label for="inputReply" th:text="${session.loginUserId}">작성자</label>
                 <textarea maxlength="400" id="inputReply" name="contents" placeholder="댓글의 내용을 입력하세요"></textarea>
@@ -44,30 +44,37 @@
 
         <div id="replyContainer">
             <span th:text="|댓글 ${#lists.size(replies)}개|">댓글 10개</span>
-            <div class="reply" th:each="reply : ${replies}">
+            <article class="reply" th:each="reply : ${replies}">
                 <div>
                     <div class="replyInfo">
-                        <span class="replyWriter" th:text="${reply.userId}">yeon</span><span th:text="${#temporals.format(reply.createdAt, 'yyyy. MM. dd. a hh:mm')}">2023-04-19</span>
+                        <span class="replyWriter" th:text="${reply.userId}">작성자</span><span th:text="${#temporals.format(reply.createdAt, 'yyyy. MM. dd. a hh:mm')}">2023-04-19</span>
                     </div>
-                    <a th:if="${reply.userId == session.loginUserId}" class="editButton">삭제</a>
+                    <form name="deleteReply" class="deleteReply" th:action="@{/articles/{articleId}/replies/{replyId}(articleId=${article.id}, replyId=${reply.id})}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button th:data-replyId="${reply.id}" th:if="${reply.userId == session.loginUserId}" class="deleteButton editButton">삭제</button>
+                    </form>
                 </div>
                 <p th:text="${reply.contents}">댓글 내용</p>
-            </div>
+            </article>
         </div>
     </section>
 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <script src="/js/validation.js"></script>
     <script src="/js/reply.js"></script>
     <script type="text/template" id="answerTemplate">
-        <div class="reply">
+        <article class="reply">
             <div>
                 <div class="replyInfo">
                     <span class="replyWriter">{0}</span><span>{1}</span>
                 </div>
-                <a class="editButton">삭제</a>
+                <form name="deleteReply" class="deleteReply" action="/articles/{3}/replies/{4}" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button data-replyId="{4}" class="deleteButton editButton">삭제</button>
+                </form>
             </div>
             <p>{2}</p>
-        </div>
+        </article>
     </script>
 </div>
 

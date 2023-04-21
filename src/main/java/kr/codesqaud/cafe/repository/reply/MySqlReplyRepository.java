@@ -35,7 +35,7 @@ public class MySqlReplyRepository {
     }
 
     public Reply findByReplyId(Long replyId) {
-        final String sql = "SELECT id, userId, contents, createdAt FROM Reply WHERE id = :id AND deleted = false LIMIT 1";
+        final String sql = "SELECT id, articleId, userId, contents, createdAt FROM Reply WHERE id = :id AND deleted = false LIMIT 1";
         try (final Stream<Reply> result = jdbcTemplate.queryForStream(sql, Map.of("id", replyId), replyRowMapper)) {
             return result.findFirst().orElseThrow();
         }
@@ -44,5 +44,10 @@ public class MySqlReplyRepository {
     public List<Reply> findByArticleId(Long articleId) {
         final String sql = "SELECT id, userId, contents, createdAt FROM Reply WHERE articleId = :articleId AND deleted = false";
         return jdbcTemplate.query(sql, Map.of("articleId", articleId), replyRowMapper);
+    }
+
+    public int delete(Long replyId) {
+        final String sql = "UPDATE Reply SET deleted = true WHERE id = :id";
+        return jdbcTemplate.update(sql, Map.of("id", replyId));
     }
 }

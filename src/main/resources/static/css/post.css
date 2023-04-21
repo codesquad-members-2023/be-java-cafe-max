@@ -347,3 +347,9 @@ p {
     flex-direction: row;
     justify-content: space-between;
 }
+
+.deleteReply > button {
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+}

@@ -20,6 +20,10 @@ public class Reply {
         this.createdAt = LocalDateTime.now();
     }
 
+    public boolean isReplyWriter(final String userId) {
+        return this.userId.equals(userId);
+    }
+
     public long getId() {
         return id;
     }

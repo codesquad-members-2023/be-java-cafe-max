@@ -11,15 +11,16 @@ public class ReplyResponse {
     private String contents;
     private LocalDateTime createdAt;
 
-    private ReplyResponse(final long id, final String userId, final String contents, final LocalDateTime createdAt) {
+    private ReplyResponse(final long id, final long articleId, final String userId, final String contents, final LocalDateTime createdAt) {
         this.id = id;
+        this.articleId = articleId;
         this.userId = userId;
         this.contents = contents;
         this.createdAt = createdAt;
     }
 
     public static ReplyResponse from(Reply reply) { // Entity → DTO
-        return new ReplyResponse(reply.getId(), reply.getUserId(), reply.getContents(), reply.getCreatedAt());
+        return new ReplyResponse(reply.getId(), reply.getArticleId(), reply.getUserId(), reply.getContents(), reply.getCreatedAt());
     }
 
     public long getId() {

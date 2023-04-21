@@ -12,12 +12,14 @@ function validateReply() {
     return true;
 }
 
-const button = document.getElementById("replyButton");
-button.addEventListener("click", submitReply);
+const saveButton = document.getElementById("replyButton");
+saveButton.addEventListener("click", submitReply);
 
-let commentCount = parseInt(document.querySelector("#replyContainer > span").innerText.split(" ")[1].slice(0, -1));
+let replyCount = parseInt(document.querySelector("#replyContainer > span").innerText.split(" ")[1].slice(0, -1));
 
-function submitReply() {
+function submitReply(event) {
+    event.preventDefault();
+
     if (!validateReply()) {
         return false;
     }
@@ -43,9 +45,11 @@ function submitReply() {
                 const answerTemplate = document.querySelector("#answerTemplate").innerHTML;
                 const template = answerTemplate.replace("{0}", data.userId)
                                              .replace("{1}", formattedCreatedAt)
-                                             .replace("{2}", data.contents);
-                commentCount++;
-                document.querySelector("#replyContainer > span").innerText = `댓글 ${commentCount}개`;
+                                             .replace("{2}", data.contents)
+                                             .replace("{3}", data.articleId)
+                                             .replace("{4}", data.id);
+                replyCount++;
+                document.querySelector("#replyContainer > span").innerText = `댓글 ${replyCount}개`;
                 document.querySelector("#replyContainer").insertAdjacentHTML("beforeend", template);
                 document.querySelector("textarea[name=contents]").value = "";
                 document.querySelector("#replyContainer")
@@ -56,3 +60,30 @@ function submitReply() {
     };
     xhr.send(queryString);
 }
+
+/* 댓글 삭제 */
+$(document).on("click", "form[name=deleteReply]", deleteReply);
+
+function deleteReply(event) {
+    event.preventDefault();
+
+    const deleteBtn = $(this);
+    const url = $(this).attr("action");
+
+    $.ajax({
+        type: 'DELETE',
+        url: url,
+        dataType: 'json',
+        error: function () {
+            console.log('failure');
+        },
+        success : function () {
+            replyCount--;
+            document.querySelector("#replyContainer > span").innerText = `댓글 ${replyCount}개`;
+            deleteBtn.closest("article").remove();
+        }
+    });
+}
+
+
+
