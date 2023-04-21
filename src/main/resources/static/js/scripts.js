@@ -54,9 +54,9 @@ function getInfo(){
               '                   <a class="link-modify-article" href="/api/qna/updateAnswer/'+result[i]["articleIdx"]+'">수정</a>'+
               '               </li>'+
               '               <li>'+
-              '                   <form class="delete-answer-form" action="/api/questions/'+result[i]["articleIdx"]+'/answers/'+result[i]["index"]+'" method="POST">'+
+              '                   <form class="delete-answer-form" action="/article/'+result[i]["articleIdx"]+'/delete/'+result[i]["index"]+'" method="POST">'+
               '                       <input type="hidden" name="_method" value="DELETE">'+
-              '                       <button type="submit" class="delete-answer-button">삭제</button>'+
+              '                       <button type="button" class="delete-answer-button">삭제</button>'+
               '                   </form>'+
               '               </li>'+
               '           </ul>';
@@ -71,6 +71,23 @@ function getInfo(){
     }
   })
 }
+$(document).on("click", ".delete-answer-button", deleteReply)
+  function deleteReply() {
+    alert("Ddd")
+    const url = $(this).parent().attr("action");
+    $.ajax({
+      url : url,
+      type : 'delete' ,
+      success(result){
+        alert(result)
+        if(result){
+          getInfo();
+          return;
+        }
+        alert("삭제 실패 본인만 삭제 가능");
+      }
+    })
+  }
 
 
 // function getInfo(){

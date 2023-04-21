@@ -91,4 +91,13 @@ public class ArticleService {
     public List<Reply> replyList(int index){
         return replyRepository.findAll(index);
     }
+
+    public boolean deleteReply(int index){
+//        replyRepository.findByIdx(index).orElseThrow(() -> new NotFoundException("댓글 찾을 수 없음"));
+       if(replyRepository.exist(index)){
+           replyRepository.delete(index);
+           return true;
+       }
+       throw new NotFoundException("댓글을 찾을 수 없음");
+    }
 }

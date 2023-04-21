@@ -5,19 +5,13 @@ import kr.codesqaud.cafe.domain.reply.Reply;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
 import kr.codesqaud.cafe.dto.LoginSessionDto;
 import kr.codesqaud.cafe.service.ArticleService;
-import org.h2.util.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 @Controller
@@ -48,7 +42,7 @@ public class ArticleController {
         Article article = articleService.findByIdx(index);
         model.addAttribute("article", article);
         model.addAttribute("auth", articleService.checkIdentity(article.getUserId(), sessionDto.getId()));
-        model.addAttribute("nickname",sessionDto.getName());
+        model.addAttribute("nickname", sessionDto.getName());
         return "qna/show";
     }
 
@@ -82,13 +76,6 @@ public class ArticleController {
         return "redirect:/";
     }
 
-//    @PostMapping("/article/{index}/reply")
-//    public String saveReply(@PathVariable int index,@RequestParam String contents,
-//                             HttpSession session){
-//        LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
-//        articleService.writeReply(index,contents, sessionDto.getName());
-//        return "redirect:/article/show/"+index;
-//    }
     @GetMapping("/article/getReply/{index}")
     @ResponseBody
     public List<Reply> getReply(@PathVariable int index) {
@@ -98,9 +85,15 @@ public class ArticleController {
     @PostMapping("/article/{index}/reply")
     @ResponseBody
     public Reply saveReply(@PathVariable int index, @RequestParam String contents,
-                                         HttpSession session){
+                           HttpSession session) {
         LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
-        return articleService.writeReply(index,contents, sessionDto.getName());
+        return articleService.writeReply(index, contents, sessionDto.getName());
+    }
+
+    @DeleteMapping("/article/{articleIndex}/delete/{index}")
+    @ResponseBody
+    boolean deleteReply(@PathVariable int articleIndex, @PathVariable int index) {
+        return articleService.deleteReply(index);
     }
 
 }

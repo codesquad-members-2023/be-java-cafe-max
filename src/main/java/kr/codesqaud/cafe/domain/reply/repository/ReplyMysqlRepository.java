@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReplyMysqlRepository implements ReplyRepository {
@@ -38,6 +39,23 @@ public class ReplyMysqlRepository implements ReplyRepository {
         );
     }
 
+    @Override
+    public void delete(int index) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("index", index);
+        namedParameterJdbcTemplate.update(
+                "UPDATE REPLY SET DELETED = TRUE WHERE IDX = :index", namedParameters
+        );
+    }
+
+//    @Override
+//    public Optional<Reply> findByIdx(int index) {
+//        SqlParameterSource namedParameters = new MapSqlParameterSource("index", index);
+//        List<Reply> replies = namedParameterJdbcTemplate.query(
+//                "SELECT  ID  WHERE IDX = :index", namedParameters, rowMapper()
+//        );
+//        return replies.stream().findFirst();
+//    }
+
     private RowMapper<Reply> rowMapper() {
         return (rs, rowNum) ->
                 new Reply.Builder()
@@ -47,6 +65,14 @@ public class ReplyMysqlRepository implements ReplyRepository {
                         .replyContents(rs.getString("REPLY_CONTENTS"))
                         .date(rs.getString("DATE"))
                         .build();
+    }
+
+    @Override
+    public boolean exist(int index) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("index", index);
+        final String sql = "SELECT EXISTS(SELECT 1 FROM REPLY WHERE IDX = :index AND DELETED = 0 LIMIT 1)";
+        final int count = namedParameterJdbcTemplate.queryForObject(sql,namedParameters,Integer.class);
+        return count > 0;
     }
 }
 
