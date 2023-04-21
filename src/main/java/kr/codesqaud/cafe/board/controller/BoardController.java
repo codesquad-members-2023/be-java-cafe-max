@@ -45,11 +45,12 @@ public class BoardController {
     }
 
     @GetMapping("/{postId}")
-    public String getDetailPost(@PathVariable Long postId, Model model, HttpSession session) {
+    public String getDetailPost(@PathVariable Long postId, @SessionAttribute("sessionUser") SessionUser sessionUser, Model model) {
         PostResponse postResponse = boardService.getPost(postId);
         model.addAttribute("post", postResponse);
 
-        if (isSameWriter(session, postResponse.getWriter())) {
+        String sessionUserName = sessionUser.getUserName();
+        if (sessionUserName.equals(postResponse.getWriter())) {
             model.addAttribute("isWriter", true);
         }
 
@@ -61,11 +62,13 @@ public class BoardController {
     }
 
     @GetMapping("/{postId}/update")
-    public String updateForm(@PathVariable Long postId, Model model, HttpSession session) {
+    public String updateForm(@PathVariable Long postId, @SessionAttribute("sessionUser") SessionUser sessionUser,
+                             Model model, HttpSession session) {
         PostResponse postResponse = boardService.getPost(postId);
         model.addAttribute("post", postResponse);
-
-        if (!isSameWriter(session, postResponse.getWriter())) {
+        
+        String sessionUserName = sessionUser.getUserName();
+        if (sessionUserName.equals(postResponse.getWriter())) {
             throw new ForbiddenException("접근할 수 없는 페이지입니다.");
         }
 
@@ -82,11 +85,6 @@ public class BoardController {
     public String deletePost(@PathVariable Long postId) {
         boardService.delete(postId);
         return "redirect:/board/list";
-    }
-
-    private boolean isSameWriter(HttpSession session, String writer) {
-        SessionUser sessionUser = (SessionUser) session.getAttribute("sessionUser");
-        return sessionUser.getUserName().equals(writer);
     }
 
 }
