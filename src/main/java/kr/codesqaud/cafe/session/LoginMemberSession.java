@@ -2,16 +2,10 @@ package kr.codesqaud.cafe.session;
 
 
 public class LoginMemberSession {
-    private final Long memberId;
     private final String memberEmail;
 
-    public LoginMemberSession(Long memberId, String memberEmail) {
-        this.memberId = memberId;
+    public LoginMemberSession(String memberEmail) {
         this.memberEmail = memberEmail;
-    }
-
-    public LoginMemberSession(Member member) {
-        this(member.getMemberId(),member.getEmail());
     }
 
     public String getMemberEmail() {
