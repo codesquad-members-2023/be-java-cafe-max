@@ -1,41 +1,99 @@
 # be-java-cafe
 마스터즈 2023 스프링 카페<br>4차 리뷰 대비 다시 작성
 
-### 이번 주 학습계획
+### 4차 리뷰 준비를 위한 학습계획
 - 수단과 방법을 가리지 말고 진도 따라잡기....!!!!!!  :fire::fire:
-> [ㅇ] 2단계 -> 이번주 목표는 2단계까지<br>
-> [] 2단계 선택<회원정보 수정하기> -> (미루기)<br>
-> [] 3단계 직행<br>
-> [] WebMVCConfigurer 적용
+> [ㅇ] 2단계 -> 이번주 목표는 2단계까지(회원정보 수정하기 -> 미루기)/3단계로 직행 중<br>
+> [ㅇ] WebMvcConfigurer 적용
 
 ### 경과
-- 2단계: 완료
-- 2단계-선택미션: 하려다가 미루고 3단계 시작
+- 2단계: 완료(선택미션: 다음으로 미루기...)
 - 3단계 시작(목요일)
 
-#### TODO 리스트
-- [] DI에 대해 더 알아보기
-- [] Bean에 대해 몹시 알아보기
-- [] Get과 POST의 차이 + query parameter + MESSEAGE BODY
-- [] @ComponentScan 알아보기 -> (@Component + @Bean까지...)
-- [] @RequestBody
-- [] @Repository -> @Service -> @Controller 관계(매우 명쾌하면 좋겠다!)
-- [] Ioc Container
-
-#### <학습 주제 목록>
-- bean:
-- @AutoWired ->
-- Service 클래스 하는 역할: ?? -> 비지니스 로직(무슨 뜻인지 아직 잘 모름)
+#### 학습 주제
+- Dependency: '외부 객체를 필수 속성으로 갖게 될 경우 그 객체'
+- Dependency Injection: D를 가지게 만드는 방법(@Autowired를 속성/세터/생성자에 사용 -> 생성자1개일 때 불필요)
+- Bean: 'Ioc 컨테이너에서 만든 자바 클래스'(확인 필요....)
+- GET과 POST의 차이: Get은 여러 번의 요청을 해도 항상 일정한 결과가 나오는(멱등) 반면 Post는 요청을 할 때마다 다른 결과가 나오는(안 멱등)  
+- query parameter: ex) url 주소에 '?'과 희망사항 값(parameter)이 포함되서, 필터된 결과 반환 가능! (더 확인 필요...)  
+- MESSEAGE BODY: http 메세지 body는 1. 실제 전송할 데이터이다 2. byte로 표현 가능한 모든 결과가 다 갈 수 있다.
+- @ComponentScan 알아보기 -> (@Component + @Bean까지...)
 - Model.addAttribute: ("amumal", amumal.get()) ---mustache--> {{#amumal}} .. {{/amumal}}
-- @Repository -> 저장소<br>
-- @RequestBody -> POST API인데 Json일때 필요(아직 잘 모름)
-- Ioc 컨테이너:
-- @ComponentScan:
+- @Repository -> @Service -> @Controller 관계(매우 명쾌하면 좋겠다!)
+- @RequestBody:
+- Ioc 컨테이너: '프레임워크'이고 하는 일은....(확인중)
 - @Repository -> @Service -> @Controller (흐름)
-- @Configuration:  '설정 클래스를 선언'<<<
+- @Configuration:  '설정 클래스 선언'<<<
 - @ModelAttribute:
 - wrapper 클래스!: '원시 타입 자체를 객체로 만들어주는' 것인데(아직 정확히 이해하지 못함 -> 몇 번 예제로 연습을...)
 - 자료구조 선택기준!: 성능 스펙이 다 있으므로 생각을 해서 선택(!)
 - WebMVCConfigurer(인터페이스): ~를 구현한 클래스로 .... (이 것으로 할 수 있는 것들을 더 찾아봐야 겠다는)
 - Data Access 0bject: @Repository <<< 
-- Persistence Layer: (DB)
+- Persistence Layer == (DB)
+- Spring Jdbc: == JdbcTemplate ...
+
+# 4주차
+## 미션 진행 상황 <2단계 구현> (완료)
+
+<특이사항>
+- 모든 사용자는 게시글 목록을 볼 수 있어야 한다 <br>
+  -> (특별히 조치를 하지 않으면 원래 그랬던 것 같은) -> (요구사항을 이해하지 못한 듯한 느낌)
+
+### [커밋을 이쁘게 하기 위한 TODO리스트]
+<버그>
+- [] /users/ 다음에 없는 아이디를 쓰면 빈 profile 화면으로 이동 됨 -> 뭔가 이상한 -> 에러 페이지 처리(예정)
+
+<글쓰기>
+- [ㅇ] html의 헤더(와 푸터) 공통부분 분리
+- [ㅇ] 게시글 기능 구현을 담당할 ArticleController를 추가하고 애노테이션 매핑한다.
+- [ㅇ] 게시글 작성 요청(POST 요청)을 처리할 메소드를 추가하고 매핑한다.
+- [ㅇ] 사용자가 전달한 값을 Article 클래스를 생성해 저장한다.
+- [ㅇ] 게시글 목록을 관리하는 컬렉션 클래스를 생성한 후 앞에서 생성한 Article 인스턴스를 저장한다.
+- [ㅇ] 게시글 추가를 완료한 후 메인 페이지(“redirect:/”)로 이동한다.
+- [ㅇ] 작성 날짜 구현()
+
+<글 목록 조회하기>
+- [ㅇ] 메인 페이지(요청 URL이 “/”)를 담당하는 Controller의 method에서 게시글 목록을 조회한다.
+- [ㅇ] 조회한 게시글 목록을 Model에 저장한 후 View에 전달한다. 게시글 목록은 앞의 게시글 작성 단계에서 생성한 컬렉션을 그대로 전달한다.
+- [ㅇ] View에서 Model을 통해 전달한 게시글 목록을 출력한다. // (왜인지 자꾸 전 단계를 하고 나면 이미 되어 있는...)
+
+<게시글 상세보기>
+- [ㅇ] 게시글 목록의 제목을 클릭했을 때 게시글 상세 페이지에 접속할 수 있도록 한다.
+- [ㅇ] 게시글 상세 페이지 접근 URL은 "/articles/{index}"(예를 들어 첫번째 글은 /articles/1)와 같이 구현한다.
+- [ㅇ] 게시글 객체에 Id 인스턴스 변수를 추가하고 새로운 게시글마다 증가하도록 구현한다. <<<<<< ('Id 인스턴스 변수'가 무슨 말인지 이해하지 못함)
+- [ㅇ] Controller에 상세 페이지 접근 method를 추가하고 URL은 /articles/{index}로 매핑한다.
+- [ㅇ] 해당하는 데이터를 조회한 후 Model에 저장해 /qna/detail.html에 전달한다.  <<<<<< (혹시 아닌지 모르겠지만 detail.html==show.html인 것으로 추정...)
+- [ㅇ] /qna/detail.html에서는 Controller에서 전달한 데이터를 활용해 html을 생성한다.
+
+<+>
+- [ㅇ] MvcConfig.java 되게 만들기
+
+<회원정보 수정(미루고 3단계 직행)>
+- 비밀번호, 이름, 이메일만 수정할 수 있으며, 사용자 아이디는 수정할 수 없다.<br>비밀번호가 일치하는 경우에만 수정 가능하다.
+- [] /user/form.html 파일을 /user/updateForm.html로 복사한 후 수정화면을 생성한다.
+- [] UserController의 사용자가 수정한 정보를 User 클래스에 저장한다.
+- [] {id}에 해당하는 User를 DB에서 조회한다(UserRepository의 findOne()).
+- [] DB에서 조회한 User 데이터를 새로 입력받은 데이터로 업데이트한다.
+- [] UserRepository의 save() 메소드를 사용해 업데이트한다.
+
+## <3단계>
+
+<H2 데이터베이스 연동>
+- [ㅇ] H2 데이터베이스 의존성을 추가하고 연동한다. (JPA와 같은 ORM은 사용하지 않는다.)
+- [ㅇ] Spring JDBC를 사용한다. (DB 저장 및 조회에 필요한 SQL은 직접 작성한다.)
+- [] 데이터베이스를 생성할 때 필요한 SQL문을 resources/schema.sql 로 저장한다.
+-
+<게시글 데이터 저장하기>
+- [] Article 클래스를 DB 테이블에 저장할 수 있게 구현한다.
+> Article 테이블이 적절한 PK를 가지도록 구현한다.
+- [] 게시글 목록 구현하기
+> 전체 게시글 목록 데이터를 DB에서 조회하도록 구현한다.
+- [] 게시글 상세보기 구현하기
+> 게시글의 세부 내용을 DB에서 가져오도록 구현한다.
+- [] 사용자 정보 DB에 저장
+> 회원가입을 통해 등록한 사용자 정보를 DB에 저장한다.
+- [] 배포(..!!!!!!!)
+> AWS와 같은 클라우드를 이용해서 간단히 배포를 진행해 본다.<br>
+> README와 PR에 배포 URL을 기술한다.<br>
+> DB는 그대로 H2를 사용한다. 배포를 위해 MySQL 등으로 변경하지 말 것.<br>
+
