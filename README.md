@@ -49,24 +49,34 @@
 
 
 ## ERD
+### 게시글 article
 
+|     Key     | 이름  |    Field    |     Type     |   NULL   |     Extra      |
+|:-----------:|:---:|:-----------:|:------------:|:--------:|:--------------:|
+| primary key | 번호  |     id      |    bigint    | NOT NULL | auto_increment |
+|             | 글쓴이 |   writer    | varchar(16)  | NOT NULL |                |
+|             | 제목  |    title    | varchar(32)  | NOT NULL |                |
+|             | 내용  |  contents   | varchar(255) | NOT NULL |                |
+|             | 생성일 | created_at  |   datetime   | NOT NULL |                |
+|             | 수정일 | modified_at |   datetime   |   NULL   |                |
+|             | 포인트 |   points    |    bigint    | NOT NULL |                |
 
-|     게시글     |     |            |              |          |    articles    |
-|:-----------:|:---:|:----------:|:------------:|:--------:|:--------------:|
-| primary key | 번호  |     id     |    bigint    | NOT NULL | auto_increment |
-|             | 글쓴이 |   writer   | varchar(16)  | NOT NULL |                |
-|             | 제목  |   title    | varchar(32)  | NOT NULL |                |
-|             | 내용  |  contents  | varchar(255) | NOT NULL |                |
-|             | 생성일 | createdAt  |   datetime   | NOT NULL |                |
-|             | 수정일 | modifiedAt |   datetime   |   NULL   |                |
-|             | 포인트 |   points   |    bigint    | NOT NULL |                |
+### 회원 user
 
-|     회원      |      |            |             |          |     users      |
-|:-----------:|:----:|:----------:|:-----------:|:--------:|:--------------:|
-| primary key | 회원번호 | customerId |   bigint    | NOT NULL | auto_increment |
-|             | 아이디  |   userId   | varchar(16) | NOT NULL |                |
-|             | 비밀번호 |  password  | varchar(32) | NOT NULL |                |
-|             |  이름  |    name    | varchar(16) | NOT NULL |                |
-|             | 이메일  |   email    | varchar(64) | NOT NULL |                |
+|     Key     |  이름  |    Field    |    Type     |   NULL   |     Extra      |
+|:-----------:|:----:|:-----------:|:-----------:|:--------:|:--------------:|
+| primary key | 회원번호 | customer_id |   bigint    | NOT NULL | auto_increment |
+|             | 아이디  |   user_id   | varchar(16) | NOT NULL |                |
+|             | 비밀번호 |  password   | varchar(32) | NOT NULL |                |
+|             |  이름  |    name     | varchar(16) | NOT NULL |                |
+|             | 이메일  |    email    | varchar(64) | NOT NULL |                |
 
-
+### 댓글 reply
+|     Key     |   이름   |    Field    |     Type     |   NULL   |     Extra      |
+|:-----------:|:------:|:-----------:|:------------:|:--------:|:--------------:|
+| primary key | 댓글 번호  |  reply_id   |    bigint    | NOT NULL | auto_increment |
+|             |  글쓴이   |   writer    | varchar(16)  | NOT NULL |                |
+|             |   내용   |  contents   | varchar(255) | NOT NULL |                |
+|             |  생성일   | created_at  |   datetime   | NOT NULL |                |
+|             |  수정일   | modified_at |   datetime   |   NULL   |                |
+|             | 게시글 번호 | article_id  |    bigint    | NOT NULL |                |
