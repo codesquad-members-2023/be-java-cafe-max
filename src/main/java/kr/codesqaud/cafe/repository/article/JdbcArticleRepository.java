@@ -32,9 +32,9 @@ public class JdbcArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public Article findByIndex(Long index) {
+	public Article findByIndex(Long postIndex) {
 		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("index", index);
+			.addValue("postIndex", postIndex);
 		List<Article> articles = namedParameterJdbcTemplate.query(FIND_BY_INDEX, param, articleRowMapper());
 		return OptionalTo(articles).orElseThrow(ArticleNotFoundException::new);
 	}
@@ -49,23 +49,23 @@ public class JdbcArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public boolean increaseHits(Long index) {
+	public boolean increaseHits(Long postIndex) {
 		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("index", index);
+			.addValue("postIndex", postIndex);
 		namedParameterJdbcTemplate.update(INCREASE_HITS, param);
 		return true;
 	}
 
 	@Override
-	public boolean delete(Long index) {
-		SqlParameterSource param = new MapSqlParameterSource("index", index);
+	public boolean delete(Long postIndex) {
+		SqlParameterSource param = new MapSqlParameterSource("postIndex", postIndex);
 		namedParameterJdbcTemplate.update(DELETE, param);
 		return true;
 	}
 
 	@Override
-	public boolean update(Long index, ArticleDto articleDto) {
-		SqlParameterSource params = new MapSqlParameterSource("index", index)
+	public boolean update(Long postIndex, ArticleDto articleDto) {
+		SqlParameterSource params = new MapSqlParameterSource("postIndex", postIndex)
 			.addValue("title", articleDto.getTitle())
 			.addValue("writer", articleDto.getWriter())
 			.addValue("contents", articleDto.getContents());
@@ -74,7 +74,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 	}
 
 	private RowMapper<Article> articleRowMapper() {
-		return (rs, rowNum) -> new Article(rs.getLong("index"), rs.getString("title"), rs.getString("writer"),
+		return (rs, rowNum) -> new Article(rs.getLong("postIndex"), rs.getString("title"), rs.getString("writer"),
 			rs.getString("contents"), rs.getString("writeDate"), rs.getLong("hits"));
 	}
 }

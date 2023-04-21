@@ -6,15 +6,15 @@ import kr.codesqaud.cafe.exception.DeniedDataModificationException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 
 public class User {
-	private Long index;
+	private Long userIndex;
 	private String userID;
 	private String email;
 	private String nickname;
 	private String password;
 	private LocalDate signUpDate;
 
-	public User(Long index, String userID, String email, String nickname, String password, LocalDate signUpDate) {
-		this.index = index;
+	public User(Long userIndex, String userID, String email, String nickname, String password, LocalDate signUpDate) {
+		this.userIndex = userIndex;
 		this.userID = userID;
 		this.email = email;
 		this.nickname = nickname;
@@ -30,8 +30,8 @@ public class User {
 		this.signUpDate = signUpDate;
 	}
 
-	public Long getIndex() {
-		return index;
+	public Long getUserIndex() {
+		return userIndex;
 	}
 
 	public String getUserID() {

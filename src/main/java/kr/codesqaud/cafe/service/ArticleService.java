@@ -36,26 +36,26 @@ public class ArticleService {
 		return now.format(DATE_FORMATTER);
 	}
 
-	public Article findByIndex(Long index) {
-		return articleRepository.findByIndex(index);
+	public Article findByIndex(Long postIndex) {
+		return articleRepository.findByIndex(postIndex);
 	}
 
 	public List<Article> findArticles() {
 		return articleRepository.findAll();
 	}
 
-	public boolean increaseHits(Long index) {
-		articleRepository.increaseHits(index);
+	public boolean increaseHits(Long postIndex) {
+		articleRepository.increaseHits(postIndex);
 		return true;
 	}
 
-	public boolean deleteArticle(Long index) {
-		articleRepository.delete(index);
+	public boolean deleteArticle(Long postIndex) {
+		articleRepository.delete(postIndex);
 		return true;
 	}
 
-	public boolean updateArticle(Long index, ArticleDto articleDto) {
-		articleRepository.update(index, articleDto);
+	public boolean updateArticle(Long postIndex, ArticleDto articleDto) {
+		articleRepository.update(postIndex, articleDto);
 		return true;
 	}
 
@@ -70,12 +70,12 @@ public class ArticleService {
 		return commentRepository.findByPostIndex(postIndex);
 	}
 
-	public Comment findCommentByIndex(Long postIndex, Long index) {
-		return commentRepository.findOne(postIndex, index);
+	public Comment findCommentByIndex(Long postIndex, Long commentIndex) {
+		return commentRepository.findOne(postIndex, commentIndex);
 	}
 
-	public void deleteComment(Long postIndex, Long index) {
-		commentRepository.delete(postIndex, index);
+	public void deleteComment(Long postIndex, Long commentIndex) {
+		commentRepository.delete(postIndex, commentIndex);
 	}
 
 	public void deleteAllComment(Long postIndex) {

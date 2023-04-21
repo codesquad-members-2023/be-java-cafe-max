@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.domain;
 import kr.codesqaud.cafe.exception.DeniedDataModificationException;
 
 public class Article {
-	private Long index;
+	private Long postIndex;
 	private String title;
 	private String writer;
 	private String contents;
@@ -11,9 +11,9 @@ public class Article {
 	private long hits;
 	private boolean deleted;
 
-	public Article(Long index, String title, String writer, String contents, String writeDate, long hits,
+	public Article(Long postIndex, String title, String writer, String contents, String writeDate, long hits,
 		boolean deleted) {
-		this.index = index;
+		this.postIndex = postIndex;
 		this.title = title;
 		this.writer = writer;
 		this.contents = contents;
@@ -22,8 +22,8 @@ public class Article {
 		this.deleted = deleted;
 	}
 
-	public Article(Long index, String title, String writer, String contents, String writeDate, Long hits) {
-		this.index = index;
+	public Article(Long postIndex, String title, String writer, String contents, String writeDate, Long hits) {
+		this.postIndex = postIndex;
 		this.title = title;
 		this.writer = writer;
 		this.contents = contents;
@@ -39,8 +39,8 @@ public class Article {
 		this.hits = hits;
 	}
 
-	public Long getIndex() {
-		return index;
+	public Long getPostIndex() {
+		return postIndex;
 	}
 
 	public String getTitle() {
@@ -67,7 +67,7 @@ public class Article {
 		this.hits = hits;
 		return true;
 	}
-	
+
 	public boolean isDeleted() {
 		return deleted;
 	}

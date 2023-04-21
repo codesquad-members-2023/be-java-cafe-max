@@ -33,12 +33,12 @@ public class CommentCommandController {
 		return articleService.createComment(commentDto);
 	}
 
-	@DeleteMapping("/comment/delete/{postIndex}/{index}")
-	public List<Comment> delete(@PathVariable Long postIndex, @PathVariable Long index, HttpSession session) {
+	@DeleteMapping("/comment/delete/{postIndex}/{commentIndex}")
+	public List<Comment> delete(@PathVariable Long postIndex, @PathVariable Long commentIndex, HttpSession session) {
 		User user = (User)session.getAttribute("sessionUser");
-		Comment comment = articleService.findCommentByIndex(postIndex, index);
+		Comment comment = articleService.findCommentByIndex(postIndex, commentIndex);
 		comment.validateAuthor(user.getNickname(), "다른 사람의 댓글은 삭제할 수 없습니다.");
-		articleService.deleteComment(postIndex, index);
+		articleService.deleteComment(postIndex, commentIndex);
 		return articleService.showComments(postIndex);
 	}
 }

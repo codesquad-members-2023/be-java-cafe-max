@@ -19,7 +19,7 @@
     <div class="comment-box"></div>
     <div class="write-comment">
         <form name="comment-form" id="comment" method="post" action="/comment/create/{{article.writer}}">
-            <input type="hidden" name="postIndex" value="{{article.index}}"/>
+            <input type="hidden" name="postIndex" value="{{article.postIndex}}"/>
             <input type="hidden" name="author" value="{{user.nickname}}"/>
             <label for="comment-input" id="comment-label"></label>
             <textarea name="comment" id="comment-input" placeholder="댓글을 입력하세요."></textarea>
@@ -29,16 +29,16 @@
     <div class="post-detail-button">
         <div class="button-writing">
             <div>
-                <a class="button pre-writing" href="/article/{{index}}/{{writer}}">이전 글</a>
+                <a class="button pre-writing" href="/article/{{article.postIndex}}/{{article.writer}}">이전 글</a>
             </div>
             <div>
-                <a class="button next-writing" href="/article/{{index}}/{{writer}}">다음 글</a>
+                <a class="button next-writing" href="/article/{{article.postIndex}}/{{article.writer}}">다음 글</a>
             </div>
         </div>
         <div class="post-bottom-list">
             {{#equal}}
-            <a href="/article/update/{{article.index}}" class="button next-writing">수정</a>
-            <form name="question" method="post" action="/article/delete/{{article.index}}">
+            <a href="/article/update/{{article.postIndex}}" class="button next-writing">수정</a>
+            <form name="question" method="post" action="/article/delete/{{article.postIndex}}">
                 <input type="hidden" name="_method" value="DELETE"/>
                 <button class="button next-writing" type="submit" style="border: none;">삭제</button>
             </form>

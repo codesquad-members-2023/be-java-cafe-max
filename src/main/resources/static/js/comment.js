@@ -27,10 +27,10 @@ function addComment() {
 }
 
 function createComment(comment) {
-    let button = "<form name='comment-update-form' method='post' action='/comment/update/" + comment.postIndex + "/" + comment.index + "'>"
+    let button = "<form name='comment-update-form' method='post' action='/comment/update/" + comment.postIndex + "/" + comment.commentIndex + "'>"
         + "<input type='hidden' name='_method' value='PATCH'/>"
         + "<button class='updateComment button next-writing' type='button' style='border: none;'>수정</button></form>"
-        + "<form name='comment-delete-form' method='post' action='/comment/delete/" + comment.postIndex + "/" + comment.index + "'>"
+        + "<form name='comment-delete-form' method='post' action='/comment/delete/" + comment.postIndex + "/" + comment.commentIndex + "'>"
         + "<input type='hidden' name='_method' value='DELETE'/>"
         + "<button class='deleteComment button next-writing' type='button' style='border: none;'>삭제</button></form>";
 
@@ -79,7 +79,6 @@ function deleteComment() {
     $.ajax({
       type : 'delete',
       url : url,
-      dataType : 'json',
       error: function () {
           alert("다른 사람의 댓글은 삭제할 수 없습니다.");
       },

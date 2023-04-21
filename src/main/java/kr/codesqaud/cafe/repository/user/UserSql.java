@@ -2,15 +2,15 @@ package kr.codesqaud.cafe.repository.user;
 
 public class UserSql {
 	public static final String SELECT_ALL_FOR_USER_LIST
-		= "SELECT index, userID, email, nickname, password, signUpDate "
+		= "SELECT userIndex, userID, email, nickname, password, signUpDate "
 		+ "FROM USER_INFO";
 
 	public static final String FIND_BY_USERID
-		= "SELECT index, userID, email, nickname, password, signUpDate "
+		= "SELECT userIndex, userID, email, nickname, password, signUpDate "
 		+ "FROM USER_INFO WHERE userID = :userID";
 
 	public static final String FIND_BY_NICKNAME
-		= "SELECT index, userID, email, nickname, password, signUpDate "
+		= "SELECT userIndex, userID, email, nickname, password, signUpDate "
 		+ "FROM USER_INFO WHERE nickname = :nickname";
 
 	public static final String UPDATE
@@ -22,21 +22,21 @@ public class UserSql {
 
 	public static final String EXISTS_USERID
 		= "SELECT EXISTS "
-		+ "(SELECT FROM USER_INFO WHERE userID = :userID)";
+		+ "(SELECT 1 FROM USER_INFO WHERE userID = :userID)";
 
 	public static final String EXISTS_EMAIL
 		= "SELECT EXISTS "
-		+ "(SELECT FROM USER_INFO WHERE email = :email)";
+		+ "(SELECT 1 FROM USER_INFO WHERE email = :email)";
 
 	public static final String EXISTS_NICKNAME
 		= "SELECT EXISTS "
-		+ "(SELECT FROM USER_INFO WHERE nickname = :nickname)";
+		+ "(SELECT 1 FROM USER_INFO WHERE nickname = :nickname)";
 
 	public static final String EXISTS_UPDATE_EMAIL
 		= "SELECT EXISTS "
-		+ "(SELECT FROM USER_INFO WHERE (userID NOT IN (:userID)) AND (email = :email))";
+		+ "(SELECT 1 FROM USER_INFO WHERE (userID NOT IN (:userID)) AND (email = :email))";
 
 	public static final String EXISTS_UPDATE_NICKNAME
 		= "SELECT EXISTS "
-		+ "(SELECT FROM USER_INFO WHERE (userID NOT IN (:userID)) AND (nickname = :nickname))";
+		+ "(SELECT 1 FROM USER_INFO WHERE (userID NOT IN (:userID)) AND (nickname = :nickname))";
 }

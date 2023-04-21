@@ -24,7 +24,7 @@ public class JdbcCommentRepository implements CommentRepository {
 	}
 
 	private RowMapper<Comment> commentRowMapper() {
-		return (rs, rowNum) -> new Comment(rs.getLong("index"), rs.getLong("postIndex"), rs.getString("author"),
+		return (rs, rowNum) -> new Comment(rs.getLong("commentIndex"), rs.getLong("postIndex"), rs.getString("author"),
 			rs.getString("comment"), rs.getString("createdDate"), rs.getBoolean("deleted"));
 	}
 
@@ -42,20 +42,20 @@ public class JdbcCommentRepository implements CommentRepository {
 	}
 
 	@Override
-	public Comment findOne(Long postIndex, Long index) {
+	public Comment findOne(Long postIndex, Long commentIndex) {
 		SqlParameterSource params = new MapSqlParameterSource()
 			.addValue("postIndex", postIndex)
-			.addValue("index", index);
+			.addValue("commentIndex", commentIndex);
 		List<Comment> comments = namedParameterJdbcTemplate.query(FIND_BY_POST_INDEX_WITH_INDEX, params,
 			commentRowMapper());
 		return OptionalTo(comments).orElseThrow(CommentNotFoundException::new);
 	}
 
 	@Override
-	public void delete(Long postIndex, Long index) {
+	public void delete(Long postIndex, Long commentIndex) {
 		SqlParameterSource params = new MapSqlParameterSource()
 			.addValue("postIndex", postIndex)
-			.addValue("index", index);
+			.addValue("commentIndex", commentIndex);
 		namedParameterJdbcTemplate.update(DELETE_COMMENT, params);
 	}
 

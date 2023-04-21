@@ -3,15 +3,16 @@ package kr.codesqaud.cafe.domain;
 import kr.codesqaud.cafe.exception.DeniedDataModificationException;
 
 public class Comment {
-	private Long index;
+	private Long commentIndex;
 	private Long postIndex;
 	private String author;
 	private String comment;
 	private String createdDate;
 	private boolean deleted;
 
-	public Comment(Long index, Long postIndex, String author, String comment, String createdDate, boolean deleted) {
-		this.index = index;
+	public Comment(Long commentIndex, Long postIndex, String author, String comment, String createdDate,
+		boolean deleted) {
+		this.commentIndex = commentIndex;
 		this.postIndex = postIndex;
 		this.author = author;
 		this.comment = comment;
@@ -27,8 +28,8 @@ public class Comment {
 		this.deleted = deleted;
 	}
 
-	public Long getIndex() {
-		return index;
+	public Long getCommentIndex() {
+		return commentIndex;
 	}
 
 	public Long getPostIndex() {

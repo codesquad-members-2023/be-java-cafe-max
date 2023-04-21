@@ -1,7 +1,7 @@
 {{> fragments/header}}
 <div></div>
 <div class="wrap">
-    <form name="question" id="question" method="post" action="/article/update/{{article.index}}"
+    <form name="question" id="question" method="post" action="/article/update/{{article.postIndex}}"
           onsubmit="return validateWritingUpdate()">
         <input type="hidden" name="_method" value="PATCH"/>
         <input type="hidden" name="writer" value="{{article.writer}}"/>

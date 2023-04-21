@@ -102,7 +102,7 @@ public class JdbcUserRepository implements UserRepository {
 	}
 
 	private RowMapper<User> userRowMapper() {
-		return (rs, rowNum) -> new User(rs.getLong("index"), rs.getString("userID"), rs.getString("email"),
+		return (rs, rowNum) -> new User(rs.getLong("userIndex"), rs.getString("userID"), rs.getString("email"),
 			rs.getString("nickname"), rs.getString("password"), rs.getDate("signUpDate").toLocalDate());
 	}
 }
