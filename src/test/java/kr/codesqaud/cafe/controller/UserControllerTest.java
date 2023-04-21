@@ -29,9 +29,9 @@ class UserControllerTest {
         BDDMockito.given(userService.join(ArgumentMatchers.any(UserJoinDto.class))).willReturn(0L);
 
         mvc.perform(MockMvcRequestBuilders.post(url)
-                        .param("userId", userJoinDto.getUserId())
+                        .param("username", userJoinDto.getUsername())
                         .param("password", userJoinDto.getPassword())
-                        .param("name", userJoinDto.getName())
+                        .param("nickname", userJoinDto.getNickname())
                         .param("email", userJoinDto.getEmail())
                 )
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection());

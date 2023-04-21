@@ -4,23 +4,23 @@ import kr.codesqaud.cafe.domain.User;
 
 public class LoginUserSession {
     private final Long id;
-    private final String userId;
+    private final String nickname;
 
-    public LoginUserSession(Long id, String userId) {
+    public LoginUserSession(Long id, String nickname) {
         this.id = id;
-        this.userId = userId;
+        this.nickname = nickname;
     }
 
     public LoginUserSession(User user) {
-        this(user.getId(), user.getUserId());
+        this(user.getId(), user.getNickname());
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getNickname() {
+        return nickname;
     }
 
     public boolean isOtherUser(Long id) {

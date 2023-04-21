@@ -4,16 +4,16 @@ import java.time.LocalDateTime;
 
 public class Article {
     private Long id;
-    private Long userFk;
+    private Long userId;
     private String writer;
     private String title;
     private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Article(Long id, Long userFk, String writer, String title, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Article(Long id, Long userId, String writer, String title, String contents, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.userFk = userFk;
+        this.userId = userId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -21,12 +21,12 @@ public class Article {
         this.updatedAt = updatedAt;
     }
 
-    public Article(Long userFk, String title, String contents) {
-        this(null, userFk, null, title, contents, LocalDateTime.now(), LocalDateTime.now());
+    public Article(Long userId, String writer, String title, String contents) {
+        this(null, userId, writer, title, contents, null, null);
     }
 
-    public Long getuserFk() {
-        return userFk;
+    public Long getUserId() {
+        return userId;
     }
 
     public Long getId() {

@@ -25,9 +25,9 @@ public class MemoryUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
+    public Optional<User> findByUsername(String username) {
         return users.values().stream()
-                .filter(user -> user.getUserId().equals(userId))
+                .filter(user -> user.getUsername().equals(username))
                 .findAny();
     }
 
@@ -58,6 +58,6 @@ public class MemoryUserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean existUsername(String username) {
-        return users.values().stream().anyMatch(user -> user.getUserId().equals(username));
+        return users.values().stream().anyMatch(user -> user.getUsername().equals(username));
     }
 }

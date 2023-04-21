@@ -29,8 +29,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public Long save(final User user) {
-        final String sql = "INSERT INTO users (user_id, name, password, email, created_at, updated_at) " +
-                "VALUES (:userId, :name, :password, :email, :createdAt, :updatedAt)";
+        final String sql = "INSERT INTO users (username, nickname, password, email) " +
+                "VALUES (:username, :nickname, :password, :email)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         template.update(sql, new BeanPropertySqlParameterSource(user), keyHolder);
@@ -48,10 +48,10 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUserId(final String userId) {
-        final String sql  = "SELECT * FROM users WHERE user_id = :userId";
+    public Optional<User> findByUsername(final String username) {
+        final String sql  = "SELECT * FROM users WHERE username = :username";
 
-        try (final Stream<User> result = template.queryForStream(sql, Map.of("userId", userId), userRowMapper())) {
+        try (final Stream<User> result = template.queryForStream(sql, Map.of("username", username), userRowMapper())) {
             return result.findFirst();
         }
     }
@@ -74,10 +74,10 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public void update(User user) {
-        final String sql = "UPDATE users SET user_id=:userId, password=:password WHERE id=:id";
+        final String sql = "UPDATE users SET nickname=:nickname, password=:password WHERE id=:id";
 
         final MapSqlParameterSource param = new MapSqlParameterSource()
-                .addValue("userId", user.getUserId())
+                .addValue("nickname", user.getNickname())
                 .addValue("password", user.getPassword())
                 .addValue("id", user.getId());
 
@@ -86,7 +86,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean existUsername(String username) {
-        final String sql = "SELECT EXISTS (SELECT 1 FROM users WHERE user_id = :username)";
+        final String sql = "SELECT EXISTS (SELECT 1 FROM users WHERE username = :username)";
 
         return Boolean.TRUE.equals(template.queryForObject(sql, Map.of("username", username), Boolean.class));
     }
@@ -94,8 +94,8 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     private RowMapper<User> userRowMapper() {
         return ((rs, rowNum) -> new User(
                 rs.getLong("id"),
-                rs.getString("user_id"),
-                rs.getString("name"),
+                rs.getString("username"),
+                rs.getString("nickname"),
                 rs.getString("password"),
                 rs.getString("email"),
                 rs.getTimestamp("created_at").toLocalDateTime(),

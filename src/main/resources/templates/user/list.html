@@ -15,8 +15,8 @@
                   <tbody>
                     <tr th:each="user, userStatus : ${users}">
                         <th scope="row" th:text="${userStatus.count}"></th>
-                            <td th:text="${user.userId}"></td>
-                            <td th:text="${user.name}"></td>
+                            <td th:text="${user.username}"></td>
+                            <td th:text="${user.nickname}"></td>
                             <td th:text="${user.email}"></td>
                             <td>
                                 <a th:href="@{users/{id}(id = ${user.id})}" class="btn btn-success" role="button">프로필</a>

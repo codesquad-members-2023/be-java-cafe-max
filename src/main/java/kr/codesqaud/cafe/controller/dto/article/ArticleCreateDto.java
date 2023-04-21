@@ -10,11 +10,13 @@ import javax.validation.constraints.Size;
 public class ArticleCreateDto {
     private static final String BLANK = "";
 
-    private Long userFk;
+    private Long userId;
 
     @NotBlank(message = "제목을 입력하세요.")
     @Size(min = 2, max = 30, message = "제목은 {min} ~ {max} 길이로 입력하세요.")
     private String title;
+
+    private String writer;
 
     @Nullable
     @Size(max = 1000, message = "본문은 {max}글자 이하로 입력하세요.")
@@ -23,12 +25,20 @@ public class ArticleCreateDto {
     public ArticleCreateDto() {
     }
 
-    public Long getUserFk() {
-        return userFk;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public void setUserFk(Long userFk) {
-        this.userFk = userFk;
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 
     public String getTitle() {
@@ -52,7 +62,7 @@ public class ArticleCreateDto {
             contents = BLANK;
         }
 
-        return new Article(userFk, title, contents);
+        return new Article(userId, writer, title, contents);
     }
 
     private boolean isEmptyContents() {

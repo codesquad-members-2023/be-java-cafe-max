@@ -8,7 +8,8 @@
       <div class="panel panel-default content-main">
           <form name="question" method="post" th:object="${article}" th:action="@{/articles}">
               <th:block>
-                  <input type="hidden" th:name="userFk" th:value="${session.loginUser.id}"/>
+                  <input type="hidden" th:name="userId" th:value="${session.loginUser.id}"/>
+                  <input type="hidden" th:name="writer" th:value="${session.loginUser.nickname}"/>
               </th:block>
               <div class="form-group">
                   <label for="title">제목</label>

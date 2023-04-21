@@ -11,37 +11,37 @@ public class UserJoinDto {
     @NotBlank(message = "아이디를 입력하세요.")
     @Size(min = 5, max = 20, message = "아이디는 {min} ~ {max} 길이로 입력하세요.")
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "아이디는 알파벳, 숫자만 가능합니다.")
-    private String userId;
+    private String username;
 
     @NotBlank(message = "비밀번호를 입력하세요.")
     @Size(min = 8, max = 20, message = "비밀번호는 {min} ~ {max} 길이로 입력하세요.")
     @Pattern(regexp = "[a-zA-Z0-9!@#$%^&*()_+|~=`{}\\[\\]:\";'\\\\<>,.?/\\-]+", message = "비밀번호는 알파벳, 숫자, 특수문자만 가능합니다.")
     private String password;
 
-    @NotBlank(message = "이름을 입력하세요.")
-    @Size(min = 2, max = 4, message = "유효한 이름을 입력하세요.")
-    @Pattern(regexp = "^[가-힣]{2,4}$", message = "이름 형식에 맞게 입력하세요.")
-    private String name;
+    @NotBlank(message = "닉네임을 입력하세요.")
+    @Size(min = 2, max = 20, message = "닉네임은 {min} ~ {max} 길이로 입력하세요.")
+    @Pattern(regexp = "^[a-zA-Z가-힣0-9]+$", message = "닉네임 형식에 맞게 입력하세요.")
+    private String nickname;
 
     @Email(message = "이메일 형식이 올바르지 않습니다.")
     private String email;
 
-    public UserJoinDto(String userId, String password, String name, String email) {
-        this.userId = userId;
+    public UserJoinDto(String username, String password, String nickname, String email) {
+        this.username = username;
         this.password = password;
-        this.name = name;
+        this.nickname = nickname;
         this.email = email;
     }
 
     public UserJoinDto() {
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -52,12 +52,12 @@ public class UserJoinDto {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getEmail() {
@@ -69,6 +69,6 @@ public class UserJoinDto {
     }
 
     public User toUser() {
-        return new User(userId, name, password, email);
+        return new User(username, nickname, password, email);
     }
 }

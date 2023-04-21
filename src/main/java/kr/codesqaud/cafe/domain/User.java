@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 public class User {
     private Long id;
-    private String userId;
-    private String name;
+    private String username;
+    private String nickname;
     private String password;
     private String email;
     private LocalDateTime createdAt;
@@ -14,34 +14,34 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String userId, String name, String password, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(Long id, String username, String nickname, String password, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.userId = userId;
-        this.name = name;
+        this.username = username;
+        this.nickname = nickname;
         this.password = password;
         this.email = email;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public User(String userId, String name, String password, String email) {
-        this(null, userId, name, password, email, LocalDateTime.now(), LocalDateTime.now());
+    public User(String username, String name, String password, String email) {
+        this(null, username, name, password, email, null, null);
     }
 
-    public User(Long id, String userId, String password, LocalDateTime updatedAt) {
-        this(id, userId, null, password, null, null, updatedAt);
+    public User(Long id, String nickname, String password) {
+        this(id, null, nickname, password, null, null, LocalDateTime.now());
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
     public String getPassword() {
@@ -68,7 +68,7 @@ public class User {
         return !this.password.equals(password);
     }
 
-    public boolean isChangedUserId(String userId) {
-        return !this.userId.equals(userId);
+    public boolean isChangedUsername(String username) {
+        return !this.username.equals(username);
     }
 }

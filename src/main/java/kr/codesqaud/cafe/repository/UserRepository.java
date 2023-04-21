@@ -10,7 +10,7 @@ public interface UserRepository {
 
     Optional<User> findById(Long id);
 
-    Optional<User> findByUserId(String userId);
+    Optional<User> findByUsername(String username);
 
     Optional<User> findByEmail(String email);
 
