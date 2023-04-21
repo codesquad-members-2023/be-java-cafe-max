@@ -11,7 +11,6 @@ public class ArticleTimeForm {
     private String title;
     private String contents;
     private String currentTime;
-    // count(*)
     private Long replyCount;
 
     public ArticleTimeForm() {

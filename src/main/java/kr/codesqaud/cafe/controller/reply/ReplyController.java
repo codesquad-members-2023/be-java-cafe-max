@@ -24,7 +24,8 @@ public class ReplyController {
         return replyService.saveReply(articleId, form, (String) session.getAttribute(SessionConst.LOGIN_USER_ID));
     }
 
-    // TODO: ajax는 이렇게 꼼수 안됨
+    // TODO: 기존 경로로 변경 후 ajax 삭제 구현
+    // articleId 오류 수정을 위해 <input hidden>으로 임시방편 사용
     @DeleteMapping("/replies/{id}")
     public String deleteArticle(@PathVariable Long id, Long articleId, HttpSession session) {
         validateReplyId(id, (String) session.getAttribute(SessionConst.LOGIN_USER_ID));
