@@ -26,13 +26,13 @@ public class JdbcArticleRepository implements ArticleRepository{
     @Override
     public Article save(Article article) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("articles").usingGeneratedKeyColumns("id");
+        jdbcInsert.withTableName("article").usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new ConcurrentHashMap<>();
         parameters.put("writer", article.getWriter());
         parameters.put("title", article.getTitle());
         parameters.put("contents", article.getContents());
-        parameters.put("createdAt", article.getCreatedAt());
+        parameters.put("created_at", article.getCreatedAt());
         parameters.put("points", article.getPoints());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
@@ -58,13 +58,13 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public Optional<Article> findById(Long id) {
-        List<Article> result = jdbcTemplate.query("select * from articles where id = ?", articleRowMapper(), id);
+        List<Article> result = jdbcTemplate.query("select * from article where id = ?", articleRowMapper(), id);
         return result.stream().findAny();
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from articles", articleRowMapper());
+        return jdbcTemplate.query("select * from article", articleRowMapper());
     }
 
     @Override
@@ -82,7 +82,7 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public Long delete(Long id) {
-        jdbcTemplate.update("delete from articles where id=?", id);
+        jdbcTemplate.update("delete from article where id=?", id);
         return id;
     }
 }
