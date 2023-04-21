@@ -26,6 +26,18 @@ public class ReplyService {
         return id;
     }
 
+    // TODO: 댓글 수정 기능 구현 필요
+//    public long edit(long id, String requesterId) {
+//        Reply findReply = replyRepository.findById(id);
+//        String originId = findReply.getUserId();
+//        if (!originId.equals(requesterId)) {
+//            logger.info("댓글 수정 요청 Id와 댓글 Id 불일치, 댓글 Id: {}", findReply.getId());
+//            throw new IllegalArgumentException(); // TODO: 커스텀 에러로 변경
+//        }
+//        logger.info("댓글 수정 성공, 댓글 Id: {}", findReply.getId());
+//        return replyRepository.update(findReply);
+//    }
+
     /**
      * @param id reply id
      */

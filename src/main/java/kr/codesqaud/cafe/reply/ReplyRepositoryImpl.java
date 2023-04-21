@@ -28,6 +28,19 @@ public class ReplyRepositoryImpl implements ReplyRepository {
         return keyHolder.getKey().longValue();
     }
 
+    // TODO: 댓글 수정 기능 구현 필요
+//    @Override
+//    public long update(Reply reply) {
+//        String sql = "UPDATE reply "
+//                + "SET contents = :contents "
+//                + "WHERE id = :id";
+//        SqlParameterSource param = new MapSqlParameterSource()
+//                .addValue("id", reply.getId())
+//                .addValue("contents", reply.getContents());
+//        template.update(sql, param);
+//        return reply.getId();
+//    }
+
     /**
      * @param id 댓글 Id
      */

@@ -6,6 +6,9 @@ public interface ReplyRepository {
 
     long save(Reply reply);
 
+    // TODO: 댓글 수정 기능 구현 필요
+//    long update(Reply reply);
+
     long deleteOneByReplyId(long id);
 
     Reply findById(long id);

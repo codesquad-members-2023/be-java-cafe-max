@@ -23,6 +23,14 @@ public class ReplyController {
         return "redirect:/articles/{id}";
     }
 
+    // TODO: 댓글 수정 기능 구현 필요
+//    @PutMapping("/articles/{articleId}/{replyId}")
+//    public String edit(@PathVariable final long replyId, final HttpSession session) {
+//        String requesterId = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
+//        replyService.edit(replyId, requesterId);
+//        return "redirect:/articles/{articleId}";
+//    }
+
     @DeleteMapping("/articles/{articleId}/{replyId}")
     public String delete(@PathVariable final long replyId, final HttpSession session) {
         String requesterId = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
