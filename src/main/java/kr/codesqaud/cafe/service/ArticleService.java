@@ -74,7 +74,13 @@ public class ArticleService {
     }
 
     public void delete(int index) {
-        articleRepository.findByIdx(index).orElseThrow(() -> new NotFoundException("게시글 찾을 수 없음"));
+        Article article = articleRepository.findByIdx(index).orElseThrow(() -> new NotFoundException("게시글 찾을 수 없음"));
+        List<Reply> replyList = replyRepository.findAll(index);
+        for(Reply temp : replyList) {
+            if(!temp.validateAuthor(article.getWriter())){
+                throw new DeniedAccessException("다른 사람이 댓글을 남기면 지울 수 없습니다.");
+            }
+        }
         articleRepository.delete(index);
     }
 

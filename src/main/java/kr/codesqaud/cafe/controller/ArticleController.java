@@ -31,6 +31,8 @@ public class ArticleController {
 
     @PostMapping("/article/write")
     public String postQuestion(@Valid @ModelAttribute ArticleFormDto articleFormDto, HttpSession session) {
+        LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
+        articleService.checkLogin(sessionDto);
         articleService.writeArticle(articleFormDto, session);
         return "redirect:/";
     }
