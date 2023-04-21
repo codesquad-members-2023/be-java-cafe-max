@@ -3,6 +3,8 @@ package kr.codesqaud.cafe.controller.dto.user;
 import kr.codesqaud.cafe.domain.User;
 
 public class LoginUserSession {
+    public final static String KEY = "loginUser";
+
     private final Long id;
     private final String nickname;
 
@@ -25,5 +27,9 @@ public class LoginUserSession {
 
     public boolean isOtherUser(Long id) {
         return !this.id.equals(id);
+    }
+
+    public static LoginUserSession renew(UserUpdateDto userUpdateDto) {
+        return new LoginUserSession(userUpdateDto.getId(), userUpdateDto.getNickname());
     }
 }

@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.common.auth;
 
+import kr.codesqaud.cafe.controller.dto.user.LoginUserSession;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -27,6 +28,6 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     private boolean hasLoginSession(HttpSession session) {
-        return session != null && session.getAttribute("loginUser") != null;
+        return session != null && session.getAttribute(LoginUserSession.KEY) != null;
     }
 }

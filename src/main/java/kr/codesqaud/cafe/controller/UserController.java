@@ -76,25 +76,27 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public String updateUser(@ModelAttribute("user") UserUpdateDto userUpdateDto, BindingResult bindingResult) {
+    public String updateUser(@ModelAttribute("user") UserUpdateDto userUpdateDto, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "user/update";
         }
 
         userService.update(userUpdateDto);
 
+        request.getSession().setAttribute(LoginUserSession.KEY, LoginUserSession.renew(userUpdateDto));
+
         return "redirect:/users";
     }
 
     @GetMapping("/login")
     public String loginForm(Model model) {
-        model.addAttribute("loginUser", new UserLoginDto());
+        model.addAttribute(LoginUserSession.KEY, new UserLoginDto());
 
         return "user/login";
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("loginUser") UserLoginDto userLoginDto, BindingResult bindingResult, HttpServletRequest request) {
+    public String login(@Valid @ModelAttribute(LoginUserSession.KEY) UserLoginDto userLoginDto, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "user/login";
         }
@@ -103,7 +105,7 @@ public class UserController {
 
         final HttpSession session = request.getSession();
 
-        session.setAttribute("loginUser", loginUser);
+        session.setAttribute(LoginUserSession.KEY, loginUser);
 
         return "redirect:/";
     }

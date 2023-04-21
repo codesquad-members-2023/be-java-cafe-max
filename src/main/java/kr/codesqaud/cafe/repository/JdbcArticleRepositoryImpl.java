@@ -57,10 +57,8 @@ public class JdbcArticleRepositoryImpl implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         final String sql = "" +
-                "SELECT article.id, article.user_id, users.username as writer , article.title, article.contents, article.created_at, article.updated_at " +
-                "FROM article " +
-                "JOIN users ON article.user_id = users.id";
-
+                "SELECT id, user_id, writer , title, contents, created_at, updated_at " +
+                "FROM article";
         return template.query(sql, articleRowMapper());
     }
 
