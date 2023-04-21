@@ -65,13 +65,12 @@ public class JdbcArticleRepositoryImpl implements ArticleRepository {
     public void update(Article article) {
         final String sql = "" +
                 "UPDATE article " +
-                "SET title = :title, contents = :contents, updated_at = :updatedAt " +
+                "SET title = :title, contents = :contents " +
                 "WHERE id = :id";
 
         final MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("title", article.getTitle())
                 .addValue("contents", article.getContents())
-                .addValue("updatedAt", article.getUpdatedAt())
                 .addValue("id", article.getId());
 
         template.update(sql, params);
