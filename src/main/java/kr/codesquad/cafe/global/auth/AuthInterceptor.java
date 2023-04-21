@@ -34,6 +34,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 return true;
             } else if (method.equals(GET.name())) {
                 checkRole(user);
+                return true;
             }
         }
         if (user == null) {
