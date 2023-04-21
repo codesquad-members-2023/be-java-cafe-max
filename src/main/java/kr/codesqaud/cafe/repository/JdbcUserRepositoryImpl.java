@@ -85,10 +85,17 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean existUsername(String username) {
+    public boolean existsUsername(String username) {
         final String sql = "SELECT EXISTS (SELECT 1 FROM users WHERE username = :username)";
 
         return Boolean.TRUE.equals(template.queryForObject(sql, Map.of("username", username), Boolean.class));
+    }
+
+    @Override
+    public boolean existsNickname(String nickname) {
+        final String sql = "SELECT EXISTS (SELECT 1 FROM users WHERE nickname = :nickname)";
+
+        return Boolean.TRUE.equals(template.queryForObject(sql, Map.of("nickname", nickname), Boolean.class));
     }
 
     private RowMapper<User> userRowMapper() {

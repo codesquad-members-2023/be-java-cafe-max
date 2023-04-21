@@ -15,7 +15,7 @@
 
 ---
 
-[ ] 테이블 수정 -> MySQL로 변경하면서 수정
+[x] 테이블 수정 -> ~~MySQL로 변경하면서 수정~~
   - users
     - 로그인 아이디 칼럼 수정 user_id -> username  
     - 닉네임 칼럼 추가 nickname 중복 불가

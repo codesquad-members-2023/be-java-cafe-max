@@ -64,11 +64,11 @@ public class User {
         this.id = id;
     }
 
-    public boolean isNotMatchedPassword(String password) {
+    public boolean isDifferentPassword(String password) {
         return !this.password.equals(password);
     }
 
-    public boolean isChangedUsername(String username) {
-        return !this.username.equals(username);
+    public boolean isDifferentNickname(String nickname) {
+        return !this.nickname.equals(nickname);
     }
 }

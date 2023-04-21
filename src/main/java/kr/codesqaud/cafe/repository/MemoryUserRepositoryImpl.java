@@ -57,7 +57,12 @@ public class MemoryUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean existUsername(String username) {
+    public boolean existsUsername(String username) {
         return users.values().stream().anyMatch(user -> user.getUsername().equals(username));
+    }
+
+    @Override
+    public boolean existsNickname(String nickname) {
+        return users.values().stream().anyMatch(user -> user.getNickname().equals(nickname));
     }
 }

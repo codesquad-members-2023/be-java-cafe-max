@@ -18,5 +18,7 @@ public interface UserRepository {
 
     void update(User toUser);
 
-    boolean existUsername(String username);
+    boolean existsUsername(String username);
+
+    boolean existsNickname(String nickname);
 }
