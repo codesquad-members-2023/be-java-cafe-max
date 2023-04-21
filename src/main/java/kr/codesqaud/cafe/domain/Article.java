@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 public class Article {
     private Long id;
     private final String writer;
-    private final String title;
-    private final String content;
+    private String title;
+    private String content;
     private final LocalDateTime createdAt;
 
     public Article(Long id, String writer, String title, String content, LocalDateTime createdAt) {
@@ -18,12 +18,17 @@ public class Article {
         this.content = content;
         this.createdAt = createdAt;
     }
+
     private Article(String writer, String title, String content, LocalDateTime createdAt) {
         this(null, writer, title, content, createdAt);
     }
 
-    public static Article from(final PostRequest postRequest) {
-        return new Article(postRequest.getWriter(), postRequest.getTitle(), postRequest.getContent(), LocalDateTime.now());
+    public static Article from(String writer, final PostRequest postRequest) {
+        return new Article(
+                writer,
+                postRequest.getTitle(),
+                postRequest.getContent(),
+                LocalDateTime.now());
     }
 
     public Long getId() {
@@ -48,5 +53,10 @@ public class Article {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void editArticle(final String title, final String content) {
+        this.title = title;
+        this.content = content;
     }
 }
