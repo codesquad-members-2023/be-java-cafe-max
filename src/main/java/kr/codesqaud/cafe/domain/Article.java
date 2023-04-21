@@ -1,24 +1,60 @@
 package kr.codesqaud.cafe.domain;
 
-import java.time.LocalDateTime;
+import kr.codesqaud.cafe.controller.dto.ArticleDTO;
+import kr.codesqaud.cafe.unit.CurrentDateTime;
 
 public class Article {
 
     private Long id;
     private String title;
     private String content;
-    private String author;
-    private LocalDateTime createdTime;
+    private String userId;
+    private String create_Time;
 
-    public Article() {}
+    public Article() {
+    }
 
-    public Article(Long id, String title, String content, String author, LocalDateTime createdTime) {
+    public Article(Long id, String title, String content, String userId) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.author = author;
-        this.createdTime = createdTime;
+        this.userId = userId;
+        this.create_Time = new CurrentDateTime().toString();
     }
+
+    public void create(Long id, Article article) {
+        this.id = id;
+        this.title = article.getTitle();
+        this.content = article.getContent();
+        this.userId = article.userId;
+        this.create_Time = article.getCreate_Time();
+    }
+
+    public void update(ArticleDTO articleDTO) {
+        this.title = articleDTO.getTitle();
+        this.content = articleDTO.getContent();
+    }
+
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public String getTitle() {
+//        return title;
+//    }
+//
+//    public String getContent() {
+//        return content;
+//    }
+//
+//    public String getUserId() {
+//        return userId;
+//    }
+//
+//    public String getCreate_Time() {
+//        return create_Time;
+//    }
+
 
     public Long getId() {
         return id;
@@ -44,133 +80,19 @@ public class Article {
         this.content = content;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public LocalDateTime getCreatedTime() {
-        return createdTime;
+    public String getCreate_Time() {
+        return create_Time;
     }
 
-    public void setCreatedTime(LocalDateTime createdTime) {
-        this.createdTime = createdTime;
+    public void setCreate_Time(String create_Time) {
+        this.create_Time = create_Time;
     }
 }
-
-
-
-    /*
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-}
-
-     */
-
-
-/*
-
-    private final Long id;
-    private final String title;
-    private final String content;
-    private final String author;
-    private final LocalDateTime createdTime;
-
-    private Article(Builder builder) {
-        this.id = builder.id;
-        this.title = builder.title;
-        this.content = builder.content;
-        this.author = builder.author;
-        this.createdTime = builder.createdTime;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdTime;
-    }
-
-
-    public static Builder builder(Long id, String title, String content, String author) {
-        return new Builder(id, title, content, author);
-    }
-
-    public static class Builder {
-
-        //id는 어차피 DB에서 부여하므로 final 삭제
-        private Long id;
-        private final String title;
-        private final String content;
-        private final String author;
-        private LocalDateTime createdTime;
-
-        public Builder(Long id, String title, String content, String author) {
-            this.id = id;
-            this.title = title;
-            this.content = content;
-            this.author = author;
-        }
-
-        public Builder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder createdAt(LocalDateTime createdTime) {
-            this.createdTime = createdTime;
-            return this;
-        }
-
-        public Article build() {
-            return new Article(this);
-        }
-    }
- */
