@@ -13,12 +13,13 @@
 ![IntelliJ](https://img.shields.io/badge/IntelliJ-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
 ![Thymeleaf](https://img.shields.io/badge/Thymeleaf-%23005C0F.svg?style=for-the-badge&logo=Thymeleaf&logoColor=white)
 
 ## 🔖 버전 기록
 | 버전  | 구현 기간               | 기능                                                   |
 |:----|:--------------------|:-----------------------------------------------------|
-| 6.0 | 23-04-17 ~          | 댓글 추가, 삭제 기능 추가                                      |
+| 6.0 | 23-04-17 ~ 23-04-21 | 댓글 추가, 삭제 기능 추가                                      |
 | 5.0 | 23-04-12 ~ 23-04-14 | 게시글 권한 부여 - 게시글 작성, 수정 기능 추가                         |
 | 4.0 | 23-04-10 ~ 23-04-12 | 로그인, 로그아웃 기능 추가                                      |
 | 3.0 | 23-04-03 ~ 23-04-07 | H2 DB 연동 <br/>AWS 배포                                 |
@@ -162,26 +163,49 @@
     - [ ] 로그인 사용자와 글쓴이의 사용자 아이디가 불잁치할 경우, 에러 페이지 출력 혹은 버튼 비활성화
 
 - 댓글 추가, 삭제 기능
-  - [ ] 로그인한 사용자의 댓글 작성 기능
-  - [ ] 자신이 쓴 댓글을 삭제하는 기능
+  - 로그인한 사용자의 댓글 작성 기능
+    - [X] 댓글을 데이터베이스에 저장하는 기능
+    - [X] 댓글을 화면에 출력하는 기능
+  - [X] 자신이 쓴 댓글을 삭제하는 기능
+  - [ ] 자신이 쓴 댓글을 수정하는 기능
 
 ## 📌 URL 및 메서드 컨벤션
-| 기능            | URI                   | templates          | HTTP 메서드 |
-|:--------------|:----------------------|:-------------------|:---------|
-| 회원 가입 페이지 조회  | /users/new            | /user/form.html    | `GET`    |
-| 회원 가입 폼 제출    | /users                | /user/form.html    | `POST`   |
-| 회원 목록 조회      | /users                | /user/list.html    | `GET`    |
-| 특정 회원 프로필 조회  | /users/{userId}       | /user/profile.html | `GET`    |
-| 게시글 쓰기 페이지 조회 | /articles/new         | /qna/form.html     | `GET`    |
-| 게시글 폼 제출      | /articles             | /qna/form.html     | `POST`   |
-| 게시글 목록 조회     | /articles             | /index.html        | `GET`    |
-| 게시글 상세 보기     | /articles/{index}     | /qna/show.html     | `GET`    |
-| 게시글 수정 페이지 조회 | articles/{index}/edit | qna/edit_form.html | `GET`    |
-| 게시글 수정 페이지 제출 | /articles/{index}     | qna/edit_form.html | `POST`   |
-| 에러 페이지        | /error                | /error.html        | `GET`    |
-| 로그인 페이지 조회    | /login                | /user/login.html   | `GET`    |
-| 로그인 폼 제출      | /login                | /user/login.html   | `POST`   |
-| 로그아웃          | /logout               |                    | `GET`    |
+### 회원 관련 기능
+| 기능            | URI                     | templates          | HTTP 메서드 |
+|:--------------|:------------------------|:-------------------|:---------|
+| 회원 가입 페이지 조회  | /users/new              | /user/form.html    | `GET`    |
+| 회원 가입 폼 제출    | /users                  | /user/form.html    | `POST`   |
+| 회원 목록 조회      | /users                  | /user/list.html    | `GET`    |
+| 특정 회원 프로필 조회  | /users/{userId}         | /user/profile.html | `GET`    |
+
+### 게시글 관련 기능
+| 기능            | URI                     | templates          | HTTP 메서드 |
+|:--------------|:------------------------|:-------------------|:---------|
+| 게시글 쓰기 페이지 조회 | /articles/new           | /qna/form.html     | `GET`    |
+| 게시글 폼 제출      | /articles               | /qna/form.html     | `POST`   |
+| 게시글 목록 조회     | /articles               | /index.html        | `GET`    |
+| 게시글 상세 보기     | /articles/{index}       | /qna/show.html     | `GET`    |
+| 게시글 수정 페이지 조회 | articles/{index}/edit   | qna/edit_form.html | `GET`    |
+| 게시글 수정 페이지 제출 | /articles/{index}       | qna/edit_form.html | `POST`   |
+| 댓글 작성         | /articles/{index}/reply | /qna/show.html     | `POST`   |
+
+### 로그인 관련 기능
+| 기능            | URI                     | templates          | HTTP 메서드 |
+|:--------------|:------------------------|:-------------------|:---------|
+| 로그인 페이지 조회    | /login                  | /user/login.html   | `GET`    |
+| 로그인 폼 제출      | /login                  | /user/login.html   | `POST`   |
+| 로그아웃          | /logout                 |                    | `GET`    |
+
+### 댓글 관련 기능
+| 기능    | URI                             | templates      | HTTP 메서드 |
+|:------|:--------------------------------|:---------------|:---------|
+| 댓글 작성 | /articles/{id}/reply            | /qna/show.html | `POST`   |
+| 댓글 삭제 | /articles/{articleId}/{replyId} | /qna/show.html | `DELETE` |
+
+### 에러 페이지
+| 기능     | URI    | templates   | HTTP 메서드 |
+|:-------|:-------|:------------|:---------|
+| 에러 페이지 | /error | /error.html | `GET`    |
 
 ## ⚡️ 개선 필요 사항
 - [X] html 중복 코드 분리
