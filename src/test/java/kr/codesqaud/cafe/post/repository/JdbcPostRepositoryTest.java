@@ -33,8 +33,8 @@ public class JdbcPostRepositoryTest {
     void save_many() {
         // given
         LocalDateTime dateTime = LocalDateTime.now();
-        Post post1 = postRepository.save(new Post(null, "writer", "title", "contents", dateTime));
-        Post post2 = postRepository.save(new Post(null, "writer", "title2", "contents", dateTime.plusHours(1)));
+        Post post1 = postRepository.save(new Post(null, "writer", "name", "title", "contents", dateTime));
+        Post post2 = postRepository.save(new Post(null, "writer", "name", "title2", "contents", dateTime.plusHours(1)));
 
         // when
         List<Post> posts = postRepository.findAll();
@@ -44,8 +44,8 @@ public class JdbcPostRepositoryTest {
         // then
         assertEquals(2, posts.size());
         assertEquals(1, id2 - id1);
-        assertEquals(new Post(id1, "writer", "title", "contents", dateTime), post1);
-        assertEquals(new Post(id2, "writer", "title2", "contents", dateTime.plusHours(1)), post2);
+        assertEquals(new Post(id1, "writer", "name", "title", "contents", dateTime), post1);
+        assertEquals(new Post(id2, "writer", "name", "title2", "contents", dateTime.plusHours(1)), post2);
     }
 
     @Test
@@ -65,8 +65,8 @@ public class JdbcPostRepositoryTest {
     void findAll() {
         // given
         LocalDateTime dateTime = LocalDateTime.now();
-        postRepository.save(new Post(null, "writer", "title", "contents", dateTime));
-        postRepository.save(new Post(null, "writer", "title2", "contents", dateTime.plusHours(1)));
+        postRepository.save(new Post(null, "writer", "name", "title", "contents", dateTime));
+        postRepository.save(new Post(null, "writer", "name", "title2", "contents", dateTime.plusHours(1)));
 
         // when
         List<Post> posts = postRepository.findAll();
