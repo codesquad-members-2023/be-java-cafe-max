@@ -138,7 +138,12 @@ public class UserController {
 	 */
 	@GetMapping("/{userId}/modify-form")
 	public String modifyForm(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
-		Model model) throws UserNotExistException {
+		Model model, HttpServletRequest request) throws UserNotExistException {
+
+		if (!checkAuthSession(request.getSession(false), userId)) {
+			return "error/403-forbidden";
+		}
+
 		if (errorMessage.isBlank()) {
 			model.addAttribute("userResponseDto", UserResponseDTO.from(service.findByUserId(userId)));
 		}
@@ -220,5 +225,16 @@ public class UserController {
 			.map(DefaultMessageSourceResolvable::getDefaultMessage)
 			.filter(Objects::nonNull)
 			.collect(Collectors.toUnmodifiableList());
+	}
+
+	/**
+	 * pathValue의 userId와 session의 userId가 같은지 검증한다.
+	 * @param httpSession HttpSession
+	 * @param userIdFromPath pathValue의 userId
+	 * @return session 검증 통과시 ture, 실패시 false 반환
+	 */
+	private boolean checkAuthSession(HttpSession httpSession, String userIdFromPath) {
+		AuthSession authSession = (httpSession != null) ? (AuthSession)httpSession.getAttribute("authSession") : null;
+		return httpSession != null && userIdFromPath.equals(authSession.getUserId());
 	}
 }
