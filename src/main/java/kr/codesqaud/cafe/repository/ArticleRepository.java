@@ -11,4 +11,8 @@ public interface ArticleRepository {
     List<Article> findAll();
 
     Optional<Article> findById(Long id);
+
+    void delete(Long id);
+
+    void update(Article article);
 }
