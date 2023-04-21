@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.index.controller;
+package kr.codesqaud.cafe.web.controller;
 
 import kr.codesqaud.cafe.post.service.PostService;
 import org.springframework.stereotype.Controller;
