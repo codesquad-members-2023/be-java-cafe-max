@@ -77,6 +77,12 @@ public class UserController {
 		return "redirect:/questions";
 	}
 
+	@GetMapping("/signout")
+	public String signOut(HttpSession session) {
+		session.removeAttribute("authSession");
+		return "redirect:/questions";
+	}
+
 	/**
 	 * 회원 목록 페이지로 이동
 	 * @param model 회원 목록을 전달하기 위한 model
