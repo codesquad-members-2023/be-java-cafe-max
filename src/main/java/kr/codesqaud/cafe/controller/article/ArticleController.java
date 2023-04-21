@@ -79,7 +79,7 @@ public class ArticleController {
             return "qna/edit_failed";
         }
 
-        articleService.deleteArticle(id);
+        articleService.delete(id);
         return "redirect:/";
     }
     

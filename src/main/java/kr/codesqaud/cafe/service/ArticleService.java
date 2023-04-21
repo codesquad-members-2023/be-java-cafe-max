@@ -37,7 +37,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public Long deleteArticle(Long id){
+    public Long delete(Long id){
         return articleRepository.delete(id);
     }
 }
