@@ -7,7 +7,7 @@ CREATE TABLE member (
 memberId BIGINT AUTO_INCREMENT,
 email VARCHAR(100) NOT NULL UNIQUE,
 password VARCHAR(100) NOT NULL,
-nickName VARCHAR(100),
+nickname VARCHAR(100),
 create_date TIMESTAMP NOT NULL,
 PRIMARY KEY (memberId)
 );

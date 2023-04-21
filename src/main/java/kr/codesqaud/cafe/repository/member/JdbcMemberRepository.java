@@ -26,7 +26,7 @@ public class JdbcMemberRepository implements MemberRepository {
         Long memberId = rs.getLong("memberId");
         String email = rs.getString("email");
         String password = rs.getString("password");
-        String nickname = rs.getString("nickName");
+        String nickname = rs.getString("nickname");
         LocalDateTime createDate = rs.getTimestamp("create_date").toLocalDateTime();
         return new Member(memberId, email, password, nickname, createDate);
     };
@@ -39,7 +39,7 @@ public class JdbcMemberRepository implements MemberRepository {
 
     @Override
     public Long save(Member member) {
-        String sql = "INSERT INTO member(email, password, nickName, create_date) VALUES(:email, :password, :nickName, :createDate)";
+        String sql = "INSERT INTO member(email, password, nickname, create_date) VALUES(:email, :password, :nickname, :createDate)";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(member);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, parameter, keyHolder);
@@ -57,28 +57,29 @@ public class JdbcMemberRepository implements MemberRepository {
 
     @Override
     public Optional<Member> findByEmail(String email) {
-        String sql = "SELECT memberId, email, password, nickName, create_date FROM member WHERE email = :email";
+        String sql = "SELECT memberId, email, password, nickname, create_date FROM member WHERE email = :email";
         SqlParameterSource parameter = new MapSqlParameterSource("email", email);
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, memberRowMapper)));
     }
 
-    @Override
-    public Optional<Member> findByNickName(String nickName) {
+   @Override
+    public Optional<Member> findByNickname(String nickname) {
         String sql = "SELECT memberId, email, password, nickName, create_date FROM member WHERE nickName = :nickName";
-        SqlParameterSource parameter = new MapSqlParameterSource("nickName", nickName);
-        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, memberRowMapper)));
+        SqlParameterSource parameter = new MapSqlParameterSource("nickname", nickname);
+        List<Member> members = jdbcTemplate.query(sql, parameter, memberRowMapper);
+        return members.stream().findFirst();
     }
 
 
     @Override
     public List<Member> findAll() {
-        String sql = "SELECT memberId, email, password, nickName, create_date FROM member";
+        String sql = "SELECT memberId, email, password, nickname, create_date FROM member";
         return jdbcTemplate.query(sql, memberRowMapper);
     }
 
     @Override
     public void update(Member member) {
-        String sql = "UPDATE member SET email = :email, password = :password, nickName = :nickName WHERE memberId = :memberId";
+        String sql = "UPDATE member SET email = :email, password = :password, nickname = :nickname WHERE memberId = :memberId";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(member);
         jdbcTemplate.update(sql, parameter);
     }

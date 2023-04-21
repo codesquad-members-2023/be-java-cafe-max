@@ -61,7 +61,7 @@ public class MemberService {
                     });
         }
 
-        findMember.setNickName(profileEditRequestDto.getNickName());
+        findMember.setNickname(profileEditRequestDto.getNickname());
         memberRepository.update(findMember);
     }
 

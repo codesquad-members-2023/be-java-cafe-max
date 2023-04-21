@@ -20,13 +20,13 @@ public class ProfileEditRequestDto {
     @NotBlank(message = "닉네임을 입력하세요")
     @Size(min = 2, max = 10, message = "유효한 닉네임을 입력하세요")
     @Pattern(regexp = "^[가-힣]{2,4}$", message = "닉네임 형식에 맞게 입력하세요.")
-    private final String nickName;
+    private final String nickname;
 
     public ProfileEditRequestDto(Long memberId, String email, String password, String nickName) {
         this.memberId = memberId;
         this.email = email;
         this.password = password;
-        this.nickName = nickName;
+        this.nickname = nickname;
     }
 
     public Long getMemberId() {
@@ -41,8 +41,8 @@ public class ProfileEditRequestDto {
         return password;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
     public static ProfileEditRequestDto of(MemberResponseDto memberResponseDto) {

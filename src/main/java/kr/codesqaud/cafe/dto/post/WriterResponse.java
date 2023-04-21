@@ -4,22 +4,22 @@ import kr.codesqaud.cafe.domain.Member;
 
 public class WriterResponse {
     private final String writerEmail;
-    private final String nickName;
+    private final String nickname;
 
-    public WriterResponse(String writerEmail, String nickName) {
+    public WriterResponse(String writerEmail, String nickname) {
         this.writerEmail = writerEmail;
-        this.nickName = nickName;
+        this.nickname = nickname;
     }
 
     public String getWriterEmail() {
         return writerEmail;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
     public static WriterResponse from(Member member) {
-        return new WriterResponse(member.getEmail(), member.getNickName());
+        return new WriterResponse(member.getEmail(), member.getNickname());
     }
 }
