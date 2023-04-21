@@ -38,22 +38,24 @@ public class MemberController {
     @GetMapping
     public String readMember(Model model) {
         model.addAttribute("memberResponsesDto", memberService.findAll());
-        return "/all";
+        return "member/members";
     }
 
     @GetMapping("/join")
     public String joinMember(Model model) {
         model.addAttribute("memberJoinRequestDto", new MemberJoinRequestDto());
-        return "/form";
+        return "member/register";
     }
 
-    @PostMapping("/join")
-    public String join(@Valid @ModelAttribute MemberJoinRequestDto memberJoinRequestDto, BindingResult bindingResult) {
+
+
+    @PostMapping
+    public String register(@Valid @ModelAttribute MemberJoinRequestDto memberJoinRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "member/join";
+            return "member/register";
         }
         memberService.join(memberJoinRequestDto);
-        return "redirect:/join";
+        return "redirect:/members";
     }
 
 
@@ -67,12 +69,12 @@ public class MemberController {
         HttpSession httpSession = httpServletRequest.getSession();
         httpSession.setAttribute("loginMember", loginMember);
 
-        return "redirect:/login";
+        return "redirect:/posts";
     }
 
     @GetMapping("/login")
-    public String loginForm(@ModelAttribute("signUpRequestDto") MemberLoginRequestDto memberLoginRequestDto) {
-        return "/login";
+    public String loginForm(@ModelAttribute("memberLoginRequestDto") MemberLoginRequestDto memberLoginRequestDto) {
+        return "member/login";
     }
 
 
