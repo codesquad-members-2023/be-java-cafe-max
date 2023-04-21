@@ -62,7 +62,6 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/articles/delete/{articleId}", method = {RequestMethod.GET, RequestMethod.DELETE})
-    // get or post
     public String deleteArticle(@PathVariable final Long articleId, HttpServletRequest httpRequest, Model model) {
         HttpSession session = httpRequest.getSession(false);
         ArticleDto article = articleService.findById(articleId);
