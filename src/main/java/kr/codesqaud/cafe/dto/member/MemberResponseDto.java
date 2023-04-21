@@ -41,6 +41,6 @@ public class MemberResponseDto {
     }
 
     public static MemberResponseDto of(Member member) {
-        return new MemberResponseDto(member.getMemberId(), member.getEmail(), member.getPassword(), member.getNickName(), member.getCreateDate());
+        return new MemberResponseDto(member.getMemberId(), member.getEmail(), member.getPassword(), member.getNickname(), member.getCreateDate());
     }
 }

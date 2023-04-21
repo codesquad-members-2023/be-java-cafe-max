@@ -22,7 +22,7 @@ public class ProfileEditRequestDto {
     @Pattern(regexp = "^[가-힣]{2,4}$", message = "닉네임 형식에 맞게 입력하세요.")
     private final String nickname;
 
-    public ProfileEditRequestDto(Long memberId, String email, String password, String nickName) {
+    public ProfileEditRequestDto(Long memberId, String email, String password, String nickname) {
         this.memberId = memberId;
         this.email = email;
         this.password = password;
@@ -46,6 +46,6 @@ public class ProfileEditRequestDto {
     }
 
     public static ProfileEditRequestDto of(MemberResponseDto memberResponseDto) {
-        return new ProfileEditRequestDto(memberResponseDto.getMemberId(), memberResponseDto.getEmail(), null, memberResponseDto.getNickName());
+        return new ProfileEditRequestDto(memberResponseDto.getMemberId(), memberResponseDto.getEmail(), null, memberResponseDto.getNickname());
     }
 }
