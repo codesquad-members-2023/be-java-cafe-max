@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/api")
+@RequestMapping("/api/posts/{postId}/comments")
 @RestController
 public class CommentController {
 
@@ -25,7 +25,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/posts/{postId}/comments")
+    @PostMapping
     public ResponseEntity<CommentResponse> write(@PathVariable Long postId,
         @RequestBody CommentWriteRequest commentWriteRequest,
         @RequestAttribute AccountSession accountSession) {
@@ -33,7 +33,7 @@ public class CommentController {
         return new ResponseEntity<>(commentService.write(commentWriteRequest), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/posts/{postId}/comments/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<CommentDeleteResponse> delete(@PathVariable Long id,
         @RequestAttribute AccountSession accountSession) {
         return new ResponseEntity<>(commentService.delete(id, accountSession.getId()), HttpStatus.OK);
