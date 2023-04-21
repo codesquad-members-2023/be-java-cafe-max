@@ -25,34 +25,41 @@
         </div>
 
 
-        <section class="mb-5">
-            <div class="card bg-light">
-                <div class="card-body" style="flex-wrap: wrap">
-                    <!-- Comment form-->
-                    <form class="mb-4" method="post" action="/comments">
-                        <input type="hidden" name="articleId" value="{{id}}">
-                        <textarea class="form-control" rows="3"
-                                  name="contents"
-                                  placeholder="댓글을 작성해보세요"></textarea>
-                        <button type="submit" class="btn btn-primary">작성하기</button>
-                    </form>
-                    {{#comments}}
-                        <!-- Single comment-->
-                        <div class="d-flex mb-4">
-                            <div class="flex-shrink-0"><img class="rounded-circle"
-                                                            src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
-                                                            alt="..."/></div>
-                            <div class="ms-3">
-                                <div class="fw-bold">{{userId}}</div>
-                                <div class="text-muted fst-italic">{{createdTime}}</div>
-                                <div class="comment-content">{{contents}}</div>
-                            </div>
-                        </div>
-                    {{/comments}}
-                </div>
-            </div>
-        </section>
+        <!-- Comment Section-->
+    <section class="mb-5">
+    <div class="card bg-light">
+    <div class="card-body" style="flex-wrap: wrap">
+        <!-- Comment form-->
+        <form class="mb-4"  id="commentForm" method="post" action="/api/comments">
+            <input type="hidden" name="articleId" value="{{id}}">
+            <textarea class="form-control" rows="3"
+                      name="contents"
+                      placeholder="댓글을 작성해보세요"></textarea>
+            <button type="submit" id="new-comment" class="btn btn-primary">작성하기</button>
+        </form>
     {{/articleDetail}}
+    {{#comments}}
+        <!-- Single comment-->
+        <div class="d-flex mb-4">
+            <div class="flex-shrink-0"><img class="rounded-circle"
+                                            src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
+                                            alt="..."/></div>
+            <div class="ms-3">
+                <div class="fw-bold">{{userId}}</div>
+                <div class="text-muted fst-italic">{{createdTime}}</div>
+                <div class="comment-content">{{contents}}</div>
+                <form method="post" class="delete_button" action="/api/comments">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <input type="hidden" name="commentId" value={{commentId}}>
+                    <input type="hidden" name="userId" value={{userId}}>
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+            </div>
+        </div>
+    {{/comments}}
 </div>
+</div>
+</section>
 
+</div>
 {{>layout/footer}}
