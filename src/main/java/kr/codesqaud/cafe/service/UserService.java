@@ -40,6 +40,10 @@ public class UserService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     public User findByUserId(String userId) {
         return userRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("User not found"));
     }
@@ -53,5 +57,11 @@ public class UserService {
         } else {
             //todo : 오류메세지 출력
         }
+    }
+
+    public User login(String userId, String password) {
+        return userRepository.findByUserId(userId)
+                .filter(m -> m.getPassword().equals(password))
+                .orElse(null);
     }
 }
