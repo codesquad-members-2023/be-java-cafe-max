@@ -32,12 +32,9 @@ public class ReplyController {
 	@DeleteMapping("/articles/{id}/replies/{replyId}")
 	public String deleteReply(@PathVariable("id") Long id, @PathVariable("replyId") String replyId,
 		HttpSession httpSession, Model model) {
-		System.out.println(replyId);
-		System.out.println(httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_NAME.type()));
 		if (replyRepository.findById(replyId).get().getWriter() != httpSession.getAttribute(
 			SessionAttributeNames.LOGIN_USER_NAME.type())) {
 			model.addAttribute("error", "댓글작성자만  삭제할 수 있습니다.");
-			System.out.println("error!");
 			return "redirect:/articles/{id}";
 		}
 		replyRepository.delete(replyId);
