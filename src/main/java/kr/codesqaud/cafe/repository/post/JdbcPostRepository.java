@@ -51,7 +51,8 @@ public class JdbcPostRepository implements PostRepository {
     public Optional<Post> findById(Long postId) {
         String sql = "SELECT postId,title,content,writerEmail,write_date,views FROM post WHERE postId=:postId";
         SqlParameterSource parameter = new MapSqlParameterSource("postId", postId);
-        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, postRowMapper)));
+        List<Post> posts = jdbcTemplate.query(sql, parameter, postRowMapper);
+        return posts.stream().findFirst();
     }
 
     @Override
