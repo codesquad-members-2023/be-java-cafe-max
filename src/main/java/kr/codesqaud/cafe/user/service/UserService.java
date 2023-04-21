@@ -61,9 +61,9 @@ public class UserService {
 	/**
 	 * 회원 정보 수정
 	 * @param user 수정할 회원 정보
-	 * @throws NoSuchElementException 존재하지 않는 회원의 정보를 수정하려 한 경우 Exception 발생
+	 * @throws UserDoesNotMatchException 존재하지 않는 회원의 정보를 수정하거나, 비밀번호가 일치하지 않는 경우 Exception 발생
 	 */
-	public void modifyUser(User user) throws UserNotExistException {
+	public void modifyUser(User user) throws UserDoesNotMatchException {
 		repository.modify(user);
 	}
 

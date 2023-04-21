@@ -158,7 +158,7 @@ public class UserController {
 	@PutMapping("/{userId}")
 	public String userModify(@PathVariable String userId, @Valid SignUpRequestDTO dto, BindingResult result,
 		RedirectAttributes redirect,
-		HttpServletRequest request) throws UserNotExistException {
+		HttpServletRequest request) throws UserDoesNotMatchException {
 
 		if (!userId.equals(dto.getUserId())) {
 			addAttributeErrorMessage(redirect, "잘못된 입력입니다.");
@@ -169,7 +169,6 @@ public class UserController {
 			addAttributeErrorMessages(redirect, collectErrorMessages(result));
 			return redirectBack(request);
 		}
-
 		service.modifyUser(dto.toEntity());
 
 		return "redirect:/users/" + dto.getUserId();

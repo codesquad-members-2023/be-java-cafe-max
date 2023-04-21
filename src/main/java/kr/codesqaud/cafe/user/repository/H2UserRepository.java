@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
 import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
 import kr.codesqaud.cafe.user.exception.UserNotExistException;
 
@@ -46,8 +47,13 @@ public class H2UserRepository implements UserRepository {
 	}
 
 	@Override
-	public void modify(User user) throws UserNotExistException {
-		// TODO document why this method is empty
+	public void modify(User user) throws UserDoesNotMatchException {
+		String sql = "UPDATE \"user\" SET name = ?, email = ? WHERE userId = ? AND password = ?";
+		try {
+			jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getUserId(), user.getPassword());
+		} catch (DataAccessException e) {
+			throw new UserDoesNotMatchException();
+		}
 	}
 
 	private RowMapper<User> getUserRowMapper() {

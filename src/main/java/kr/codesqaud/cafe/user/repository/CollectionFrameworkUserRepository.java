@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.common.repository.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
 import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
-import kr.codesqaud.cafe.user.exception.UserNotExistException;
 
 @Repository
 public class CollectionFrameworkUserRepository implements UserRepository {
@@ -43,7 +43,7 @@ public class CollectionFrameworkUserRepository implements UserRepository {
 		throw new NoSuchElementException(userId);
 	}
 
-	public void modify(User user) throws UserNotExistException {
+	public void modify(User user) throws UserDoesNotMatchException {
 		String userId = user.getUserId();
 		for (User exgistingUser : userTable.select()) {
 			if (exgistingUser.getUserId().equals(userId)) {
@@ -51,7 +51,7 @@ public class CollectionFrameworkUserRepository implements UserRepository {
 				return;
 			}
 		}
-		throw new UserNotExistException(user.getUserId());
+		throw new UserDoesNotMatchException();
 	}
 
 }

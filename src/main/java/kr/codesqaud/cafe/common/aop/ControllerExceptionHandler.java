@@ -32,7 +32,7 @@ public class ControllerExceptionHandler {
 		return getRedirectRequestURI(request);
 	}
 
-	@ExceptionHandler({UserIdDuplicateException.class, UserNotExistException.class})
+	@ExceptionHandler({UserIdDuplicateException.class, UserNotExistException.class, UserDoesNotMatchException.class})
 	public String catchIllegalArgumentException(HttpServletRequest request, RedirectAttributes redirect,
 		Exception e) {
 		redirect.addFlashAttribute(ERROR_MESSAGE_NAME, e.getMessage());
@@ -41,15 +41,7 @@ public class ControllerExceptionHandler {
 			return "redirect:/users/signup";
 		}
 
-		return "error/400-bad-request";
-	}
-
-	@ExceptionHandler(UserDoesNotMatchException.class)
-	public String catchUserDoesNotMatchException(RedirectAttributes redirect,
-		Exception e) {
-		redirect.addFlashAttribute(ERROR_MESSAGE_NAME, e.getMessage());
-
-		return "redirect:/users/signin";
+		return getRedirectRequestURI(request);
 	}
 
 }
