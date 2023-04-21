@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
@@ -39,8 +40,8 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/join")
-    public String joinUser(Model model) {
+    @GetMapping("/join-form")
+    public String joinUserForm(Model model) {
         model.addAttribute("user", new UserJoinDto());
 
         return "user/form";
@@ -64,7 +65,7 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/{id}/update")
+    @GetMapping("/{id}/update-form")
     public String updateUserForm(@PathVariable Long id, Model model, @SessionAttribute("loginUser") LoginUserSession loginUserSession) {
         if (loginUserSession.isOtherUser(id)) {
             throw new CommonException(CommonExceptionType.ACCESS_DENIED);
@@ -74,7 +75,7 @@ public class UserController {
         return "user/update";
     }
 
-    @PostMapping("/{id}/update")
+    @PutMapping("/{id}")
     public String updateUser(@ModelAttribute("user") UserUpdateDto userUpdateDto) {
         userService.update(userUpdateDto);
 

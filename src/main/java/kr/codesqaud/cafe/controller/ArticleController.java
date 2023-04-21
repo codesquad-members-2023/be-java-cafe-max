@@ -30,7 +30,7 @@ public class ArticleController {
         return "home";
     }
 
-    @GetMapping("/create")
+    @GetMapping("/create-form")
     public String createArticle(Model model) {
         model.addAttribute("article", new ArticleCreateDto());
         return "article/form";

@@ -5,16 +5,16 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class LoginConfig implements WebMvcConfigurer {
+public class AuthConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptor())
+        registry.addInterceptor(new AuthInterceptor())
                 .excludePathPatterns(
                         "/",
                         "/articles",
                         "/users/login",
-                        "/users/join",
+                        "/users/join-form",
                         "/users"
                 )
                 .addPathPatterns(
