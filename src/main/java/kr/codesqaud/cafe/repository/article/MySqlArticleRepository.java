@@ -84,8 +84,6 @@ public class MySqlArticleRepository implements ArticleRepository {
     @Override
     public int delete(final Long id) {
         final String sql = "UPDATE Article SET deleted = true WHERE id = :id";
-        Map<String, Object> parameter = Map.of(
-                "id", id);
-        return jdbcTemplate.update(sql, parameter);
+        return jdbcTemplate.update(sql, Map.of("id", id));
     }
 }
