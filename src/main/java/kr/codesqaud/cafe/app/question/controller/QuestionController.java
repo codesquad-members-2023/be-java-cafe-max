@@ -77,13 +77,20 @@ public class QuestionController {
     @PutMapping("/qna/{id}")
     public QuestionResponse editQuestion(
         @PathVariable(value = "id") Long id,
-        @Valid @RequestBody QuestionSavedRequest requestDto) {
+        @Valid @RequestBody QuestionSavedRequest requestDto,
+        HttpSession session) {
         logger.info("{}, {}", id, requestDto.toString());
+        UserResponse user = (UserResponse) session.getAttribute("user");
+        Question question = questionService.findQuestion(id);
+        if (!question.getUserId().equals(user.getId())) {
+            throw new RestApiException(UserErrorCode.PERMISSION_DENIED);
+        }
         User writer = userService.findUser(requestDto.getUserId());
         Question modifiedQuestion = questionService.modifyQuestion(id, requestDto);
         return new QuestionResponse(modifiedQuestion, writer);
     }
 
+    // 특정 질문 삭제
     @DeleteMapping("/qna/{id}")
     public ResponseEntity<Object> deleteQuestion(@PathVariable(value = "id") Long id,
         HttpSession session) {
