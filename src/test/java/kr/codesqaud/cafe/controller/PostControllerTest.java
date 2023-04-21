@@ -107,8 +107,8 @@ class PostControllerTest {
     private MemberJoinRequestDto basicMemberData() {
         String email = "test@gmail.com";
         String password = "testtest";
-        String nickName = "chacha";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "chacha";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 
 
@@ -123,8 +123,8 @@ class PostControllerTest {
     private MemberJoinRequestDto dummyMemberData() {
         String email = "dummy@gmail.com";
         String password = "dummydummy";
-        String nickName = "피오니";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "피오니";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 
     private Post dummyPostData(Member member) {

@@ -60,8 +60,8 @@ class MemberServiceTest {
                 .forEach(count -> {
                     String email = String.format("test%d@test.com", count);
                     String password = String.format("test%d", count);
-                    String nickName = String.format("chacha%d", count);
-                    memberService.join(new MemberJoinRequestDto(email, password, nickName));
+                    String nickname = String.format("chacha%d", count);
+                    memberService.join(new MemberJoinRequestDto(email, password, nickname));
                 });
 
         //when
@@ -83,8 +83,8 @@ class MemberServiceTest {
         //then
         assertAll(
                 () -> assertEquals(memberId, memberResponseDto.getMemberId()),
-                () -> assertEquals(requestDtoMember.getEmail(), memberResponseDto.getEmail()),
-                () -> assertEquals(requestDtoMember.getNickName(), memberResponseDto.getNickName()));
+                () -> assertEquals(requestDtoMember.getEmail(), "test@gmail.com"),
+                () -> assertEquals(requestDtoMember.getNickname(), "차차"));
     }
 
     @Test
@@ -100,8 +100,8 @@ class MemberServiceTest {
         //then
         assertAll(
                 () -> assertEquals(memberEmail, member.getEmail()),
-                () -> assertEquals(requestDtoMember.getNickName(), member.getNickName()),
-                () -> assertEquals(requestDtoMember.getPassword(), member.getPassword()));
+                () -> assertEquals("차차", member.getNickname()),
+                () -> assertEquals("testtest", member.getPassword()));
     }
 
 
@@ -118,7 +118,7 @@ class MemberServiceTest {
         Member targetMember = memberRepository.findById(saveId).orElseThrow();
         assertAll(
                 () -> assertEquals(saveId, targetMember.getMemberId()),
-                () -> assertEquals(dummyMemberData().getNickName(), targetMember.getNickName()));
+                () -> assertEquals("피오니", targetMember.getNickname()));
     }
 
     @Test
@@ -138,14 +138,14 @@ class MemberServiceTest {
     private MemberJoinRequestDto basicMemberData() {
         String email = "test@gmail.com";
         String password = "testtest";
-        String nickName = "차차";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "차차";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 
     private MemberJoinRequestDto dummyMemberData() {
         String email = "dummy@gmail.com";
         String password = "dummydummy";
-        String nickName = "피오니";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "피오니";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 }

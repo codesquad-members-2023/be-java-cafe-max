@@ -12,7 +12,7 @@ public interface MemberRepository {
 
     Optional<Member> findByEmail(String email);
 
-    Optional<Member> findByNickName(String nickName);
+    Optional<Member> findByNickname(String nickName);
 
     List<Member> findAll();
 

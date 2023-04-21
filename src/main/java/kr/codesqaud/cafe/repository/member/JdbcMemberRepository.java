@@ -50,7 +50,7 @@ public class JdbcMemberRepository implements MemberRepository {
 
     @Override
     public Optional<Member> findById(Long memberId) {
-        String sql = "SELECT memberId, email, password, nickName, create_date FROM member WHERE memberId = :memberId";
+        String sql = "SELECT memberId, email, password, nickname, create_date FROM member WHERE memberId = :memberId";
         SqlParameterSource parameter = new MapSqlParameterSource("memberId", memberId);
         List<Member> members = jdbcTemplate.query(sql, parameter, memberRowMapper);
         return members.stream().findFirst();
