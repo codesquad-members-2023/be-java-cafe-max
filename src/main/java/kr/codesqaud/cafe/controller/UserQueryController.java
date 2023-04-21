@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.exception.DeniedDataModificationException;
 import kr.codesqaud.cafe.service.UserService;
 
 @Controller
@@ -31,7 +32,9 @@ public class UserQueryController {
 	}
 
 	@GetMapping("/user/checkForUpdate")
-	public String checkForUpdate() {
+	public String checkForUpdate(HttpSession session) {
+		boolean passwordCheck = true;
+		session.setAttribute("passwordCheck", passwordCheck);
 		return "user/checkForUpdate";
 	}
 
@@ -39,6 +42,10 @@ public class UserQueryController {
 	public String checkUserID(@PathVariable String userID, HttpSession session) {
 		User user = (User)session.getAttribute("sessionUser");
 		user.validateUserId(userID);
+		if (session.getAttribute("passwordCheck") == null) {
+			throw new DeniedDataModificationException("잘못된 접근입니다.");
+		}
+		session.removeAttribute("passwordCheck");
 		return "user/checkForUpdate";
 	}
 
