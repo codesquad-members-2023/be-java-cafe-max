@@ -9,6 +9,8 @@ public interface PostRepository {
 
     Post save(Post post);
 
+    Post update(long id, Post post);
+
     Optional<Post> findById(long id);
 
     List<Post> findAll();

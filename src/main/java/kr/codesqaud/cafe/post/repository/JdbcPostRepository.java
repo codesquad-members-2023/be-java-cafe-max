@@ -40,6 +40,20 @@ public class JdbcPostRepository implements PostRepository {
     }
 
     @Override
+    public Post update(long id, Post post) {
+        String sql = "update `post` set writer_name = ?, title = ?, contents = ? where id = ?";
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, post.getWriterName());
+            ps.setString(2, post.getTitle());
+            ps.setString(3, post.getContents());
+            ps.setLong(4, id);
+            return ps;
+        });
+        return post.create(id);
+    }
+
+    @Override
     public Optional<Post> findById(long id) {
         String sql = "select id, writer_id, writer_name, title, contents, writing_time from post where id = ?";
         try {
