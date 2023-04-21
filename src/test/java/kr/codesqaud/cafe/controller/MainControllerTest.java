@@ -27,7 +27,7 @@ public class MainControllerTest {
     @MockBean
     private PostService postService;
 
-    @DisplayName("게시물 목록 조회")
+    @DisplayName("ROOT URL을 접근하면 게시글 목록 페이지로 이동한다")
     @Test
     void posts() throws Exception {
         // given

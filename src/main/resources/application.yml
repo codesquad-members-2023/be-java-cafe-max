@@ -3,6 +3,7 @@ spring:
         group:
             prod: prodDB, prodConfig, common
             dev: devDB, devConfig, common
+            test: testDB, devConfig, common
         active: prod
 ---
 spring:
@@ -16,9 +17,19 @@ spring:
             on-profile: devDB
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/dev
+        url: jdbc:mysql://localhost:3306/cafe
         username: mandu
         password: mandu1234
+---
+spring:
+    config:
+        activate:
+            on-profile: testDB
+    datasource:
+        driver-class-name: org.h2.Driver
+        url: jdbc:h2:mem:dev;DB_CLOSE_ON_EXIT=FALSE
+        username: sa
+        password:
 ---
 spring:
     config:
