@@ -52,7 +52,7 @@ class MemberServiceTest {
 
 
     @Test
-    @DisplayName("모든 회원 조회 성공")
+    @DisplayName("기존 가입된 모든 회원들을 조회하면 모든 회원의 정보가 조회된다.")
     void findAll() {
         //given
         int memberNumber = 10;
@@ -72,7 +72,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("회원 단건 조회")
+    @DisplayName("기존 가입된 회원의 id로 회원을 조회하면 해당 회원의 정보가 조회된다.")
     void findById() {
         MemberJoinRequestDto requestDtoMember = basicMemberData();
         Long memberId = memberService.join(requestDtoMember);
@@ -88,7 +88,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("회원 이메일 조회")
+    @DisplayName("기존 가입 회원의 이메일 주소로 회원을 조회하면 해당 회원의 정보가 조회된다.")
     void findByEmail() {
         MemberJoinRequestDto requestDtoMember = basicMemberData();
         Long memberId = memberService.join(requestDtoMember);
