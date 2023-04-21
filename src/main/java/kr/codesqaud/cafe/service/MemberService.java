@@ -56,8 +56,8 @@ public class MemberService {
     public void update(ProfileEditRequestDto profileEditRequestDto) {
         Member findMember = memberRepository.findById(profileEditRequestDto.getMemberId()).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND));
 
-        if (findMember.isChangedMemberNickName(profileEditRequestDto.getNickName())) {
-            memberRepository.findByNickName(profileEditRequestDto.getNickName())
+        if (findMember.isDifferentNickname(profileEditRequestDto.getNickname())) {
+            memberRepository.findByNickname(profileEditRequestDto.getNickname())
                     .ifPresent(m -> {
                         throw new MemberProfileEditException(MemberExceptionType.DUPLICATED_MEMBER_NICKNAME, profileEditRequestDto);
                     });
