@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS Reply (
     articleId BIGINT NOT NULL,
     writer    VARCHAR (50) NOT NULL,
     content  TEXT NOT NULL,
-    dateTime TIMESTAMP NOT NULL
+    dateTime TIMESTAMP NOT NULL,
+    INDEX(articleId)
     );
 
