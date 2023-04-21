@@ -38,6 +38,18 @@ public class JdbcUserRepository implements UserRepository{
         return user;
     }
 
+    private RowMapper<User> userRowMapper(){
+        return (rs, rowNum) -> {
+            User user = new User();
+            user.setCustomerId(rs.getLong("customer_id"));
+            user.setUserId(rs.getString("user_id"));
+            user.setPassword(rs.getString("password"));
+            user.setName(rs.getString("name"));
+            user.setEmail(rs.getString("email"));
+            return user;
+        };
+    }
+
     @Override
     public Optional<User> findByUserId(String userId) {
         // 디자인 패턴 중, 템플릿 메서드 패턴의 요소가 많이 반영되어있기 때문이다.
@@ -58,18 +70,6 @@ public class JdbcUserRepository implements UserRepository{
 
     @Override
     public void clearStore() {
-        jdbcTemplate.update("delete from users");
-    }
-
-    private RowMapper<User> userRowMapper(){
-        return (rs, rowNum) -> {
-            User user = new User();
-            user.setCustomerId(rs.getLong("customerId"));
-            user.setUserId(rs.getString("userId"));
-            user.setPassword(rs.getString("password"));
-            user.setName(rs.getString("name"));
-            user.setEmail(rs.getString("email"));
-            return user;
-        };
+        jdbcTemplate.update("delete from `user`");
     }
 }

@@ -40,6 +40,22 @@ public class JdbcArticleRepository implements ArticleRepository{
         return article;
     }
 
+    private RowMapper<Article> articleRowMapper(){
+        return (rs, rowNum) -> {
+            Article article = new Article();
+            article.setId(rs.getLong("id"));
+            article.setWriter(rs.getString("writer"));
+            article.setTitle(rs.getString("title"));
+            article.setContents(rs.getString("contents"));
+            article.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+            if (rs.getTimestamp("modified_at") != null) {
+                article.setModifiedAt(rs.getTimestamp("modified_at").toLocalDateTime());
+            }
+            article.setPoints(rs.getLong("points"));
+            return article;
+        };
+    }
+
     @Override
     public Optional<Article> findById(Long id) {
         List<Article> result = jdbcTemplate.query("select * from articles where id = ?", articleRowMapper(), id);
@@ -53,23 +69,7 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public void clearStore() {
-        jdbcTemplate.update("delete from articles");
-    }
-
-    private RowMapper<Article> articleRowMapper(){
-        return (rs, rowNum) -> {
-            Article article = new Article();
-            article.setId(rs.getLong("id"));
-            article.setWriter(rs.getString("writer"));
-            article.setTitle(rs.getString("title"));
-            article.setContents(rs.getString("contents"));
-            article.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
-            if (rs.getTimestamp("modifiedAt") != null) {
-                article.setModifiedAt(rs.getTimestamp("modifiedAt").toLocalDateTime());
-            }
-            article.setPoints(rs.getLong("points"));
-            return article;
-        };
+        jdbcTemplate.update("delete from article");
     }
 
     @Override
