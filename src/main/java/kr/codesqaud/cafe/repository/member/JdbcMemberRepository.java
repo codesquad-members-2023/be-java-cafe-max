@@ -52,14 +52,16 @@ public class JdbcMemberRepository implements MemberRepository {
     public Optional<Member> findById(Long memberId) {
         String sql = "SELECT memberId, email, password, nickName, create_date FROM member WHERE memberId = :memberId";
         SqlParameterSource parameter = new MapSqlParameterSource("memberId", memberId);
-        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, memberRowMapper)));
+        List<Member> members = jdbcTemplate.query(sql, parameter, memberRowMapper);
+        return members.stream().findFirst();
     }
 
     @Override
     public Optional<Member> findByEmail(String email) {
         String sql = "SELECT memberId, email, password, nickname, create_date FROM member WHERE email = :email";
         SqlParameterSource parameter = new MapSqlParameterSource("email", email);
-        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, memberRowMapper)));
+        List<Member> members = jdbcTemplate.query(sql, parameter, memberRowMapper);
+        return members.stream().findFirst();
     }
 
    @Override
