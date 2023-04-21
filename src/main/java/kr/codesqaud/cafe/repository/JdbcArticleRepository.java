@@ -49,4 +49,15 @@ public class JdbcArticleRepository implements ArticleRepository{
             return Optional.empty();
         }
     }
+
+    @Override
+    public void delete(Long id) {
+        jdbcTemplate.update("DELETE FROM articles WHERE id = ?", id);
+    }
+
+    @Override
+    public void update(Article article) {
+        jdbcTemplate.update("UPDATE articles SET title = ?, content = ? WHERE id = ?",
+                article.getTitle(), article.getContent(), article.getId());
+    }
 }
