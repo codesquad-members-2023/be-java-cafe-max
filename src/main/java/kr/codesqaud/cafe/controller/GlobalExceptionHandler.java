@@ -59,7 +59,8 @@ public class GlobalExceptionHandler {
         String uri = request.getRequestURI();
         String[] uriSplit = uri.split("/");
         model.addFlashAttribute("idError", e.getMessage());
-        if (uriSplit[1].equals("signup")) {
+
+        if (uriSplit[2].equals("create")) {
             return "redirect:/user/signup";
         } else {
             return "redirect:/user/update/" + uri.split("/")[3];
