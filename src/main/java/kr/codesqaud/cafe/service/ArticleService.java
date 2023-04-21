@@ -78,13 +78,14 @@ public class ArticleService {
         articleRepository.delete(index);
     }
 
-    public void writeReply(int index, String contents ,String name) {
+    public Reply writeReply(int index, String contents ,String name) {
         Reply reply = new Reply.Builder()
                 .articleIdx(index)
                 .replyWriter(name)
                 .replyContents(contents)
                 .build();
         replyRepository.save(reply);
+        return reply;
     }
 
     public List<Reply> replyList(int index){
