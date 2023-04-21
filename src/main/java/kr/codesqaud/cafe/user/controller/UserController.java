@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -54,10 +56,23 @@ public class UserController {
 	}
 
 	@PostMapping("/signin")
-	public String signIn(SignInRequestDTO dto, HttpServletRequest request) throws UserDoesNotMatchException {
+	public String signIn(SignInRequestDTO dto, HttpServletRequest request, HttpServletResponse response) throws
+		UserDoesNotMatchException {
 		HttpSession session = request.getSession();
 		session.setAttribute("authSession",
 			AuthSession.from(service.performSignIn(dto.getUserId(), dto.getPassword())));
+
+		if (dto.isRemember()) {
+			Cookie cookie = new Cookie("rememberCheckbox", dto.getUserId());
+			cookie.setPath("/");
+			cookie.setMaxAge(60 * 60 * 24 * 365);
+			response.addCookie(cookie);
+		} else {
+			Cookie cookie = new Cookie("rememberCheckbox", null);
+			cookie.setPath("/");
+			cookie.setMaxAge(0);
+			response.addCookie(cookie);
+		}
 
 		return "redirect:/questions";
 	}
