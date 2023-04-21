@@ -5,7 +5,7 @@ import kr.codesqaud.cafe.controller.dto.request.PostRequest;
 import java.time.LocalDateTime;
 
 public class Article {
-    private Long id;
+    private final Long id;
     private final String writer;
     private String title;
     private String content;
@@ -49,10 +49,6 @@ public class Article {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public void editArticle(final String title, final String content) {
