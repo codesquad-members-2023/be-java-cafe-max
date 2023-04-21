@@ -7,7 +7,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.NoSuchElementException;
 
-import kr.codesqaud.cafe.dto.error.ErrorDto;
 import kr.codesqaud.cafe.exception.common.CommonException;
 import kr.codesqaud.cafe.exception.common.CommonExceptionType;
 import kr.codesqaud.cafe.exception.member.MemberExceptionType;
