@@ -5,15 +5,15 @@ import kr.codesqaud.cafe.domain.reply.entity.Reply;
 public class ReplySaveRequestDto {
 	private String content;
 
+	public ReplySaveRequestDto(String content) {
+		this.content = content;
+	}
+
 	public String getContent() {
 		return content;
 	}
 
 	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public ReplySaveRequestDto(String content) {
 		this.content = content;
 	}
 
