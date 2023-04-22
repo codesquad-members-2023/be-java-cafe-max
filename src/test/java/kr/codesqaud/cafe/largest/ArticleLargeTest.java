@@ -31,19 +31,22 @@ public class ArticleLargeTest {
 	@TestFactory
 	Stream<DynamicTest> postArticle() {
 		return Stream.of(
-			dynamicTest("게시글 작성", () -> {
-				//given
-				ArticleSaveRequestDto articleSaveRequestDto = new ArticleSaveRequestDto("제목입니다", "내용입니다");
+                dynamicTest("게시글 작성", () -> {
+                    //given
+                    final String title = "제목입니다.";
+                    final String content = "내용입니다.";
+                    final String writer = "June";
+                    Article article = new ArticleSaveRequestDto(title, content).toEntity(writer);
 
-				//when
-				articleRepository.save(articleSaveRequestDto.toEntity("June"));
+                    //when
+                    articleRepository.save(article);
 
-				//then
-				assertThat(articleRepository.findById(1L).get().getTitle()).isEqualTo("제목입니다");
-				assertThat(articleRepository.findById(1L).get().getContent()).isEqualTo("내용입니다");
-				assertThat(articleRepository.findById(1L).get().getWriter()).isEqualTo("June");
-
-			}),
+                    //then
+                    Article target = articleRepository.findById(1L).get();
+                    assertThat(target.getTitle()).isEqualTo(title);
+                    assertThat(target.getContent()).isEqualTo(content);
+                    assertThat(target.getWriter()).isEqualTo(writer);
+                }),
 			dynamicTest("존재하지 않는 게시글 조회시", () -> {
 				//given
 				Model model = new ConcurrentModel();
