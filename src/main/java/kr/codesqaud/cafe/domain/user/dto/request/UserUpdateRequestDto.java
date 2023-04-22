@@ -15,8 +15,8 @@ public class UserUpdateRequestDto {
 		this.changedEmail = changedEmail;
 	}
 
-	public User toEntity(String loginId) {
-		return new User(loginId, this.changedName, this.password, this.changedEmail);
+	public User toEntity(String username) {
+		return new User(username, this.changedName, this.password, this.changedEmail);
 	}
 
 	public String getId() {

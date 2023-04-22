@@ -25,11 +25,11 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public String login(AuthLoginRequestDto authLoginRequestDto, HttpSession session) {
-		User loginUser = userRepository.findById(authLoginRequestDto.getLoginId())
+		User loginUser = userRepository.findById(authLoginRequestDto.getUsername())
 			.filter(user -> user.matchPassword(authLoginRequestDto.getPassword()))
 			.orElseThrow(InvalidLoginInfoException::new);
-		session.setAttribute(SessionAttributeNames.LOGIN_USER_ID.type(), loginUser.getLoginId());
-		session.setAttribute(SessionAttributeNames.LOGIN_USER_NAME.type(), loginUser.getName());
+		session.setAttribute(SessionAttributeNames.LOGIN_USER_ID.type(), loginUser.getUsername());
+		session.setAttribute(SessionAttributeNames.LOGIN_USER_NAME.type(), loginUser.getNickName());
 		return "redirect:/";
 	}
 

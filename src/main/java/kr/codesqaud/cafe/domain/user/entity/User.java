@@ -5,15 +5,15 @@ import java.time.LocalDateTime;
 public class User {
 	private String id;
 	private String password;
-	private String name;
+	private String nickName;
 	private String email;
-	private String loginId;
+	private String username;
 	LocalDateTime dateTime;
 
-	public User(String loginId, String name, String password, String email) {
-		this.loginId = loginId;
+	public User(String username, String nickName, String password, String email) {
+		this.username = username;
 		this.password = password;
-		this.name = name;
+		this.nickName = nickName;
 		this.email = email;
 		this.dateTime = LocalDateTime.now();
 	}
@@ -25,8 +25,12 @@ public class User {
 		return this.password.equals(password);
 	}
 
-	public String getName() {
-		return name;
+	public String getNickName() {
+		return nickName;
+	}
+
+	public String getUsername() {
+		return username;
 	}
 
 	public String getPassword() {
@@ -45,8 +49,8 @@ public class User {
 		this.dateTime = dateTime;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
 	public String getEmail() {
@@ -65,11 +69,7 @@ public class User {
 		this.id = id;
 	}
 
-	public String getLoginId() {
-		return loginId;
-	}
-
-	public void setLoginId(String loginId) {
-		this.loginId = loginId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }

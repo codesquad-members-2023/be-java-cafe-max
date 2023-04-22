@@ -31,7 +31,7 @@ public class UserController {
 
 	@PostMapping("/user/join")
 	public String signIn(UserSaveRequestDto userSaveRequestDto) {
-		if (userRepository.findById(userSaveRequestDto.getLoginId()).isPresent()) {
+		if (userRepository.findById(userSaveRequestDto.getUsername()).isPresent()) {
 			throw new DuplicatedUserIdException();
 		}
 		userRepository.save(userSaveRequestDto.toEntity());
@@ -47,10 +47,10 @@ public class UserController {
 		return "user/list";
 	}
 
-	@GetMapping("/users/{loginId}")
-	public String findUserProfile(@PathVariable("loginId") String loginId, Model model) {
+	@GetMapping("/users/{username}")
+	public String findUserProfile(@PathVariable("username") String username, Model model) {
 
-		Optional<User> user = userRepository.findById(loginId);
+		Optional<User> user = userRepository.findById(username);
 		if (user.isEmpty()) {
 			return "redirect:/";
 		}
@@ -58,19 +58,19 @@ public class UserController {
 		return "/user/profile";
 	}
 
-	@GetMapping("/users/{loginId}/form")
-	public String updateUserProfile(@PathVariable("loginId") String loginId, Model model) {
-		User user = userRepository.findById(loginId).orElseThrow(NoSuchElementException::new);
+	@GetMapping("/users/{username}/form")
+	public String updateUserProfile(@PathVariable("username") String username, Model model) {
+		User user = userRepository.findById(username).orElseThrow(NoSuchElementException::new);
 		model.addAttribute("user", new UserDetailResponseDto(user));
 		return "/user/updateForm";
 	}
 
-	@PutMapping("/users/{loginId}/update")
-	public String modifyUserProfile(UserUpdateRequestDto userUpdateDto, @PathVariable("loginId") String loginId) {
-		if (!userRepository.findById(loginId).get().matchPassword(userUpdateDto.getPassword())) {
+	@PutMapping("/users/{username}/update")
+	public String modifyUserProfile(UserUpdateRequestDto userUpdateDto, @PathVariable("username") String username) {
+		if (!userRepository.findById(username).get().matchPassword(userUpdateDto.getPassword())) {
 			throw new InvalidPasswordException();
 		}
-		userRepository.update(userUpdateDto.toEntity(loginId));
+		userRepository.update(userUpdateDto.toEntity(username));
 		return "redirect:/users";
 	}
 }

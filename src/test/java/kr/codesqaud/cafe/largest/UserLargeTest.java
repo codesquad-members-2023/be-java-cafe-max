@@ -54,7 +54,7 @@ public class UserLargeTest {
 				UserDetailResponseDto userDetailResponseDto = new UserDetailResponseDto(user.get());
 
 				//then
-				assertThat(userDetailResponseDto.getName()).isEqualTo("June");
+				assertThat(userDetailResponseDto.getUsername()).isEqualTo("June");
 			}),
 			dynamicTest("회원 수정 시 기존 비밀번호가 아닌 비밀번호를 입력한 경우", () -> {
 				//given
@@ -74,7 +74,7 @@ public class UserLargeTest {
 				userRepository.update(userUpdateRequestDto.toEntity("pjs970616"));
 
 				//then
-				assertThat(userRepository.findById("pjs970616").get().getName()).isEqualTo("Joonsoo");
+				assertThat(userRepository.findById("pjs970616").get().getUsername()).isEqualTo("Joonsoo");
 			}),
 			dynamicTest("모든 회원 정보 조회", () -> {
 				//given
@@ -85,7 +85,7 @@ public class UserLargeTest {
 				users.forEach(user -> userDetailResponseDtos.add(new UserDetailResponseDto(user)));
 
 				//then
-				assertThat(userDetailResponseDtos.get(0).getName()).isEqualTo("Joonsoo");
+				assertThat(userDetailResponseDtos.get(0).getUsername()).isEqualTo("Joonsoo");
 
 			})
 

@@ -1,9 +1,9 @@
 
 CREATE TABLE IF NOT EXISTS Users (
     id        BIGINT AUTO_INCREMENT PRIMARY KEY,
-    loginId VARCHAR(50) UNIQUE ,
+    username VARCHAR(50) UNIQUE ,
     password  VARCHAR(50) NOT NULL,
-    name      VARCHAR(50) NOT NULL UNIQUE ,
+    nickName      VARCHAR(50) NOT NULL UNIQUE ,
     email     VARCHAR(50) NOT NULL,
     dateTime TIMESTAMP NOT NULL
     );
