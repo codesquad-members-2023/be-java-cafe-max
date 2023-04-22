@@ -23,7 +23,7 @@ public class ReplyService {
     public ReplyTimeForm saveReply(Long articleId, ReplyForm form, String userId) {
         Reply reply = new Reply(articleId, userId, form.getReplyContent());
         Long replyId = replyRepository.save(reply);
-        return ReplyTimeForm.from(replyId, reply);
+        return ReplyTimeForm.of(replyId, reply);
     }
 
     public List<ReplyTimeForm> findReplies(Long articleId) {
