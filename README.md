@@ -43,26 +43,34 @@
   - 로그인 사용자와 글쓴이의 사용자 아이디가 같은 경우에만 가능하다.
     - 같지 않으면 로그인 유저와 작성자 매치 실패 예외를 발생시킨다.
   - 삭제 완료하면 홈 화면으로 redirect 한다.
+- [x] 로그인한 사용자는 게시글 상세보기 화면에서 댓글들을 볼 수 있다.
+- [x] 로그인한 사용자는 댓글을 추가할 수 있다.
+- [x] 자신이 쓴 댓글에 한해 댓글을 삭제할 수 있다.
+  - 자신이 쓴 댓글이 아니면 로그인 유저와 댓글 작성자 매치 실패 예외를 발생시킨다.
 
 ## URL
-|__HTTP Method__| __URL__                 | __기능__            |
-|---------------|-------------------------|-------------------|
-|GET| /                       | 홈 화면 출력(질문 목록 조회) |
-|GET| /users/join             | 회원 가입 화면 출력       |
-|POST| /users                  | 회원 가입             |
-|GET| /users                  | 회원 목록 조회 화면 출력    |
-|GET| /users/{userId}         | 유저 프로필 화면 조회      |
-|POST| /questions              | 질문하기 게시글 작성       |
-|GET| /questions/form         | 글쓰기 화면 조회         |
-|GET| /articles/{postId}      | 게시글 상세 조회         |
-|GET| /users/{userId}/form    | 회원 정보 수정 화면 출력    |
-|PUT| /users/{userId}/update  | 회원 정보 수정          |
-|GET| /users/login            | 로그인 화면 출력         |
-|POST| /users/login            | 로그인               |
-|GET| /users/logout           | 로그아웃              |
-|GET| /articles/{postId}/form | 게시글 수정 화면 출력      |
-|PUT| /articles/{postId}      | 게시글 수정            |
-|DELETE| /articles/{postId}      | 게시글 삭제            |
+|__HTTP Method__| __URL__                 | __기능__                 |
+|---------------|-------------------------|------------------------|
+|GET| /                       | 홈 화면 출력(질문 목록 조회)      |
+|GET| /users/join             | 회원 가입 화면 출력            |
+|POST| /users                  | 회원 가입                  |
+|GET| /users                  | 회원 목록 조회 화면 출력         |
+|GET| /users/{userId}         | 유저 프로필 화면 조회           |
+|POST| /questions              | 질문하기 게시글 작성            |
+|GET| /questions/form         | 글쓰기 화면 조회              |
+|GET| /articles/{postId}      | 게시글 상세 조회(+ 댓글도 같이 조회) |
+|GET| /users/{userId}/form    | 회원 정보 수정 화면 출력         |
+|PUT| /users/{userId}/update  | 회원 정보 수정               |
+|GET| /users/login            | 로그인 화면 출력              |
+|POST| /users/login            | 로그인                    |
+|GET| /users/logout           | 로그아웃                   |
+|GET| /articles/{postId}/form | 게시글 수정 화면 출력           |
+|PUT| /articles/{postId}      | 게시글 수정                 |
+|DELETE| /articles/{postId}      | 게시글 삭제                 |
+|POST| /reply/{postId} | 댓글 작성                  |
+|DELETE|/reply/{postId}/{replyId}| 댓글 삭제                  |
+
+
 ## 배포 url
 [codesquad_cafe](http://52.79.232.139:8080/)
 
@@ -184,6 +192,33 @@
 <div>
 
 ![delete](https://user-images.githubusercontent.com/57451700/232852437-2ab0b5aa-b6b4-49ba-bf00-d8cbd3f697c0.png)
+
+</div>
+</details>
+
+<details>
+<summary>댓글 작성 화면</summary>
+<div>
+
+![reply](https://user-images.githubusercontent.com/57451700/233772159-220f78c3-6a62-4035-a587-ac41b08562b1.png)
+
+</div>
+</details>
+
+<details>
+<summary>댓글 작성 완료 화면</summary>
+<div>
+
+![result](https://user-images.githubusercontent.com/57451700/233772197-8fe54370-a5f4-4691-85ac-a3d0b3eadbcc.png)
+
+</div>
+</details>
+
+<details>
+<summary>댓글 삭제 완료 화면</summary>
+<div>
+
+![delete](https://user-images.githubusercontent.com/57451700/233772222-0a3eded8-292a-4172-a87e-6ca585c24846.png)
 
 </div>
 </details>
