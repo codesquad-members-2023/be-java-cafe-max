@@ -31,4 +31,5 @@ public class CommentDto {
 			comment.getArticleId()
 		);
 	}
+
 }

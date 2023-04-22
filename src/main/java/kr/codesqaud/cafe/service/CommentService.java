@@ -26,8 +26,8 @@ public class CommentService {
 		commentRepository.save(comment);
 	}
 
-	public List<CommentDto> articleComment(Long id) {
-		return commentRepository.articleComment(id)
+	public List<CommentDto> getAllCommentsByArticleId(Long articleId) {
+		return commentRepository.findAllCommentsByArticleId(articleId)
 			.stream()
 			.map(CommentDto::fromEntity)
 			.collect(Collectors.toUnmodifiableList());

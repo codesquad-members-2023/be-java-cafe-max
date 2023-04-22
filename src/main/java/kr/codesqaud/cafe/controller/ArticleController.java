@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
+import kr.codesqaud.cafe.controller.dto.CommentDto;
 import kr.codesqaud.cafe.controller.dto.PostingRequest;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.CommentService;
@@ -46,7 +49,10 @@ public class ArticleController {
 			return "redirect:/users/login";
 		}
 		model.addAttribute("details", articleService.findById(id));
-		model.addAttribute("comments", commentService.articleComment(id));
+		List<CommentDto> comments = commentService.getAllCommentsByArticleId(id);
+
+		model.addAttribute("comments", comments);
+		model.addAttribute("commentCount", comments.size());
 		return "qna/show";
 	}
 
