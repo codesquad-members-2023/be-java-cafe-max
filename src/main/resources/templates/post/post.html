@@ -4,6 +4,7 @@
     <link rel="stylesheet" th:href="@{/css/post/post.css}">
 </head>
 <body>
+<script src="/js/post.js" defer></script>
 <header th:replace="~{layout/header :: header}">
 </header>
 <main>
@@ -12,12 +13,12 @@
             <div>
                 <h2 class="post-title" th:text="${postResponse.title}">자바 웹개발 교육 홈페이지 디자인 개발</h2>
                     <form th:action="@{/posts/{id}(id = ${postResponse.id})}" th:method="delete" th:if="${session.account.id == postResponse.writer.id}">
-                        <a class="btn btn-primary btn-sm" th:href="@{/posts/{id}/modify(id = ${postResponse.id})}">수정</a>
+                        <a class="btn btn-primary btn-sm" th:href="@{/posts/{id}/form(id = ${postResponse.id})}">수정</a>
                         <button class="btn btn-primary btn-sm" type="submit">삭제</button>
                     </form>
             </div>
             <div class="row row-cols-3 post-detail">
-                <span class="col-sm-2" th:text="${postResponse.writer.nickName}">비회원</span>
+                <span class="col-sm-2" th:text="${postResponse.writer.nickname}">비회원</span>
                 <span class="col-sm-4">작성일자:[[${postResponse.getWriteDateFormat()}]]</span>
                 <span class="col-sm-2">조회 [[${postResponse.views}]]</span>
             </div>
@@ -28,23 +29,21 @@
         </div>
         <div class="comments">
             <div>
-                <span>댓글 2개</span>
+                <span id="comments-size" >댓글 [[${commentResponses.size()}]]개</span>
             </div>
-            <div class="comment">
-                <strong class="comment-writer">자바지기</strong>
-                <p class="comment-content">이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
-                <span class="comment-date">2015-12-30 01:47</span>
-            </div>
-            <div class="comment">
-                <strong class="comment-writer">자바지기</strong>
-                <p class="comment-content">이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</p>
-                <span class="comment-date">2015-12-30 01:47</span>
+            <div class="comment" th:each="commentResponse : ${commentResponses}">
+                <strong class="comment-writer" th:text="${commentResponse.writer.nickname}">자바지기</strong>
+                <pre class="comment-content" th:text="${commentResponse.content}">이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</pre>
+                <span class="comment-date" th:text="${commentResponse.getWriteDateFormat()}">2015-12-30 01:47</span>
+                <form class="comment-delete" th:action="@{/api/posts/{postId}/comments/{id}(postId= __${id}__ ,id = ${commentResponse.id})}">
+                    <button class="btn btn-primary btn-sm" type="submit">삭제</button>
+                </form>
             </div>
         </div>
-        <form>
+        <form class="comment-submit" th:action="@{/api/posts/{postId}/comments(postId = __${id}__)}" th:method="post">
             <div class="form-group">
-                <div class="comment-from-writer">만두</div>
-                <textarea class="form-control" id="comment" name="comment" placeholder="내용을 입력하세요"></textarea>
+                <div class="comment-from-writer" th:text="${session.account.name}">만두</div>
+                <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
                 <div class="col text-end">
                     <button class="btn btn-primary btn-sm comment-button" type="submit">등록</button>
                 </div>

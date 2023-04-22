@@ -23,6 +23,11 @@ public class PostResponse {
         this.views = views;
     }
 
+    public static PostResponse from(Post post) {
+        return new PostResponse(post.getId(), post.getTitle(), post.getContent(),
+            WriterResponse.from(post.getWriter()), post.getWriteDate(), post.getViews());
+    }
+
     public Long getId() {
         return id;
     }
@@ -49,10 +54,5 @@ public class PostResponse {
 
     public Long getViews() {
         return views;
-    }
-
-    public static PostResponse of(Post post) {
-        return new PostResponse(post.getId(), post.getTitle(), post.getContent(),
-            WriterResponse.from(post.getWriter()), post.getWriteDate(), post.getViews());
     }
 }

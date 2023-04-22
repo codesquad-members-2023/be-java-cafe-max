@@ -132,3 +132,55 @@
 ## ERD
 
 ![](https://lh3.googleusercontent.com/pw/AJFCJaX1UoZ5jdJMJwDiDhO9EiosHEKQFmXe7iRDzTr86gQ_o3uTDbf8guc501C8vvIFAThz7pBGQrYaE4dZZWVQP1OVZw7-25k3nmmOcSvGBtgdEsEw_3peBtlGsrtb28ecTIoapRc2YYcz0CAaZyKnPGnF=w714-h507-s-no?authuser=0)
+
+## 6단계 미션
+
+### 구현할 기능 목록
+
+- 로그인한 사용자는 게시글 상세보기 화면에서 댓글들을 볼 수 있다.✅
+- 로그인한 사용자만 게시글에 댓글을 추가할 수 있다.✅
+- 게시글 삭제시 데이터의 상태를 삭제 상태로 변경한다.✅
+  - 댓글이 없는 경우 삭제가 가능하다.✅
+  - 게시글 작성자와 댓글 작성자가 다를 경우 삭제는 불가능하다.✅
+  - 게시글 작성자와 댓글 작성자가 모두 같은 경우는 삭제가 가능하다.✅
+- 댓글 삭제도 데이터의 상태를 삭제 상태로 변경한다.✅
+  - 로그인 사용자와 댓글 작성자가 같은 경우에만 댓글을 삭제할 수 있다.✅
+
+### URL
+
+| HTTP Method |                URL                |         기능         |
+| :---------: | :-------------------------------: | :------------------: |
+|     GET     |             /members              |    회원 목록 조회    |
+|     GET     |           /members/{id}           |     프로필 조회      |
+|     PUT     |           /members/{id}           |   회원 프로필 수정   |
+|     GET     |        /members/{id}/form         | 회원 프로필 수정 폼  |
+|     GET     |         /members/sign-up          |     회원가입 폼      |
+|    POST     |         /members/sign-up          |      회원 가입       |
+|     GET     |         /members/sign-in          |      로그인 폼       |
+|    POST     |         /members/sign-in          |        로그인        |
+|    POST     |         /members/sign-out         |       로그아웃       |
+|     GET     |                 /                 | 홈 화면(게시글 목록) |
+|    POST     |              /posts               |     게시글 생성      |
+|     GET     |            /posts/{id}            |   게시글 상세 조회   |
+|     PUT     |            /posts/{id}            |     게시글 수정      |
+|   DELETE    |            /posts/{id}            |     게시글 삭제      |
+|     GET     |            /posts/form            |    게시글 작성 폼    |
+|     GET     |         /posts/{id}/form          |    게시글 수정 폼    |
+|    POST     |   /api/posts/{postId}/comments    |      댓글 작성       |
+|   DELETE    | /api/posts/{postId}/comments/{id} |      댓글 삭제       |
+
+### ERD
+
+![](https://lh3.googleusercontent.com/pw/AJFCJaWlkMzu68-V2V-eY0o0fm332TG4h3egUnN-rDhEsJc3m-4cJglqwF-zXC67lAw2D3WKNhooU94-xGJCRMQrNozUY3UoQ2-gfFB_8MC8tk7WJSU7K4w_uybbI0HIh8qNxY5i-e8Y8lvDuOeeCSXXUHhl=w1327-h1071-s-no?authuser=0)
+
+## 7단계 미션
+
+### 학습 계획
+
+- Mysql 설치
+- ajax
+
+### 구현할 기능목록
+
+- 댓글 기능들을 AJAX와 RestController로 구현한다.✅
+- 데이터베이스는 MySQL.8.0으로 변경한다.✅

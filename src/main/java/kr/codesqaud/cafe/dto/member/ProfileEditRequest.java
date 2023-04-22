@@ -24,15 +24,15 @@ public class ProfileEditRequest {
 
     @NotBlank
     @Length(min = 2, max = 10)
-    private final String nickName;
+    private final String nickname;
 
     public ProfileEditRequest(Long id, String email, String password, String newPassword,
-        String nickName) {
+        String nickname) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.newPassword = newPassword;
-        this.nickName = nickName;
+        this.nickname = nickname;
     }
 
     public Long getId() {
@@ -55,8 +55,8 @@ public class ProfileEditRequest {
         return newPassword;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
     public Member toMember() {
@@ -64,12 +64,7 @@ public class ProfileEditRequest {
             .id(id)
             .email(email)
             .password(newPassword)
-            .nickName(nickName)
+            .nickname(nickname)
             .build();
-    }
-
-    public static ProfileEditRequest from(MemberResponse memberResponse) {
-        return new ProfileEditRequest(memberResponse.getId(), memberResponse.getEmail(),
-            null, null, memberResponse.getNickName());
     }
 }

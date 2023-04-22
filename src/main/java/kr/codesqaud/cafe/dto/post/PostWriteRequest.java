@@ -47,13 +47,11 @@ public class PostWriteRequest {
         return writeDate;
     }
 
-    public Post toPost() {
+    public Post toPost(Member member) {
         return Post.builder()
             .title(title)
             .content(content)
-            .writer(Member.builder()
-                .id(writerId)
-                .build())
+            .writer(member)
             .writeDate(writeDate)
             .views(0L)
             .build();

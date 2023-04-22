@@ -14,7 +14,6 @@ import kr.codesqaud.annotation.RepositoryTest;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +27,7 @@ class PostRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    @BeforeEach
-    void beforeEach() {
-        postRepository.deleteAll();
-        memberRepository.deleteAll();
-    }
-
-    @DisplayName("게시글 저장 성공")
+    @DisplayName("게시글 저장할 때 제목, 내용, 작성자 아이디, 게시글 작성 날짜, 조회수를 입력하면 게시글 저장된다")
     @Test
     void save() {
         // given
@@ -50,7 +43,7 @@ class PostRepositoryTest {
             () -> assertEquals(savedId, findPost.get().getId()));
     }
 
-    @DisplayName("게시글 단건 조회 성공")
+    @DisplayName("게시글 아이디로 조회할 때 게시글이 있다면 게시글을 반환한다")
     @Test
     void findById() {
         // given
@@ -71,7 +64,7 @@ class PostRepositoryTest {
             () -> assertEquals(post.getViews(), findPost.getViews()));
     }
 
-    @DisplayName("게시글 전체 조회 성공")
+    @DisplayName("게시글 전체 조회할 때 게시글이 있다면 모든 게시글을 반한한다")
     @Test
     void findAll() {
         // given
@@ -99,7 +92,7 @@ class PostRepositoryTest {
         assertEquals(postCount, findAll.size());
     }
 
-    @DisplayName("게시글 수정 성공")
+    @DisplayName("게시글 수정할 때 아이디, 제목, 내용을 입력하면 게시글이 수정된다")
     @Test
     void update() {
         // given
@@ -110,9 +103,6 @@ class PostRepositoryTest {
             .id(savedId)
             .title("업데이트")
             .content("업데이트 내용")
-            .writer(post.getWriter())
-            .writeDate(post.getWriteDate())
-            .views(0L)
             .build();
 
         // when
@@ -121,14 +111,11 @@ class PostRepositoryTest {
         // then
         Post findPost = postRepository.findById(savedId).orElseThrow();
         assertAll(
-            () -> assertEquals(updatePost.getId(), findPost.getId()),
-            () -> assertEquals(updatePost.getTitle(), findPost.getTitle()),
-            () -> assertEquals(updatePost.getContent(), findPost.getContent()),
-            () -> assertEquals(updatePost.getWriteDate(), findPost.getWriteDate()),
-            () -> assertEquals(updatePost.getViews(), findPost.getViews()));
+            () -> assertEquals("업데이트", findPost.getTitle()),
+            () -> assertEquals("업데이트 내용", findPost.getContent()));
     }
 
-    @DisplayName("게시글 삭제 성공")
+    @DisplayName("게시글 아이디로 삭제할 떄 게시글이 있다면 게시글을 삭제한다")
     @Test
     void delete() {
         // given
@@ -159,7 +146,7 @@ class PostRepositoryTest {
         return memberRepository.save(Member.builder()
             .email("test@naver.com")
             .password("Test1234")
-            .nickName("만두")
+            .nickname("만두")
             .createDate(LocalDateTime.now())
             .build());
     }

@@ -26,7 +26,7 @@ public class JdbcMemberRepository implements MemberRepository {
     @Override
     public Long save(Member member) {
         String sql = "INSERT INTO member(email, password, nickname, create_date) "
-                   + "VALUES(:email, :password, :nickName, :createDate)";
+                   + "VALUES(:email, :password, :nickname, :createDate)";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(member);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, parameter, keyHolder);
@@ -52,6 +52,21 @@ public class JdbcMemberRepository implements MemberRepository {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM member WHERE email = :email)";
+        MapSqlParameterSource parameter = new MapSqlParameterSource("email", email);
+        return jdbcTemplate.queryForObject(sql, parameter, Boolean.class);
+    }
+
+    @Override
+    public boolean existsByEmailAndIdNot(String email, Long id) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM member WHERE email = :email AND id != :id)";
+        MapSqlParameterSource parameter = new MapSqlParameterSource("email", email);
+        parameter.addValue("id", id);
+        return jdbcTemplate.queryForObject(sql, parameter, Boolean.class);
+    }
+
+    @Override
     public List<Member> findAll() {
         String sql = "SELECT id, email, password, nickname, create_date "
                      + "FROM member";
@@ -63,16 +78,10 @@ public class JdbcMemberRepository implements MemberRepository {
         String sql = "UPDATE member "
                       + "SET email = :email, "
                           + "password = :password, "
-                          + "nickname = :nickName "
+                          + "nickname = :nickname "
                     + "WHERE id = :id";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(member);
         jdbcTemplate.update(sql, parameter);
-    }
-
-    @Override
-    public void deleteAll() {
-        String sql = "DELETE FROM member";
-        jdbcTemplate.update(sql, (SqlParameterSource) null);
     }
 
     private final RowMapper<Member> memberRowMapper = (rs, rowNum) ->
@@ -80,7 +89,7 @@ public class JdbcMemberRepository implements MemberRepository {
             .id(rs.getLong("id"))
             .email(rs.getString("email"))
             .password(rs.getString("password"))
-            .nickName(rs.getString("nickname"))
+            .nickname(rs.getString("nickname"))
             .createDate(rs.getTimestamp("create_date").toLocalDateTime())
             .build();
 }

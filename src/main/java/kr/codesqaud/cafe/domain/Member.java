@@ -8,15 +8,15 @@ public class Member {
     private final Long id;
     private final String email;
     private final String password;
-    private final String nickName;
+    private final String nickname;
     private final LocalDateTime createDate;
 
-    private Member(Long id, String email, String password, String nickName,
+    private Member(Long id, String email, String password, String nickname,
         LocalDateTime createDate) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.createDate = createDate;
     }
 
@@ -32,8 +32,8 @@ public class Member {
         return password;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
     public LocalDateTime getCreateDate() {
@@ -52,10 +52,6 @@ public class Member {
         return this.password.equals(password);
     }
 
-    public Member createWithId(Long id) {
-        return new Member(id, email, password, nickName, createDate);
-    }
-
     public static MemberBuilder builder() {
         return new MemberBuilder();
     }
@@ -65,7 +61,7 @@ public class Member {
         private Long id;
         private String email;
         private String password;
-        private String nickName;
+        private String nickname;
         private LocalDateTime createDate;
 
         public MemberBuilder() {
@@ -86,8 +82,8 @@ public class Member {
             return this;
         }
 
-        public MemberBuilder nickName(String nickName) {
-            this.nickName = nickName;
+        public MemberBuilder nickname(String nickName) {
+            this.nickname = nickName;
             return this;
         }
 
@@ -97,7 +93,7 @@ public class Member {
         }
 
         public Member build() {
-            return new Member(id, email, password, nickName, createDate);
+            return new Member(id, email, password, nickname, createDate);
         }
     }
 }

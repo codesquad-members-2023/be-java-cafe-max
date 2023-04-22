@@ -13,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Target(ElementType.TYPE)
 @SpringBootTest
 @Transactional
-@ActiveProfiles("dev")
-@Sql(scripts = "classpath:schema.sql")
+@ActiveProfiles("test")
 public @interface RepositoryTest {
 
 }

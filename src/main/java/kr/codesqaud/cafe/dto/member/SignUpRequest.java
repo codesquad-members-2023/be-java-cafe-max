@@ -19,14 +19,14 @@ public class SignUpRequest {
 
     @NotBlank
     @Length(min = 2, max = 10)
-    private final String nickName;
+    private final String nickname;
 
     private final LocalDateTime createDate;
 
-    public SignUpRequest(String email, String password, String nickName) {
+    public SignUpRequest(String email, String password, String nickname) {
         this.email = email;
         this.password = password;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.createDate = LocalDateTime.now();
     }
 
@@ -38,8 +38,8 @@ public class SignUpRequest {
         return password;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
     public LocalDateTime getCreateDate() {
@@ -50,7 +50,7 @@ public class SignUpRequest {
         return Member.builder()
             .email(email)
             .password(password)
-            .nickName(nickName)
+            .nickname(nickname)
             .createDate(createDate)
             .build();
     }

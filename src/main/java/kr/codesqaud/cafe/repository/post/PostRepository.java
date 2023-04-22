@@ -14,9 +14,7 @@ public interface PostRepository {
 
     void update(Post post);
 
-    void increaseViews(Post post);
+    void increaseViews(Long id);
 
     void delete(Long id);
-
-    void deleteAll();
 }

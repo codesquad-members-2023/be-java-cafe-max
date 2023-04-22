@@ -26,8 +26,8 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Long save(Post post) {
-        String sql = "INSERT INTO post(title, content, writer_id, write_date, views) "
-                   + "VALUES(:title, :content, :writer.id, :writeDate, :views)";
+        String sql = "INSERT INTO post(title, content, writer_id, write_date, views, is_deleted) "
+                   + "VALUES(:title, :content, :writer.id, :writeDate, :views, false)";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(post);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, parameter, keyHolder);
@@ -40,7 +40,8 @@ public class JdbcPostRepository implements PostRepository {
                           + "p.write_date, p.views "
                      + "FROM post p "
                + "INNER JOIN member m on m.id = p.writer_id "
-            + "        WHERE p.id = :id";
+            + "        WHERE p.id = :id "
+                      + "AND p.is_deleted = false ";
         SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, postRowMapper)));
     }
@@ -51,7 +52,8 @@ public class JdbcPostRepository implements PostRepository {
                          + " p.write_date, p.views "
                     + "FROM post p "
               + "INNER JOIN member m on m.id = p.writer_id "
-                   + "ORDER BY id DESC"; // 교집합
+                   + "WHERE p.is_deleted = false "
+                   + "ORDER BY id DESC";
         return jdbcTemplate.query(sql, postRowMapper);
     }
 
@@ -66,26 +68,24 @@ public class JdbcPostRepository implements PostRepository {
     }
 
     @Override
-    public void increaseViews(Post post) {
+    public void increaseViews(Long id) {
         String sql = "UPDATE post "
-                      + "SET views = :views "
+                      + "SET views = (SELECT p.views "
+                                    + "FROM (SELECT views + 1 as views "
+                                                + "FROM post "
+                                                + "WHERE id = :id) p) "
                     + "WHERE id = :id";
-        SqlParameterSource parameter = new BeanPropertySqlParameterSource(post);
-        jdbcTemplate.update(sql, parameter);
-    }
-
-    @Override
-    public void delete(Long id) {
-        String sql = "DELETE FROM post "
-                   + "WHERE id = :id";
         SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         jdbcTemplate.update(sql, parameter);
     }
 
     @Override
-    public void deleteAll() {
-        String sql = "DELETE FROM post";
-        jdbcTemplate.update(sql, (SqlParameterSource) null);
+    public void delete(Long id) {
+        String sql = "UPDATE post "
+                      + "SET is_deleted = true "
+                    + "WHERE id = :id";
+        SqlParameterSource parameter = new MapSqlParameterSource("id", id);
+        jdbcTemplate.update(sql, parameter);
     }
 
     private final RowMapper<Post> postRowMapper = (rs, rowNum) ->
@@ -95,7 +95,7 @@ public class JdbcPostRepository implements PostRepository {
             .content(rs.getString("content"))
             .writer(Member.builder()
                 .id(rs.getLong("writer_id"))
-                .nickName(rs.getString("writer_name"))
+                .nickname(rs.getString("writer_name"))
                 .build())
             .writeDate(rs.getTimestamp("write_date").toLocalDateTime())
             .views(rs.getLong("views"))
