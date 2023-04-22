@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.article.entity.Article;
 
 public class ArticleDetailResponseDto {
-	private String id;
+	private String articleId;
 	private String content;
 	private String title;
 	private String dateTime;
@@ -15,7 +15,7 @@ public class ArticleDetailResponseDto {
 	public ArticleDetailResponseDto(Article article) {
 		this.title = article.getTitle();
 		this.content = article.getContent();
-		this.id = String.valueOf(article.getId());
+		this.articleId = String.valueOf(article.getId());
 		this.dateTime = setDateTime(article.getDateTime());
 		this.writer = article.getWriter();
 	}
@@ -24,8 +24,8 @@ public class ArticleDetailResponseDto {
 		return localDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일(E) HH:mm:ss"));
 	}
 
-	public String getId() {
-		return id;
+	public String getArticleId() {
+		return articleId;
 	}
 
 	public String getContent() {

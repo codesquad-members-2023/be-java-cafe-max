@@ -48,10 +48,10 @@ public class ArticleController {
 		return "redirect:/";
 	}
 
-	@GetMapping("/articles/{id}")
-	public String viewArticle(@PathVariable("id") Long id, Model model) {
-		Article article = articleRepository.findById(id).orElseThrow(NoSuchElementException::new);
-		List<Reply> replies = replyRepository.findByArticleId(id);
+	@GetMapping("/articles/{articleId}")
+	public String viewArticle(@PathVariable("articleId") Long articleId, Model model) {
+		Article article = articleRepository.findById(articleId).orElseThrow(NoSuchElementException::new);
+		List<Reply> replies = replyRepository.findByArticleId(articleId);
 		List<ReplyDetailResponseDto> replyDetailResponseDtos = new ArrayList<>();
 		replies.forEach(reply -> replyDetailResponseDtos.add(new ReplyDetailResponseDto(reply)));
 		model.addAttribute("article", new ArticleDetailResponseDto(article));

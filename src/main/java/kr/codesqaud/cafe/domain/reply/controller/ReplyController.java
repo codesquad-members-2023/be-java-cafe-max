@@ -21,23 +21,23 @@ public class ReplyController {
 		this.replyRepository = replyRepository;
 	}
 
-	@PostMapping("/reply/{id}")
-	public String saveReply(@PathVariable("id") Long id, ReplySaveRequestDto replySaveRequestDto,
+	@PostMapping("/reply/{articleId}")
+	public String saveReply(@PathVariable("articleId") Long articleId, ReplySaveRequestDto replySaveRequestDto,
 		HttpSession httpSession) {
-		replyRepository.save(replySaveRequestDto.toEntity(id,
+		replyRepository.save(replySaveRequestDto.toEntity(articleId,
 			(String)httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_NAME.type())));
-		return "redirect:/articles/{id}";
+		return "redirect:/articles/{articleId}";
 	}
 
-	@DeleteMapping("/articles/{id}/replies/{replyId}")
-	public String deleteReply(@PathVariable("id") Long id, @PathVariable("replyId") String replyId,
+	@DeleteMapping("/articles/{articleId}/replies/{replyId}")
+	public String deleteReply(@PathVariable("articleId") Long articleId, @PathVariable("replyId") String replyId,
 		HttpSession httpSession, Model model) {
 		if (replyRepository.findById(replyId).get().getWriter() != httpSession.getAttribute(
 			SessionAttributeNames.LOGIN_USER_NAME.type())) {
 			model.addAttribute("error", "댓글작성자만  삭제할 수 있습니다.");
-			return "redirect:/articles/{id}";
+			return "redirect:/articles/{articleId}";
 		}
 		replyRepository.delete(replyId);
-		return "redirect:/articles/{id}";
+		return "redirect:/articles/{articleId}";
 	}
 }
