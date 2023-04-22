@@ -13,15 +13,15 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.domain.articlecomment.ArticleComment;
-import kr.codesqaud.cafe.repository.ArticleCommentRepository;
+import kr.codesqaud.cafe.domain.articlecomment.Comment;
+import kr.codesqaud.cafe.repository.CommentRepository;
 
 @Repository
-public class ArticleCommentJdbcRepository implements ArticleCommentRepository {
+public class CommentJdbcRepository implements CommentRepository {
 
 	private final NamedParameterJdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
-	private final RowMapper<ArticleComment> articleCommentRowMapper = (rs, rowNum) -> new ArticleComment(
+	private final RowMapper<Comment> articleCommentRowMapper = (rs, rowNum) -> new Comment(
 		rs.getLong("id"),
 		rs.getString("content"),
 		rs.getTimestamp("created_at").toLocalDateTime(),
@@ -29,7 +29,7 @@ public class ArticleCommentJdbcRepository implements ArticleCommentRepository {
 		rs.getLong("article_id")
 	);
 
-	public ArticleCommentJdbcRepository(DataSource dataSource) {
+	public CommentJdbcRepository(DataSource dataSource) {
 		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		this.jdbcInsert = new SimpleJdbcInsert(dataSource)
 			.withTableName("article_comment")
@@ -38,12 +38,12 @@ public class ArticleCommentJdbcRepository implements ArticleCommentRepository {
 	}
 
 	@Override
-	public Long save(final ArticleComment articleComment) {
-		return jdbcInsert.executeAndReturnKey(new BeanPropertySqlParameterSource(articleComment)).longValue();
+	public Long save(final Comment comment) {
+		return jdbcInsert.executeAndReturnKey(new BeanPropertySqlParameterSource(comment)).longValue();
 	}
 
 	@Override
-	public Optional<ArticleComment> findById(final Long id) {
+	public Optional<Comment> findById(final Long id) {
 		try {
 			return Optional.ofNullable(
 				jdbcTemplate.queryForObject(
@@ -55,7 +55,7 @@ public class ArticleCommentJdbcRepository implements ArticleCommentRepository {
 	}
 
 	@Override
-	public List<ArticleComment> findAllByArticleId(final Long articleId) {
+	public List<Comment> findAllByArticleId(final Long articleId) {
 		return jdbcTemplate.query(
 			"SELECT id, content, created_at, writer, article_id FROM article_comment WHERE is_deleted = FALSE AND article_id = :articleId",
 			Map.of("articleId", articleId),

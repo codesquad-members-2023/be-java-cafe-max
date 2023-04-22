@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.controller.dto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import kr.codesqaud.cafe.domain.articlecomment.ArticleComment;
+import kr.codesqaud.cafe.domain.articlecomment.Comment;
 
 public class ArticleCommentRequest {
 
@@ -21,12 +21,12 @@ public class ArticleCommentRequest {
 		this.createdAt = DATE_TIME_FORMATTER.format(createdAt);
 	}
 
-	public static ArticleCommentRequest from(final ArticleComment articleComment) {
+	public static ArticleCommentRequest from(final Comment comment) {
 		return new ArticleCommentRequest(
-			articleComment.getId(),
-			articleComment.getWriter(),
-			articleComment.getContent(),
-			articleComment.getCreatedAt()
+			comment.getId(),
+			comment.getWriter(),
+			comment.getContent(),
+			comment.getCreatedAt()
 		);
 	}
 }

@@ -26,7 +26,7 @@ import kr.codesqaud.cafe.controller.dto.ArticleDetails;
 import kr.codesqaud.cafe.controller.dto.ArticleRequest;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
-import kr.codesqaud.cafe.domain.articlecomment.ArticleComment;
+import kr.codesqaud.cafe.domain.articlecomment.Comment;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.service.ArticleService;
 
@@ -83,7 +83,7 @@ class ArticleControllerTest {
 	void givenNothing_whenShowArticleDetails_thenReturnsArticleDetailsView() throws Exception {
 		// given
 		ArticleDetails articleDetails = new ArticleDetails(ArticleRequest.from(createArticle()), List.of(
-			ArticleCommentRequest.from(new ArticleComment(1L, "이건 댓글!", LocalDateTime.now(), "익명의 사용자", 1L))));
+			ArticleCommentRequest.from(new Comment(1L, "이건 댓글!", LocalDateTime.now(), "익명의 사용자", 1L))));
 		given(articleService.getArticleDetails(anyLong())).willReturn(articleDetails);
 
 		// when & then

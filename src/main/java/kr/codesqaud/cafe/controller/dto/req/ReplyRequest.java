@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller.dto.req;
 
-import kr.codesqaud.cafe.domain.articlecomment.ArticleComment;
+import kr.codesqaud.cafe.domain.articlecomment.Comment;
 
 public class ReplyRequest {
 
@@ -23,7 +23,7 @@ public class ReplyRequest {
 		return content;
 	}
 
-	public ArticleComment toEntity(final String userId) {
-		return ArticleComment.of(content, userId, articleId);
+	public Comment toEntity(final String userId) {
+		return Comment.of(content, userId, articleId);
 	}
 }

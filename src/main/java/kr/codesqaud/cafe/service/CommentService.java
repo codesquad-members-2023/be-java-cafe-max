@@ -5,31 +5,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.codesqaud.cafe.controller.dto.req.ReplyRequest;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
-import kr.codesqaud.cafe.repository.ArticleCommentRepository;
+import kr.codesqaud.cafe.repository.CommentRepository;
 
 @Transactional(readOnly = true)
 @Service
-public class ArticleCommentService {
+public class CommentService {
 
-	private final ArticleCommentRepository articleCommentRepository;
+	private final CommentRepository commentRepository;
 
-	public ArticleCommentService(ArticleCommentRepository articleCommentRepository) {
-		this.articleCommentRepository = articleCommentRepository;
+	public CommentService(CommentRepository commentRepository) {
+		this.commentRepository = commentRepository;
 	}
 
 	@Transactional
 	public Long reply(final ReplyRequest request, final String userId) {
-		return articleCommentRepository.save(request.toEntity(userId));
+		return commentRepository.save(request.toEntity(userId));
 	}
 
 	public void validateHasAuthorization(final Long id, final String userId) {
-		articleCommentRepository.findById(id)
+		commentRepository.findById(id)
 			.filter(articleComment -> articleComment.isSameWriter(userId))
 			.orElseThrow(NoAuthorizationException::new);
 	}
 
 	@Transactional
 	public void deleteById(final Long id) {
-		articleCommentRepository.deleteById(id);
+		commentRepository.deleteById(id);
 	}
 }

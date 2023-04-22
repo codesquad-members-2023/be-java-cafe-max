@@ -12,31 +12,31 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.codesqaud.cafe.controller.dto.req.ReplyRequest;
-import kr.codesqaud.cafe.service.ArticleCommentService;
+import kr.codesqaud.cafe.service.CommentService;
 
 @RestController
-public class ArticleCommentController {
+public class CommentController {
 
-	private final ArticleCommentService articleCommentService;
+	private final CommentService commentService;
 
-	public ArticleCommentController(ArticleCommentService articleCommentService) {
-		this.articleCommentService = articleCommentService;
+	public CommentController(CommentService commentService) {
+		this.commentService = commentService;
 	}
 
 	@PostMapping("/comments")
 	public ResponseEntity<Long> reply(@RequestBody final ReplyRequest request,
 									  @SessionAttribute(SESSION_USER) final String userId) {
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(articleCommentService.reply(request, userId));
+			.body(commentService.reply(request, userId));
 	}
 
-	@DeleteMapping("/comments/{articleCommentId}")
-	public ResponseEntity<Long> deleteComment(@PathVariable final Long articleCommentId,
+	@DeleteMapping("/comments/{commentId}")
+	public ResponseEntity<Long> deleteComment(@PathVariable final Long commentId,
 											  @SessionAttribute(SESSION_USER) final String userId) {
-		articleCommentService.validateHasAuthorization(articleCommentId, userId);
-		articleCommentService.deleteById(articleCommentId);
+		commentService.validateHasAuthorization(commentId, userId);
+		commentService.deleteById(commentId);
 
 		return ResponseEntity.status(HttpStatus.OK)
-			.body(articleCommentId);
+			.body(commentId);
 	}
 }

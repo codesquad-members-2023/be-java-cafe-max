@@ -20,10 +20,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.codesqaud.cafe.controller.dto.req.ReplyRequest;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
-import kr.codesqaud.cafe.service.ArticleCommentService;
+import kr.codesqaud.cafe.service.CommentService;
 
-@WebMvcTest(ArticleCommentController.class)
-public class ArticleCommentControllerTest {
+@WebMvcTest(CommentController.class)
+public class CommentControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -32,14 +32,14 @@ public class ArticleCommentControllerTest {
 	private ObjectMapper mapper;
 
 	@MockBean
-	private ArticleCommentService articleCommentService;
+	private CommentService commentService;
 
 	@DisplayName("[POST] 댓글 작성 - 정상호출")
 	@Test
 	void givenReplyRequest_whenReply_thenRedirectsArticleDetailsPage() throws Exception {
 		// given
 		ReplyRequest request = new ReplyRequest(1L, "댓글의 내용이랍니다~");
-		given(articleCommentService.reply(any(ReplyRequest.class), anyString())).willReturn(1L);
+		given(commentService.reply(any(ReplyRequest.class), anyString())).willReturn(1L);
 
 		// when & then
 		mockMvc.perform(post("/comments")
@@ -50,7 +50,7 @@ public class ArticleCommentControllerTest {
 			.andExpect(content().string("1"))
 			.andDo(print());
 
-		then(articleCommentService).should().reply(any(ReplyRequest.class), anyString());
+		then(commentService).should().reply(any(ReplyRequest.class), anyString());
 	}
 
 	@DisplayName("[POST] 댓글 작성 - 세션이 없을 때 로그인 페이지로 리다이렉트 된다.")
@@ -59,7 +59,7 @@ public class ArticleCommentControllerTest {
 		// given
 		ReplyRequest request = new ReplyRequest(1L, "댓글의 내용이랍니다~");
 
-		given(articleCommentService.reply(any(ReplyRequest.class), anyString())).willReturn(1L);
+		given(commentService.reply(any(ReplyRequest.class), anyString())).willReturn(1L);
 
 		// when & then
 		mockMvc.perform(post("/comments")
@@ -69,15 +69,15 @@ public class ArticleCommentControllerTest {
 			.andExpect(redirectedUrl("/user/login"))
 			.andDo(print());
 
-		then(articleCommentService).shouldHaveNoInteractions();
+		then(commentService).shouldHaveNoInteractions();
 	}
 
 	@DisplayName("[DELETE] 댓글 삭제 - 정상호출")
 	@Test
 	void givenArticleId_whenDelete_thenRedirectsArticleDetailsPage() throws Exception {
 		// given
-		willDoNothing().given(articleCommentService).validateHasAuthorization(anyLong(), anyString());
-		willDoNothing().given(articleCommentService).deleteById(anyLong());
+		willDoNothing().given(commentService).validateHasAuthorization(anyLong(), anyString());
+		willDoNothing().given(commentService).deleteById(anyLong());
 
 		// when & then
 		mockMvc.perform(delete("/comments/1")
@@ -87,8 +87,8 @@ public class ArticleCommentControllerTest {
 			.andDo(print());
 
 		assertAll(
-			() -> then(articleCommentService).should().validateHasAuthorization(1L, "bruni"),
-			() -> then(articleCommentService).should().deleteById(1L)
+			() -> then(commentService).should().validateHasAuthorization(1L, "bruni"),
+			() -> then(commentService).should().deleteById(1L)
 		);
 	}
 
@@ -107,7 +107,7 @@ public class ArticleCommentControllerTest {
 			.andExpect(redirectedUrl("/user/login"))
 			.andDo(print());
 
-		then(articleCommentService).shouldHaveNoInteractions();
+		then(commentService).shouldHaveNoInteractions();
 	}
 
 	@DisplayName("[DELETE] 댓글 삭제 - 댓글의 작성자와 현재 로그인된 사용자가 일치하지 않으면 에러뷰가 반환된다.")
@@ -117,9 +117,9 @@ public class ArticleCommentControllerTest {
 		MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 		body.add("articleId", "1");
 
-		willThrow(NoAuthorizationException.class).given(articleCommentService)
+		willThrow(NoAuthorizationException.class).given(commentService)
 			.validateHasAuthorization(anyLong(), anyString());
-		willDoNothing().given(articleCommentService).deleteById(anyLong());
+		willDoNothing().given(commentService).deleteById(anyLong());
 
 		// when & then
 		mockMvc.perform(delete("/comments/1")
@@ -131,8 +131,8 @@ public class ArticleCommentControllerTest {
 			.andDo(print());
 
 		assertAll(
-			() -> then(articleCommentService).should().validateHasAuthorization(1L, "bruni"),
-			() -> then(articleCommentService).should(never()).deleteById(anyLong())
+			() -> then(commentService).should().validateHasAuthorization(1L, "bruni"),
+			() -> then(commentService).should(never()).deleteById(anyLong())
 		);
 	}
 }

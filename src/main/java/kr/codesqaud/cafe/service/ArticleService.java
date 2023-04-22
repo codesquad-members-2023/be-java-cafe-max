@@ -13,23 +13,23 @@ import kr.codesqaud.cafe.controller.dto.ArticleWithCommentCount;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.domain.article.Article;
-import kr.codesqaud.cafe.domain.articlecomment.ArticleComment;
+import kr.codesqaud.cafe.domain.articlecomment.Comment;
 import kr.codesqaud.cafe.exception.InvalidOperationException;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.exception.NotFoundException;
-import kr.codesqaud.cafe.repository.ArticleCommentRepository;
 import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.repository.CommentRepository;
 
 @Transactional(readOnly = true)
 @Service
 public class ArticleService {
 
 	private final ArticleRepository articleRepository;
-	private final ArticleCommentRepository articleCommentRepository;
+	private final CommentRepository commentRepository;
 
-	public ArticleService(ArticleRepository articleRepository, ArticleCommentRepository articleCommentRepository) {
+	public ArticleService(ArticleRepository articleRepository, CommentRepository commentRepository) {
 		this.articleRepository = articleRepository;
-		this.articleCommentRepository = articleCommentRepository;
+		this.commentRepository = commentRepository;
 	}
 
 	@Transactional
@@ -40,8 +40,8 @@ public class ArticleService {
 	public ArticleDetails getArticleDetails(final Long id) {
 		Article article = articleRepository.findById(id)
 			.orElseThrow(() -> new NotFoundException(String.format("%d번 게시글을 찾을 수 없습니다.", id)));
-		List<ArticleComment> articleComments = articleCommentRepository.findAllByArticleId(id);
-		return new ArticleDetails(ArticleRequest.from(article), articleComments.stream()
+		List<Comment> comments = commentRepository.findAllByArticleId(id);
+		return new ArticleDetails(ArticleRequest.from(article), comments.stream()
 			.map(ArticleCommentRequest::from)
 			.collect(Collectors.toUnmodifiableList()));
 	}
