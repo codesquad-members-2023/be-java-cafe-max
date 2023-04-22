@@ -2,49 +2,47 @@ package kr.codesqaud.cafe.controller.dto.article;
 
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.lang.Nullable;
-import org.springframework.util.StringUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class ArticleCreateDto {
-    private static final String BLANK = "";
-
-    private Long userId;
+public class ArticleUpdateDto {
+    private Long id;
 
     @NotBlank(message = "제목을 입력하세요.")
     @Size(min = 2, max = 30, message = "제목은 {min} ~ {max} 길이로 입력하세요.")
     private String title;
 
-    private String writer;
-
     @Nullable
     @Size(max = 1000, message = "본문은 {max}글자 이하로 입력하세요.")
     private String contents;
 
-    public ArticleCreateDto() {
+    public ArticleUpdateDto(Long id, String title, String contents) {
+        this.id = id;
+        this.title = title;
+        this.contents = contents;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public ArticleUpdateDto() {
     }
 
-    public Long getUserId() {
-        return userId;
+    public ArticleUpdateDto(ArticleReadDto articleReadDto) {
+        this(articleReadDto.getId(), articleReadDto.getTitle(), articleReadDto.getContents());
     }
 
-    public String getWriter() {
-        return writer;
+    public Article toArticle() {
+        return new Article(id, title, contents);
     }
 
-    public void setWriter(String writer) {
-        this.writer = writer;
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {
         return title;
     }
 
+    @Nullable
     public String getContents() {
         return contents;
     }
@@ -57,15 +55,7 @@ public class ArticleCreateDto {
         this.contents = contents;
     }
 
-    public Article toArticle() {
-        if (isEmptyContents()) {
-            contents = BLANK;
-        }
-
-        return new Article(userId, writer, title, contents);
-    }
-
-    private boolean isEmptyContents() {
-        return !StringUtils.hasText(contents);
+    public void setId(Long id) {
+        this.id = id;
     }
 }

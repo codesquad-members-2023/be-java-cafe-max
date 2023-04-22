@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.article.ArticleCreateDto;
 import kr.codesqaud.cafe.controller.dto.article.ArticleReadDto;
+import kr.codesqaud.cafe.controller.dto.article.ArticleUpdateDto;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,11 @@ public class ArticleService {
         return articleRepository.findAll().stream()
                 .map(ArticleReadDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public void update(ArticleUpdateDto articleUpdateDto) {
+        final Article article = articleUpdateDto.toArticle();
+
+        articleRepository.update(article);
     }
 }

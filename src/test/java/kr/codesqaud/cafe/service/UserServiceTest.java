@@ -39,7 +39,7 @@ class UserServiceTest {
         final User user = new User("testId", "이성빈", "test123123", "tjdqls@naver.com");
         final UserLoginDto userLoginDto = new UserLoginDto("testId", "test123123");
 
-        BDDMockito.given(userRepository.findByUserId(userLoginDto.getUserId())).willReturn(Optional.of(user));
+        BDDMockito.given(userRepository.findByUsername(userLoginDto.getUsername())).willReturn(Optional.of(user));
 
         Assertions.assertThatNoException().isThrownBy(() -> userService.login(userLoginDto));
     }
@@ -50,7 +50,7 @@ class UserServiceTest {
         final User user = new User("testId", "이성빈", "test123123", "tjdqls@naver.com");
         final UserLoginDto userLoginDto = new UserLoginDto("testId", "adsadkdjalk");
 
-        BDDMockito.given(userRepository.findByUserId(userLoginDto.getUserId())).willReturn(Optional.of(user));
+        BDDMockito.given(userRepository.findByUsername(userLoginDto.getUsername())).willReturn(Optional.of(user));
 
         Assertions.assertThatThrownBy(() -> userService.login(userLoginDto)).isInstanceOf(UserLoginException.class);
     }

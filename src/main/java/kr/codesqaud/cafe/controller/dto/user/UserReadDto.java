@@ -4,31 +4,31 @@ import kr.codesqaud.cafe.domain.User;
 
 public class UserReadDto {
     private final Long id;
-    private final String userId;
-    private final String name;
+    private final String username;
+    private final String nickname;
     private final String email;
 
-    public UserReadDto(Long id, String userId, String name, String email) {
+    public UserReadDto(Long id, String username, String nickname, String email) {
         this.id = id;
-        this.userId = userId;
-        this.name = name;
+        this.username = username;
+        this.nickname = nickname;
         this.email = email;
     }
 
     public UserReadDto(User user) {
-        this(user.getId(), user.getUserId(), user.getName(), user.getEmail());
+        this(user.getId(), user.getUsername(), user.getNickname(), user.getEmail());
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
     public String getEmail() {

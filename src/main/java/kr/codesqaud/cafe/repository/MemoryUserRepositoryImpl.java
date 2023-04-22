@@ -25,16 +25,9 @@ public class MemoryUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
+    public Optional<User> findByUsername(String username) {
         return users.values().stream()
-                .filter(user -> user.getUserId().equals(userId))
-                .findAny();
-    }
-
-    @Override
-    public Optional<User> findByEmail(String email) {
-        return users.values().stream()
-                .filter(user -> user.getEmail().equals(email))
+                .filter(user -> user.getUsername().equals(username))
                 .findAny();
     }
 
@@ -52,7 +45,17 @@ public class MemoryUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void update(User toUser) {
+    public void update(User user) {
+        users.put(user.getId(), user);
+    }
 
+    @Override
+    public boolean existsUsername(String username) {
+        return users.values().stream().anyMatch(user -> user.getUsername().equals(username));
+    }
+
+    @Override
+    public boolean existsNickname(String nickname) {
+        return users.values().stream().anyMatch(user -> user.getNickname().equals(nickname));
     }
 }

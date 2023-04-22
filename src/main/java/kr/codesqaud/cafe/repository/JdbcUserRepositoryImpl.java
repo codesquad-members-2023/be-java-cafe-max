@@ -2,12 +2,10 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
 import org.springframework.context.annotation.Primary;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -17,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Primary
 @Repository
@@ -30,13 +29,11 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public Long save(final User user) {
-        final String sql = "INSERT INTO users (user_id, name, password, email, created_at, updated_at) " +
-                "VALUES (:userId, :name, :password, :email, :createdAt, :updatedAt)";
+        final String sql = "INSERT INTO users (username, nickname, password, email) " +
+                "VALUES (:username, :nickname, :password, :email)";
 
-        final SqlParameterSource param = new BeanPropertySqlParameterSource(user);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        template.update(sql, param, keyHolder);
+        template.update(sql, new BeanPropertySqlParameterSource(user), keyHolder);
 
         return (long) Objects.requireNonNull(keyHolder.getKeys()).get("id");
     }
@@ -45,32 +42,17 @@ public class JdbcUserRepositoryImpl implements UserRepository {
     public Optional<User> findById(final Long id) {
         final String sql  = "SELECT * FROM users WHERE id = :id";
 
-        try {
-            return Optional.ofNullable(template.queryForObject(sql, Map.of("id", id), userRowMapper()));
-        } catch (EmptyResultDataAccessException ex) {
-            return Optional.empty();
+        try (final Stream<User> result = template.queryForStream(sql, Map.of("id", id), userRowMapper())) {
+            return result.findFirst();
         }
     }
 
     @Override
-    public Optional<User> findByUserId(final String userId) {
-        final String sql  = "SELECT * FROM users WHERE user_id = :userId";
+    public Optional<User> findByUsername(final String username) {
+        final String sql  = "SELECT * FROM users WHERE username = :username";
 
-        try {
-            return Optional.ofNullable(template.queryForObject(sql, Map.of("userId", userId), userRowMapper()));
-        } catch (EmptyResultDataAccessException ex) {
-            return Optional.empty();
-        }
-    }
-
-    @Override
-    public Optional<User> findByEmail(final String email) {
-        final String sql  = "SELECT * FROM users WHERE email = :email";
-
-        try {
-            return Optional.ofNullable(template.queryForObject(sql, Map.of("email", email), userRowMapper()));
-        } catch (EmptyResultDataAccessException ex) {
-            return Optional.empty();
+        try (final Stream<User> result = template.queryForStream(sql, Map.of("username", username), userRowMapper())) {
+            return result.findFirst();
         }
     }
 
@@ -83,21 +65,35 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public void update(User user) {
-        final String sql = "UPDATE users SET user_id=:userId, password=:password WHERE id=:id";
+        final String sql = "UPDATE users SET nickname=:nickname, password=:password WHERE id=:id";
 
         final MapSqlParameterSource param = new MapSqlParameterSource()
-                .addValue("userId", user.getUserId())
+                .addValue("nickname", user.getNickname())
                 .addValue("password", user.getPassword())
                 .addValue("id", user.getId());
 
         template.update(sql, param);
     }
 
+    @Override
+    public boolean existsUsername(String username) {
+        final String sql = "SELECT EXISTS (SELECT 1 FROM users WHERE username = :username)";
+
+        return Boolean.TRUE.equals(template.queryForObject(sql, Map.of("username", username), Boolean.class));
+    }
+
+    @Override
+    public boolean existsNickname(String nickname) {
+        final String sql = "SELECT EXISTS (SELECT 1 FROM users WHERE nickname = :nickname)";
+
+        return Boolean.TRUE.equals(template.queryForObject(sql, Map.of("nickname", nickname), Boolean.class));
+    }
+
     private RowMapper<User> userRowMapper() {
         return ((rs, rowNum) -> new User(
                 rs.getLong("id"),
-                rs.getString("user_id"),
-                rs.getString("name"),
+                rs.getString("username"),
+                rs.getString("nickname"),
                 rs.getString("password"),
                 rs.getString("email"),
                 rs.getTimestamp("created_at").toLocalDateTime(),

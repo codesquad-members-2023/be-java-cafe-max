@@ -8,7 +8,7 @@ public class UserLoginDto {
     @NotBlank(message = "아이디를 입력하세요.")
     @Size(min = 5, max = 20, message = "아이디는 {min} ~ {max} 길이로 입력하세요.")
     @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "아이디는 알파벳, 숫자만 가능합니다.")
-    private String userId;
+    private String username;
 
     @NotBlank(message = "비밀번호를 입력하세요.")
     @Size(min = 8, max = 20, message = "비밀번호는 {min} ~ {max} 길이로 입력하세요.")
@@ -18,21 +18,21 @@ public class UserLoginDto {
     public UserLoginDto() {
     }
 
-    public UserLoginDto(String userId, String password) {
-        this.userId = userId;
+    public UserLoginDto(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPassword(String password) {
