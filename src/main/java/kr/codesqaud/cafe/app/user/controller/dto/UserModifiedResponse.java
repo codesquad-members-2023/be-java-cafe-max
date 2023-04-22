@@ -6,14 +6,12 @@ public class UserModifiedResponse {
 
     private Long id;
     private String userId;
-    private String password;
     private String name;
     private String email;
 
     public UserModifiedResponse(User user) {
         this.id = user.getId();
         this.userId = user.getUserId();
-        this.password = user.getPassword();
         this.name = user.getName();
         this.email = user.getEmail();
     }
@@ -26,10 +24,6 @@ public class UserModifiedResponse {
         return userId;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public String getName() {
         return name;
     }
@@ -40,8 +34,8 @@ public class UserModifiedResponse {
 
     @Override
     public String toString() {
-        return String.format("UserResponseDto={id=%d, userId=%s, password=%s name=%s, email=%s}",
-            id, userId, password, name, email);
+        return String.format("UserResponseDto={id=%d, userId=%s, name=%s, email=%s}",
+            id, userId, name, email);
     }
 
 }
