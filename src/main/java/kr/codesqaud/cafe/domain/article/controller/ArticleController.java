@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.domain.article.controller;
 
+import static kr.codesqaud.cafe.global.common.constant.SessionAttributeNames.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.codesqaud.cafe.domain.article.dto.request.ArticleSaveRequestDto;
 import kr.codesqaud.cafe.domain.article.dto.response.ArticleDetailResponseDto;
@@ -19,7 +20,6 @@ import kr.codesqaud.cafe.domain.article.repository.ArticleRepository;
 import kr.codesqaud.cafe.domain.reply.dto.response.ReplyDetailResponseDto;
 import kr.codesqaud.cafe.domain.reply.entity.Reply;
 import kr.codesqaud.cafe.domain.reply.repository.ReplyRepository;
-import kr.codesqaud.cafe.global.common.constant.SessionAttributeNames;
 
 @Controller
 public class ArticleController {
@@ -41,12 +41,12 @@ public class ArticleController {
 		return "index";
 	}
 
-    @GetMapping("/articles")
-    public String saveArticle(ArticleSaveRequestDto articleSaveRequestDto, HttpSession httpSession) {
-        String loginUserName = httpSession.getAttribute(LOGIN_USER_NAME.type()).toString();
-        articleRepository.save(articleSaveRequestDto.toEntity(loginUserName));
-        return "redirect:/";
-    }
+	@GetMapping("/articles")
+	public String saveArticle(ArticleSaveRequestDto articleSaveRequestDto, HttpSession httpSession) {
+		String loginUserName = httpSession.getAttribute(LOGIN_USER_NAME.type()).toString();
+		articleRepository.save(articleSaveRequestDto.toEntity(loginUserName));
+		return "redirect:/";
+	}
 
 	@GetMapping("/articles/{id}")
 	public String viewArticle(@PathVariable("id") Long id, Model model) {
