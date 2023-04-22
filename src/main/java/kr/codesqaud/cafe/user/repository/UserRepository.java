@@ -1,17 +1,18 @@
 package kr.codesqaud.cafe.user.repository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
-import kr.codesqaud.cafe.user.dto.request.SignUpDTO;
-import kr.codesqaud.cafe.user.dto.response.UserDTO;
+import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
+import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
+import kr.codesqaud.cafe.user.exception.UserNotExistException;
 
 public interface UserRepository {
-	void insert(SignUpDTO dto) throws IllegalArgumentException;
+	void save(User user) throws UserIdDuplicateException;
 
-	List<UserDTO> selectAll();
+	List<User> findAll();
 
-	UserDTO selectByUserId(String userId) throws NoSuchElementException;
+	User findByUserId(String userId) throws UserNotExistException;
 
-	void update(SignUpDTO dto) throws NoSuchElementException;
+	void modify(User user) throws UserDoesNotMatchException;
 }

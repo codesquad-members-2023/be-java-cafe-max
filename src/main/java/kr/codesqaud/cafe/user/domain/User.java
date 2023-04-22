@@ -1,25 +1,29 @@
 package kr.codesqaud.cafe.user.domain;
 
-import kr.codesqaud.cafe.user.dto.request.SignUpDTO;
-import kr.codesqaud.cafe.user.dto.response.UserDTO;
-
 public class User {
-	private final int idx;
+	private long id;
 	private final String userId;
 	private String password;
 	private String name;
 	private String email;
 
-	public User(int idx, String userId, String password, String name, String email) {
-		this.idx = idx;
+	public User(String userId, String password, String name, String email) {
 		this.userId = userId;
 		this.password = password;
 		this.name = name;
 		this.email = email;
 	}
 
-	public int getIdx() {
-		return idx;
+	public User(long id, String userId, String password, String name, String email) {
+		this.id = id;
+		this.userId = userId;
+		this.password = password;
+		this.name = name;
+		this.email = email;
+	}
+
+	public long getId() {
+		return id;
 	}
 
 	public String getUserId() {
@@ -38,14 +42,10 @@ public class User {
 		return email;
 	}
 
-	public UserDTO toDto() {
-		return new UserDTO(idx, userId, name, email);
-	}
-
-	public void updateFrom(SignUpDTO dto) {
-		this.password = dto.getPassword();
-		this.name = dto.getName();
-		this.email = dto.getEmail();
+	public void updateFrom(User user) {
+		this.password = user.getPassword();
+		this.name = user.getName();
+		this.email = user.getEmail();
 	}
 
 }

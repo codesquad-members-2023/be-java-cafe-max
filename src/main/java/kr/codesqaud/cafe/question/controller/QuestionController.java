@@ -1,5 +1,8 @@
 package kr.codesqaud.cafe.question.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import kr.codesqaud.cafe.question.dto.response.QuestionWriteDTO;
+import kr.codesqaud.cafe.common.web.PageHandler;
+import kr.codesqaud.cafe.question.controller.request.QuestionWriteRequestDTO;
+import kr.codesqaud.cafe.question.controller.response.QuestionBoardResponseDTO;
+import kr.codesqaud.cafe.question.controller.response.QuestionDetailDTO;
+import kr.codesqaud.cafe.question.controller.response.QuestionTitleResponseDTO;
+import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.question.service.QuestionService;
 
 @Controller
@@ -37,8 +45,8 @@ public class QuestionController {
 	 * @return Q&A 게시글 작성 페이지로 redirect
 	 */
 	@PostMapping
-	public String questionAdd(QuestionWriteDTO dto) {
-		service.addQuestion(dto);
+	public String questionAdd(QuestionWriteRequestDTO dto) {
+		service.save(dto.toEntity());
 		return "redirect:questions/write-form";
 	}
 
@@ -49,27 +57,33 @@ public class QuestionController {
 	 * @return Q&A 게시글 목록 페이지
 	 */
 	@GetMapping
-	public String questionList(@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+	public String questionList(@RequestParam(value = "page", required = false, defaultValue = "1") long page,
 		Model model) {
-
-		model.addAttribute("questionBoardDto", service.makeQuestionBoard(page));
+		PageHandler pageHandler = new PageHandler(service.countBy(), page);
+		List<QuestionTitleResponseDTO> questionTitles =
+			service.findAll(pageHandler.getPostOffset(),
+					pageHandler.getPageSize())
+				.stream()
+				.map(QuestionTitleResponseDTO::from)
+				.collect(Collectors.toUnmodifiableList());
+		model.addAttribute("questionBoardResponseDTO",
+			new QuestionBoardResponseDTO(pageHandler, questionTitles));
 
 		return "index";
 	}
 
 	/**
 	 * Q&A 게시글 상세 보기 페이지로 이동
-	 * @param questionIdx 조회하고자 하는 Q&A 게시글의 idx
+	 * @param id 조회하고자 하는 Q&A 게시글의 id
 	 * @param errorMessage 없는 게시글 또는 잘못된 입력값이 들어왔을때 받아올 에러 메시지
 	 * @param model `Q&A 게시글 상세 내역` 또는 `에러 메시지`를 전달하기 위한 model
 	 * @return Q&A 게시글 상세 보기 페이지
 	 */
-	@GetMapping("/{questionIdx}")
-	public String questionDetails(@PathVariable String questionIdx, @ModelAttribute("errorMessage") String errorMessage,
-		Model model) {
+	@GetMapping("/{id}")
+	public String questionDetail(@PathVariable String id, @ModelAttribute("errorMessage") String errorMessage,
+		Model model) throws QuestionNotExistException {
 		if (errorMessage.isBlank()) {
-			int idx = Integer.parseInt(questionIdx);
-			model.addAttribute("questionDetails", service.findQuestion(idx));
+			model.addAttribute("questionDetailDTO", QuestionDetailDTO.from(service.findById(Long.parseLong(id))));
 		}
 
 		return "qna/show";

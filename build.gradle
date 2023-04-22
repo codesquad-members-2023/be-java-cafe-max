@@ -19,6 +19,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'com.h2database:h2'
+    implementation 'org.mockito:mockito-inline'
 }
 
 tasks.named('test') {

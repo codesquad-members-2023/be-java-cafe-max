@@ -6,21 +6,22 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import kr.codesqaud.cafe.question.domain.Question;
-import kr.codesqaud.cafe.question.dto.response.QuestionWriteDTO;
 
 public class TempQuestionTable {
 	private final List<Question> questions = new ArrayList<>();
-	private final AtomicInteger questionIdx = new AtomicInteger(1);
+	private final AtomicInteger id = new AtomicInteger(1);
 
-	public synchronized void insert(QuestionWriteDTO dto) {
-		questions.add(dto.toEntity(questionIdx.getAndIncrement()));
+	public synchronized void insert(Question question) {
+		Question questionGivenId = new Question(id.getAndIncrement(), question.getWriter(), question.getTitle(),
+			question.getContents(), question.getRegistrationDateTime());
+		questions.add(questionGivenId);
 	}
 
 	public List<Question> select() {
 		return Collections.unmodifiableList(questions);
 	}
 
-	public int countAll() {
+	public int count() {
 		return questions.size();
 	}
 

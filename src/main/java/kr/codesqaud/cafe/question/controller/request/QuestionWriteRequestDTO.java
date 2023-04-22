@@ -1,15 +1,15 @@
-package kr.codesqaud.cafe.question.dto.response;
+package kr.codesqaud.cafe.question.controller.request;
 
 import java.time.LocalDateTime;
 
 import kr.codesqaud.cafe.question.domain.Question;
 
-public class QuestionWriteDTO {
+public class QuestionWriteRequestDTO {
 	private final String writer;
 	private final String title;
 	private final String contents;
 
-	public QuestionWriteDTO(String writer, String title, String contents) {
+	public QuestionWriteRequestDTO(String writer, String title, String contents) {
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
@@ -27,7 +27,7 @@ public class QuestionWriteDTO {
 		return contents;
 	}
 
-	public Question toEntity(int idx) {
-		return new Question(idx, writer, title, contents, LocalDateTime.now());
+	public Question toEntity() {
+		return new Question(-1, writer, title, contents, LocalDateTime.now());
 	}
 }

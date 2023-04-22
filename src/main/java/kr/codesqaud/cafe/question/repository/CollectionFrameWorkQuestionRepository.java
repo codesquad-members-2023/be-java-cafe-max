@@ -2,16 +2,13 @@ package kr.codesqaud.cafe.question.repository;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.common.repository.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.question.domain.Question;
-import kr.codesqaud.cafe.question.dto.response.QuestionDetailDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionTitleDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionWriteDTO;
+import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 
 @Repository
 public class CollectionFrameWorkQuestionRepository implements QuestionRepository {
@@ -23,29 +20,28 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 		dummyData.insertQuestionsDummyData(questionTable);
 	}
 
-	public void insert(QuestionWriteDTO dto) {
-		questionTable.insert(dto);
+	public void save(Question question) {
+		questionTable.insert(question);
 	}
 
-	public int countAll() {
-		return questionTable.countAll();
+	public long countBy() {
+		return questionTable.count();
 	}
 
-	public List<QuestionTitleDTO> selectQuestionTitlesByOffset(int postOffset, int pageSize) {
+	public List<Question> findAll(long offset, int pageSize) {
 		return questionTable.select().stream()
-			.sorted(Comparator.comparing(Question::getIdx).reversed())
-			.skip(postOffset).limit(pageSize)
-			.map(Question::toTitleDto)
+			.sorted(Comparator.comparing(Question::getId).reversed())
+			.skip(offset).limit(pageSize)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public QuestionDetailDTO selectByIdx(int idx) throws NoSuchElementException {
+	public Question findById(long id) throws QuestionNotExistException {
 		for (Question question : questionTable.select()) {
-			if (question.getIdx() == idx) {
-				return question.toDetailsDto();
+			if (question.getId() == id) {
+				return question;
 			}
 		}
-		throw new NoSuchElementException("존재하지 않는 개시글 입니다.");
+		throw new QuestionNotExistException(id);
 	}
 
 }

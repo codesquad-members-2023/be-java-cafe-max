@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -19,7 +22,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.codesqaud.cafe.user.dto.request.SignUpDTO;
+import kr.codesqaud.cafe.user.controller.request.SignInRequestDTO;
+import kr.codesqaud.cafe.user.controller.request.SignUpRequestDTO;
+import kr.codesqaud.cafe.user.controller.response.AuthSession;
+import kr.codesqaud.cafe.user.controller.response.UserResponseDTO;
+import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
+import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
+import kr.codesqaud.cafe.user.exception.UserNotExistException;
 import kr.codesqaud.cafe.user.service.UserService;
 
 @Controller
@@ -41,6 +50,39 @@ public class UserController {
 		return "user/form";
 	}
 
+	@GetMapping("/signin")
+	public String signIn(Model model) {
+		return "user/signin";
+	}
+
+	@PostMapping("/signin")
+	public String signIn(SignInRequestDTO dto, HttpServletRequest request, HttpServletResponse response) throws
+		UserDoesNotMatchException {
+		HttpSession session = request.getSession();
+		session.setAttribute("authSession",
+			AuthSession.from(service.performSignIn(dto.getUserId(), dto.getPassword())));
+
+		if (dto.isRemember()) {
+			Cookie cookie = new Cookie("rememberCheckbox", dto.getUserId());
+			cookie.setPath("/");
+			cookie.setMaxAge(60 * 60 * 24 * 365);
+			response.addCookie(cookie);
+		} else {
+			Cookie cookie = new Cookie("rememberCheckbox", null);
+			cookie.setPath("/");
+			cookie.setMaxAge(0);
+			response.addCookie(cookie);
+		}
+
+		return "redirect:/questions";
+	}
+
+	@GetMapping("/signout")
+	public String signOut(HttpSession session) {
+		session.removeAttribute("authSession");
+		return "redirect:/questions";
+	}
+
 	/**
 	 * 회원 목록 페이지로 이동
 	 * @param model 회원 목록을 전달하기 위한 model
@@ -60,12 +102,13 @@ public class UserController {
 	 * @return 회원가입 성공시 회원 목록 보기 페이지, 실패시 회원가입 페이지로 redirect
 	 */
 	@PostMapping
-	public String userAdd(@Valid SignUpDTO dto, BindingResult result, RedirectAttributes redirect) {
+	public String userAdd(@Valid SignUpRequestDTO dto, BindingResult result, RedirectAttributes redirect) throws
+		UserIdDuplicateException {
 		if (result.hasErrors()) {
 			addAttributeErrorMessages(redirect, collectErrorMessages(result));
 			return "redirect:/users/signup";
 		}
-		service.addUser(dto);
+		service.addUser(dto.toEntity());
 		return "redirect:/users";
 	}
 
@@ -77,10 +120,10 @@ public class UserController {
 	 * @return 회원 프로필 보기 페이지
 	 */
 	@GetMapping("/{userId}")
-	public String userDetails(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
-		Model model) {
+	public String userDetail(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
+		Model model) throws UserNotExistException {
 		if (errorMessage.isBlank()) {
-			model.addAttribute("userDto", service.findUser(userId));
+			model.addAttribute("userResponseDto", UserResponseDTO.from(service.findByUserId(userId)));
 		}
 
 		return "user/profile";
@@ -95,9 +138,14 @@ public class UserController {
 	 */
 	@GetMapping("/{userId}/modify-form")
 	public String modifyForm(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
-		Model model) {
+		Model model, HttpServletRequest request) throws UserNotExistException {
+
+		if (!checkAuthSession(request.getSession(false), userId)) {
+			return "error/403-forbidden";
+		}
+
 		if (errorMessage.isBlank()) {
-			model.addAttribute("userDto", service.findUser(userId));
+			model.addAttribute("userResponseDto", UserResponseDTO.from(service.findByUserId(userId)));
 		}
 
 		return "user/modify-form";
@@ -113,9 +161,9 @@ public class UserController {
 	 * @return 회원 정보 수정 성공시 회원 프로필 페이지, 실패시 이전 페이지로 redirect
 	 */
 	@PutMapping("/{userId}")
-	public String userModify(@PathVariable String userId, @Valid SignUpDTO dto, BindingResult result,
+	public String userModify(@PathVariable String userId, @Valid SignUpRequestDTO dto, BindingResult result,
 		RedirectAttributes redirect,
-		HttpServletRequest request) {
+		HttpServletRequest request) throws UserDoesNotMatchException {
 
 		if (!userId.equals(dto.getUserId())) {
 			addAttributeErrorMessage(redirect, "잘못된 입력입니다.");
@@ -126,8 +174,7 @@ public class UserController {
 			addAttributeErrorMessages(redirect, collectErrorMessages(result));
 			return redirectBack(request);
 		}
-
-		service.modifyUser(dto);
+		service.modifyUser(dto.toEntity());
 
 		return "redirect:/users/" + dto.getUserId();
 	}
@@ -178,5 +225,16 @@ public class UserController {
 			.map(DefaultMessageSourceResolvable::getDefaultMessage)
 			.filter(Objects::nonNull)
 			.collect(Collectors.toUnmodifiableList());
+	}
+
+	/**
+	 * pathValue의 userId와 session의 userId가 같은지 검증한다.
+	 * @param httpSession HttpSession
+	 * @param userIdFromPath pathValue의 userId
+	 * @return session 검증 통과시 ture, 실패시 false 반환
+	 */
+	private boolean checkAuthSession(HttpSession httpSession, String userIdFromPath) {
+		AuthSession authSession = (httpSession != null) ? (AuthSession)httpSession.getAttribute("authSession") : null;
+		return httpSession != null && userIdFromPath.equals(authSession.getUserId());
 	}
 }

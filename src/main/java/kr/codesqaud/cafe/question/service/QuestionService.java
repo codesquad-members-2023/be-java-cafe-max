@@ -1,15 +1,11 @@
 package kr.codesqaud.cafe.question.service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
-import kr.codesqaud.cafe.common.domain.PageHandler;
-import kr.codesqaud.cafe.question.dto.response.QuestionBoardDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionDetailDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionTitleDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionWriteDTO;
+import kr.codesqaud.cafe.question.domain.Question;
+import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.question.repository.QuestionRepository;
 
 @Service
@@ -20,33 +16,19 @@ public class QuestionService {
 		this.repository = repository;
 	}
 
-	/**
-	 * Q&A 게시글 저장하기
-	 * @param dto Q&A 게시글 입력 정보
-	 */
-	public void addQuestion(QuestionWriteDTO dto) {
-		repository.insert(dto);
+	public void save(Question question) {
+		repository.save(question);
 	}
 
-	/**
-	 * Q&A 게시판에 필요한 정보 만들기
-	 * @param page 게시판 페이지 번호
-	 * @return Q&A 게시글 목록과 페이징 정보를 담고 있는 dto
-	 */
-	public QuestionBoardDTO makeQuestionBoard(int page) {
-		PageHandler handler = new PageHandler(repository.countAll(), page);
-		List<QuestionTitleDTO> dto = repository.selectQuestionTitlesByOffset(handler.getPostOffset(),
-			handler.getPageSize());
-		return new QuestionBoardDTO(handler, dto);
+	public long countBy() {
+		return repository.countBy();
 	}
 
-	/**
-	 * Q&A 게시글 상세정보 불러오기
-	 * @param idx 불러올 게시글의 idx
-	 * @return Q&A 게시글 상세정보
-	 * @throws NoSuchElementException 없는 게시글의 idx를 조회한 경우 Exception 발생
-	 */
-	public QuestionDetailDTO findQuestion(int idx) throws NoSuchElementException {
-		return repository.selectByIdx(idx);
+	public List<Question> findAll(long offset, int pageSize) {
+		return repository.findAll(offset, pageSize);
+	}
+
+	public Question findById(long id) throws QuestionNotExistException {
+		return repository.findById(id);
 	}
 }

@@ -1,18 +1,16 @@
 package kr.codesqaud.cafe.question.repository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
-import kr.codesqaud.cafe.question.dto.response.QuestionDetailDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionTitleDTO;
-import kr.codesqaud.cafe.question.dto.response.QuestionWriteDTO;
+import kr.codesqaud.cafe.question.domain.Question;
+import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 
 public interface QuestionRepository {
-	void insert(QuestionWriteDTO dto);
+	void save(Question question);
 
-	int countAll();
+	long countBy();
 
-	List<QuestionTitleDTO> selectQuestionTitlesByOffset(int postOffset, int pageSize);
+	List<Question> findAll(long offset, int pageSize);
 
-	QuestionDetailDTO selectByIdx(int idx) throws NoSuchElementException;
+	Question findById(long id) throws QuestionNotExistException;
 }

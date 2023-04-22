@@ -1,28 +1,30 @@
-package kr.codesqaud.cafe.question.dto.response;
+package kr.codesqaud.cafe.question.controller.response;
 
 import java.time.LocalDateTime;
+
+import kr.codesqaud.cafe.question.domain.Question;
 
 /**
  * Q&A 게시판 글 하나의 디테일한 정보를 저장할 DTO
  */
 public class QuestionDetailDTO {
-	private final int idx;
+	private final long id;
 	private final String writer;
 	private final String title;
 	private final String contents;
 	private final LocalDateTime registrationDateTime;
 
-	public QuestionDetailDTO(int idx, String writer, String title, String contents,
+	public QuestionDetailDTO(long id, String writer, String title, String contents,
 		LocalDateTime registrationDateTime) {
-		this.idx = idx;
+		this.id = id;
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
 		this.registrationDateTime = registrationDateTime;
 	}
 
-	public int getIdx() {
-		return idx;
+	public long getId() {
+		return id;
 	}
 
 	public String getWriter() {
@@ -39,5 +41,11 @@ public class QuestionDetailDTO {
 
 	public LocalDateTime getRegistrationDateTime() {
 		return registrationDateTime;
+	}
+
+	public static QuestionDetailDTO from(Question question) {
+		return new QuestionDetailDTO(question.getId(), question.getWriter(), question.getTitle(),
+			question.getContents(),
+			question.getRegistrationDateTime());
 	}
 }

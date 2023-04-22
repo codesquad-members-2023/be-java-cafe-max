@@ -1,15 +1,19 @@
 package kr.codesqaud.cafe.user.repository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.user.dto.request.SignUpDTO;
-import kr.codesqaud.cafe.user.dto.response.UserDTO;
+import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
+import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
+import kr.codesqaud.cafe.user.exception.UserNotExistException;
 
 @Repository
 @Primary
@@ -20,27 +24,51 @@ public class H2UserRepository implements UserRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public void insert(SignUpDTO dto) throws IllegalArgumentException {
+	public void save(User user) throws UserIdDuplicateException {
 		String sql = "INSERT INTO \"user\"(userId, password, name, email) VALUES (?, ?, ?, ?)";
 		try {
-			jdbcTemplate.update(sql, dto.getUserId(), dto.getPassword(), dto.getName(), dto.getEmail());
+			jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
 		} catch (DataAccessException e) {
-			throw new IllegalArgumentException("이미 등록된 아이디 입니다.");
+			throw new UserIdDuplicateException(user.getUserId());
 		}
 	}
 
 	@Override
-	public List<UserDTO> selectAll() {
-		return null;
+	public List<User> findAll() {
+		String sql = "SELECT id, userId, password, name, email FROM \"user\"";
+		try {
+			return Collections.unmodifiableList(jdbcTemplate.query(sql, getUserRowMapper()));
+		} catch (DataAccessException e) {
+			return Collections.unmodifiableList(new ArrayList<>());
+		}
 	}
 
 	@Override
-	public UserDTO selectByUserId(String userId) throws NoSuchElementException {
-		return null;
+	public User findByUserId(String userId) throws UserNotExistException {
+		String sql = "SELECT id, userId, password, name, email FROM \"user\" WHERE userId = ?";
+		try {
+			return jdbcTemplate.queryForObject(sql, getUserRowMapper(), userId);
+		} catch (DataAccessException e) {
+			throw new UserNotExistException(userId);
+		}
 	}
 
 	@Override
-	public void update(SignUpDTO dto) throws NoSuchElementException {
-		// TODO document why this method is empty
+	public void modify(User user) throws UserDoesNotMatchException {
+		String sql = "UPDATE \"user\" SET name = ?, email = ? WHERE userId = ? AND password = ?";
+		try {
+			jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getUserId(), user.getPassword());
+		} catch (DataAccessException e) {
+			throw new UserDoesNotMatchException();
+		}
+	}
+
+	private RowMapper<User> getUserRowMapper() {
+		return (rs, rowNum) ->
+			new User(rs.getLong("id"),
+				rs.getString("userId"),
+				rs.getString("password"),
+				rs.getString("name"),
+				rs.getString("email"));
 	}
 }

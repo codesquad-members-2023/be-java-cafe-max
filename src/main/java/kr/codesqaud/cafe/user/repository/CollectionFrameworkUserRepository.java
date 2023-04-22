@@ -2,14 +2,13 @@ package kr.codesqaud.cafe.user.repository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.common.repository.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.dto.request.SignUpDTO;
-import kr.codesqaud.cafe.user.dto.response.UserDTO;
+import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
+import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
 
 @Repository
 public class CollectionFrameworkUserRepository implements UserRepository {
@@ -21,40 +20,38 @@ public class CollectionFrameworkUserRepository implements UserRepository {
 		dummyData.insertUserDummyData(userTable);
 	}
 
-	public void insert(SignUpDTO dto) throws IllegalArgumentException {
-		String userId = dto.getUserId();
-		for (User user : userTable.select()) {
-			if (user.getUserId().equals(userId)) {
-				throw new IllegalArgumentException("이미 등록된 아이디 입니다.");
+	public void save(User user) throws UserIdDuplicateException {
+		String userId = user.getUserId();
+		for (User exgistingUser : userTable.select()) {
+			if (exgistingUser.getUserId().equals(userId)) {
+				throw new UserIdDuplicateException(user.getUserId());
 			}
 		}
-		userTable.insert(dto);
+		userTable.insert(user);
 	}
 
-	public List<UserDTO> selectAll() {
-		return userTable.select().stream()
-			.map(User::toDto)
-			.collect(Collectors.toUnmodifiableList());
+	public List<User> findAll() {
+		return userTable.select();
 	}
 
-	public UserDTO selectByUserId(String userId) throws NoSuchElementException {
-		for (User user : userTable.select()) {
-			if (user.getUserId().equals(userId)) {
-				return user.toDto();
+	public User findByUserId(String userId) throws NoSuchElementException {
+		for (User exgistingUser : userTable.select()) {
+			if (exgistingUser.getUserId().equals(userId)) {
+				return exgistingUser;
 			}
 		}
-		throw new NoSuchElementException("존재하지 않는 유저 입니다.");
+		throw new NoSuchElementException(userId);
 	}
 
-	public void update(SignUpDTO dto) throws NoSuchElementException {
-		String userId = dto.getUserId();
-		for (User user : userTable.select()) {
-			if (user.getUserId().equals(userId)) {
-				userTable.update(user, dto);
+	public void modify(User user) throws UserDoesNotMatchException {
+		String userId = user.getUserId();
+		for (User exgistingUser : userTable.select()) {
+			if (exgistingUser.getUserId().equals(userId)) {
+				userTable.update(exgistingUser, user);
 				return;
 			}
 		}
-		throw new NoSuchElementException("존재하지 않는 유저 입니다.");
+		throw new UserDoesNotMatchException();
 	}
 
 }

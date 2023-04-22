@@ -8,6 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import kr.codesqaud.cafe.common.web.PageHandler;
+
 class PageHandlerTest {
 
 	private PageHandler handler;
