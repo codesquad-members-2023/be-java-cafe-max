@@ -3,19 +3,21 @@ package kr.codesquad.cafe.user.dto;
 import kr.codesquad.cafe.user.annotation.ValidEmail;
 import kr.codesquad.cafe.user.annotation.ValidNickName;
 import kr.codesquad.cafe.user.annotation.ValidPassword;
+import kr.codesquad.cafe.user.annotation.ValidTwoPassword;
 import kr.codesquad.cafe.user.domain.User;
 import org.jasypt.encryption.StringEncryptor;
 
+@ValidTwoPassword
 public class JoinForm {
     @ValidNickName
-    private final String nickname;
+    private String nickname;
     @ValidEmail
-    private final String email;
+    private String email;
     @ValidPassword
-    private final String password;
+    private String password;
 
     @ValidPassword
-    private final String reconfirmPassword;
+    private String reconfirmPassword;
 
     public JoinForm(String nickname, String email, String password, String reconfirmPassword) {
         this.nickname = nickname;
@@ -34,6 +36,10 @@ public class JoinForm {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getReconfirmPassword() {
+        return reconfirmPassword;
     }
 
     public User toUser(StringEncryptor encryptor) {

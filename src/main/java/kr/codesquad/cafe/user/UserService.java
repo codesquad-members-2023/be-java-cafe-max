@@ -5,10 +5,7 @@ import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.user.dto.LoginForm;
 import kr.codesquad.cafe.user.dto.ProfileEditForm;
 import kr.codesquad.cafe.user.dto.UserForm;
-import kr.codesquad.cafe.user.exception.DuplicateEmailException;
-import kr.codesquad.cafe.user.exception.IncorrectPasswordException;
-import kr.codesquad.cafe.user.exception.InvalidPasswordException;
-import kr.codesquad.cafe.user.exception.UserNotFoundException;
+import kr.codesquad.cafe.user.exception.*;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +31,9 @@ public class UserService {
 
     @Transactional
     public User save(JoinForm joinForm) {
+        if (existsByEmail(joinForm.getEmail())) {
+            throw new ExistsEmailException();
+        }
         User user = joinForm.toUser(encryptor);
         return userRepository.save(user);
     }
