@@ -38,7 +38,7 @@ public class UserService {
         // 다른 코드 참고하지 않고 직접 처음 생각해낸 코드 (패스워드를 뺀)
         return userRepository.findAll().stream()
                 .map(UserListForm::from)
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public UserProfileForm findProfile(String userId) {
@@ -63,9 +63,7 @@ public class UserService {
     }
 
     public void updateUser(Long id, UserUpdateForm updateUser) {
-        if (!updateUser.getExistingPassword().equals(updateUser.getPassword())) {
-            throw new IllegalStateException("비밀번호가 같지 않습니다.");
-        }
+        validatePassword(updateUser);
 
         // updateUser의 정보들을 User에 덮어씌우기
         User originUser = findUser(id);
@@ -73,5 +71,11 @@ public class UserService {
         originUser.setName(updateUser.getName());
         originUser.setEmail(updateUser.getEmail());
         userRepository.update(id, originUser);
+    }
+
+    private void validatePassword(UserUpdateForm updateUser) {
+        if (!updateUser.isSamePassword(updateUser.getPassword())) {
+            throw new IllegalStateException("비밀번호가 같지 않습니다.");
+        }
     }
 }

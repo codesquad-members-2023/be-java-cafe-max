@@ -25,7 +25,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
     public JdbcTemplateUserRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-                .withTableName("users")
+                .withTableName("USERS")
                 .usingGeneratedKeyColumns("id");
     }
 
@@ -39,7 +39,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-        String sql = "select ID, USERID, PASSWORD, NAME, EMAIL from USERS where ID = :id";
+        String sql = "select id, user_id, password, name, email from USERS where id = :id";
 
         try {
             Map<String, Object> param = Map.of("id", id);
@@ -53,7 +53,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        String sql = "select ID, USERID, PASSWORD, NAME, EMAIL from USERS where USERID = :userId";
+        String sql = "select id, user_id, password, name, email from USERS where user_id = :userId";
 
         try {
             Map<String, Object> param = Map.of("userId", userId);
@@ -67,7 +67,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        String sql = "select ID, USERID, PASSWORD, NAME, EMAIL from USERS";
+        String sql = "select id, user_id, password, name, email from USERS";
         return template.query(sql, userRowMapper);
     }
 
@@ -81,8 +81,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
     public void update(Long id, User user) {
 
         String sql = "update USERS " +
-                "set PASSWORD=:password, NAME=:name, EMAIL=:email " +
-                "where ID=:id";
+                "set password=:password, name=:name, email=:email " +
+                "where id=:id";
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("password", user.getPassword())

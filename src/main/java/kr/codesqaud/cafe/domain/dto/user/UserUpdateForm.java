@@ -76,4 +76,8 @@ public class UserUpdateForm {
     public String getName() {
         return name;
     }
+
+    public boolean isSamePassword(String password) {
+        return password.equals(existingPassword);
+    }
 }

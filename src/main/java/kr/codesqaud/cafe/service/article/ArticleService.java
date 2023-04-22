@@ -21,8 +21,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Article add(ArticleForm form, HttpSession session) {
-        Article article = new Article((String) session.getAttribute(SessionConst.LOGIN_USER_ID), form.getTitle(), form.getContents());
+    public Article add(ArticleForm form, String loginUserId) {
+        Article article = new Article(loginUserId, form.getTitle(), form.getContents());
         return articleRepository.save(article);
     }
 
@@ -30,13 +30,11 @@ public class ArticleService {
         // DTO가 가지고 있는 변수로 필터링하는 과정
         return articleRepository.findAll().stream()
                 .map(ArticleTimeForm::from)
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public ArticleTimeForm findArticleId(Long id) {
-        // Optional을 스트림으로 처리
-        Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("이 아이디를 찾을 수 없어: " + id));
+        Article article = findArticle(id);
         return ArticleTimeForm.from(article);
     }
 
@@ -54,6 +52,7 @@ public class ArticleService {
     }
 
     private Article findArticle(Long id) {
+        // Optional을 스트림으로 처리
         return articleRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("이 아이디를 찾을 수 없어: " + id));
     }
