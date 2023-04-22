@@ -32,7 +32,7 @@ public class ArticleController {
 		this.replyRepository = replyRepository;
 	}
 
-	@GetMapping("/")
+	@GetMapping("")
 	public String main(Model model) {
 		List<Article> articles = articleRepository.findAll();
 		List<ArticleDetailResponseDto> articleDetailResponseDtos = new ArrayList<>();
