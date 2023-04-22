@@ -53,24 +53,10 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
         jdbcTemplate.update("update article set writer = ? where writer = ?", updateName, name);
     }
 
-    @Override
-    public boolean isCreatedBy(String userId, Long id) {
-        Article article = jdbcTemplate.query("select * from article where id = ?", articleRowMapper(), id)
-                .stream().findAny().get();
-        if (article.getUserId().equals(userId)) {
-            return true;
-        }
-        return false;
-    }
 
     @Override
-    public void updateTitle(Long id, String updateTitle) {
-        jdbcTemplate.update("update article set title = ? where id = ?", updateTitle, id);
-    }
-
-    @Override
-    public void updateContents(Long id, String updateContents) {
-        jdbcTemplate.update("update article set contents = ? where id = ?", updateContents, id);
+    public void updateArticle(Article article) {
+        jdbcTemplate.update("update article set title = ?, contents = ? where id = ?", article.getTitle(), article.getContents(), article.getId());
     }
 
     @Override

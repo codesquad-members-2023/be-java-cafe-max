@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.constant;
 
-public interface SessionConst {
+public final class SessionConst {
 
-    final String LOGIN_MEMBER = "loginMember";
+    private SessionConst(){}
+    public static final String LOGIN_MEMBER = "loginMember";
 }

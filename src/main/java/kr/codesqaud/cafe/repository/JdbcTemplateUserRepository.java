@@ -31,11 +31,11 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(String id) {
+    public Optional<User> findById(String userId) {
         String sql = "select * from users where userId = ?";
         try {
 
-            User user = jdbcTemplate.queryForObject(sql, userRowMapper(), id);
+            User user = jdbcTemplate.queryForObject(sql, userRowMapper(), userId);
             return Optional.ofNullable(user);
 
         } catch (EmptyResultDataAccessException e) {
@@ -56,13 +56,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
-    public void updateUserName(String userId, String updateName) {
-        jdbcTemplate.update("update users set name = ? where userId = ?", updateName, userId);
-    }
-
-    @Override
-    public void updateUserEmail(String userId, String updateEmail) {
-        jdbcTemplate.update("update users set email = ? where userId = ?", updateEmail, userId);
+    public void updateUser(User user) {
+        jdbcTemplate.update("update users set name = ?, email = ? where userId = ?", user.getName(),user.getEmail(), user.getUserId());
     }
 
     private RowMapper<User> userRowMapper() {

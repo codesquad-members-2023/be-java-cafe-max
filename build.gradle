@@ -18,8 +18,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
-	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
+
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+//	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
+
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'mysql:mysql-connector-java:8.0.28'
 }
 
 tasks.named('test') {

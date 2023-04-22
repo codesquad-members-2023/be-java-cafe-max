@@ -70,7 +70,7 @@ public class UserController {
         if (isLoginSuccess) {
 
             HttpSession session = request.getSession();
-            User user = userService.findById(form.getUserId()).get();
+            User user = userService.findById(form.getUserId());
             SessionDto sessionDto = new SessionDto(user.getUserId(), user.getName(), user.getEmail());
             session.setAttribute(SessionConst.LOGIN_MEMBER, sessionDto);
             return "redirect:/";
@@ -100,7 +100,7 @@ public class UserController {
         if (loginUser == null) {
             return "user/login";
         }
-        User user = userService.findById(loginUser.getUserId()).get();
+        User user = userService.findById(loginUser.getUserId());
         model.addAttribute("user", user);
         model.addAttribute("loginUser", loginUser);
         return "user/update";
@@ -110,7 +110,7 @@ public class UserController {
     public String update(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                              SessionDto loginUser, UserUpdateForm form, RedirectAttributes redirectAttributes) {
 
-        User user = userService.findById(loginUser.getUserId()).get();
+        User user = userService.findById(loginUser.getUserId());
         if (!user.getPassword().equals(form.getPassword())) {
             redirectAttributes.addFlashAttribute("passwordIncorrect", true);
             return "redirect:/user/update";

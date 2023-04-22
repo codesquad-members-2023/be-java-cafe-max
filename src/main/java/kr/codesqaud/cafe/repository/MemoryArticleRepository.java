@@ -46,18 +46,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public boolean isCreatedBy(String userId, Long id) {
-        // userId가 article을 작성한 사용자인지 확인
-        return false;
-    }
-
-    @Override
-    public void updateTitle(Long id, String updateTitle) {
-
-    }
-
-    @Override
-    public void updateContents(Long id, String updateContents) {
+    public void updateArticle(Article article) {
 
     }
 
