@@ -7,12 +7,12 @@ import kr.codesqaud.cafe.domain.user.entity.User;
 
 public class UserDetailResponseDto {
 
-	private String username;
+	private String nickName;
 	private String email;
 	private String dateTime;
 
 	public UserDetailResponseDto(User user) {
-		this.username = user.getUsername();
+		this.nickName = user.getNickName();
 		this.email = user.getEmail();
 		this.dateTime = setDateTime(user.getDateTime());
 	}
@@ -21,8 +21,8 @@ public class UserDetailResponseDto {
 		return localDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일(E) HH:mm:ss"));
 	}
 
-	public String getUsername() {
-		return username;
+	public String getNickName() {
+		return nickName;
 	}
 
 	public String getEmail() {

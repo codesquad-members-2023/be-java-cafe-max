@@ -58,15 +58,15 @@ public class UserController {
 		return "/user/profile";
 	}
 
-	@GetMapping("/users/{username}/form")
-	public String updateUserProfile(@PathVariable("username") String username, Model model) {
+	@GetMapping("/users/{loginUserId}/form")
+	public String updateUserProfile(@PathVariable("loginUserId") String username, Model model) {
 		User user = userRepository.findById(username).orElseThrow(NoSuchElementException::new);
 		model.addAttribute("user", new UserDetailResponseDto(user));
 		return "/user/updateForm";
 	}
 
-	@PutMapping("/users/{username}/update")
-	public String modifyUserProfile(UserUpdateRequestDto userUpdateDto, @PathVariable("username") String username) {
+	@PutMapping("/users/{loginUserId}/update")
+	public String modifyUserProfile(UserUpdateRequestDto userUpdateDto, @PathVariable("loginUserId") String username) {
 		if (!userRepository.findById(username).get().matchPassword(userUpdateDto.getPassword())) {
 			throw new InvalidPasswordException();
 		}
