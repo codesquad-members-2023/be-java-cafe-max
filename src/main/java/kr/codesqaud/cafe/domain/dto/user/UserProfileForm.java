@@ -7,7 +7,7 @@ public class UserProfileForm {
     private String name;
     private String email;
 
-    public UserProfileForm() {
+    private UserProfileForm() {
     }
 
     private UserProfileForm(Long id, String name, String email) {

@@ -10,7 +10,7 @@ public class Article {
     private LocalDateTime currentTime;
     private Long replyCount;
 
-    public Article() {
+    private Article() {
     }
 
     public Article(String userId, String title, String contents) {

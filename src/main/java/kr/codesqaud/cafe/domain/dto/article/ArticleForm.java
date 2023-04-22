@@ -11,7 +11,7 @@ public class ArticleForm {
     @NotBlank(message = "글을 입력해 주세요")
     private String contents;
 
-    public ArticleForm() {
+    private ArticleForm() {
     }
 
     public String getTitle() {

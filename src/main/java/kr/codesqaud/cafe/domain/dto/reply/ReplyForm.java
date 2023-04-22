@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.domain.dto.reply;
 public class ReplyForm {
     private String replyContent;
 
-    public ReplyForm() {
+    private ReplyForm() {
     }
 
     public String getReplyContent() {

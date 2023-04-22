@@ -13,7 +13,7 @@ public class ArticleUpdateForm {
     @NotBlank(message = "글을 입력해 주세요")
     private String contents;
 
-    public ArticleUpdateForm() {
+    private ArticleUpdateForm() {
     }
 
     private ArticleUpdateForm(Long id, String title, String contents) {

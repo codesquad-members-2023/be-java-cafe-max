@@ -13,7 +13,7 @@ public class ArticleTimeForm {
     private String currentTime;
     private Long replyCount;
 
-    public ArticleTimeForm() {
+    private ArticleTimeForm() {
     }
 
     // 정적 팩토리 메서드

@@ -8,7 +8,7 @@ public class UserListForm {
     private String name;
     private String email;
 
-    public UserListForm() {
+    private UserListForm() {
     }
 
     private UserListForm(Long id, String userId, String name, String email) {

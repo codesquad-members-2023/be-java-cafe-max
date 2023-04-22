@@ -23,7 +23,7 @@ public class UserUpdateForm {
     private String email;
 
     // 이 기본 생성자를 삭제한 이후 계속 db를 인식을 못 했음
-    public UserUpdateForm() {
+    private UserUpdateForm() {
     }
 
     private UserUpdateForm(Long id, String name, String password, String email) {
