@@ -60,13 +60,12 @@ public class UserErrorLargeTest {
 						httpSession)).isInstanceOf(
 					InvalidLoginInfoException.class);
 			}),
-			dynamicTest("로그인시 올바르지 않은 비밀번호를 입력한 경우", () -> {
-				//when & then
-				assertThatThrownBy(() ->
-					authController.login(new AuthLoginRequestDto("pjs970616", "wrongPassword"),
-						httpSession)).isInstanceOf(
-					InvalidLoginInfoException.class);
-			}),
+                dynamicTest("로그인시 올바르지 않은 비밀번호를 입력한 경우", () -> {
+                    //when & then
+                    AuthLoginRequestDto requestDto = new AuthLoginRequestDto("pjs970616", "wrongPassword");
+                    assertThatThrownBy(() -> authController.login(requestDto, httpSession))
+                            .isInstanceOf(InvalidLoginInfoException.class);
+                }),
 			dynamicTest("회원 정보 수정시 올바르지 않은 비밀번호를 입력한 경우", () -> {
 				//when & then
 				assertThatThrownBy(() -> userController.modifyUserProfile(
