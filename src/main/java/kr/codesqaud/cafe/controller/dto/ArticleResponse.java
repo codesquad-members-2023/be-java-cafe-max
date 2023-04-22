@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import kr.codesqaud.cafe.domain.article.Article;
 
-public class ArticleRequest {
+public class ArticleResponse {
 
 	private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -15,7 +15,7 @@ public class ArticleRequest {
 	private final String content;
 	private final String createdAt;
 
-	public ArticleRequest(Long id, String writer, String title, String content, LocalDateTime createdAt) {
+	public ArticleResponse(Long id, String writer, String title, String content, LocalDateTime createdAt) {
 		this.id = id;
 		this.writer = writer;
 		this.title = title;
@@ -23,9 +23,9 @@ public class ArticleRequest {
 		this.createdAt = DATE_TIME_FORMATTER.format(createdAt);
 	}
 
-	public static ArticleRequest from(final Article article) {
-		return new ArticleRequest(article.getId(), article.getWriter(), article.getTitle(), article.getContent(),
-								  article.getCreatedAt());
+	public static ArticleResponse from(final Article article) {
+		return new ArticleResponse(article.getId(), article.getWriter(), article.getTitle(), article.getContent(),
+								   article.getCreatedAt());
 	}
 
 	public Long getId() {

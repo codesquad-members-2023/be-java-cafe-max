@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.codesqaud.cafe.controller.dto.ArticleCommentRequest;
+import kr.codesqaud.cafe.controller.dto.ArticleCommentResponse;
 import kr.codesqaud.cafe.controller.dto.ArticleDetails;
-import kr.codesqaud.cafe.controller.dto.ArticleRequest;
+import kr.codesqaud.cafe.controller.dto.ArticleResponse;
 import kr.codesqaud.cafe.controller.dto.ArticleWithCommentCount;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
@@ -41,8 +41,8 @@ public class ArticleService {
 		Article article = articleRepository.findById(id)
 			.orElseThrow(() -> new NotFoundException(String.format("%d번 게시글을 찾을 수 없습니다.", id)));
 		List<Comment> comments = commentRepository.findAllByArticleId(id);
-		return new ArticleDetails(ArticleRequest.from(article), comments.stream()
-			.map(ArticleCommentRequest::from)
+		return new ArticleDetails(ArticleResponse.from(article), comments.stream()
+			.map(ArticleCommentResponse::from)
 			.collect(Collectors.toUnmodifiableList()));
 	}
 

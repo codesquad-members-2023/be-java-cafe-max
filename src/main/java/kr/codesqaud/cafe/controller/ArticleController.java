@@ -38,9 +38,9 @@ public class ArticleController {
 	@GetMapping("/{articleId}")
 	public String showArticleDetails(@PathVariable final Long articleId, final Model model) {
 		ArticleDetails articleDetails = articleService.getArticleDetails(articleId);
-		model.addAttribute("article", articleDetails.getArticleRequest());
-		model.addAttribute("articleCommentCount", articleDetails.getArticleCommentRequest().size());
-		model.addAttribute("articleComments", articleDetails.getArticleCommentRequest());
+		model.addAttribute("article", articleDetails.getArticleResponse());
+		model.addAttribute("articleCommentCount", articleDetails.getArticleCommentResponse().size());
+		model.addAttribute("articleComments", articleDetails.getArticleCommentResponse());
 		return "qna/show";
 	}
 

@@ -114,7 +114,7 @@ class ArticleServiceTest {
 			// then
 			assertAll(
 				() -> assertThat(articleDetails).isNotNull(),
-				() -> assertThat(articleDetails.getArticleCommentRequest()).hasSize(size),
+				() -> assertThat(articleDetails.getArticleCommentResponse()).hasSize(size),
 				() -> then(articleRepository).should().findById(1L),
 				() -> then(commentRepository).should().findAllByArticleId(1L)
 			);
