@@ -41,13 +41,12 @@ public class ArticleController {
 		return "index";
 	}
 
-	@PostMapping("/articles")
-	public String saveArticle(ArticleSaveRequestDto articleSaveRequestDto, HttpSession httpSession) {
-		articleRepository.save(
-			articleSaveRequestDto.toEntity(
-				(String)httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_NAME.type())));
-		return "redirect:/";
-	}
+    @GetMapping("/articles")
+    public String saveArticle(ArticleSaveRequestDto articleSaveRequestDto, HttpSession httpSession) {
+        String loginUserName = httpSession.getAttribute(LOGIN_USER_NAME.type()).toString();
+        articleRepository.save(articleSaveRequestDto.toEntity(loginUserName));
+        return "redirect:/";
+    }
 
 	@GetMapping("/articles/{id}")
 	public String viewArticle(@PathVariable("id") Long id, Model model) {
