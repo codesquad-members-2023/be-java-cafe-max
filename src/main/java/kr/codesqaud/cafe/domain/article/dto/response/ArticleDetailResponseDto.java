@@ -21,7 +21,7 @@ public class ArticleDetailResponseDto {
 	}
 
 	private String setDateTime(LocalDateTime localDateTime) {
-		return localDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일(E) HH:mm:ss"));
+		return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 	}
 
 	public String getArticleId() {
