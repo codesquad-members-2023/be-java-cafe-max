@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.user;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.domain.dto.DataType;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,7 +26,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
     public JdbcTemplateUserRepository(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-                .withTableName("USERS")
+                .withTableName(DataType.USERS.getType())
                 .usingGeneratedKeyColumns("id");
     }
 
@@ -39,7 +40,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-        String sql = "select id, user_id, password, name, email from USERS where id = :id";
+        String sql = "select id, user_id, password, name, email from " + DataType.USERS.getType() + " where id = :id";
 
         try {
             Map<String, Object> param = Map.of("id", id);
@@ -53,7 +54,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        String sql = "select id, user_id, password, name, email from USERS where user_id = :userId";
+        String sql = "select id, user_id, password, name, email from " + DataType.USERS.getType() + " where user_id = :userId";
 
         try {
             Map<String, Object> param = Map.of("userId", userId);
@@ -67,7 +68,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        String sql = "select id, user_id, password, name, email from USERS";
+        String sql = "select id, user_id, password, name, email from " + DataType.USERS.getType();
         return template.query(sql, userRowMapper);
     }
 
@@ -80,8 +81,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
     @Override
     public void update(Long id, User user) {
 
-        String sql = "update USERS " +
-                "set password=:password, name=:name, email=:email " +
+        String sql = "update " + DataType.USERS.getType() +
+                " set password=:password, name=:name, email=:email " +
                 "where id=:id";
 
         SqlParameterSource param = new MapSqlParameterSource()

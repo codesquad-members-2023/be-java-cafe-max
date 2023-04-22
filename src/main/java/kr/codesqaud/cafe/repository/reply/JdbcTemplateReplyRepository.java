@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.reply;
 
 import kr.codesqaud.cafe.domain.Reply;
+import kr.codesqaud.cafe.domain.dto.DataType;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,7 +29,7 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
 
     @Override
     public Long save(Reply reply) {
-        String sql = "insert into REPLIES (article_id, user_id, reply_content, reply_time, deleted) " +
+        String sql = "insert into " + DataType.REPLIES.getType() + " (article_id, user_id, reply_content, reply_time, deleted) " +
                 "values (:articleId, :userId, :replyContent, :replyTime, false)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         SqlParameterSource param = new BeanPropertySqlParameterSource(reply);
@@ -38,7 +39,7 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
 
     @Override
     public Optional<Reply> findById(Long id) {
-        String sql = "select id, article_id, user_id, reply_content, reply_time from REPLIES where id = :id and deleted=false";
+        String sql = "select id, article_id, user_id, reply_content, reply_time from " + DataType.REPLIES.getType() + " where id = :id and deleted=false";
 
         try {
             Map<String, Object> param = Map.of("id", id);
@@ -53,7 +54,7 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
     public List<Reply> findByArticleId(Long articleId) {
         // 1차: articleId -> 2차: userId
         String sql = "select r.id, r.user_id, r.article_id, u.user_id, r.reply_content, r.reply_time " +
-                "from REPLIES r join USERS u on r.user_id = u.user_id " +
+                "from " +  DataType.REPLIES.getType() + " r join " + DataType.USERS.getType() + " u on r.user_id = u.user_id " +
                 "where r.article_id=:articleId and r.deleted=false order by r.id";
 
         Map<String, Object> param = Map.of("articleId", articleId);
@@ -62,7 +63,7 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
 
     @Override
     public void deleteReply(Long id) {
-        String articleDeletedSql = "update REPLIES set deleted=true where id=:id";
+        String articleDeletedSql = "update " + DataType.REPLIES.getType() + " set deleted=true where id=:id";
 
         Map<String, Object> param = Map.of("id", id);
         template.update(articleDeletedSql, param);
