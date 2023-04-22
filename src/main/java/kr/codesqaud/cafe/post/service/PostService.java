@@ -2,7 +2,9 @@ package kr.codesqaud.cafe.post.service;
 
 import kr.codesqaud.cafe.post.controller.response.PostDetailResponse;
 import kr.codesqaud.cafe.post.controller.response.PostListResponse;
+import kr.codesqaud.cafe.post.controller.response.SimplePostResponse;
 import kr.codesqaud.cafe.post.repository.PostRepository;
+import kr.codesqaud.cafe.user.service.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,22 @@ public class PostService {
         postRepository.save(post);
     }
 
+    public boolean updatePost(long id, Post post) {
+        boolean isWriterMatch = postRepository.findById(id).orElseThrow().getWriterId().equals(post.getWriterId());
+        if (isWriterMatch) {
+            postRepository.update(id, post);
+        }
+        return isWriterMatch;
+    }
+
+    public boolean deletePost(long id, User user) {
+        boolean isWriterMatch = postRepository.findById(id).orElseThrow().getWriterId().equals(user.getUserId());
+        if (isWriterMatch) {
+            postRepository.delete(id);
+        }
+        return isWriterMatch;
+    }
+
     public List<PostListResponse> getPostList() {
         return postRepository.findAll().stream()
                 .map(PostListResponse::from)
@@ -29,5 +47,9 @@ public class PostService {
 
     public PostDetailResponse getPostById(long id) {
         return PostDetailResponse.from(postRepository.findById(id).orElseThrow());
+    }
+
+    public SimplePostResponse getSimplePostById(long id) {
+        return SimplePostResponse.from(postRepository.findById(id).orElseThrow());
     }
 }

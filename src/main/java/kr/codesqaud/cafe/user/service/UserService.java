@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -18,8 +19,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void register(User user) {
+    public boolean register(User user) {
+        if (userRepository.findByUserId(user.getUserId()).isPresent()) {
+            return false;
+        }
         userRepository.save(user);
+        return true;
     }
 
     public List<UserListResponse> getUserList() {
@@ -31,5 +36,23 @@ public class UserService {
 
     public UserProfileResponse getProfile(String userId) {
         return UserProfileResponse.from(userRepository.findByUserId(userId).orElseThrow());
+    }
+
+    public Optional<User> login(String userId, String password) {
+        Optional<User> user = userRepository.findByUserId(userId);
+        if (user.isPresent() && !password.equals(user.get().getPassword())) {
+            user = Optional.empty();
+        }
+        return user;
+    }
+
+    public boolean updateUser(User currentUser, User newProfile, String currPassword) {
+        boolean isIdMatch = newProfile.getUserId().equals(currentUser.getUserId());
+        boolean isPasswordMatch = currPassword.equals(currentUser.getPassword());
+        boolean success = isIdMatch && isPasswordMatch;
+        if (success) {
+            userRepository.update(currentUser, newProfile);
+        }
+        return success;
     }
 }

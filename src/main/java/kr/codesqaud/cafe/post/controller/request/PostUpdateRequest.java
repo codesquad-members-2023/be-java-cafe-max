@@ -5,12 +5,12 @@ import kr.codesqaud.cafe.user.service.User;
 
 import java.time.LocalDateTime;
 
-public class PostWriteRequest {
+public class PostUpdateRequest {
 
     private final String title;
     private final String contents;
 
-    public PostWriteRequest(String title, String contents) {
+    public PostUpdateRequest(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }
