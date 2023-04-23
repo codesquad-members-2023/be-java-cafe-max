@@ -23,8 +23,8 @@ public class UserController {
     //todo : MvcConfigure 활성화 하려면 get, post url 달라야 함. 변경하기
     @PostMapping("/users/new-try")
     public String signUp(@ModelAttribute final JoinDTO joinDTO, Model model) {
-        boolean isIdDuplicated = userService.checkDuplicate(joinDTO.getUserId());
-        if(isIdDuplicated) {
+        boolean isExistUser = userService.checkDuplicate(joinDTO.getUserId());
+        if(isExistUser) {
             model.addAttribute("duplicate", true);
             return "user/form";
         }
