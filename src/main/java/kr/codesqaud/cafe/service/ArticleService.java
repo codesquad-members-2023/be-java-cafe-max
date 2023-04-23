@@ -50,9 +50,10 @@ public class ArticleService {
         articleRepository.delete(articleId);
     }
 
-    public void editArticle(final Long articleId, final PostEditRequest request){
+    public Article editArticle(final Long articleId, final PostEditRequest request){
         Article savedArticle = articleRepository.findById(articleId).orElseThrow(() -> new RuntimeException("Article not found"));
         savedArticle.editArticle(request.getNewTitle(), request.getNewContent());
         articleRepository.update(savedArticle);
+        return savedArticle;
     }
 }
