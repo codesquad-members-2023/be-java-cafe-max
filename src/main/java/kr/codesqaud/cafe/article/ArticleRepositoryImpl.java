@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.article;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -25,28 +26,29 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public Article save(Article article) { // TODO: 저장할 때 ID가 아닌 name으로 바로 저장하게끔 수정(그러면 다른 메서드에서 join 안해도 될 듯)
+    public long save(Article article) { // TODO: 저장할 때 ID가 아닌 name으로 바로 저장하게끔 수정(그러면 다른 메서드에서 join 안해도 될 듯)
         String sql = "insert into article (writer, title, contents) values (:writer, :title, :contents)";
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
         KeyHolder keyHolder = new GeneratedKeyHolder();
+
         template.update(sql, param, keyHolder);
-        return article;
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
     @Override
-    public String findIdBySequence(long sequence) {
-        String sql = "select sequence, writer, title, contents from article where sequence = :sequence";
-        SqlParameterSource param = new MapSqlParameterSource("sequence", sequence);
+    public String findIdBySequence(long id) {
+        String sql = "select id, writer, title, contents from article where id = :id";
+        SqlParameterSource param = new MapSqlParameterSource("id", id);
         return template.queryForObject(sql, param, articleRowMapper()).getWriter();
     }
 
     @Override
-    public Optional<Article> findBySequence(long sequence) {
-        String sql = "select a.sequence, u.name as writer, a.title, a.contents "
-                + "from article a inner join users u on a.writer = u.userId where a.sequence = :sequence";
-        SqlParameterSource param = new MapSqlParameterSource("sequence", sequence);
+    public Optional<Article> findOneById(long id) {
+        String sql = "select a.id, u.name as writer, a.title, a.contents "
+                + "from article a inner join users u on a.writer = u.userId where a.id = :id";
+        SqlParameterSource param = new MapSqlParameterSource("id", id);
         try {
-            return Optional.ofNullable(template.queryForObject(sql, param, articleRowMapper())); // TODO: RowMapper 대신 Article.class를 사용하면 에러 발생
+            return Optional.ofNullable(template.queryForObject(sql, param, articleRowMapper()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -54,28 +56,28 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select a.sequence, u.name as writer, a.title, a.contents "
+        String sql = "select a.id, u.name as writer, a.title, a.contents "
                 + "from article a inner join users u on a.writer = u.userId";
         return template.query(sql, articleRowMapper());
     }
 
     @Override
-    public Article update(long sequence, Article article) {
-        String sql = "UPDATE article SET title = :title, contents = :contents where sequence = :sequence";
+    public long update(long id, Article article) {
+        String sql = "UPDATE article SET title = :title, contents = :contents where id = :id";
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("sequence", sequence)
+                .addValue("id", id)
                 .addValue("title", article.getTitle())
                 .addValue("contents", article.getContents());
         template.update(sql, param);
-        return article;
+        return id;
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return (resultSet, rowNumber) -> new Article(
-                resultSet.getLong("sequence"),
-                resultSet.getString("writer"),
-                resultSet.getString("title"),
-                resultSet.getString("contents")
-        );
+        return (resultSet, rowNumber) -> new Article.Builder()
+                .id(resultSet.getLong("id"))
+                .writer(resultSet.getString("writer"))
+                .title(resultSet.getString("title"))
+                .contents(resultSet.getString("contents"))
+                .build();
     }
 }

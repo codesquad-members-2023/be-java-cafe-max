@@ -5,58 +5,63 @@ package kr.codesqaud.cafe.article;
  */
 public class Article {
 
-    private long sequence;
-    private String writer;
-    private String title;
-    private String contents;
+    private final long id;
+    private final String writer;
+    private final String title;
+    private final String contents;
 
-    public Article(long sequence, String writer, String title, String contents) {
-        this.sequence = sequence;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
+    private Article(Builder builder) {
+        id = builder.id;
+        writer = builder.writer;
+        title = builder.title;
+        contents = builder.contents;
     }
 
-    public Article(String writer, String title, String contents) {
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-    }
-
-    public Article(String title, String contents) {
-        this.title = title;
-        this.contents = contents;
-    }
-
-    public long getSequence() {
-        return sequence;
-    }
-
-    public void setSequence(final long sequence) {
-        this.sequence = sequence;
+    public long getId() {
+        return id;
     }
 
     public String getWriter() {
         return writer;
     }
 
-    public void setWriter(final String writer) {
-        this.writer = writer;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(final String title) {
-        this.title = title;
     }
 
     public String getContents() {
         return contents;
     }
 
-    public void setContents(final String contents) {
-        this.contents = contents;
+    public static class Builder {
+
+        private long id;
+        private String writer;
+        private String title;
+        private String contents;
+
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder writer(String writer) {
+            this.writer = writer;
+            return this;
+        }
+
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public Builder contents(String contents) {
+            this.contents = contents;
+            return this;
+        }
+
+        public Article build() {
+            return new Article(this);
+        }
     }
 }

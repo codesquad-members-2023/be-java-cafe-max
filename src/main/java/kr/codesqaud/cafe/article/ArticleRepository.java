@@ -5,13 +5,13 @@ import java.util.Optional;
 
 public interface ArticleRepository {
 
-    Article save(Article article);
+    long save(Article article);
 
     String findIdBySequence(long sequence);
 
-    Optional<Article> findBySequence(long sequence);
+    Optional<Article> findOneById(long id);
 
     List<Article> findAll();
 
-    Article update(long sequence, Article article);
+    long update(long id, Article article);
 }

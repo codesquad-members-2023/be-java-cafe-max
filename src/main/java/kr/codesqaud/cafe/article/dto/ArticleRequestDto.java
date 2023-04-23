@@ -1,13 +1,23 @@
-package kr.codesqaud.cafe.article;
+package kr.codesqaud.cafe.article.dto;
+
+import kr.codesqaud.cafe.article.Article;
 
 /**
- * 게시글 DTO 객체
+ * 게시글 DTO 요청 객체
  */
-public class ArticleDTO {
+public class ArticleRequestDto {
 
     private String writer;
     private String title;
     private String contents;
+
+    public Article toEntity(String writer) {
+        return new Article.Builder()
+                .writer(writer)
+                .title(title)
+                .contents(contents)
+                .build();
+    }
 
     public String getWriter() {
         return writer;

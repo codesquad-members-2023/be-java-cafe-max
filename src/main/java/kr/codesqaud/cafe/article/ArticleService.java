@@ -23,10 +23,11 @@ public class ArticleService {
     /**
      * 게시글 저장
      */
-    public Article save(ArticleDTO articleDTO, String writer) {
+    public long save(Article article) {
         // TODO: title/content 비어있는지 등 유효성 검증
-        Article article = new Article(writer, articleDTO.getTitle(), articleDTO.getContents());
-        return articleRepository.save(article);
+        long id = articleRepository.save(article);
+        logger.info("게시글 저장 성공, 게시글 id: {}", id);
+        return id;
     }
 
     /**
@@ -34,27 +35,32 @@ public class ArticleService {
      * @return 저장소 내 전체 게시글
      */
     public List<Article> findArticles() {
-        return articleRepository.findAll();
+        return articleRepository.findAll(); // TODO: 불변값으로 수정
     }
 
     /**
-     * index 로 특정 게시글 조회
-     * @param index 게시글 index
+     * @param id Article id
      * @return 게시글
      */
-    public Optional<Article> findOne(long index) {
-        return articleRepository.findBySequence(index);
+    public Optional<Article> findOne(long id) {
+        return articleRepository.findOneById(id);
     }
 
-    public Article edit(long index, String requesterId, ArticleDTO articleDTO) {
-        String originWriter = articleRepository.findIdBySequence(index);
+    /**
+     * @param id Article id
+     */
+    public long edit(long id, Article article) {
+        String originWriter = articleRepository.findIdBySequence(id);
+        String requesterId = article.getWriter();
+
         if (!originWriter.equals(requesterId)) {
-            logger.info("게시글 수정 요청 ID와 기존 게시글 ID 불일치");
+            logger.info("게시글 수정 요청 ID와 기존 게시글 ID 불일치, requesterId: {}, originId: {}", requesterId, originWriter);
             throw new InvalidRequesterIdException();
         }
-        Article article = new Article(articleDTO.getTitle(), articleDTO.getContents());
-        logger.info("게시글 수정 성공");
-        return articleRepository.update(index, article);
+
+        articleRepository.update(id, article);
+        logger.info("게시글 수정 성공, 게시글 id: {}", id);
+        return id;
     }
 
 }
