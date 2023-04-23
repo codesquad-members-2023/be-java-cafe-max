@@ -3,17 +3,17 @@ package kr.codesqaud.cafe.domain.user.entity;
 import java.time.LocalDateTime;
 
 public class User {
-
-	private String password;
-	private String name;
-	private String email;
 	private String id;
+	private String password;
+	private String nickName;
+	private String email;
+	private String username;
 	LocalDateTime dateTime;
 
-	public User(String id, String name, String password, String email) {
-		this.id = id;
+	public User(String username, String nickName, String password, String email) {
+		this.username = username;
 		this.password = password;
-		this.name = name;
+		this.nickName = nickName;
 		this.email = email;
 		this.dateTime = LocalDateTime.now();
 	}
@@ -21,12 +21,16 @@ public class User {
 	public User() {
 	}
 
-	public boolean isCorrectPassword(String password) {
+	public boolean matchPassword(String password) {
 		return this.password.equals(password);
 	}
 
-	public String getName() {
-		return name;
+	public String getNickName() {
+		return nickName;
+	}
+
+	public String getUsername() {
+		return username;
 	}
 
 	public String getPassword() {
@@ -45,16 +49,8 @@ public class User {
 		this.dateTime = dateTime;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
 	}
 
 	public String getEmail() {
@@ -65,4 +61,15 @@ public class User {
 		return this.dateTime;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 }

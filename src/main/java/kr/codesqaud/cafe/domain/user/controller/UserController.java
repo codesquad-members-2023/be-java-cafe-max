@@ -17,6 +17,8 @@ import kr.codesqaud.cafe.domain.user.dto.request.UserUpdateRequestDto;
 import kr.codesqaud.cafe.domain.user.dto.response.UserDetailResponseDto;
 import kr.codesqaud.cafe.domain.user.entity.User;
 import kr.codesqaud.cafe.domain.user.repository.UserRepository;
+import kr.codesqaud.cafe.global.exception.user.DuplicatedUserIdException;
+import kr.codesqaud.cafe.global.exception.user.InvalidPasswordException;
 
 @Controller
 public class UserController {
@@ -29,8 +31,11 @@ public class UserController {
 
 	@PostMapping("/user/join")
 	public String signIn(UserSaveRequestDto userSaveRequestDto) {
+		if (userRepository.findById(userSaveRequestDto.getUsername()).isPresent()) {
+			throw new DuplicatedUserIdException();
+		}
 		userRepository.save(userSaveRequestDto.toEntity());
-		return "redirect:/users";
+		return "redirect:/user/login";
 	}
 
 	@GetMapping("/users")
@@ -42,10 +47,10 @@ public class UserController {
 		return "user/list";
 	}
 
-	@GetMapping("/users/{id}")
-	public String findUserProfile(@PathVariable("id") String id, Model model) {
+	@GetMapping("/users/{username}")
+	public String findUserProfile(@PathVariable("username") String username, Model model) {
 
-		Optional<User> user = userRepository.findById(id);
+		Optional<User> user = userRepository.findById(username);
 		if (user.isEmpty()) {
 			return "redirect:/";
 		}
@@ -53,16 +58,19 @@ public class UserController {
 		return "/user/profile";
 	}
 
-	@GetMapping("/users/{id}/form")
-	public String updateUserProfile(@PathVariable("id") String id, Model model) {
-		User user = userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+	@GetMapping("/users/{loginUserId}/form")
+	public String updateUserProfile(@PathVariable("loginUserId") String username, Model model) {
+		User user = userRepository.findById(username).orElseThrow(NoSuchElementException::new);
 		model.addAttribute("user", new UserDetailResponseDto(user));
 		return "/user/updateForm";
 	}
 
-	@PutMapping("/users/{id}/update")
-	public String modifyUserProfile(UserUpdateRequestDto userUpdateDto, @PathVariable("id") String id) {
-		userRepository.update(userUpdateDto.toEntity(id));
+	@PutMapping("/users/{loginUserId}/update")
+	public String modifyUserProfile(UserUpdateRequestDto userUpdateDto, @PathVariable("loginUserId") String username) {
+		if (!userRepository.findById(username).get().matchPassword(userUpdateDto.getPassword())) {
+			throw new InvalidPasswordException();
+		}
+		userRepository.update(userUpdateDto.toEntity(username));
 		return "redirect:/users";
 	}
 }

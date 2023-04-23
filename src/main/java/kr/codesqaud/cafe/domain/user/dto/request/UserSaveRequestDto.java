@@ -4,20 +4,35 @@ import kr.codesqaud.cafe.domain.user.entity.User;
 
 public class UserSaveRequestDto {
 
-	private String id;
-	private String name;
+	private String username;
+	private String nickName;
 	private String password;
 	private String email;
 
-	public UserSaveRequestDto(String id, String name, String password, String email) {
-		this.id = id;
-		this.name = name;
+	public UserSaveRequestDto(String username, String nickName, String password, String email) {
+		this.username = username;
+		this.nickName = nickName;
 		this.password = password;
 		this.email = email;
 	}
 
 	public User toEntity() {
-		return new User(id, name, password, email);
+		return new User(username, nickName, password, email);
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
 }

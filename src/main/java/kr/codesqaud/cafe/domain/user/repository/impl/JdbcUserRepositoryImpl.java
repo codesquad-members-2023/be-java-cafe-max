@@ -30,7 +30,7 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
 	@Transactional
 	public void save(User user) {
-		final String SQL = "INSERT INTO users ( id, password, name, email, dateTime) VALUES (:id,:password, :name, :email,:dateTime)";
+		final String SQL = "INSERT INTO users ( username, password, nickName, email, dateTime) VALUES (:username,:password, :nickName, :email,:dateTime)";
 		namedParameterJdbcTemplate.update(SQL, new BeanPropertySqlParameterSource(user));
 	}
 
@@ -39,10 +39,10 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 		return namedParameterJdbcTemplate.query(SQL, BeanPropertyRowMapper.newInstance(User.class));
 	}
 
-	public Optional<User> findById(String id) {
-		final String SQL = "SELECT * FROM users WHERE id = :id";
+	public Optional<User> findById(String username) {
+		final String SQL = "SELECT * FROM users WHERE username = :username";
 		try {
-			return namedParameterJdbcTemplate.queryForStream(SQL, Map.of("id", id), userRowMapper)
+			return namedParameterJdbcTemplate.queryForStream(SQL, Map.of("username", username), userRowMapper)
 				.findFirst();
 		} catch (DataAccessException e) {
 			return Optional.empty();
@@ -51,12 +51,12 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
 	@Transactional
 	public void update(User user) {
-		final String SQL = "UPDATE users SET name = :name, email = :email, password = :password WHERE id = :id";
+		final String SQL = "UPDATE users SET nickName = :nickName, email = :email WHERE username = :username";
 		Map<String, Object> parameter = Map.of(
-			"name", user.getName(),
+			"nickName", user.getNickName(),
 			"email", user.getEmail(),
 			"password", user.getPassword(),
-			"id", user.getId());
+			"username", user.getUsername());
 		namedParameterJdbcTemplate.update(SQL, parameter);
 	}
 }

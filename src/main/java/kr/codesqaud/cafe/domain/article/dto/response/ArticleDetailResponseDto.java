@@ -6,24 +6,26 @@ import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.article.entity.Article;
 
 public class ArticleDetailResponseDto {
-	String id;
-	String content;
-	String title;
-	String dateTime;
+	private String articleId;
+	private String content;
+	private String title;
+	private String dateTime;
+	private String writer;
 
 	public ArticleDetailResponseDto(Article article) {
 		this.title = article.getTitle();
 		this.content = article.getContent();
-		this.id = String.valueOf(article.getId());
+		this.articleId = String.valueOf(article.getId());
 		this.dateTime = setDateTime(article.getDateTime());
+		this.writer = article.getWriter();
 	}
 
 	private String setDateTime(LocalDateTime localDateTime) {
-		return localDateTime.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일(E) HH:mm:ss"));
+		return localDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
 	}
 
-	public String getId() {
-		return id;
+	public String getArticleId() {
+		return articleId;
 	}
 
 	public String getContent() {
@@ -36,5 +38,9 @@ public class ArticleDetailResponseDto {
 
 	public String getDateTime() {
 		return dateTime;
+	}
+
+	public String getWriter() {
+		return writer;
 	}
 }

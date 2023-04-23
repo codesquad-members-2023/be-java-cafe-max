@@ -19,7 +19,7 @@ public class ArticleSaveRequestDto {
 		this.content = content;
 	}
 
-	public Article toEntity() {
-		return new Article(title, content);
+	public Article toEntity(String writer) {
+		return new Article(title, content, writer);
 	}
 }

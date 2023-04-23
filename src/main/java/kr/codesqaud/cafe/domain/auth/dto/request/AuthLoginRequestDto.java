@@ -2,16 +2,16 @@ package kr.codesqaud.cafe.domain.auth.dto.request;
 
 public class AuthLoginRequestDto {
 
-	private String id;
+	private String username;
 	private String password;
 
-	public AuthLoginRequestDto(String id, String password) {
-		this.id = id;
+	public AuthLoginRequestDto(String username, String password) {
+		this.username = username;
 		this.password = password;
 	}
 
-	public String getId() {
-		return id;
+	public String getUsername() {
+		return username;
 	}
 
 	public String getPassword() {

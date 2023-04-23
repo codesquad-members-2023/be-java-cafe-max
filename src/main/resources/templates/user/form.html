@@ -15,7 +15,7 @@
         <form name="question" class="info-container" method="post" action="/user/join">
             <div class="form-group">
                 <label for="name">ID</label>
-                <input class="form-control" id="id" name="id" placeholder="id를 입력하세요">
+                <input class="form-control" id="username" name="username" placeholder="id를 입력하세요">
             </div>
             <div class="form-group">
                 <label for="password">비밀번호</label>
@@ -23,12 +23,16 @@
             </div>
             <div class="form-group">
                 <label for="name">닉네임</label>
-                <input class="form-control" id="name" name="name" placeholder="닉네임을 입력하세요">
+                <input class="form-control" id="nickName" name="nickName" placeholder="닉네임을 입력하세요">
             </div>
             <div class="form-group">
                 <label for="email">이메일</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
             </div>
+
+            {{#error}}
+            <span style="color: red">{{error}}</span>
+            {{/error}}
 
 
             <button type="submit" class="btn btn-success clearfix pull-right">회원가입</button>
