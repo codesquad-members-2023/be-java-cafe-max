@@ -60,18 +60,15 @@ public class ArticleController {
         return "qna/show";
     }
 
-    @RequestMapping(value = "/articles/delete/{articleId}", method = {RequestMethod.GET, RequestMethod.DELETE})
+    @DeleteMapping("/articles/delete/{articleId}")
     public String deleteArticle(@PathVariable final Long articleId, HttpServletRequest httpRequest, Model model) {
         HttpSession session = httpRequest.getSession(false);
         ArticleDto article = articleService.findById(articleId);
         model.addAttribute("article", article);
-        if(session == null) return "qna/failed";
-        else if (session.getAttribute("userId").equals(article.getWriter())) {
+        if (session != null && session.getAttribute("userId").equals(article.getWriter())) {
             articleService.deleteArticle(articleId);
             return "redirect:/";
         }
-
         return "qna/failed";
     }
-
 }
