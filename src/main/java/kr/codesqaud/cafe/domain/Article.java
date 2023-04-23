@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDTO;
-import kr.codesqaud.cafe.unit.CurrentDateTime;
 
 public class Article {
 
@@ -14,12 +13,12 @@ public class Article {
     public Article() {
     }
 
-    public Article(Long id, String title, String content, String userId) {
+    public Article(Long id, String title, String content, String userId, String createTime) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.userId = userId;
-        this.createTime = new CurrentDateTime().toString();
+        this.createTime = createTime;
     }
 
     public void create(Long id, Article article) {

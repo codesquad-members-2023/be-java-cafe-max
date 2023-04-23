@@ -23,7 +23,7 @@ public class ArticleDTO {
     }
 
     public Article toEntity(String userId) {
-        return new Article(id, title, content, userId);
+        return new Article(id, title, content, userId, createTime);
     }
 
     public Long getId() {
