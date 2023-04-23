@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller.user;
 
-import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    // 회원 가입
     @GetMapping("/create")
     public String create(){
         return "user/form";
@@ -26,23 +26,22 @@ public class UserController {
 
     @PostMapping("/create")
     public String create(UserForm form){
-        User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
-        userService.join(user);
+        userService.join(form);
         return "redirect:/users";
     }
 
-    @GetMapping("")
+    @GetMapping
     public String list(Model model){
         List<UserResponse> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
+    // 유저 프로필 보기
     @GetMapping("/{userId}")
     public String profile(@PathVariable String userId, Model model){
-        UserResponse userResponse = userService.findByUserId(userId).get();
+        UserResponse userResponse = userService.findByUserId(userId);
         model.addAttribute("user", userResponse);
         return "user/profile";
     }
-
 }

@@ -1,13 +1,12 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.user.UserForm;
 import kr.codesqaud.cafe.controller.user.UserResponse;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,8 +19,9 @@ public class UserService {
     }
     // 회원 가입
 
-    @Transactional(rollbackFor = {IllegalStateException.class})
-    public String join(User user){
+    public String join(UserForm form){
+        User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
+
         // 같은 이름, 같은 아이디가 있는 중복 회원X
         validateDuplicateUserName(user);
         validateDuplicateUserId(user);
@@ -53,15 +53,13 @@ public class UserService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public Optional<UserResponse> findByUserId(String userId) {
-        User user = userRepository.findByUserId(userId).get();
-        UserResponse userResponse = new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail());
-        return Optional.ofNullable(userResponse);
+    public UserResponse findByUserId(String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(()->new IllegalStateException("찾으시는 아이디는 없는 아이디 입니다."));
+        return new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail());
     }
 
-    public Optional<UserResponse> findByName(String name){
-        User user = userRepository.findByName(name).get();
-        UserResponse userResponse = new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail());
-        return Optional.ofNullable(userResponse);
+    public UserResponse findByName(String name){
+        User user = userRepository.findByName(name).orElseThrow(()->new IllegalStateException("찾으시는 이름은 없는 이름 입니다."));
+        return new UserResponse(user.getCustomerId(), user.getUserId(), user.getName(), user.getEmail());
     }
 }

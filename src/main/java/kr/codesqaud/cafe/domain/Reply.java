@@ -1,35 +1,31 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.article.ArticleForm;
-
 import java.time.LocalDateTime;
 
-public class Article {
-    private Long id; // 글 번호
+public class Reply {
+    private Long replyId;
     private String writer;
-    private String title;
     private String contents;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private Long points;
+    private Long articleId;
 
-    public Article(){}
+    public Reply(){}
 
-    public Article(String writer, String title, String contents) {
+    public Reply(String writer, String contents, Long articleId) {
         this.writer = writer;
-        this.title = title;
         this.contents = contents;
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = null;
-        this.points = 1L;
+        this.articleId = articleId;
     }
 
-    public Long getId() {
-        return id;
+    public Long getReplyId() {
+        return replyId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setReplyId(Long replyId) {
+        this.replyId = replyId;
     }
 
     public String getWriter() {
@@ -38,14 +34,6 @@ public class Article {
 
     public void setWriter(String writer) {
         this.writer = writer;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContents() {
@@ -72,11 +60,11 @@ public class Article {
         this.modifiedAt = modifiedAt;
     }
 
-    public Long getPoints() {
-        return points;
+    public Long getArticleId() {
+        return articleId;
     }
 
-    public void setPoints(Long points) {
-        this.points = points;
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 }

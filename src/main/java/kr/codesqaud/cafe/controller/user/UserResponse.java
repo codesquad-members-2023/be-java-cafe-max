@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.controller.user;
 
 public class UserResponse {
-    private Long customerId;
+    private Long customerId; // 회원 번호
     private String userId;
     private String name;
     private String email;
@@ -14,6 +14,10 @@ public class UserResponse {
         this.userId = userId;
         this.name = name;
         this.email = email;
+    }
+
+    public Long getCustomerId(){
+        return customerId;
     }
 
     public String getUserId() {

@@ -25,10 +25,10 @@ public class JdbcUserRepository implements UserRepository{
     @Override
     public User save(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("users").usingGeneratedKeyColumns("customerId");
+        jdbcInsert.withTableName("`user`").usingGeneratedKeyColumns("customer_id");
 
         Map<String, Object> parameters = new ConcurrentHashMap<>();
-        parameters.put("userId", user.getUserId());
+        parameters.put("user_id", user.getUserId());
         parameters.put("password", user.getPassword());
         parameters.put("name", user.getName());
         parameters.put("email", user.getEmail());
@@ -38,38 +38,38 @@ public class JdbcUserRepository implements UserRepository{
         return user;
     }
 
-    @Override
-    public Optional<User> findByUserId(String userId) {
-        // 디자인 패턴 중, 템플릿 메서드 패턴의 요소가 많이 반영되어있기 때문이다.
-        List<User> result = jdbcTemplate.query("select * from users where userId = ?", userRowMapper(), userId);
-        return result.stream().findAny();
-    }
-
-    @Override
-    public Optional<User> findByName(String name) {
-        List<User> result = jdbcTemplate.query("select * from users where name = ?", userRowMapper(), name);
-        return result.stream().findAny();
-    }
-
-    @Override
-    public List<User> findAll() {
-        return jdbcTemplate.query("select * from users", userRowMapper());
-    }
-
-    @Override
-    public void clearStore() {
-        jdbcTemplate.update("delete from users");
-    }
-
     private RowMapper<User> userRowMapper(){
         return (rs, rowNum) -> {
             User user = new User();
-            user.setCustomerId(rs.getLong("customerId"));
-            user.setUserId(rs.getString("userId"));
+            user.setCustomerId(rs.getLong("customer_id"));
+            user.setUserId(rs.getString("user_id"));
             user.setPassword(rs.getString("password"));
             user.setName(rs.getString("name"));
             user.setEmail(rs.getString("email"));
             return user;
         };
+    }
+
+    @Override
+    public Optional<User> findByUserId(String userId) {
+        // 디자인 패턴 중, 템플릿 메서드 패턴의 요소가 많이 반영되어있기 때문이다.
+        List<User> result = jdbcTemplate.query("select * from `user` where user_id = ?", userRowMapper(), userId);
+        return result.stream().findAny();
+    }
+
+    @Override
+    public Optional<User> findByName(String name) {
+        List<User> result = jdbcTemplate.query("select * from `user` where name = ?", userRowMapper(), name);
+        return result.stream().findAny();
+    }
+
+    @Override
+    public List<User> findAll() {
+        return jdbcTemplate.query("select * from `user`", userRowMapper());
+    }
+
+    @Override
+    public void clearStore() {
+        jdbcTemplate.update("delete from `user`");
     }
 }
