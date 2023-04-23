@@ -45,8 +45,7 @@ public class ArticleController {
         model.addAttribute("title", article.getTitle());
         model.addAttribute("content", article.getContent());
 
-        if(session == null) return "qna/failed";
-        else if (session.getAttribute("userId").equals(article.getWriter())) {
+        if (session != null && session.getAttribute("userId").equals(article.getWriter())) {
             return "qna/edit_form";
         }
 
