@@ -40,7 +40,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void update(Article updatedArticle) {
-        String sql = "UPDATE ARTICLE_TB SET TITLE = :TITLE, CONTENT = :CONTENT, createTime = :CREATE_TIME WHERE ID = :ID";
+        String sql = "UPDATE ARTICLE_TB SET TITLE = :TITLE, CONTENT = :CONTENT, createTime = :createTime WHERE ID = :ID";
 
         SqlParameterSource param = new MapSqlParameterSource()
                 .addValue("TITLE", updatedArticle.getTitle())
