@@ -71,16 +71,3 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 }
-
-
-
-/*
-        if (wantedUser.isPresent()) {
-        //Optional 객체를 꺼내 가져오려면 get() 메서드 사용
-            return UserReadDTO.toUserReadDTO(wantedUser.get());
-        }
-        return null;
-        을 한줄로 변환하면
-        => return wantedUser.map(UserReadDTO::toUserReadDTO).orElse(null);
-
- */
