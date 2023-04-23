@@ -35,11 +35,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findById(Long id) {
-        String sql = "select a.id, a.title, a.contents, a.currentTime, a.user_id, u.user_id, " +
-                "(select count(*) from " + DataType.REPLIES.getType() + " r where a.id=r.article_id and r.deleted=false) as replyCount " +
-                "from " + DataType.ARTICLES.getType() + " a join " + DataType.USERS.getType() + " u on a.user_id=u.user_id " +
-                "where a.id=:id and a.deleted=false";
+    public synchronized Optional<Article> findById(Long id) {
+        String sql = "select a.id, a.title, a.contents, a.currentTime, a.user_id, " +
+                "count(r.article_id) as replyCount " +
+                "from " + DataType.ARTICLES.getType() + " a " +
+                "left join " + DataType.REPLIES.getType() + " r " + "on a.id=r.article_id and r.deleted=false " +
+                "where a.id=:id and a.deleted=false " +
+                "group by a.id, a.title, a.contents, a.currentTime, a.user_id";
 
         try {
             Map<String, Object> param = Map.of("id", id);
@@ -51,11 +53,15 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAll() {
+    public synchronized List<Article> findAll() {
         String sql = "select a.id, a.title, a.contents, a.currentTime, a.user_id, u.user_id, " +
-                "(select count(*) from " + DataType.REPLIES.getType() + " r where a.id=r.article_id and r.deleted=false) as replyCount " +
-                "from " + DataType.ARTICLES.getType() + " a join " + DataType.USERS.getType() + " u on a.user_id=u.user_id " +
-                "where a.deleted=false order by a.id desc";
+                "count(r.article_id) as replyCount " +
+                "from " + DataType.ARTICLES.getType() + " a " +
+                "join " + DataType.USERS.getType() + " u on a.user_id = u.user_id " +
+                "left join " + DataType.REPLIES.getType() + " r on a.id = r.article_id and r.deleted = false " +
+                "where a.deleted = false " +
+                "group by a.id, a.title, a.contents, a.currentTime, a.user_id, u.user_id " +
+                "order by a.id desc";
 
         return template.query(sql, articleRowMapper);
     }
