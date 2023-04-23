@@ -1,20 +1,20 @@
 package kr.codesqaud.cafe.user.domain;
 
-public class User {
+public class UserEntity {
 	private long id;
 	private final String userId;
 	private String password;
 	private String name;
 	private String email;
 
-	public User(String userId, String password, String name, String email) {
+	public UserEntity(String userId, String password, String name, String email) {
 		this.userId = userId;
 		this.password = password;
 		this.name = name;
 		this.email = email;
 	}
 
-	public User(long id, String userId, String password, String name, String email) {
+	public UserEntity(long id, String userId, String password, String name, String email) {
 		this.id = id;
 		this.userId = userId;
 		this.password = password;
@@ -42,7 +42,7 @@ public class User {
 		return email;
 	}
 
-	public void updateFrom(User user) {
+	public void updateFrom(UserEntity user) {
 		this.password = user.getPassword();
 		this.name = user.getName();
 		this.email = user.getEmail();

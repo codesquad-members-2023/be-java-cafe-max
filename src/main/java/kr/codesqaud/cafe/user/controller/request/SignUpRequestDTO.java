@@ -5,7 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.domain.UserEntity;
 
 public class SignUpRequestDTO {
 	@NotBlank(message = "아이디를 입력해 주세요.")
@@ -59,8 +59,8 @@ public class SignUpRequestDTO {
 		return email;
 	}
 
-	public User toEntity() {
-		return new User(userId, password, name, email);
+	public UserEntity toEntity() {
+		return new UserEntity(userId, password, name, email);
 	}
 
 }

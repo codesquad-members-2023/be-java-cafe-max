@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
-import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.domain.UserEntity;
 import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
 import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
 import kr.codesqaud.cafe.user.exception.UserNotExistException;
@@ -24,13 +24,13 @@ public class UserService {
 	 * @param user 회원 가입 정보
 	 * @throws IllegalArgumentException 이미 등록된 회원 ID을 중복하여 등록한 경우 Exception 발생
 	 */
-	public void addUser(User user) throws UserIdDuplicateException {
+	public void addUser(UserEntity user) throws UserIdDuplicateException {
 		repository.save(user);
 	}
 
-	public User performSignIn(String userId, String password) throws UserDoesNotMatchException {
+	public UserEntity performSignIn(String userId, String password) throws UserDoesNotMatchException {
 		try {
-			User user = findByUserId(userId);
+			UserEntity user = findByUserId(userId);
 			if (password.equals(user.getPassword())) {
 				return user;
 			}
@@ -44,7 +44,7 @@ public class UserService {
 	 * 회원 목록 검색
 	 * @return 회원 목록이 담긴 List
 	 */
-	public List<User> findAllUsers() {
+	public List<UserEntity> findAllUsers() {
 		return repository.findAll();
 	}
 
@@ -54,7 +54,7 @@ public class UserService {
 	 * @return ID에 해당하는 회원 정보
 	 * @throws NoSuchElementException 존재하지 않는 회원을 검색한 경우 Exception 발생
 	 */
-	public User findByUserId(String userId) throws UserNotExistException {
+	public UserEntity findByUserId(String userId) throws UserNotExistException {
 		return repository.findByUserId(userId);
 	}
 
@@ -63,7 +63,7 @@ public class UserService {
 	 * @param user 수정할 회원 정보
 	 * @throws UserDoesNotMatchException 존재하지 않는 회원의 정보를 수정하거나, 비밀번호가 일치하지 않는 경우 Exception 발생
 	 */
-	public void updateUser(User user) throws UserDoesNotMatchException {
+	public void updateUser(UserEntity user) throws UserDoesNotMatchException {
 		repository.update(user);
 	}
 

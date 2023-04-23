@@ -2,17 +2,17 @@ package kr.codesqaud.cafe.user.repository;
 
 import java.util.List;
 
-import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.domain.UserEntity;
 import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
 import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
 import kr.codesqaud.cafe.user.exception.UserNotExistException;
 
 public interface UserRepository {
-	void save(User user) throws UserIdDuplicateException;
+	void save(UserEntity user) throws UserIdDuplicateException;
 
-	List<User> findAll();
+	List<UserEntity> findAll();
 
-	User findByUserId(String userId) throws UserNotExistException;
+	UserEntity findByUserId(String userId) throws UserNotExistException;
 
-	void update(User user) throws UserDoesNotMatchException;
+	void update(UserEntity user) throws UserDoesNotMatchException;
 }

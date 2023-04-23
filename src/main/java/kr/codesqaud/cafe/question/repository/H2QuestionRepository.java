@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.question.domain.Question;
+import kr.codesqaud.cafe.question.domain.QuestionEntity;
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 
 @Repository
@@ -22,7 +22,7 @@ public class H2QuestionRepository implements QuestionRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public void save(Question question) {
+	public void save(QuestionEntity question) {
 		String sql = "INSERT INTO \"post\"(writer, title, contents) VALUES (:writer , :title, :contents)";
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("writer", question.getWriter())
@@ -37,7 +37,7 @@ public class H2QuestionRepository implements QuestionRepository {
 		return jdbcTemplate.queryForObject(sql, (SqlParameterSource)null, Long.class);
 	}
 
-	public List<Question> findPageBy(long offset, int pageSize) {
+	public List<QuestionEntity> findPageBy(long offset, int pageSize) {
 		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\" ORDER BY id DESC LIMIT :pageSize OFFSET :offset";
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("offset", offset)
@@ -46,7 +46,7 @@ public class H2QuestionRepository implements QuestionRepository {
 		return jdbcTemplate.query(sql, parameters, getQuestionRowMapper());
 	}
 
-	public Question findById(long id) throws QuestionNotExistException {
+	public QuestionEntity findById(long id) throws QuestionNotExistException {
 		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\"  WHERE id = :id";
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("id", id);
@@ -59,9 +59,9 @@ public class H2QuestionRepository implements QuestionRepository {
 
 	}
 
-	private RowMapper<Question> getQuestionRowMapper() {
+	private RowMapper<QuestionEntity> getQuestionRowMapper() {
 		return (rs, rowNum) ->
-			new Question(rs.getInt("id"),
+			new QuestionEntity(rs.getInt("id"),
 				rs.getString("writer"),
 				rs.getString("title"),
 				rs.getString("contents"),

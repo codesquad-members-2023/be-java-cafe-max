@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import kr.codesqaud.cafe.question.domain.Question;
+import kr.codesqaud.cafe.question.domain.QuestionEntity;
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.question.repository.QuestionRepository;
 
@@ -16,7 +16,7 @@ public class QuestionService {
 		this.repository = repository;
 	}
 
-	public void save(Question question) {
+	public void save(QuestionEntity question) {
 		repository.save(question);
 	}
 
@@ -24,11 +24,11 @@ public class QuestionService {
 		return repository.countBy();
 	}
 
-	public List<Question> findPageBy(long offset, int pageSize) {
+	public List<QuestionEntity> findPageBy(long offset, int pageSize) {
 		return repository.findPageBy(offset, pageSize);
 	}
 
-	public Question findById(long id) throws QuestionNotExistException {
+	public QuestionEntity findById(long id) throws QuestionNotExistException {
 		return repository.findById(id);
 	}
 }

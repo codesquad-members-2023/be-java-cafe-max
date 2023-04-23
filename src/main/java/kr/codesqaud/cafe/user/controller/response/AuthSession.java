@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.user.controller.response;
 
-import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.domain.UserEntity;
 
 public class AuthSession {
 	private final long id;
@@ -19,7 +19,7 @@ public class AuthSession {
 		return userId;
 	}
 
-	public static AuthSession from(User user) {
+	public static AuthSession from(UserEntity user) {
 		return new AuthSession(user.getId(), user.getUserId());
 	}
 }

@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.domain.UserEntity;
 import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
 import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
 import kr.codesqaud.cafe.user.exception.UserNotExistException;
@@ -24,7 +24,7 @@ public class H2UserRepository implements UserRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public void save(User user) throws UserIdDuplicateException {
+	public void save(UserEntity user) throws UserIdDuplicateException {
 		String sql = "INSERT INTO \"user\"(userId, password, name, email) VALUES (?, ?, ?, ?)";
 		try {
 			jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
@@ -34,7 +34,7 @@ public class H2UserRepository implements UserRepository {
 	}
 
 	@Override
-	public List<User> findAll() {
+	public List<UserEntity> findAll() {
 		String sql = "SELECT id, userId, password, name, email FROM \"user\"";
 		try {
 			return Collections.unmodifiableList(jdbcTemplate.query(sql, getUserRowMapper()));
@@ -44,7 +44,7 @@ public class H2UserRepository implements UserRepository {
 	}
 
 	@Override
-	public User findByUserId(String userId) throws UserNotExistException {
+	public UserEntity findByUserId(String userId) throws UserNotExistException {
 		String sql = "SELECT id, userId, password, name, email FROM \"user\" WHERE userId = ?";
 		try {
 			return jdbcTemplate.queryForObject(sql, getUserRowMapper(), userId);
@@ -54,7 +54,7 @@ public class H2UserRepository implements UserRepository {
 	}
 
 	@Override
-	public void update(User user) throws UserDoesNotMatchException {
+	public void update(UserEntity user) throws UserDoesNotMatchException {
 		String sql = "UPDATE \"user\" SET name = ?, email = ? WHERE userId = ? AND password = ?";
 		try {
 			jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getUserId(), user.getPassword());
@@ -63,9 +63,9 @@ public class H2UserRepository implements UserRepository {
 		}
 	}
 
-	private RowMapper<User> getUserRowMapper() {
+	private RowMapper<UserEntity> getUserRowMapper() {
 		return (rs, rowNum) ->
-			new User(rs.getLong("id"),
+			new UserEntity(rs.getLong("id"),
 				rs.getString("userId"),
 				rs.getString("password"),
 				rs.getString("name"),

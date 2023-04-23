@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.common.repository.CollectionFrameworkRepositoryDummyData;
-import kr.codesqaud.cafe.question.domain.Question;
+import kr.codesqaud.cafe.question.domain.QuestionEntity;
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 
 @Repository
@@ -20,7 +20,7 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 		dummyData.insertQuestionsDummyData(questionTable);
 	}
 
-	public void save(Question question) {
+	public void save(QuestionEntity question) {
 		questionTable.insert(question);
 	}
 
@@ -28,15 +28,15 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 		return questionTable.count();
 	}
 
-	public List<Question> findPageBy(long offset, int pageSize) {
+	public List<QuestionEntity> findPageBy(long offset, int pageSize) {
 		return questionTable.select().stream()
-			.sorted(Comparator.comparing(Question::getId).reversed())
+			.sorted(Comparator.comparing(QuestionEntity::getId).reversed())
 			.skip(offset).limit(pageSize)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public Question findById(long id) throws QuestionNotExistException {
-		for (Question question : questionTable.select()) {
+	public QuestionEntity findById(long id) throws QuestionNotExistException {
+		for (QuestionEntity question : questionTable.select()) {
 			if (question.getId() == id) {
 				return question;
 			}

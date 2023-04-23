@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.common.repository.CollectionFrameworkRepositoryDummyData;
-import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.domain.UserEntity;
 import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
 import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
 
@@ -20,9 +20,9 @@ public class CollectionFrameworkUserRepository implements UserRepository {
 		dummyData.insertUserDummyData(userTable);
 	}
 
-	public void save(User user) throws UserIdDuplicateException {
+	public void save(UserEntity user) throws UserIdDuplicateException {
 		String userId = user.getUserId();
-		for (User exgistingUser : userTable.select()) {
+		for (UserEntity exgistingUser : userTable.select()) {
 			if (exgistingUser.getUserId().equals(userId)) {
 				throw new UserIdDuplicateException(user.getUserId());
 			}
@@ -30,12 +30,12 @@ public class CollectionFrameworkUserRepository implements UserRepository {
 		userTable.insert(user);
 	}
 
-	public List<User> findAll() {
+	public List<UserEntity> findAll() {
 		return userTable.select();
 	}
 
-	public User findByUserId(String userId) throws NoSuchElementException {
-		for (User exgistingUser : userTable.select()) {
+	public UserEntity findByUserId(String userId) throws NoSuchElementException {
+		for (UserEntity exgistingUser : userTable.select()) {
 			if (exgistingUser.getUserId().equals(userId)) {
 				return exgistingUser;
 			}
@@ -43,9 +43,9 @@ public class CollectionFrameworkUserRepository implements UserRepository {
 		throw new NoSuchElementException(userId);
 	}
 
-	public void update(User user) throws UserDoesNotMatchException {
+	public void update(UserEntity user) throws UserDoesNotMatchException {
 		String userId = user.getUserId();
-		for (User exgistingUser : userTable.select()) {
+		for (UserEntity exgistingUser : userTable.select()) {
 			if (exgistingUser.getUserId().equals(userId)) {
 				userTable.update(exgistingUser, user);
 				return;

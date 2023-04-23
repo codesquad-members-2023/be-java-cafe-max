@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.question.controller.request;
 
 import java.time.LocalDateTime;
 
-import kr.codesqaud.cafe.question.domain.Question;
+import kr.codesqaud.cafe.question.domain.QuestionEntity;
 
 public class QuestionWriteRequestDTO {
 	private final String writer;
@@ -27,7 +27,7 @@ public class QuestionWriteRequestDTO {
 		return contents;
 	}
 
-	public Question toEntity() {
-		return new Question(-1, writer, title, contents, LocalDateTime.now());
+	public QuestionEntity toEntity() {
+		return new QuestionEntity(-1, writer, title, contents, LocalDateTime.now());
 	}
 }

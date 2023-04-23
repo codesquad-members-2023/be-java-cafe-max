@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.question.controller.response;
 
 import java.time.LocalDateTime;
 
-import kr.codesqaud.cafe.question.domain.Question;
+import kr.codesqaud.cafe.question.domain.QuestionEntity;
 
 /**
  * Q&A 게시판 목록 페이지에 보여줄 게시글 목록 중 하나의 title 정보를 저장할 DTO
@@ -36,7 +36,7 @@ public class QuestionTitleResponseDTO {
 		return registrationDateTime;
 	}
 
-	public static QuestionTitleResponseDTO from(Question question) {
+	public static QuestionTitleResponseDTO from(QuestionEntity question) {
 		return new QuestionTitleResponseDTO(question.getId(), question.getWriter(), question.getTitle(),
 			question.getRegistrationDateTime());
 	}
