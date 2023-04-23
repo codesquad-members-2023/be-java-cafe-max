@@ -58,11 +58,11 @@ class ArticleCommentServiceTest {
 			// given
 			given(commentRepository.findById(anyLong())).willReturn(Optional.of(createArticleComment()));
 
-			// when & then
-			assertAll(
-				() -> commentService.validateHasAuthorization(1L, "bruni"),
-				() -> then(commentRepository).should().findById(1L)
-			);
+			// when
+			commentService.validateHasAuthorization(1L, "bruni");
+
+			// then
+			then(commentRepository).should().findById(1L);
 		}
 
 		@DisplayName("댓글의 작성자와 현재 로그인한 사용자가 일치하지 않으면 예외를 던진다.")
