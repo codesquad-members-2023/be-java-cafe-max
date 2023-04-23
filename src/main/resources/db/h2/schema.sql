@@ -9,14 +9,15 @@ CREATE TABLE users
     primary key (id)
 );
 
-DROP TABLE IF EXISTS article CASCADE;
-CREATE TABLE article
+DROP TABLE IF EXISTS question CASCADE;
+CREATE TABLE question
 (
-    id        bigint auto_increment,
-    title     VARCHAR(255) NOT NULL,
-    content   TEXT         NOT NULL,
-    writeDate TIMESTAMP    NOT NULL,
-    userId    bigint       NOT NULL,
+    id         bigint auto_increment,
+    title      VARCHAR(255) NOT NULL,
+    content    TEXT         NOT NULL,
+    createTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updateTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    userId     bigint       NOT NULL,
     primary key (id),
     foreign key (userId) references users (id) ON DELETE CASCADE
 );

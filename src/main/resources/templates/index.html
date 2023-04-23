@@ -12,20 +12,20 @@
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
       <div class="panel panel-default qna-list">
         <ul class="list">
-          <th:block th:each="article : ${articles}">
+          <th:block th:each="question : ${questions}">
             <li>
               <div class="wrap">
                 <div class="main">
                   <strong class="subject">
-                    <a th:href="@{/qna/{id}(id=${article.id})}"
-                       th:text="${article.title}"></a>
+                    <a th:href="@{/qna/{id}(id=${question.id})}"
+                       th:text="${question.title}"></a>
                   </strong>
                   <div class="auth-info">
                     <i class="icon-add-comment"></i>
                     <span class="time"
-                          th:text="${#temporals.format(article.writeDate, 'YYYY-MM-dd HH:mm')}"></span>
-                    <a class="author" th:href="@{/users/{id}(id=${article.userId})}"
-                       th:text="${article.writer}"></a>
+                          th:text="${#temporals.format(question.createTime, 'YYYY-MM-dd HH:mm')}"></span>
+                    <a class="author" th:href="@{/users/{id}(id=${question.userId})}"
+                       th:text="${question.writer}"></a>
                   </div>
                   <div class="reply" title="댓글">
                     <i class="icon-reply"></i>
@@ -50,7 +50,7 @@
             </ul>
           </div>
           <div class="col-md-3 qna-write">
-            <a class="btn btn-primary pull-right" href="/qna/form" role="button">질문하기</a>
+            <a class="btn btn-primary pull-right" href="/qna/new" role="button">질문하기</a>
           </div>
         </div>
       </div>

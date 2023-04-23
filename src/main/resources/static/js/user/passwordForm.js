@@ -4,48 +4,35 @@ $(document).ready(function () {
     await clearErrorMessage()
 
     const data = {
-      "password": $("#password").val()
+      password: $("#password").val()
     }
+
     const id = $("#id").val()
-    const urlPath = `/users/password/${id}`
+    const urlPath = `/password/${id}`
 
     $.ajax({
       type: "POST",
       url: urlPath,
       data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8',
-      success: function (resp) {
-        if (resp.errorCode === 802) {
-          $("#passwordError").text(resp.errorMessage)
-          return;
-        }
-        if (hasFormatError(resp)) {
-          writeError(resp)
-          return;
-        }
-        location.href = `/user/form/${id}`
+    }).done(function () {
+      location.href = `/user/form/${id}`
+    }).fail(function (response) {
+      const errorResponse = response.responseJSON
+      // 비밀번호 일치하지 않는 경우
+      if (errorResponse.name === 'NOT_MATCH_PASSWORD') {
+        $("#passwordError").text(errorResponse.errorMessage)
+      }
+      // 유저 입력 형식 오류
+      if (errorResponse.name === 'INVALID_INPUT_FORMAT') {
+        errorResponse.errors.forEach(item => {
+          $(`#${item.field}Error`).text(item.message)
+        })
       }
     })
   })
 
   function clearErrorMessage() {
     $("#form p").text("")
-  }
-
-  function hasFormatError(respMap) {
-    for (let key in respMap) {
-      const value = respMap[key]
-      if (value.errorCode !== undefined) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function writeError(respMap) {
-    for (let key in respMap) {
-      const value = respMap[key]
-      $(`#${key}Error`).text(value.errorMessage)
-    }
   }
 })

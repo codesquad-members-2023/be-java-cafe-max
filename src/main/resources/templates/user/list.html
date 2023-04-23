@@ -32,9 +32,8 @@
               <td>
                 <th:block th:if="${session.user} and ${session.user.id eq user.id}">
                   <a class="btn btn-success" role="button"
-                     th:href="@{/user/password/{id}(id=${user.id})}">수정</a>
+                     th:href="@{/users/{id}/edit(id=${user.id})}">수정</a>
                 </th:block>
-
               </td>
             </tr>
           </th:block>

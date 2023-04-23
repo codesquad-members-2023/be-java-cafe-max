@@ -5,22 +5,28 @@ $(document).ready(function () {
 
     const data = {
       userId: $("#userId").val(),
-      password: $("#password").val()
+      password: $("#password").val(),
+      name: $("#name").val(),
+      email: $("#email").val()
     }
 
     $.ajax({
       type: "POST",
-      url: "/login",
+      url: "/users",
       data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8',
     }).done(function () {
-      location.href = "/"
+      alert("회원가입이 완료되었습니다.")
+      location.href = "/users"
     }).fail(function (response) {
       const errorResponse = response.responseJSON
-
-      // 아이디 또는 비밀번호 일치하지 않는 경우
-      if (errorResponse.name === 'NOT_MATCH_LOGIN') {
-        $("#loginError").removeClass("hidden").text(errorResponse.errorMessage)
+      // 유저 아이디 중복
+      if (errorResponse.name === 'ALREADY_EXIST_USERID') {
+        $("#userIdError").text(errorResponse.errorMessage)
+      }
+      // 유저 이메일 중복
+      if (errorResponse.name === 'ALREADY_EXIST_EMAIL') {
+        $("#emailError").text(errorResponse.errorMessage)
       }
       // 유저 입력 형식 오류
       if (errorResponse.name === 'INVALID_INPUT_FORMAT') {
@@ -33,6 +39,5 @@ $(document).ready(function () {
 
   function clearErrorMessage() {
     $("#form p").text("")
-    $("#loginError").addClass("hidden")
   }
 })

@@ -4,25 +4,23 @@ $(document).ready(function () {
     await clearErrorMessage()
 
     const data = {
-      userId: $("#userId").val(),
-      password: $("#password").val()
+      writer: $("#writer").val(),
+      title: $("#title").val(),
+      content: $("#content").val(),
+      userId: $("#userId").val()
     }
 
     $.ajax({
       type: "POST",
-      url: "/login",
+      url: "/qna",
       data: JSON.stringify(data),
-      contentType: 'application/json; charset=utf-8',
+      contentType: 'application/json; charset=utf-8'
     }).done(function () {
       location.href = "/"
     }).fail(function (response) {
       const errorResponse = response.responseJSON
 
-      // 아이디 또는 비밀번호 일치하지 않는 경우
-      if (errorResponse.name === 'NOT_MATCH_LOGIN') {
-        $("#loginError").removeClass("hidden").text(errorResponse.errorMessage)
-      }
-      // 유저 입력 형식 오류
+      // QNA 입력 형식 오류
       if (errorResponse.name === 'INVALID_INPUT_FORMAT') {
         errorResponse.errors.forEach(item => {
           $(`#${item.field}Error`).text(item.message)
@@ -33,6 +31,5 @@ $(document).ready(function () {
 
   function clearErrorMessage() {
     $("#form p").text("")
-    $("#loginError").addClass("hidden")
   }
 })

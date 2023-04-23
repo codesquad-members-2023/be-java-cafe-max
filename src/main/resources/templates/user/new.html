@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="kr"
+      layout:decorate="layout/defaultLayout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>회원가입</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+  <div class="container" id="main">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default content-main">
+        <form action="/users" id="form" method="post" name="question">
+          <div class="form-group">
+            <label for="userId">사용자 아이디</label>
+            <input class="form-control" id="userId" name="userId" placeholder="User ID">
+            <p id="userIdError"></p>
+          </div>
+          <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input class="form-control" id="password" name="password" placeholder="Password"
+                   type="password">
+            <p id="passwordError"></p>
+          </div>
+          <div class="form-group">
+            <label for="name">이름</label>
+            <input class="form-control" id="name" name="name" placeholder="Name">
+            <p id="nameError"></p>
+          </div>
+          <div class="form-group">
+            <label for="email">이메일</label>
+            <input class="form-control" id="email" name="email" placeholder="Email" type="email">
+            <p id="emailError"></p>
+          </div>
+          <button class="btn btn-success clearfix pull-right">회원가입</button>
+          <div class="clearfix"/>
+        </form>
+      </div>
+    </div>
+  </div>
+</th:block>
+
+<th:block layout:fragment="pageCustomScript">
+  <script src="/js/user/new.js" type="text/javascript">
+  </script>
+</th:block>
+
+</body>
+</html>

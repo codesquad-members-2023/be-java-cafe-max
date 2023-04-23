@@ -3,10 +3,11 @@ $(document).ready(function () {
     e.preventDefault()
     $.ajax({
       type: "POST",
-      url: "/users/logout",
-      success: function (msg) {
-        location.href = "/user/login"
-      }
+      url: "/logout"
+    }).done(function (redirectURL) {
+      location.href = redirectURL
+    }).fail(function () {
+      location.href = "/error/server-error"
     })
   })
 })
