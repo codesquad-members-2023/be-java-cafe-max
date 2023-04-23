@@ -36,10 +36,11 @@ public class UserJdbcRepository implements UserRepository {
 
 	@Override
 	public Optional<User> save(final User user) {
-		if (isExistUserByUserId(user.getUserId()).isPresent()) {
+		if (isExistUserByUserId(user.getUserId())) {
 			jdbcInsert.execute(new BeanPropertySqlParameterSource(user));
 			return Optional.of(user);
 		}
+
 		return Optional.empty();
 	}
 
@@ -60,13 +61,13 @@ public class UserJdbcRepository implements UserRepository {
 		}
 	}
 
-	private Optional<Boolean> isExistUserByUserId(final String userId) {
+	private boolean isExistUserByUserId(final String userId) {
 		try {
-			return Optional.of(Boolean.TRUE.equals(jdbcTemplate.queryForObject(
+			return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
 				"SELECT EXISTS (SELECT user_id FROM user_account WHERE user_id = :userId)",
-				Map.of("userId", userId), Boolean.class)));
+				Map.of("userId", userId), Boolean.class));
 		} catch (final EmptyResultDataAccessException e) {
-			return Optional.empty();
+			return false;
 		}
 	}
 

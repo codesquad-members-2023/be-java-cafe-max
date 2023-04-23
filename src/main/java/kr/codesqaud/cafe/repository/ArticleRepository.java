@@ -20,5 +20,5 @@ public interface ArticleRepository {
 
 	void deleteById(Long id);
 
-	Optional<Boolean> isPossibleDeleteById(Long id);
+	boolean isPossibleDeleteById(Long id);
 }

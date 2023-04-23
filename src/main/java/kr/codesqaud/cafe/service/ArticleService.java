@@ -71,15 +71,10 @@ public class ArticleService {
 	public void deleteArticle(final Long articleId) {
 		articleRepository.findById(articleId)
 			.orElseThrow(() -> new NotFoundException(String.format("%d번 게시글을 찾을 수 없습니다.", articleId)));
-		articleRepository.isPossibleDeleteById(articleId)
-			.ifPresentOrElse(isExists -> {
-				if (isExists) {
-					articleRepository.deleteById(articleId);
-					return;
-				}
-				throw new InvalidOperationException(articleId);
-			}, () -> {
-				throw new InvalidOperationException(articleId);
-			});
+		if (articleRepository.isPossibleDeleteById(articleId)) {
+			articleRepository.deleteById(articleId);
+			return;
+		}
+		throw new InvalidOperationException(articleId);
 	}
 }
