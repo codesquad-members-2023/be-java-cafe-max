@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ArticleService;
 
@@ -28,45 +29,36 @@ public class ArticleQueryController {
 		return "index";
 	}
 
-	@GetMapping("/questions/form")
+	@GetMapping("/article/form")
 	public String getArticleForm(HttpSession session, Model model) {
-		Object value = session.getAttribute("sessionUser");
-		if (value == null) {
-			return "redirect:/user/login";
-		}
-		User user = (User)value;
+		User user = (User)session.getAttribute("sessionUser");
 		model.addAttribute("writer", user.getNickname());
-		return "qna/form";
+		return "article/form";
 	}
 
-	@GetMapping("/articles/{index}/{writer}")
+	@GetMapping("/article/{index}/{writer}")
 	public String showArticle(@PathVariable long index, @PathVariable String writer, HttpSession session, Model model) {
 		String equal = null;
-		Object value = session.getAttribute("sessionUser");
-		if (value == null) {
-			return "redirect:/user/login";
-		}
-		User user = (User)value;
+		User user = (User)session.getAttribute("sessionUser");
 		if (user.getNickname().equals(writer)) {
 			equal = "true";
 		}
 		articleService.increaseHits(index);
 		Article article = articleService.findByIndex(index);
+		List<Comment> comments = articleService.findCommentsByPostIndex(index);
+		model.addAttribute("user", user);
 		model.addAttribute("article", article);
+		model.addAttribute("comments", comments);
 		model.addAttribute("equal", equal);
-		return "qna/detail";
+		return "article/detail";
 	}
 
-	@GetMapping("/qna/update/{index}")
-	public String getUpdateForm(@PathVariable Long index, Model model) {
+	@GetMapping("/article/update/{index}")
+	public String getUpdateForm(@PathVariable Long index, Model model, HttpSession session) {
+		User user = (User)session.getAttribute("sessionUser");
 		Article article = articleService.findByIndex(index);
+		article.validateWriter(user.getNickname(), "다른 사람의 글은 수정할 수 없습니다.");
 		model.addAttribute("article", article);
-		return "qna/updateDetail";
-	}
-
-	@GetMapping("/article/update/{originalNickname}/{newNickname}")
-	public String updateNickname(@PathVariable String originalNickname, @PathVariable String newNickname) {
-		articleService.updateWriter(originalNickname, newNickname);
-		return "redirect:/users";
+		return "article/updateDetail";
 	}
 }

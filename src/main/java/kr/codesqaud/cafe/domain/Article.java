@@ -1,15 +1,29 @@
 package kr.codesqaud.cafe.domain;
 
+import kr.codesqaud.cafe.exception.DeniedDataModificationException;
+
 public class Article {
-	private Long index;
+	private Long postIndex;
 	private String title;
 	private String writer;
 	private String contents;
 	private String writeDate;
 	private long hits;
+	private boolean deleted;
 
-	public Article(Long index, String title, String writer, String contents, String writeDate, Long hits) {
-		this.index = index;
+	public Article(Long postIndex, String title, String writer, String contents, String writeDate, long hits,
+		boolean deleted) {
+		this.postIndex = postIndex;
+		this.title = title;
+		this.writer = writer;
+		this.contents = contents;
+		this.writeDate = writeDate;
+		this.hits = hits;
+		this.deleted = deleted;
+	}
+
+	public Article(Long postIndex, String title, String writer, String contents, String writeDate, Long hits) {
+		this.postIndex = postIndex;
 		this.title = title;
 		this.writer = writer;
 		this.contents = contents;
@@ -25,8 +39,8 @@ public class Article {
 		this.hits = hits;
 	}
 
-	public Long getIndex() {
-		return index;
+	public Long getPostIndex() {
+		return postIndex;
 	}
 
 	public String getTitle() {
@@ -52,5 +66,15 @@ public class Article {
 	public boolean setHits(long hits) {
 		this.hits = hits;
 		return true;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void validateWriter(String nickname, String message) {
+		if (!writer.equals(nickname)) {
+			throw new DeniedDataModificationException(message);
+		}
 	}
 }

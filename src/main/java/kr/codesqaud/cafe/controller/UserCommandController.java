@@ -1,8 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import java.util.Objects;
-
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -21,42 +20,34 @@ public class UserCommandController {
 	}
 
 	@PostMapping("/user/create")
-	public String createUser(UserDto userDto) {
+	public String createUser(@Valid UserDto userDto) {
 		userService.create(userDto);
 		return "redirect:/users";
 	}
 
 	@PatchMapping("/user/update")
-	public String updateUser(UserDto userDto, HttpSession httpSession) {
+	public String updateUser(@Valid UserDto userDto, HttpSession httpSession) {
 		String original = (userService.findOne(userDto.getUserID())).getNickname();
 		userService.update(userDto);
 		User user = userService.findOne(userDto.getUserID());
 		httpSession.setAttribute("sessionUser", user);
-		if (!Objects.equals(original, user.getNickname())) {
-			return "redirect:/article/update/" + original + "/" + user.getNickname();
-		}
 		return "redirect:/users";
 	}
 
 	@PostMapping("/login")
 	public String login(String userID, String password, HttpSession session) {
 		User user = userService.findOne(userID);
-		if (user == null) {
-			return "redirect:/user/login";
-		}
-		if (!Objects.equals(user.getPassword(), password)) {
-			return "redirect:/user/login";
-		}
+		user.validatePassword(password);
 		session.setAttribute("sessionUser", user);
 		return "redirect:/";
 	}
 
-	@PostMapping("/user/form")
+	@PostMapping("/user/form/{userId}")
 	public String getUpdateForm(String password, HttpSession session) {
 		User user = (User)session.getAttribute("sessionUser");
-		if (!password.equals(user.getPassword())) {
-			return "redirect:/checkForUpdate";
-		}
+		user.validatePassword(password);
+		boolean passwordCheck = true;
+		session.setAttribute("passwordCheck", passwordCheck);
 		return "redirect:/user/updateForm";
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.exception.DeniedDataModificationException;
 import kr.codesqaud.cafe.service.UserService;
 
 @Controller
@@ -30,21 +31,11 @@ public class UserQueryController {
 		return "user/login";
 	}
 
-	@GetMapping("/checkForUpdate")
-	public String checkForUpdate() {
-		return "user/checkForUpdate";
-	}
-
 	@GetMapping("/check/{userID}")
-	public String checkUserID(@PathVariable String userID, HttpSession session) {
-		Object value = session.getAttribute("sessionUser");
-		if (value == null) {
-			return "redirect:/user/login";
-		}
-		User user = (User)value;
-		if (!user.getUserID().equals(userID)) {
-			throw new IllegalStateException("다른 사용자의 정보는 수정할 수 없습니다.");
-		}
+	public String checkUserID(@PathVariable String userID, HttpSession session, Model model) {
+		User user = (User)session.getAttribute("sessionUser");
+		user.validateUserId(userID);
+		model.addAttribute("userId", user.getUserID());
 		return "user/checkForUpdate";
 	}
 
@@ -61,9 +52,9 @@ public class UserQueryController {
 		return "user/list";
 	}
 
-	@GetMapping("/users/{userID}")
-	public String getProfileByUserID(@PathVariable String userID, Model model) {
-		User user = userService.findOne(userID);
+	@GetMapping("/users/{nickname}")
+	public String getProfileByUserID(@PathVariable String nickname, Model model) {
+		User user = userService.findByNickname(nickname);
 		model.addAttribute("user", user);
 		return "user/profile";
 	}
@@ -72,6 +63,10 @@ public class UserQueryController {
 	public String updateForm(HttpSession session, Model model) {
 		User user = (User)session.getAttribute("sessionUser");
 		model.addAttribute("user", user);
+		if (session.getAttribute("passwordCheck") == null) {
+			throw new DeniedDataModificationException("잘못된 접근입니다.");
+		}
+		session.removeAttribute("passwordCheck");
 		return "user/updateForm";
 	}
 }

@@ -1,15 +1,31 @@
-const validSignUpCheck = [false, false, false];
+const validSignUpCheck = [false, false, false, false];
+const validUpdateCheck = [true, true, true, true];
 const validWriteCheck = [false, false];
-const validOutputView = ["올바른 이메일 형식입니다.", "올바른 닉네임입니다.", "올바른 비밀번호 형식입니다."];
-const invalidOutputView = ["잘못된 이메일 형식입니다.", "닉네임은 2글자 이상 64글자 이하여야 합니다."
+const validWriteUpdateCheck = [true, true];
+const validOutputView = ["올바른 아이디 형식입니다.", "올바른 이메일 형식입니다.", "올바른 닉네임입니다.", "올바른 비밀번호 형식입니다."];
+const invalidOutputView = ["아이디는 2글자 이상 64글자 이하여야 합니다.", "잘못된 이메일 형식입니다.", "닉네임은 2글자 이상 64글자 이하여야 합니다."
 , "비밀번호는 8글자 이상 32글자 이하, 영어 소문자 및 숫자를 반드시 포함해야합니다."
 , "모든 사항을 올바르게 기입해주세요.", "제목은 공란일 수 없고 글 내용은 3글자 이상 1000 글자 이하여야 합니다."];
-const EMAIL_NUM = 0;
-const NICKNAME_NUM = 1;
-const PASSWORD_NUM = 2;
-const ALL_DATA_NUM = 3;
-const WRITING_NUM = 4;
+const USERID_NUM = 0;
+const EMAIL_NUM = 1;
+const NICKNAME_NUM = 2;
+const PASSWORD_NUM = 3;
+const ALL_DATA_NUM = 4;
+const WRITING_NUM = 5;
 let user = {};
+
+function verifyUserID() {
+    const userID = document.getElementById("userID").value;
+
+    if(userID.length >= 2 && userID.length <= 64) {
+        validView('#userIDMessage', USERID_NUM);
+        validSignUpCheck[USERID_NUM] = true;
+        user.userID = userID;
+    } else {
+        invalidView('#userIDMessage', USERID_NUM);
+        validSignUpCheck[USERID_NUM] = false;
+    }
+}
 
 function verifyEmail() {
     const email = document.getElementById("email").value;
@@ -18,10 +34,12 @@ function verifyEmail() {
     if(regExp.test(email)) {
         validView('#emailMessage', EMAIL_NUM);
         validSignUpCheck[EMAIL_NUM] = true;
+        validUpdateCheck[EMAIL_NUM] = true;
         user.email = email;
     } else {
         invalidView('#emailMessage', EMAIL_NUM);
         validSignUpCheck[EMAIL_NUM] = false;
+        validUpdateCheck[EMAIL_NUM] = false;
     }
 }
 
@@ -31,10 +49,12 @@ function verifyNickname() {
     if(nickname.length >= 2 && nickname.length <= 64) {
         validView('#nicknameMessage', NICKNAME_NUM);
         validSignUpCheck[NICKNAME_NUM] = true;
+        validUpdateCheck[NICKNAME_NUM] = true;
         user.nickname = nickname;
     } else {
         invalidView('#nicknameMessage', NICKNAME_NUM);
         validSignUpCheck[NICKNAME_NUM] = false;
+        validUpdateCheck[NICKNAME_NUM] = false;
     }
 }
 
@@ -45,19 +65,31 @@ function verifyPassword() {
     if(reg.test(password)) {
         validView('#passwordMessage', PASSWORD_NUM);
         validSignUpCheck[PASSWORD_NUM] = true;
+        validUpdateCheck[PASSWORD_NUM] = true;
         user.password = password;
     } else {
         invalidView('#passwordMessage', PASSWORD_NUM);
         validSignUpCheck[PASSWORD_NUM] = false;
+        validUpdateCheck[PASSWORD_NUM] = false;
     }
 }
 
 function validateData() {
-    if(validSignUpCheck[0] && validSignUpCheck[1] && validSignUpCheck[2]) {
+    if(validSignUpCheck[0] && validSignUpCheck[1] && validSignUpCheck[2] && validSignUpCheck[3]) {
         localStorage.setItem(user.email, JSON.stringify(user));
-        window.location.href='signUpCompleted.html?user=' + user.email;
+        return true;
     } else {
         invalidView('#allMessage', ALL_DATA_NUM);
+        return false;
+    }
+}
+
+function validateUpdateData() {
+    if(validUpdateCheck[1] && validUpdateCheck[2] && validUpdateCheck[3]) {
+        return true;
+    } else {
+        invalidView('#allMessage', ALL_DATA_NUM);
+        return false;
     }
 }
 
@@ -66,8 +98,10 @@ function verifyTitle() {
 
     if(title.length > 0) {
         validWriteCheck[0] = true;
+        validWriteUpdateCheck[0] = true;
     } else {
         validWriteCheck[0] = false;
+        validWriteUpdateCheck[0] = false;
     }
 }
 
@@ -76,27 +110,28 @@ function verifyContent() {
 
     if(title.length >= 3 && title.length <= 1000) {
         validWriteCheck[1] = true;
+        validWriteUpdateCheck[1] = true;
     } else {
         validWriteCheck[1] = false;
+        validWriteUpdateCheck[1] = false;
     }
 }
 
 function validateWriting() {
     if(validWriteCheck[0] && validWriteCheck[1]) {
-        const write = createWriteObject();
-        const commentArrayData = [];
-        const commentData = createCommentDataObject();
-
-        const board = JSON.parse(localStorage.getItem("board"));
-        const comment = JSON.parse(localStorage.getItem("comment"));
-
-        board.push(write);
-        commentArrayData.push(comment);
-        comment.push(commentArrayData);
-
-        saveDataToLocalStorage(board, comment);
+        return true;
     } else {
-        invalidView('#writingMessage', WRITING_NUM);
+        invalidView('#allMessage', WRITING_NUM);
+        return false;
+    }
+}
+
+function validateWritingUpdate() {
+    if(validWriteCheck[0] && validWriteCheck[1]) {
+        return true;
+    } else {
+        invalidView('#allMessage', WRITING_NUM);
+        return false;
     }
 }
 

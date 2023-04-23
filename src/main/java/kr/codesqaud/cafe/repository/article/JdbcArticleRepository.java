@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.repository.article;
 
-import static kr.codesqaud.cafe.repository.ArticleSql.*;
+import static kr.codesqaud.cafe.repository.article.ArticleSql.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.ArticleDto;
+import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
@@ -31,11 +32,11 @@ public class JdbcArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public Optional<Article> findByIndex(Long index) {
+	public Article findByIndex(Long postIndex) {
 		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("index", index);
+			.addValue("postIndex", postIndex);
 		List<Article> articles = namedParameterJdbcTemplate.query(FIND_BY_INDEX, param, articleRowMapper());
-		return OptionalTo(articles);
+		return OptionalTo(articles).orElseThrow(ArticleNotFoundException::new);
 	}
 
 	private Optional<Article> OptionalTo(List<Article> articles) {
@@ -48,25 +49,23 @@ public class JdbcArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public boolean increaseHits(Long index) {
-		long newHits = findByIndex(index).get().getHits();
+	public boolean increaseHits(Long postIndex) {
 		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("index", index)
-			.addValue("hits", ++newHits);
+			.addValue("postIndex", postIndex);
 		namedParameterJdbcTemplate.update(INCREASE_HITS, param);
 		return true;
 	}
 
 	@Override
-	public boolean delete(Long index) {
-		SqlParameterSource param = new MapSqlParameterSource("index", index);
+	public boolean delete(Long postIndex) {
+		SqlParameterSource param = new MapSqlParameterSource("postIndex", postIndex);
 		namedParameterJdbcTemplate.update(DELETE, param);
 		return true;
 	}
 
 	@Override
-	public boolean update(Long index, ArticleDto articleDto) {
-		SqlParameterSource params = new MapSqlParameterSource("index", index)
+	public boolean update(Long postIndex, ArticleDto articleDto) {
+		SqlParameterSource params = new MapSqlParameterSource("postIndex", postIndex)
 			.addValue("title", articleDto.getTitle())
 			.addValue("writer", articleDto.getWriter())
 			.addValue("contents", articleDto.getContents());
@@ -74,16 +73,8 @@ public class JdbcArticleRepository implements ArticleRepository {
 		return true;
 	}
 
-	@Override
-	public boolean updateWriter(String originalNickname, String newNickname) {
-		SqlParameterSource params = new MapSqlParameterSource("original", originalNickname)
-			.addValue("writer", newNickname);
-		namedParameterJdbcTemplate.update(UPDATE_WRITER, params);
-		return true;
-	}
-
 	private RowMapper<Article> articleRowMapper() {
-		return (rs, rowNum) -> new Article(rs.getLong("index"), rs.getString("title"), rs.getString("writer"),
+		return (rs, rowNum) -> new Article(rs.getLong("postIndex"), rs.getString("title"), rs.getString("writer"),
 			rs.getString("contents"), rs.getString("writeDate"), rs.getLong("hits"));
 	}
 }

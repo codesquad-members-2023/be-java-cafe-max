@@ -1,7 +1,7 @@
 {{> fragments/header}}
 <div class="keyword"><strong>개인정보 수정</strong></div>
 <div class="form-box">
-    <form name="question" id="update-form" method="post" action="/user/update">
+    <form name="question" id="update-form" method="post" action="/user/update" onsubmit="return validateUpdateData()">
         <input type="hidden" name="_method" value="PATCH"/>
         <div class="box">
             <label for="userID">아이디</label>
@@ -22,8 +22,12 @@
             <input type="password" id="password" name="password" value="{{user.password}}" onkeyup="verifyPassword()">
         </div>
         <div id="passwordMessage" class="message"></div>
-        <button class="body button" onclick="validateData()">수정 완료</button>
-        <div id="allMessage" class="message"></div>
+        <button class="body button">수정 완료</button>
+        <div id="allMessage" class="message" style="color: red">
+            {{#errorMessage}}
+            {{{errorMessage}}}
+            {{/errorMessage}}
+        </div>
     </form>
 </div>
 <script src="/js/dataValidation.js"></script>

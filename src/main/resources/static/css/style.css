@@ -54,6 +54,7 @@ a {
     background: #afb9ea;
     font-weight: 600;
     min-width: 80px;
+    text-align: center;
 }
 
 .button:hover {
@@ -399,6 +400,7 @@ input:focus, textarea:focus {
     justify-content: center;
     font-size: 15px;
     color: #afb9ea;
+    margin-top: 10px;
 }
 
 .comment {
@@ -533,6 +535,12 @@ li a  {
 .post-bottom-list {
     display: flex;
     align-items: center;
+}
+
+.comment-menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 @media (max-width: 700px) {
