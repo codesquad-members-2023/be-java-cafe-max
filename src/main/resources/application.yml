@@ -1,6 +1,11 @@
 spring:
   profiles:
-    active: prod
+    active:
+      - local
+      - db
+
+  sql:
+    init: always
 
   mvc:
     hiddenmethod:

@@ -37,5 +37,4 @@ out/
 .vscode/
 
 ### YML ###
-application-local.yml
-application-prod.yml
+application-db.yml
