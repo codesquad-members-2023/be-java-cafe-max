@@ -60,12 +60,13 @@ public class QuestionController {
 	public String questionList(@RequestParam(value = "page", required = false, defaultValue = "1") long page,
 		Model model) {
 		PageHandler pageHandler = new PageHandler(service.countBy(), page);
+
 		List<QuestionTitleResponseDTO> questionTitles =
-			service.findAll(pageHandler.getPostOffset(),
-					pageHandler.getPageSize())
+			service.findAll(pageHandler.getPostOffset(), pageHandler.getPageSize())
 				.stream()
 				.map(QuestionTitleResponseDTO::from)
 				.collect(Collectors.toUnmodifiableList());
+
 		model.addAttribute("questionBoardResponseDTO",
 			new QuestionBoardResponseDTO(pageHandler, questionTitles));
 
