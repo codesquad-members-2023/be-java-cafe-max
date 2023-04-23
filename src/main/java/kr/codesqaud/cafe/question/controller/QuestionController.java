@@ -68,7 +68,7 @@ public class QuestionController {
 				.collect(Collectors.toUnmodifiableList());
 
 		model.addAttribute("questionBoardResponseDTO",
-			new QuestionBoardResponseDTO(pageHandler, questionTitles));
+			new QuestionBoardResponseDTO(questionTitles, pageHandler));
 
 		return "index";
 	}
