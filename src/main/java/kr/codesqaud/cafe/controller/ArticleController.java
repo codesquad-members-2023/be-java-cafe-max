@@ -25,7 +25,7 @@ public class ArticleController {
         return "post/form";
     }
 
-    @PostMapping("/posts/new-try")
+    @PostMapping("/posts/new")
     public String writePost(@ModelAttribute final ArticleDTO articleDto, HttpSession session) {
         articleService.write(articleDto, session);
         return "redirect:/";
@@ -47,7 +47,7 @@ public class ArticleController {
     }
 
     //todo : @ModelAttribute 없어도 되는 원리 정리하기
-    @PutMapping("/posts/{id}/revision-try")
+    @PutMapping("/posts/{id}")
     public String modifyPost(@PathVariable final long id, final ArticleDTO articleDTO) {
         articleService.modify(id, articleDTO);
         return "redirect:/posts/{id}";

@@ -19,7 +19,7 @@
         <header class="post-header">
             <p class="title">글쓰기</p>
         </header>
-        <form class="submit-write" method="post" action="/posts/new-try">
+        <form class="submit-write" method="post" action="/posts/new">
             <input type="hidden" id="createTime" name="createTime" th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm')}">
             <div class="text-box">
                 <div class="comment-writer-container">

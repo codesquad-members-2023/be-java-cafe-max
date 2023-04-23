@@ -57,7 +57,7 @@ public class UserController {
         return "user/modifyProfile";
     }
 
-    @PutMapping("/users/{id}/revision-try")
+    @PutMapping("/users/{id}")
     public String modifyProfile(@PathVariable final long id, final ModifiedUserDTO modifiedUserDTO, final Model model) {
         boolean isPasswordWrong = !userService.isPasswordRight(id, modifiedUserDTO);
         if(isPasswordWrong) {

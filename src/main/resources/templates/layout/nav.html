@@ -11,7 +11,7 @@
                 <li><a th:href="@{/login}" class="black-component" role="button">로그인</a></li>
                 <li><a th:href="@{/users/new}" class="black-component" role="button">회원가입</a></li>
             </th:block>
-            <form th:if="${session.loginUser} != null" th:action="@{/logout-try}" th:method="post">
+            <form th:if="${session.loginUser} != null" th:action="@{/logout}" th:method="post">
                 <button class="black-component" type="submit">로그아웃</button>
             </form>
             <li th:if="${session.loginUser} != null">
