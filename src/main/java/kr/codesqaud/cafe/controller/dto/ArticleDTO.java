@@ -8,18 +8,18 @@ public class ArticleDTO {
     private final String title;
     private final String content;
     private final String userId;
-    private final String create_Time;
+    private final String createTime;
 
-    public ArticleDTO(Long id, String title, String content, String userId, String create_Time) {
+    public ArticleDTO(Long id, String title, String content, String userId, String createTime) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.userId = userId;
-        this.create_Time = create_Time;
+        this.createTime = createTime;
     }
 
     public static ArticleDTO from(final Article article) {
-        return new ArticleDTO(article.getId(), article.getTitle(), article.getContent(), article.getUserId(), article.getCreate_Time());
+        return new ArticleDTO(article.getId(), article.getTitle(), article.getContent(), article.getUserId(), article.getCreateTime());
     }
 
     public Article toEntity(String userId) {
@@ -42,7 +42,7 @@ public class ArticleDTO {
         return userId;
     }
 
-    public String getCreate_Time() {
-        return create_Time;
+    public String getCreateTime() {
+        return createTime;
     }
 }

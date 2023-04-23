@@ -9,7 +9,7 @@ public class Article {
     private String title;
     private String content;
     private String userId;
-    private String create_Time;
+    private String createTime;
 
     public Article() {
     }
@@ -19,7 +19,7 @@ public class Article {
         this.title = title;
         this.content = content;
         this.userId = userId;
-        this.create_Time = new CurrentDateTime().toString();
+        this.createTime = new CurrentDateTime().toString();
     }
 
     public void create(Long id, Article article) {
@@ -27,34 +27,13 @@ public class Article {
         this.title = article.getTitle();
         this.content = article.getContent();
         this.userId = article.userId;
-        this.create_Time = article.getCreate_Time();
+        this.createTime = article.getCreateTime();
     }
 
     public void update(ArticleDTO articleDTO) {
         this.title = articleDTO.getTitle();
         this.content = articleDTO.getContent();
     }
-
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public String getTitle() {
-//        return title;
-//    }
-//
-//    public String getContent() {
-//        return content;
-//    }
-//
-//    public String getUserId() {
-//        return userId;
-//    }
-//
-//    public String getCreate_Time() {
-//        return create_Time;
-//    }
-
 
     public Long getId() {
         return id;
@@ -88,11 +67,11 @@ public class Article {
         this.userId = userId;
     }
 
-    public String getCreate_Time() {
-        return create_Time;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_Time(String create_Time) {
-        this.create_Time = create_Time;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 }
