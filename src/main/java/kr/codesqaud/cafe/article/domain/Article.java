@@ -58,6 +58,10 @@ public class Article {
 		return nickName;
 	}
 
+	public void setArticleIdx(Long idx) {
+		this.articleIdx = idx;
+	}
+
 	public boolean validUserIdAndArticleId(String SessionId) {
 		return Objects.equals(SessionId, userId);
 	}

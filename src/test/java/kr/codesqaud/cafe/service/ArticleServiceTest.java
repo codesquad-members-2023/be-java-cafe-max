@@ -39,20 +39,18 @@ class ArticleServiceTest {
 
 	private Article article;
 	private ArticleResponse articleResponse;
-	private ArticleTitleAndContentResponse articleTitleAndContentResponse;
 
 	@BeforeEach
 	void setUp() {
-		article = new Article("제목입니다", "내용입니다", "id", "nickName");
-		articleResponse = new ArticleResponse("title", "content", 1L, null, null);
-		articleTitleAndContentResponse = new ArticleTitleAndContentResponse("title", "content");
+		article = createArticle();
+		articleResponse = createArticleResponse();
 	}
 
 	@Test
 	@DisplayName("articlePostRequest에 저장된 제목과 내용을 db에 저장한다.")
 	void postTest() {
 		//given
-		ArticlePostRequest articlePostRequest = new ArticlePostRequest("제목입니다", "내용입니다");
+		ArticlePostRequest articlePostRequest = createArticlePostRequest();
 		given(articleMapper.toArticle(articlePostRequest)).willReturn(article);
 
 		//when
@@ -66,9 +64,10 @@ class ArticleServiceTest {
 	@DisplayName("db에 저장된 모든 article을 역순으로 list에 담아 반환한다.")
 	void getArticleListTest() {
 		//given
-		Article article = new Article("title1", "content1", 1L);
-		Article article2 = new Article("title2", "content2", 2L);
-		ArticleResponse articleResponse2 = new ArticleResponse("title2", "content2", 2L, "2023-4-18", "nickName");
+		Article article2 = createArticle2();
+		ArticleResponse articleResponse2 = createArticleResponse2();
+		article.setArticleIdx(1l);
+		article2.setArticleIdx(2l);
 		List<Article> articles = Arrays.asList(article, article2);
 		given(articleRepository.findAll()).willReturn(articles);
 		given(articleMapper.toArticleResponse(article)).willReturn(articleResponse);
@@ -89,9 +88,7 @@ class ArticleServiceTest {
 	@DisplayName("idx를 통해 해당 article을 articleResponse의 형태로 반환한다.")
 	void findArticleByIdxTest() {
 		//given
-		Long idx = 1L;
-		Article article = new Article("title", "content", idx);
-
+		Long idx = 1l;
 		given(articleRepository.findArticleByIdx(idx)).willReturn(Optional.of(article));
 		given(articleMapper.toArticleResponse(article)).willReturn(articleResponse);
 
@@ -99,7 +96,7 @@ class ArticleServiceTest {
 		ArticleResponse result = articleService.findArticleByIdx(idx);
 
 		//then
-		org.junit.jupiter.api.Assertions.assertAll(
+		Assertions.assertAll(
 			() -> assertThat(result).isEqualTo(articleResponse)
 		);
 	}
@@ -108,9 +105,8 @@ class ArticleServiceTest {
 	@DisplayName("ArticleUpdateRequest의 제목과 내용을 db에 업데이트 한다.")
 	void updateArticleTest() {
 		//given
-		ArticleUpdateRequest articleUpdateRequest = new ArticleUpdateRequest("새로운제목", "새로운내용");
-		Long idx = 1L;
-		Article article = new Article("새로운제목", "새로운내용", idx);
+		ArticleUpdateRequest articleUpdateRequest = createArticleUpdateRequest();
+		Article article = createArticle();
 		given(articleMapper.toArticle(articleUpdateRequest)).willReturn(article);
 
 		//when
@@ -125,10 +121,39 @@ class ArticleServiceTest {
 	void validSessionIdAndArticleIdTest() {
 		Long idx = 1L;
 		String id = "id";
+		ArticleTitleAndContentResponse articleTitleAndContentResponse = createArticleTitleAndContentResponse();
 		given(articleMapper.toArticleTitleAndContentResponse(article)).willReturn(articleTitleAndContentResponse);
 		given(articleRepository.findArticleByIdx(idx)).willReturn(Optional.of(article));
 
 		//when & then
 		assertThatCode(() -> articleService.validSessionIdAndArticleId(idx, id)).doesNotThrowAnyException();
+	}
+
+	private static ArticleTitleAndContentResponse createArticleTitleAndContentResponse() {
+		return new ArticleTitleAndContentResponse("title", "content");
+	}
+
+	private static ArticleResponse createArticleResponse() {
+		return new ArticleResponse("제목입니다", "내용입니다", 1L, "2023-4-23", "nickName");
+	}
+
+	private static ArticleResponse createArticleResponse2() {
+		return new ArticleResponse("제목입니다", "내용입니다", 2L, "2023-4-23", "nickName");
+	}
+
+	private static Article createArticle() {
+		return new Article("제목입니다", "내용입니다", "id", "nickName");
+	}
+
+	private static Article createArticle2() {
+		return new Article("제목입니다", "내용입니다", "id", "nickName");
+	}
+
+	private static ArticlePostRequest createArticlePostRequest() {
+		return new ArticlePostRequest("제목입니다", "내용입니다");
+	}
+
+	private static ArticleUpdateRequest createArticleUpdateRequest() {
+		return new ArticleUpdateRequest("새로운제목", "새로운내용");
 	}
 }
