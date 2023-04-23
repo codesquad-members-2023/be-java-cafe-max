@@ -47,7 +47,8 @@ public class ArticleService {
 	}
 
 	public void updateArticle(ArticleUpdateRequest articleUpdateRequest) {
-		articleRepository.updateArticle(articleMapper.toArticle(articleUpdateRequest));
+		Article article = articleMapper.toArticle(articleUpdateRequest);
+		articleRepository.updateArticle(article);
 	}
 
 	public ArticleTitleAndContentResponse validSessionIdAndArticleId(Long articleIdx, String userId) {

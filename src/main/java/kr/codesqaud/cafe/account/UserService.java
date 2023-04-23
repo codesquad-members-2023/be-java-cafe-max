@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import kr.codesqaud.cafe.account.domain.User;
 import kr.codesqaud.cafe.account.dto.ProfileEditRequest;
 import kr.codesqaud.cafe.account.dto.SignInRequest;
 import kr.codesqaud.cafe.account.dto.UserListResponse;
@@ -30,7 +31,8 @@ public class UserService {
 
 	public void addUser(UserSignUpRequest userSignUpRequest) {
 		validateId(userSignUpRequest.getUserId());
-		userRepository.save(userMapper.toUser(userSignUpRequest));
+		User user = userMapper.toUser(userSignUpRequest);
+		userRepository.save(user);
 	}
 
 	private void validateId(String userId) {
@@ -58,7 +60,8 @@ public class UserService {
 			throw new UserUpdateInvalidPasswordException();
 		}
 
-		userRepository.updateUser(userMapper.toUser(profileEditRequest));
+		User user = userMapper.toUser(profileEditRequest);
+		userRepository.updateUser(user);
 	}
 
 	private boolean matchPassword(ProfileEditRequest profileEditRequest, UserResponse userResponse) {
