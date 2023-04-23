@@ -14,5 +14,5 @@ public interface UserRepository {
 
 	User findByUserId(String userId) throws UserNotExistException;
 
-	void modify(User user) throws UserDoesNotMatchException;
+	void update(User user) throws UserDoesNotMatchException;
 }

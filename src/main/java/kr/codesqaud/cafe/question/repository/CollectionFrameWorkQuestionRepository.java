@@ -28,7 +28,7 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 		return questionTable.count();
 	}
 
-	public List<Question> findAll(long offset, int pageSize) {
+	public List<Question> findPageBy(long offset, int pageSize) {
 		return questionTable.select().stream()
 			.sorted(Comparator.comparing(Question::getId).reversed())
 			.skip(offset).limit(pageSize)

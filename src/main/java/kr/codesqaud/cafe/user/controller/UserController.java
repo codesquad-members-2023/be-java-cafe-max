@@ -174,7 +174,7 @@ public class UserController {
 			addAttributeErrorMessages(redirect, collectErrorMessages(result));
 			return redirectBack(request);
 		}
-		service.modifyUser(dto.toEntity());
+		service.updateUser(dto.toEntity());
 
 		return "redirect:/users/" + dto.getUserId();
 	}

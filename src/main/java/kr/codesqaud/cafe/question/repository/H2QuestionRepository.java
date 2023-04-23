@@ -37,10 +37,10 @@ public class H2QuestionRepository implements QuestionRepository {
 		return jdbcTemplate.queryForObject(sql, (SqlParameterSource)null, Integer.class);
 	}
 
-	public List<Question> findAll(long offset, int pageSize) {
-		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\" ORDER BY id DESC LIMIT :pageSize OFFSET :postOffset";
+	public List<Question> findPageBy(long offset, int pageSize) {
+		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\" ORDER BY id DESC LIMIT :pageSize OFFSET :offset";
 		SqlParameterSource parameters = new MapSqlParameterSource()
-			.addValue("postOffset", offset)
+			.addValue("offset", offset)
 			.addValue("pageSize", pageSize);
 
 		return jdbcTemplate.query(sql, parameters, getQuestionRowMapper());

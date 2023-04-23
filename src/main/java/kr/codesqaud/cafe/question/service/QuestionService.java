@@ -24,8 +24,8 @@ public class QuestionService {
 		return repository.countBy();
 	}
 
-	public List<Question> findAll(long offset, int pageSize) {
-		return repository.findAll(offset, pageSize);
+	public List<Question> findPageBy(long offset, int pageSize) {
+		return repository.findPageBy(offset, pageSize);
 	}
 
 	public Question findById(long id) throws QuestionNotExistException {

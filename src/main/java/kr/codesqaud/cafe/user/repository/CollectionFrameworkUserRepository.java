@@ -43,7 +43,7 @@ public class CollectionFrameworkUserRepository implements UserRepository {
 		throw new NoSuchElementException(userId);
 	}
 
-	public void modify(User user) throws UserDoesNotMatchException {
+	public void update(User user) throws UserDoesNotMatchException {
 		String userId = user.getUserId();
 		for (User exgistingUser : userTable.select()) {
 			if (exgistingUser.getUserId().equals(userId)) {

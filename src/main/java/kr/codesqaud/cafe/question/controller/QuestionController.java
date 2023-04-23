@@ -62,7 +62,7 @@ public class QuestionController {
 		PageHandler pageHandler = new PageHandler(service.countBy(), page);
 
 		List<QuestionTitleResponseDTO> questionTitles =
-			service.findAll(pageHandler.getPostOffset(), pageHandler.getPageSize())
+			service.findPageBy(pageHandler.getPostOffset(), pageHandler.getPageSize())
 				.stream()
 				.map(QuestionTitleResponseDTO::from)
 				.collect(Collectors.toUnmodifiableList());

@@ -10,7 +10,7 @@ public interface QuestionRepository {
 
 	long countBy();
 
-	List<Question> findAll(long offset, int pageSize);
+	List<Question> findPageBy(long offset, int pageSize);
 
 	Question findById(long id) throws QuestionNotExistException;
 }

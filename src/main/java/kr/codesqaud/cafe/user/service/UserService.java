@@ -63,8 +63,8 @@ public class UserService {
 	 * @param user 수정할 회원 정보
 	 * @throws UserDoesNotMatchException 존재하지 않는 회원의 정보를 수정하거나, 비밀번호가 일치하지 않는 경우 Exception 발생
 	 */
-	public void modifyUser(User user) throws UserDoesNotMatchException {
-		repository.modify(user);
+	public void updateUser(User user) throws UserDoesNotMatchException {
+		repository.update(user);
 	}
 
 }

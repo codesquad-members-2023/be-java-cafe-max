@@ -54,7 +54,7 @@ public class H2UserRepository implements UserRepository {
 	}
 
 	@Override
-	public void modify(User user) throws UserDoesNotMatchException {
+	public void update(User user) throws UserDoesNotMatchException {
 		String sql = "UPDATE \"user\" SET name = ?, email = ? WHERE userId = ? AND password = ?";
 		try {
 			jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getUserId(), user.getPassword());
