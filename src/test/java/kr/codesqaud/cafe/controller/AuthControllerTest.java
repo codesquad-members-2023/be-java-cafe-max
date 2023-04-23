@@ -60,8 +60,8 @@ class AuthControllerTest {
 	@DisplayName("로그인성공시 id와 nickName을 session에 저장한다.")
 	void signInTest() throws Exception {
 		//given
-		SignInRequest signInRequest = new SignInRequest("id", "user");
-		UserResponse userResponse = new UserResponse("nickName", "aaa@naver.com", "password", "id");
+		SignInRequest signInRequest = createSignInRequest();
+		UserResponse userResponse = createUserResponse();
 		given(userService.getUserById(signInRequest.getUserId())).willReturn(userResponse);
 
 		//when
@@ -72,15 +72,15 @@ class AuthControllerTest {
 
 			//then
 			.andExpect(status().is3xxRedirection())
-			.andExpect(view().name("redirect:/users/sign-in-success/id"));
+			.andExpect(view().name("redirect:/users/sign-in-success"));
 
 		MvcResult mvcResult = resultActions.andReturn();
 		MockHttpSession resultSession = (MockHttpSession)mvcResult.getRequest().getSession();
 		Session session = (Session)resultSession.getAttribute(Session.LOGIN_USER);
 
 		assertAll(
-			() -> Assertions.assertThat(session.getId().equals(userResponse.getUserId())).isTrue(),
-			() -> Assertions.assertThat(session.getNickName().equals(userResponse.getNickName())).isTrue()
+			() -> Assertions.assertThat(isEqualsWithSessionIdAndSignInRequestId(userResponse, session)).isTrue(),
+			() -> Assertions.assertThat(isEqualsWithSessionIdAndSignInRequestNickName(userResponse, session)).isTrue()
 		);
 	}
 
@@ -88,11 +88,11 @@ class AuthControllerTest {
 	@DisplayName("로그인성공시 로그인 성공창을 보여준다.")
 	void singInSuccessTest() throws Exception {
 		//given
-		UserResponse userResponse = new UserResponse("nickName", "aaa@naver.com", "password123", "id");
+		UserResponse userResponse = createUserResponse();
 		given(userService.getUserById(userResponse.getUserId())).willReturn(userResponse);
 
 		//when
-		mockMvc.perform(MockMvcRequestBuilders.get("/users/sign-in-success/id")
+		mockMvc.perform(MockMvcRequestBuilders.get("/users/sign-in-success")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.session(httpSession))
 			//then
@@ -113,5 +113,21 @@ class AuthControllerTest {
 			.andExpect(view().name("redirect:/"));
 
 		Assertions.assertThat(httpSession.isInvalid()).isTrue();
+	}
+
+	private static UserResponse createUserResponse() {
+		return new UserResponse("nickName", "aaa@naver.com", "password123", "id");
+	}
+
+	private static SignInRequest createSignInRequest() {
+		return new SignInRequest("id", "user");
+	}
+
+	private static boolean isEqualsWithSessionIdAndSignInRequestNickName(UserResponse userResponse, Session session) {
+		return session.getNickName().equals(userResponse.getNickName());
+	}
+
+	private static boolean isEqualsWithSessionIdAndSignInRequestId(UserResponse userResponse, Session session) {
+		return session.getId().equals(userResponse.getUserId());
 	}
 }

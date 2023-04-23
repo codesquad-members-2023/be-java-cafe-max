@@ -65,8 +65,7 @@ class UserControllerTest {
 	@DisplayName("유저의 id,nickName,email정보를 db로부터 가져와 user/profile에서 볼수있다.")
 	void userProfileTest() throws Exception {
 		//given
-		UserResponse userResponse = new UserResponse("nickName", "aaa@naver.com", "password123",
-			"testId");
+		UserResponse userResponse = createUserResponse();
 		given(userService.getUserById("testId")).willReturn(userResponse);
 
 		//when & then
@@ -84,14 +83,17 @@ class UserControllerTest {
 	void updateTest() throws Exception {
 
 		//given & when
+		String paramNickName = "nickName";
+		String paramId = "testId";
+
 		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.put("/users/testId")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("nickName", "nickName")
+				.param("nickName", paramNickName)
 				.param("email", "aaa@naver.com")
 				.param("newPassword", "password123")
 				.param("oriPassword", "password1234")
-				.param("id", "testId"))
+				.param("id", paramId))
 
 			//then
 			.andExpect(status().is3xxRedirection())
@@ -102,8 +104,21 @@ class UserControllerTest {
 		Session session = (Session)resultSession.getAttribute(Session.LOGIN_USER);
 
 		assertAll(
-			() -> Assertions.assertThat(session.getId().equals("testId")).isTrue(),
-			() -> Assertions.assertThat(session.getNickName().equals("nickName")).isTrue()
+			() -> Assertions.assertThat(isEqualsWithSessionIdWithParamId(session, paramId)).isTrue(),
+			() -> Assertions.assertThat(isEqualsWithSessionNickNameWithParmNickName(session, paramNickName)).isTrue()
 		);
+	}
+
+	private static boolean isEqualsWithSessionNickNameWithParmNickName(Session session, String paramId) {
+		return session.getNickName().equals(paramId);
+	}
+
+	private static boolean isEqualsWithSessionIdWithParamId(Session session, String paramNickName) {
+		return session.getId().equals(paramNickName);
+	}
+
+	private static UserResponse createUserResponse() {
+		return new UserResponse("nickName", "aaa@naver.com", "password123",
+			"testId");
 	}
 }
