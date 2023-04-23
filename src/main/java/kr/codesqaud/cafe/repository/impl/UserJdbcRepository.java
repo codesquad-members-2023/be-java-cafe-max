@@ -36,7 +36,7 @@ public class UserJdbcRepository implements UserRepository {
 
 	@Override
 	public Optional<User> save(final User user) {
-		if (isExistUserByUserId(user.getUserId())) {
+		if (!isExistUserByUserId(user.getUserId())) {
 			jdbcInsert.execute(new BeanPropertySqlParameterSource(user));
 			return Optional.of(user);
 		}
