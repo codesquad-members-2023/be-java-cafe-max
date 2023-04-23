@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static kr.codesqaud.cafe.controller.LoginController.LOGIN_USER;
+
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
@@ -26,7 +28,7 @@ public class ArticleService {
     }
 
     private String obtainUserId(HttpSession session) {
-        LoginDTO loggedInUser = (LoginDTO) session.getAttribute("loginUser");
+        LoginDTO loggedInUser = (LoginDTO) session.getAttribute(LOGIN_USER);
         assert loggedInUser != null;
         return loggedInUser.getUserId();
     }

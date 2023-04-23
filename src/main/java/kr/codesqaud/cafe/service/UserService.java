@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static kr.codesqaud.cafe.controller.LoginController.LOGIN_USER;
+
 @Service
 public class UserService {
 
@@ -53,7 +55,7 @@ public class UserService {
     }
 
     private long obtainId(HttpSession session) {
-        LoginDTO loggedInUser = (LoginDTO) session.getAttribute("loginUser");
+        LoginDTO loggedInUser = (LoginDTO) session.getAttribute(LOGIN_USER);
         assert loggedInUser != null;
         return loggedInUser.getId();
     }

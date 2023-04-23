@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     private final LoginService loginService;
+    public static final String LOGIN_USER = "loginUser";
 
     public LoginController(LoginService loginService) {
         this.loginService = loginService;
@@ -32,7 +33,7 @@ public class LoginController {
 
         //세션 객체 얻어오기
         HttpSession session = request.getSession();
-        session.setAttribute("loginUser", loginUser);
+        session.setAttribute(LOGIN_USER, loginUser);
 
         return "redirect:/";
     }
