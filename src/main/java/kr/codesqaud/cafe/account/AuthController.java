@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.account;
 
+import static kr.codesqaud.cafe.global.config.Session.*;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -7,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.codesqaud.cafe.account.dto.SignInRequest;
 import kr.codesqaud.cafe.account.dto.UserResponse;
@@ -48,12 +50,12 @@ public class AuthController {
 		Session session = new Session(userDto.getUserId(), userDto.getNickName());
 
 		httpSession.setAttribute(Session.LOGIN_USER, session);
-		return "redirect:/users/sign-in-success/" + userId;
+		return "redirect:/users/sign-in-success";
 	}
 
-	@GetMapping("/users/sign-in-success/{userId}")
-	public String singInSuccess(@PathVariable String userId, Model model) {
-		model.addAttribute("user", userService.getUserById(userId));
+	@GetMapping("/users/sign-in-success")
+	public String singInSuccess(@SessionAttribute(LOGIN_USER) Session session, Model model) {
+		model.addAttribute("user", userService.getUserById(session.getId()));
 		return "user/sign-in-success";
 	}
 
