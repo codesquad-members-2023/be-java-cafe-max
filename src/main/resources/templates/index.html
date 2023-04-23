@@ -5,45 +5,67 @@
 <nav th:replace="fragments/navbar.html :: common"></nav>
 <div class="container-fluid">
     <div class="row justify-content-center text-light-emphasis">
-        <div class="col-10">
-            전체 글 <span th:text="${simpleForms.size()}"></span>개
+        <div class="row d-inline mt-4 ms-3 text-black">
+            <span class="text-danger-emphasis" th:text="${simpleForms.size()}"></span>개
         </div>
-        <div class="row col-10">
-            <ol class="d-flex flex-wrap justify-content-start" id="bookList">
-                <li class="text-center mt-1 list-unstyled p-1" th:each="post : ${simpleForms}">
-                    <div class="card p-1 m-1" style="width: 18rem;height: 30rem">
-                        <div class="card-body">
-                            <p class="card-title text-primary fw-bold fs-5" th:text="${post.title}">Card title</p>
-                            <p class="card-text" th:text="${post.textContent}">Some quick example text to build on the
-                                card title and make up the bulk of the card's content.</p>
-                        </div>
-                        <ol class="list-group">
-                            <button type="button" class="list-group-item btn btn-warning p-1 mb-1">NickName:
-                                <span th:text="${post.nickname}"></span>
-                            </button>
-                            <button class="list-group-item btn btn-info p-1 mb-1">
-                                Views:<span>20</span> 댓글수:<span>20</span>
-                            </button>
-                            <button class="list-group-item btn btn-info p-1 mb-1">
-                                Tag:
-                                <span>20</span>
-                            </button>
-                            <button class="list-group-item btn btn-success p-1 mb-1">
-                                CreateTime:
-                                <span th:text="${#temporals.format(post.createdDateTime,'yyyy-MM-dd HH:mm')}"></span>
-                            </button>
-                        </ol>
-                        <a th:href="@{/posts/{id}(id = ${post.id})}" class="btn btn-primary mb-2">자세히 보기</a>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col" th:each="simpleForm : ${simpleForms}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <a class="mb-2" th:href="@{/posts/{id}(id = ${simpleForm.id})}">
+                            <h5 class="card-title text-primary" th:text="${simpleForm.title}">Card title</h5>
+                        </a>
+                        <small class="text-primary-emphasis" th:text="${simpleForm.nickname}">Last updated 3 mins
+                            ago</small>
+                        <p class="card-text" th:text="${simpleForm.textContent}">This is a wider card with supporting
+                            text below as a natural lead-in to additional content. This content is a little bit
+                            longer.</p>
+                        <small class="text-success">댓글수:<span th:text="${simpleForm.commentCount}">20</span></small>
                     </div>
-                </li>
-            </ol>
+                    <div class="card-footer">
+                        <small class="text-body-secondary">Last updated <span
+                                th:text="${#temporals.format(simpleForm.createdDateTime,'yyyy-MM-dd HH:mm')}"></span></small>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button class="btn btn-primary" th:if="${session.user != null}"
-                    th:onclick="|location.href='@{/posts/form}'|"
-                    type="submit">글쓰기
-            </button>
+        <div class="row justify-content-between mt-4">
+            <div class="col">
+                <ul class="pagination col-5">
+                    <li class="page-item">
+                        <a aria-label="Previous" class="page-link"
+                           th:href="@{/(page = ${pagesInfo.previousPages})}" th:if="${pagesInfo.previous}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                        <p aria-label="Previous" class="page-link disabled" th:if="!${pagesInfo.previous}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </p>
+                    </li>
+                    <li class="page-item" th:each="pageNumber : ${pagesInfo.pageNumbers}">
+                        <a class="page-link"
+                           th:class="${pageNumber == pagesInfo.currentPage ? 'page-link active' : 'page-link'}"
+                           th:href="@{/(page=${pageNumber})}" th:text="${pageNumber}">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a aria-label="Next" class="page-link" href="#" th:href="@{/(page = ${pagesInfo.nextPages})}"
+                           th:if="${pagesInfo.next}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                        <p aria-label="Next" class="page-link disabled" disabled href="#"
+                           th:if="!${pagesInfo.next}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col row justify-content-end">
+                <div class="col-2">
+                    <button class="btn btn-primary" th:if="${session.user != null}"
+                            th:onclick="|location.href='@{/posts/form}'|"
+                            type="submit">글쓰기
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

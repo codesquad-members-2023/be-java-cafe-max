@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header.html :: header"></head>
+<body>
+<nav th:replace="fragments/navbar.html :: common">
+</nav>
+<form class="container" id="postingForm" novalidate th:action="@{/users/{userId}/profile(userId = ${userId})}">
+    <div class="row justify-content-center mt-5">
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <div class="row justify-content-center mt-2">
+                        <svg data-jdenticon-value="user127" height="120"
+                             th:data-jdenticon-value="${profileForm.nickname}"
+                             width="120"></svg>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text col-5" id="nickname">Nickname</span>
+                            <input aria-describedby="nickname" aria-label="Sizing example input" class="form-control"
+                                   disabled readonly th:value="${profileForm.nickname}"
+                                   type="text"
+                                   value="nickname">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text col-5" id="email">Email</span>
+                            <input aria-describedby="nickname" aria-label="Sizing example input" class="form-control"
+                                   disabled readonly th:value="${profileForm.email}" type="text"
+                                   value="email">
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button class="btn btn-primary" type="submit">개인 프로필</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="container-fluid justify-content-center" id="postsPage">
+    <div class="row d-inline mt-4 ms-3 text-black" th:if="${simpleForms.size() != 0}">
+        <span class="text-danger-emphasis" th:text="${simpleForms.size()}"></span>개
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4" th:if="${simpleForms.size() != 0}">
+        <div class="col" th:each="simpleForm : ${simpleForms}">
+            <div class="card h-100">
+                <div class="card-body">
+                    <a class="mb-2" th:href="@{/posts/{id}(id = ${simpleForm.id})}">
+                        <h5 class="card-title text-primary" th:text="${simpleForm.title}">Card title</h5>
+                    </a>
+                    <small class="text-primary-emphasis" th:text="${simpleForm.nickname}">Last updated 3 mins
+                        ago</small>
+                    <p class="card-text" th:text="${simpleForm.textContent}">This is a wider card with supporting
+                        text below as a natural lead-in to additional content. This content is a little bit
+                        longer.</p>
+                    <small class="text-success">댓글수:<span th:text="${simpleForm.commentCount}">20</span></small>
+                </div>
+                <div class="card-footer">
+                    <small class="text-body-secondary">Last updated <span
+                            th:text="${#temporals.format(simpleForm.createdDateTime,'yyyy-MM-dd HH:mm')}"></span></small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center text-light-emphasis mt-5">
+        <div class="row justify-content-between">
+            <div class="col">
+                <ul class="pagination col-5" th:if="${simpleForms.size() != 0}">
+                    <li class="page-item">
+                        <a aria-label="Previous" class="page-link"
+                           th:href="@{/users/{userId}(userId = ${userId},page = ${pagesInfo.previousPages})}"
+                           th:if="${pagesInfo.previous}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                        <p aria-label="Previous" class="page-link disabled" th:if="!${pagesInfo.previous}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </p>
+                    </li>
+                    <li class="page-item" th:each="pageNumber : ${pagesInfo.pageNumbers}">
+                        <a class="page-link"
+                           th:class="${pageNumber == pagesInfo.currentPage ? 'page-link active' : 'page-link'}"
+                           th:href="@{/users/{userId}(userId = ${userId},page=${pageNumber})}"
+                           th:text="${pageNumber}">1</a>
+                    </li>
+                    <li class="page-item">
+                        <a aria-label="Next" class="page-link" href="#"
+                           th:href="@{/users/{userId}(userId = ${userId},page = ${pagesInfo.nextPages})}"
+                           th:if="${pagesInfo.next}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                        <p aria-label="Next" class="page-link disabled"
+                           th:if="!${pagesInfo.next}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col row justify-content-end">
+                <div class="col-2">
+                    <button class="btn btn-primary" th:if="${session.user != null}"
+                            th:onclick="|location.href='@{/posts/form}'|"
+                            type="submit">글쓰기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="container-fluid mt-auto bg-light py-3"></footer>
+</body>
+<script async crossorigin="anonymous"
+        integrity="sha384-yBhgDqxM50qJV5JPdayci8wCfooqvhFYbIKhv0hTtLvfeeyJMJCscRfFNKIxt43M"
+        src="https://cdn.jsdelivr.net/npm/jdenticon@3.2.0/dist/jdenticon.min.js">
+</script>
+<script>
+    $(document).on("click", ".page-link", nextPage);
+
+
+    function nextPage(e) {
+        e.preventDefault();
+        let pagBtn = $(this);
+        const url = pagBtn.attr("href");
+
+        $.ajax({
+            type: 'get',
+            url: url,
+        }).done(function (data) {
+            console.log(data);
+            $("#postsPage").replaceWith(data);
+        })
+    }
+</script>
+</html>
