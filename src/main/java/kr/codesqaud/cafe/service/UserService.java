@@ -23,46 +23,50 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean signUp(SignUpFormDto dto) {
+    public void signUp(SignUpFormDto dto) {
         User user = new User(dto.getUserId(), dto.getPassword(), dto.getName(), dto.getEmail());
         userRepository.save(user);
-        return true;
     }
 
-    public User findById(String id){
-        return userRepository.findById(id).orElseThrow(()->new NotFoundException("유저를 찾을수 없음"));
+    public User findById(String id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("유저를 찾을수 없음"));
     }
 
 
-    public boolean update(User user, UpdateFormDto dto) {
+    public void update(User user, UpdateFormDto dto) {
         User current = user;
+        if (userRepository.exist(dto.getName())) {
+            throw new DuplicatedIdException("중복된 닉네임으로는 변경 할 수 없습니다.");
+        }
         if (current.checkPassword(dto.getPassword())) {
             userRepository.update(new User(user.getUserId(), dto.getNewPassword(), dto.getName(), dto.getEmail()));
-            return true;
+            return;
         }
         throw new NotFoundException("비밀번호입력 오류");
+
     }
 
-    public boolean login(User loginUser,String password){
-        if(!loginUser.checkPassword(password)){
+    public void login(User loginUser, String password) {
+        if (!loginUser.checkPassword(password)) {
             throw new LoginFailedException("로그인 실패");
         }
-        return true;
     }
 
-    public boolean updateAccess(String id , HttpSession session){
-        LoginSessionDto userSession = (LoginSessionDto) session.getAttribute("sessionId");
-        if(userSession == null || !id.equals(userSession.getId())){
+    public void updateAccess(String id, LoginSessionDto sessionId) {
+        if (sessionId == null || !id.equals(sessionId.getId())) {
             throw new DeniedAccessException("수정 권한 없습니다.");
         }
-        return true;
     }
 
-    public void duplicatedId(String id){
-         userRepository.findById(id).filter(u->{throw new DuplicatedIdException("중복된 아이디 입니다.");
-         });
-    }
+    public void duplicatedId(SignUpFormDto dto) {
+        userRepository.findById(dto.getUserId()).filter(u -> {
+            throw new DuplicatedIdException("중복된 아이디 입니다.");
+        });
+        if (userRepository.exist(dto.getName())) {
+            throw new DuplicatedIdException("중복된 닉네임");
+        }
 
+    }
 
 
     public List<User> getUserList() {

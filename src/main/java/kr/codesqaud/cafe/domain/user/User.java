@@ -1,4 +1,5 @@
 package kr.codesqaud.cafe.domain.user;
+
 import kr.codesqaud.cafe.dto.UpdateFormDto;
 
 public class User {
@@ -19,7 +20,7 @@ public class User {
     }
 
     public User(String userId, String password, String name, String email) {
-        this(0,userId,password,name,email);
+        this(0, userId, password, name, email);
     }
 
     public boolean checkPassword(String FormPassword) {
@@ -45,6 +46,5 @@ public class User {
     public String getEmail() {
         return email;
     }
-
 
 }

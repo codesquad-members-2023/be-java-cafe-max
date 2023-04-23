@@ -26,10 +26,18 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(String id) { // EmptyResultDataAccessException 때문에 query 사용
-        List<User> users= jdbcTemplate.query(
+        List<User> users = jdbcTemplate.query(
                 "SELECT IDX , ID , PASSWORD , NAME , EMAIL FROM USERS WHERE ID = ?", rowMapper(), id
         );
         return users.stream().findFirst();
+    }
+
+    @Override
+    public boolean exist(String name) {
+
+        final String sql = "SELECT EXISTS(SELECT 1 FROM USERS WHERE NAME = ? LIMIT 1)";
+        final int count = jdbcTemplate.queryForObject(sql, Integer.class, name);
+        return count > 0;
     }
 
     private RowMapper<User> rowMapper() {
@@ -41,7 +49,7 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public void update(User user) {
-        jdbcTemplate.update("update USERS set PASSWORD = ? ,NAME = ? ,EMAIL = ? WHERE ID = ?",
+        jdbcTemplate.update("UPDATE USERS set PASSWORD = ? , NAME = ? , EMAIL = ? WHERE ID = ?",
                 user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
     }
 

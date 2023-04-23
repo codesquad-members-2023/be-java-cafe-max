@@ -35,7 +35,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query(
-                "SELECT IDX , ID , WRITER , TITLE , CONTENTS , DATE  FROM ARTICLES ORDER BY IDX DESC ",rowMapper());
+                "SELECT IDX , ID , WRITER , TITLE , CONTENTS , DATE FROM ARTICLES WHERE DELETED = FALSE ORDER BY IDX DESC ",rowMapper());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
     @Override
     public void update(Article article) {
         jdbcTemplate.update(
-                "UPDATE ARTICLES SET WRITER = ?, TITLE = ? ,CONTENTS = ?  WHERE IDX = ?",
+                "UPDATE ARTICLES SET WRITER = ? , TITLE = ? , CONTENTS = ? WHERE IDX = ?",
                 article.getWriter(),article.getTitle(),article.getContents(),article.getIndex()
         );
     }
@@ -57,7 +57,10 @@ public class ArticleJdbcRepository implements ArticleRepository {
     @Override
     public void delete(int index) {
         jdbcTemplate.update(
-                "DELETE FROM ARTICLES WHERE IDX = ?"
+                "UPDATE ARTICLES AS A " +
+                        "LEFT JOIN REPLY AS R ON A.IDX = R.ARTICLE_IDX " +
+                        "SET A.DELETED = TRUE, R.DELETED = TRUE " +
+                        "WHERE A.IDX = ? AND (A.DELETED = FALSE OR A.DELETED IS NULL);"
                 ,index
         );
     }

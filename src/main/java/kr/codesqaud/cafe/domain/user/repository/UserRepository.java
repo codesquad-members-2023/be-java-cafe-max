@@ -9,11 +9,14 @@ import java.util.Optional;
 public interface UserRepository {
     void save(User user);
 
-     List<User> findAll();
+    List<User> findAll();
 
-     Optional<User> findById(String id);
+    Optional<User> findById(String id);
 
-    default void update(User user){};
+    boolean exist(String name);
+
+    default void update(User user) {
+    }
 
 
 }

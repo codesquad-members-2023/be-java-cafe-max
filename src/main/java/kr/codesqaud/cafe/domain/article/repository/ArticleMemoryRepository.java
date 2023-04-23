@@ -26,8 +26,10 @@ public class ArticleMemoryRepository implements ArticleRepository {
     }
 
     @Override
-    public void update(Article article) {}
+    public void update(Article article) {
+    }
 
     @Override
-    public void delete(int index) {}
+    public void delete(int index) {
+    }
 }
