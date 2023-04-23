@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.request.PostEditRequest;
 import kr.codesqaud.cafe.controller.dto.request.PostRequest;
+import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,8 +55,7 @@ public class ArticleController {
 
     @PutMapping("/articles/{articleId}")
     public String editArticle(@PathVariable final Long articleId, @ModelAttribute final PostEditRequest request, Model model) {
-        articleService.editArticle(articleId, request);
-        ArticleDto article = articleService.findById(articleId);
+        Article article = articleService.editArticle(articleId, request);
         model.addAttribute("article", article);
         return "qna/show";
     }
