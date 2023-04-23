@@ -27,10 +27,10 @@
             <tbody>
             <tr th:each="postResponse : ${postResponses}">
                 <td class="title"><a class="nav-link" th:text="${postResponse.title}"
-                                     th:href="@{/posts/{id}(id = ${postResponse.postId})}">게시판 테스트 1</a></td>
+                                     th:href="@{/posts/{postId}(postId = ${postResponse.postId})}">게시판 테스트 1</a></td>
                 <td class="writer" th:if="${postResponse.writer == null}">비회원</td>
-                <td class="writer" th:if="${postResponse.writer != null}" th:text="${postResponse.writer.nickName}">차차</td>
-                <td class="writeDate" th:text="${postResponse.convertLocalDateTime()}">2023-03-28</td>
+                <td class="writer" th:if="${postResponse.writer != null}" th:text="${postResponse.writer.getNickname()}">차차</td>
+                <td class="writeDate" th:text="${postResponse.convertLocalDateTime()}">2023-04-30</td>
                 <td class="views" th:text="${postResponse.views}">0</td>
             </tr>
             </tbody>

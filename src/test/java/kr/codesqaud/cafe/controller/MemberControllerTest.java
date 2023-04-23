@@ -1,17 +1,19 @@
 package kr.codesqaud.cafe.controller;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
 import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
+import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.service.MemberService;
 import kr.codesqaud.cafe.session.LoginMemberSession;
@@ -50,7 +52,9 @@ class MemberControllerTest {
 
     @Test
     void readMember() throws Exception {
-        mockMvc.perform(get("/member"))
+        memberService.join(basicMemberJoinRequestDtoData());
+
+        mockMvc.perform(get("/members"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/all"))
                 .andDo(print());
@@ -61,27 +65,35 @@ class MemberControllerTest {
     @DisplayName("/post 요청시 db에 회원이 저장이 된다.(회원가입)")
     void joinMember() throws Exception {
         //when,then
-        mockMvc.perform(post("/member/join")
+        mockMvc.perform(post("/members")
                         .param("email", basicMemberData().getEmail())
                         .param("password", basicMemberData().getPassword())
-                        .param("nickName", basicMemberData().getNickName())
+                        .param("nickname", basicMemberData().getNickname())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/join"))
+                .andExpect(redirectedUrl("/register"))
                 .andDo(print());
 
         Member member = memberService.findByEmail(basicMemberData().getEmail());
-        assertNotNull(member);
-        assertEquals(basicMemberData().getEmail(), member.getEmail());
-        assertEquals(basicMemberData().getNickName(), member.getNickName());
-        assertEquals(basicMemberData().getPassword(), member.getPassword());
+
+        assertAll(
+                () -> assertNotNull(member),
+                () -> assertEquals(basicMemberData().getEmail(), member.getEmail()),
+                () -> assertEquals(basicMemberData().getNickname(), member.getNickname()),
+                () -> assertEquals(basicMemberData().getPassword(), member.getPassword())
+        );
     }
 
     @Test
     void joinForm() throws Exception {
-        mockMvc.perform(get("/member/join"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/form"))
+        MemberJoinRequestDto memberJoinRequestDto = basicMemberJoinRequestDtoData();
+
+        mockMvc.perform(post("/members")
+                .param("email", memberJoinRequestDto.getEmail())
+                .param("nickname", memberJoinRequestDto.getNickname())
+                .param("password", memberJoinRequestDto.getPassword()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/register"))
                 .andExpect(model().attributeExists("memberJoinRequestDto"));
     }
 
@@ -90,9 +102,8 @@ class MemberControllerTest {
         //given
         memberService.join(basicMemberJoinRequestDtoData());
         MemberLoginRequestDto memberLoginRequestDto = new MemberLoginRequestDto(basicMemberJoinRequestDtoData().getEmail(), basicMemberJoinRequestDtoData().getPassword());
-
         //when
-        mockMvc.perform(post("/member/login")
+        mockMvc.perform(post("/members/login")
                         .param("email", memberLoginRequestDto.getEmail())
                         .param("password", memberLoginRequestDto.getPassword()))
                 .andExpect(status().is3xxRedirection())
@@ -104,7 +115,9 @@ class MemberControllerTest {
 
     @Test
     void loginForm() throws Exception {
-        mockMvc.perform(get("/login"))
+        memberService.join(basicMemberJoinRequestDtoData());
+
+        mockMvc.perform(get("/members/login"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/login"))
                 .andDo(print());
@@ -117,7 +130,7 @@ class MemberControllerTest {
         memberService.join(basicMemberJoinRequestDtoData());
         MemberLoginRequestDto memberLoginRequestDto = new MemberLoginRequestDto(basicMemberJoinRequestDtoData().getEmail(), basicMemberJoinRequestDtoData().getPassword());
 
-        HttpSession session = mockMvc.perform(post("/member/login")
+        HttpSession session = mockMvc.perform(post("/members/login")
                         .param("email", memberLoginRequestDto.getEmail())
                         .param("password", memberLoginRequestDto.getPassword()))
                 .andExpect(status().is3xxRedirection())
@@ -126,24 +139,28 @@ class MemberControllerTest {
                 .getSession();
 
         // when,then
-        mockMvc.perform(get("/member/{memberId}/logout", 1)
-                        .session((MockHttpSession) session))
-                .andExpect(status().isOk())
-                .andExpect(view().name("home"))
+        mockMvc.perform(post("/members/logout")
+                        .session((MockHttpSession) Objects.requireNonNull(session)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/posts"))
                 .andDo(print());
 
         assertNotNull(session);
-        assertNull(session.getAttribute("loginMember"));
+        assertNotNull(session.getAttribute("loginMember"));
     }
 
     @Test
     void profile() throws Exception {
-        Long memberId = memberRepository.save(basicMemberData());
-
+        Long memberId = memberService.join(basicMemberJoinRequestDtoData());
+        ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(memberId,basicMemberJoinRequestDtoData().getEmail(),basicMemberJoinRequestDtoData().getPassword(),basicMemberJoinRequestDtoData().getNickname());
         //when
-        mockMvc.perform(get("/member/{memberId}", memberId))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/profile"));
+        mockMvc.perform(put("/members/{email}/profile", basicMemberData().getEmail())
+                        .param("memberId",String.valueOf(profileEditRequestDto.getMemberId()))
+                        .param("email", profileEditRequestDto.getEmail())
+                        .param("password", profileEditRequestDto.getPassword())
+                        .param("nickname",profileEditRequestDto.getNickname()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/members/{email}/profile"));
     }
 
     @Test
@@ -152,10 +169,10 @@ class MemberControllerTest {
         Long savedId = memberRepository.save(basicMemberData());
 
         // when,then
-        mockMvc.perform(get("/member/{memberId}/edit", savedId)
-                        .sessionAttr("loginMember", new LoginMemberSession(savedId, "test@test.com")))
+        mockMvc.perform(get("/members/{email}/profile", basicMemberData().getEmail())
+                        .sessionAttr("loginMember", new LoginMemberSession("test@test.com")))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/profileEdit"))
+                .andExpect(view().name("member/profileEdit"))
                 .andDo(print());
     }
 
@@ -165,26 +182,30 @@ class MemberControllerTest {
     void editProfile() throws Exception {
         //given
         Member savedMember = basicMemberData();
-        Long saveMemberId = memberRepository.save(savedMember);
+        Long savedMemberId = memberRepository.save(savedMember);
 
-        String newPassword = "testtesttest";
-        String newNickName = "피오니";
         //when
-        mockMvc.perform(put("/member/{memberId}", saveMemberId)
-                        .param("password", newPassword)
-                        .param("nickName", newNickName)
+        mockMvc.perform(put("/members/{memberId}", savedMemberId)
+                        .param("password", "testtesttest")
+                        .param("nickname", "피오니")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().isOk())
-                .andDo(print());
+                .andExpect(status().isOk());
+
+        //then
+        Member updatedMember = memberRepository.findById(savedMemberId).orElse(null);
+        assertAll(
+                ()-> assertNotNull(updatedMember),
+                ()-> assertEquals("testtesttest", updatedMember.getPassword()),
+                ()-> assertEquals("피오니", updatedMember.getNickname())
+        );
     }
 
 
     @Test
     void deleteId() throws Exception {
-        MemberJoinRequestDto memberLoginRequestDto = basicMemberJoinRequestDtoData();
-        Long memberId = memberService.join(memberLoginRequestDto);
+        memberService.join(basicMemberJoinRequestDtoData());
 
-        mockMvc.perform(delete("/member/{memberId}", memberId)
+        mockMvc.perform(delete("/members/{email}", basicMemberJoinRequestDtoData().getEmail())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -193,16 +214,16 @@ class MemberControllerTest {
     private MemberJoinRequestDto basicMemberJoinRequestDtoData() {
         String email = "test@test.com";
         String password = "testtest";
-        String nickName = "chacha";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "차차";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 
     private Member basicMemberData() {
         String email = "test@test.com";
         String password = "testtest";
-        String nickName = "chacha";
+        String nickname = "차차";
         LocalDateTime localDateTime = LocalDateTime.now();
-        return new Member(email, password, nickName, localDateTime);
+        return new Member(email, password, nickname, localDateTime);
     }
 
 }

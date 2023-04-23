@@ -45,14 +45,14 @@ class MemberServiceTest {
         //then
         Member targetMember = memberRepository.findById(savedMemberId).orElseThrow();
         assertAll(() -> assertEquals(savedMemberId, targetMember.getMemberId()),
-                () -> assertEquals(memberLoginRequestDto.getEmail(), targetMember.getEmail()),
-                () -> assertEquals(memberLoginRequestDto.getPassword(), targetMember.getPassword()),
-                () -> assertEquals(memberLoginRequestDto.getNickName(), targetMember.getNickName()));
+                () -> assertEquals("test@gmail.com", targetMember.getEmail()),
+                () -> assertEquals("testtest", targetMember.getPassword()),
+                () -> assertEquals("차차", targetMember.getNickname()));
     }
 
 
     @Test
-    @DisplayName("모든 회원 조회 성공")
+    @DisplayName("기존 가입된 모든 회원들을 조회하면 모든 회원의 정보가 조회된다.")
     void findAll() {
         //given
         int memberNumber = 10;
@@ -60,8 +60,8 @@ class MemberServiceTest {
                 .forEach(count -> {
                     String email = String.format("test%d@test.com", count);
                     String password = String.format("test%d", count);
-                    String nickName = String.format("chacha%d", count);
-                    memberService.join(new MemberJoinRequestDto(email, password, nickName));
+                    String nickname = String.format("chacha%d", count);
+                    memberService.join(new MemberJoinRequestDto(email, password, nickname));
                 });
 
         //when
@@ -72,7 +72,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("회원 단건 조회")
+    @DisplayName("기존 가입된 회원의 id로 회원을 조회하면 해당 회원의 정보가 조회된다.")
     void findById() {
         MemberJoinRequestDto requestDtoMember = basicMemberData();
         Long memberId = memberService.join(requestDtoMember);
@@ -83,12 +83,12 @@ class MemberServiceTest {
         //then
         assertAll(
                 () -> assertEquals(memberId, memberResponseDto.getMemberId()),
-                () -> assertEquals(requestDtoMember.getEmail(), memberResponseDto.getEmail()),
-                () -> assertEquals(requestDtoMember.getNickName(), memberResponseDto.getNickName()));
+                () -> assertEquals(requestDtoMember.getEmail(), "test@gmail.com"),
+                () -> assertEquals(requestDtoMember.getNickname(), "차차"));
     }
 
     @Test
-    @DisplayName("회원 이메일 조회")
+    @DisplayName("기존 가입 회원의 이메일 주소로 회원을 조회하면 해당 회원의 정보가 조회된다.")
     void findByEmail() {
         MemberJoinRequestDto requestDtoMember = basicMemberData();
         Long memberId = memberService.join(requestDtoMember);
@@ -100,8 +100,8 @@ class MemberServiceTest {
         //then
         assertAll(
                 () -> assertEquals(memberEmail, member.getEmail()),
-                () -> assertEquals(requestDtoMember.getNickName(), member.getNickName()),
-                () -> assertEquals(requestDtoMember.getPassword(), member.getPassword()));
+                () -> assertEquals("차차", member.getNickname()),
+                () -> assertEquals("testtest", member.getPassword()));
     }
 
 
@@ -109,7 +109,7 @@ class MemberServiceTest {
     void update() {
         //given
         Long saveId = memberService.join(basicMemberData());
-        ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(saveId, dummyMemberData().getEmail(), dummyMemberData().getPassword(), dummyMemberData().getNickName());
+        ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(saveId, basicMemberData().getEmail(), dummyMemberData().getPassword(), dummyMemberData().getNickname());
 
         //when
         memberService.update(profileEditRequestDto);
@@ -118,7 +118,7 @@ class MemberServiceTest {
         Member targetMember = memberRepository.findById(saveId).orElseThrow();
         assertAll(
                 () -> assertEquals(saveId, targetMember.getMemberId()),
-                () -> assertEquals(dummyMemberData().getNickName(), targetMember.getNickName()));
+                () -> assertEquals("피오니", targetMember.getNickname()));
     }
 
     @Test
@@ -138,14 +138,14 @@ class MemberServiceTest {
     private MemberJoinRequestDto basicMemberData() {
         String email = "test@gmail.com";
         String password = "testtest";
-        String nickName = "차차";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "차차";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 
     private MemberJoinRequestDto dummyMemberData() {
         String email = "dummy@gmail.com";
         String password = "dummydummy";
-        String nickName = "피오니";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "피오니";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 }

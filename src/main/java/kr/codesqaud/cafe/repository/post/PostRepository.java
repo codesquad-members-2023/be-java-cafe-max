@@ -12,11 +12,13 @@ public interface PostRepository {
 
     Optional<Post> findById(Long postId);
 
-    List<Post> findPostByWriterId(Long writerId);
+    List<Post> findPostByWriterEmail(String writerEmail);
 
     List<Post> findAll();
 
     void update(Post post);
 
     void deleteAll();
+
+    void deletePostId(Long postId);
 }

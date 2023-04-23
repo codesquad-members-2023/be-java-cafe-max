@@ -8,6 +8,6 @@ public class CommonException extends RuntimeException {
     }
 
     public CommonExceptionType getCommonExceptionType() {
-        return getCommonExceptionType();
+        return commonExceptionType;
     }
 }

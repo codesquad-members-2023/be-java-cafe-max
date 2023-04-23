@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
 import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
@@ -26,7 +27,7 @@ import kr.codesqaud.cafe.service.MemberService;
 import kr.codesqaud.cafe.session.LoginMemberSession;
 
 @Controller
-@RequestMapping("/member")
+@RequestMapping("/members")
 public class MemberController {
     private final MemberService memberService;
 
@@ -35,24 +36,26 @@ public class MemberController {
     }
 
     @GetMapping
-    public String readMember(Model model) {
+    public String readMembers(Model model) {
         model.addAttribute("memberResponsesDto", memberService.findAll());
-        return "/all";
+        return "member/members";
     }
 
-    @GetMapping("/join")
-    public String joinMember(Model model) {
+    @GetMapping("/register")
+    public String registerMember(@ModelAttribute MemberJoinRequestDto memberJoinRequestDto,Model model) {
         model.addAttribute("memberJoinRequestDto", new MemberJoinRequestDto());
-        return "/form";
+        return "member/register";
     }
 
-    @PostMapping("/join")
-    public String join(@Valid @ModelAttribute("member") MemberJoinRequestDto memberJoinDto, BindingResult bindingResult) {
+
+
+    @PostMapping
+    public String register(@Valid @ModelAttribute MemberJoinRequestDto memberJoinRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "member/join";
+            return "member/register";
         }
-        memberService.join(memberJoinDto);
-        return "redirect:/join";
+        memberService.join(memberJoinRequestDto);
+        return "redirect:/members";
     }
 
 
@@ -66,51 +69,53 @@ public class MemberController {
         HttpSession httpSession = httpServletRequest.getSession();
         httpSession.setAttribute("loginMember", loginMember);
 
-        return "redirect:/login";
+        return "redirect:/posts";
     }
 
     @GetMapping("/login")
-    public String loginForm(@ModelAttribute("signUpRequestDto") MemberLoginRequestDto memberLoginRequestDto) {
-        return "/login";
+    public String loginForm(@ModelAttribute("memberLoginRequestDto") MemberLoginRequestDto memberLoginRequestDto) {
+        return "member/login";
     }
 
 
-    @GetMapping("/{memberId}")
-    public String profile(@PathVariable Long memberId, Model model) {
-        model.addAttribute("memberResponsesDto", memberService.findById(memberId));
-        return "/profile";
+    @GetMapping("/{email}")
+    public String profile(@PathVariable String email, Model model) {
+        Member member = memberService.findByEmail(email);
+        model.addAttribute("memberResponsesDto", memberService.findById(member.getMemberId()));
+        return "member/profile";
     }
 
-    @PutMapping("/{memberId}")
+    @PutMapping("/{email}/profile")
     public String editProfile(@ModelAttribute @Valid ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "member/profiledEdit";
         }
 
         memberService.update(profileEditRequestDto);
-        redirectAttributes.addAttribute("memberId", profileEditRequestDto.getMemberId());
-        return "redirect:/member/{memberId}";
+        redirectAttributes.addAttribute("email", profileEditRequestDto.getEmail());
+        return "redirect:/members/{email}";
     }
 
-    @GetMapping("/{memberId}/edit")
-    public String profileEditForm(@PathVariable Long memberId, Model model, @SessionAttribute("loginMember") LoginMemberSession longinMemberSession) {
-        if (longinMemberSession.isNotEqualMember(memberId)) {
+    @GetMapping("/{email}/profile")
+    public String profileEditForm(@PathVariable String email, Model model, @SessionAttribute("loginMember") LoginMemberSession longinMemberSession) {
+        if (longinMemberSession.isNotEqualMember(email)) {
             throw new CommonException(CommonExceptionType.ACCESS_DENIED);
         }
-        model.addAttribute("profileEditRequest", ProfileEditRequestDto.of(memberService.findById(memberId)));
-        return "/profileEdit";
+        Member member = memberService.findByEmail(email);
+        model.addAttribute("profileEditRequestDto", ProfileEditRequestDto.of(memberService.findById(member.getMemberId())));
+        return "member/profileEdit";
     }
 
 
-    @DeleteMapping("/{memberId}")
-    public void deleteId(@PathVariable Long memberId) {
-        memberService.deleteById(memberId);
+    @DeleteMapping("/{email}")
+    public void deleteId(@PathVariable String email) {
+        Member member = memberService.findByEmail(email);
+        memberService.deleteById(member.getMemberId());
     }
 
-    @GetMapping("/{memberId}/logout")
-    public String logout(HttpServletRequest httpServletRequest) {
-        final HttpSession httpSession = httpServletRequest.getSession();
-        httpSession.removeAttribute("loginMember");
-        return "home";
+    @PostMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        httpSession.invalidate();
+        return "redirect:/posts";
     }
 }

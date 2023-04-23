@@ -52,11 +52,11 @@ class PostServiceTest {
 
         //then
         assertAll(
-                () -> assertEquals(basicPostData(member).getTitle(), postResponse.getTitle()),
-                () -> assertEquals(basicPostData(member).getContent(), postResponse.getContent()),
-                () -> assertEquals(basicPostData(member).getWriterId(), postResponse.getWriter().getWriterId()),
+                () -> assertEquals("피에스타", postResponse.getTitle()),
+                () -> assertEquals("내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게", postResponse.getContent()),
+                () -> assertEquals("test@gmail.com", postResponse.getWriter().getWriterEmail()),
                 () -> assertEquals(basicPostData(member).getWriteDate().withNano(0), postResponse.getWriteDate().withNano(0)),
-                () -> assertEquals(basicPostData(member).getViews() + 1, postResponse.getViews()),
+                () -> assertEquals(0L, postResponse.getViews()),
                 () -> assertNotNull(savedPostId));
     }
 
@@ -74,7 +74,7 @@ class PostServiceTest {
 
         //then
         assertEquals(postId, postResponse.getPostId());
-        assertEquals(basicPostData(member).getWriterId(), postResponse.getWriter().getWriterId());
+        assertEquals("test@gmail.com", postResponse.getWriter().getWriterEmail());
     }
 
     @Test
@@ -89,8 +89,8 @@ class PostServiceTest {
         Member member2 = memberRepository.findById(member2Id).orElseThrow();
 
 
-        Long post1Id = postRepository.save(new Post("title1", "content1", member1, LocalDateTime.now(), 0L), member1);
-        Long post2Id = postRepository.save(new Post("title2", "content2", member2, LocalDateTime.now(), 0L), member2);
+        Long post1Id = postRepository.save(new Post("title1", "content1", member1.getEmail(), LocalDateTime.now(), 0L), member1);
+        Long post2Id = postRepository.save(new Post("title2", "content2", member2.getEmail(), LocalDateTime.now(), 0L), member2);
 
         // when
         List<PostResponse> result = postService.findAll();
@@ -101,8 +101,8 @@ class PostServiceTest {
                 () -> assertFalse(result.contains(null)),
                 () -> assertEquals(post1Id, result.get(1).getPostId()),
                 () -> assertEquals(post2Id, result.get(0).getPostId()),
-                () -> assertEquals(member1.getNickName(), result.get(1).getWriter().getNickName()),
-                () -> assertEquals(member2.getNickName(), result.get(0).getWriter().getNickName())
+                () -> assertEquals("차차", result.get(1).getWriter().getNickname()),
+                () -> assertEquals("피오니", result.get(0).getWriter().getNickname())
         );
     }
 
@@ -118,22 +118,22 @@ class PostServiceTest {
         WriterResponse writerResponse = postService.getWriterResponse(post);
 
         // then
-        assertEquals(writer.getNickName(), writerResponse.getNickName());
+        assertEquals(writer.getNickname(), writerResponse.getNickname());
     }
 
 
     private MemberJoinRequestDto basicMemberData() {
         String email = "test@gmail.com";
         String password = "testtest";
-        String nickName = "chacha";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "차차";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 
     private MemberJoinRequestDto dummyMemberData() {
         String email = "dummy@gmail.com";
         String password = "dummydummy";
-        String nickName = "피오니";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "피오니";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 
     private Post basicPostData(Member member) {
@@ -141,7 +141,7 @@ class PostServiceTest {
         String content = "내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게";
         LocalDateTime writeTime = LocalDateTime.now();
         Long views = 0L;
-        return new Post(title, content, member, writeTime, views);
+        return new Post(title, content, member.getEmail(), writeTime, views);
     }
 
 }

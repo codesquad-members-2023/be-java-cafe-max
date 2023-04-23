@@ -22,15 +22,15 @@ public class MemberJoinRequestDto {
     @NotBlank(message = "닉네임을 입력하세요")
     @Size(min = 2, max = 10, message = "유효한 닉네임을 입력하세요")
     @Pattern(regexp = "^[가-힣]{2,4}$", message = "닉네임 형식에 맞게 입력하세요.")
-    private String nickName;
+    private String nickname;
 
     public MemberJoinRequestDto() {
     }
 
-    public MemberJoinRequestDto(String email, String password, String nickName) {
+    public MemberJoinRequestDto(String email, String password, String nickname) {
         this.email = email;
         this.password = password;
-        this.nickName = nickName;
+        this.nickname = nickname;
     }
 
     public String getEmail() {
@@ -49,15 +49,15 @@ public class MemberJoinRequestDto {
         this.password = password;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public Member toUser() {
-        return new Member(this.email, this.password, this.nickName, LocalDateTime.now());
+        return new Member(this.email, this.password, this.nickname, LocalDateTime.now());
     }
 }

@@ -4,25 +4,25 @@ import java.time.LocalDateTime;
 
 public class Post {
     private Long postId;
-    private final String title;
-    private final String content;
-    private final Long writerId;
+    private String title;
+    private String content;
+    private final String writerEmail;
     private final LocalDateTime writeDate;
     private Long views;
 
-    public Post(String title, String content, Member writer, LocalDateTime writeDate, Long views) {
+    public Post(String title, String content, String writer, LocalDateTime writeDate, Long views) {
         this.title = title;
         this.content = content;
-        this.writerId = writer.getMemberId();
+        this.writerEmail = writer;
         this.writeDate = writeDate;
         this.views = views;
     }
 
-    public Post(Long postId, String title, String content, Long writerId, LocalDateTime writeDate, Long views) {
+    public Post(Long postId, String title, String content, String writerEmail, LocalDateTime writeDate, Long views) {
         this.postId = postId;
         this.title = title;
         this.content = content;
-        this.writerId = writerId;
+        this.writerEmail = writerEmail;
         this.writeDate = writeDate;
         this.views = views;
     }
@@ -39,8 +39,8 @@ public class Post {
         return content;
     }
 
-    public Long getWriterId() {
-        return writerId;
+    public String getWriterEmail() {
+        return writerEmail;
     }
 
     public LocalDateTime getWriteDate() {
@@ -57,5 +57,10 @@ public class Post {
 
     public void setPostId(Long postId) {
         this.postId = postId;
+    }
+
+    public void editPost(final String title, final String content) {
+        this.title = title;
+        this.content = content;
     }
 }

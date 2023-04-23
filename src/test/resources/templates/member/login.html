@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head :: head(~{::link})">
+  <link rel="stylesheet" th:href="@{/css/member/memberForm.css}">
+</head>
+<body>
+<header th:replace="~{layout/header :: header}">
+</header>
+<main>
+  <div class="m-auto w-100">
+    <div>
+      <h2 class="title">로그인</h2>
+    </div>
+    <form class="form" th:action="@{/members/login}" method="post" th:object="${memberLoginRequestDto}">
+      <div class="form-floating">
+        <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력해주세요"
+               aria-describedby="validationEmailFeedback" th:errorclass="is-invalid" th:field="*{email}">
+        <label for="email">이메일</label>
+        <div id="validationEmailFeedback" class="invalid-feedback" th:errors="*{email}">
+        </div>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" id="password" name="password"
+               placeholder="비밀번호를 입력해주세요" th:errorclass="is-invalid" th:field="*{password}">
+        <label for="password">비밀번호</label>
+        <div id="validationPasswordFeedback" class="invalid-feedback" th:errors="*{password}">
+        </div>
+      </div>
+      <button id="submit" class="w-100 btn btn-primary mt-4" type="submit">로그인</button>
+      <div id="signUp" class="mt-4">
+        <span>아직 회원가입을 안하셨나요? <a th:href="@{/members/join}">회원가입하기</a></span>
+      </div>
+    </form>
+  </div>
+</main>
+</body>
+</html>

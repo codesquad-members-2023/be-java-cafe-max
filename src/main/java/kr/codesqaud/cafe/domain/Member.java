@@ -6,21 +6,21 @@ public class Member {
     private Long memberId;
     private String email;
     private final String password;
-    private String nickName;
+    private String nickname;
     private final LocalDateTime createDate;
 
-    public Member(String email, String password, String nickName, LocalDateTime createDate) {
+    public Member(String email, String password, String nickname, LocalDateTime createDate) {
         this.email = email;
         this.password = password;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.createDate = createDate;
     }
 
-    public Member(Long memberId, String email, String password, String nickName, LocalDateTime createDate) {
+    public Member(Long memberId, String email, String password, String nickname, LocalDateTime createDate) {
         this.memberId = memberId;
         this.email = email;
         this.password = password;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.createDate = createDate;
     }
 
@@ -36,8 +36,8 @@ public class Member {
         return password;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getNickname() {
+        return nickname;
     }
 
     public LocalDateTime getCreateDate() {
@@ -48,12 +48,12 @@ public class Member {
         this.email = email;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public boolean isChangedMemberNickName(String nickName) {
-        return !this.nickName.equals(nickName);
+    public boolean isDifferentNickname(String nickname) {
+        return !this.nickname.equals(nickname);
     }
 
     public boolean isNotMatchedPassword(String password) {

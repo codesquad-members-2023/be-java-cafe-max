@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
@@ -23,6 +22,7 @@ import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
 import kr.codesqaud.cafe.service.MemberService;
 import kr.codesqaud.cafe.service.PostService;
+import kr.codesqaud.cafe.session.LoginMemberSession;
 
 
 @SpringBootTest
@@ -67,11 +67,14 @@ class PostControllerTest {
         Long savedPostId = postRepository.save(dummyPostData(member), member);
         PostResponse postResponse = postService.findById(savedPostId);
 
+        LoginMemberSession loginMemberSession = new LoginMemberSession(dummyMemberData().getEmail());
+
         //when,then
         mockMvc.perform(post("/posts/write/")
                         .param("title", postResponse.getTitle())
                         .param("content", postResponse.getContent())
-                        .param("writerId", String.valueOf(postResponse.getWriter().getWriterId()))
+                        .param("writerEmail", postResponse.getWriter().getWriterEmail())
+                        .sessionAttr("loginMember",loginMemberSession)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/write"))
@@ -103,8 +106,8 @@ class PostControllerTest {
     private MemberJoinRequestDto basicMemberData() {
         String email = "test@gmail.com";
         String password = "testtest";
-        String nickName = "chacha";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "chacha";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 
 
@@ -113,14 +116,14 @@ class PostControllerTest {
         String content = "내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게";
         LocalDateTime writeTime = LocalDateTime.now();
         Long views = 0L;
-        return new Post(title, content, member, writeTime, views);
+        return new Post(title, content, member.getEmail(), writeTime, views);
     }
 
     private MemberJoinRequestDto dummyMemberData() {
         String email = "dummy@gmail.com";
         String password = "dummydummy";
-        String nickName = "피오니";
-        return new MemberJoinRequestDto(email, password, nickName);
+        String nickname = "피오니";
+        return new MemberJoinRequestDto(email, password, nickname);
     }
 
     private Post dummyPostData(Member member) {
@@ -128,6 +131,6 @@ class PostControllerTest {
         String content = "니가 참 궁금해 그건 너도 마찬가지 이거면 충분해";
         LocalDateTime writeTime = LocalDateTime.now();
         Long views = 0L;
-        return new Post(title, content, member, writeTime, views);
+        return new Post(title, content, member.getEmail(), writeTime, views);
     }
 }

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
+import kr.codesqaud.cafe.dto.post.PostEditRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
@@ -27,8 +28,15 @@ public class PostService {
     }
 
     public Long save(PostWriteRequest postWriteRequest) {
-        Member member = memberRepository.findById(postWriteRequest.getWriterId()).orElseThrow();
+        Member member = memberRepository.findByEmail(postWriteRequest.getWriterEmail()).orElseThrow();
         return postRepository.save(postWriteRequest.toMakePost(member), member);
+    }
+
+    public void editPost(PostEditRequest postEditRequest) {
+        Post post = postRepository.findById(postEditRequest.getPostId())
+                .orElseThrow(() -> new NoSuchElementException("해당 id를 가진 글을 찾을 수 없습니다."));
+        post.editPost(postEditRequest.getTitle(), postEditRequest.getContent());
+        postRepository.update(post);
     }
 
 
@@ -40,8 +48,8 @@ public class PostService {
         return PostResponse.of(post, getWriterResponse(post));
     }
 
-    public List<Post> findPostByWriterId(Long writerId) {
-        return postRepository.findPostByWriterId(writerId);
+    public List<Post> findPostByWriterEmail(String writerEmail) {
+        return postRepository.findPostByWriterEmail(writerEmail);
     }
 
     public List<PostResponse> findAll() {
@@ -54,9 +62,13 @@ public class PostService {
     }
 
     WriterResponse getWriterResponse(Post post) {
-        return Optional.ofNullable(post.getWriterId())
-                .flatMap(memberRepository::findById)
+        return Optional.ofNullable(post.getWriterEmail())
+                .flatMap(memberRepository::findByEmail)
                 .map(WriterResponse::from)
                 .orElseThrow(() -> new NoSuchElementException("해당 id를 가진 글쓴이를 찾을 수 없습니다."));
+    }
+
+    public void deletePostId(Long postId) {
+        postRepository.deletePostId(postId);
     }
 }

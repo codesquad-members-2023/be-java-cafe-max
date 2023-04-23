@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,6 +30,7 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional
     public Long join(MemberJoinRequestDto memberJoinRequestDto) {
         Member member = memberJoinRequestDto.toUser();
         memberRepository.findByEmail(memberJoinRequestDto.getEmail()).ifPresent(m -> {
@@ -44,24 +46,24 @@ public class MemberService {
     }
 
     public MemberResponseDto findById(Long memberId) {
-        return MemberResponseDto.of(memberRepository.findById(memberId).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_MEMBER)));
+        return MemberResponseDto.of(memberRepository.findById(memberId).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND)));
     }
 
     public Member findByEmail(String email) {
-        return memberRepository.findByEmail(email).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_EMAIL));
+        return memberRepository.findByEmail(email).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND));
     }
 
     public void update(ProfileEditRequestDto profileEditRequestDto) {
-        Member findMember = memberRepository.findById(profileEditRequestDto.getMemberId()).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND_MEMBER));
+        Member findMember = memberRepository.findById(profileEditRequestDto.getMemberId()).orElseThrow(() -> new CommonException(CommonExceptionType.NOT_FOUND));
 
-        if (findMember.isChangedMemberNickName(profileEditRequestDto.getNickName())) {
-            memberRepository.findByNickName(profileEditRequestDto.getNickName())
+        if (findMember.isDifferentNickname(profileEditRequestDto.getNickname())) {
+            memberRepository.findByNickname(profileEditRequestDto.getNickname())
                     .ifPresent(m -> {
                         throw new MemberProfileEditException(MemberExceptionType.DUPLICATED_MEMBER_NICKNAME, profileEditRequestDto);
                     });
         }
 
-        findMember.setNickName(profileEditRequestDto.getNickName());
+        findMember.setNickname(profileEditRequestDto.getNickname());
         memberRepository.update(findMember);
     }
 
@@ -70,10 +72,10 @@ public class MemberService {
     }
 
     public LoginMemberSession login(MemberLoginRequestDto memberLoginRequestDto) {
-        Member member = memberRepository.findByEmail(memberLoginRequestDto.getEmail()).orElseThrow(() -> new MemberLoginException(MemberExceptionType.INVALID_USER_ID, memberLoginRequestDto));
+        Member member = memberRepository.findByEmail(memberLoginRequestDto.getEmail()).orElseThrow(() -> new MemberLoginException(MemberExceptionType.NOT_FOUND, memberLoginRequestDto));
         if (member.isNotMatchedPassword(memberLoginRequestDto.getPassword())) {
-            throw new MemberLoginException(MemberExceptionType.NOT_MATCHED_PASSWORD, memberLoginRequestDto);
+            throw new MemberLoginException(MemberExceptionType.NOT_FOUND, memberLoginRequestDto);
         }
-        return new LoginMemberSession(member);
+        return new LoginMemberSession(member.getEmail());
     }
 }
