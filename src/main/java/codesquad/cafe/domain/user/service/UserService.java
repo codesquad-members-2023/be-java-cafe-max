@@ -1,6 +1,7 @@
 package codesquad.cafe.domain.user.service;
 
 import codesquad.cafe.domain.user.domain.User;
+import codesquad.cafe.domain.user.dto.UserLoginRequestDto;
 import codesquad.cafe.domain.user.dto.UserRequestDto;
 import codesquad.cafe.domain.user.dto.UserResponseDto;
 import codesquad.cafe.domain.user.dto.UserUpdateRequestDto;
@@ -45,21 +46,37 @@ public class UserService {
     }
 
     public UserResponseDto findUser(final String id) {
-        return userRepository.findById(id)
-                .map(user -> new UserResponseDto(user.getId(), user.getName(), user.getEmail()))
-                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+        User user = isExistUser(id);
+        return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
     }
 
-    public void updateUser(final String id, final UserUpdateRequestDto userUpdateRequestDto) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
-        validatePassword(user, userUpdateRequestDto);
+    public void updateUser(final String id, final UserUpdateRequestDto userUpdateRequestDto, final User sessionUser) {
+        validateUpdateUser(sessionUser, id);
+        User user = isExistUser(id);
+        validatePassword(user, userUpdateRequestDto.getPassword());
         userRepository.update(user.update(userUpdateRequestDto));
     }
 
-    private void validatePassword(final User user, final UserUpdateRequestDto userUpdateRequestDto) {
-        if(!user.getPassword().equals(userUpdateRequestDto.getPassword())) {
+    private User isExistUser(final String id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+    }
+
+    private void validatePassword(final User user, final String password) {
+        if(!user.getPassword().equals(password)) {
             throw new CustomException(WRONG_INPUT_PASSWORD);
+        }
+    }
+
+    public User login(final UserLoginRequestDto userLoginRequestDto) {
+        User user = isExistUser(userLoginRequestDto.getUserId());
+        validatePassword(user, userLoginRequestDto.getPassword());
+        return user;
+    }
+
+    public void validateUpdateUser(final User user, final String userId) {
+        if (!user.getId().equals(userId)) {
+            throw new CustomException(UNAUTHORIZED_USER);
         }
     }
 }

@@ -1,10 +1,11 @@
 package codesquad.cafe.domain.article.repository;
 
 import codesquad.cafe.domain.article.domain.Article;
-import org.springframework.stereotype.Repository;
+import codesquad.cafe.domain.user.domain.User;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -16,9 +17,9 @@ public class MemoryArticleRepository implements ArticleRepository {
     private AtomicLong id = new AtomicLong();
 
     @Override
-    public void save(final Article article) {
-        id.getAndIncrement();
-        store.put(id.get(), article.createdWith(id.get()));
+    public void save(final Article article, final String id) {
+        this.id.getAndIncrement();
+        store.put(this.id.get(), article.createdWith(this.id.get()));
     }
 
     @Override
@@ -29,6 +30,19 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public Article findById(final Long id) {
         return store.get(id);
+    }
+
+    @Override
+    public String findWriterByUserId(final String writerId) {
+        return null;
+    }
+
+    @Override
+    public void update(final Article article) {
+    }
+
+    @Override
+    public void deletePostById(final Long postId) {
     }
 
 }
