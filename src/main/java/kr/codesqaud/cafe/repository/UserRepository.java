@@ -20,7 +20,7 @@ public class UserRepository {
 
     public void save(User user) {
         userList.add(user);
-        dataBase.put(user.getUserId(), user);
+        dataBase.put(user.getUserLoginId(), user);
     }
 
     public List<User> getUserList() {
@@ -30,4 +30,5 @@ public class UserRepository {
     public User getUserByUserId(String userId) {
         return dataBase.get(userId);
     }
+
 }
