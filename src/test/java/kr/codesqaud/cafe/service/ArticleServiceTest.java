@@ -103,7 +103,7 @@ class ArticleServiceTest {
 		@ArgumentsSource(ArticleComments.class)
 		@ParameterizedTest
 		void givenArticleId_whenFindArticleDetails_thenReturnsArticleDetails(List<Comment> comments,
-																			 int size) {
+		                                                                     int size) {
 			// given
 			given(articleRepository.findById(anyLong())).willReturn(Optional.of(createArticle()));
 			given(commentRepository.findAllByArticleId(anyLong())).willReturn(comments);
@@ -218,7 +218,7 @@ class ArticleServiceTest {
 		void givenNothing_whenDeletesArticle_thenDoNothing() {
 			// given
 			given(articleRepository.findById(anyLong())).willReturn(Optional.of(createArticle()));
-			given(articleRepository.isPossibleDeleteById(anyLong())).willReturn(Optional.of(Boolean.TRUE));
+			given(articleRepository.isPossibleDeleteById(anyLong())).willReturn(true);
 			willDoNothing().given(articleRepository).deleteById(anyLong());
 
 			// when & then
@@ -250,7 +250,7 @@ class ArticleServiceTest {
 		void givenContainsCommentsThatNotEqualsWriter_whenDeleteArticle_thenThrowsException() {
 			// given
 			given(articleRepository.findById(anyLong())).willReturn(Optional.of(createArticle()));
-			given(articleRepository.isPossibleDeleteById(anyLong())).willReturn(Optional.of(Boolean.FALSE));
+			given(articleRepository.isPossibleDeleteById(anyLong())).willReturn(false);
 
 			// when & then
 			assertAll(
