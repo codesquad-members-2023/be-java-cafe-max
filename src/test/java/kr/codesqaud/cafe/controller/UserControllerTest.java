@@ -23,8 +23,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import kr.codesqaud.cafe.account.UserController;
 import kr.codesqaud.cafe.account.UserService;
-import kr.codesqaud.cafe.account.dto.UserListResponse;
 import kr.codesqaud.cafe.account.dto.UserResponse;
+import kr.codesqaud.cafe.account.dto.UserResponseForList;
 import kr.codesqaud.cafe.global.config.Session;
 
 @WebMvcTest(UserController.class)
@@ -49,7 +49,7 @@ class UserControllerTest {
 	@DisplayName("회원가입 성공시 회원들의 list 를 user/list 에서 나열한다.")
 	void userListTest() throws Exception {
 		//given
-		List<UserListResponse> userList = new ArrayList<>();
+		List<UserResponseForList> userList = new ArrayList<>();
 		given(userService.getUserList()).willReturn(userList);
 
 		//when & then

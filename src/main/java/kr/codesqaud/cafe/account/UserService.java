@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import kr.codesqaud.cafe.account.domain.User;
 import kr.codesqaud.cafe.account.dto.ProfileEditRequest;
 import kr.codesqaud.cafe.account.dto.SignInRequest;
-import kr.codesqaud.cafe.account.dto.UserListResponse;
 import kr.codesqaud.cafe.account.dto.UserResponse;
+import kr.codesqaud.cafe.account.dto.UserResponseForList;
 import kr.codesqaud.cafe.account.dto.UserSignUpRequest;
 import kr.codesqaud.cafe.account.exception.IdDuplicatedException;
 import kr.codesqaud.cafe.account.exception.LoginInvalidPasswordException;
@@ -41,7 +41,7 @@ public class UserService {
 		}
 	}
 
-	public List<UserListResponse> getUserList() {
+	public List<UserResponseForList> getUserList() {
 		return userRepository.findAll().stream()
 			.map(userMapper::toUserListResponse)
 			.collect(Collectors.toUnmodifiableList());
