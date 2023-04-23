@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.codesqaud.cafe.account.exception.AlreadyUserExistenceException;
+import kr.codesqaud.cafe.account.exception.IdDuplicatedException;
 import kr.codesqaud.cafe.account.exception.LoginInvalidPasswordException;
 import kr.codesqaud.cafe.account.exception.UserNotFoundException;
 import kr.codesqaud.cafe.account.exception.UserUpdateInvalidPasswordException;
-import kr.codesqaud.cafe.article.exception.ArticleDeleteFailedException;
+import kr.codesqaud.cafe.article.exception.ArticleDeleteException;
 import kr.codesqaud.cafe.article.exception.ArticleIdAndSessionIdMismatchException;
 import kr.codesqaud.cafe.article.exception.ArticleNotFoundException;
 
@@ -49,8 +49,8 @@ public class GlobalExceptionHandler {
 		return "redirect:/articles";
 	}
 
-	@ExceptionHandler(AlreadyUserExistenceException.class)
-	public ModelAndView handleAlreadyUserExistenceException(AlreadyUserExistenceException e,
+	@ExceptionHandler(IdDuplicatedException.class)
+	public ModelAndView handleAlreadyUserExistenceException(IdDuplicatedException e,
 		RedirectAttributes redirectAttributes) {
 		return new ModelAndView(handleExceptionWithRedirect(e, "/users/sign-up", "id-error", redirectAttributes));
 	}
@@ -91,8 +91,8 @@ public class GlobalExceptionHandler {
 		return createErrorResponseModelAndView("error/403-forbidden", e);
 	}
 
-	@ExceptionHandler(ArticleDeleteFailedException.class)
-	public ModelAndView handleArticleDeleteFailedException(ArticleDeleteFailedException e) {
+	@ExceptionHandler(ArticleDeleteException.class)
+	public ModelAndView handleArticleDeleteFailedException(ArticleDeleteException e) {
 		return createErrorResponseModelAndView("error/403-forbidden", e);
 	}
 }

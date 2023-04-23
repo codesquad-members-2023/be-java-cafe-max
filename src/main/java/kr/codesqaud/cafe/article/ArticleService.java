@@ -11,7 +11,7 @@ import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
-import kr.codesqaud.cafe.article.exception.ArticleDeleteFailedException;
+import kr.codesqaud.cafe.article.exception.ArticleDeleteException;
 import kr.codesqaud.cafe.article.exception.ArticleIdAndSessionIdMismatchException;
 import kr.codesqaud.cafe.article.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
@@ -60,7 +60,7 @@ public class ArticleService {
 	public void deleteArticleByIdx(Long articleIdx, String userId) {
 		validSessionIdAndArticleId(articleIdx, userId);
 		if (!articleRepository.deleteArticle(articleIdx, userId)) {
-			throw new ArticleDeleteFailedException();
+			throw new ArticleDeleteException();
 		}
 	}
 }

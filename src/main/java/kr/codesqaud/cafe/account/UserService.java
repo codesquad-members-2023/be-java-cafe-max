@@ -10,7 +10,7 @@ import kr.codesqaud.cafe.account.dto.SignInRequest;
 import kr.codesqaud.cafe.account.dto.UserListResponse;
 import kr.codesqaud.cafe.account.dto.UserResponse;
 import kr.codesqaud.cafe.account.dto.UserSignUpRequest;
-import kr.codesqaud.cafe.account.exception.AlreadyUserExistenceException;
+import kr.codesqaud.cafe.account.exception.IdDuplicatedException;
 import kr.codesqaud.cafe.account.exception.LoginInvalidPasswordException;
 import kr.codesqaud.cafe.account.exception.UserNotFoundException;
 import kr.codesqaud.cafe.account.exception.UserUpdateInvalidPasswordException;
@@ -35,7 +35,7 @@ public class UserService {
 
 	private void validateId(String userId) {
 		if (userRepository.exist(userId)) {
-			throw new AlreadyUserExistenceException();
+			throw new IdDuplicatedException();
 		}
 	}
 
