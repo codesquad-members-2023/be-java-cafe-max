@@ -53,7 +53,7 @@ public class ArticleService {
 
 	public ArticleTitleAndContentResponse validSessionIdAndArticleId(Long articleIdx, String userId) {
 		return articleRepository.findArticleByIdx(articleIdx)
-			.filter(article -> userId.equals(article.getUserId()))
+			.filter(article -> article.validUserIdAndArticleId(userId))
 			.map(articleMapper::toArticleTitleAndContentResponse)
 			.orElseThrow(ArticleIdAndSessionIdMismatchException::new);
 	}

@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.article.domain;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class Article {
 	private String title;
@@ -55,5 +56,9 @@ public class Article {
 
 	public String getNickName() {
 		return nickName;
+	}
+
+	public boolean validUserIdAndArticleId(String SessionId) {
+		return Objects.equals(SessionId, userId);
 	}
 }
