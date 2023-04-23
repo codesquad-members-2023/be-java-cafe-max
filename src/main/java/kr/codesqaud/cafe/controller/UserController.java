@@ -44,8 +44,8 @@ public class UserController {
 
 	@GetMapping("/users/{userId}/form")
 	public String showProfileEditPage(@PathVariable final String userId,
-									  @SessionAttribute(SESSION_USER) final String sessionUserId,
-									  final Model model) {
+	                                  @SessionAttribute(SESSION_USER) final String sessionUserId,
+	                                  final Model model) {
 		userService.validateHasAuthorization(sessionUserId, userId);
 		model.addAttribute("userId", userId);
 		return "user/edit_form";
@@ -53,8 +53,8 @@ public class UserController {
 
 	@PutMapping("/users/{userId}")
 	public String editUserProfile(@PathVariable final String userId,
-								  @SessionAttribute(SESSION_USER) final String sessionUserId,
-								  @ModelAttribute final ProfileEditRequest request) {
+	                              @SessionAttribute(SESSION_USER) final String sessionUserId,
+	                              @ModelAttribute final ProfileEditRequest request) {
 		userService.validateHasAuthorization(sessionUserId, userId);
 		userService.editUserProfile(userId, request);
 		return "redirect:/users";

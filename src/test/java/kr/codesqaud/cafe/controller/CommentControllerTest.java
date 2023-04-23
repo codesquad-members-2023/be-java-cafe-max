@@ -43,9 +43,9 @@ public class CommentControllerTest {
 
 		// when & then
 		mockMvc.perform(post("/comments")
-							.contentType(MediaType.APPLICATION_JSON)
-							.content(mapper.writeValueAsString(request))
-							.sessionAttr("sessionedUser", "bruni"))
+			                .contentType(MediaType.APPLICATION_JSON)
+			                .content(mapper.writeValueAsString(request))
+			                .sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().isCreated())
 			.andExpect(content().string("1"))
 			.andDo(print());
@@ -63,8 +63,8 @@ public class CommentControllerTest {
 
 		// when & then
 		mockMvc.perform(post("/comments")
-							.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-							.content(mapper.writeValueAsString(request)))
+			                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+			                .content(mapper.writeValueAsString(request)))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/user/login"))
 			.andDo(print());
@@ -81,8 +81,8 @@ public class CommentControllerTest {
 
 		// when & then
 		mockMvc.perform(delete("/comments/1")
-							.contentType(MediaType.APPLICATION_JSON)
-							.sessionAttr("sessionedUser", "bruni"))
+			                .contentType(MediaType.APPLICATION_JSON)
+			                .sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().isOk())
 			.andDo(print());
 
@@ -101,8 +101,8 @@ public class CommentControllerTest {
 
 		// when & then
 		mockMvc.perform(delete("/comments/1")
-							.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-							.params(body))
+			                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+			                .params(body))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/user/login"))
 			.andDo(print());
@@ -123,9 +123,9 @@ public class CommentControllerTest {
 
 		// when & then
 		mockMvc.perform(delete("/comments/1")
-							.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-							.params(body)
-							.sessionAttr("sessionedUser", "bruni"))
+			                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+			                .params(body)
+			                .sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("error"))
 			.andDo(print());

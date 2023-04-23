@@ -73,9 +73,9 @@ public class UserJdbcRepository implements UserRepository {
 	@Override
 	public void update(final User user) {
 		Map<String, Object> params = Map.of("password", user.getPassword(),
-											"name", user.getName(),
-											"email", user.getEmail(),
-											"userId", user.getUserId());
+		                                    "name", user.getName(),
+		                                    "email", user.getEmail(),
+		                                    "userId", user.getUserId());
 		jdbcTemplate.update(
 			"UPDATE user_account SET password = :password, name = :name, email = :email WHERE user_id = :userId",
 			params);

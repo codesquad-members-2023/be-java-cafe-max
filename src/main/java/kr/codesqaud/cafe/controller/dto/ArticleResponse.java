@@ -25,7 +25,7 @@ public class ArticleResponse {
 
 	public static ArticleResponse from(final Article article) {
 		return new ArticleResponse(article.getId(), article.getWriter(), article.getTitle(), article.getContent(),
-								   article.getCreatedAt());
+		                           article.getCreatedAt());
 	}
 
 	public Long getId() {

@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.controller;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.List;
@@ -48,7 +48,7 @@ class UserControllerTest {
 
 		// when & then
 		mockMvc.perform(post("/user/create")
-							.params(body))
+			                .params(body))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/users"))
 			.andDo(print());
@@ -99,7 +99,7 @@ class UserControllerTest {
 
 		// when & then
 		mockMvc.perform(request(HttpMethod.GET, "/users/bruni/form")
-							.sessionAttr("sessionedUser", "bruni"))
+			                .sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("user/edit_form"))
 			.andExpect(model().attribute("userId", "bruni"))
@@ -116,7 +116,7 @@ class UserControllerTest {
 
 		// when & then
 		mockMvc.perform(request(HttpMethod.GET, "/users/bruni/form")
-							.sessionAttr("sessionedUser", "unknown"))
+			                .sessionAttr("sessionedUser", "unknown"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("error"))
 			.andDo(print());
@@ -139,8 +139,8 @@ class UserControllerTest {
 
 		// when & then
 		mockMvc.perform(put("/users/bruni")
-							.params(body)
-							.sessionAttr("sessionedUser", "bruni"))
+			                .params(body)
+			                .sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/users"))
 			.andDo(print());
@@ -164,8 +164,8 @@ class UserControllerTest {
 
 		// when & then
 		mockMvc.perform(put("/users/bruni")
-							.params(body)
-							.sessionAttr("sessionedUser", "unknown"))
+			                .params(body)
+			                .sessionAttr("sessionedUser", "unknown"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("error"))
 			.andDo(print());

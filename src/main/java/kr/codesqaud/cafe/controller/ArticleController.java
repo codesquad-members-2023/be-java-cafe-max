@@ -30,7 +30,7 @@ public class ArticleController {
 
 	@PostMapping
 	public String post(@ModelAttribute final PostingRequest request,
-					   @SessionAttribute(SESSION_USER) final String userId) {
+	                   @SessionAttribute(SESSION_USER) final String userId) {
 		articleService.post(request, userId);
 		return "redirect:/";
 	}
@@ -46,8 +46,8 @@ public class ArticleController {
 
 	@GetMapping("/{articleId}/form")
 	public String showArticleEditPage(@PathVariable final Long articleId,
-									  @SessionAttribute(SESSION_USER) final String userId,
-									  final Model model) {
+	                                  @SessionAttribute(SESSION_USER) final String userId,
+	                                  final Model model) {
 		articleService.validateHasAuthorization(articleId, userId);
 		model.addAttribute("articleId", articleId);
 		return "qna/edit_form";
@@ -61,7 +61,7 @@ public class ArticleController {
 
 	@DeleteMapping("/{articleId}")
 	public String deleteArticle(@PathVariable final Long articleId,
-								@SessionAttribute(SESSION_USER) final String userId) {
+	                            @SessionAttribute(SESSION_USER) final String userId) {
 		articleService.validateHasAuthorization(articleId, userId);
 		articleService.deleteArticle(articleId);
 		return "redirect:/";

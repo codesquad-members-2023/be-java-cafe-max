@@ -15,7 +15,7 @@ public class ArticleWithCommentCount {
 	private final Long commentCount;
 
 	public ArticleWithCommentCount(Long id, String writer, String title, String content, LocalDateTime createdAt,
-								   Long commentCount) {
+	                               Long commentCount) {
 		this.id = id;
 		this.writer = writer;
 		this.title = title;

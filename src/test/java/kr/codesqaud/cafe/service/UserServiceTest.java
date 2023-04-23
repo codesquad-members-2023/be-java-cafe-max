@@ -111,9 +111,9 @@ class UserServiceTest {
 			given(userRepository.findByUserId(anyString())).willReturn(Optional.of(createUser()));
 			willDoNothing().given(userRepository).update(any(User.class));
 			ProfileEditRequest request = new ProfileEditRequest("qwer1234",
-																"newPassword",
-																"브으루우니이",
-																"bbruunii@codeSquad.com");
+			                                                    "newPassword",
+			                                                    "브으루우니이",
+			                                                    "bbruunii@codeSquad.com");
 
 			// when & then
 			assertAll(
@@ -131,9 +131,9 @@ class UserServiceTest {
 			given(userRepository.findByUserId(anyString())).willReturn(Optional.empty());
 
 			ProfileEditRequest request = new ProfileEditRequest("qwer1234",
-																"newPassword",
-																"브으루우니이",
-																"bbruunii@codeSquad.com");
+			                                                    "newPassword",
+			                                                    "브으루우니이",
+			                                                    "bbruunii@codeSquad.com");
 
 			// when & then
 			assertAll(
@@ -150,9 +150,9 @@ class UserServiceTest {
 			// given
 			given(userRepository.findByUserId(anyString())).willReturn(Optional.of(createUser()));
 			ProfileEditRequest request = new ProfileEditRequest("wrong",
-																"newPassword",
-																"브으루우니이",
-																"bbruunii@codeSquad.com");
+			                                                    "newPassword",
+			                                                    "브으루우니이",
+			                                                    "bbruunii@codeSquad.com");
 
 			// when & then
 			assertAll(

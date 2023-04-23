@@ -25,14 +25,14 @@ public class CommentController {
 
 	@PostMapping("/comments")
 	public ResponseEntity<Long> reply(@RequestBody final ReplyRequest request,
-									  @SessionAttribute(SESSION_USER) final String userId) {
+	                                  @SessionAttribute(SESSION_USER) final String userId) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(commentService.reply(request, userId));
 	}
 
 	@DeleteMapping("/comments/{commentId}")
 	public ResponseEntity<Long> deleteComment(@PathVariable final Long commentId,
-											  @SessionAttribute(SESSION_USER) final String userId) {
+	                                          @SessionAttribute(SESSION_USER) final String userId) {
 		commentService.validateHasAuthorization(commentId, userId);
 		commentService.deleteById(commentId);
 
