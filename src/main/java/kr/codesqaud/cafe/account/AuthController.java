@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.codesqaud.cafe.account.dto.SignInRequest;
-import kr.codesqaud.cafe.account.dto.UserResponse;
 import kr.codesqaud.cafe.account.dto.UserSignUpRequest;
 import kr.codesqaud.cafe.global.config.Session;
 
@@ -46,15 +45,14 @@ public class AuthController {
 		String userId = signInRequest.getUserId();
 		userService.matchPassword(signInRequest);
 
-		UserResponse userDto = userService.getUserById(userId);
-		Session session = new Session(userDto.getUserId(), userDto.getNickName());
+		Session session = new Session(userService.getUserById(userId));
 
 		httpSession.setAttribute(Session.LOGIN_USER, session);
 		return "redirect:/users/sign-in-success";
 	}
 
 	@GetMapping("/users/sign-in-success")
-	public String singInSuccess(@SessionAttribute(LOGIN_USER) Session session, Model model) {
+	public String signInSuccess(@SessionAttribute(LOGIN_USER) Session session, Model model) {
 		model.addAttribute("user", userService.getUserById(session.getId()));
 		return "user/sign-in-success";
 	}
