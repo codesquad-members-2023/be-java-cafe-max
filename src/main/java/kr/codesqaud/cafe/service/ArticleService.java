@@ -8,9 +8,10 @@ import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static kr.codesqaud.cafe.service.util.ArticleUtil.getUserIdFromSession;
 
 @Service
 public class ArticleService {
@@ -38,19 +39,19 @@ public class ArticleService {
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }
 
-    public String getUserIdFromSession(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            return (String) session.getAttribute("userId");
-        }
-        return null;
-    }
+//    public String getUserIdFromSession(HttpServletRequest request) {
+//        HttpSession session = request.getSession(false);
+//        if (session != null) {
+//            return (String) session.getAttribute("userId");
+//        }
+//        return null;
+//    }
 
-    public void deleteArticle(Long articleId){
+    public void deleteArticle(Long articleId) {
         articleRepository.delete(articleId);
     }
 
-    public Article editArticle(final Long articleId, final PostEditRequest request){
+    public Article editArticle(final Long articleId, final PostEditRequest request) {
         Article savedArticle = articleRepository.findById(articleId).orElseThrow(() -> new RuntimeException("Article not found"));
         savedArticle.editArticle(request.getNewTitle(), request.getNewContent());
         articleRepository.update(savedArticle);
