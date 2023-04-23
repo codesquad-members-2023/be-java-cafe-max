@@ -16,11 +16,6 @@ public class LoginService {
         this.userRepository = userRepository;
     }
 
-//    public boolean checkLoginUser(LoginDTO loginDTO) {
-//        Optional<User> loginUser = userRepository.findByUserId(loginDTO.getUserId());
-//        return loginUser.isPresent() && loginUser.get().getPassword().equals(loginDTO.getPassword());
-//    }
-
     public boolean checkLoginUser(LoginDTO loginDTO) {
         Optional<User> loginUser = userRepository.findByUserId(loginDTO.getUserId());
         return loginUser.isPresent() && loginUser.get().matchPassword(loginDTO.getPassword());
