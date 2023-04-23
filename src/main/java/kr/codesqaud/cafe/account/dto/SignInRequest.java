@@ -21,7 +21,7 @@ public class SignInRequest {
 		return password;
 	}
 
-	public boolean isMatchWithResponsePassword(String responsePassword) {
-		return Objects.equals(password, responsePassword);
+	public boolean isMatchWithResponsePassword(UserResponse userResponse) {
+		return Objects.equals(password, userResponse.getPassword());
 	}
 }

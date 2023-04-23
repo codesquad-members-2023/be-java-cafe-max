@@ -65,12 +65,12 @@ public class UserService {
 	}
 
 	private boolean matchPassword(ProfileEditRequest profileEditRequest, UserResponse userResponse) {
-		return profileEditRequest.isMatchWithResponsePassword(userResponse.getPassword());
+		return profileEditRequest.isMatchWithResponsePassword(userResponse);
 	}
 
 	public void matchPassword(SignInRequest signInRequest) {
 		UserResponse userResponse = getUserById(signInRequest.getUserId());
-		if (!signInRequest.isMatchWithResponsePassword(userResponse.getPassword())) {
+		if (!signInRequest.isMatchWithResponsePassword(userResponse)) {
 			throw new LoginInvalidPasswordException();
 		}
 	}

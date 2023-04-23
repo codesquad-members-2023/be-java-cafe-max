@@ -50,7 +50,7 @@ public class ProfileEditRequest {
 		return email;
 	}
 
-	public boolean isMatchWithResponsePassword(String responsePassword) {
-		return Objects.equals(oriPassword, responsePassword);
+	public boolean isMatchWithResponsePassword(UserResponse userResponse) {
+		return Objects.equals(oriPassword, userResponse.getPassword());
 	}
 }
