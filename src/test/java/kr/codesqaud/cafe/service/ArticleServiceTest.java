@@ -66,7 +66,7 @@ class ArticleServiceTest {
 	void getArticleListTest() {
 
 		Article article1 = createArticle1ContainsIdx();
-		Article article2 = createArticle2ContatinsIdx();
+		Article article2 = createArticle2ContainsIdx();
 		ArticleResponse articleResponse2 = createArticleResponse2();
 		List<Article> articles = new ArrayList<>(Arrays.asList(article1, article2));
 
@@ -155,7 +155,7 @@ class ArticleServiceTest {
 		return new ArticleResponse("title2", "content2", 2L, "2023-4-23", "nickName");
 	}
 
-	private static Article createArticle2ContatinsIdx() {
+	private static Article createArticle2ContainsIdx() {
 		return new Article("title2", "content2", 2L);
 	}
 
