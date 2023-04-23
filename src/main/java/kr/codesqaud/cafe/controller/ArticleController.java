@@ -37,7 +37,7 @@ public class ArticleController {
         return "qna/show";
     }
 
-    @GetMapping("/articles/edit/{articleId}")
+    @GetMapping("/article-edit-form/{articleId}")
     public String showArticleEditForm(@PathVariable final Long articleId, HttpServletRequest httpRequest, Model model) {
         HttpSession session = httpRequest.getSession(false);
         ArticleDto article = articleService.findById(articleId);
@@ -60,7 +60,7 @@ public class ArticleController {
         return "qna/show";
     }
 
-    @DeleteMapping("/articles/delete/{articleId}")
+    @DeleteMapping("/article-delete-form/{articleId}")
     public String deleteArticle(@PathVariable final Long articleId, HttpServletRequest httpRequest, Model model) {
         HttpSession session = httpRequest.getSession(false);
         ArticleDto article = articleService.findById(articleId);
