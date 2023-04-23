@@ -61,16 +61,15 @@ public class JDBCArticleRepository implements ArticleRepository {
 	@Override
 	public boolean deleteArticle(Long articleIdx, String userId) {
 		int rowsAffected = namedParameterJdbcTemplate.update(
-			"UPDATE ARTICLE A SET A.is_visible = FALSE WHERE A.article_idx = :articleIdx "
-				+ "AND NOT EXISTS (SELECT 1 FROM REPLY B WHERE B.article_idx = A.article_idx AND B.is_visible = TRUE AND B.user_id != :userId)",
+			"UPDATE ARTICLE A "
+				+ "LEFT JOIN REPLY B ON A.article_idx = B.article_idx "
+				+ "SET A.is_visible = FALSE, B.is_visible = FALSE "
+				+ "WHERE A.article_idx = :articleIdx "
+				+ "AND NOT EXISTS (SELECT 1 FROM (SELECT 1 FROM REPLY WHERE article_idx = :articleIdx AND is_visible = TRUE AND user_id != :userId) AS t)",
 			new MapSqlParameterSource()
 				.addValue("articleIdx", articleIdx)
 				.addValue("userId", userId)
 		);
-		if (rowsAffected > 0) {
-			namedParameterJdbcTemplate.update("UPDATE REPLY SET is_visible = FALSE WHERE article_idx = :articleIdx"
-				, new MapSqlParameterSource("articleIdx", articleIdx));
-		}
 		return (rowsAffected > 0);
 	}
 }
