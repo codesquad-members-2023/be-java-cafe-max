@@ -34,7 +34,7 @@ public class H2QuestionRepository implements QuestionRepository {
 
 	public long countBy() {
 		String sql = "SELECT COUNT(*) FROM \"post\";";
-		return jdbcTemplate.queryForObject(sql, (SqlParameterSource)null, Integer.class);
+		return jdbcTemplate.queryForObject(sql, (SqlParameterSource)null, Long.class);
 	}
 
 	public List<Question> findPageBy(long offset, int pageSize) {
