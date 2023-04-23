@@ -15,7 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kr.codesqaud.cafe.controller.dto.req.ReplyRequest;
+import kr.codesqaud.cafe.controller.dto.req.CommentRequest;
 import kr.codesqaud.cafe.domain.articlecomment.Comment;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.repository.CommentRepository;
@@ -37,11 +37,11 @@ class ArticleCommentServiceTest {
 		@Test
 		void givenReplyRequest_whenReply_thenReturnsNothing() {
 			// given
-			ReplyRequest replyRequest = new ReplyRequest(1L, "댓글 등록 테스트~");
+			CommentRequest commentRequest = new CommentRequest(1L, "댓글 등록 테스트~");
 			given(commentRepository.save(any(Comment.class))).willReturn(1L);
 
 			// when
-			commentService.reply(replyRequest, "bruni");
+			commentService.reply(commentRequest, "bruni");
 
 			// then
 			then(commentRepository).should().save(any(Comment.class));

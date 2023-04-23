@@ -18,7 +18,7 @@ import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.codesqaud.cafe.controller.dto.req.ReplyRequest;
+import kr.codesqaud.cafe.controller.dto.req.CommentRequest;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.service.CommentService;
 
@@ -38,8 +38,8 @@ public class CommentControllerTest {
 	@Test
 	void givenReplyRequest_whenReply_thenRedirectsArticleDetailsPage() throws Exception {
 		// given
-		ReplyRequest request = new ReplyRequest(1L, "댓글의 내용이랍니다~");
-		given(commentService.reply(any(ReplyRequest.class), anyString())).willReturn(1L);
+		CommentRequest request = new CommentRequest(1L, "댓글의 내용이랍니다~");
+		given(commentService.reply(any(CommentRequest.class), anyString())).willReturn(1L);
 
 		// when & then
 		mockMvc.perform(post("/comments")
@@ -50,16 +50,16 @@ public class CommentControllerTest {
 			.andExpect(content().string("1"))
 			.andDo(print());
 
-		then(commentService).should().reply(any(ReplyRequest.class), anyString());
+		then(commentService).should().reply(any(CommentRequest.class), anyString());
 	}
 
 	@DisplayName("[POST] 댓글 작성 - 세션이 없을 때 로그인 페이지로 리다이렉트 된다.")
 	@Test
 	void givenNoSession_whenReply_thenRedirectsLoginPage() throws Exception {
 		// given
-		ReplyRequest request = new ReplyRequest(1L, "댓글의 내용이랍니다~");
+		CommentRequest request = new CommentRequest(1L, "댓글의 내용이랍니다~");
 
-		given(commentService.reply(any(ReplyRequest.class), anyString())).willReturn(1L);
+		given(commentService.reply(any(CommentRequest.class), anyString())).willReturn(1L);
 
 		// when & then
 		mockMvc.perform(post("/comments")

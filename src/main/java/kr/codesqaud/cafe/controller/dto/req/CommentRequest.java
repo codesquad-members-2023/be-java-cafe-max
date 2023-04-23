@@ -2,15 +2,15 @@ package kr.codesqaud.cafe.controller.dto.req;
 
 import kr.codesqaud.cafe.domain.articlecomment.Comment;
 
-public class ReplyRequest {
+public class CommentRequest {
 
 	private Long articleId;
 	private String content;
 
-	public ReplyRequest() {
+	public CommentRequest() {
 	}
 
-	public ReplyRequest(Long articleId, String content) {
+	public CommentRequest(Long articleId, String content) {
 		this.articleId = articleId;
 		this.content = content;
 	}

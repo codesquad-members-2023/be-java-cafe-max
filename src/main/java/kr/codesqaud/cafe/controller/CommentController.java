@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import kr.codesqaud.cafe.controller.dto.req.ReplyRequest;
+import kr.codesqaud.cafe.controller.dto.req.CommentRequest;
 import kr.codesqaud.cafe.service.CommentService;
 
 @RestController
@@ -24,7 +24,7 @@ public class CommentController {
 	}
 
 	@PostMapping("/comments")
-	public ResponseEntity<Long> reply(@RequestBody final ReplyRequest request,
+	public ResponseEntity<Long> reply(@RequestBody final CommentRequest request,
 	                                  @SessionAttribute(SESSION_USER) final String userId) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(commentService.reply(request, userId));

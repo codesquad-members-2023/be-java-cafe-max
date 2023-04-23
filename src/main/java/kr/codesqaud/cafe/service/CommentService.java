@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.codesqaud.cafe.controller.dto.req.ReplyRequest;
+import kr.codesqaud.cafe.controller.dto.req.CommentRequest;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.repository.CommentRepository;
 
@@ -18,7 +18,7 @@ public class CommentService {
 	}
 
 	@Transactional
-	public Long reply(final ReplyRequest request, final String userId) {
+	public Long reply(final CommentRequest request, final String userId) {
 		return commentRepository.save(request.toEntity(userId));
 	}
 
