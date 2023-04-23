@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.account;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.account.dto.ProfileEditRequest;
@@ -24,7 +23,7 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
 
-	public UserService(@Qualifier("jdbcRepository") UserRepository userRepository, UserMapper userMapper) {
+	public UserService(UserRepository userRepository, UserMapper userMapper) {
 		this.userRepository = userRepository;
 		this.userMapper = userMapper;
 	}

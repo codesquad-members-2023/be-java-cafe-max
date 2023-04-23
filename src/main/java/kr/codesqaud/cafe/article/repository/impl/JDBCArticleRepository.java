@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.article.repository.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,6 @@ import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
 
 @Repository
-@Qualifier("jdbcRepository")
 public class JDBCArticleRepository implements ArticleRepository {
 
 	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;

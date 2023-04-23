@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.article.domain.Article;
@@ -23,7 +22,7 @@ public class ArticleService {
 	private final ArticleRepository articleRepository;
 	private final ArticleMapper articleMapper;
 
-	public ArticleService(@Qualifier("jdbcRepository") ArticleRepository articleRepository,
+	public ArticleService(ArticleRepository articleRepository,
 		ArticleMapper articleMapper) {
 		this.articleRepository = articleRepository;
 		this.articleMapper = articleMapper;
