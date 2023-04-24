@@ -48,7 +48,7 @@ public class ArticleController {
         return "qna/show";
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String getIndex(Model model) {
         model.addAttribute("articleList", articleService.getAricleList());
         return "index";
@@ -78,7 +78,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/article/getReply/{index}")
+    @GetMapping("/article/reply/{index}")
     @ResponseBody
     public List<Reply> getReply(@PathVariable int index) {
         return articleService.replyList(index);

@@ -27,7 +27,7 @@ function getInfo(){
   const index = window.location.pathname.split("/")[3];
   let nickname = $("#hidden").val()
   $.ajax({
-    url:"/article/getReply/"+index,
+    url:"/article/reply/"+index,
     method : "GET",
     success : function(result){
       let answerTemplate = $("#answerTemplate").text();

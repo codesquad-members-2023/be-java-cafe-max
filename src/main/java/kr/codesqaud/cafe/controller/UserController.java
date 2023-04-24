@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.dto.LoginDto;
 import kr.codesqaud.cafe.dto.LoginSessionDto;
 import kr.codesqaud.cafe.dto.SignUpFormDto;
 import kr.codesqaud.cafe.dto.UpdateFormDto;
@@ -67,10 +68,9 @@ public class UserController {
     }
 
     @PostMapping("/signIn")
-    public String signIn(@RequestParam("userId") String id, @RequestParam("password") String password,
-                         HttpSession session) {
-        User user = userService.findById(id);
-        userService.login(user, password);
+    public String signIn(LoginDto dto, HttpSession session) {
+        User user = userService.findById(dto.getUserId());
+        userService.login(user, dto.getPassword());
         session.setAttribute("sessionId", new LoginSessionDto(user.getUserId(), user.getName()));
         return "redirect:/";
     }
