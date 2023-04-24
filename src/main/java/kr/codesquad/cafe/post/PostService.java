@@ -2,6 +2,7 @@ package kr.codesquad.cafe.post;
 
 import kr.codesquad.cafe.comment.Comment;
 import kr.codesquad.cafe.global.PagesInfo;
+import kr.codesquad.cafe.global.exception.IllegalAccessIdException;
 import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.post.dto.SimplePostForm;
 import kr.codesquad.cafe.post.exception.PostNotFoundException;
@@ -54,6 +55,12 @@ public class PostService {
         return postRepository.findByIdAndIsDeleted(postId, false).orElseThrow(PostNotFoundException::new);
     }
 
+    public Post findById(long postId, long userId) {
+        Post post = findById(postId);
+        post.checkPermission(userId);
+        return post;
+    }
+
     public List<SimplePostForm> getAllSimplePostForm(int currentPage) {
         List<Post> posts = postRepository.findAllByIsDeleted(false, getPageable(currentPage, MAIN_PAGE_SIZE));
         return toSimplePostForm(posts);
@@ -61,7 +68,7 @@ public class PostService {
 
     @Transactional
     public Post updateFromPostForm(long postId, PostForm postForm, long userId) {
-        Post post = postRepository.findById(postId).orElseThrow();
+        Post post = postRepository.findById(postId).orElseThrow(IllegalAccessIdException::new);
         post.checkPermission(userId);
         post.setTextContent(postForm.getTextContent());
         post.setTitle(postForm.getTitle());
