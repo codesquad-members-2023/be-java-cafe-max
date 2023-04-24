@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -44,20 +43,19 @@ public class BoardJdbcRepository {
     }
 
     public boolean containsPostId(Long postId) {
-        Map<String, Long> namedParameters = Collections.singletonMap("post_id", postId);
         Optional<Integer> countOfPost = Optional.ofNullable(jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM post WHERE post_id = :post_id AND deleted = FALSE", namedParameters, Integer.class));
+                "SELECT COUNT(*) FROM post WHERE post_id = :post_id AND deleted = FALSE",
+                Collections.singletonMap("post_id", postId), Integer.class));
         return countOfPost.orElse(0) > 0;
     }
 
     public BoardPost findByPostId(Long postId) {
-        Map<String, Long> namedParameters = Collections.singletonMap("postId", postId);
         try {
             return jdbcTemplate.queryForObject(
                     "SELECT post_id, writer, title, contents, write_date_time " +
                             "FROM post " +
                             "WHERE post_id = :postId AND deleted = FALSE",
-                    namedParameters, postRowMapper);
+                    Collections.singletonMap("postId", postId), postRowMapper);
         } catch (DataRetrievalFailureException e) {
             throw new ResourceNotFoundException("요청한 데이터가 존재하지 않습니다.");
         }

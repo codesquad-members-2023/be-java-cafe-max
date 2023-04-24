@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -74,14 +73,13 @@ public class CommentJdbcRepository {
     };
 
     public int getCommentCountByOtherWriter(Long postId) {
-        Map<String, Long> namedParameters = Collections.singletonMap("postId", postId);
         Optional<Integer> countOfPost = Optional.ofNullable(jdbcTemplate.queryForObject(
                 "SELECT COUNT(*)\n" +
                         "FROM comment a\n" +
                         "JOIN post b ON a.post_id = b.post_id AND a.writer != b.writer\n" +
                         "WHERE a.post_id = :postId\n" +
                         "AND a.deleted = FALSE",
-                namedParameters, Integer.class));
+                Collections.singletonMap("postId", postId), Integer.class));
         return countOfPost.orElse(0);
     }
 }
