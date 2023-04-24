@@ -19,20 +19,20 @@ public class CommentController {
 		this.commentService = commentService;
 	}
 
-	@PostMapping("/comments")
+	@PostMapping("/articles/{articleId}/comments")
 	public String newComment(@ModelAttribute CommentRequest request, HttpSession session) {
 		Object userId = session.getAttribute("sessionedUser");
-		commentService.commentSave(request, (String)userId, request.getArticleId());
+		commentService.save(request, (String)userId, request.getArticleId());
 		return "redirect:/articles/" + request.getArticleId();
 	}
 
-	@DeleteMapping("/comments/{id}")
+	@DeleteMapping("/articles/{articleId}/comments/{id}")
 	public String deleteComment(@PathVariable Long id, HttpSession session, String userId, Long articleId) {
 		Object user = session.getAttribute("sessionedUser");
 		if (!user.equals(userId)) {
 			return "user/error";
 		}
-		commentService.commentDelete(id);
+		commentService.delete(id);
 		return "redirect:/articles/" + articleId;
 	}
 }

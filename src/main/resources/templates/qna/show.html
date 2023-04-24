@@ -38,7 +38,7 @@
                               </form>
                           </li>
                           <li>
-                              <a class="link-modify-article" href="/templates/index.html">목록</a>
+                              <a class="link-modify-article" href="/">목록</a>
                           </li>
                       </ul>
                   </div>
@@ -71,7 +71,7 @@
                                           <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
                                       </li>
                                       <li>
-                                          <form class="delete-answer-form" action="/comments/{{id}}" method="POST">
+                                          <form class="delete-answer-form" action="/articles/{{articleId}}/comments/{{id}}" method="POST">
                                               <input name="userId" value="{{userId}}" type="hidden">
                                               <input name="articleId" value="{{articleId}}" type="hidden">
                                               <input type="hidden" name="_method" value="DELETE">
@@ -83,7 +83,7 @@
                           </article>
                           {{/comments}}
                           {{#details}}
-                          <form class="submit-write" id="article-comment-form" method="POST" action="/comments">
+                          <form class="submit-write" id="article-comment-form" method="POST" action="/articles/{{id}}/comments">
                               <input name="articleId" value="{{id}}" hidden="hidden">
                               <div class="form-group" style="padding:14px;">
                                   <textarea class="form-control" placeholder="Update your status" form="article-comment-form" name="contents"></textarea>
