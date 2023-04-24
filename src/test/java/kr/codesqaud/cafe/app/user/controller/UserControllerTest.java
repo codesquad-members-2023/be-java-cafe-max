@@ -19,7 +19,6 @@ import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.repository.UserRepository;
 import kr.codesqaud.cafe.app.user.service.UserService;
-import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -265,12 +264,32 @@ class UserControllerTest {
         TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
         };
         HashMap<String, Object> errorMap = objectMapper.readValue(jsonError, typeReference);
+        assertThat(errorMap.get("name")).isEqualTo("PERMISSION_DENIED");
+        assertThat(errorMap.get("httpStatus")).isEqualTo("FORBIDDEN");
+        assertThat(errorMap.get("errorMessage")).isEqualTo("접근 권한이 없습니다.");
+    }
+
+    @Test
+    @DisplayName("클라이언트가 존재하지 않는 회원 등록번호를 이용하여 특정 회원 조회 요청시 전체 회원 조회 페이지로 이동합니다.")
+    public void givenNotExistUserId_whenListUser_thenRedirectUsers() throws Exception {
+        //given
+        login("yonghwan1107", "yonghwan1107");
+        long id = 9999L;
+        String url = "/users/" + id;
+        //when
+        String json = mockMvc.perform(get(url)
+                .session(session))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/users"))
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        //then
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> errorMap = objectMapper.readValue(json, typeReference);
         assertThat(errorMap.get("name"))
-            .isEqualTo(UserErrorCode.PERMISSION_DENIED.getName());
-        assertThat(errorMap.get("httpStatus"))
-            .isEqualTo(UserErrorCode.PERMISSION_DENIED.getHttpStatus().name());
-        assertThat(errorMap.get("errorMessage"))
-            .isEqualTo(UserErrorCode.PERMISSION_DENIED.getMessage());
+            .isEqualTo("NOT_FOUND_USER");
+        assertThat(errorMap.get("httpStatus")).isEqualTo("MOVED_PERMANENTLY");
+        assertThat(errorMap.get("errorMessage")).isEqualTo("회원을 찾을 수 없습니다.");
     }
 
     private Long signup(String userId, String password, String name, String email) {
