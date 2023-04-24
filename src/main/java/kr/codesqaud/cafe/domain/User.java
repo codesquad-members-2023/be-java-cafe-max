@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.ModifiedUserDTO;
+import kr.codesqaud.cafe.controller.dto.user.ModifiedUserDTO;
 
 public class User {
     private Long id;
@@ -9,7 +9,8 @@ public class User {
     private String password;
     private String email;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String userId, String name, String password, String email) {
         this.userId = userId;
@@ -19,7 +20,7 @@ public class User {
     }
 
     public boolean matchPassword(String originPassword) {
-        if(this.password == null) {
+        if (this.password == null) {
             return false;
         }
         return this.password.equals(originPassword);
@@ -39,27 +40,7 @@ public class User {
         this.email = modifiedUserDTO.getNewEmail();
     }
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public String getUserId() {
-//        return userId;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    public String getEmail() {
-//        return email;
-//    }
-
-        public Long getId() {
+    public Long getId() {
         return id;
     }
 
