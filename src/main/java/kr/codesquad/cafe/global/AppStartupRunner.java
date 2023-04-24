@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -28,8 +29,8 @@ public class AppStartupRunner implements CommandLineRunner {
     private static final String USER_DIR = "user.dir";
     private final UserRepository userRepository;
     private final StringEncryptor encryptor;
-
     private final PostRepository postRepository;
+
 
     public AppStartupRunner(UserRepository userRepository, StringEncryptor encryptor, PostRepository postRepository) {
         this.userRepository = userRepository;
@@ -39,33 +40,47 @@ public class AppStartupRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        User manager = new User.Builder()
+        User manager = setAdminUser();
+        User savedManager = userRepository.save(manager);
+        saveDefaultPosts(manager, savedManager);
+    }
+
+    private User setAdminUser() {
+        return new User.Builder()
                 .password(PASSWORD)
                 .email(encryptor.decrypt(EMAIL))
                 .nickname(ADMIN)
                 .role(Role.MANAGER).build();
-        User savedManager = userRepository.save(manager);
+    }
 
+    private void saveDefaultPosts(User manager, User savedManager) {
+        File file = getCSVFile();
 
-        String path = System.getProperty(USER_DIR) + CSV_FILE_NAME;
-        System.out.println(path);
-
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             int index = START_NUMBER;
             while ((line = br.readLine()) != null) {
-                Post test = new Post.Builder()
-                        .createdDateTime(LocalDateTime.now())
-                        .title(TEST_TITLE + (++index))
-                        .user(savedManager)
-                        .textContent(line)
-                        .nickname(manager.getNickname())
-                        .build();
-                postRepository.save(test);
-
+                index = savePost(manager, savedManager, line, index);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static File getCSVFile() {
+        String property = System.getProperty(USER_DIR);
+        return new File(property + CSV_FILE_NAME);
+    }
+
+    private int savePost(User manager, User savedManager, String line, int index) {
+        Post test = new Post.Builder()
+                .createdDateTime(LocalDateTime.now())
+                .title(TEST_TITLE + (++index))
+                .user(savedManager)
+                .textContent(line)
+                .nickname(manager.getNickname())
+                .build();
+        postRepository.save(test);
+        return index;
     }
 }
