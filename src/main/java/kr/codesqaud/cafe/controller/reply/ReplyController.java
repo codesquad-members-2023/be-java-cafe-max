@@ -37,6 +37,7 @@ public class ReplyController {
 
     @DeleteMapping("/answers/{replyId}/delete")
     public String delete(@PathVariable Long replyId, HttpSession session) {
+        if (!replyService.validateUserIdDuplicate(replyId, session)) {
             return "qna/edit_failed";
         }
         replyService.delete(replyId);
