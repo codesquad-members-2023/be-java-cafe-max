@@ -38,7 +38,6 @@ $(document).ready(function () {
       }
       if (errorResponse.name === 'PERMISSION_DENIED') {
         alert("접근 권한이 없습니다.")
-        location.href = "/error/client-error"
       }
     })
   })

@@ -112,7 +112,7 @@ public class QuestionController {
 
     // 질문 수정 페이지
     @GetMapping("/qna/{id}/edit")
-    public ModelAndView editQuestionForm(@PathVariable(value = "id") Long id, HttpSession session) {
+    public ModelAndView editQuestionForm(@PathVariable(value = "id") Long id) {
         Question original = questionService.findQuestion(id);
         User writer = userService.findUser(original.getUserId());
         ModelAndView mav = new ModelAndView("qna/edit");

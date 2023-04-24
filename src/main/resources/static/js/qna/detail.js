@@ -15,8 +15,4 @@ $(document).ready(function () {
       alert(errorResponse.errorMessage)
     })
   })
-
-  function clearErrorMessage() {
-    $("#form p").text("")
-  }
 })

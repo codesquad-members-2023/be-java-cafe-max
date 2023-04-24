@@ -26,7 +26,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(RestApiException.class)
-    public ResponseEntity<Object> handleUserException(RestApiException e) {
+    public ResponseEntity<Object> handleRestApiException(RestApiException e) {
+        log.info("RestApiException handling : {}", e.toString());
         return handleExceptionInternal(e.getErrorCode());
     }
 
@@ -41,15 +42,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> handleExceptionInternal(ErrorCode errorCode) {
         return ResponseEntity.status(errorCode.getHttpStatus())
+            .header(HttpHeaders.LOCATION, errorCode.getRedirectUrl())
             .body(makeErrorResponse(errorCode));
     }
 
     private ErrorResponse makeErrorResponse(ErrorCode errorCode) {
-        return new ErrorResponse(
-            errorCode.getName(),
-            errorCode.getHttpStatus(),
-            errorCode.getMessage(),
-            null);
+        return new ErrorResponse(errorCode, null);
     }
 
     private ResponseEntity<Object> handleExceptionInternal(BindException e, ErrorCode errorCode) {
@@ -64,10 +62,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .stream()
                 .map(ValidationError::of)
                 .collect(Collectors.toUnmodifiableList());
-        return new ErrorResponse(
-            errorCode.getName(),
-            errorCode.getHttpStatus(),
-            errorCode.getMessage(),
-            validationErrorList);
+        return new ErrorResponse(errorCode, validationErrorList);
     }
+
+
 }
