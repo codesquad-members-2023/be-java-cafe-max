@@ -1,50 +1,45 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.LoginDTO;
+import kr.codesqaud.cafe.controller.dto.login.AuthenticationDTO;
+import kr.codesqaud.cafe.controller.dto.login.LoggedInDTO;
 import kr.codesqaud.cafe.service.LoginService;
+import kr.codesqaud.cafe.util.LoginSessionManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 @Controller
 public class LoginController {
 
     private final LoginService loginService;
-    public static final String LOGIN_USER = "loginUser";
+    private final LoginSessionManager loginSessionManager;
 
-    public LoginController(LoginService loginService) {
+    public LoginController(LoginService loginService, LoginSessionManager loginSessionManager) {
         this.loginService = loginService;
+        this.loginSessionManager = loginSessionManager;
     }
 
     //todo : MvcConfigure 활성화 하려면 get, post url 달라야 함. 변경하기
     @PostMapping("/login-try")
-    public String login(@ModelAttribute final LoginDTO loginDTO, final Model model, HttpServletRequest request) {
-        boolean isLoginFailed = !loginService.checkLoginUser(loginDTO);
+    public String login(@ModelAttribute final AuthenticationDTO authenticationDTO, final Model model) {
+        boolean isLoginFailed = !loginService.checkLoginUser(authenticationDTO);
         if (isLoginFailed) {
             model.addAttribute("loginFailed", true);
             return "login/form";
         }
 
-        LoginDTO loginUser = loginService.findId(loginDTO.getUserId());
+        LoggedInDTO loginUser = loginService.findByUserId(authenticationDTO.getUserId());
 
         //세션 객체 얻어오기
-        HttpSession session = request.getSession();
-        session.setAttribute(LOGIN_USER, loginUser);
+        loginSessionManager.save(loginUser);
 
         return "redirect:/";
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false); // 현재 세션이 없으면 null 반환
-        if (session != null) {
-            session.invalidate(); // 현재 세션을 무효화
-        }
-
+    public String logout() {
+        loginSessionManager.remove();
         return "redirect:/";
     }
 
