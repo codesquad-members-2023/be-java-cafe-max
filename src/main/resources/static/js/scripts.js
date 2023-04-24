@@ -25,7 +25,28 @@ $('#post-reply').click(() => {
 
         $(".qna-comment-slipp-articles").append(template);
         $("textarea[name=replyContent]").val("");
+        $(".delete-reply").last().on("click", deleteReply);
+
     }).fail((err) => {
         alert(JSON.stringify(err));
     });
 });
+
+$('.delete-reply').click(deleteReply)
+function deleteReply(e) {
+    var replyId = e.target.dataset['replyId'];
+    var url = window.location.pathname + '/replies/' + replyId;
+
+    $.ajax({
+        type: 'DELETE',
+        url: url,
+        dataType: 'json',
+    }).done((data) => {
+        alert("okay");
+        e.target.closest("article").remove();
+
+    }).fail((err) => {
+        alert("failed");
+        console.log(JSON.stringify(err));
+    })
+}
