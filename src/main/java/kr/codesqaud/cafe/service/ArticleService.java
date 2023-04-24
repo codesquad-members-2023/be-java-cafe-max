@@ -1,36 +1,30 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
-import kr.codesqaud.cafe.controller.dto.LoginDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.util.LoginSessionManager;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static kr.codesqaud.cafe.controller.LoginController.LOGIN_USER;
 
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
+    private final LoginSessionManager loginSessionManager;
 
-    public ArticleService(final ArticleRepository articleRepository) {
+    public ArticleService(final ArticleRepository articleRepository, LoginSessionManager loginSessionManager) {
         this.articleRepository = articleRepository;
+        this.loginSessionManager = loginSessionManager;
     }
 
-    public void write(final ArticleDTO articleDto, HttpSession session) {
-        String userId = obtainUserId(session);
-        Article article = articleDto.toEntity(userId);
+    public void write(final ArticleDTO articleDto) {
+        String userName = loginSessionManager.getLoginUser().getName();
+        Article article = articleDto.toEntity(userName);
         articleRepository.save(article);
-    }
-
-    private String obtainUserId(HttpSession session) {
-        LoginDTO loggedInUser = (LoginDTO) session.getAttribute(LOGIN_USER);
-        assert loggedInUser != null;
-        return loggedInUser.getUserId();
     }
 
     public void modify(final long id, final ArticleDTO articleDTO) {
@@ -38,6 +32,10 @@ public class ArticleService {
         assert originArticle != null;
         originArticle.update(articleDTO);
         articleRepository.update(originArticle);
+    }
+
+    public boolean isOwner(long id) {
+        return loginSessionManager.getLoginUser().getUserId().equals(findById(id).getUserName());
     }
 
     public List<ArticleDTO> gatherPosts() {
@@ -50,4 +48,6 @@ public class ArticleService {
         Optional<Article> wantedPost = articleRepository.findById(id);
         return wantedPost.map(ArticleDTO::from).orElse(null);
     }
+
+
 }

@@ -1,12 +1,14 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+
+import static kr.codesqaud.cafe.util.LoginSessionManager.LOGIN_USER;
 
 
 @Controller
@@ -26,8 +28,8 @@ public class ArticleController {
     }
 
     @PostMapping("/posts/new")
-    public String writePost(@ModelAttribute final ArticleDTO articleDto, HttpSession session) {
-        articleService.write(articleDto, session);
+    public String writePost(@ModelAttribute final ArticleDTO articleDto) {
+        articleService.write(articleDto);
         return "redirect:/";
     }
 
@@ -41,6 +43,11 @@ public class ArticleController {
 
     @GetMapping("/posts/{id}/revision")
     public String modifyForm(@PathVariable final long id, final Model model) {
+        boolean isDifferentUser = !articleService.isOwner(id);
+        if(isDifferentUser) {
+            return "error/article403";
+        }
+
         ArticleDTO wantedPost = articleService.findById(id);
         model.addAttribute("articleDTO", wantedPost);
         return "post/modifyForm";
@@ -54,7 +61,7 @@ public class ArticleController {
     }
 
     public boolean isAnonymous(HttpSession session) {
-        return session.getAttribute("loginUser") == null;
+        return session.getAttribute(LOGIN_USER) == null;
     }
 }
 
