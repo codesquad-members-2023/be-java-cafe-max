@@ -1,14 +1,13 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.JoinDTO;
-import kr.codesqaud.cafe.controller.dto.ModifiedUserDTO;
-import kr.codesqaud.cafe.controller.dto.ProfileDTO;
+import kr.codesqaud.cafe.controller.dto.user.JoinDTO;
+import kr.codesqaud.cafe.controller.dto.user.ModifiedUserDTO;
+import kr.codesqaud.cafe.controller.dto.user.ProfileDTO;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -20,7 +19,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    //todo : MvcConfigure 활성화 하려면 get, post url 달라야 함. 변경하기
     @PostMapping("/users/new-try")
     public String signUp(@ModelAttribute final JoinDTO joinDTO, Model model) {
         boolean isExistUser = userService.checkDuplicate(joinDTO.getUserId());
@@ -47,10 +45,10 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/revision")
-    public String modifyProfileForm(@PathVariable final long id, final Model model, HttpSession session) {
-        boolean isDifferentUser = !userService.isOwner(id, session);
+    public String modifyProfileForm(@PathVariable final long id, final Model model) {
+        boolean isDifferentUser = !userService.isOwner(id);
         if(isDifferentUser) {
-            return "error/forbidden403";
+            return "error/userProfile403";
         }
         ProfileDTO wantedUser = userService.findOne(id);
         model.addAttribute("profileDTO", wantedUser);
