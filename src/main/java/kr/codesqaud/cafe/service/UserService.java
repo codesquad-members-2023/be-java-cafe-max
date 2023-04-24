@@ -1,30 +1,29 @@
 package kr.codesqaud.cafe.service;
 
-import kr.codesqaud.cafe.controller.dto.JoinDTO;
-import kr.codesqaud.cafe.controller.dto.LoginDTO;
-import kr.codesqaud.cafe.controller.dto.ModifiedUserDTO;
-import kr.codesqaud.cafe.controller.dto.ProfileDTO;
+import kr.codesqaud.cafe.controller.dto.login.LoggedInDTO;
+import kr.codesqaud.cafe.controller.dto.user.JoinDTO;
+import kr.codesqaud.cafe.controller.dto.user.ModifiedUserDTO;
+import kr.codesqaud.cafe.controller.dto.user.ProfileDTO;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.util.LoginSessionManager;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static kr.codesqaud.cafe.controller.LoginController.LOGIN_USER;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final LoginSessionManager loginSessionManager;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, LoginSessionManager loginSessionManager) {
         this.userRepository = userRepository;
+        this.loginSessionManager = loginSessionManager;
     }
 
-    //수정 : User.toUser -> joinDTO.toEntity
     public void signUp(final JoinDTO joinDTO) {
         User user = joinDTO.toEntity();
         userRepository.join(user);
@@ -34,30 +33,25 @@ public class UserService {
         return userRepository.findByUserId(userId).isPresent();
     }
 
-    //todo : null일 때 예외처리 하기
+    //todo : null 예외처리 하기
     public void modify(final long id, final ModifiedUserDTO modifiedUserDTO) {
-        User originUser = userRepository.findById(id).orElse(null);
-        assert originUser != null;
-        originUser.update(modifiedUserDTO);
-        userRepository.update(originUser);
+        User user = userRepository.findById(id).orElse(null);
+        assert user != null;
+        user.update(modifiedUserDTO);
+        userRepository.update(user);
+        loginSessionManager.updateInfo(LoggedInDTO.from(user));
     }
 
-    //todo : null일 때 예외처리 하기
+    //todo : null 예외처리 하기
     public boolean isPasswordRight(long id, ModifiedUserDTO modifiedUserDTO) {
         User originUser = userRepository.findById(id).orElse(null);
         assert originUser != null;
         return originUser.matchPassword(modifiedUserDTO.getOriginPassword());
     }
 
-    public boolean isOwner(long id, HttpSession session) {
-        long loggedInId = obtainId(session);
+    public boolean isOwner(long id) {
+        Long loggedInId = loginSessionManager.getLoginUser().getId();
         return loggedInId == id;
-    }
-
-    private long obtainId(HttpSession session) {
-        LoginDTO loggedInUser = (LoginDTO) session.getAttribute(LOGIN_USER);
-        assert loggedInUser != null;
-        return loggedInUser.getId();
     }
 
     public ProfileDTO findOne(final long id) {
