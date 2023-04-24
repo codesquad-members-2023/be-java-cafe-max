@@ -9,4 +9,8 @@ public interface ErrorCode {
     HttpStatus getHttpStatus();
 
     String getMessage();
+
+    default String getRedirectUrl() {
+        return null;
+    }
 }
