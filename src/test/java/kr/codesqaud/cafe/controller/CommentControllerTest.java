@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.codesqaud.cafe.controller.dto.CommentSaveResponse;
 import kr.codesqaud.cafe.controller.dto.req.CommentRequest;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.service.CommentService;
@@ -39,7 +42,8 @@ public class CommentControllerTest {
 	void givenReplyRequest_whenReply_thenRedirectsArticleDetailsPage() throws Exception {
 		// given
 		CommentRequest request = new CommentRequest(1L, "댓글의 내용이랍니다~");
-		given(commentService.reply(any(CommentRequest.class), anyString())).willReturn(1L);
+		CommentSaveResponse response = new CommentSaveResponse(1L, "댓글의 내용이랍니다~", LocalDateTime.now(), "bruni", 1L);
+		given(commentService.reply(any(CommentRequest.class), anyString())).willReturn(response);
 
 		// when & then
 		mockMvc.perform(post("/comments")
@@ -47,7 +51,7 @@ public class CommentControllerTest {
 			                .content(mapper.writeValueAsString(request))
 			                .sessionAttr("sessionedUser", "bruni"))
 			.andExpect(status().isCreated())
-			.andExpect(content().string("1"))
+			.andExpect(content().string(mapper.writeValueAsString(response)))
 			.andDo(print());
 
 		then(commentService).should().reply(any(CommentRequest.class), anyString());
@@ -58,8 +62,9 @@ public class CommentControllerTest {
 	void givenNoSession_whenReply_thenRedirectsLoginPage() throws Exception {
 		// given
 		CommentRequest request = new CommentRequest(1L, "댓글의 내용이랍니다~");
+		CommentSaveResponse response = new CommentSaveResponse(1L, "댓글의 내용이랍니다~", LocalDateTime.now(), "bruni", 1L);
 
-		given(commentService.reply(any(CommentRequest.class), anyString())).willReturn(1L);
+		given(commentService.reply(any(CommentRequest.class), anyString())).willReturn(response);
 
 		// when & then
 		mockMvc.perform(post("/comments")

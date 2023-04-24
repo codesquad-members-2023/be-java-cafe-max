@@ -92,8 +92,8 @@ class ArticleControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(view().name("qna/show"))
 			.andExpect(model().attributeExists("article"))
-			.andExpect(model().attributeExists("articleComments"))
-			.andExpect(model().attributeExists("articleCommentCount"))
+			.andExpect(model().attributeExists("comments"))
+			.andExpect(model().attributeExists("commentCount"))
 			.andDo(print());
 		then(articleService).should().getArticleDetails(1L);
 	}

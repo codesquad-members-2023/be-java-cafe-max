@@ -47,7 +47,7 @@ class UserControllerTest {
 		willDoNothing().given(userService).join(any(JoinRequest.class));
 
 		// when & then
-		mockMvc.perform(post("/user/create")
+		mockMvc.perform(post("/users")
 			                .params(body))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/users"))

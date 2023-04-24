@@ -38,8 +38,10 @@ public class CommentJdbcRepository implements CommentRepository {
 	}
 
 	@Override
-	public Long save(final Comment comment) {
-		return jdbcInsert.executeAndReturnKey(new BeanPropertySqlParameterSource(comment)).longValue();
+	public Optional<Comment> save(final Comment comment) {
+		Long id = jdbcInsert.executeAndReturnKey(new BeanPropertySqlParameterSource(comment)).longValue();
+		comment.setId(id);
+		return Optional.of(comment);
 	}
 
 	@Override

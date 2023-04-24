@@ -3,7 +3,10 @@ package kr.codesqaud.cafe.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.codesqaud.cafe.controller.dto.CommentSaveResponse;
 import kr.codesqaud.cafe.controller.dto.req.CommentRequest;
+import kr.codesqaud.cafe.domain.comment.Comment;
+import kr.codesqaud.cafe.exception.BusinessException;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.repository.CommentRepository;
 
@@ -18,8 +21,10 @@ public class CommentService {
 	}
 
 	@Transactional
-	public Long reply(final CommentRequest request, final String userId) {
-		return commentRepository.save(request.toEntity(userId));
+	public CommentSaveResponse reply(final CommentRequest request, final String userId) {
+		Comment comment = commentRepository.save(request.toEntity(userId))
+			.orElseThrow(() -> new BusinessException("댓글 등록에 실패했습니다."));
+		return CommentSaveResponse.from(comment);
 	}
 
 	public void checkDeleteCommentPermission(final Long id, final String userId) {

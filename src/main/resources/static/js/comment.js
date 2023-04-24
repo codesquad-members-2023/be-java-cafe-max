@@ -19,8 +19,13 @@ function commentSave() {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(data)
-    }).done(function () {
-        location.reload();
+    }).done(function (comment) {
+        console.log(comment);
+        const answerTemplate = $("#answerTemplate").html();
+        const template = answerTemplate.format(comment.writer, comment.createdAt, comment.content, comment.id);
+
+        $(".qna-comment-slipp-articles").append(template);
+        $("#comment-content").val("");
     }).fail(function (error) {
         alert('댓글 등록에 실패했습니다!');
     });

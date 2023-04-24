@@ -82,19 +82,19 @@
                                 </div>
                             </article>
                             {{/comments}}
-                            <form class="submit-write" id="article-comment-form" method="post" action="/comments">
-                                <div class="form-group" style="padding:14px;">
-                                    {{#article}}
-                                    <input id="article-id" name="articleId" value="{{id}}" hidden="hidden"/>
-                                    {{/article}}
-                                    <textarea class="form-control" id="comment-content" placeholder="Update your status"
-                                              form="article-comment-form" name="content"></textarea>
-                                </div>
-                                <button class="btn btn-success pull-right" id="comment-btn-save" type="button">답변하기
-                                </button>
-                                <div class="clearfix"/>
-                            </form>
                         </div>
+                        <form class="submit-write" id="article-comment-form" method="post" action="/comments">
+                            <div class="form-group" style="padding:14px;">
+                                {{#article}}
+                                <input id="article-id" name="articleId" value="{{id}}" hidden="hidden"/>
+                                {{/article}}
+                                <textarea class="form-control" id="comment-content" placeholder="Update your status"
+                                          form="article-comment-form" name="content"></textarea>
+                            </div>
+                            <button class="btn btn-success pull-right" id="comment-btn-save" type="button">답변하기
+                            </button>
+                            <div class="clearfix"/>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -109,7 +109,7 @@
                 <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
             </div>
             <div class="article-header-text">
-                <a href="#" class="article-author-name">{0}</a>
+                <a href="" class="article-author-name">{0}</a>
                 <div class="article-header-time">{1}</div>
             </div>
         </div>
@@ -119,10 +119,10 @@
         <div class="article-util">
             <ul class="article-util-list">
                 <li>
-                    <a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
+                    <a class="link-modify-article" href="/api/qna/updateAnswer">수정</a>
                 </li>
                 <li>
-                    <form class="delete-answer-form" action="/comments/{4}" method="POST">
+                    <form class="delete-answer-form" action="/comments/{3}" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="delete-answer-button">삭제</button>
                     </form>
