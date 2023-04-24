@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS article CASCADE;
+DROP TABLE IF EXISTS reply CASCADE;
 
 CREATE TABLE IF NOT EXISTS users
 (
@@ -35,8 +36,8 @@ CREATE TABLE IF NOT EXISTS reply
     user_id BIGINT NOT NULL ,
     writer VARCHAR (20) NOT NULL ,
     comments VARCHAR (255),
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP(3),
-    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(3),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (id),
     FOREIGN KEY (article_id) REFERENCES article (id),
@@ -44,3 +45,9 @@ CREATE TABLE IF NOT EXISTS reply
 );
 
 INSERT INTO users (username, password, nickname, email) values ('hs1107', 'a123123123', 'sungbin', 'sungbin@naver.com');
+
+INSERT INTO article (title, user_id, writer, contents) VALUES ( '제목', 1, 'sungbin', '본문');
+
+INSERT INTO reply (article_id, user_id, writer, comments) VALUES ( 1, 1, 'sungbin', '댓글1');
+INSERT INTO reply (article_id, user_id, writer, comments) VALUES ( 1, 1, 'sungbin', '댓글2');
+INSERT INTO reply (article_id, user_id, writer, comments) VALUES ( 1, 1, 'sungbin', '댓글3');

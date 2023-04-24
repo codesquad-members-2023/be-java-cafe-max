@@ -7,17 +7,45 @@ public class Reply {
     private Long articleId;
     private Long userId;
     private String writer;
-    private String comment;
+    private String comments;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Reply(Long id, Long articleId, Long userId, String writer, String comment, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Reply(Long id, Long articleId, Long userId, String writer, String comments, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.articleId = articleId;
         this.userId = userId;
         this.writer = writer;
-        this.comment = comment;
+        this.comments = comments;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getArticleId() {
+        return articleId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }
