@@ -6,7 +6,7 @@ public class User {
     private final String userName;
     private final String email;
 
-    public User(Builder builder) {
+    private User(Builder builder) {
         this.userId = builder.userId;
         this.password = builder.password;
         this.userName = builder.userName;

@@ -9,7 +9,7 @@ public class BoardPost {
     private final String contents;
     private final LocalDateTime writeDateTime;
 
-    public BoardPost(Builder builder) {
+    private BoardPost(Builder builder) {
         this.postId = builder.postId;
         this.writer = builder.writer;
         this.title = builder.title;

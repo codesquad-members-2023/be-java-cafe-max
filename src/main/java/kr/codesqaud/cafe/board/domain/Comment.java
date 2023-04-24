@@ -9,7 +9,7 @@ public class Comment {
     private final String contents;
     private final LocalDateTime writeDateTime;
 
-    public Comment(Builder builder) {
+    private Comment(Builder builder) {
         this.commentId = builder.commentId;
         this.postId = builder.postId;
         this.writer = builder.writer;
