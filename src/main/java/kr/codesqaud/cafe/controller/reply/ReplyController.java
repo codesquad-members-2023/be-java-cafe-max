@@ -1,13 +1,12 @@
 package kr.codesqaud.cafe.controller.reply;
 
+import kr.codesqaud.cafe.domain.dto.Result;
 import kr.codesqaud.cafe.domain.dto.reply.ReplyForm;
 import kr.codesqaud.cafe.domain.dto.reply.ReplyTimeForm;
 import kr.codesqaud.cafe.service.reply.ReplyService;
 import kr.codesqaud.cafe.session.SessionConst;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,14 +23,12 @@ public class ReplyController {
         return replyService.saveReply(articleId, form, (String) session.getAttribute(SessionConst.LOGIN_USER_ID));
     }
 
-    // TODO: 기존 경로로 변경 후 ajax 삭제 구현
-    // articleId 오류 수정을 위해 <input hidden>으로 임시방편 사용
-    @DeleteMapping("/replies/{id}")
-    public String deleteArticle(@PathVariable Long id, Long articleId, HttpSession session) {
+    @DeleteMapping("/questions/{articleId}/replies/{id}")
+    public Result deleteArticle(@PathVariable Long id, HttpSession session) {
         validateReplyId(id, (String) session.getAttribute(SessionConst.LOGIN_USER_ID));
 
         replyService.delete(id);
-        return "redirect:/questions/" + articleId;
+        return Result.ok();
     }
 
     private void validateReplyId(Long id, String loginUserId) {
@@ -40,5 +37,11 @@ public class ReplyController {
         if (!loginUserId.equals(replyId.getUserId())) {
             throw new IllegalArgumentException("자신이 작성한 댓글이어야 합니다.");
         }
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public Result illegalApiExHandler(IllegalArgumentException e) {
+        return Result.fail(e.getMessage());
     }
 }
