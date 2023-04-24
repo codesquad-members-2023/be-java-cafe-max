@@ -55,19 +55,19 @@ public class JdbcUserRepository implements UserRepository{
     @Override
     public Optional<User> findByUserId(String userId) {
         // 디자인 패턴 중, 템플릿 메서드 패턴의 요소가 많이 반영되어있기 때문이다.
-        List<User> result = jdbcTemplate.query("select * from `user` where user_id = ?", userRowMapper(), userId);
+        List<User> result = jdbcTemplate.query("select * from `user` where user_id = ? and deleted = 0", userRowMapper(), userId);
         return result.stream().findAny();
     }
 
     @Override
     public Optional<User> findByName(String name) {
-        List<User> result = jdbcTemplate.query("select * from `user` where name = ?", userRowMapper(), name);
+        List<User> result = jdbcTemplate.query("select * from `user` where name = ? and deleted = 0", userRowMapper(), name);
         return result.stream().findAny();
     }
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from `user`", userRowMapper());
+        return jdbcTemplate.query("select * from `user` where deleted = 0", userRowMapper());
     }
 
     @Override

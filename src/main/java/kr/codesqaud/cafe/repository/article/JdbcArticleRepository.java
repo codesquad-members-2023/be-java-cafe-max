@@ -60,13 +60,13 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public Optional<Article> findById(Long id) {
-        List<Article> result = jdbcTemplate.query("select * from article where id = ?", articleRowMapper(), id);
+        List<Article> result = jdbcTemplate.query("select * from article where id = ? and deleted = 0", articleRowMapper(), id);
         return result.stream().findAny();
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from article", articleRowMapper());
+        return jdbcTemplate.query("select * from article where deleted = 0", articleRowMapper());
     }
 
     @Override
