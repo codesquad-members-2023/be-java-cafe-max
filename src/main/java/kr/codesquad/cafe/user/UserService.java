@@ -7,6 +7,7 @@ import kr.codesquad.cafe.user.dto.ProfileEditForm;
 import kr.codesquad.cafe.user.dto.UserForm;
 import kr.codesquad.cafe.user.exception.*;
 import org.jasypt.encryption.StringEncryptor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,12 @@ public class UserService {
 
     public List<UserForm> getAllUsersForm(int page) {
         Pageable pageable = PageRequest.of(page, POST_DEFAULT_PAGE_SIZE);
-        return userRepository.findAll(pageable).stream()
+        Page<User> users = userRepository.findAll(pageable);
+        return toUserForm(users);
+    }
+
+    private static List<UserForm> toUserForm(Page<User> userPage) {
+        return userPage.stream()
                 .map(UserForm::from)
                 .collect(Collectors.toList());
     }
