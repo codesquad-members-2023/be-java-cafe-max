@@ -21,7 +21,7 @@ public class CommentService {
 		this.commentRepository = commentRepository;
 	}
 
-	public void commentSave(CommentRequest request, String userId, Long articleId) {
+	public void save(CommentRequest request, String userId, Long articleId) {
 		Comment comment = new Comment(userId, request.getContents(), articleId);
 		commentRepository.save(comment);
 	}
@@ -33,7 +33,7 @@ public class CommentService {
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public void commentDelete(Long id) {
+	public void delete(Long id) {
 		commentRepository.delete(id);
 	}
 }
