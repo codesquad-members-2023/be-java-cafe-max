@@ -1,8 +1,10 @@
 package kr.codesqaud.cafe.controller.article;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.service.ReplyService;
 import kr.codesqaud.cafe.util.SessionConst;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +16,12 @@ import java.util.List;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService)
+    {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     // 게시글 목록 보기
@@ -45,6 +50,9 @@ public class ArticleController {
     @GetMapping("/questions/{id}")
     public String findArticle(@PathVariable Long id, Model model){
         model.addAttribute("article", articleService.findOne(id));
+        List<Reply> replies = replyService.findAll(id);
+        model.addAttribute("reply", replies);
+        model.addAttribute("replyNum", replies.size());
         return "qna/show";
     }
 
