@@ -23,6 +23,7 @@ public class MvcConfig implements WebMvcConfigurer {
                 .order(1)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/", "/users/login", "/users", "/users/join",
-                        "js/**", "/css/**", "/h2-console", "/js/**", "/fonts/**", "/*.ico");
+                        "js/**", "/css/**", "/h2-console", "/js/**", "/fonts/**", "/*.ico",
+                        "/error");
     }
 }
