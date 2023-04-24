@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.article.dto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ResponsePreview {
+public class ResponseArticlePreview {
     //글 목록에 표시할 내용 DTO
     private final String author;
 
@@ -13,7 +13,7 @@ public class ResponsePreview {
 
     private final long id;
 
-    public ResponsePreview(String author, String title, LocalDateTime createdTime, long id) {
+    public ResponseArticlePreview(String author, String title, LocalDateTime createdTime, long id) {
         this.author = author;
         this.title = title;
         this.createdTime = createdTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));

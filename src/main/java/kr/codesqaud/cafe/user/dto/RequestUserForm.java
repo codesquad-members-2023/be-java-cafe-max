@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.user.dto;
 
-public class RequestForm {
+public class RequestUserForm {
     //회원 가입 형식 DTO
     private String userId;
     private String password;

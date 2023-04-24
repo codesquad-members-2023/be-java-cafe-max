@@ -4,7 +4,7 @@ package kr.codesqaud.cafe.article.dto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class ResponseDetail {
+public class ResponseArticleDetail {
     //세부적인 글 내용 DTO
     private final String author;
 
@@ -16,7 +16,7 @@ public class ResponseDetail {
 
     private final long id;
 
-    public ResponseDetail(String author, String title, String contents, LocalDateTime createdTime, long id) {
+    public ResponseArticleDetail(String author, String title, String contents, LocalDateTime createdTime, long id) {
         this.author = author;
         this.title = title;
         this.contents = contents;

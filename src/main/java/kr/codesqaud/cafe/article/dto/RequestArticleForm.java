@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.article.dto;
 
-public class RequestForm {
+public class RequestArticleForm {
     //글 작성했을때 사용하는 DTO
     private String title;
 

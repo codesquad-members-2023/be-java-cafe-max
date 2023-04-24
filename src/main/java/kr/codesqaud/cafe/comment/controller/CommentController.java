@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.comment.controller;
 
 import kr.codesqaud.cafe.comment.domain.Comment;
-import kr.codesqaud.cafe.comment.dto.RequestForm;
+import kr.codesqaud.cafe.comment.dto.RequestCommentForm;
 import kr.codesqaud.cafe.comment.service.CommentService;
 import kr.codesqaud.cafe.utils.Session;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +25,8 @@ public class CommentController {
     }
 
     @PostMapping
-    public Comment createComment(RequestForm requestForm, HttpSession session) {
-        return commentService.save(requestForm, Session.getUserId(session));
+    public Comment createComment(RequestCommentForm requestCommentForm, HttpSession session) {
+        return commentService.save(requestCommentForm, Session.getUserId(session));
     }
 
     @DeleteMapping

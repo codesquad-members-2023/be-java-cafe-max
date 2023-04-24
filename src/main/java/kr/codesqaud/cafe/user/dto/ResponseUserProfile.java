@@ -1,21 +1,15 @@
 package kr.codesqaud.cafe.user.dto;
 
-public class ResponsePreview {
-    //회원 목록 조회영 사용자DTO
-    private final String userId;
+public class ResponseUserProfile {
+    //회원 프로필 내용 DTO
 
     private final String name;
 
     private final String email;
 
-    public ResponsePreview(String userId, String name, String email) {
-        this.userId = userId;
+    public ResponseUserProfile(String name, String email) {
         this.name = name;
         this.email = email;
-    }
-
-    public String getUserId() {
-        return userId;
     }
 
     public String getName() {
@@ -25,4 +19,5 @@ public class ResponsePreview {
     public String getEmail() {
         return email;
     }
+
 }

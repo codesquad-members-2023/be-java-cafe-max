@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.article.controller;
 
-import kr.codesqaud.cafe.article.dto.RequestForm;
-import kr.codesqaud.cafe.article.dto.ResponseDetail;
+import kr.codesqaud.cafe.article.dto.RequestArticleForm;
+import kr.codesqaud.cafe.article.dto.ResponseArticleDetail;
 import kr.codesqaud.cafe.article.service.ArticleService;
 import kr.codesqaud.cafe.comment.domain.Comment;
 import kr.codesqaud.cafe.comment.service.CommentService;
@@ -34,8 +34,8 @@ public class ArticleController {
 
     //글 작성 클릭 시 매핑하고 글 저장
     @PostMapping("/save")
-    public String createArticle(RequestForm requestForm, HttpSession session) {
-        articleService.save(requestForm, Session.getUserId(session));
+    public String createArticle(RequestArticleForm requestArticleForm, HttpSession session) {
+        articleService.save(requestArticleForm, Session.getUserId(session));
         return "redirect:/articles";
     }
 
@@ -57,8 +57,8 @@ public class ArticleController {
 
     @GetMapping("/{id}/modify")
     public String showModifyForm(@PathVariable long id, Model model, HttpSession session) {
-        ResponseDetail responseDetail = articleService.getArticleDetail(id);
-        if (!Session.getUserId(session).equals(responseDetail.getAuthor())) {
+        ResponseArticleDetail responseArticleDetail = articleService.getArticleDetail(id);
+        if (!Session.getUserId(session).equals(responseArticleDetail.getAuthor())) {
             return "articles/forbidden";
         }
         model.addAttribute("articleDetail", articleService.getArticleDetail(id));
@@ -66,15 +66,15 @@ public class ArticleController {
     }
 
     @PutMapping("/{id}")
-    public String updateArticle(@PathVariable long id, RequestForm requestForm) {
-        articleService.update(id, requestForm);
+    public String updateArticle(@PathVariable long id, RequestArticleForm requestArticleForm) {
+        articleService.update(id, requestArticleForm);
         return "redirect:/articles/" + id;
     }
 
     @DeleteMapping("/{id}")
     public String deleteArticle(@PathVariable long id, HttpSession session) {
-        ResponseDetail responseDetail = articleService.getArticleDetail(id);
-        if (!Session.getUserId(session).equals(responseDetail.getAuthor())) {
+        ResponseArticleDetail responseArticleDetail = articleService.getArticleDetail(id);
+        if (!Session.getUserId(session).equals(responseArticleDetail.getAuthor())) {
             return "articles/forbidden";
         }
         articleService.delete(id);

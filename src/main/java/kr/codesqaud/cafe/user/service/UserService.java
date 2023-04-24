@@ -1,9 +1,9 @@
 package kr.codesqaud.cafe.user.service;
 
 import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.dto.RequestForm;
-import kr.codesqaud.cafe.user.dto.ResponsePreview;
-import kr.codesqaud.cafe.user.dto.ResponseProfile;
+import kr.codesqaud.cafe.user.dto.RequestUserForm;
+import kr.codesqaud.cafe.user.dto.ResponseUserPreview;
+import kr.codesqaud.cafe.user.dto.ResponseUserProfile;
 import kr.codesqaud.cafe.user.mapper.UserDtoMapper;
 import kr.codesqaud.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -23,8 +23,8 @@ public class UserService {
     }
 
     //ID 중복 확인 후 회원가입
-    public String join(RequestForm requestForm) {
-        User user = UserDtoMapper.INSTANCE.toUser(requestForm);
+    public String join(RequestUserForm requestUserForm) {
+        User user = UserDtoMapper.INSTANCE.toUser(requestUserForm);
         validateDuplicateMember(user); //중복 회원 검증
         userRepository.save(user);
         return user.getUserId();
@@ -39,18 +39,18 @@ public class UserService {
 
 
     //회원목록 조회(+DTO로 필터)
-    public List<ResponsePreview> getUserList() {
+    public List<ResponseUserPreview> getUserList() {
         List<User> users = userRepository.findAll();
-        List<ResponsePreview> responsePreviews = new ArrayList<>();
+        List<ResponseUserPreview> responseUserPreviews = new ArrayList<>();
         for (User user : users) {
-            responsePreviews.add(UserDtoMapper.INSTANCE.toPreviewDto(user));
+            responseUserPreviews.add(UserDtoMapper.INSTANCE.toPreviewDto(user));
         }
-        return responsePreviews;
+        return responseUserPreviews;
     }
 
 
     //특정 회원 조회(+DTO 필터)
-    public ResponseProfile getUserProfile(String userId) {
+    public ResponseUserProfile getUserProfile(String userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다"));
         return UserDtoMapper.INSTANCE.toProfileDto(user);
     }

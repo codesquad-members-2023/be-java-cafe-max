@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.comment.service;
 
 import kr.codesqaud.cafe.comment.domain.Comment;
-import kr.codesqaud.cafe.comment.dto.RequestForm;
+import kr.codesqaud.cafe.comment.dto.RequestCommentForm;
 import kr.codesqaud.cafe.comment.mapper.CommentDtoMapper;
 import kr.codesqaud.cafe.comment.repository.CommentRepository;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,8 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public Comment save(RequestForm requestForm, String userId) {
-        long savedId = commentRepository.save(CommentDtoMapper.INSTANCE.toComment(requestForm, userId));
+    public Comment save(RequestCommentForm requestCommentForm, String userId) {
+        long savedId = commentRepository.save(CommentDtoMapper.INSTANCE.toComment(requestCommentForm, userId));
         return commentRepository.findById(savedId);
     }
 
