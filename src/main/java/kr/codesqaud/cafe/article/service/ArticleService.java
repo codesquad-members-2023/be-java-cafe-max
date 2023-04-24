@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.article.service;
 
 
 import kr.codesqaud.cafe.article.domain.Article;
-import kr.codesqaud.cafe.article.dto.RequestArticleForm;
+import kr.codesqaud.cafe.article.dto.RequestArticleWriteForm;
 import kr.codesqaud.cafe.article.dto.ResponseArticleDetail;
 import kr.codesqaud.cafe.article.dto.ResponseArticlePreview;
 import kr.codesqaud.cafe.article.mapper.ArticleDtoMapper;
@@ -23,8 +23,8 @@ public class ArticleService {
     }
 
     //글 저장
-    public Long save(RequestArticleForm requestArticleForm, String author) {
-        return articleRepository.save(ArticleDtoMapper.INSTANCE.toArticle(requestArticleForm, author));
+    public Long save(RequestArticleWriteForm requestArticleWriteForm, String author) {
+        return articleRepository.save(ArticleDtoMapper.INSTANCE.toArticle(requestArticleWriteForm, author));
     }
 
     //전체 글 목록을 DTO로 필터링 하고 반환
@@ -45,8 +45,8 @@ public class ArticleService {
         return ArticleDtoMapper.INSTANCE.toDetailDto(article);
     }
 
-    public void update(long id, RequestArticleForm requestArticleForm) {
-        articleRepository.modify(ArticleDtoMapper.INSTANCE.toArticle(requestArticleForm, id));
+    public void update(long id, RequestArticleWriteForm requestArticleWriteForm) {
+        articleRepository.modify(ArticleDtoMapper.INSTANCE.toArticle(requestArticleWriteForm, id));
     }
 
     public void delete(long id) {

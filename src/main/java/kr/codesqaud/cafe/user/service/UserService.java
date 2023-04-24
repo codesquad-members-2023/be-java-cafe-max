@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.user.service;
 
 import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.dto.RequestUserForm;
+import kr.codesqaud.cafe.user.dto.RequestUserJoinForm;
 import kr.codesqaud.cafe.user.dto.ResponseUserPreview;
 import kr.codesqaud.cafe.user.dto.ResponseUserProfile;
 import kr.codesqaud.cafe.user.mapper.UserDtoMapper;
@@ -23,8 +23,8 @@ public class UserService {
     }
 
     //ID 중복 확인 후 회원가입
-    public String join(RequestUserForm requestUserForm) {
-        User user = UserDtoMapper.INSTANCE.toUser(requestUserForm);
+    public String join(RequestUserJoinForm requestUserJoinForm) {
+        User user = UserDtoMapper.INSTANCE.toUser(requestUserJoinForm);
         validateDuplicateMember(user); //중복 회원 검증
         userRepository.save(user);
         return user.getUserId();

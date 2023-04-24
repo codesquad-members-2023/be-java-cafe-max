@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.user.controller;
 
 import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.dto.RequestUserForm;
+import kr.codesqaud.cafe.user.dto.RequestUserJoinForm;
 import kr.codesqaud.cafe.user.service.UserService;
 import kr.codesqaud.cafe.utils.Session;
 import org.springframework.stereotype.Controller;
@@ -25,7 +25,7 @@ public class UserController {
 
 
     @PostMapping
-    public String createUser(RequestUserForm userForm) {
+    public String createUser(RequestUserJoinForm userForm) {
         userService.join(userForm);
         return "redirect:/user";
     }

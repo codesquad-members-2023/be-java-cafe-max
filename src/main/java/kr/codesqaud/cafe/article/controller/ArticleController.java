@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.article.controller;
 
-import kr.codesqaud.cafe.article.dto.RequestArticleForm;
+import kr.codesqaud.cafe.article.dto.RequestArticleWriteForm;
 import kr.codesqaud.cafe.article.dto.ResponseArticleDetail;
 import kr.codesqaud.cafe.article.service.ArticleService;
 import kr.codesqaud.cafe.comment.domain.Comment;
@@ -34,8 +34,8 @@ public class ArticleController {
 
     //글 작성 클릭 시 매핑하고 글 저장
     @PostMapping
-    public String createArticle(RequestArticleForm requestArticleForm, HttpSession session) {
-        articleService.save(requestArticleForm, Session.getUserId(session));
+    public String createArticle(RequestArticleWriteForm requestArticleWriteForm, HttpSession session) {
+        articleService.save(requestArticleWriteForm, Session.getUserId(session));
         return "redirect:/articles";
     }
 
@@ -66,8 +66,8 @@ public class ArticleController {
     }
 
     @PutMapping("/{id}")
-    public String updateArticle(@PathVariable long id, RequestArticleForm requestArticleForm) {
-        articleService.update(id, requestArticleForm);
+    public String updateArticle(@PathVariable long id, RequestArticleWriteForm requestArticleWriteForm) {
+        articleService.update(id, requestArticleWriteForm);
         return "redirect:/articles/" + id;
     }
 
