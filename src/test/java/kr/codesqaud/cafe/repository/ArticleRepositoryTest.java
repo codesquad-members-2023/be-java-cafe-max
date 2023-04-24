@@ -57,7 +57,7 @@ public class ArticleRepositoryTest {
         List<Article> articles = articleRepository.findAll();
 
         // then
-        assertThat(articles.size()).isEqualTo(1);
+assertThat(articles).hasSize(1);
     }
 
     @Test
@@ -101,7 +101,8 @@ public class ArticleRepositoryTest {
         articleRepository.deleteById(savedId);
 
         // then
-        assertThrows(EmptyResultDataAccessException.class, () -> articleRepository.findById(savedId));
+        assertThatThrownBy(() -> articleRepository.findById(savedId))
+                .isInstanceOf(EmptyResultDataAccessException.class);
     }
 
 }
