@@ -18,11 +18,13 @@ public class ReplyController {
         this.replyService = replyService;
     }
 
-    // 게시글 상세 보기 + 댓글 목록 보기
+    @PostMapping("/answers/{articleId}")
     @PostMapping("questions/{id}/answers")
     public String create(@PathVariable Long articleId, String contents, HttpSession session) {
         User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
         replyService.post(user.getUserId(), contents, articleId);
         return "redirect:/questions/{articleId}";
+    @PutMapping("/answers/{replyId}/edit")
+    @DeleteMapping("/answers/{replyId}/delete")
     }
 }

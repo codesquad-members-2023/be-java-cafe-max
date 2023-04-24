@@ -31,10 +31,10 @@
                     <div class="article-util">
                         <ul class="article-util-list">
                             <li>
-                                <a class="link-modify-article" href="/questions/edit/{{id}}">수정</a>
+                                <a class="link-modify-article" href="/questions/{{id}}/edit">수정</a>
                             </li>
                             <li>
-                                <form class="form-delete" action="/questions/delete/{{id}}" method="POST">
+                                <form class="form-delete" action="/questions/{{id}}/delete" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button class="link-delete-article" type="submit">삭제</button>
                                 </form>
@@ -45,7 +45,7 @@
                         </ul>
                     </div>
                 </article>
-
+                {{/article}}
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
 
@@ -77,10 +77,10 @@
                                             <!-------------------TODO: 댓글 수정 삭제 기능 구현하기------------------>
 
                                             <a class="link-modify-article"
-                                            href="/questions/{{id}}/answers/{{id}}/edit">수정</a>
+                                            href="/answers/{{id}}/edit">수정</a>
                                         </li>
                                         <li>
-                                            <form class="delete-answer-form" action="/questions/{{id}}/answers/{{id}}/delete"
+                                            <form class="delete-answer-form" action="/answers/{{id}}/delete"
                                                   method="POST">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="delete-answer-button">삭제</button>
@@ -98,7 +98,7 @@
                                              class="article-author-thumb" alt="">
                                     </div>
                                     <div class="article-header-text">
-                                        <a href="/users/1/자바지기" class="article-author-name">{{writer}}</a>
+                                        <a href="/users/{{writer}}" class="article-author-name">{{writer}}</a>
                                         <a href="#answer-1434" class="article-header-time" title="퍼머링크">
                                             {{^modifiedAt}} 생성: {{createdAt}} {{/modifiedAt}}
                                             {{#modifiedAt}} 수정: {{modifiedAt}} {{/modifiedAt}}
@@ -112,11 +112,11 @@
                                     <ul class="article-util-list">
                                         <li>
                                             <a class="link-modify-article"
-                                               href="/questions/{{id}}/answers/{{replyId}}/form">수정</a>
+                                               href="/answers/{{replyId}}/edit">수정</a>
                                         </li>
                                         <li>
 
-                                            <form class="form-delete" action="/questions/{{id}}/answers/{{replyId}}"
+                                            <form class="form-delete" action="/answers/{{replyId}}/delete"
                                                   method="POST">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="delete-answer-button">삭제</button>
@@ -126,8 +126,8 @@
                                 </div>
                             </article>
                             {{/reply}}
-
-                            <form class="submit-write" method="post" action="questions/{{id}}/answers">
+                            {{#article}}
+                            <form class="submit-write" method="post" action="/answers/{{id}}">
                                 <div class="form-group" style="padding:14px;">
                                     <textarea class="form-control" placeholder="Update your status"></textarea>
                                 </div>
