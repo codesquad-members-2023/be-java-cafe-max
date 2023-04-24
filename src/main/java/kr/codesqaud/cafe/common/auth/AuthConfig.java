@@ -15,6 +15,8 @@ public class AuthConfig implements WebMvcConfigurer {
                         "/articles/update-form",
                         "/users/**"
                 )
-                .excludePathPatterns("/users/login");
+                .excludePathPatterns(
+                        "/users/login",
+                        "/users/join-form");
     }
 }

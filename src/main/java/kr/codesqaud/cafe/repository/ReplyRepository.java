@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ReplyRepository {
     List<Reply> findAll(Long articleId);
+
+    Long save(Reply reply);
 }

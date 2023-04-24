@@ -42,11 +42,13 @@
                           <div class="reply-list"></div>
                           <div class="qna-comment-slipp-articles">
                               <form class="submit-write">
+                                  <input type="hidden" th:if="${session.loginUser}" id="reply-user-id" th:value="${session.loginUser.id}"/>
+                                  <input type="hidden" th:if="${session.loginUser}" id="reply-writer" th:value="${session.loginUser.nickname}"/>
                                   <div class="form-group" style="padding:14px;">
-                                      <textarea class="form-control" placeholder="Update your status"></textarea>
+                                      <textarea class="form-control" placeholder="내용을 입력하세요 .." id="reply-comments"></textarea>
                                   </div>
-                                  <button class="btn btn-success pull-right" type="button">답변하기</button>
-                                  <div class="clearfix" />
+                                  <button class="btn btn-success pull-right" type="button" id="reply-create">답변하기</button>
+                                  <div class="clearfix"></div>
                               </form>
                           </div>
                       </div>
@@ -57,14 +59,13 @@
 </div>
 <footer th:replace="~{fragment/layout/footer :: common_footer}"></footer>
 <script th:inline="javascript">
-    let articleId = 1;
-    // let articleId = [[${article.id}]];
+    let articleId = [[${article.id}]];
     $(function (e) {
         printReplyList();
     });
 
     function printReplyList() {
-        var url = "/articles/1/replies";
+        let url = "/articles/" + articleId + "/replies";
         $.get(url, function (response) {
             let replyListHtml = "";
             let replyList = response.result;
@@ -105,6 +106,39 @@
             $(".reply-list").html(replyListHtml);
         })
     }
+
+    $("button#reply-create").click( function (e) {
+        e.preventDefault();
+        if (!document.querySelector("#reply-user-id")) {
+            alert("로그인을 먼저 해주세요.");
+            return;
+        }
+        if (!document.querySelector("#reply-comments")) {
+            alert("내용을 입력해주세요.");
+            return;
+        }
+
+        let sendReplyData = {
+            "articleId" : articleId,
+            "userId" : document.querySelector("#reply-user-id").value,
+            "writer" : document.querySelector("#reply-writer").value,
+            "comments" : document.querySelector("#reply-comments").value
+        };
+        $.ajax({
+            type: "POST",
+            url: "/articles/" + articleId + "/replies",
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(sendReplyData),
+            success: function (response) {
+                document.getElementById("reply-comments").value = "";
+                printReplyList();
+            },
+            error: function (err) {
+                console.log(sendReplyData);
+                alert("댓글 작성 오류");
+            }
+        });
+    });
 </script>
 </body>
 </html>

@@ -21,6 +21,10 @@ public class Reply {
         this.updatedAt = updatedAt;
     }
 
+    public Reply(Long articleId, Long userId, String writer, String comments) {
+        this(null, articleId, userId, writer, comments, null, null);
+    }
+
     public Long getId() {
         return id;
     }

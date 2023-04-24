@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.controller.dto.reply.ReplyCreateDto;
 import kr.codesqaud.cafe.controller.dto.reply.ReplyReadDto;
 import kr.codesqaud.cafe.repository.ReplyRepository;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,9 @@ public class ReplyService {
         return replyRepository.findAll(articleId).stream()
                 .map(ReplyReadDto::from)
                 .collect(Collectors.toList());
+    }
+
+    public Long save(ReplyCreateDto replyCreateDto) {
+        return replyRepository.save(replyCreateDto.toReply());
     }
 }

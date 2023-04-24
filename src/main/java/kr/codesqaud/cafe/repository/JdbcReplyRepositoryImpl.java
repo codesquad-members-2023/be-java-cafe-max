@@ -2,12 +2,16 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Reply;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Repository
 public class JdbcReplyRepositoryImpl implements ReplyRepository {
@@ -16,6 +20,20 @@ public class JdbcReplyRepositoryImpl implements ReplyRepository {
 
     public JdbcReplyRepositoryImpl(DataSource dataSource) {
         this.template = new NamedParameterJdbcTemplate(dataSource);
+    }
+
+    @Override
+    public Long save(Reply reply) {
+        final String sql = "" +
+                "INSERT INTO reply (article_id, user_id, writer, comments) " +
+                "VALUES (:articleId, :userId, :writer, :comments)";
+
+        final SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(reply);
+        final GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+
+        template.update(sql, parameterSource, keyHolder);
+
+        return (Long) Objects.requireNonNull(keyHolder.getKeys()).get("id");
     }
 
     @Override
