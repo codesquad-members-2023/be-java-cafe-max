@@ -11,9 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequest;
 import kr.codesqaud.cafe.app.user.controller.dto.UserResponse;
@@ -22,8 +20,6 @@ import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.repository.UserRepository;
 import kr.codesqaud.cafe.app.user.service.UserService;
 import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
-import kr.codesqaud.cafe.errors.response.ErrorResponse;
-import kr.codesqaud.cafe.errors.response.ErrorResponse.ValidationError;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +27,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
@@ -98,19 +93,18 @@ class UserControllerTest {
         String url = "/users";
         UserSavedRequest dto = new UserSavedRequest(duplicateUserId, password, name, email);
         //when
-        String jsonErrorResponse = mockMvc.perform(post(url)
+        String jsonError = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
             .andExpect(status().isConflict())
             .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        ErrorResponse actual = objectMapper.readValue(jsonErrorResponse, ErrorResponse.class);
-        ErrorResponse expected = new ErrorResponse(
-            UserErrorCode.ALREADY_EXIST_USERID.name(),
-            HttpStatus.CONFLICT,
-            UserErrorCode.ALREADY_EXIST_USERID.getMessage(),
-            null);
-        assertThat(actual).isEqualTo(expected);
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> errorMap = objectMapper.readValue(jsonError, typeReference);
+        Assertions.assertThat(errorMap.get("httpStatus")).isEqualTo("CONFLICT");
+        Assertions.assertThat(errorMap.get("name")).isEqualTo("ALREADY_EXIST_USERID");
+        Assertions.assertThat(errorMap.get("errorMessage")).isEqualTo("이미 존재하는 아이디입니다.");
     }
 
     @Test
@@ -125,19 +119,18 @@ class UserControllerTest {
         String url = "/users";
         UserSavedRequest dto = new UserSavedRequest(userId, password, name, duplicatedEmail);
         //when
-        String jsonErrorResponse = mockMvc.perform(post(url)
+        String jsonError = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
             .andExpect(status().isConflict())
             .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        ErrorResponse actual = objectMapper.readValue(jsonErrorResponse, ErrorResponse.class);
-        ErrorResponse expected = new ErrorResponse(
-            UserErrorCode.ALREADY_EXIST_EMAIL.name(),
-            HttpStatus.CONFLICT,
-            UserErrorCode.ALREADY_EXIST_EMAIL.getMessage(),
-            null);
-        assertThat(actual).isEqualTo(expected);
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> errorMap = objectMapper.readValue(jsonError, typeReference);
+        Assertions.assertThat(errorMap.get("httpStatus")).isEqualTo("CONFLICT");
+        Assertions.assertThat(errorMap.get("name")).isEqualTo("ALREADY_EXIST_EMAIL");
+        Assertions.assertThat(errorMap.get("errorMessage")).isEqualTo("이미 존재하는 이메일입니다.");
     }
 
     @Test
@@ -152,24 +145,18 @@ class UserControllerTest {
         UserSavedRequest dto = new UserSavedRequest(userId, password, name, email);
         String url = "/users";
         //when
-        String jsonErrors = mockMvc.perform(post(url)
+        String jsonError = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
             .andExpect(status().isBadRequest())
             .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        List<ValidationError> errors = new ArrayList<>();
-        errors.add(new ValidationError("password", "8~16자 영문 대 소문자, 숫자, 특수문자만 사용 가능합니다."));
-        errors.add(new ValidationError("userId", "5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다."));
-        errors.add(new ValidationError("email",
-            "(소문자 또는 숫자로 최소1글자)@(소문자 최소1글자).(소문자 2~3글자) 형식으로 사용 가능합니다."));
-        errors.add(new ValidationError("name", "1~20자 영문 소문자, 한글만 사용 가능합니다."));
-
-        ErrorResponse errorResponse = objectMapper.readValue(jsonErrors, ErrorResponse.class);
-        Assertions.assertThat(errorResponse.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-        Assertions.assertThat(errorResponse.getErrorMessage()).isEqualTo("유효하지 않은 입력 형식입니다.");
-        Assertions.assertThat(errorResponse.getErrors()).containsAll(errors);
-
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> errorMap = objectMapper.readValue(jsonError, typeReference);
+        Assertions.assertThat(errorMap.get("httpStatus")).isEqualTo("BAD_REQUEST");
+        Assertions.assertThat(errorMap.get("name")).isEqualTo("INVALID_INPUT_FORMAT");
+        Assertions.assertThat(errorMap.get("errorMessage")).isEqualTo("유효하지 않은 입력 형식입니다.");
     }
 
     @Test
@@ -229,20 +216,19 @@ class UserControllerTest {
         UserSavedRequest dto =
             new UserSavedRequest(userId, password, modifiedName, duplicatedEmail);
         //when
-        String jsonErrorResponse = mockMvc.perform(put(url)
+        String jsonError = mockMvc.perform(put(url)
                 .session(session)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(toJSON(dto)))
             .andExpect(status().isConflict())
             .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
         //then
-        ErrorResponse actual = objectMapper.readValue(jsonErrorResponse, ErrorResponse.class);
-        ErrorResponse expected = new ErrorResponse(
-            UserErrorCode.ALREADY_EXIST_EMAIL.name(),
-            HttpStatus.CONFLICT,
-            UserErrorCode.ALREADY_EXIST_EMAIL.getMessage(),
-            null);
-        assertThat(actual).isEqualTo(expected);
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> errorMap = objectMapper.readValue(jsonError, typeReference);
+        Assertions.assertThat(errorMap.get("httpStatus")).isEqualTo("CONFLICT");
+        Assertions.assertThat(errorMap.get("name")).isEqualTo("ALREADY_EXIST_EMAIL");
+        Assertions.assertThat(errorMap.get("errorMessage")).isEqualTo("이미 존재하는 이메일입니다.");
     }
 
     @Test

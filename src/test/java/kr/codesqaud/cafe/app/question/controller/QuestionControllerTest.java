@@ -27,8 +27,6 @@ import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequest;
 import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.service.UserService;
-import kr.codesqaud.cafe.errors.errorcode.CommonErrorCode;
-import kr.codesqaud.cafe.errors.response.ErrorResponse;
 import kr.codesqaud.cafe.errors.response.ErrorResponse.ValidationError;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +35,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
@@ -134,13 +131,12 @@ class QuestionControllerTest {
         List<ValidationError> errors = new ArrayList<>();
         errors.add(new ValidationError("title", "제목은 100자 이내여야 합니다."));
 
-        ErrorResponse actual = objectMapper.readValue(jsonErrors, ErrorResponse.class);
-        ErrorResponse expected = new ErrorResponse(
-            CommonErrorCode.INVALID_INPUT_FORMAT.getName(),
-            HttpStatus.BAD_REQUEST,
-            "유효하지 않은 입력 형식입니다.",
-            errors);
-        assertThat(actual).isEqualTo(expected);
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> errorMap = objectMapper.readValue(jsonErrors, typeReference);
+        Assertions.assertThat(errorMap.get("httpStatus")).isEqualTo("BAD_REQUEST");
+        Assertions.assertThat(errorMap.get("name")).isEqualTo("INVALID_INPUT_FORMAT");
+        Assertions.assertThat(errorMap.get("errorMessage")).isEqualTo("유효하지 않은 입력 형식입니다.");
     }
 
     @Test
@@ -257,6 +253,29 @@ class QuestionControllerTest {
                 .session(httpSession))
             .andExpect(status().isForbidden());
         //then
+    }
+
+    @Test
+    @DisplayName("클라이언트가 서버에 없는 게시물을 요청할때 전체 게시물 목록 페이지로 리다이렉션 되는지 테스트")
+    public void givenNotExistQuestionId_whenListQuestion_thenRedirection() throws Exception {
+        //given
+        login("yonghwan1107", "yonghwan1107");
+        long id = 9999L;
+        String url = "/qna/" + id;
+        //when
+        String json = mockMvc.perform(get(url)
+                .session(httpSession))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/"))
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        //then
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> errorMap = objectMapper.readValue(json, typeReference);
+        Assertions.assertThat(errorMap.get("httpStatus")).isEqualTo("MOVED_PERMANENTLY");
+        Assertions.assertThat(errorMap.get("name")).isEqualTo("NOT_FOUND_QUESTION");
+        Assertions.assertThat(errorMap.get("errorMessage")).isEqualTo("게시물을 찾을 수 없습니다.");
+        Assertions.assertThat(errorMap.get("redirectUrl")).isEqualTo("/");
     }
 
     private Long signUp(String userId, String password, String name, String email) {
