@@ -1,13 +1,12 @@
 package kr.codesqaud.cafe.controller.reply;
 
+import kr.codesqaud.cafe.controller.article.ArticleForm;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ReplyService;
 import kr.codesqaud.cafe.util.SessionConst;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -27,10 +26,20 @@ public class ReplyController {
         return "redirect:/article/" + articleId;
     }
 
+    @GetMapping("/answers/{replyId}/edit")
+    public String editForm(@PathVariable Long replyId, Model model, HttpSession session){
+        if (!replyService.validateUserIdDuplicate(replyId, session)){
+            return "qna/edit_failed";
+        }
+
+        model.addAttribute("reply", replyService.findOne(replyId));
+        return "qna/edit_reply";
+    }
+
     @PutMapping("/answers/{replyId}/edit")
-    public String edit(@PathVariable Long replyId, String contents, HttpSession session) {
-        replyService.update(replyId, contents);
+    public String edit(@PathVariable Long replyId, String contents) {
         Long articleId = replyService.findOne(replyId).getArticleId();
+        replyService.update(replyId, contents);
 
         return "redirect:/questions/" + articleId;
     }
@@ -40,9 +49,10 @@ public class ReplyController {
         if (!replyService.validateUserIdDuplicate(replyId, session)) {
             return "qna/edit_failed";
         }
-        replyService.delete(replyId);
 
         Long articleId = replyService.findOne(replyId).getArticleId();
+        replyService.delete(replyId);
+
         return "redirect:/questions/" + articleId;
     }
 }
