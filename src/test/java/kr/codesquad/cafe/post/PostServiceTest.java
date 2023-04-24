@@ -6,6 +6,7 @@ import kr.codesquad.cafe.user.UserService;
 import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.dto.JoinForm;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +40,9 @@ class PostServiceTest {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    EntityManager entityManager;
 
     User jack;
 
@@ -104,5 +109,12 @@ class PostServiceTest {
         assertThatCode(() -> postService.findById(post.getId())).doesNotThrowAnyException();
         postService.delete(post.getId(), jack.getId());
         assertThatThrownBy(() -> postService.findById(post.getId())).isInstanceOf(PostNotFoundException.class);
+    }
+
+    @AfterEach
+    void tearDown() {
+        postRepository.deleteAll();
+        userService.deleteAll();
+        entityManager.flush();
     }
 }

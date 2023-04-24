@@ -103,4 +103,8 @@ public class PostService {
         int allCount = postRepository.countByIsDeletedAndUserId(false, userId);
         return getPages(allCount);
     }
+
+    public void deleteAll() {
+        postRepository.deleteAll();
+    }
 }

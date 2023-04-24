@@ -4,10 +4,7 @@ import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.user.UserService;
 import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.dto.JoinForm;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -46,6 +45,9 @@ class PostControllerTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    EntityManager entityManager;
 
     private MockHttpSession session;
 
@@ -233,6 +235,13 @@ class PostControllerTest {
                 session.setAttribute("user", jerry);
             }
         }
+    }
+
+    @AfterEach
+    void tearDown() {
+        postService.deleteAll();
+        userService.deleteAll();
+        entityManager.flush();
     }
 
 }
