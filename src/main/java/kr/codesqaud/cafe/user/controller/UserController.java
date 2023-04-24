@@ -62,7 +62,7 @@ public class UserController {
 
     @PutMapping
     public String updateUser(@ModelAttribute UserUpdateForm userUpdateForm, Model model) {
-        userService.validateAndUpdateUser(userUpdateForm);
+        userService.updateUser(userUpdateForm);
         return "redirect:/user/list";
     }
 
