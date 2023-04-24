@@ -49,7 +49,7 @@ public class UserRepositoryTest {
         // given
         User user = new User(USER_ID, PASSWORD, NAME, EMAIL);
         userRepository.save(user);
-        User user2 = new User(USER_ID + 1, PASSWORD, NAME, EMAIL);
+        User user2 = new User("another" + USER_ID, PASSWORD, NAME, EMAIL);
         userRepository.save(user2);
 
         // when
