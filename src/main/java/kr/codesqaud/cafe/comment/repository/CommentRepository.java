@@ -24,7 +24,7 @@ public class CommentRepository {
     }
 
     public long save(Comment comment) {
-        String sql = "INSERT INTO comments (article_id, contents, user_id, created_time) VALUES (:articleId, :contents, :userId, :createdTime)";
+        String sql = "INSERT INTO comment (article_id, contents, user_id, created_time) VALUES (:articleId, :contents, :userId, :createdTime)";
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(comment);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
@@ -32,7 +32,7 @@ public class CommentRepository {
     }
 
     public Comment findById(long id) {
-        String sql = "SELECT comment_id, article_id, contents, user_id, created_time FROM comments WHERE comment_id = :id";
+        String sql = "SELECT comment_id, article_id, contents, user_id, created_time FROM comment WHERE comment_id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, commentRowMapper());
     }
@@ -48,13 +48,13 @@ public class CommentRepository {
     }
 
     public List<Comment> findByArticleId(long id) {
-        String sql = "SELECT comment_id, article_id, contents, user_id, created_time FROM comments WHERE article_id = :id";
+        String sql = "SELECT comment_id, article_id, contents, user_id, created_time FROM comment WHERE article_id = :id";
         SqlParameterSource namedParameters = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.query(sql, namedParameters, commentRowMapper());
     }
 
     public void deleteById(long commentId) {
-        String sql = "DELETE FROM comments WHERE comment_id = :commentId";
+        String sql = "DELETE FROM comment WHERE comment_id = :commentId";
         SqlParameterSource namedParameters = new MapSqlParameterSource("commentId", commentId);
         namedParameterJdbcTemplate.update(sql, namedParameters);
     }
