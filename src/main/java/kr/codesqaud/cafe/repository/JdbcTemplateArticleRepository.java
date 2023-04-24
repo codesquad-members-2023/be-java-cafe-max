@@ -35,6 +35,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     public void save(Article article) {
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
         Number key = simpleJdbcInsert.executeAndReturnKey(param);
+
         article.create(key.longValue(), article);
     }
 
