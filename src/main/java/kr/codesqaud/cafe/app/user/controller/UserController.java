@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import kr.codesqaud.cafe.app.user.controller.dto.UserModifiedResponse;
 import kr.codesqaud.cafe.app.user.controller.dto.UserResponse;
 import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.app.user.entity.User;
@@ -85,7 +84,7 @@ public class UserController {
     public ModelAndView modifyUserForm(@PathVariable(value = "id") Long id) {
         ModelAndView mav = new ModelAndView("user/edit");
         User user = userService.findUser(id);
-        UserModifiedResponse userResponse = new UserModifiedResponse(user);
+        UserResponse userResponse = new UserResponse(user);
         mav.addObject("user", userResponse);
         return mav;
     }
