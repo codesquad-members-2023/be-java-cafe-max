@@ -14,14 +14,14 @@ public class Article {
 
     private final LocalDateTime createdTime;
 
-    private long id;
+    private final Long id;
 
 
     public Article(String author, String title, String contents, Long id, LocalDateTime createdTime) {
         this.author = author;
         this.title = title;
         this.contents = contents;
-        if (id != null) this.id = id;
+        this.id = id;
         this.createdTime = Objects.requireNonNullElseGet(createdTime, LocalDateTime::now);
     }
 

@@ -22,6 +22,7 @@ public class ArticleRepositoryTest {
     private static final String AUTHOR = "John Doe";
     private static final String TITLE = "Test Article";
     private static final String CONTENTS = "Test contents";
+    private static final Long ARTICLE_ID_NULL = null;
     private static final LocalDateTime CREATED_TIME = LocalDateTime.now().withNano(0);
 
     @Autowired
@@ -31,7 +32,7 @@ public class ArticleRepositoryTest {
     @DisplayName("새로운 글을 저장시 id로 찾을 수 있다")
     public void test_save() {
         // given
-        Article article = new Article(AUTHOR, TITLE, CONTENTS, null, CREATED_TIME);
+        Article article = new Article(AUTHOR, TITLE, CONTENTS, ARTICLE_ID_NULL, CREATED_TIME);
 
         // when
         long savedId = articleRepository.save(article);
@@ -49,7 +50,7 @@ public class ArticleRepositoryTest {
     @DisplayName("글을 저장하고 findAll을 하면 저장된 글 수만큼 가져온다")
     public void test_findAll() {
         // given
-        Article article = new Article(AUTHOR, TITLE, CONTENTS, null, CREATED_TIME);
+        Article article = new Article(AUTHOR, TITLE, CONTENTS, ARTICLE_ID_NULL, CREATED_TIME);
         articleRepository.save(article);
 
         // when
@@ -63,7 +64,7 @@ public class ArticleRepositoryTest {
     @DisplayName("특정 글을 ID로 검색할 수 있다.")
     public void test_findById() {
         // given
-        Article article = new Article(AUTHOR, TITLE, CONTENTS, null, CREATED_TIME);
+        Article article = new Article(AUTHOR, TITLE, CONTENTS, ARTICLE_ID_NULL, CREATED_TIME);
         long savedId = articleRepository.save(article);
 
         // when
@@ -77,7 +78,7 @@ public class ArticleRepositoryTest {
     @DisplayName("글 수정하면 DB에도 수정이 된다.")
     public void test_modify() {
         // given
-        Article article = new Article(AUTHOR, TITLE, CONTENTS, null, CREATED_TIME);
+        Article article = new Article(AUTHOR, TITLE, CONTENTS, ARTICLE_ID_NULL, CREATED_TIME);
         long savedId =  articleRepository.save(article);
         Article articleV2 = new Article(AUTHOR, "Modified title", CONTENTS, savedId, LocalDateTime.now());
 
@@ -93,7 +94,7 @@ public class ArticleRepositoryTest {
     @DisplayName("글을 삭제하고 다시 찾으면 에러 발생")
     public void test_deleteById() {
         // given
-        Article article = new Article(AUTHOR, TITLE, CONTENTS, null, CREATED_TIME);
+        Article article = new Article(AUTHOR, TITLE, CONTENTS, ARTICLE_ID_NULL, CREATED_TIME);
         long savedId = articleRepository.save(article);
 
         // when
