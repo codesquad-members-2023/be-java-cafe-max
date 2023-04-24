@@ -68,8 +68,8 @@ public class UserController {
         }
 
         User modifiedUser = userService.modifyUser(id, requestDto);
-        // 회원정보 수정시 기존 세션에 저장되어 있는 유저 정보 제거
-        session.removeAttribute("user");
+        // 회원정보 수정시 기존 세션에 저장되어 있는 유저 정보 갱신
+        session.setAttribute("user", modifiedUser);
         return new UserResponse(modifiedUser);
     }
 
