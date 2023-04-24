@@ -1,10 +1,12 @@
 package kr.codesquad.cafe.user;
 
+import kr.codesquad.cafe.global.PagesInfo;
 import kr.codesquad.cafe.global.auth.AuthBeforeAdvice;
 import kr.codesquad.cafe.post.PostService;
 import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.user.exception.DuplicateEmailException;
+import kr.codesquad.cafe.user.exception.InvalidPasswordException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -19,7 +21,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.ArgumentMatchers.any;
+import java.util.ArrayList;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -45,6 +50,10 @@ public class UserProfileControllerTest {
     private static final int NOT_EXIST_PAGE = 2000;
     public static final int OTHER_USER_ID = 20;
     public static final String NO_MATCH_PASSWORD = "987654123a";
+    public static final int CURRENT_PAGE = 4;
+    public static final int TOTAL_PAGES = 10;
+    public static final String PAGE = "page";
+    public static final String PAGE_NUMBER = "1";
 
     @Autowired
     private MockMvc mockMvc;
@@ -143,9 +152,22 @@ public class UserProfileControllerTest {
                         .andExpect(redirectedUrl("/users/" + jack.getId() + "/profile"));
             }
 
-            @DisplayName("일력한 비밀번호가 일치하지 않는 에러가 발생시 함께 프로필 수정페이지와 이동")
+            @DisplayName("일력한 비밀번호가 일치하지 않는 에러가 발생시 오류 메시지와 함께 프로필 수정페이지와 이동")
             @Test
             void setUserProfileFailedByPassword() throws Exception {
+                doThrow(new InvalidPasswordException()).when(userService).checkEditInfo(any(), any());
+                mockMvc.perform(put("/users/" + jack.getId() + "/profile")
+                                .param(PASSWORD, NO_MATCH_PASSWORD)
+                                .param(EMAIL, JERRY_EMAIL)
+                                .param(NICKNAME, JERRY)
+                                .session(session))
+                        .andExpect(status().is4xxClientError())
+                        .andExpect(view().name("user/profileEditFormFailed"));
+            }
+
+            @DisplayName("중복된 이메일 에러 발생시 오류 메시지와 함께 프로필 수정페이지와 이동")
+            @Test
+            void setUserProfileFailedByEmail() throws Exception {
                 doThrow(new DuplicateEmailException()).when(userService).checkEditInfo(any(), any());
                 mockMvc.perform(put("/users/" + jack.getId() + "/profile")
                                 .param(PASSWORD, NO_MATCH_PASSWORD)
@@ -168,7 +190,7 @@ public class UserProfileControllerTest {
                         .andExpect(view().name("error/4xx"));
             }
 
-            @DisplayName("입력 하 수정 요청 형식 오류는 에러와 함께 유저 프로필페이지로 이동한다")
+            @DisplayName("수정 요청 형식 오류는 에러와 함께 유저 프로필페이지로 이동한다")
             @ParameterizedTest
             @CsvSource({JERRY_EMAIL + ",j", JERRY + ",jerry"})
             void setUserProfileFailedByType(String email, String nickname) throws Exception {
@@ -181,6 +203,55 @@ public class UserProfileControllerTest {
                         .andExpect(model().hasErrors())
                         .andExpect(view().name("user/profileEditForm"));
             }
+        }
+    }
+
+    @DisplayName("유저 info 페이지")
+    @Nested
+    class UserInfoPage {
+
+        @DisplayName("Page Param이 없을 때 성공적으로 접근가능하면 페이지 info와 작성한 Posts 심플 form 및 프로필 정보를 담아서 보여준다")
+        @Test
+        void viewUserInfoSuccess() throws Exception {
+            given(postService.getAllSimplePostFormByUser(anyLong(), anyInt())).willReturn(new ArrayList<>());
+            PagesInfo pagesInfo = PagesInfo.of(CURRENT_PAGE, TOTAL_PAGES);
+            given(postService.getPagesInfoByUser(anyInt(), anyLong())).willReturn(pagesInfo);
+            mockMvc.perform(get("/users/" + jack.getId())
+                            .session(session))
+                    .andExpect(model().attributeExists("profileForm", "simpleForms", "pagesInfo"))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("user/info"));
+        }
+
+        @DisplayName("Page Param이 았을 때 성공적으로 접근가능하면 페이지 info와 작성한 Posts 심플 form 및 프로필 정보를 담아서 보여준다")
+        @Test
+        void viewUserInfoSuccessWithPageParam() throws Exception {
+            given(postService.getAllSimplePostFormByUser(anyLong(), anyInt())).willReturn(new ArrayList<>());
+            PagesInfo pagesInfo = PagesInfo.of(CURRENT_PAGE, TOTAL_PAGES);
+            given(postService.getPagesInfoByUser(anyInt(), anyLong())).willReturn(pagesInfo);
+            mockMvc.perform(get("/users/" + jack.getId())
+                            .param(PAGE, PAGE_NUMBER)
+                            .session(session))
+                    .andExpect(model().attributeExists("profileForm", "simpleForms", "pagesInfo"))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("user/info :: #postsPage"));
+        }
+
+
+        @DisplayName("유저 가 아닐 때 에러 페이지를 보여준다.")
+        @Test
+        void viewUserInfoFailedByNotUser() throws Exception {
+            mockMvc.perform(get("/users/" + jack.getId()))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(redirectedUrl("/users/login"));
+        }
+
+        @DisplayName("접근 할 수 없은 에러가 발생시 에러 페이지를 보여준다.")
+        @Test
+        void viewUserInfoFailedByError() throws Exception {
+            mockMvc.perform(get("/users/" + NOT_MATCH_USER_ID).session(session))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(view().name("error/4xx"));
         }
     }
 

@@ -53,14 +53,13 @@ public class UserProfileController {
     }
 
     private void addAttributeForUserPage(Model model, long userId, User user, Integer currentPage) {
-        model.addAttribute(PROFILE_FORM, ProfileForm.from(user));
-
         List<SimplePostForm> simpleForms = postService.getAllSimplePostFormByUser(userId, currentPage);
-        model.addAttribute(SIMPLE_FORMS, simpleForms);
 
         PagesInfo pagesInfo = postService.getPagesInfoByUser(currentPage, userId);
-        model.addAttribute(PAGES_INFO, pagesInfo);
+
+        model.addAttribute(PROFILE_FORM, ProfileForm.from(user));
         model.addAttribute(SIMPLE_FORMS, simpleForms);
+        model.addAttribute(PAGES_INFO, pagesInfo);
     }
 
 
