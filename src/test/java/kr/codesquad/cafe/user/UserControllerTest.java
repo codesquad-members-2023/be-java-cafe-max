@@ -1,6 +1,5 @@
 package kr.codesquad.cafe.user;
 
-import kr.codesquad.cafe.post.PostIdToPostConverter;
 import kr.codesquad.cafe.post.PostService;
 import kr.codesquad.cafe.user.domain.Role;
 import kr.codesquad.cafe.user.domain.User;
@@ -15,38 +14,31 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@AutoConfigureMockMvc
 @WebMvcTest(UserController.class)
 class UserControllerTest {
     public static final String RECONFIRM_PASSWORD = "reconfirmPassword";
     private static final String JACK_NICKNAME = "jack";
     private static final String JACK_EMAIL = "jack@email.com";
     private static final String TEST_PASSWORD = "123456789a";
-    private static final String JERRY_EMAIL = "jerry@email.com";
-    private static final String JERRY = "jerry";
-    private static final String USER_ID = "userId";
     private static final String NICKNAME = "nickname";
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
-    private static final String PROFILE_EDIT_FORM = "profileEditForm";
-    private static final String PROFILE_FORM = "profileForm";
     private static final String JOIN_FORM = "joinForm";
-    private static final int NON_EXISTING_USER_ID = 200;
-    private static final int NOT_EXIST_PAGE = 2000;
     private static final String NO_MATCH_PASSWORD = "12345678aa";
     private static final String ATTR_NAME_USER = "user";
     private static final String ATTR_NAME_USERS = "users";
@@ -58,22 +50,10 @@ class UserControllerTest {
     private UserService userService;
 
     @MockBean
-    private PostIdToPostConverter postIdToPostConverter;
-
-    @MockBean
     private PostService postService;
 
     private MockHttpSession session;
     private User jack;
-
-    @BeforeEach
-    void setSession() {
-        JoinForm joinForm = new JoinForm(JACK_NICKNAME, JACK_EMAIL, TEST_PASSWORD, TEST_PASSWORD);
-        jack = setJack();
-        when(userService.save(joinForm)).thenReturn(jack);
-        session = new MockHttpSession();
-        session.setAttribute(ATTR_NAME_USER, jack);
-    }
 
     private static User setJack() {
         return new User.Builder()
@@ -85,11 +65,20 @@ class UserControllerTest {
                 .build();
     }
 
+    @BeforeEach
+    void setSession() {
+        JoinForm joinForm = new JoinForm(JACK_NICKNAME, JACK_EMAIL, TEST_PASSWORD, TEST_PASSWORD);
+        jack = setJack();
+        when(userService.save(joinForm)).thenReturn(jack);
+        session = new MockHttpSession();
+        session.setAttribute(ATTR_NAME_USER, jack);
+    }
+
     @DisplayName("유저 리스트 페이지")
     @Nested
     class UsersPageTest {
 
-        @DisplayName("Manager 일 때 오픈 가능")
+        @DisplayName("Manager 일 때 접근 가능")
         @Test
         void viewUsersSuccess() throws Exception {
             User manager = new User.Builder()
@@ -107,7 +96,7 @@ class UserControllerTest {
                     .andExpect(view().name("user/users"));
         }
 
-        @DisplayName("Manager 아닐 때 에러 발생")
+        @DisplayName("Manager 아닐 때 접근 불가 에러페이지로 이동")
         @Test
         void viewUsersFailedNotManager() throws Exception {
             session.setAttribute(ATTR_NAME_USER, jack);
@@ -116,7 +105,7 @@ class UserControllerTest {
                     .andExpect(view().name("error/4xx"));
         }
 
-        @DisplayName("로그인 하지 아닐 때 에러 발생")
+        @DisplayName("로그인 하지 아닐 때 접근 불가 에러페이지로 발생")
         @Test
         void viewUsersFailedNotUser() throws Exception {
             mockMvc.perform(get("/users"))
@@ -126,7 +115,7 @@ class UserControllerTest {
     }
 
 
-    @DisplayName("로그인 페이지 테스트")
+    @DisplayName("로그인 페이지")
     @Nested
     class LoginTest {
         @DisplayName("누구나 오픈 가능")
@@ -173,13 +162,25 @@ class UserControllerTest {
                     .andDo(print());
         }
 
+        @DisplayName("입력한 내용이 형식에 맞지 않을 때 에러메시지를 담고 로그인 페이지로 이동")
+        @ParameterizedTest
+        @CsvSource({"12314312,231231231a",",","1234@email.com,123456798"})
+        void loginFailedByType(String email,String password) throws Exception {
+            mockMvc.perform(post("/users/login")
+                            .param(EMAIL, email)
+                            .param(PASSWORD, password).session(session))
+                    .andExpect(status().isOk())
+                    .andExpect(model().hasErrors())
+                    .andExpect(view().name("user/login"))
+                    .andDo(print());
+        }
     }
 
     @Nested
     @DisplayName("가입 페이지")
     class JoinTest {
 
-        @DisplayName("누구나 오픈 가능")
+        @DisplayName("누구나 접근 가능")
         @Test
         void viewJoinPage() throws Exception {
             mockMvc.perform(get("/users/joinForm"))
@@ -188,7 +189,7 @@ class UserControllerTest {
                     .andDo(print());
         }
 
-        @DisplayName("유저 추가 성공하면 유저 info 페이지로 이동한다.")
+        @DisplayName("유저 추가 성공하면 유저 info 페이지로 이동한다")
         @Test
         void addUserSuccess() throws Exception {
             given(userService.save(any())).willReturn(jack);
@@ -202,7 +203,7 @@ class UserControllerTest {
                     .andDo(print());
         }
 
-        @DisplayName("입력 정보가 형식에 맞지 않으면 오류 메시지를 보여준다.")
+        @DisplayName("입력 정보가 형식에 맞지 않으면 오류 메시지와 함께 가입 페이지로 이동한다")
         @ParameterizedTest
         @CsvSource({"sss," + JACK_NICKNAME + ",a123456789", JACK_EMAIL + ",j,a1223456789", JACK_EMAIL + "," + JACK_NICKNAME + ",123456789"})
         void addUserFailedByType(String email, String nickname, String password) throws Exception {
@@ -217,7 +218,7 @@ class UserControllerTest {
                     .andExpect(view().name("user/join"));
         }
 
-        @DisplayName("입력한 Email이 존재하면 ")
+        @DisplayName("입력한 Email이 존재하면 Client에게 오류 메시지를 보낸다")
         @Test
         void addUserFailedByEmail() throws Exception {
             given(userService.save(any())).willThrow(new ExistsEmailException());
@@ -230,5 +231,14 @@ class UserControllerTest {
                     .andExpect(model().attributeExists("emailError"))
                     .andExpect(view().name("user/joinFailed"));
         }
+    }
+
+    @DisplayName("로그아웃 시 session에서 user 정보를 삭제 한다.")
+    @Test
+    void logout() throws Exception {
+        assertThat(session.getAttribute(ATTR_NAME_USER)).isNotNull();
+        mockMvc.perform(get("/users/logout").session(session))
+                .andExpect(view().name("user/login"));
+        assertThat(session.getAttribute(ATTR_NAME_USER)).isNull();
     }
 }

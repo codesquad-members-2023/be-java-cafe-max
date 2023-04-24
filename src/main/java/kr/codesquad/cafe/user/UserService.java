@@ -63,11 +63,6 @@ public class UserService {
         return userRepository.existsByEmail(email);
     }
 
-    public Optional<User> findById(Long userId) {
-        return userRepository.findById(userId);
-    }
-
-
     public User checkLoginForm(LoginForm loginForm) {
         User user = findByEmail(loginForm.getEmail()).orElseThrow(UserNotFoundException::new);
         if (!isSamePassword(user, loginForm.getPassword())) {
