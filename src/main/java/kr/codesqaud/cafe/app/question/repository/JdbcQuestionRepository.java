@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JdbcQuestionRepository implements QuestionRepository {
 
-    private static final Logger logger = LoggerFactory.getLogger(JdbcQuestionRepository.class);
+    private static final Logger log = LoggerFactory.getLogger(JdbcQuestionRepository.class);
     private final JdbcTemplate template;
 
     public JdbcQuestionRepository(JdbcTemplate template) {

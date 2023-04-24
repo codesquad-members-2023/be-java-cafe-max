@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public class QuestionSavedRequest {
 
-    private static final Logger logger = LoggerFactory.getLogger(QuestionSavedRequest.class);
+    private static final Logger log = LoggerFactory.getLogger(QuestionSavedRequest.class);
 
     @Pattern(regexp = "^.{1,100}$", message = "제목은 100자 이내여야 합니다.")
     private final String title;

@@ -6,8 +6,8 @@ import java.util.Objects;
 public class Question {
 
     private final Long id; // 게시글 등록번호
-    private final String title; // 제목
-    private final String content; // 내용
+    private String title; // 제목
+    private String content; // 내용
     private final LocalDateTime createTime; // 작성시간
     private final LocalDateTime updateTime; // 갱신시간
     private final Long userId; // 회원 등록번호
@@ -20,6 +20,11 @@ public class Question {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.userId = userId;
+    }
+
+    public void modify(Question question) {
+        this.title = question.getTitle();
+        this.content = question.getContent();
     }
 
     public Long getId() {
@@ -67,6 +72,6 @@ public class Question {
     public String toString() {
         return String.format(
             "Question={id=%d, title=%s, content=%s, createTime=%s, updateTime=%s, userId=%d}",
-            id, title, content, createTime, userId);
+            id, title, content, createTime, updateTime, userId);
     }
 }

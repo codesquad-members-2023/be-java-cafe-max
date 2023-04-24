@@ -23,7 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(RestApiException.class)
     public ResponseEntity<Object> handleUserException(RestApiException e) {
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException e, HttpHeaders headers, HttpStatus status,
         WebRequest request) {
-        logger.warn("handleMethodArgumentNotValid", e);
+        log.warn("handleMethodArgumentNotValid", e);
         CommonErrorCode errorCode = CommonErrorCode.INVALID_INPUT_FORMAT;
         return handleExceptionInternal(e, errorCode);
     }

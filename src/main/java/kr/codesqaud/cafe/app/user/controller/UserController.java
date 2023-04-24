@@ -24,7 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class UserController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     public UserController(UserService userService) {

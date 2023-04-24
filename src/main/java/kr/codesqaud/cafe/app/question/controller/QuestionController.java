@@ -29,7 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class QuestionController {
 
-    private static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
+    private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
     private final QuestionService questionService;
     private final UserService userService;
 
@@ -79,7 +79,7 @@ public class QuestionController {
         @PathVariable(value = "id") Long id,
         @Valid @RequestBody QuestionSavedRequest requestDto,
         HttpSession session) {
-        logger.info("{}, {}", id, requestDto.toString());
+        log.info("{}, {}", id, requestDto.toString());
         UserResponse user = (UserResponse) session.getAttribute("user");
         Question question = questionService.findQuestion(id);
         if (!question.getUserId().equals(user.getId())) {
@@ -94,7 +94,7 @@ public class QuestionController {
     @DeleteMapping("/qna/{id}")
     public ResponseEntity<Object> deleteQuestion(@PathVariable(value = "id") Long id,
         HttpSession session) {
-        logger.info(id.toString());
+        log.info(id.toString());
         UserResponse user = (UserResponse) session.getAttribute("user");
         Question question = questionService.findQuestion(id);
         if (!question.getUserId().equals(user.getId())) {

@@ -39,16 +39,9 @@ public class MemoryQuestionRepository implements QuestionRepository {
 
     @Override
     public Question modify(Question question) {
-        Question modifiedQuestion =
-            new Question(nextId(),
-                question.getTitle(),
-                question.getContent(),
-                question.getCreateTime(),
-                LocalDateTime.now(),
-                question.getUserId());
-        store.remove(question);
-        store.add(modifiedQuestion);
-        return modifiedQuestion;
+        Question original = findById(question.getId()).orElseThrow();
+        original.modify(question);
+        return original;
     }
 
     @Override
