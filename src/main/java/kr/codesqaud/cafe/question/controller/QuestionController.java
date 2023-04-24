@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.codesqaud.cafe.common.auth.exception.NoAuthSessionException;
+import kr.codesqaud.cafe.common.auth.utill.AuthSessionValidator;
 import kr.codesqaud.cafe.common.web.PageHandler;
 import kr.codesqaud.cafe.question.controller.request.QuestionWriteRequestDTO;
 import kr.codesqaud.cafe.question.controller.response.QuestionBoardResponseDTO;
@@ -22,7 +23,6 @@ import kr.codesqaud.cafe.question.controller.response.QuestionDetailDTO;
 import kr.codesqaud.cafe.question.controller.response.QuestionTitleResponseDTO;
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.question.service.QuestionService;
-import kr.codesqaud.cafe.user.controller.response.AuthSession;
 
 @Controller
 @RequestMapping("/questions")
@@ -88,10 +88,7 @@ public class QuestionController {
 	public String questionDetail(@PathVariable String id, @ModelAttribute("errorMessage") String errorMessage,
 		Model model, HttpSession session) throws QuestionNotExistException, NoAuthSessionException {
 
-		AuthSession authSession = (AuthSession)session.getAttribute("authSession");
-		if (authSession == null) {
-			throw new NoAuthSessionException();
-		}
+		AuthSessionValidator.validatePageAnyoneCanAccess(session);
 
 		if (errorMessage.isBlank()) {
 			model.addAttribute("questionDetailDTO", QuestionDetailDTO.from(service.findById(Long.parseLong(id))));
