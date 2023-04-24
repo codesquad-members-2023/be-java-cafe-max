@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.app.interceptor;
+package kr.codesqaud.cafe.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,11 +16,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         Object handler) throws Exception {
         HttpSession session = request.getSession(false);
 
-        if (session == null) {
-            response.sendRedirect("/login");
-            return false;
-        }
-        if (session.getAttribute("user") == null) {
+        if (session == null || session.getAttribute("user") == null) {
             response.sendRedirect("/login");
             return false;
         }
