@@ -1,15 +1,19 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.JoinDTO;
+import kr.codesqaud.cafe.controller.dto.LoginDTO;
 import kr.codesqaud.cafe.controller.dto.ModifiedUserDTO;
 import kr.codesqaud.cafe.controller.dto.ProfileDTO;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static kr.codesqaud.cafe.controller.LoginController.LOGIN_USER;
 
 @Service
 public class UserService {
@@ -34,9 +38,7 @@ public class UserService {
     public void modify(final long id, final ModifiedUserDTO modifiedUserDTO) {
         User originUser = userRepository.findById(id).orElse(null);
         assert originUser != null;
-        originUser.setName(modifiedUserDTO.getName());
-        originUser.setPassword(modifiedUserDTO.getNewPassword());
-        originUser.setEmail(modifiedUserDTO.getEmail());
+        originUser.update(modifiedUserDTO);
         userRepository.update(originUser);
     }
 
@@ -44,7 +46,18 @@ public class UserService {
     public boolean isPasswordRight(long id, ModifiedUserDTO modifiedUserDTO) {
         User originUser = userRepository.findById(id).orElse(null);
         assert originUser != null;
-        return originUser.getPassword().equals(modifiedUserDTO.getOriginPassword());
+        return originUser.matchPassword(modifiedUserDTO.getOriginPassword());
+    }
+
+    public boolean isOwner(long id, HttpSession session) {
+        long loggedInId = obtainId(session);
+        return loggedInId == id;
+    }
+
+    private long obtainId(HttpSession session) {
+        LoginDTO loggedInUser = (LoginDTO) session.getAttribute(LOGIN_USER);
+        assert loggedInUser != null;
+        return loggedInUser.getId();
     }
 
     public ProfileDTO findOne(final long id) {
@@ -58,16 +71,3 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 }
-
-
-
-/*
-        if (wantedUser.isPresent()) {
-        //Optional 객체를 꺼내 가져오려면 get() 메서드 사용
-            return UserReadDTO.toUserReadDTO(wantedUser.get());
-        }
-        return null;
-        을 한줄로 변환하면
-        => return wantedUser.map(UserReadDTO::toUserReadDTO).orElse(null);
-
- */
