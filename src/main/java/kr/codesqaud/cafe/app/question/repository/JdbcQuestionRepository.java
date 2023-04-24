@@ -73,7 +73,9 @@ public class JdbcQuestionRepository implements QuestionRepository {
     }
 
     @Override
-    public int deleteById(Long id) {
-        return template.update("DELETE FROM question WHERE id = ?", id);
+    public Question deleteById(Long id) {
+        Question delQuestion = findById(id).orElseThrow();
+        template.update("DELETE FROM question WHERE id = ?", id);
+        return delQuestion;
     }
 }

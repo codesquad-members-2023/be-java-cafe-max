@@ -45,9 +45,10 @@ public class MemoryQuestionRepository implements QuestionRepository {
     }
 
     @Override
-    public int deleteById(Long id) {
-        findById(id).ifPresent(store::remove);
-        return 1;
+    public Question deleteById(Long id) {
+        Question delQuestion = findById(id).orElseThrow();
+        store.remove(delQuestion);
+        return delQuestion;
     }
 
     private synchronized Long nextId() {

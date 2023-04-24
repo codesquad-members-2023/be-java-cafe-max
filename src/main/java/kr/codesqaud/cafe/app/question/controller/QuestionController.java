@@ -16,7 +16,6 @@ import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
 import kr.codesqaud.cafe.errors.exception.RestApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,16 +91,17 @@ public class QuestionController {
 
     // 특정 질문 삭제
     @DeleteMapping("/qna/{id}")
-    public ResponseEntity<Object> deleteQuestion(@PathVariable(value = "id") Long id,
+    public QuestionResponse deleteQuestion(@PathVariable(value = "id") Long id,
         HttpSession session) {
         log.info(id.toString());
-        UserResponse user = (UserResponse) session.getAttribute("user");
+        UserResponse loginUser = (UserResponse) session.getAttribute("user");
         Question question = questionService.findQuestion(id);
-        if (!question.getUserId().equals(user.getId())) {
+        if (!question.getUserId().equals(loginUser.getId())) {
             throw new RestApiException(UserErrorCode.PERMISSION_DENIED);
         }
-        questionService.delete(id);
-        return ResponseEntity.ok().build();
+        Question delQuestion = questionService.delete(id);
+        User user = loginUser.toEntity();
+        return new QuestionResponse(delQuestion, user);
     }
 
     // 질문 글쓰기 페이지

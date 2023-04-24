@@ -47,7 +47,7 @@ public class QuestionService {
         return repository.modify(modifiedQuestion);
     }
 
-    public int delete(Long id) {
+    public Question delete(Long id) {
         return repository.deleteById(id);
     }
 }

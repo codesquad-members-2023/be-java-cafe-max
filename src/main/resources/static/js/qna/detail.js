@@ -7,7 +7,8 @@ $(document).ready(function () {
     $.ajax({
       type: "DELETE",
       url: `/qna/${id}`,
-    }).done(function () {
+    }).done(function (resp) {
+      alert(`${resp.title} 게시글을 삭제하였습니다.`)
       location.href = `/`
     }).fail(function (response) {
       const errorResponse = response.responseJSON

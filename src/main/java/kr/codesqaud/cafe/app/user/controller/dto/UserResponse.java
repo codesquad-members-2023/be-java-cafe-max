@@ -16,6 +16,10 @@ public class UserResponse {
         this.email = user.getEmail();
     }
 
+    public User toEntity() {
+        return new User(id, userId, null, name, email);
+    }
+
     public Long getId() {
         return id;
     }
