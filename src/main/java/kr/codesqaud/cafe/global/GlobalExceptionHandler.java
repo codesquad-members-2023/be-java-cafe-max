@@ -8,12 +8,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.codesqaud.cafe.exception.LoginInvalidPasswordException;
-import kr.codesqaud.cafe.exception.article.ArticleIdAndSessionIdMismatchException;
-import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
-import kr.codesqaud.cafe.exception.user.AlreadyUserExistenceException;
-import kr.codesqaud.cafe.exception.user.UserNotFoundException;
-import kr.codesqaud.cafe.exception.user.UserUpdateInvalidPasswordException;
+import kr.codesqaud.cafe.account.exception.IdDuplicatedException;
+import kr.codesqaud.cafe.account.exception.LoginInvalidPasswordException;
+import kr.codesqaud.cafe.account.exception.UserNotFoundException;
+import kr.codesqaud.cafe.account.exception.UserUpdateInvalidPasswordException;
+import kr.codesqaud.cafe.article.exception.ArticleDeleteException;
+import kr.codesqaud.cafe.article.exception.ArticleIdAndSessionIdMismatchException;
+import kr.codesqaud.cafe.article.exception.ArticleNotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -40,35 +41,35 @@ public class GlobalExceptionHandler {
 	public String handleBindException(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
 		if (requestUri.contains("/sign-up")) {
-			return "redirect:/user/sign-up-form";
-		} else if (requestUri.contains("/profile")) {
+			return "redirect:/users/sign-up";
+		} else if (requestUri.contains("/users")) {
 			redirectAttributes.addAttribute("id", request.getParameter("id"));
-			return "redirect:/user/profile/{id}/form";
+			return "redirect:/users/updateForm";
 		}
-		return "redirect:/article";
+		return "redirect:/articles";
 	}
 
-	@ExceptionHandler(AlreadyUserExistenceException.class)
-	public ModelAndView handleAlreadyUserExistenceException(AlreadyUserExistenceException e,
+	@ExceptionHandler(IdDuplicatedException.class)
+	public ModelAndView handleAlreadyUserExistenceException(IdDuplicatedException e,
 		RedirectAttributes redirectAttributes) {
-		return new ModelAndView(handleExceptionWithRedirect(e, "/user/sign-up-form", "id-error", redirectAttributes));
+		return new ModelAndView(handleExceptionWithRedirect(e, "/users/sign-up", "id-error", redirectAttributes));
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)
 	public ModelAndView handleUserNotFoundException(UserNotFoundException e, HttpServletRequest request,
 		RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
-		if (requestUri.contains("/profile")) {
-			return createErrorResponseModelAndView("error/400_bad_request", e);
+		if (requestUri.contains("/sign-in")) {
+			return new ModelAndView(handleExceptionWithRedirect(e, "/users/sign-in", "id-error", redirectAttributes));
 		}
-		return new ModelAndView(handleExceptionWithRedirect(e, "/user/sign-in-form", "id-error", redirectAttributes));
+		return createErrorResponseModelAndView("error/403-forbidden", e);
 	}
 
 	@ExceptionHandler(UserUpdateInvalidPasswordException.class)
 	public ModelAndView handleUserUpdateInvalidPasswordException(UserUpdateInvalidPasswordException e,
-		RedirectAttributes redirectAttributes, HttpServletRequest request) {
+		RedirectAttributes redirectAttributes) {
 		ModelAndView mav = new ModelAndView(
-			handleExceptionWithRedirect(e, "/user/profile/" + request.getParameter("id") + "/form", "password-error",
+			handleExceptionWithRedirect(e, "/users/updateForm", "password-error",
 				redirectAttributes));
 		return mav;
 	}
@@ -77,16 +78,21 @@ public class GlobalExceptionHandler {
 	public ModelAndView handleLoginInvalidPasswordException(LoginInvalidPasswordException e,
 		RedirectAttributes redirectAttributes) {
 		return new ModelAndView(
-			handleExceptionWithRedirect(e, "/user/sign-in-form", "password-error", redirectAttributes));
+			handleExceptionWithRedirect(e, "/users/sign-in", "password-error", redirectAttributes));
 	}
 
 	@ExceptionHandler(ArticleNotFoundException.class)
 	public ModelAndView handleArticleNotFoundException(ArticleNotFoundException e) {
-		return createErrorResponseModelAndView("error/400_bad_request", e);
+		return createErrorResponseModelAndView("error/404-not-found", e);
 	}
 
 	@ExceptionHandler(ArticleIdAndSessionIdMismatchException.class)
 	public ModelAndView handleArticleIdAndSessionIdMismatchException(ArticleIdAndSessionIdMismatchException e) {
-		return createErrorResponseModelAndView("error/401_unauthorized", e);
+		return createErrorResponseModelAndView("error/403-forbidden", e);
+	}
+
+	@ExceptionHandler(ArticleDeleteException.class)
+	public ModelAndView handleArticleDeleteFailedException(ArticleDeleteException e) {
+		return createErrorResponseModelAndView("error/403-forbidden", e);
 	}
 }

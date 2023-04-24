@@ -1,6 +1,12 @@
-.panel{
+#reply-info-box {
+    display: flex;
+    flex-direction: row;
+}
+
+.panel {
     width: 100%;
 }
+
 .col-md-12 {
     display: flex;
     width: 100%;
@@ -97,10 +103,11 @@ li {
 
 .comment-author-name {
     font-weight: bold;
+    margin-right: 7px;
 }
 
 .comment-time {
-    color: lightgray;
+    margin-right: 7px;
 }
 
 .comment-content {
@@ -143,7 +150,7 @@ li {
     padding: 3%;
     width: 90%;
     height: 50px;
-    border:none;
+    border: none;
 }
 
 .form-control:focus {
@@ -166,10 +173,14 @@ li {
     flex-direction: column;
 }
 
-.post-button{
+.post-button {
     background-color: white;
     border: none;
     font-size: 14px;
     color: gray;
     margin-right: 10px;
+}
+
+.reply-button {
+    margin-top: 8px;
 }
