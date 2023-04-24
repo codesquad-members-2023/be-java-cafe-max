@@ -32,12 +32,17 @@ public class MemoryArticleRepository implements ArticleRepository{
 
     @Override
     public Optional<Article> update(Long id, ArticleForm form) {
-        return Optional.empty();
+        Article article = store.get(id);
+        article.setTitle(form.getTitle());
+        article.setContents(form.getContents());
+        return Optional.of(article);
     }
 
     @Override
     public Long delete(Long id) {
-        return null;
+        Article article = store.get(id);
+        article.setDeleted(true);
+        return article.getId();
     }
 
     @Override

@@ -9,6 +9,7 @@ public class Reply {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private Long articleId;
+    private Boolean deleted;
 
     public Reply(){}
 
@@ -18,6 +19,7 @@ public class Reply {
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = null;
         this.articleId = articleId;
+        this.deleted = false;
     }
 
     public Long getReplyId() {
@@ -66,5 +68,13 @@ public class Reply {
 
     public void setArticleId(Long articleId) {
         this.articleId = articleId;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }

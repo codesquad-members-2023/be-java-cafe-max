@@ -34,6 +34,7 @@ public class JdbcArticleRepository implements ArticleRepository{
         parameters.put("contents", article.getContents());
         parameters.put("created_at", article.getCreatedAt());
         parameters.put("points", article.getPoints());
+        parameters.put("deleted", article.getDeleted() ? 1 : 0);
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         article.setId(key.longValue());
@@ -52,6 +53,7 @@ public class JdbcArticleRepository implements ArticleRepository{
                 article.setModifiedAt(rs.getTimestamp("modified_at").toLocalDateTime());
             }
             article.setPoints(rs.getLong("points"));
+            article.setDeleted(rs.getInt("deleted") == 1);
             return article;
         };
     }
@@ -81,7 +83,7 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public Long delete(Long id) {
-        jdbcTemplate.update("delete from article where id=?", id);
+        jdbcTemplate.update("update article set deleted = ? where id = ?", 1, id);
         return id;
     }
 }
