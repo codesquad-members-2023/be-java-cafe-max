@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.codesqaud.cafe.common.auth.exception.NoAuthSessionException;
 import kr.codesqaud.cafe.common.web.PageHandler;
 import kr.codesqaud.cafe.question.controller.request.QuestionWriteRequestDTO;
 import kr.codesqaud.cafe.question.controller.response.QuestionBoardResponseDTO;
@@ -85,12 +86,11 @@ public class QuestionController {
 	 */
 	@GetMapping("/{id}")
 	public String questionDetail(@PathVariable String id, @ModelAttribute("errorMessage") String errorMessage,
-		Model model, HttpSession session) throws QuestionNotExistException {
+		Model model, HttpSession session) throws QuestionNotExistException, NoAuthSessionException {
 
 		AuthSession authSession = (AuthSession)session.getAttribute("authSession");
 		if (authSession == null) {
-			model.addAttribute("authMessage", "로그인이 필요합니다.");
-			return "error/403-forbidden";
+			throw new NoAuthSessionException();
 		}
 
 		if (errorMessage.isBlank()) {

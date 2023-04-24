@@ -4,10 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.codesqaud.cafe.common.auth.exception.NoAccessPermissionException;
+import kr.codesqaud.cafe.common.auth.exception.NoAuthSessionException;
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
 import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
@@ -46,6 +49,12 @@ public class ControllerExceptionHandler {
 		}
 
 		return getRedirectRequestURI(request);
+	}
+
+	@ExceptionHandler({NoAuthSessionException.class, NoAccessPermissionException.class})
+	public String catchNoAuthSessionException(HttpServletRequest request, Model model, Exception e) {
+		model.addAttribute("authMessage", e.getMessage());
+		return "error/403-forbidden";
 	}
 
 	private String getRedirectRequestURI(HttpServletRequest request) {
