@@ -37,16 +37,16 @@ public class Comment {
         return writeDateTime;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public static class Builder {
         private Long commentId;
         private Long postId;
         private String writer;
         private String contents;
         private LocalDateTime writeDateTime;
-
-        public Builder() {
-
-        }
 
         public Builder commentId(Long commentId) {
             this.commentId = commentId;

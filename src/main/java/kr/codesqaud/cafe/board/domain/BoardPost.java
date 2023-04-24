@@ -37,16 +37,16 @@ public class BoardPost {
         return writeDateTime;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public static class Builder {
         private Long postId;
         private String writer;
         private String title;
         private String contents;
         private LocalDateTime writeDateTime;
-
-        public Builder() {
-
-        }
 
         public Builder postId(Long postId) {
             this.postId = postId;

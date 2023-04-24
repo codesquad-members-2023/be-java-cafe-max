@@ -73,7 +73,7 @@ public class BoardJdbcRepository {
     public RowMapper<BoardPost> postRowMapper = new RowMapper<BoardPost>() {
         @Override
         public BoardPost mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new BoardPost.Builder()
+            return BoardPost.builder()
                     .postId(rs.getLong("post_id"))
                     .writer(rs.getString("writer"))
                     .title(rs.getString("title"))

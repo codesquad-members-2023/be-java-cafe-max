@@ -63,7 +63,7 @@ public class CommentJdbcRepository {
     public RowMapper<Comment> commentRowMapper = new RowMapper<Comment>() {
         @Override
         public Comment mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Comment.Builder()
+            return Comment.builder()
                     .commentId(rs.getLong("comment_id"))
                     .postId(rs.getLong("post_id"))
                     .writer(rs.getString("writer"))

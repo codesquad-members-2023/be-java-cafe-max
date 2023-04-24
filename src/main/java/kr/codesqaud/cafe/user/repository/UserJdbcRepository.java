@@ -67,7 +67,7 @@ public class UserJdbcRepository {
     public RowMapper<User> userRowMapper = new RowMapper<User>() {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User.Builder()
+            return User.builder()
                     .userId(rs.getString("user_id"))
                     .password(rs.getString("password"))
                     .userName(rs.getString("user_name"))
