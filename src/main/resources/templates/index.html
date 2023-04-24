@@ -24,12 +24,12 @@
             </button>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
-            <ul th:if="${session.loginUser==null}" class="nav navbar-nav navbar-right">
+            <ul th:if="${session.loginUser == null}" class="nav navbar-nav navbar-right">
                 <li><a href="/">Posts</a></li>
                 <li><a href="/users/login" role="button">로그인</a></li>
                 <li><a href="/users/join" role="button">회원가입</a></li>
             </ul>
-            <ul th:if="${session.loginUser!=null}" class="nav navbar-nav navbar-right">
+            <ul th:if="${session.loginUser != null}" class="nav navbar-nav navbar-right">
                 <li><a href="/">Posts</a></li>
                 <li><a href="/users/logout" role="button">로그아웃</a></li>
                 <li><a th:href="@{/users/{userId}/form(userId=${session.loginUser.getId()})}" role="button">개인정보수정</a></li>

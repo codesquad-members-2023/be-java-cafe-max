@@ -37,7 +37,6 @@ public class ArticleController {
     public String showHome(Model model) {
         List<ArticleResponseDto> posts = articleService.findPosts();
         model.addAttribute("posts", posts);
-        log.info("run showHome");
         return "index";
     }
 
