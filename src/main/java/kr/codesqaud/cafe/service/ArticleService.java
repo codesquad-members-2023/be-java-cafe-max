@@ -2,10 +2,13 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.article.ArticleForm;
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
+import kr.codesqaud.cafe.util.SessionConst;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +33,12 @@ public class ArticleService {
 
     public Article findOne(Long id){
         return articleRepository.findById(id).orElseThrow(() -> new IllegalStateException("찾으시는 게시물은 없는 게시물 입니다."));
+    }
+
+    public boolean validateUser(Long id, HttpSession session){
+        Article article = findOne(id);
+        User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
+        return article.getWriter().equals(user.getUserId());
     }
 
     @Transactional

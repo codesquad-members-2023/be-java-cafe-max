@@ -44,22 +44,18 @@ public class ArticleController {
     // 게시글 상세보기
     @GetMapping("/questions/{id}")
     public String findArticle(@PathVariable Long id, Model model){
-        Article article = articleService.findOne(id);
-        model.addAttribute("article", article);
+        model.addAttribute("article", articleService.findOne(id));
         return "qna/show";
     }
 
     // 게시글 수정
     @GetMapping("/questions/edit/{id}")
     public String editArticleForm(@PathVariable Long id, Model model, HttpSession session) {
-        Article article = articleService.findOne(id);
-        User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
-
-        if (!article.getWriter().equals(user.getUserId())){
+        if (!articleService.validateUser(id, session)){
             return "qna/edit_failed";
         }
 
-        model.addAttribute("article", article);
+        model.addAttribute("article", articleService.findOne(id));
         return "qna/edit";
     }
 
@@ -72,10 +68,7 @@ public class ArticleController {
     // 게시글 삭제
     @DeleteMapping ("/questions/delete/{id}")
     public String deleteArticle(@PathVariable Long id, HttpSession session){
-        Article article = articleService.findOne(id);
-        User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
-
-        if (!article.getWriter().equals(user.getUserId())){
+        if (!articleService.validateUser(id, session)){
             return "qna/edit_failed";
         }
 
