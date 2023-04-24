@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -24,7 +24,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/save")
+    @PostMapping
     public String createUser(RequestUserForm userForm) {
         userService.join(userForm);
         return "redirect:/user";

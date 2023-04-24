@@ -33,7 +33,7 @@ public class ArticleController {
     }
 
     //글 작성 클릭 시 매핑하고 글 저장
-    @PostMapping("/save")
+    @PostMapping
     public String createArticle(RequestArticleForm requestArticleForm, HttpSession session) {
         articleService.save(requestArticleForm, Session.getUserId(session));
         return "redirect:/articles";
