@@ -34,7 +34,7 @@ $('#post-reply').click(() => {
 
 $('.delete-reply').click(deleteReply)
 function deleteReply(e) {
-    var replyId = e.target.dataset['replyId'];
+    var replyId = e.target.dataset['replyid'];
     var url = window.location.pathname + '/replies/' + replyId;
 
     $.ajax({
@@ -46,7 +46,7 @@ function deleteReply(e) {
         e.target.closest("article").remove();
 
     }).fail((err) => {
-        alert("failed");
+        alert("오류지만 삭제는 됨");
         console.log(JSON.stringify(err));
     })
 }
