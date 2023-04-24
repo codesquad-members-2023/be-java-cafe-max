@@ -100,7 +100,8 @@ public class ArticleRepositoryTest {
         articleRepository.deleteById(savedId);
 
         // then
-        assertThrows(EmptyResultDataAccessException.class, () -> articleRepository.findById(savedId));
+        assertThatThrownBy(() -> articleRepository.findById(savedId))
+                .isInstanceOf(EmptyResultDataAccessException.class);
     }
 
 }
