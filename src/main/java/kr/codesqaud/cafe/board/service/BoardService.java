@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.board.repository.BoardJdbcRepository;
 import kr.codesqaud.cafe.board.repository.CommentJdbcRepository;
 import kr.codesqaud.cafe.exception.ForbiddenException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,13 +29,13 @@ public class BoardService {
         boardJdbcRepository.update(postResponse.toEntity());
     }
 
+    @Transactional
     public void delete(Long postId) {
-        if (commentJdbcRepository.getCommentCountByOtherWriter(postId) == 0) {
-            commentJdbcRepository.deleteAllByPostId(postId);
-            boardJdbcRepository.delete(postId);
-        } else {
+        if (hasOtherCommentWriter(postId)) {
             throw new ForbiddenException("작성자와 다른 댓글 작성자가 존재하여 삭제할 수 없습니다.");
         }
+        commentJdbcRepository.deleteAllByPostId(postId);
+        boardJdbcRepository.delete(postId);
     }
 
     public PostResponse getPost(Long postId) {
@@ -45,5 +46,9 @@ public class BoardService {
         return boardJdbcRepository.findAll().stream()
                 .map(PostResponse::from)
                 .collect(Collectors.toList());
+    }
+
+    private boolean hasOtherCommentWriter(Long postId) {
+        return commentJdbcRepository.getCommentCountByOtherWriter(postId) > 0;
     }
 }
