@@ -31,6 +31,9 @@ public class LoginController {
         User loginUser = loginService.login(loginForm.getUserId(), loginForm.getPassword());
         HttpSession session = request.getSession();
 
+        if (loginUser == null) {
+            return "user/login";
+        }
         session.setAttribute("user", loginUser);
         return "redirect:/";
     }
