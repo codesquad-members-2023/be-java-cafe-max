@@ -11,7 +11,7 @@ public class Comment {
     private final String userId;
     private final LocalDateTime createdTime;
 
-    public Comment(long commentId, long articleId, String contents, String userId, LocalDateTime createdTime) {
+    public Comment(Long commentId, long articleId, String contents, String userId, LocalDateTime createdTime) {
         this.commentId = commentId;
         this.articleId = articleId;
         this.contents = contents;

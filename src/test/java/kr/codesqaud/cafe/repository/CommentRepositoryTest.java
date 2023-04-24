@@ -27,7 +27,7 @@ public class CommentRepositoryTest {
     @DisplayName("새로운 댓글을 저장시 id로 찾을 수 있다")
     public void test_save() {
         // given
-        Comment comment = new Comment(ARTICLE_ID, CONTENTS, USER_ID, CREATED_TIME);
+        Comment comment = new Comment(null, ARTICLE_ID, CONTENTS, USER_ID, CREATED_TIME);
 
         // when
         long savedId = commentRepository.save(comment);
