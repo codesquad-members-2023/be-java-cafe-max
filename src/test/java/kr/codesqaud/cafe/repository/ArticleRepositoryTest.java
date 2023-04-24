@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.article.domain.Article;
-import kr.codesqaud.cafe.article.repository.JdbcArticleRepository;
+import kr.codesqaud.cafe.article.repository.ArticleRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class ArticleRepositoryTest {
     private static final LocalDateTime CREATED_TIME = LocalDateTime.now().withNano(0);
 
     @Autowired
-    private JdbcArticleRepository articleRepository;
+    private ArticleRepository articleRepository;
 
     @Test
     @DisplayName("새로운 글을 저장시 id로 찾을 수 있다")

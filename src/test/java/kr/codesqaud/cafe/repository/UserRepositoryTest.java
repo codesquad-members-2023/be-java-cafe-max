@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.repository.JdbcUserRepository;
+import kr.codesqaud.cafe.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class UserRepositoryTest {
     private static final String EMAIL = "johndoe@example.com";
 
     @Autowired
-    private JdbcUserRepository userRepository;
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("새로운 사용자를 저장하면 id로 찾을 수 있다")
