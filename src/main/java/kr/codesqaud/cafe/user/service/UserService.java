@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.user.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,15 @@ public class UserService {
 	 * @throws IllegalArgumentException 이미 등록된 회원 ID을 중복하여 등록한 경우 Exception 발생
 	 */
 	public void addUser(UserEntity user) throws UserIdDuplicateException {
+		Optional<UserEntity> existUserEntity = repository.findAll()
+			.stream()
+			.filter(existUser -> existUser.getUserId().equals(user.getUserId()))
+			.findAny();
+
+		if (existUserEntity.isPresent()) {
+			throw new UserIdDuplicateException(existUserEntity.get().getUserId());
+		}
+
 		repository.save(user);
 	}
 
@@ -55,7 +65,13 @@ public class UserService {
 	 * @throws NoSuchElementException 존재하지 않는 회원을 검색한 경우 Exception 발생
 	 */
 	public UserEntity findByUserId(String userId) throws UserNotExistException {
-		return repository.findByUserId(userId);
+		Optional<UserEntity> userToFind = repository.findByUserId(userId);
+
+		if (userToFind.isPresent()) {
+			return userToFind.get();
+		} else {
+			throw new UserNotExistException(userId);
+		}
 	}
 
 	/**
@@ -64,7 +80,11 @@ public class UserService {
 	 * @throws UserDoesNotMatchException 존재하지 않는 회원의 정보를 수정하거나, 비밀번호가 일치하지 않는 경우 Exception 발생
 	 */
 	public void updateUser(UserEntity user) throws UserDoesNotMatchException {
-		repository.update(user);
+		if (repository.update(user)) {
+			return;
+		}
+
+		throw new UserDoesNotMatchException();
 	}
 
 }

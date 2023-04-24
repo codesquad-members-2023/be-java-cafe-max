@@ -1,9 +1,9 @@
 package kr.codesqaud.cafe.question.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import kr.codesqaud.cafe.question.domain.QuestionEntity;
-import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 
 public interface QuestionRepository {
 	void save(QuestionEntity question);
@@ -12,5 +12,5 @@ public interface QuestionRepository {
 
 	List<QuestionEntity> findPageBy(long offset, int pageSize);
 
-	QuestionEntity findById(long id) throws QuestionNotExistException;
+	Optional<QuestionEntity> findById(long id);
 }

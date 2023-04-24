@@ -2,13 +2,13 @@ package kr.codesqaud.cafe.question.repository;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.common.repository.CollectionFrameworkRepositoryDummyData;
 import kr.codesqaud.cafe.question.domain.QuestionEntity;
-import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 
 @Repository
 public class CollectionFrameWorkQuestionRepository implements QuestionRepository {
@@ -35,13 +35,13 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public QuestionEntity findById(long id) throws QuestionNotExistException {
+	public Optional<QuestionEntity> findById(long id) {
 		for (QuestionEntity question : questionTable.select()) {
 			if (question.getId() == id) {
-				return question;
+				return Optional.ofNullable(question);
 			}
 		}
-		throw new QuestionNotExistException(id);
+		return Optional.ofNullable(null);
 	}
 
 }

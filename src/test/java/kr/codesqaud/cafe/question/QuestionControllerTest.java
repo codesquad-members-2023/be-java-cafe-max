@@ -19,7 +19,7 @@ import org.springframework.util.MultiValueMap;
 
 import kr.codesqaud.cafe.question.controller.QuestionController;
 import kr.codesqaud.cafe.question.controller.response.QuestionDetailDTO;
-import kr.codesqaud.cafe.question.domain.Question;
+import kr.codesqaud.cafe.question.domain.QuestionEntity;
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.question.service.QuestionService;
 
@@ -40,11 +40,11 @@ public class QuestionControllerTest {
 		@BeforeEach
 		void initTest() throws QuestionNotExistException {
 			given(questionService.findById(1))
-				.willReturn(new Question(1, "wiriter", "title", "contents", null));
+				.willReturn(new QuestionEntity(1, "wiriter", "title", "contents", null));
 
 			questionDetailDTOMockedStatic = mockStatic(QuestionDetailDTO.class);
 			questionDetailDTOMockedStatic.when(
-					() -> QuestionDetailDTO.from(new Question(1, "wiriter", "title", "contents", null)))
+					() -> QuestionDetailDTO.from(new QuestionEntity(1, "wiriter", "title", "contents", null)))
 				.thenReturn(new QuestionDetailDTO(1, "wiriter", "title", "contents", null));
 		}
 

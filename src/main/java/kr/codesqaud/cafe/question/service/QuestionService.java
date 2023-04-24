@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.question.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,12 @@ public class QuestionService {
 	}
 
 	public QuestionEntity findById(long id) throws QuestionNotExistException {
-		return repository.findById(id);
+		Optional<QuestionEntity> questionToFind = repository.findById(id);
+
+		if (questionToFind.isPresent()) {
+			return questionToFind.get();
+		} else {
+			throw new QuestionNotExistException(id);
+		}
 	}
 }

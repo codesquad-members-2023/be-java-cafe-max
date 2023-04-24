@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.question.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
@@ -11,7 +12,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.question.domain.QuestionEntity;
-import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 
 @Repository
 @Primary
@@ -46,15 +46,15 @@ public class H2QuestionRepository implements QuestionRepository {
 		return jdbcTemplate.query(sql, parameters, getQuestionRowMapper());
 	}
 
-	public QuestionEntity findById(long id) throws QuestionNotExistException {
+	public Optional<QuestionEntity> findById(long id) {
 		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\"  WHERE id = :id";
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("id", id);
 
 		try {
-			return jdbcTemplate.queryForObject(sql, parameters, getQuestionRowMapper());
+			return Optional.ofNullable(jdbcTemplate.queryForObject(sql, parameters, getQuestionRowMapper()));
 		} catch (DataAccessException e) {
-			throw new QuestionNotExistException(id);
+			return Optional.ofNullable(null);
 		}
 
 	}

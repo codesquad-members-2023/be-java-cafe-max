@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.user.repository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
@@ -11,9 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.user.domain.UserEntity;
-import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
-import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
-import kr.codesqaud.cafe.user.exception.UserNotExistException;
 
 @Repository
 @Primary
@@ -24,13 +22,9 @@ public class H2UserRepository implements UserRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public void save(UserEntity user) throws UserIdDuplicateException {
+	public void save(UserEntity user) {
 		String sql = "INSERT INTO \"user\"(userId, password, name, email) VALUES (?, ?, ?, ?)";
-		try {
-			jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
-		} catch (DataAccessException e) {
-			throw new UserIdDuplicateException(user.getUserId());
-		}
+		jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
 	}
 
 	@Override
@@ -44,22 +38,23 @@ public class H2UserRepository implements UserRepository {
 	}
 
 	@Override
-	public UserEntity findByUserId(String userId) throws UserNotExistException {
+	public Optional<UserEntity> findByUserId(String userId) {
 		String sql = "SELECT id, userId, password, name, email FROM \"user\" WHERE userId = ?";
 		try {
-			return jdbcTemplate.queryForObject(sql, getUserRowMapper(), userId);
+			return Optional.ofNullable(jdbcTemplate.queryForObject(sql, getUserRowMapper(), userId));
 		} catch (DataAccessException e) {
-			throw new UserNotExistException(userId);
+			return Optional.ofNullable(null);
 		}
 	}
 
 	@Override
-	public void update(UserEntity user) throws UserDoesNotMatchException {
+	public boolean update(UserEntity user) {
 		String sql = "UPDATE \"user\" SET name = ?, email = ? WHERE userId = ? AND password = ?";
 		try {
 			jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getUserId(), user.getPassword());
+			return true;
 		} catch (DataAccessException e) {
-			throw new UserDoesNotMatchException();
+			return false;
 		}
 	}
 
