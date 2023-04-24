@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS user_account
     PRIMARY KEY (user_id)
 );
 
-CREATE TABLE IF NOT EXISTS article_comment
+CREATE TABLE IF NOT EXISTS comment
 (
     id         BIGINT       NOT NULL AUTO_INCREMENT,
     content    VARCHAR(255) NOT NULL,
@@ -29,6 +29,6 @@ CREATE TABLE IF NOT EXISTS article_comment
     PRIMARY KEY (id)
 );
 
-ALTER TABLE article_comment
+ALTER TABLE comment
     DROP INDEX article_id_idx;
-CREATE INDEX article_id_idx ON article_comment (article_id);
+CREATE INDEX article_id_idx ON comment (article_id);

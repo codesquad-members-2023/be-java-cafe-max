@@ -32,7 +32,7 @@ public class CommentJdbcRepository implements CommentRepository {
 	public CommentJdbcRepository(DataSource dataSource) {
 		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		this.jdbcInsert = new SimpleJdbcInsert(dataSource)
-			.withTableName("article_comment")
+			.withTableName("comment")
 			.usingColumns("content", "created_at", "writer", "article_id")
 			.usingGeneratedKeyColumns("id");
 	}
@@ -47,7 +47,7 @@ public class CommentJdbcRepository implements CommentRepository {
 		try {
 			return Optional.ofNullable(
 				jdbcTemplate.queryForObject(
-					"SELECT id, content, created_at, writer, article_id FROM article_comment WHERE id = :id AND is_deleted = FALSE",
+					"SELECT id, content, created_at, writer, article_id FROM comment WHERE id = :id AND is_deleted = FALSE",
 					Map.of("id", id), articleCommentRowMapper));
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
@@ -57,13 +57,13 @@ public class CommentJdbcRepository implements CommentRepository {
 	@Override
 	public List<Comment> findAllByArticleId(final Long articleId) {
 		return jdbcTemplate.query(
-			"SELECT id, content, created_at, writer, article_id FROM article_comment WHERE is_deleted = FALSE AND article_id = :articleId",
+			"SELECT id, content, created_at, writer, article_id FROM comment WHERE is_deleted = FALSE AND article_id = :articleId",
 			Map.of("articleId", articleId),
 			articleCommentRowMapper);
 	}
 
 	@Override
 	public void deleteById(final Long id) {
-		jdbcTemplate.update("UPDATE article_comment SET is_deleted = TRUE WHERE id = :id", Map.of("id", id));
+		jdbcTemplate.update("UPDATE comment SET is_deleted = TRUE WHERE id = :id", Map.of("id", id));
 	}
 }
