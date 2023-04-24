@@ -3,6 +3,8 @@ package kr.codesqaud.cafe.question.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import kr.codesqaud.cafe.question.controller.response.QuestionDetailDTO;
 import kr.codesqaud.cafe.question.controller.response.QuestionTitleResponseDTO;
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.question.service.QuestionService;
+import kr.codesqaud.cafe.user.controller.response.AuthSession;
 
 @Controller
 @RequestMapping("/questions")
@@ -74,7 +77,7 @@ public class QuestionController {
 	}
 
 	/**
-	 * Q&A 게시글 상세 보기 페이지로 이동
+	 * Q&A 게시글 상세 보기 페이지로 이동. (접근 권한: 로그인한 모든 유저)
 	 * @param id 조회하고자 하는 Q&A 게시글의 id
 	 * @param errorMessage 없는 게시글 또는 잘못된 입력값이 들어왔을때 받아올 에러 메시지
 	 * @param model `Q&A 게시글 상세 내역` 또는 `에러 메시지`를 전달하기 위한 model
@@ -82,7 +85,14 @@ public class QuestionController {
 	 */
 	@GetMapping("/{id}")
 	public String questionDetail(@PathVariable String id, @ModelAttribute("errorMessage") String errorMessage,
-		Model model) throws QuestionNotExistException {
+		Model model, HttpSession session) throws QuestionNotExistException {
+
+		AuthSession authSession = (AuthSession)session.getAttribute("authSession");
+		if (authSession == null) {
+			model.addAttribute("authMessage", "로그인이 필요합니다.");
+			return "error/403-forbidden";
+		}
+
 		if (errorMessage.isBlank()) {
 			model.addAttribute("questionDetailDTO", QuestionDetailDTO.from(service.findById(Long.parseLong(id))));
 		}
