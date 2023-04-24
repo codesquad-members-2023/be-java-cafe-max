@@ -2,19 +2,17 @@ package kr.codesqaud.cafe.user.dto;
 
 import kr.codesqaud.cafe.user.domain.User;
 
-public class UserResponse {
+public class SessionUser {
     private final String userId;
     private final String userName;
-    private final String email;
 
-    public UserResponse(String userId, String userName, String email) {
+    public SessionUser(String userId, String userName) {
         this.userId = userId;
         this.userName = userName;
-        this.email = email;
     }
 
-    public static UserResponse from(User user) {
-        return new UserResponse(user.getUserId(), user.getUserName(), user.getEmail());
+    public static SessionUser from(User user) {
+        return new SessionUser(user.getUserId(), user.getUserName());
     }
 
     public String getUserId() {
@@ -25,7 +23,4 @@ public class UserResponse {
         return userName;
     }
 
-    public String getEmail() {
-        return email;
-    }
 }

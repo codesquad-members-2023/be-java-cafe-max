@@ -1,50 +1,65 @@
 package kr.codesqaud.cafe.user.domain;
 
 public class User {
-    private String userId;
-    private String password;
-    private String userName;
-    private String email;
+    private final String userId;
+    private final String password;
+    private final String userName;
+    private final String email;
 
-    public User() {
-    }
-
-    public User(String userId, String password, String userName, String email) {
-        this.userId = userId;
-        this.password = password;
-        this.userName = userName;
-        this.email = email;
+    public User(Builder builder) {
+        this.userId = builder.userId;
+        this.password = builder.password;
+        this.userName = builder.userName;
+        this.email = builder.email;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public static class Builder {
+        private String userId;
+        private String password;
+        private String userName;
+        private String email;
+
+        public Builder() {
+        }
+
+        public Builder userId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder userName(String userName) {
+            this.userName = userName;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.exception;
 
-public class ResourceNotFoundException extends RuntimeException {
+import org.springframework.dao.DataRetrievalFailureException;
+
+public class ResourceNotFoundException extends DataRetrievalFailureException {
     public ResourceNotFoundException(String message) {
         super(message);
     }

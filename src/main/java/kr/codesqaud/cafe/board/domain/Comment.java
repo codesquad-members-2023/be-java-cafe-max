@@ -2,19 +2,23 @@ package kr.codesqaud.cafe.board.domain;
 
 import java.time.LocalDateTime;
 
-public class BoardPost {
+public class Comment {
+    private final Long commentId;
     private final Long postId;
     private final String writer;
-    private final String title;
     private final String contents;
     private final LocalDateTime writeDateTime;
 
-    public BoardPost(Builder builder) {
+    public Comment(Builder builder) {
+        this.commentId = builder.commentId;
         this.postId = builder.postId;
         this.writer = builder.writer;
-        this.title = builder.title;
         this.contents = builder.contents;
         this.writeDateTime = builder.writeDateTime;
+    }
+
+    public Long getCommentId() {
+        return commentId;
     }
 
     public Long getPostId() {
@@ -23,10 +27,6 @@ public class BoardPost {
 
     public String getWriter() {
         return writer;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public String getContents() {
@@ -38,14 +38,19 @@ public class BoardPost {
     }
 
     public static class Builder {
+        private Long commentId;
         private Long postId;
         private String writer;
-        private String title;
         private String contents;
         private LocalDateTime writeDateTime;
 
         public Builder() {
 
+        }
+
+        public Builder commentId(Long commentId) {
+            this.commentId = commentId;
+            return this;
         }
 
         public Builder postId(Long postId) {
@@ -55,11 +60,6 @@ public class BoardPost {
 
         public Builder writer(String writer) {
             this.writer = writer;
-            return this;
-        }
-
-        public Builder title(String title) {
-            this.title = title;
             return this;
         }
 
@@ -73,8 +73,8 @@ public class BoardPost {
             return this;
         }
 
-        public BoardPost build() {
-            return new BoardPost(this);
+        public Comment build() {
+            return new Comment(this);
         }
     }
 }

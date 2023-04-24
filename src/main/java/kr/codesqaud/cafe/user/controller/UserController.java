@@ -1,15 +1,15 @@
 package kr.codesqaud.cafe.user.controller;
 
+import kr.codesqaud.cafe.user.dto.SessionUser;
 import kr.codesqaud.cafe.user.dto.UserAddForm;
 import kr.codesqaud.cafe.user.dto.UserLoginForm;
-import kr.codesqaud.cafe.user.dto.UserResponse;
+import kr.codesqaud.cafe.user.dto.UserUpdateForm;
 import kr.codesqaud.cafe.user.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 
 @Controller
@@ -25,17 +25,13 @@ public class UserController {
     @PostMapping
     public String addUser(@ModelAttribute UserAddForm userAddForm, HttpSession session) {
         String userId = userService.addUser(userAddForm);
-        session.setAttribute("sessionUser", userAddForm.toUserResponse());
+        session.setAttribute("sessionUser", new SessionUser(userAddForm.getUserId(), userAddForm.getUserName()));
         return "redirect:/user/list";
     }
 
     @PostMapping("/login")
     public String loginUser(@ModelAttribute UserLoginForm userLoginForm, HttpSession session) {
-        Optional<UserResponse> loginResult = userService.loginCheck(userLoginForm);
-        if (!loginResult.isPresent()) {
-            return "user/login_failed";
-        }
-        session.setAttribute("sessionUser", loginResult.get());
+        session.setAttribute("sessionUser", userService.loginCheck(userLoginForm));
         return "redirect:/board/list";
     }
 
@@ -58,10 +54,16 @@ public class UserController {
     }
 
     @GetMapping("/update")
-    public String updateUser(HttpSession session, Model model) {
-        UserResponse user = (UserResponse) session.getAttribute("sessionUser");
-        model.addAttribute("user", user);
+    public String viewUpdateForm(HttpSession session, Model model) {
+        String sessionUserId = ((SessionUser) session.getAttribute("sessionUser")).getUserId();
+        model.addAttribute("user", userService.getUser(sessionUserId));
         return "user/update";
+    }
+
+    @PutMapping
+    public String updateUser(@ModelAttribute UserUpdateForm userUpdateForm, Model model) {
+        userService.validateAndUpdateUser(userUpdateForm);
+        return "redirect:/user/list";
     }
 
 }

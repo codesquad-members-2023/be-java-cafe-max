@@ -12,9 +12,13 @@ public class PostWriteForm {
         this.title = title;
         this.contents = contents;
     }
-    
-    public BoardPost toBoardPost() {
-        return new BoardPost(writer, title, contents);
+
+    public BoardPost toEntity() {
+        return new BoardPost.Builder()
+                .writer(writer)
+                .title(title)
+                .contents(contents)
+                .build();
     }
 
     public String getWriter() {
