@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS ARTICLE_TB
     title      VARCHAR(100),
     content    LONGTEXT,
     userId     VARCHAR(50),
-    createTime VARCHAR(50)
+    createTime VARCHAR(50),
+    FOREIGN KEY(userId) REFERENCES USER_TB(userId)
+    ON UPDATE CASCADE
 );
 
