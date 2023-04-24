@@ -1,23 +1,23 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
 
 public class Article {
 
     private Long id;
     private String title;
     private String content;
-    private String userId;
+    private String userName;
     private String createTime;
 
     public Article() {
     }
 
-    public Article(Long id, String title, String content, String userId, String createTime) {
+    public Article(Long id, String title, String content, String userName, String createTime) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.userId = userId;
+        this.userName = userName;
         this.createTime = createTime;
     }
 
@@ -25,7 +25,7 @@ public class Article {
         this.id = id;
         this.title = article.getTitle();
         this.content = article.getContent();
-        this.userId = article.userId;
+        this.userName = article.userName;
         this.createTime = article.getCreateTime();
     }
 
@@ -58,12 +58,12 @@ public class Article {
         this.content = content;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getCreateTime() {

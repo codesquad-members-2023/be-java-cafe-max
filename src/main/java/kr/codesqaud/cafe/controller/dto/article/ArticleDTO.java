@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto;
+package kr.codesqaud.cafe.controller.dto.article;
 
 import kr.codesqaud.cafe.domain.Article;
 
@@ -7,23 +7,23 @@ public class ArticleDTO {
     private final Long id;
     private final String title;
     private final String content;
-    private final String userId;
+    private final String userName;
     private final String createTime;
 
-    public ArticleDTO(Long id, String title, String content, String userId, String createTime) {
+    public ArticleDTO(Long id, String title, String content, String userName, String createTime) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.userId = userId;
+        this.userName = userName;
         this.createTime = createTime;
     }
 
     public static ArticleDTO from(final Article article) {
-        return new ArticleDTO(article.getId(), article.getTitle(), article.getContent(), article.getUserId(), article.getCreateTime());
+        return new ArticleDTO(article.getId(), article.getTitle(), article.getContent(), article.getUserName(), article.getCreateTime());
     }
 
-    public Article toEntity(String userId) {
-        return new Article(id, title, content, userId, createTime);
+    public Article toEntity(String name) {
+        return new Article(id, title, content, name, createTime);
     }
 
     public Long getId() {
@@ -38,8 +38,8 @@ public class ArticleDTO {
         return content;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserName() {
+        return userName;
     }
 
     public String getCreateTime() {
