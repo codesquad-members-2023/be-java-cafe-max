@@ -10,29 +10,72 @@
 <body>
 
 <div layout:fragment="content">
-    <section class="post">
+    <section class="postDetail">
         <div class="detailContainer">
             <h2 th:text="${article.title}">제목</h2>
             <div class="createdAt">
                 <div>
-                    <span class="firstText" th:text="|작성자 : ${article.writer}|">작성자</span><span th:text="|작성일자 : ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}|">작성일자</span>
+                    <span class="firstText" th:text="|작성자 : ${article.writer}|">작성자</span><span th:text="|작성일자 : ${#temporals.format(article.createdAt, 'yyyy. MM. dd. a hh:mm')}|">작성일자</span>
                 </div>
-                <a class="editButton" th:if="${article.writer == session.loginUserName}" th:href="@{/articles/{id}/edit(id=${article.id})}">수정하기</a>
+                <a class="editButton" th:if="${article.writer == session.loginUserId}" th:href="@{/articles/{id}/edit-form(id=${article.id})}">수정하기</a>
             </div>
             <p th:text="${article.contents}"></p>
-            <hr/>
 
             <div class="buttons">
                 <div>
-                    <a th:if="${article.previousId == 0}" class="firstText disable" style="background: #D2DAE0;">이전 글</a>
-                    <a th:if="${article.previousId != 0}" class="firstText" th:href="@{/articles/{id}(id=${article.previousId})}">이전 글</a>
-                    <a th:if="${article.nextId == 0}" class="disable" style="background: #D2DAE0;">다음 글</a>
-                    <a th:if="${article.nextId != 0}" th:href="@{/articles/{id}(id=${article.nextId})}">다음 글</a>
+                    <a th:if="${article.previousId == null}" class="firstText disable" style="background: #D2DAE0;">이전 글</a>
+                    <a th:if="${article.previousId != null}" class="firstText" th:href="@{/articles/{id}(id=${article.previousId})}">이전 글</a>
+                    <a th:if="${article.nextId == null}" class="disable" style="background: #D2DAE0;">다음 글</a>
+                    <a th:if="${article.nextId != null}" th:href="@{/articles/{id}(id=${article.nextId})}">다음 글</a>
                 </div>
                 <a th:href="@{/}">목록으로</a>
             </div>
         </div>
+
+        <form name="submitReply" class="submitReply" th:action="@{/articles/{articleId}/replies(articleId=${article.id})}" method="post">
+            <div id="replyForm">
+                <label for="inputReply" th:text="${session.loginUserId}">작성자</label>
+                <textarea maxlength="400" id="inputReply" name="contents" placeholder="댓글의 내용을 입력하세요"></textarea>
+                <button id="replyButton" type="button" class="button">댓글 등록</button>
+            </div>
+            <span class="checkReply hide">내용은 3자 이상 400자 이하로 입력해주세요</span>
+        </form>
+
+
+        <div id="replyContainer">
+            <span th:text="|댓글 ${#lists.size(replies)}개|">댓글 10개</span>
+            <article class="reply" th:each="reply : ${replies}">
+                <div>
+                    <div class="replyInfo">
+                        <span class="replyWriter" th:text="${reply.userId}">작성자</span><span th:text="${#temporals.format(reply.createdAt, 'yyyy. MM. dd. a hh:mm')}">2023-04-19</span>
+                    </div>
+                    <form name="deleteReply" class="deleteReply" th:action="@{/articles/{articleId}/replies/{replyId}(articleId=${article.id}, replyId=${reply.id})}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button th:data-replyId="${reply.id}" th:if="${reply.userId == session.loginUserId}" class="deleteButton editButton">삭제</button>
+                    </form>
+                </div>
+                <p th:text="${reply.contents}">댓글 내용</p>
+            </article>
+        </div>
     </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="/js/validation.js"></script>
+    <script src="/js/reply.js"></script>
+    <script type="text/template" id="answerTemplate">
+        <article class="reply">
+            <div>
+                <div class="replyInfo">
+                    <span class="replyWriter">{0}</span><span>{1}</span>
+                </div>
+                <form name="deleteReply" class="deleteReply" action="/articles/{3}/replies/{4}" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button data-replyId="{4}" class="deleteButton editButton">삭제</button>
+                </form>
+            </div>
+            <p>{2}</p>
+        </article>
+    </script>
 </div>
 
 </body>

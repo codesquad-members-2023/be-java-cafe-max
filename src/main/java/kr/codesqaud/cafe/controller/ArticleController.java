@@ -4,7 +4,9 @@ import kr.codesqaud.cafe.config.SessionAttributeNames;
 import kr.codesqaud.cafe.dto.article.ArticleResponse;
 import kr.codesqaud.cafe.dto.article.ArticleSaveRequest;
 import kr.codesqaud.cafe.dto.article.ArticleUpdateRequest;
+import kr.codesqaud.cafe.dto.reply.ReplyResponse;
 import kr.codesqaud.cafe.exception.user.AccessDeniedException;
+import kr.codesqaud.cafe.repository.reply.MySqlReplyRepository;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,14 +18,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.stream.Collectors;
 
 @Controller
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final MySqlReplyRepository replyRepository;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, MySqlReplyRepository replyRepository) {
         this.articleService = articleService;
+        this.replyRepository = replyRepository;
     }
 
     @GetMapping
@@ -32,13 +37,13 @@ public class ArticleController {
         return "article/main";
     }
 
-    @GetMapping("/articles/write")
-    public String write() {
+    @GetMapping("/articles/write-form")
+    public String getFormToWrite() {
         return "article/write";
     }
 
     @PostMapping("/articles")
-    public String write(@ModelAttribute ArticleSaveRequest articleSaveRequest) {
+    public String writeArticle(@ModelAttribute ArticleSaveRequest articleSaveRequest) {
         articleService.saveArticle(articleSaveRequest);
         return "redirect:/";
     }
@@ -46,11 +51,12 @@ public class ArticleController {
     @GetMapping("/articles/{id}")
     public String getArticle(@PathVariable Long id, Model model) {
         model.addAttribute("article", articleService.getArticleWithSurrounding(id));
+        model.addAttribute("replies", replyRepository.findByArticleId(id).stream().map(ReplyResponse::from).collect(Collectors.toList()));
         return "article/detail";
     }
 
-    @GetMapping("/articles/{id}/edit")
-    public String editArticle(@PathVariable Long id, Model model, HttpSession httpSession) {
+    @GetMapping("/articles/{id}/edit-form")
+    public String getFormToEdit(@PathVariable Long id, Model model, HttpSession httpSession) {
         final ArticleResponse article = articleService.findById(id);
         checkUserPermissions(httpSession, article.getWriter());
         model.addAttribute("article", article);
@@ -72,7 +78,7 @@ public class ArticleController {
     }
 
     private void checkUserPermissions(HttpSession httpSession, String writer) {
-        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_NAME).equals(writer)) {
+        if (!httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_ID).equals(writer)) {
             throw new AccessDeniedException();
         }
     }

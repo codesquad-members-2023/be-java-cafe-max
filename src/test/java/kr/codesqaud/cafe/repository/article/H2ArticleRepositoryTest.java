@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,21 +12,20 @@ import org.springframework.test.context.jdbc.Sql;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @JdbcTest
 @Sql("classpath:test.sql")
-class JdbcArticleRepositoryTest {
+class H2ArticleRepositoryTest {
 
-    JdbcArticleRepository articleRepository;
+    H2ArticleRepository articleRepository;
 
     @Autowired
     NamedParameterJdbcTemplate jdbcTemplate;
 
     @BeforeEach
     void setUp() {
-        this.articleRepository = new JdbcArticleRepository(jdbcTemplate);
+        this.articleRepository = new H2ArticleRepository(jdbcTemplate);
     }
 
     @DisplayName("article을 save하면 jdbcRepository에 정상적으로 저장되는지 확인하는 테스트")
@@ -57,18 +55,15 @@ class JdbcArticleRepositoryTest {
         Long savedArticle2 = articleRepository.save(article2);
 
         // when
-        Article findArticle1 = articleRepository.findById(savedArticle1);
-        Article findArticle2 = articleRepository.findById(savedArticle2);
+        Article findArticle1 = articleRepository.findById(savedArticle1).get();
+        Article findArticle2 = articleRepository.findById(savedArticle2).get();
 
         // then
         assertAll(
             () -> assertThat(findArticle2.getId()).isEqualTo(2L),
             () -> assertThat(findArticle2.getTitle()).isEqualTo("test2"),
             () -> assertThat(findArticle2.getWriter()).isEqualTo("writer2"),
-            () -> assertThat(findArticle2.getContents()).isEqualTo("contents2"),
-            () -> assertThatThrownBy(() -> articleRepository.findById(3L))
-                        .isInstanceOf(ArticleNotFoundException.class)
-                        .hasMessage("존재하지 않는 게시글입니다."));
+            () -> assertThat(findArticle2.getContents()).isEqualTo("contents2"));
     }
 
     @DisplayName("findAll을 통해 모든 article을 List로 가져오는지 확인하는 테스트")
