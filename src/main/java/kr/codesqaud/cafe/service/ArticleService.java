@@ -109,8 +109,10 @@ public class ArticleService {
     public boolean deleteAuth(int index, LoginSessionDto dto) {
         List<Reply> list = replyRepository.findAll(index);
         for (Reply temp : list) {
-            return temp.validateAuthor(dto.getName());
+            if(temp.validateAuthor(dto.getName())){
+                return true;
+            }
         }
-        return true;
+        return false;
     }
 }
