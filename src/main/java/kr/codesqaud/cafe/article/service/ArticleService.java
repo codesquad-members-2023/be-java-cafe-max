@@ -2,9 +2,9 @@ package kr.codesqaud.cafe.article.service;
 
 
 import kr.codesqaud.cafe.article.domain.Article;
-import kr.codesqaud.cafe.article.dto.ArticleDetailDto;
-import kr.codesqaud.cafe.article.dto.ArticleFormDto;
-import kr.codesqaud.cafe.article.dto.ArticlePreviewDto;
+import kr.codesqaud.cafe.article.dto.RequestArticleWriteForm;
+import kr.codesqaud.cafe.article.dto.ResponseArticleDetail;
+import kr.codesqaud.cafe.article.dto.ResponseArticlePreview;
 import kr.codesqaud.cafe.article.mapper.ArticleDtoMapper;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -23,33 +23,33 @@ public class ArticleService {
     }
 
     //글 저장
-    public Long save(ArticleFormDto articleFormDto, String author) {
-        return articleRepository.save(ArticleDtoMapper.INSTANCE.toArticle(articleFormDto, author));
+    public Long save(RequestArticleWriteForm requestArticleWriteForm, String author) {
+        return articleRepository.save(ArticleDtoMapper.INSTANCE.toArticle(requestArticleWriteForm, author));
     }
 
     //전체 글 목록을 DTO로 필터링 하고 반환
-    public List<ArticlePreviewDto> getPreviewDtos() {
+    public List<ResponseArticlePreview> getPreviewDtos() {
         List<Article> articles = articleRepository.findAll();
-        List<ArticlePreviewDto> articlePreviewDtos = new ArrayList<>();
+        List<ResponseArticlePreview> responseArticlePreviews = new ArrayList<>();
         for (Article article : articles) {
-            articlePreviewDtos.add(ArticleDtoMapper.INSTANCE.toPreviewDto(article));
+            responseArticlePreviews.add(ArticleDtoMapper.INSTANCE.toPreviewDto(article));
         }
 
-        return articlePreviewDtos;
+        return responseArticlePreviews;
     }
 
 
     //ID로 글을 찾아 DTO로 필터링 후 반환
-    public ArticleDetailDto getArticleDetail(Long index) {
-        Article article = articleRepository.findById(index);
+    public ResponseArticleDetail getArticleDetail(long id) {
+        Article article = articleRepository.findById(id);
         return ArticleDtoMapper.INSTANCE.toDetailDto(article);
     }
 
-    public void update(long id, ArticleFormDto articleFormDto) {
-        articleRepository.modify(ArticleDtoMapper.INSTANCE.toArticle(articleFormDto, id));
+    public void update(long id, RequestArticleWriteForm requestArticleWriteForm) {
+        articleRepository.modify(ArticleDtoMapper.INSTANCE.toArticle(requestArticleWriteForm, id));
     }
 
     public void delete(long id) {
-        articleRepository.delete(id);
+        articleRepository.deleteById(id);
     }
 }

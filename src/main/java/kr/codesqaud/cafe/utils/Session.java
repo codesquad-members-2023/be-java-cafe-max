@@ -4,10 +4,11 @@ import kr.codesqaud.cafe.user.domain.User;
 
 import javax.servlet.http.HttpSession;
 
-public class Session {
+public final class Session {
 
     private static final String sessionName = "sessionUser";
 
+    private Session(){}
 
     public static void logIn(HttpSession session, User user){
         session.setAttribute(sessionName, user);
@@ -27,4 +28,5 @@ public class Session {
         User user = (User) session.getAttribute(sessionName);
         return user.getUserId();
     }
+
 }

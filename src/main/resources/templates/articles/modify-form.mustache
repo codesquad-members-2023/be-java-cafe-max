@@ -4,9 +4,8 @@
 <div class="container mt-5">
     <h2>글쓰기</h2>
     {{#articleDetail}}
-    <form id="write-form" method="post" action="/articles/update">
+    <form id="write-form" method="post" action="/articles/{{id}}">
         <input type="hidden" name="_method" value="PUT" />
-        <input type="hidden" name="id" value="{{id}}" />
         <div class="form-group">
             <label for="post-title">제목</label>
             <input type="text" class="form-control" name="title" id="post-title" placeholder="제목을 입력하세요" value="{{title}}">

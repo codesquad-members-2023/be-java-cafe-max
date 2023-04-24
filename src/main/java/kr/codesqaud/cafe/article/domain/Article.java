@@ -6,34 +6,32 @@ import java.util.Objects;
 
 public class Article {
 
-    private String author;
+    private final String author;
 
-    private String title;
+    private final String title;
 
-    private String contents;
+    private final String contents;
 
-    private LocalDateTime time;
+    private final LocalDateTime createdTime;
 
-    private long id;
+    private final Long id;
 
 
-
-    public Article(String author, String title, String contents, Long id, LocalDateTime time) {
+    public Article(String author, String title, String contents, Long id, LocalDateTime createdTime) {
         this.author = author;
         this.title = title;
         this.contents = contents;
-        if(id != null) this.id = id;
-        this.time = Objects.requireNonNullElseGet(time, LocalDateTime::now);
+        this.id = id;
+        this.createdTime = Objects.requireNonNullElseGet(createdTime, LocalDateTime::now);
     }
 
-    public LocalDateTime getTime() {
-        return time;
+    public LocalDateTime getCreatedTime() {
+        return createdTime;
     }
 
     public long getId() {
         return id;
     }
-
 
     public String getAuthor() {
         return author;

@@ -5,10 +5,11 @@
         <div class="container d-flex justify-content-between align-items-center">
             <h2 class="mt-5">{{title}}</h2>
             <div class="d-flex">
-                <a href="/articles/{{id}}/modify"><button id="edit-post-button" class="btn btn-primary mt-5 ml-auto">글 수정</button></a>
-                <form method="post" action="/articles/delete">
-                    <input type="hidden" name="_method" value="DELETE" />
-                    <input type="hidden" name="id" value="{{id}}" />
+                <a href="/articles/{{id}}/modify">
+                    <button id="edit-post-button" class="btn btn-primary mt-5 ml-auto">글 수정</button>
+                </a>
+                <form method="post" action="/articles/{{id}}">
+                    <input type="hidden" name="_method" value="DELETE"/>
                     <button id="delete-post-button" class="btn btn-danger mt-5">글 삭제</button>
                 </form>
             </div>
@@ -16,13 +17,49 @@
         <hr>
         <div class="article-details">
             <p>글쓴이: {{author}}</p>
-            <p>작성일: {{time}}</p>
+            <p>작성일: {{createdTime}}</p>
             <hr>
             <div class="article-content">
                 {{contents}}
             </div>
         </div>
-    {{/articleDetail}}
-</div>
 
+
+        <!-- Comment Section-->
+    <section class="mb-5">
+    <div class="card bg-light">
+    <div class="card-body" style="flex-wrap: wrap">
+        <!-- Comment form-->
+        <form class="mb-4"  id="commentForm" method="post" action="/api/comments">
+            <input type="hidden" name="articleId" value="{{id}}">
+            <textarea class="form-control" rows="3"
+                      name="contents"
+                      placeholder="댓글을 작성해보세요"></textarea>
+            <button type="submit" id="new-comment" class="btn btn-primary">작성하기</button>
+        </form>
+    {{/articleDetail}}
+    {{#comments}}
+        <!-- Single comment-->
+        <div class="d-flex mb-4">
+            <div class="flex-shrink-0"><img class="rounded-circle"
+                                            src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
+                                            alt="..."/></div>
+            <div class="ms-3">
+                <div class="fw-bold">{{userId}}</div>
+                <div class="text-muted fst-italic">{{createdTime}}</div>
+                <div class="comment-content">{{contents}}</div>
+                <form method="post" class="delete_button" action="/api/comments">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <input type="hidden" name="commentId" value={{commentId}}>
+                    <input type="hidden" name="userId" value={{userId}}>
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+            </div>
+        </div>
+    {{/comments}}
+</div>
+</div>
+</section>
+
+</div>
 {{>layout/footer}}

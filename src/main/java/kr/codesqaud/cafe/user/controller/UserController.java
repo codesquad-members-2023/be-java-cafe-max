@@ -1,17 +1,20 @@
 package kr.codesqaud.cafe.user.controller;
 
 import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.dto.UserFormDto;
+import kr.codesqaud.cafe.user.dto.RequestUserJoinForm;
 import kr.codesqaud.cafe.user.service.UserService;
 import kr.codesqaud.cafe.utils.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -21,9 +24,8 @@ public class UserController {
     }
 
 
-    //회원 가입 시, 회원 객체 생성 후 join
-    @PostMapping("/create")
-    public String createUser(UserFormDto userForm) {
+    @PostMapping
+    public String createUser(RequestUserJoinForm userForm) {
         userService.join(userForm);
         return "redirect:/user";
     }
@@ -43,7 +45,7 @@ public class UserController {
         return "user/profile";
     }
 
-    @PostMapping("/session-login")
+    @PostMapping("/login")
     public String logIn( String userId, String password, HttpSession session){
         User user = userService.findAndAuthenticate(userId, password);
 
@@ -56,7 +58,7 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/session-logout")
+    @PostMapping("/logout")
     public String logOut(HttpSession session){
         session.invalidate();
         return "redirect:/";

@@ -1,20 +1,20 @@
 package kr.codesqaud.cafe.user.mapper;
 
 import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.dto.UserFormDto;
-import kr.codesqaud.cafe.user.dto.UserPreviewDto;
-import kr.codesqaud.cafe.user.dto.UserProfileDto;
+import kr.codesqaud.cafe.user.dto.RequestUserJoinForm;
+import kr.codesqaud.cafe.user.dto.ResponseUserPreview;
+import kr.codesqaud.cafe.user.dto.ResponseUserProfile;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface UserDtoMapper {
 
     UserDtoMapper INSTANCE = Mappers.getMapper(UserDtoMapper.class);
 
-    User toUser(UserFormDto userFormDto);
+    User toUser(RequestUserJoinForm requestUserJoinForm);
 
-    UserProfileDto toProfileDto(User user);
+    ResponseUserProfile toProfileDto(User user);
 
-    UserPreviewDto toPreviewDto(User user);
+    ResponseUserPreview toPreviewDto(User user);
 }

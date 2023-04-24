@@ -1,22 +1,16 @@
 package kr.codesqaud.cafe.user.dto;
 
-public class UserPreviewDto {
+public class ResponseUserPreview {
     //회원 목록 조회영 사용자DTO
-    private String userId;
+    private final String userId;
 
-    private String name;
+    private final String name;
 
-    private String email;
+    private final String email;
 
-    public void setUserId(String userId) {
+    public ResponseUserPreview(String userId, String name, String email) {
         this.userId = userId;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
     }
 
