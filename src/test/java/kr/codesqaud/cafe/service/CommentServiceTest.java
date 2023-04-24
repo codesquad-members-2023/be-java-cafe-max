@@ -16,12 +16,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import kr.codesqaud.cafe.controller.dto.req.CommentRequest;
-import kr.codesqaud.cafe.domain.articlecomment.Comment;
+import kr.codesqaud.cafe.domain.comment.Comment;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.repository.CommentRepository;
 
 @ExtendWith(MockitoExtension.class)
-class ArticleCommentServiceTest {
+class CommentServiceTest {
 
 	@Mock
 	private CommentRepository commentRepository;

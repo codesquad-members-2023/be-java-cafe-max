@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.repository;
 import java.util.List;
 import java.util.Optional;
 
-import kr.codesqaud.cafe.domain.articlecomment.Comment;
+import kr.codesqaud.cafe.domain.comment.Comment;
 
 public interface CommentRepository {
 

@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.domain.articlecomment.Comment;
+import kr.codesqaud.cafe.domain.comment.Comment;
 import kr.codesqaud.cafe.repository.CommentRepository;
 
 @Repository

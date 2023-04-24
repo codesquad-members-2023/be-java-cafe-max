@@ -21,12 +21,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import kr.codesqaud.cafe.controller.dto.ArticleCommentResponse;
 import kr.codesqaud.cafe.controller.dto.ArticleDetails;
 import kr.codesqaud.cafe.controller.dto.ArticleResponse;
+import kr.codesqaud.cafe.controller.dto.CommentResponse;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
-import kr.codesqaud.cafe.domain.articlecomment.Comment;
+import kr.codesqaud.cafe.domain.comment.Comment;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.service.ArticleService;
 
@@ -83,7 +83,7 @@ class ArticleControllerTest {
 	void givenNothing_whenShowArticleDetails_thenReturnsArticleDetailsView() throws Exception {
 		// given
 		ArticleDetails articleDetails = new ArticleDetails(ArticleResponse.from(createArticle()), List.of(
-			ArticleCommentResponse.from(new Comment(1L, "이건 댓글!", LocalDateTime.now(), "익명의 사용자", 1L))));
+			CommentResponse.from(new Comment(1L, "이건 댓글!", LocalDateTime.now(), "익명의 사용자", 1L))));
 		given(articleService.getArticleDetails(anyLong())).willReturn(articleDetails);
 
 		// when & then

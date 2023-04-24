@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.controller.dto.req;
 
-import kr.codesqaud.cafe.domain.articlecomment.Comment;
+import kr.codesqaud.cafe.domain.comment.Comment;
 
 public class CommentRequest {
 

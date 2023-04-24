@@ -26,7 +26,7 @@ import kr.codesqaud.cafe.controller.dto.ArticleDetails;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.domain.article.Article;
-import kr.codesqaud.cafe.domain.articlecomment.Comment;
+import kr.codesqaud.cafe.domain.comment.Comment;
 import kr.codesqaud.cafe.exception.InvalidOperationException;
 import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.exception.NotFoundException;
@@ -114,7 +114,7 @@ class ArticleServiceTest {
 			// then
 			assertAll(
 				() -> assertThat(articleDetails).isNotNull(),
-				() -> assertThat(articleDetails.getArticleCommentResponse()).hasSize(size),
+				() -> assertThat(articleDetails.getCommentResponse()).hasSize(size),
 				() -> then(articleRepository).should().findById(1L),
 				() -> then(commentRepository).should().findAllByArticleId(1L)
 			);

@@ -39,8 +39,8 @@ public class ArticleController {
 	public String showArticleDetails(@PathVariable final Long articleId, final Model model) {
 		ArticleDetails articleDetails = articleService.getArticleDetails(articleId);
 		model.addAttribute("article", articleDetails.getArticleResponse());
-		model.addAttribute("articleCommentCount", articleDetails.getArticleCommentResponse().size());
-		model.addAttribute("articleComments", articleDetails.getArticleCommentResponse());
+		model.addAttribute("commentCount", articleDetails.getCommentResponse().size());
+		model.addAttribute("comments", articleDetails.getCommentResponse());
 		return "qna/show";
 	}
 

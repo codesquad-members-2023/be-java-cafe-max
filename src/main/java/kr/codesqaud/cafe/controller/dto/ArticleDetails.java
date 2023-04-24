@@ -5,18 +5,18 @@ import java.util.List;
 public class ArticleDetails {
 
 	private final ArticleResponse articleResponse;
-	private final List<ArticleCommentResponse> articleCommentResponse;
+	private final List<CommentResponse> commentResponse;
 
-	public ArticleDetails(ArticleResponse articleResponse, List<ArticleCommentResponse> articleCommentResponse) {
+	public ArticleDetails(ArticleResponse articleResponse, List<CommentResponse> commentResponse) {
 		this.articleResponse = articleResponse;
-		this.articleCommentResponse = articleCommentResponse;
+		this.commentResponse = commentResponse;
 	}
 
 	public ArticleResponse getArticleResponse() {
 		return articleResponse;
 	}
 
-	public List<ArticleCommentResponse> getArticleCommentResponse() {
-		return articleCommentResponse;
+	public List<CommentResponse> getCommentResponse() {
+		return commentResponse;
 	}
 }

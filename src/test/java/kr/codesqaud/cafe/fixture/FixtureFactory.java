@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import kr.codesqaud.cafe.domain.article.Article;
-import kr.codesqaud.cafe.domain.articlecomment.Comment;
+import kr.codesqaud.cafe.domain.comment.Comment;
 import kr.codesqaud.cafe.domain.user.User;
 
 public class FixtureFactory {
