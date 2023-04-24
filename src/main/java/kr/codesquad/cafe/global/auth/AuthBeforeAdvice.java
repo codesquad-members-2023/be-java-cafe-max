@@ -35,7 +35,7 @@ public class AuthBeforeAdvice {
         return Arrays.stream(joinPoint.getArgs()).filter(Post.class::isInstance)
                 .map(Post.class::cast)
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(IllegalAccessIdException::new);
     }
 
     private static Long getPathId(JoinPoint joinPoint) {
