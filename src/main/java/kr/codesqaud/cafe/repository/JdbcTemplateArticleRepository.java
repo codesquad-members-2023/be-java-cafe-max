@@ -28,7 +28,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
         this.template = new NamedParameterJdbcTemplate(dataSource);
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName("ARTICLE_TB")
-                .usingGeneratedKeyColumns("ID");
+                .usingGeneratedKeyColumns("id");
     }
 
     @Override
@@ -40,13 +40,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void update(Article updatedArticle) {
-        String sql = "UPDATE ARTICLE_TB SET TITLE = :TITLE, CONTENT = :CONTENT, createTime = :createTime WHERE ID = :ID";
+        String sql = "UPDATE ARTICLE_TB SET title = :title, content = :content, createTime = :createTime WHERE id = :id";
 
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("TITLE", updatedArticle.getTitle())
-                .addValue("CONTENT", updatedArticle.getContent())
+                .addValue("title", updatedArticle.getTitle())
+                .addValue("content", updatedArticle.getContent())
                 .addValue("createTime", updatedArticle.getCreateTime())
-                .addValue("ID", updatedArticle.getId());
+                .addValue("id", updatedArticle.getId());
 
         template.update(sql, param);
     }
@@ -59,8 +59,8 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(long id) {
-        String sql = "SELECT * FROM ARTICLE_TB WHERE ID = :ID";
-        Map<String, Object> param = Map.of("ID", id);
+        String sql = "SELECT * FROM ARTICLE_TB WHERE id = :id";
+        Map<String, Object> param = Map.of("id", id);
         try (Stream<Article> result = template.queryForStream(sql, param, articleRowMapper())) {
             return result.findFirst();
         }

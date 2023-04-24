@@ -26,7 +26,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
         this.template = new NamedParameterJdbcTemplate(dataSource);
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName("USER_TB")
-                .usingGeneratedKeyColumns("ID");
+                .usingGeneratedKeyColumns("id");
     }
 
     @Override
@@ -38,20 +38,20 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public void update(User updateUser) {
-        String sql = "UPDATE USER_TB SET NAME = :NAME, PASSWORD = :PASSWORD, EMAIL = :EMAIL WHERE ID = :ID";
+        String sql = "UPDATE USER_TB SET name = :name, password = :password, email = :email WHERE id = :id";
 
         SqlParameterSource param = new MapSqlParameterSource()
-                .addValue("NAME", updateUser.getName())
-                .addValue("PASSWORD", updateUser.getPassword())
-                .addValue("EMAIL", updateUser.getEmail())
-                .addValue("ID", updateUser.getId());
+                .addValue("name", updateUser.getName())
+                .addValue("password", updateUser.getPassword())
+                .addValue("email", updateUser.getEmail())
+                .addValue("id", updateUser.getId());
 
         template.update(sql, param);
     }
     @Override
     public Optional<User> findById(long id) {
-        String sql = "SELECT * FROM USER_TB WHERE ID = :ID";
-        Map<String, Object> param = Map.of("ID", id);
+        String sql = "SELECT * FROM USER_TB WHERE id = :id";
+        Map<String, Object> param = Map.of("id", id);
         try (Stream<User> result = template.queryForStream(sql, param, userRowMapper())) {
             return result.findFirst();
         }
@@ -59,8 +59,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        String sql = "SELECT * FROM USER_TB WHERE USERID = :USERID";
-        Map<String, Object> param = Map.of("USERID", userId);
+        String sql = "SELECT * FROM USER_TB WHERE userId = :userId";
+        Map<String, Object> param = Map.of("userId", userId);
         try (Stream<User> result = template.queryForStream(sql, param, userRowMapper())) {
             return result.findFirst();
         }
