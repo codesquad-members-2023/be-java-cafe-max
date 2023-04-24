@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import kr.codesqaud.cafe.controller.dto.ArticleDetails;
 import kr.codesqaud.cafe.controller.dto.req.ArticleEditRequest;
 import kr.codesqaud.cafe.controller.dto.req.PostingRequest;
 import kr.codesqaud.cafe.service.ArticleService;
@@ -29,21 +30,24 @@ public class ArticleController {
 
 	@PostMapping
 	public String post(@ModelAttribute final PostingRequest request,
-					   @SessionAttribute(SESSION_USER) final String userId) {
+	                   @SessionAttribute(SESSION_USER) final String userId) {
 		articleService.post(request, userId);
 		return "redirect:/";
 	}
 
 	@GetMapping("/{articleId}")
 	public String showArticleDetails(@PathVariable final Long articleId, final Model model) {
-		model.addAttribute("article", articleService.findById(articleId));
+		ArticleDetails articleDetails = articleService.getArticleDetails(articleId);
+		model.addAttribute("article", articleDetails.getArticleResponse());
+		model.addAttribute("commentCount", articleDetails.getCommentResponse().size());
+		model.addAttribute("comments", articleDetails.getCommentResponse());
 		return "qna/show";
 	}
 
 	@GetMapping("/{articleId}/form")
 	public String showArticleEditPage(@PathVariable final Long articleId,
-									  @SessionAttribute(SESSION_USER) final String userId,
-									  final Model model) {
+	                                  @SessionAttribute(SESSION_USER) final String userId,
+	                                  final Model model) {
 		articleService.validateHasAuthorization(articleId, userId);
 		model.addAttribute("articleId", articleId);
 		return "qna/edit_form";
@@ -57,7 +61,7 @@ public class ArticleController {
 
 	@DeleteMapping("/{articleId}")
 	public String deleteArticle(@PathVariable final Long articleId,
-								@SessionAttribute(SESSION_USER) final String userId) {
+	                            @SessionAttribute(SESSION_USER) final String userId) {
 		articleService.validateHasAuthorization(articleId, userId);
 		articleService.deleteArticle(articleId);
 		return "redirect:/";

@@ -36,24 +36,26 @@ public class UserJdbcRepository implements UserRepository {
 
 	@Override
 	public Optional<User> save(final User user) {
-		if (isExistUserByUserId(user.getUserId())) {
-			return Optional.empty();
+		if (!isExistUserByUserId(user.getUserId())) {
+			jdbcInsert.execute(new BeanPropertySqlParameterSource(user));
+			return Optional.of(user);
 		}
-		jdbcInsert.execute(new BeanPropertySqlParameterSource(user));
-		return Optional.of(user);
+
+		return Optional.empty();
 	}
 
 	@Override
 	public List<User> findAll() {
-		return jdbcTemplate.query("SELECT * FROM user_account", userMapper);
+		return jdbcTemplate.query("SELECT user_id, password, name, email FROM user_account", userMapper);
 	}
 
 	@Override
 	public Optional<User> findByUserId(final String userId) {
 		try {
 			return Optional.ofNullable(
-				jdbcTemplate.queryForObject("SELECT * FROM user_account WHERE user_id = :userId",
-											Map.of("userId", userId), userMapper));
+				jdbcTemplate.queryForObject(
+					"SELECT user_id, password, name, email FROM user_account WHERE user_id = :userId",
+					Map.of("userId", userId), userMapper));
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
 		}
@@ -72,11 +74,11 @@ public class UserJdbcRepository implements UserRepository {
 	@Override
 	public void update(final User user) {
 		Map<String, Object> params = Map.of("password", user.getPassword(),
-											"name", user.getName(),
-											"email", user.getEmail(),
-											"userId", user.getUserId());
+		                                    "name", user.getName(),
+		                                    "email", user.getEmail(),
+		                                    "userId", user.getUserId());
 		jdbcTemplate.update(
-			"UPDATE user_account SET password = :password, name = :name, email = :email WHERE user_id = :useId",
+			"UPDATE user_account SET password = :password, name = :name, email = :email WHERE user_id = :userId",
 			params);
 	}
 }

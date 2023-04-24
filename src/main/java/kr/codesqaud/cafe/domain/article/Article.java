@@ -18,6 +18,14 @@ public class Article {
 		this.createdAt = createdAt;
 	}
 
+	private Article(String writer, String title, String content) {
+		this(null, writer, title, content, LocalDateTime.now());
+	}
+
+	public static Article of(final String writer, final String title, final String content) {
+		return new Article(writer, title, content);
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -45,5 +53,9 @@ public class Article {
 	public void editArticle(final String title, final String content) {
 		this.title = title;
 		this.content = content;
+	}
+
+	public boolean isSameWriter(final String userId) {
+		return writer.equals(userId);
 	}
 }

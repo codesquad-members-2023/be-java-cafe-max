@@ -1,12 +1,19 @@
 package kr.codesqaud.cafe.service;
 
+import static kr.codesqaud.cafe.fixture.FixtureFactory.createUser;
 import static org.assertj.core.api.Assertions.*;
-import static org.assertj.core.api.SoftAssertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.BDDMockito.*;
 
-import org.junit.jupiter.api.BeforeEach;
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
 import kr.codesqaud.cafe.controller.dto.req.ProfileEditRequest;
@@ -14,18 +21,16 @@ import kr.codesqaud.cafe.domain.user.User;
 import kr.codesqaud.cafe.exception.DuplicatedUserIdException;
 import kr.codesqaud.cafe.exception.InvalidPasswordException;
 import kr.codesqaud.cafe.exception.NotFoundException;
-import kr.codesqaud.cafe.repository.impl.UserMemoryRepository;
+import kr.codesqaud.cafe.repository.UserRepository;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
+	@InjectMocks
 	private UserService userService;
-	private UserMemoryRepository userMemoryRepository;
 
-	@BeforeEach
-	void setUserRepository() {
-		userMemoryRepository = new UserMemoryRepository();
-		this.userService = new UserService(userMemoryRepository);
-	}
+	@Mock
+	private UserRepository userRepository;
 
 	@DisplayName("회원가입을 수행할 때 ")
 	@Nested
@@ -35,23 +40,30 @@ class UserServiceTest {
 		@Test
 		void givenJoinRequest_whenJoin_thenReturnsNothing() {
 			// given
+			given(userRepository.save(any(User.class))).willReturn(Optional.of(createUser()));
 			JoinRequest joinRequest = new JoinRequest("userId", "password", "name", "email@email.com");
 
 			// when & then
-			assertThatCode(() -> userService.join(joinRequest))
-				.doesNotThrowAnyException();
+			assertAll(
+				() -> assertThatCode(() -> userService.join(joinRequest))
+					.doesNotThrowAnyException(),
+				() -> then(userRepository).should().save(any(User.class))
+			);
 		}
 
 		@DisplayName("중복된 로그인 아이디를 가진 요청이 들어오면 예외를 던진다.")
 		@Test
 		void givenDuplicatedLoginIdJoinRequest_whenJoin_thenThrowsException() {
 			// given
+			given(userRepository.save(any(User.class))).willReturn(Optional.empty());
 			JoinRequest joinRequest = new JoinRequest("duplicatedUserId", "password", "name", "email@email.com");
-			userService.join(joinRequest);
 
 			// when & then
-			assertThatThrownBy(() -> userService.join(joinRequest))
-				.isInstanceOf(DuplicatedUserIdException.class);
+			assertAll(
+				() -> assertThatThrownBy(() -> userService.join(joinRequest))
+					.isInstanceOf(DuplicatedUserIdException.class),
+				() -> then(userRepository).should().save(any(User.class))
+			);
 		}
 	}
 
@@ -63,23 +75,28 @@ class UserServiceTest {
 		@Test
 		void givenUserId_whenFindByUserId_thenReturnsUser() {
 			// given
-			String userId = "uniqueId";
-			userService.join(new JoinRequest(userId, "password", "name", "email@email.com"));
+			given(userRepository.findByUserId(anyString())).willReturn(Optional.of(createUser()));
 
 			// when & then
-			assertThatCode(() -> userService.findByUserId(userId))
-				.doesNotThrowAnyException();
+			assertAll(
+				() -> assertThatCode(() -> userService.findByUserId("bruni"))
+					.doesNotThrowAnyException(),
+				() -> then(userRepository).should().findByUserId("bruni")
+			);
 		}
 
 		@DisplayName("해당 아이디를 가진 회원이 없으면 예외를 던진다.")
 		@Test
 		void givenNotExistsUserId_whenFindByUserId_thenThrowsException() {
 			// given
-			String userId = "notExistsId";
+			given(userRepository.findByUserId(anyString())).willReturn(Optional.empty());
 
 			// when & then
-			assertThatThrownBy(() -> userService.findByUserId(userId))
-				.isInstanceOf(NotFoundException.class);
+			assertAll(
+				() -> assertThatThrownBy(() -> userService.findByUserId("bruni"))
+					.isInstanceOf(NotFoundException.class),
+				() -> then(userRepository).should().findByUserId("bruni")
+			);
 		}
 	}
 
@@ -91,54 +108,59 @@ class UserServiceTest {
 		@Test
 		void givenProfileEditRequest_whenEditProfile_thenReturnsNothing() {
 			// given
-			userService.join(new JoinRequest("bruni", "qwer1234", "브루니", "bruni@codeSquad.com"));
+			given(userRepository.findByUserId(anyString())).willReturn(Optional.of(createUser()));
+			willDoNothing().given(userRepository).update(any(User.class));
 			ProfileEditRequest request = new ProfileEditRequest("qwer1234",
-				"newPassword",
-				"브으루우니이",
-				"bbruunii@codeSquad.com");
+			                                                    "newPassword",
+			                                                    "브으루우니이",
+			                                                    "bbruunii@codeSquad.com");
 
 			// when & then
-			assertSoftly(softAssertions -> {
-				softAssertions.assertThatCode(() -> userService.editUserProfile("bruni", request))
-					.doesNotThrowAnyException();
-				User updatedUser = userMemoryRepository.findByUserId("bruni").get();
-				softAssertions.assertThat(updatedUser.getName()).isEqualTo("브으루우니이");
-				softAssertions.assertThat(updatedUser.getEmail()).isEqualTo("bbruunii@codeSquad.com");
-
-				// 비밀번호 변경에 성공했다면 수정된 비밀번호로 회원정보 수정 가능
-				softAssertions.assertThatCode(() -> userService.editUserProfile("bruni",
-						new ProfileEditRequest("newPassword", "new", "브루니", "bruni@codeSquad.com")))
-					.doesNotThrowAnyException();
-			});
+			assertAll(
+				() -> assertThatCode(() -> userService.editUserProfile("bruni", request))
+					.doesNotThrowAnyException(),
+				() -> then(userRepository).should().findByUserId("bruni"),
+				() -> then(userRepository).should().update(any(User.class))
+			);
 		}
 
 		@DisplayName("존재하지 않는 유저 아이디가 주어지면 예외를 던진다.")
 		@Test
 		void givenNotExistsUserId_whenEditProfile_thenThrowsException() {
 			// given
+			given(userRepository.findByUserId(anyString())).willReturn(Optional.empty());
+
 			ProfileEditRequest request = new ProfileEditRequest("qwer1234",
-				"newPassword",
-				"브으루우니이",
-				"bbruunii@codeSquad.com");
+			                                                    "newPassword",
+			                                                    "브으루우니이",
+			                                                    "bbruunii@codeSquad.com");
 
 			// when & then
-			assertThatThrownBy(() -> userService.editUserProfile("notExists", request))
-				.isInstanceOf(NotFoundException.class);
+			assertAll(
+				() -> assertThatThrownBy(() -> userService.editUserProfile("notExists", request))
+					.isInstanceOf(NotFoundException.class),
+				() -> then(userRepository).should().findByUserId("notExists"),
+				() -> then(userRepository).should(never()).update(any(User.class))
+			);
 		}
 
 		@DisplayName("기존 비밀번호와 일치하지 않는 수정 정보가 주어지면 예외를 던진다.")
 		@Test
 		void givenWrongOriPassword_whenEditProfile_thenThrowsException() {
 			// given
-			userService.join(new JoinRequest("bruni", "qwer1234", "브루니", "bruni@codeSquad.com"));
+			given(userRepository.findByUserId(anyString())).willReturn(Optional.of(createUser()));
 			ProfileEditRequest request = new ProfileEditRequest("wrong",
-				"newPassword",
-				"브으루우니이",
-				"bbruunii@codeSquad.com");
+			                                                    "newPassword",
+			                                                    "브으루우니이",
+			                                                    "bbruunii@codeSquad.com");
 
 			// when & then
-			assertThatThrownBy(() -> userService.editUserProfile("bruni", request))
-				.isInstanceOf(InvalidPasswordException.class);
+			assertAll(
+				() -> assertThatThrownBy(() -> userService.editUserProfile("bruni", request))
+					.isInstanceOf(InvalidPasswordException.class),
+				() -> then(userRepository).should().findByUserId("bruni"),
+				() -> then(userRepository).should(never()).update(any(User.class))
+			);
 		}
 	}
 }

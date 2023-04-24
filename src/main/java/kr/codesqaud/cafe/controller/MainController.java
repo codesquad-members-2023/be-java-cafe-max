@@ -17,7 +17,7 @@ public class MainController {
 
 	@GetMapping("/")
 	public String showMainPage(final Model model) {
-		model.addAttribute("articles", articleService.getArticles());
+		model.addAttribute("articles", articleService.getArticlesWithCommentCount());
 		return "index";
 	}
 }

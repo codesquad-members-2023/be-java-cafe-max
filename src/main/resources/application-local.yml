@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: ${local.driver-class-name}
+    url: ${local.url}
+    username: ${local.username}
+    password: ${local.password}

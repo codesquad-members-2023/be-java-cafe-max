@@ -11,6 +11,12 @@ import kr.codesqaud.cafe.common.interceptor.LoginInterceptor;
 @Configuration(proxyBeanMethods = false)
 public class MvcConfig implements WebMvcConfigurer {
 
+	private final LoginInterceptor loginInterceptor;
+
+	public MvcConfig(LoginInterceptor loginInterceptor) {
+		this.loginInterceptor = loginInterceptor;
+	}
+
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
@@ -21,10 +27,10 @@ public class MvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		String[] authorizePatterns = new String[] {"/articles/**", "/question/**"};
+		String[] authorizePatterns = new String[] {"/articles/**", "/question/**", "/comments/**"};
 
 		registry
-			.addInterceptor(new LoginInterceptor())
+			.addInterceptor(loginInterceptor)
 			.addPathPatterns(authorizePatterns);
 	}
 }
