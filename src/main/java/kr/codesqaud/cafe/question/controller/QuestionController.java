@@ -39,7 +39,8 @@ public class QuestionController {
 	 * @return Q&A 게시글 작성 페이지
 	 */
 	@GetMapping("/write-form")
-	public String writeForm() {
+	public String writeForm(HttpSession session) throws NoAuthSessionException {
+		AuthSessionValidator.validatePageAnyoneCanAccess(session);
 		return "qna/form";
 	}
 
