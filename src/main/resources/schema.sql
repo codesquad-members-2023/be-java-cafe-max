@@ -33,4 +33,4 @@ CREATE TABLE  IF NOT EXISTS reply
     deleted boolean DEFAULT FALSE NOT NULL,
     primary key (id),
     foreign key (articleId) references article(id)
-    );
+);
