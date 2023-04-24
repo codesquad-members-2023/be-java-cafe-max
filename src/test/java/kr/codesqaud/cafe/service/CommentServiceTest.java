@@ -59,7 +59,7 @@ class CommentServiceTest {
 			given(commentRepository.findById(anyLong())).willReturn(Optional.of(createArticleComment()));
 
 			// when
-			commentService.validateHasAuthorization(1L, "bruni");
+			commentService.checkDeleteCommentPermission(1L, "bruni");
 
 			// then
 			then(commentRepository).should().findById(1L);
@@ -73,7 +73,7 @@ class CommentServiceTest {
 
 			// when & then
 			assertAll(
-				() -> assertThatThrownBy(() -> commentService.validateHasAuthorization(1L, "unknown"))
+				() -> assertThatThrownBy(() -> commentService.checkDeleteCommentPermission(1L, "unknown"))
 					.isInstanceOf(NoAuthorizationException.class),
 				() -> then(commentRepository).should().findById(1L)
 			);

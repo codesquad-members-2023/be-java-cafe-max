@@ -33,7 +33,7 @@ public class CommentController {
 	@DeleteMapping("/comments/{commentId}")
 	public ResponseEntity<Long> deleteComment(@PathVariable final Long commentId,
 	                                          @SessionAttribute(SESSION_USER) final String userId) {
-		commentService.validateHasAuthorization(commentId, userId);
+		commentService.checkDeleteCommentPermission(commentId, userId);
 		commentService.deleteById(commentId);
 
 		return ResponseEntity.status(HttpStatus.OK)

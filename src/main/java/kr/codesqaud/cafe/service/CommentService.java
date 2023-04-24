@@ -22,7 +22,7 @@ public class CommentService {
 		return commentRepository.save(request.toEntity(userId));
 	}
 
-	public void validateHasAuthorization(final Long id, final String userId) {
+	public void checkDeleteCommentPermission(final Long id, final String userId) {
 		commentRepository.findById(id)
 			.filter(articleComment -> articleComment.isSameWriter(userId))
 			.orElseThrow(NoAuthorizationException::new);

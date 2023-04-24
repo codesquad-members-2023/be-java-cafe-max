@@ -76,7 +76,7 @@ public class CommentControllerTest {
 	@Test
 	void givenArticleId_whenDelete_thenRedirectsArticleDetailsPage() throws Exception {
 		// given
-		willDoNothing().given(commentService).validateHasAuthorization(anyLong(), anyString());
+		willDoNothing().given(commentService).checkDeleteCommentPermission(anyLong(), anyString());
 		willDoNothing().given(commentService).deleteById(anyLong());
 
 		// when & then
@@ -87,7 +87,7 @@ public class CommentControllerTest {
 			.andDo(print());
 
 		assertAll(
-			() -> then(commentService).should().validateHasAuthorization(1L, "bruni"),
+			() -> then(commentService).should().checkDeleteCommentPermission(1L, "bruni"),
 			() -> then(commentService).should().deleteById(1L)
 		);
 	}
@@ -118,7 +118,7 @@ public class CommentControllerTest {
 		body.add("articleId", "1");
 
 		willThrow(NoAuthorizationException.class).given(commentService)
-			.validateHasAuthorization(anyLong(), anyString());
+			.checkDeleteCommentPermission(anyLong(), anyString());
 		willDoNothing().given(commentService).deleteById(anyLong());
 
 		// when & then
@@ -131,7 +131,7 @@ public class CommentControllerTest {
 			.andDo(print());
 
 		assertAll(
-			() -> then(commentService).should().validateHasAuthorization(1L, "bruni"),
+			() -> then(commentService).should().checkDeleteCommentPermission(1L, "bruni"),
 			() -> then(commentService).should(never()).deleteById(anyLong())
 		);
 	}
