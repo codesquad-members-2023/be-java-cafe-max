@@ -37,10 +37,10 @@ public class ReplyController {
     public Result delete(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
                              SessionDto loginUser, @PathVariable Long articleId, @PathVariable Long id) {
 
-        if (replyService.isCreateBy(loginUser.getUserId(), id)) {
-            replyService.delete(id);
-            return new Result("success");
+        if (!replyService.isCreateBy(loginUser.getUserId(), id)) {
+            throw new UnauthorizedException();
         }
-        throw new UnauthorizedException();
+        replyService.delete(id);
+        return new Result("success");
     }
 }

@@ -22,7 +22,9 @@ public class UserService {
     }
 
     public boolean join(User user) {
-       if (userRepository.findById(user.getUserId()).isPresent()) {
+
+       boolean isDuplicated = userRepository.findById(user.getUserId()).isPresent();
+       if (isDuplicated) {
            return false;
        }
        userRepository.save(user);
@@ -31,7 +33,8 @@ public class UserService {
 
     public boolean login(String userId, String password) {
 
-        if (!userRepository.findById(userId).isPresent()) {
+        boolean isNotExistId = !userRepository.findById(userId).isPresent();
+        if (isNotExistId) {
             return false;
         }
         User user = findById(userId);
@@ -53,6 +56,6 @@ public class UserService {
     }
 
     public User findByName(String name) {
-        return userRepository.findByName(name).orElseThrow();
+        return userRepository.findByName(name).orElseThrow(UserNotFoundException::new);
     }
 }
