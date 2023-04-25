@@ -8,8 +8,6 @@ import kr.codesqaud.cafe.dto.comment.CommentDeleteResponse;
 import kr.codesqaud.cafe.dto.comment.CommentResponse;
 import kr.codesqaud.cafe.dto.comment.CommentWriteRequest;
 import kr.codesqaud.cafe.service.CommentService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,16 +27,16 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentResponse> write(@PathVariable Long postId,
+    public CommentResponse write(@PathVariable Long postId,
         @RequestBody @Valid CommentWriteRequest commentWriteRequest,
         @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
         commentWriteRequest.initializeWriterAndPostId(accountSession, postId);
-        return new ResponseEntity<>(commentService.write(commentWriteRequest), HttpStatus.CREATED);
+        return commentService.write(commentWriteRequest);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CommentDeleteResponse> delete(@PathVariable Long id,
+    public CommentDeleteResponse delete(@PathVariable Long id,
         @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
-        return new ResponseEntity<>(commentService.delete(id, accountSession.getId()), HttpStatus.OK);
+        return commentService.delete(id, accountSession.getId());
     }
 }
