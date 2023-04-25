@@ -1,7 +1,9 @@
-package kr.codesquad.cafe.post;
+package kr.codesquad.cafe.post.controller;
 
 import kr.codesquad.cafe.global.auth.AuthBeforeAdvice;
 import kr.codesquad.cafe.global.exception.IllegalAccessIdException;
+import kr.codesquad.cafe.post.Post;
+import kr.codesquad.cafe.post.PostService;
 import kr.codesquad.cafe.post.controller.PostController;
 import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.post.exception.DeletionFailedException;

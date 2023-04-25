@@ -1,8 +1,10 @@
-package kr.codesquad.cafe.user;
+package kr.codesquad.cafe.user.controller;
 
 import kr.codesquad.cafe.global.PagesInfo;
 import kr.codesquad.cafe.global.auth.AuthBeforeAdvice;
 import kr.codesquad.cafe.post.PostService;
+import kr.codesquad.cafe.user.UserService;
+import kr.codesquad.cafe.user.controller.UserProfileController;
 import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.user.exception.DuplicateEmailException;

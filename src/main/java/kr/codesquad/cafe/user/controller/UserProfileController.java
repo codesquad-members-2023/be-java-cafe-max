@@ -1,8 +1,9 @@
-package kr.codesquad.cafe.user;
+package kr.codesquad.cafe.user.controller;
 
 import kr.codesquad.cafe.global.PagesInfo;
 import kr.codesquad.cafe.post.PostService;
 import kr.codesquad.cafe.post.dto.SimplePostForm;
+import kr.codesquad.cafe.user.UserService;
 import kr.codesquad.cafe.user.annotation.ValidUserIdPath;
 import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.dto.ProfileEditForm;
