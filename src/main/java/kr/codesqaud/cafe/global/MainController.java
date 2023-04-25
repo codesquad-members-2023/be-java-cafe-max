@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import kr.codesqaud.cafe.article.ArticleService;
-import kr.codesqaud.cafe.article.dto.ArticleResponse;
+import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 
 @Controller
 public class MainController {
@@ -19,7 +19,7 @@ public class MainController {
 
 	@GetMapping("/")
 	public String mainPage(Model model) {
-		List<ArticleResponse> articles = articleService.getArticleList();
+		List<ArticleResponseForList> articles = articleService.getArticleList();
 		model.addAttribute("articles", articles)
 			.addAttribute("countOfArticles", articles.size());
 		return "index";

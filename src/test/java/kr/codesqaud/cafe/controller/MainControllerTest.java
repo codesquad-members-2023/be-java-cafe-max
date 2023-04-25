@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import kr.codesqaud.cafe.article.ArticleService;
-import kr.codesqaud.cafe.article.dto.ArticleResponse;
+import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 import kr.codesqaud.cafe.global.MainController;
 
 @WebMvcTest(MainController.class)
@@ -31,7 +31,7 @@ class MainControllerTest {
 	@DisplayName("mainPage메서드를 통해 article의 list를 가져온후 나열한다.")
 	void mainPageTest() throws Exception {
 		//given
-		List<ArticleResponse> articleList = new ArrayList<>();
+		List<ArticleResponseForList> articleList = new ArrayList<>();
 		given(articleService.getArticleList()).willReturn(articleList);
 
 		//when & then

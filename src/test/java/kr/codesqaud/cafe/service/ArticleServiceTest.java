@@ -21,6 +21,7 @@ import kr.codesqaud.cafe.article.ArticleService;
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
+import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
@@ -39,12 +40,10 @@ class ArticleServiceTest {
 	private ArticleMapper articleMapper;
 
 	private Article article;
-	private ArticleResponse articleResponse;
 
 	@BeforeEach
 	void setUp() {
 		article = createArticle();
-		articleResponse = createArticleResponse();
 	}
 
 	@Test
@@ -67,22 +66,23 @@ class ArticleServiceTest {
 
 		Article article1 = createArticle1ContainsIdx();
 		Article article2 = createArticle2ContainsIdx();
-		ArticleResponse articleResponse2 = createArticleResponse2();
+		ArticleResponseForList articleResponse1 = createArticleResponseForList1();
+		ArticleResponseForList articleResponse2 = createArticleResponseForList2();
 		List<Article> articles = new ArrayList<>(Arrays.asList(article1, article2));
 
 		//given
-		given(articleMapper.toArticleResponse(article1)).willReturn(articleResponse);
-		given(articleMapper.toArticleResponse(article2)).willReturn(articleResponse2);
 		given(articleRepository.findAll()).willReturn(articles);
+		given(articleMapper.toArticleResponseForList(article1)).willReturn(articleResponse1);
+		given(articleMapper.toArticleResponseForList(article2)).willReturn(articleResponse2);
 
 		//when
-		List<ArticleResponse> result = articleService.getArticleList();
+		List<ArticleResponseForList> result = articleService.getArticleList();
 
 		//then
 		Assertions.assertAll(
 			() -> assertThat(result.size() == 2).isTrue(),
 			() -> assertThat(result.get(0)).isEqualTo(articleResponse2),
-			() -> assertThat(result.get(1)).isEqualTo(articleResponse)
+			() -> assertThat(result.get(1)).isEqualTo(articleResponse1)
 		);
 	}
 
@@ -90,6 +90,7 @@ class ArticleServiceTest {
 	@DisplayName("idx를 통해 해당 article을 articleResponse의 형태로 반환한다.")
 	void findArticleByIdxTest() {
 		//given
+		ArticleResponse articleResponse = createArticleResponse();
 		Long idx = 1l;
 		given(articleRepository.findArticleByIdx(idx)).willReturn(Optional.of(article));
 		given(articleMapper.toArticleResponse(article)).willReturn(articleResponse);
@@ -151,8 +152,12 @@ class ArticleServiceTest {
 		return new ArticleUpdateRequest("새로운제목", "새로운내용");
 	}
 
-	private static ArticleResponse createArticleResponse2() {
-		return new ArticleResponse("title2", "content2", 2L, "2023-4-23", "nickName");
+	private static ArticleResponseForList createArticleResponseForList1() {
+		return new ArticleResponseForList("title2", 1L, "2023-4-23", "nickName");
+	}
+
+	private static ArticleResponseForList createArticleResponseForList2() {
+		return new ArticleResponseForList("title2", 2L, "2023-4-23", "nickName");
 	}
 
 	private static Article createArticle2ContainsIdx() {

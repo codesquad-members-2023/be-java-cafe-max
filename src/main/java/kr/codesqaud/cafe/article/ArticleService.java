@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
+import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 import kr.codesqaud.cafe.article.exception.ArticleDeleteException;
@@ -33,10 +34,10 @@ public class ArticleService {
 		articleRepository.save(article);
 	}
 
-	public List<ArticleResponse> getArticleList() {
+	public List<ArticleResponseForList> getArticleList() {
 		return articleRepository.findAll().stream()
 			.sorted(Comparator.comparing(Article::getArticleIdx).reversed())
-			.map(articleMapper::toArticleResponse)
+			.map(articleMapper::toArticleResponseForList)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
