@@ -44,7 +44,7 @@ public class QuestionController {
 	 */
 	@GetMapping("/write-form")
 	public String writeForm(HttpSession session) throws NoAuthSessionException {
-		AuthSessionValidator.validatePageAnyoneCanAccess(session);
+		AuthSessionValidator.validateUserIsSignedIn(session);
 		return "qna/form";
 	}
 
@@ -55,7 +55,7 @@ public class QuestionController {
 	 */
 	@PostMapping
 	public String questionAdd(QuestionWriteRequestDTO dto, HttpSession session) throws NoAuthSessionException {
-		long writer_id = AuthSessionValidator.validatePageAnyoneCanAccess(session);
+		long writer_id = AuthSessionValidator.validateUserIsSignedIn(session);
 		service.save(dto.toEntity(writer_id));
 
 		return "redirect:questions/write-form";
@@ -94,7 +94,7 @@ public class QuestionController {
 	@GetMapping("/{id}")
 	public String questionDetail(@PathVariable String id, @ModelAttribute("errorMessage") String errorMessage,
 		Model model, HttpSession session) throws QuestionNotExistException, NoAuthSessionException {
-		AuthSessionValidator.validatePageAnyoneCanAccess(session);
+		AuthSessionValidator.validateUserIsSignedIn(session);
 
 		if (errorMessage.isBlank()) {
 			model.addAttribute("questionDetailDTO",

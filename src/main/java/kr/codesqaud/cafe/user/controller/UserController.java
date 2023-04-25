@@ -22,10 +22,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.codesqaud.cafe.common.auth.exception.NoAccessPermissionException;
+import kr.codesqaud.cafe.common.auth.utill.AuthSessionValidator;
 import kr.codesqaud.cafe.user.controller.request.SignInRequestDTO;
 import kr.codesqaud.cafe.user.controller.request.SignUpRequestDTO;
 import kr.codesqaud.cafe.user.controller.response.AuthSession;
 import kr.codesqaud.cafe.user.controller.response.UserResponseDTO;
+import kr.codesqaud.cafe.user.domain.UserEntity;
 import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
 import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
 import kr.codesqaud.cafe.user.exception.UserNotExistException;
@@ -41,20 +44,41 @@ public class UserController {
 	}
 
 	/**
-	 * 회원가입 페이지로 이동
+	 * 회원가입 페이지로 이동. (접근 권한: 로그인 하지 않은 접속자)
 	 * @param model 회원가입 정보 유효성 검사 실패시 에러 메시지를 전달하기 위한 model
 	 * @return 회원가입 페이지
 	 */
 	@GetMapping("/signup")
-	public String signup(Model model) {
+	public String signup(Model model, HttpSession session) {
+		if (AuthSessionValidator.isSignedIn(session)) {
+			return "redirect:/questions";
+		}
+
 		return "user/form";
 	}
 
+	/**
+	 * 로그인 페이지로 이동. (접근 권한: 로그인 하지 않은 접속자)
+	 * @param model 로그인 실패시 에러 메시지를 전달하기 위한 model
+	 * @return 로그인 페이지
+	 */
 	@GetMapping("/signin")
-	public String signIn(Model model) {
+	public String signIn(Model model, HttpSession session) {
+		if (AuthSessionValidator.isSignedIn(session)) {
+			return "redirect:/questions";
+		}
+
 		return "user/signin";
 	}
 
+	/**
+	 * 로그인 기능 수행.
+	 * @param dto 로그인 정보를 담아온 Dto
+	 * @param request
+	 * @param response
+	 * @return 로그인 성공시 게시글 목록 페이지로 이동
+	 * @throws UserDoesNotMatchException 로그인 정보가 일치하지 않을 때. 예외처리는 ControllerExceptionHander에서 처리
+	 */
 	@PostMapping("/signin")
 	public String signIn(SignInRequestDTO dto, HttpServletRequest request, HttpServletResponse response) throws
 		UserDoesNotMatchException {
@@ -77,6 +101,11 @@ public class UserController {
 		return "redirect:/questions";
 	}
 
+	/**
+	 * 로그아웃
+	 * @param session
+	 * @return 게시글 목록 페이지로 이동
+	 */
 	@GetMapping("/signout")
 	public String signOut(HttpSession session) {
 		session.removeAttribute("authSession");
@@ -84,18 +113,20 @@ public class UserController {
 	}
 
 	/**
-	 * 회원 목록 페이지로 이동
+	 * 회원 목록 페이지로 이동. (접근 권한: admin만)
 	 * @param model 회원 목록을 전달하기 위한 model
 	 * @return 회원 목록 페이지
 	 */
 	@GetMapping
-	public String userList(Model model) {
+	public String userList(Model model, HttpSession session) throws NoAccessPermissionException {
+		AuthSessionValidator.validateIsAdmin(session);
+
 		model.addAttribute("users", service.findAllUsers());
 		return "user/list";
 	}
 
 	/**
-	 * 회원가입 기능
+	 * 회원가입 기능.
 	 * @param dto 회원가입 정보를 담고 있는 dto
 	 * @param result 회원가입 정보 유효성 검사 결과를 담고 있는 객체
 	 * @param redirect 회원가입 실패시 회원가입 페이지로 에러메시지를 redirect 하기 위한 model
@@ -113,7 +144,7 @@ public class UserController {
 	}
 
 	/**
-	 * 회원 프로필 보기 페이지로 이동
+	 * 회원 프로필 보기 페이지로 이동. (접근 권한: 자기 자신만)
 	 * @param userId 회원 아이디
 	 * @param errorMessage 존재하지 않는 회원을 조회했을 때 받아올 에러 메시지
 	 * @param model 존재하지 않는 회원을 조회했을 때 에러 메시지를 보내기 위한 model
@@ -121,7 +152,11 @@ public class UserController {
 	 */
 	@GetMapping("/{userId}")
 	public String userDetail(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
-		Model model) throws UserNotExistException {
+		Model model, HttpSession session) throws
+		UserNotExistException, NoAccessPermissionException {
+		UserEntity user = service.findByUserId(userId);
+		AuthSessionValidator.validateIsPrivatePage(session, user.getId());
+
 		if (errorMessage.isBlank()) {
 			model.addAttribute("userResponseDto", UserResponseDTO.from(service.findByUserId(userId)));
 		}
@@ -130,7 +165,7 @@ public class UserController {
 	}
 
 	/**
-	 * 회원 정보 수정 페이지로 이동
+	 * 회원 정보 수정 페이지로 이동. (접근 권한: 자기 자신만)
 	 * @param userId 회원 아이디
 	 * @param errorMessage 존재하지 않는 회원을 조회했을 때 받아올 에러 메시지
 	 * @param model 존재하지 않는 회원을 조회했을 때 에러 메시지를 보내기 위한 model
@@ -138,21 +173,20 @@ public class UserController {
 	 */
 	@GetMapping("/{userId}/modify-form")
 	public String modifyForm(@PathVariable String userId, @ModelAttribute("errorMessage") String errorMessage,
-		Model model, HttpServletRequest request) throws UserNotExistException {
+		Model model, HttpSession session) throws UserNotExistException, NoAccessPermissionException {
 
-		if (!checkAuthSession(request.getSession(false), userId)) {
-			return "error/403-forbidden";
-		}
+		UserEntity user = service.findByUserId(userId);
+		AuthSessionValidator.validateIsPrivatePage(session, user.getId());
 
 		if (errorMessage.isBlank()) {
-			model.addAttribute("userResponseDto", UserResponseDTO.from(service.findByUserId(userId)));
+			model.addAttribute("userResponseDto", UserResponseDTO.from(user));
 		}
 
 		return "user/modify-form";
 	}
 
 	/**
-	 * 회원 정보 수정 기능
+	 * 회원 정보 수정 기능. (접근 권한: 자기 자신만)
 	 * @param userId 회원 아이디
 	 * @param dto 수정된 회원 정보를 가지고 있는 dto
 	 * @param result dto 유효성 검증 결과를 담고 있는 객체
@@ -163,7 +197,13 @@ public class UserController {
 	@PutMapping("/{userId}")
 	public String userModify(@PathVariable String userId, @Valid SignUpRequestDTO dto, BindingResult result,
 		RedirectAttributes redirect,
-		HttpServletRequest request) throws UserDoesNotMatchException {
+		HttpServletRequest request, HttpSession session) throws
+		UserDoesNotMatchException,
+		UserNotExistException,
+		NoAccessPermissionException {
+
+		UserEntity user = service.findByUserId(userId);
+		AuthSessionValidator.validateIsPrivatePage(session, user.getId());
 
 		if (!userId.equals(dto.getUserId())) {
 			addAttributeErrorMessage(redirect, "잘못된 입력입니다.");
@@ -227,14 +267,4 @@ public class UserController {
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	/**
-	 * pathValue의 userId와 session의 userId가 같은지 검증한다.
-	 * @param httpSession HttpSession
-	 * @param userIdFromPath pathValue의 userId
-	 * @return session 검증 통과시 ture, 실패시 false 반환
-	 */
-	private boolean checkAuthSession(HttpSession httpSession, String userIdFromPath) {
-		AuthSession authSession = (httpSession != null) ? (AuthSession)httpSession.getAttribute("authSession") : null;
-		return httpSession != null && userIdFromPath.equals(authSession.getUserId());
-	}
 }
