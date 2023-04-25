@@ -26,10 +26,14 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(Builder builder) {
+    private Comment(Builder builder) {
         this.post = builder.post;
         this.user = builder.user;
         this.content = builder.content;
+    }
+
+    public static Builder build() {
+        return new Builder();
     }
 
     public static Comment from(String body, Post post, User user) {

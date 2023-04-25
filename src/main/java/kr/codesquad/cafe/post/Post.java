@@ -87,6 +87,10 @@ public class Post {
         return comments;
     }
 
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
     public void disable() {
         isDeleted = true;
     }
