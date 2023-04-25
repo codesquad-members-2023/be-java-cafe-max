@@ -51,7 +51,7 @@ public class ArticleService {
      */
     public long edit(long id, Article article) {
         String originWriter = articleRepository.findIdBySequence(id);
-        String requesterId = article.getWriter();
+        String requesterId = article.getLoginId();
 
         if (!originWriter.equals(requesterId)) {
             logger.info("게시글 수정 요청 ID와 기존 게시글 ID 불일치, requesterId: {}, originId: {}", requesterId, originWriter);

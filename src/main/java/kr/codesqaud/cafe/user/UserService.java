@@ -29,7 +29,7 @@ public class UserService {
     }
 
     private void validaUserIdUniqueness(SignUpRequestDto signUpRequestDto) {
-        findOne(signUpRequestDto.getUserId()).ifPresent(user -> {
+        findOne(signUpRequestDto.getLoginId()).ifPresent(user -> {
                     throw new InvalidUserIdException();
                 });
     }
@@ -55,7 +55,7 @@ public class UserService {
      * @return null: 로그인 실패
      */
     public User login(LoginRequestDto loginRequestDto) {
-        return userRepository.findById(loginRequestDto.getUserId())
+        return userRepository.findById(loginRequestDto.getLoginId())
                 .filter(u -> u.getPassword().equals(loginRequestDto.getPassword()))
                 .orElse(null);
     }

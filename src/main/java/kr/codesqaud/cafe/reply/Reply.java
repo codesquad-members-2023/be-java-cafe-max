@@ -7,14 +7,14 @@ public class Reply {
 
     private final long id;
     private final long articleId;
-    private final String userId;
+    private final String loginId;
     private final String contents;
     private final String createDateTime;
 
     private Reply(Builder builder) {
         id = builder.id;
         articleId = builder.articleId;
-        userId = builder.userId;
+        loginId = builder.loginId;
         contents = builder.contents;
         createDateTime = builder.createDateTime;
     }
@@ -27,8 +27,8 @@ public class Reply {
         return articleId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getLoginId() {
+        return loginId;
     }
 
     public String getContents() {
@@ -43,7 +43,7 @@ public class Reply {
 
         private long id;
         private long articleId;
-        private String userId;
+        private String loginId;
         private String contents;
         private String createDateTime;
 
@@ -57,8 +57,8 @@ public class Reply {
             return this;
         }
 
-        public Builder userId(String userId) {
-            this.userId = userId;
+        public Builder userId(String loginId) {
+            this.loginId = loginId;
             return this;
         }
 

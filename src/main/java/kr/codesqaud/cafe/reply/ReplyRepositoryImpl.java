@@ -21,7 +21,7 @@ public class ReplyRepositoryImpl implements ReplyRepository {
 
     @Override
     public long save(Reply reply) {
-        String sql = "insert into reply (article_id, users_id, contents) values (:articleId, :userId, :contents)";
+        String sql = "insert into reply (article_id, user_login_id, contents) values (:articleId, :loginId, :contents)";
         SqlParameterSource param = new BeanPropertySqlParameterSource(reply);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         template.update(sql, param, keyHolder);
@@ -54,7 +54,7 @@ public class ReplyRepositoryImpl implements ReplyRepository {
 
     @Override
     public Reply findById(long id) {
-        String sql = "SELECT id, article_id, users_id, contents, create_dateTime"
+        String sql = "SELECT id, article_id, user_login_id, contents, create_dateTime"
                 + " FROM reply"
                 + " WHERE id = :id";
         SqlParameterSource param = new MapSqlParameterSource("id", id);
@@ -66,9 +66,9 @@ public class ReplyRepositoryImpl implements ReplyRepository {
      */
     @Override
     public List<Reply> findAllByArticleId(long id) {
-        String sql = "SELECT r.id, r.article_id, u.name as users_id, r.contents, r.create_dateTime "
+        String sql = "SELECT r.id, r.article_id, u.name as user_login_id, r.contents, r.create_dateTime "
                 + "FROM reply r "
-                + "INNER JOIN users u ON r.users_id = u.userId "
+                + "INNER JOIN user u ON r.user_login_id = u.login_Id "
                 + "WHERE article_id = :id";
         SqlParameterSource param = new MapSqlParameterSource("id", id);
         return template.query(sql, param, replyRowMapper());
@@ -78,7 +78,7 @@ public class ReplyRepositoryImpl implements ReplyRepository {
         return (resultSet, rowNumber) -> new Reply.Builder()
                 .id(resultSet.getLong("id"))
                 .articleId(resultSet.getLong("article_id"))
-                .userId(resultSet.getString("users_id"))
+                .userId(resultSet.getString("user_login_id"))
                 .contents(resultSet.getString("contents"))
                 .createDateTime(resultSet.getString("create_dateTime"))
                 .build();

@@ -5,41 +5,41 @@ package kr.codesqaud.cafe.user;
  */
 public class User {
 
-    private long sequence;
-    private String userId;
+    private long id;
+    private String loginId;
     private String password;
     private String name;
     private String email;
 
-    public User(String userId, String password, String name, String email) {
-        this.userId = userId;
+    public User(String loginId, String password, String name, String email) {
+        this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
     private User(Builder builder) {
-        sequence = builder.sequence;
-        userId = builder.userId;
+        id = builder.id;
+        loginId = builder.loginId;
         password = builder.password;
         name = builder.name;
         email = builder.email;
     }
 
-    public long getSequence() {
-        return sequence;
+    public long getId() {
+        return id;
     }
 
-    public void setSequence(final long sequence) {
-        this.sequence = sequence;
+    public void setId(final long id) {
+        this.id = id;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getLoginId() {
+        return loginId;
     }
 
-    public void setUserId(final String userId) {
-        this.userId = userId;
+    public void setLoginId(final String loginId) {
+        this.loginId = loginId;
     }
 
     public String getPassword() {
@@ -69,19 +69,19 @@ public class User {
 
     public static class Builder {
 
-        private long sequence;
-        private String userId;
+        private long id;
+        private String loginId;
         private String password;
         private String name;
         private String email;
 
-        public Builder sequence(long sequence) {
-            this.sequence = sequence;
+        public Builder id(long id) {
+            this.id = id;
             return this;
         }
 
-        public Builder userId(String userId) {
-            this.userId = userId;
+        public Builder loginId(String loginId) {
+            this.loginId = loginId;
             return this;
         }
 

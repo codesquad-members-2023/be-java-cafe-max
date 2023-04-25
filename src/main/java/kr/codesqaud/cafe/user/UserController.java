@@ -76,7 +76,7 @@ public class UserController {
         logger.info("로그인 성공");
 
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConstant.LOGIN_USER_ID, loginUser.getUserId());
+        session.setAttribute(SessionConstant.LOGIN_USER_ID, loginUser.getLoginId());
         session.setAttribute(SessionConstant.LOGIN_USER_NAME, loginUser.getName());
 
         return "redirect:/";

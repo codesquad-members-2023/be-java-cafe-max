@@ -8,13 +8,13 @@ import kr.codesqaud.cafe.article.Article;
 public class ArticleResponseDto {
 
     private long id;
-    private String writer;
+    private String loginId;
     private String title;
     private String contents;
 
     public ArticleResponseDto fromEntity(Article article) {
         id = article.getId();
-        writer = article.getWriter();
+        loginId = article.getLoginId();
         title = article.getTitle();
         contents = article.getContents();
         return this;
@@ -28,12 +28,12 @@ public class ArticleResponseDto {
         this.id = id;
     }
 
-    public String getWriter() {
-        return writer;
+    public String getLoginId() {
+        return loginId;
     }
 
-    public void setWriter(final String writer) {
-        this.writer = writer;
+    public void setLoginId(final String loginId) {
+        this.loginId = loginId;
     }
 
     public String getTitle() {

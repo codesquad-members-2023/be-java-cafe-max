@@ -47,19 +47,19 @@ class ArticleRepositoryImplTest {
 
         // 게시글 데이터
         article1 = new Article.Builder()
-                .writer("tester1")
+                .loginId("tester1")
                 .title("title1")
                 .contents("contents1")
                 .build();
 
         article2 = new Article.Builder()
-                .writer("tester2")
+                .loginId("tester2")
                 .title("title2")
                 .contents("contents2")
                 .build();
 
         article3 = new Article.Builder()
-                .writer("tester3")
+                .loginId("tester3")
                 .title("title3")
                 .contents("contents3")
                 .build();
@@ -73,7 +73,7 @@ class ArticleRepositoryImplTest {
 
         // then
         Article findArticle = articleRepository.findOneById(id).get(); // TODO: 전체적으로 테스트 돌리면 오류 발생// 계속 삭제하고 추가되면서 오토 인크리먼트 값이 변하는 것 같다.
-        String writer = findArticle.getWriter();
+        String writer = findArticle.getLoginId();
         String title = findArticle.getTitle();
         String contents = findArticle.getContents();
 
@@ -102,9 +102,9 @@ class ArticleRepositoryImplTest {
         long id = articleRepository.save(article1);
 
         Article article = new Article.Builder()
-                .writer("tester1")
+                .loginId("tester1")
                 .title("title1")
-                .contents("new contents")
+                .contents("new contents") // 수정 내용
                 .build();
         articleRepository.update(id, article);
 

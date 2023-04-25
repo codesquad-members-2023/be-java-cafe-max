@@ -42,7 +42,7 @@ public class ReplyService {
      * @param id reply id
      */
     public long deleteByReplyId(long id, String requesterId) {
-        String originId = findOne(id).getUserId();
+        String originId = findOne(id).getLoginId();
         if (!requesterId.equals(originId)) {
             throw new IllegalArgumentException(); // TODO: 커스텀 에러로 변경
         }

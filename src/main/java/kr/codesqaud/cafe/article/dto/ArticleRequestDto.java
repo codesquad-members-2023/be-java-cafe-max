@@ -7,24 +7,24 @@ import kr.codesqaud.cafe.article.Article;
  */
 public class ArticleRequestDto {
 
-    private String writer;
+    private String loginId;
     private String title;
     private String contents;
 
-    public Article toEntity(String writer) {
+    public Article toEntity(String loginId) {
         return new Article.Builder()
-                .writer(writer)
+                .loginId(loginId)
                 .title(title)
                 .contents(contents)
                 .build();
     }
 
-    public String getWriter() {
-        return writer;
+    public String getLoginId() {
+        return loginId;
     }
 
-    public void setWriter(final String writer) {
-        this.writer = writer;
+    public void setLoginId(final String loginId) {
+        this.loginId = loginId;
     }
 
     public String getTitle() {

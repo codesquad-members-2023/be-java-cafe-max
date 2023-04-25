@@ -6,13 +6,13 @@ package kr.codesqaud.cafe.article;
 public class Article {
 
     private final long id;
-    private final String writer;
+    private final String loginId;
     private final String title;
     private final String contents;
 
     private Article(Builder builder) {
         id = builder.id;
-        writer = builder.writer;
+        loginId = builder.loginId;
         title = builder.title;
         contents = builder.contents;
     }
@@ -21,8 +21,8 @@ public class Article {
         return id;
     }
 
-    public String getWriter() {
-        return writer;
+    public String getLoginId() {
+        return loginId;
     }
 
     public String getTitle() {
@@ -36,7 +36,7 @@ public class Article {
     public static class Builder {
 
         private long id;
-        private String writer;
+        private String loginId;
         private String title;
         private String contents;
 
@@ -45,8 +45,8 @@ public class Article {
             return this;
         }
 
-        public Builder writer(String writer) {
-            this.writer = writer;
+        public Builder loginId(String loginId) {
+            this.loginId = loginId;
             return this;
         }
 

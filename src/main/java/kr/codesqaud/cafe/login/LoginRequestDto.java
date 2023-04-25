@@ -5,17 +5,17 @@ import javax.validation.constraints.Size;
 public class LoginRequestDto {
 
     @Size(min = 1, max = 10)
-    private String userId;
+    private String loginId;
 
     @Size(min = 8, max = 10)
     private String password;
 
-    public String getUserId() {
-        return userId;
+    public String getLoginId() {
+        return loginId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setLoginId(String loginId) {
+        this.loginId = loginId;
     }
 
     public String getPassword() {

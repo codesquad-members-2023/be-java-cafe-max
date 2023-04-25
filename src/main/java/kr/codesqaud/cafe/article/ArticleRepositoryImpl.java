@@ -27,7 +27,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public long save(Article article) { // TODO: 저장할 때 ID가 아닌 name으로 바로 저장하게끔 수정(그러면 다른 메서드에서 join 안해도 될 듯)
-        String sql = "insert into article (writer, title, contents) values (:writer, :title, :contents)";
+        String sql = "insert into article (user_login_Id, title, contents) values (:loginId, :title, :contents)";
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -37,15 +37,15 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public String findIdBySequence(long id) {
-        String sql = "select id, writer, title, contents from article where id = :id";
+        String sql = "select id, user_login_Id, title, contents from article where id = :id";
         SqlParameterSource param = new MapSqlParameterSource("id", id);
-        return template.queryForObject(sql, param, articleRowMapper()).getWriter();
+        return template.queryForObject(sql, param, articleRowMapper()).getLoginId();
     }
 
     @Override
     public Optional<Article> findOneById(long id) {
-        String sql = "select a.id, u.name as writer, a.title, a.contents "
-                + "from article a inner join user u on a.writer = u.userId where a.id = :id";
+        String sql = "select a.id, u.name as user_login_id, a.title, a.contents "
+                + "from article a inner join user u on a.user_login_id = u.login_id where a.id = :id";
         SqlParameterSource param = new MapSqlParameterSource("id", id);
         try {
             return Optional.ofNullable(template.queryForObject(sql, param, articleRowMapper()));
@@ -56,8 +56,8 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select a.id, u.name as writer, a.title, a.contents "
-                + "from article a inner join user u on a.writer = u.userId";
+        String sql = "select a.id, u.name as user_login_id, a.title, a.contents "
+                + "from article a inner join user u on a.user_login_id = u.login_id";
         return template.query(sql, articleRowMapper());
     }
 
@@ -75,7 +75,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     private RowMapper<Article> articleRowMapper() {
         return (resultSet, rowNumber) -> new Article.Builder()
                 .id(resultSet.getLong("id"))
-                .writer(resultSet.getString("writer"))
+                .loginId(resultSet.getString("user_login_id"))
                 .title(resultSet.getString("title"))
                 .contents(resultSet.getString("contents"))
                 .build();
