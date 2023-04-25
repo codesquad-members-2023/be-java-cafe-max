@@ -31,21 +31,21 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findByWriter(String writer) {
-        String sql = "select * from article where writer = ?";
+        String sql = "select * from article where writer = ? and deleted = false";
         List<Article> articleList = jdbcTemplate.query(sql, articleRowMapper(), writer);
         return articleList.stream().findAny();
     }
 
     @Override
     public Optional<Article> findById(Long id) {
-        String sql = "select * from article where id = ?";
+        String sql = "select * from article where id = ? and deleted = false";
         List<Article> articleList = jdbcTemplate.query(sql, articleRowMapper(), id);
         return articleList.stream().findAny();
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from article", articleRowMapper());
+        return jdbcTemplate.query("select * from article where deleted = false", articleRowMapper());
     }
 
     @Override
@@ -61,7 +61,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void delete(Long id) {
-        jdbcTemplate.update("delete from article where id = ?", id);
+        jdbcTemplate.update("update article set deleted = ? where id = ?", true, id);
     }
 
     private RowMapper<Article> articleRowMapper() {

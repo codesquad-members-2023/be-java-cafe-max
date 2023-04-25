@@ -62,7 +62,7 @@ function deleteAnswer(e) {
       $article.remove();
 
   }).fail((error) => {
-    alert("[에러발생]다시 시도해주세요.");
+    alert("댓글을 삭제할 권한이 없습니다.");
     console.log(JSON.stringify(error));
   })
 }

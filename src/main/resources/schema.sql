@@ -19,6 +19,7 @@ CREATE TABLE  IF NOT EXISTS article
     title        varchar(255) not null,
     contents     varchar(255) not null,
     createdTime  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted boolean DEFAULT FALSE not null,
     primary key (id)
 );
 
@@ -30,7 +31,7 @@ CREATE TABLE  IF NOT EXISTS reply
     articleId bigint not null,
     contents     varchar(255) not null,
     createdTime  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted boolean DEFAULT FALSE NOT NULL,
+    deleted boolean DEFAULT FALSE not null,
     primary key (id),
     foreign key (articleId) references article(id)
 );
