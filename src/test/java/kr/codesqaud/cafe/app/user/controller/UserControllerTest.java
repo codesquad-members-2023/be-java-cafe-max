@@ -270,26 +270,18 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("클라이언트가 존재하지 않는 회원 등록번호를 이용하여 특정 회원 조회 요청시 전체 회원 조회 페이지로 이동합니다.")
-    public void givenNotExistUserId_whenListUser_thenRedirectUsers() throws Exception {
+    @DisplayName("클라이언트가 존재하지 않는 회원 등록번호를 이용하여 특정 회원 조회 요청시 404 페이지로 이동합니다.")
+    public void givenNotExistUserId_whenListUser_then404() throws Exception {
         //given
         login("yonghwan1107", "yonghwan1107");
         long id = 9999L;
         String url = "/users/" + id;
-        //when
-        String json = mockMvc.perform(get(url)
+        //when & then
+        mockMvc.perform(get(url)
                 .session(session))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/users"))
-            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        //then
-        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
-        };
-        HashMap<String, Object> errorMap = objectMapper.readValue(json, typeReference);
-        assertThat(errorMap.get("name"))
-            .isEqualTo("NOT_FOUND_USER");
-        assertThat(errorMap.get("httpStatus")).isEqualTo("MOVED_PERMANENTLY");
-        assertThat(errorMap.get("errorMessage")).isEqualTo("회원을 찾을 수 없습니다.");
+            .andExpect(status().isNotFound())
+            .andExpect(redirectedUrl("/users"));
+
     }
 
     private Long signup(String userId, String password, String name, String email) {

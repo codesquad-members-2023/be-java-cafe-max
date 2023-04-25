@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -92,13 +93,10 @@ class QuestionControllerTest {
         QuestionSavedRequest dto = new QuestionSavedRequest(title, content, userId);
         String url = "/qna";
         //when
-        String jsonArticle =
-            mockMvc.perform(post(url)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(toJSON(dto))
-                    .session(httpSession))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        String jsonArticle = mockMvc.perform(
+                post(url).contentType(MediaType.APPLICATION_JSON).content(toJSON(dto))
+                    .session(httpSession)).andExpect(status().isOk()).andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
         //then
         TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
         };
@@ -120,13 +118,10 @@ class QuestionControllerTest {
         QuestionSavedRequest dto = new QuestionSavedRequest(title, content, userId);
         String url = "/qna";
         //when
-        String jsonErrors =
-            mockMvc.perform(post(url)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(toJSON(dto))
-                    .session(httpSession))
-                .andExpect(status().isBadRequest()).andReturn().getResponse()
-                .getContentAsString(StandardCharsets.UTF_8);
+        String jsonErrors = mockMvc.perform(
+                post(url).contentType(MediaType.APPLICATION_JSON).content(toJSON(dto))
+                    .session(httpSession)).andExpect(status().isBadRequest()).andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
         //then
         List<ValidationError> errors = new ArrayList<>();
         errors.add(new ValidationError("title", "제목은 100자 이내여야 합니다."));
@@ -157,10 +152,8 @@ class QuestionControllerTest {
         String url = "/qna/" + questionId;
         //when
         QuestionResponse question = (QuestionResponse) Objects.requireNonNull(
-            mockMvc.perform(get(url)
-                    .session(httpSession))
-                .andExpect(status().isOk())
-                .andReturn().getModelAndView()).getModelMap().get("question");
+            mockMvc.perform(get(url).session(httpSession)).andExpect(status().isOk()).andReturn()
+                .getModelAndView()).getModelMap().get("question");
         //then
         assertThat(question.getTitle()).isEqualTo("제목1");
         assertThat(question.getContent()).isEqualTo("내용1");
@@ -173,8 +166,7 @@ class QuestionControllerTest {
         //given
         String url = "/qna/1";
         //when & then
-        mockMvc.perform(get(url))
-            .andExpect(redirectedUrl("/login"));
+        mockMvc.perform(get(url)).andExpect(redirectedUrl("/login"));
     }
 
     @Test
@@ -189,12 +181,10 @@ class QuestionControllerTest {
             str_userId);
         String url = "/qna/" + questionId;
         //when
-        String json = mockMvc.perform(put(url)
-                .content(toJSON(dto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .session(httpSession))
-            .andExpect(status().isOk())
-            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        String json = mockMvc.perform(
+                put(url).content(toJSON(dto)).contentType(MediaType.APPLICATION_JSON)
+                    .session(httpSession)).andExpect(status().isOk()).andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
         //then
         TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
         };
@@ -212,12 +202,10 @@ class QuestionControllerTest {
         QuestionSavedRequest dto = new QuestionSavedRequest("", "변경된 내용1", "yonghwan1107");
         String url = "/qna/" + id;
         //when
-        String json = mockMvc.perform(put(url)
-                .content(toJSON(dto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .session(httpSession))
-            .andExpect(status().isBadRequest())
-            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        String json = mockMvc.perform(
+                put(url).content(toJSON(dto)).contentType(MediaType.APPLICATION_JSON)
+                    .session(httpSession)).andExpect(status().isBadRequest()).andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
         //then
         TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
         };
@@ -235,9 +223,7 @@ class QuestionControllerTest {
         Long id = write("제목1", "내용1");
         String url = "/qna/" + id;
         //when & then
-        mockMvc.perform(delete(url)
-                .session(httpSession))
-            .andExpect(status().isOk());
+        mockMvc.perform(delete(url).session(httpSession)).andExpect(status().isOk());
     }
 
     @Test
@@ -249,33 +235,20 @@ class QuestionControllerTest {
         login("kim1107", "kim1107kim1107");
         String url = "/qna/" + id;
         //when
-        mockMvc.perform(delete(url)
-                .session(httpSession))
-            .andExpect(status().isForbidden());
+        mockMvc.perform(delete(url).session(httpSession)).andExpect(status().isForbidden());
         //then
     }
 
     @Test
-    @DisplayName("클라이언트가 서버에 없는 게시물을 요청할때 전체 게시물 목록 페이지로 리다이렉션 되는지 테스트")
+    @DisplayName("클라이언트가 서버에 없는 게시물을 요청할때 404 페이지가 응답되는지 테스트")
     public void givenNotExistQuestionId_whenListQuestion_thenRedirection() throws Exception {
         //given
         login("yonghwan1107", "yonghwan1107");
         long id = 9999L;
         String url = "/qna/" + id;
-        //when
-        String json = mockMvc.perform(get(url)
-                .session(httpSession))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/"))
-            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
-        //then
-        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
-        };
-        HashMap<String, Object> errorMap = objectMapper.readValue(json, typeReference);
-        Assertions.assertThat(errorMap.get("httpStatus")).isEqualTo("MOVED_PERMANENTLY");
-        Assertions.assertThat(errorMap.get("name")).isEqualTo("NOT_FOUND_QUESTION");
-        Assertions.assertThat(errorMap.get("errorMessage")).isEqualTo("게시물을 찾을 수 없습니다.");
-        Assertions.assertThat(errorMap.get("redirectUrl")).isEqualTo("/");
+        //when & then
+        mockMvc.perform(get(url).session(httpSession)).andExpect(status().isNotFound())
+            .andExpect(view().name("error/404"));
     }
 
     private Long signUp(String userId, String password, String name, String email) {
@@ -283,10 +256,8 @@ class QuestionControllerTest {
     }
 
     private void login(String userId, String password) throws Exception {
-        mockMvc.perform(post("/login")
-            .content(toJSON(new UserLoginRequest(userId, password)))
-            .contentType(MediaType.APPLICATION_JSON)
-            .session(httpSession));
+        mockMvc.perform(post("/login").content(toJSON(new UserLoginRequest(userId, password)))
+            .contentType(MediaType.APPLICATION_JSON).session(httpSession));
     }
 
     private Long write(String title, String content) {
