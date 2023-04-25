@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.dto.member;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.Member;
 
 public class MemberResponse {
@@ -37,9 +36,5 @@ public class MemberResponse {
 
     public LocalDateTime getCreateDate() {
         return createDate;
-    }
-
-    public String getCrateDateFormat() {
-        return createDate.format(DateTimeFormatter.ISO_DATE);
     }
 }

@@ -19,7 +19,7 @@
             </div>
             <div class="row row-cols-3 post-detail">
                 <span class="col-sm-2" th:text="${postResponse.writer.nickname}">비회원</span>
-                <span class="col-sm-4">작성일자:[[${postResponse.getWriteDateFormat()}]]</span>
+                <span class="col-sm-4">작성일자:[[${#temporals.format(postResponse.writeDate, 'yyyy-MM-dd HH:mm:ss')}]]</span>
                 <span class="col-sm-2">조회 [[${postResponse.views}]]</span>
             </div>
             <div class="post-content">
@@ -34,7 +34,7 @@
             <div class="comment" th:each="commentResponse : ${commentResponses}">
                 <strong class="comment-writer" th:text="${commentResponse.writer.nickname}">자바지기</strong>
                 <pre class="comment-content" th:text="${commentResponse.content}">이 글만으로는 원인 파악하기 힘들겠다. 소스 코드와 설정을 단순화해서 공유해 주면 같이 디버깅해줄 수도 있겠다.</pre>
-                <span class="comment-date" th:text="${commentResponse.getWriteDateFormat()}">2015-12-30 01:47</span>
+                <span class="comment-date" th:text="${#temporals.format(commentResponse.writeDate, 'yyyy-MM-dd HH:mm:ss')}">2015-12-30 01:47</span>
                 <form class="comment-delete" th:action="@{/api/posts/{postId}/comments/{id}(postId= __${id}__ ,id = ${commentResponse.id})}">
                     <button class="btn btn-primary btn-sm" type="submit">삭제</button>
                 </form>

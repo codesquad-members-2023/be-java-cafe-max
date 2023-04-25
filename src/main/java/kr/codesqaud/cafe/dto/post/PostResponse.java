@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.dto.post;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.Post;
 
 public class PostResponse {
@@ -42,10 +41,6 @@ public class PostResponse {
 
     public WriterResponse getWriter() {
         return writer;
-    }
-
-    public String getWriteDateFormat() {
-        return writeDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     public LocalDateTime getWriteDate() {
