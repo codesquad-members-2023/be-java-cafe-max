@@ -8,4 +8,6 @@ public interface ReplyRepository {
     List<Reply> findAll(Long articleId);
 
     Long save(Reply reply);
+
+    boolean update(Reply reply);
 }

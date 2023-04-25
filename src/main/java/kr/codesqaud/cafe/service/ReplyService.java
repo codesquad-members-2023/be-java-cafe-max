@@ -1,7 +1,10 @@
 package kr.codesqaud.cafe.service;
 
+import kr.codesqaud.cafe.common.exception.reply.ReplyUpdateFailedException;
 import kr.codesqaud.cafe.controller.dto.reply.ReplyCreateDto;
 import kr.codesqaud.cafe.controller.dto.reply.ReplyReadDto;
+import kr.codesqaud.cafe.controller.dto.reply.ReplyUpdateDto;
+import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.repository.ReplyRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +27,15 @@ public class ReplyService {
 
     public Long save(ReplyCreateDto replyCreateDto) {
         return replyRepository.save(replyCreateDto.toReply());
+    }
+
+    public void update(Long userId, ReplyUpdateDto replyUpdateDto) {
+        final boolean isUpdated = replyRepository.update(replyUpdateDto.toReply(userId));
+
+        if (isUpdated) {
+            return;
+        }
+
+        throw new ReplyUpdateFailedException();
     }
 }

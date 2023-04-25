@@ -52,4 +52,8 @@ public class Reply {
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+
+    public static Reply updateOf(Long id, Long userId, String comments) {
+        return new Reply(id, null, userId, null, comments, null, null);
+    }
 }

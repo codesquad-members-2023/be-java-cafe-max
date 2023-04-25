@@ -76,7 +76,7 @@
 
             $(replyList).each(function (idx, reply) {
                 replyListHtml += `
-                      <article class="article" id="answer-1405">
+                      <article class="article" id="article-${reply.id}">
                           <div class="article-header">
                               <div class="article-header-thumb">
                                   <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
@@ -84,13 +84,15 @@
                               <div class="article-header-text">
                                 <div class="article-author-name">&nbsp ${reply.writer}</div>
                                 <div class="article-header-time">${reply.createdAt}</div>
-                                <div class="article-doc comment-doc"><p>${reply.comments}</p></div>
+                                <div class="article-doc comment-doc">
+                                    <p id="reply-comments-${reply.id}">${reply.comments}</p>
+                                </div>
                               </div>
                           </div>
                           <div class="article-util">
                               <ul class="article-util-list">
                                   <li>
-                                      <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
+                                        <button class="update-answer-button" type="button" id="reply-update-button" data-reply-id="${reply.id}">수정</button>
                                   </li>
                                   <li>
                                       <form class="delete-answer-form" action="/questions/413/answers/1405" method="POST">
@@ -136,6 +138,58 @@
             error: function (err) {
                 console.log(sendReplyData);
                 alert("댓글 작성 오류");
+            }
+        });
+    });
+
+    $(document).on('click', '#reply-update-button', function (e) {
+        e.preventDefault();
+        const replyId = $(this).data('reply-id');
+        const comments = $(`#reply-comments-${replyId}`).text().trim();
+
+        const editForm = `
+          <div class="qna-comment">
+            <div class="qna-comment-slipp">
+                <div class="qna-comment-slipp-articles">
+                    <form class="reply-update-form" style="padding:14px;">
+                        <input type="hidden" id="reply-id" value="${replyId}"/>
+                        <div class="form-group" style="padding:14px;">
+                            <textarea class="form-control" id="reply-comments">${comments}</textarea>
+                        </div>
+                        <button class="btn btn-success pull-right" type="submit" id="reply-update-success">수정 완료</button>
+                        <div class="clearfix"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        `;
+        $(`#article-${replyId}`).replaceWith(editForm);
+    });
+
+    $(document).on('submit', '.reply-update-form', function(e) {
+        e.preventDefault();
+        console.log("------------- test -------------");
+        const replyId = $('#reply-id').val();
+        const updatedComment = $('#reply-comments').val();
+
+        let replyUpdateDto = {
+            "id" : replyId,
+            "comments" : updatedComment
+        };
+
+        $.ajax({
+            url: "/articles/" + articleId + "/replies/" + replyId,
+            type: 'PUT',
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(replyUpdateDto),
+            success: function(response) {
+                if (!response.success) {
+                    alert(response.result);
+                }
+                printReplyList();
+            },
+            error: function() {
+                alert("댓글 수정 실패");
             }
         });
     });

@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.repository;
 import kr.codesqaud.cafe.domain.Reply;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -44,6 +45,21 @@ public class JdbcReplyRepositoryImpl implements ReplyRepository {
                 "WHERE reply.article_id = :articleId";
 
         return template.query(sql, Map.of("articleId", articleId), replyRowMapper());
+    }
+
+    @Override
+    public boolean update(Reply reply) {
+        final String sql = "" +
+                "UPDATE reply " +
+                "SET comments = :comments " +
+                "WHERE id = :id AND user_id = :userId";
+
+        final MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("comments", reply.getComments())
+                .addValue("id", reply.getId())
+                .addValue("userId", reply.getUserId());
+
+        return template.update(sql, params) > 0;
     }
 
     private RowMapper<Reply> replyRowMapper() {
