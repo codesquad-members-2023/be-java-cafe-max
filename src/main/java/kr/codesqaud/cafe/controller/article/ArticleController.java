@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.controller.article;
 import kr.codesqaud.cafe.domain.dto.article.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleTimeForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleUpdateForm;
-import kr.codesqaud.cafe.domain.dto.reply.ReplyTimeForm;
+import kr.codesqaud.cafe.domain.vo.PageForm;
 import kr.codesqaud.cafe.service.article.ArticleService;
 import kr.codesqaud.cafe.service.reply.ReplyService;
 import kr.codesqaud.cafe.session.SessionConst;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 public class ArticleController {
@@ -43,9 +42,14 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String addArticles(Model model) {
-        // 현재 시작을 가져오는 목적(now 메서드)으로 DTO 사용
-        model.addAttribute("articles", articleService.findArticles());
+    public String addArticles(@RequestParam(value = "nowPage", required = false) Integer nowPage, Model model) {
+        if (nowPage == null) {
+            nowPage = 1;
+        }
+
+        PageForm pageForm = new PageForm(nowPage, articleService.countArticles());
+        model.addAttribute("articles", articleService.findArticles(pageForm));
+        model.addAttribute("pageForm", pageForm);
         return "index";
     }
 
