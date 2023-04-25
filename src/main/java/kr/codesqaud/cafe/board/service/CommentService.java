@@ -4,7 +4,6 @@ import kr.codesqaud.cafe.board.domain.Comment;
 import kr.codesqaud.cafe.board.dto.CommentResponse;
 import kr.codesqaud.cafe.board.dto.CommentWriteForm;
 import kr.codesqaud.cafe.board.repository.CommentJdbcRepository;
-import kr.codesqaud.cafe.exception.ForbiddenException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,12 +36,12 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
-    public void delete(Long commentId, String sessionUserName) {
+    public void delete(Long commentId) {
+        commentJdbcRepository.delete(commentId);
+    }
+
+    public boolean isSameWriter(Long commentId, String sessionUserName) {
         Comment comment = commentJdbcRepository.findByCommentId(commentId);
-        if (sessionUserName.equals(comment.getWriter())) {
-            commentJdbcRepository.delete(commentId);
-        } else {
-            throw new ForbiddenException("댓글 작성자가 아니어서 삭제할 수 없습니다.");
-        }
+        return sessionUserName.equals(comment.getWriter());
     }
 }
