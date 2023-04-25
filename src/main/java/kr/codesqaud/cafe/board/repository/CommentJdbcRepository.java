@@ -42,8 +42,8 @@ public class CommentJdbcRepository {
 
     public Comment findByCommentId(Long commentId) {
         try {
-            return jdbcTemplate.queryForObject("SELECT comment_id, post_id, writer, contents, write_date_time " +
-                            "FROM comment " +
+            return jdbcTemplate.queryForObject("SELECT comment_id, post_id, b.user_id AS writer_id, writer, contents, write_date_time " +
+                            "FROM comment a JOIN users b ON a.writer = b.user_name " +
                             "WHERE comment_id = :commentId",
                     Collections.singletonMap("commentId", commentId), commentRowMapper);
         } catch (DataRetrievalFailureException e) {
