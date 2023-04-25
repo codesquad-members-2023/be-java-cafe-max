@@ -13,7 +13,6 @@ public class ErrorResponse {
     private final String name;
     private final HttpStatus httpStatus;
     private final String errorMessage;
-    private final String redirectUrl;
 
     @JsonInclude(value = Include.NON_EMPTY)
     private final List<ValidationError> errors;
@@ -23,7 +22,6 @@ public class ErrorResponse {
         this.name = errorCode.getName();
         this.httpStatus = errorCode.getHttpStatus();
         this.errorMessage = errorCode.getMessage();
-        this.redirectUrl = errorCode.getRedirectUrl();
         this.errors = errors;
     }
 
@@ -37,10 +35,6 @@ public class ErrorResponse {
 
     public String getErrorMessage() {
         return errorMessage;
-    }
-
-    public String getRedirectUrl() {
-        return redirectUrl;
     }
 
     public List<ValidationError> getErrors() {
