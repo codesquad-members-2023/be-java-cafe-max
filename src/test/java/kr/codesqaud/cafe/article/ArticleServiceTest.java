@@ -1,13 +1,9 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.article;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.util.List;
-import kr.codesqaud.cafe.article.Article;
-import kr.codesqaud.cafe.article.ArticleRepository;
-import kr.codesqaud.cafe.article.ArticleRepositoryImpl;
-import kr.codesqaud.cafe.article.ArticleService;
 import kr.codesqaud.cafe.user.SignUpRequestDto;
 import kr.codesqaud.cafe.user.UserRepository;
 import kr.codesqaud.cafe.user.UserRepositoryImpl;

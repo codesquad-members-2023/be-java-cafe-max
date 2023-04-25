@@ -1,10 +1,7 @@
-package kr.codesqaud.cafe.repository;
+package kr.codesqaud.cafe.article;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-import kr.codesqaud.cafe.article.Article;
-import kr.codesqaud.cafe.article.ArticleRepository;
-import kr.codesqaud.cafe.article.ArticleRepositoryImpl;
 import kr.codesqaud.cafe.user.User;
 import kr.codesqaud.cafe.user.UserRepository;
 import kr.codesqaud.cafe.user.UserRepositoryImpl;
