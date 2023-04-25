@@ -64,10 +64,11 @@ public class UserService {
     }
 
     // 특정 회원 조회
-    public User findUser(String userId) {
-        return userRepository.findByUserId(userId).orElseThrow(() -> {
+    public UserResponse findUser(String userId) {
+        User findUser = userRepository.findByUserId(userId).orElseThrow(() -> {
             throw new ResourceNotFoundException(UserErrorCode.NOT_FOUND_USER);
         });
+        return new UserResponse(findUser);
     }
 
     // 로그인

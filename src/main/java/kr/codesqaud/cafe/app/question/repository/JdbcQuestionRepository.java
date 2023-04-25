@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.app.question.entity.Question;
+import kr.codesqaud.cafe.app.user.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
@@ -28,13 +29,16 @@ public class JdbcQuestionRepository implements QuestionRepository {
 
     @Override
     public List<Question> findAll() {
-        return template.query("SELECT * FROM question", questionRowMapper());
+        return template.query(
+            "SELECT q.ID, q.TITLE, q.CONTENT, q.CREATETIME, u.ID as uid, u.NAME FROM question q INNER JOIN users u ON q.USERID = u.ID",
+            questionRowMapper());
     }
 
     @Override
     public Optional<Question> findById(Long id) {
-        List<Question> result =
-            template.query("SELECT * FROM question WHERE id = ?", questionRowMapper(), id);
+        List<Question> result = template.query(
+            "SELECT q.ID, q.TITLE, q.CONTENT, q.CREATETIME, u.ID as uid, u.NAME FROM question q INNER JOIN users u ON q.USERID = u.ID WHERE q.ID = ?",
+            questionRowMapper(), id);
         return result.stream().findAny();
     }
 
@@ -49,7 +53,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
 
     @Override
     public Question modify(Question question) {
-        template.update("UPDATE question SET title = ?, content = ? WHERE id = ?",
+        template.update("UPDATE question q SET q.TITLE = ?, q.CONTENT = ? WHERE q.ID = ?",
             question.getTitle(), question.getContent(), question.getId());
         return question;
     }
@@ -59,23 +63,28 @@ public class JdbcQuestionRepository implements QuestionRepository {
         PreparedStatement pstmt = con.prepareStatement(sql, new String[]{"ID"});
         pstmt.setString(1, question.getTitle());
         pstmt.setString(2, question.getContent());
-        pstmt.setLong(3, question.getUserId());
+        pstmt.setLong(3, question.getWriter().getId());
         return pstmt;
     }
 
     private RowMapper<Question> questionRowMapper() {
-        return (rs, rowNum) -> new Question(rs.getLong("id"),
-            rs.getString("title"),
-            rs.getString("content"),
-            rs.getTimestamp("createTime").toLocalDateTime(),
-            rs.getTimestamp("modifyTime").toLocalDateTime(),
-            rs.getLong("userId"));
+        return (rs, rowNum) ->
+            Question.builder()
+                .id(rs.getLong("id"))
+                .title(rs.getString("title"))
+                .content(rs.getString("content"))
+                .createTime(rs.getTimestamp("createTime").toLocalDateTime())
+                .writer(User.builder()
+                    .id(rs.getLong("uid"))
+                    .name(rs.getString("name"))
+                    .build())
+                .build();
     }
 
     @Override
     public Question deleteById(Long id) {
         Question delQuestion = findById(id).orElseThrow();
-        template.update("DELETE FROM question WHERE id = ?", id);
+        template.update("DELETE FROM question q WHERE q.ID = ?", id);
         return delQuestion;
     }
 }

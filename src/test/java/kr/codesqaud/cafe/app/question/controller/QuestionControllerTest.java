@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +22,7 @@ import java.util.Objects;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
 import kr.codesqaud.cafe.app.question.entity.Question;
+import kr.codesqaud.cafe.app.question.repository.QuestionRepository;
 import kr.codesqaud.cafe.app.question.service.QuestionService;
 import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequest;
 import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
@@ -53,6 +53,9 @@ class QuestionControllerTest {
     private QuestionService questionService;
 
     @Autowired
+    private QuestionRepository questionRepository;
+
+    @Autowired
     private UserService userService;
     @Autowired
     private ObjectMapper objectMapper;
@@ -73,11 +76,11 @@ class QuestionControllerTest {
 
 
     public Long writeQuestion() {
-        User user = userService.findUser("yonghwan1107");
+        User user = userService.findUser("yonghwan1107").toEntity();
         String title = "제목1";
         String content = "내용1";
-        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, user.getUserId());
-        return questionService.write(dto.toEntity(user.getId())).getId();
+        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, user.getId());
+        return questionService.writeQuestion(dto).getId();
     }
 
     @Test
@@ -86,11 +89,11 @@ class QuestionControllerTest {
         //given
         login("yonghwan1107", "yonghwan1107");
         String userId = "yonghwan1107";
-        User user = userService.findUser(userId);
+        User user = userService.findUser(userId).toEntity();
         String writer = user.getName();
         String title = "제목1";
         String content = "내용1";
-        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, userId);
+        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, user.getId());
         String url = "/qna";
         //when
         String jsonArticle = mockMvc.perform(
@@ -114,8 +117,7 @@ class QuestionControllerTest {
         User user = userService.findUser(userId).toEntity();
         String title = "";
         String content = "내용1";
-        String userId = user.getUserId();
-        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, userId);
+        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, user.getId());
         String url = "/qna";
         //when
         String jsonErrors = mockMvc.perform(
@@ -174,11 +176,11 @@ class QuestionControllerTest {
     public void edit_success() throws Exception {
         //given
         login("yonghwan1107", "yonghwan1107");
-        String str_userId = userService.findUser(userId).getUserId();
+        User user = userService.findUser(userId).toEntity();
         String modifiedTitle = "변경된 제목1";
         String modifiedContent = "변경된 내용1";
         QuestionSavedRequest dto = new QuestionSavedRequest(modifiedTitle, modifiedContent,
-            str_userId);
+            user.getId());
         String url = "/qna/" + questionId;
         //when
         String json = mockMvc.perform(
@@ -198,9 +200,10 @@ class QuestionControllerTest {
     public void edit_fail1() throws Exception {
         //given
         login("yonghwan1107", "yonghwan1107");
-        Long id = write("제목1", "내용1");
-        QuestionSavedRequest dto = new QuestionSavedRequest("", "변경된 내용1", "yonghwan1107");
-        String url = "/qna/" + id;
+        Question question = write("제목1", "내용1");
+        QuestionSavedRequest dto = new QuestionSavedRequest("", "변경된 내용1",
+            question.getWriter().getId());
+        String url = "/qna/" + question.getId();
         //when
         String json = mockMvc.perform(
                 put(url).content(toJSON(dto)).contentType(MediaType.APPLICATION_JSON)
@@ -220,8 +223,8 @@ class QuestionControllerTest {
     public void delete_success() throws Exception {
         //given
         login("yonghwan1107", "yonghwan1107");
-        Long id = write("제목1", "내용1");
-        String url = "/qna/" + id;
+        Question question = write("제목1", "내용1");
+        String url = "/qna/" + question.getId();
         //when & then
         mockMvc.perform(delete(url).session(httpSession)).andExpect(status().isOk());
     }
@@ -230,10 +233,10 @@ class QuestionControllerTest {
     @DisplayName("다른 사람으로 로그인 후 다른 사람의 질문 게시글을 삭제 요청할때 에러 응답을 받는지 테스트")
     public void delete_fail1() throws Exception {
         //given
-        Long id = write("제목1", "내용1");
+        Question question = write("제목1", "내용1");
         signUp("kim1107", "kim1107kim1107", "kim", "kim1107@naver.com");
         login("kim1107", "kim1107kim1107");
-        String url = "/qna/" + id;
+        String url = "/qna/" + question.getId();
         //when
         mockMvc.perform(delete(url).session(httpSession)).andExpect(status().isForbidden());
         //then
@@ -260,10 +263,10 @@ class QuestionControllerTest {
             .contentType(MediaType.APPLICATION_JSON).session(httpSession));
     }
 
-    private Long write(String title, String content) {
-        return questionService.write(
-                new Question(null, title, content, LocalDateTime.now(), LocalDateTime.now(), userId))
-            .getId();
+    private Question write(String title, String content) {
+        Question question = Question.builder().title(title).content(content)
+            .writer(User.builder().id(userId).build()).build();
+        return questionRepository.save(question);
     }
 
     private <T> String toJSON(T data) throws JsonProcessingException {

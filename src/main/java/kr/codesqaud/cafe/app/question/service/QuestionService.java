@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.app.question.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
 import kr.codesqaud.cafe.app.question.entity.Question;
 import kr.codesqaud.cafe.app.question.repository.QuestionRepository;
@@ -20,37 +21,34 @@ public class QuestionService {
     }
 
     @Transactional
-    public Question write(Question question) {
-        return repository.save(question);
+    public QuestionResponse writeQuestion(QuestionSavedRequest questionRequest) {
+        Question savedQuestion = repository.save(questionRequest.toEntity());
+        return new QuestionResponse(savedQuestion);
     }
 
-    public List<Question> findAllQuestions() {
+    public List<QuestionResponse> getAllQuestion() {
         return repository.findAll().stream()
+            .map(QuestionResponse::new)
+            .sorted()
             .collect(Collectors.toUnmodifiableList());
     }
 
-    public Question findQuestion(Long id) {
-        return repository.findById(id).orElseThrow(() -> {
+    public QuestionResponse findQuestion(Long id) {
+        Question findQuestion = repository.findById(id).orElseThrow(() -> {
             throw new ResourceNotFoundException(QuestionErrorCode.NOT_FOUND_QUESTION);
         });
-    }
-
-    // TODO: 로직 수정
-    @Transactional
-    public Question modifyQuestion(Long id, QuestionSavedRequest requestQuestion) {
-        Question original = findQuestion(id);
-        Question modifiedQuestion =
-            new Question(original.getId(),
-                requestQuestion.getTitle(),
-                requestQuestion.getContent(),
-                original.getCreateTime(),
-                original.getModifyTime(),
-                original.getUserId());
-        return repository.modify(modifiedQuestion);
+        return new QuestionResponse(findQuestion);
     }
 
     @Transactional
-    public Question delete(Long id) {
-        return repository.deleteById(id);
+    public QuestionResponse modifyQuestion(Long id, QuestionSavedRequest questionRequest) {
+        Question original = repository.findById(id).orElseThrow();
+        original.modify(questionRequest.toEntity());
+        return new QuestionResponse(repository.modify(original));
+    }
+
+    @Transactional
+    public QuestionResponse delete(Long id) {
+        return new QuestionResponse(repository.deleteById(id));
     }
 }

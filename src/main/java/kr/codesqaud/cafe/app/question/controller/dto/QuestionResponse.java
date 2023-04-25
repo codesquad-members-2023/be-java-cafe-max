@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.app.question.controller.dto;
 
 import java.time.LocalDateTime;
 import kr.codesqaud.cafe.app.question.entity.Question;
-import kr.codesqaud.cafe.app.user.entity.User;
 
 public class QuestionResponse implements Comparable<QuestionResponse> {
 
@@ -13,13 +12,13 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
     private final Long userId;
     private final String writer;
 
-    public QuestionResponse(Question question, User user) {
+    public QuestionResponse(Question question) {
         this.id = question.getId();
         this.title = question.getTitle();
         this.content = question.getContent();
         this.createTime = question.getCreateTime();
-        this.userId = user.getId();
-        this.writer = user.getName();
+        this.userId = question.getWriter().getId();
+        this.writer = question.getWriter().getName();
     }
 
     public Long getId() {
