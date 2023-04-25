@@ -41,6 +41,7 @@ class PostControllerTest {
     private static final String TEXT_CONTENT = "textContent";
     private static final String TEST_TITLE = "testTitle";
     private static final String TEST_CONTENT = "testContent";
+
     @Autowired
     private MockMvc mockMvc;
 
