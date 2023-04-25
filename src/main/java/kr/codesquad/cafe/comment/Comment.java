@@ -80,7 +80,7 @@ public class Comment {
         throw new UnauthorizedDeleteCommentException();
     }
 
-    public boolean isSameId(Long id) {
+    public boolean isSameUserId(Long id) {
         return user.isSameId(id);
     }
 

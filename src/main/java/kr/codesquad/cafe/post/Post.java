@@ -102,7 +102,7 @@ public class Post {
 
     private boolean canDelete() {
         return getComments().stream()
-                .filter(comment -> !comment.isSameId(user.getId()))
+                .filter(comment -> !comment.isSameUserId(user.getId()))
                 .allMatch(Comment::isDeleted);
     }
 
