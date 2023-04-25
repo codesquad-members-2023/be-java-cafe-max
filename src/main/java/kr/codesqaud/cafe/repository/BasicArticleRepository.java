@@ -35,5 +35,5 @@ public class BasicArticleRepository implements ArticleRepository {
         return articleList.stream().filter(article -> article.getArticleNum() == articleNum).findAny();  // .Nullable은 없는데 Optional을 만드는 듯(?)
     }
 
-    public void clearStore(){};
+    public void clearStore(){}
 }

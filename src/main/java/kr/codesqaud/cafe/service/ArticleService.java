@@ -1,14 +1,15 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.BasicArticleRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class ArticleService {
-    private final BasicArticleRepository articleRepository;
-    public ArticleService(BasicArticleRepository articleRepository){
+    private final ArticleRepository articleRepository;
+    public ArticleService(ArticleRepository articleRepository){
         this.articleRepository = articleRepository;
     }
     public void save(Article article){

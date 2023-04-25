@@ -27,9 +27,8 @@ public class JdbcArticleRepository implements ArticleRepository{
         parameters.put("contents", article.getContents());
         parameters.put("createdTime", article.getCreatedTime());
 //        parameters.put("articleNum", article.getArticleNum());
-        long thisId = simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters)).longValue(); // 맵을 이용한 SqlParamaeterSource...?????
-        // BeanPropertySqlParameterSource("tablename")라는 것도 있다는데....
-        article.setArticleNum(thisId);
+        long articleNum = simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters)).longValue(); // 맵을 이용한 SqlParamaeterSource...?????  // BeanPropertySqlParameterSource("tablename")라는 것도 있다는데....
+        article.setArticleNum(articleNum);
     }
     @Override
     public Optional<Article> getArticleByArticleNum(Long articleNum) { // Long!
@@ -50,8 +49,7 @@ public class JdbcArticleRepository implements ArticleRepository{
         //  jdbcTemplate.update(String 쿼리문)
     }
     private RowMapper<Article> articleRowMapper() { // RowMapper<T>인데 아무래도 'T를 만들어드립니다'라는 뜻인듯... -> RowMapper<Article>을 정의해서 반환
-        return
-                (rs, rowNum) -> {   // (resultSet, current row)    // query에 id(아 이게 rowNum인가?)가 있으면 1개 레코드만 주고 없으면 맨 위에서 맨 아래까지 다 긁어서 준다는?
+        return (rs, rowNum) -> {   // (resultSet, current row)    // query에 id(아 이게 rowNum인가?)가 있으면 1개 레코드만 주고 없으면 맨 위에서 맨 아래까지 다 긁어서 준다는?
             Article article = new Article();
             article.setWriter(rs.getString("writer"));
             article.setTitle(rs.getString("title"));

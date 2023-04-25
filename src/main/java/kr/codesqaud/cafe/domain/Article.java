@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Article {
-//    private long articleId;
     private long articleNum;
     private String writer;
     private String title;
@@ -12,14 +11,12 @@ public class Article {
     private LocalDateTime createdTime;
 
     public Article(){}
-
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.createdTime = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)); // this.createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
-
 //    public void setArticleId(long id) { // 이건 아무 문제 없는데...????
 //        this.articleId = id;
 //    }
