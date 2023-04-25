@@ -30,8 +30,8 @@ public class ReplyService {
 		return replyMapper.toReplyResponse(replyRepository.saveReply(reply));
 	}
 
-	public List<ReplyResponse> getRepliesByIdx(LoadMoreReplyDto articleIdx) {
-		return replyRepository.findAllReply(articleIdx).stream()
+	public List<ReplyResponse> getRepliesByIdx(LoadMoreReplyDto loadMoreReplyDto) {
+		return replyRepository.findAllReply(loadMoreReplyDto).stream()
 			.map(replyMapper::toReplyResponse)
 			.collect(Collectors.toUnmodifiableList());
 	}
@@ -52,7 +52,7 @@ public class ReplyService {
 		return replyRepository.findReplyIdByIdx(replyIdx);
 	}
 
-	public int getCountOfReplies(Long articleIdx) {
+	public Long getCountOfReplies(Long articleIdx) {
 		return replyRepository.getCountOfReplies(articleIdx);
 	}
 }

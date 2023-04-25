@@ -49,10 +49,14 @@ public class ArticleController {
 	//todo join써서 db에 2번접근하지 말고 한번접근해 데이터 가져와보기
 	@GetMapping("/articles/{articleIdx}")
 	public String detail(@PathVariable Long articleIdx, Model model) {
-		LoadMoreReplyDto loadMoreReplyDto = new LoadMoreReplyDto(articleIdx,
-			replyService.getCountOfReplies(articleIdx));
+		LoadMoreReplyDto loadMoreReplyDto = new LoadMoreReplyDto(articleIdx);
+		Long countOfReplies = replyService.getCountOfReplies(articleIdx);
+		loadMoreReplyDto.setCountOfRepliesInDb(countOfReplies);
+
 		model.addAttribute("article", articleService.findArticleByIdx(articleIdx));
 		model.addAttribute("replies", replyService.getRepliesByIdx(loadMoreReplyDto));
+		model.addAttribute("countOfReplies", countOfReplies);
+		
 		return "article/show";
 	}
 

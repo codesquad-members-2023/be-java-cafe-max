@@ -38,7 +38,7 @@ function handleSubmit(e) {
         error: function () {
             console.log('failure');
         },
-        success: function (data, status) {
+        success: function (data) {
             const template = replyTemplate.formatUnicorn({
                 nickName: data.nickName,
                 date: data.date,
@@ -53,15 +53,16 @@ function handleSubmit(e) {
     });
 }
 
+let articleCount = 0;
 
-const countOfReply = document.getElementById("count-of-reply");
-
-document.addEventListener('DOMContentLoaded', function () {
+//todo 이거 지금은 보여지고 있는 개수로 초기화되서 추후 server에서 model을 통해 개수를 보내줘야함
+function findCountOfRepliesInHTML() {
     const commentBox = document.getElementById('comment-box');
     const articles = commentBox.querySelectorAll('article');
-    const articleCount = articles.length;
-    countOfReply.textContent = "댓글 " + articleCount + "개";
-});
+    articleCount = articles.length;
+}
+
+let countOfReply = document.getElementById('count-of-reply');
 
 function increaseCommentCount() {
     let preCountOfReply = countOfReply.textContent;
@@ -70,5 +71,38 @@ function increaseCommentCount() {
 }
 
 
-
-
+// 댓글 더보기를 위한 ajax
+$(document).ready(function () {
+    $('#button-for-more-comment').on('click', function () {
+        findCountOfRepliesInHTML();
+        let articleIdx = document.getElementById("articleIdx").dataset.myValue;
+        console.log(articleCount);
+        console.log(articleIdx);
+        $.ajax({
+            url: '/articles/reply/loadMoreReply',
+            type: 'GET',
+            dataType: 'json',
+            data: ({
+                "articleIdx": articleIdx,
+                "countOfRepliesInHtml": articleCount
+            }),
+            success: function (data) {
+                for (let i = data.length - 1; i >= 0; i--) {
+                    const template = replyTemplate.formatUnicorn({
+                        nickName: data[i].nickName,
+                        date: data[i].date,
+                        content: data[i].content,
+                        articleIdx: data[i].articleIdx,
+                        replyIdx: data[i].replyIdx,
+                    })
+                    $("#comment-box").prepend(template);
+                    findCountOfRepliesInHTML();
+                }
+                ;
+            },
+            error: function (status) {
+                console.log('Error:', status);
+            }
+        });
+    });
+});
