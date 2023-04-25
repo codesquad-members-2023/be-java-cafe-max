@@ -11,16 +11,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.codesqaud.cafe.common.auth.exception.NoAccessPermissionException;
 import kr.codesqaud.cafe.common.auth.exception.NoAuthSessionException;
 import kr.codesqaud.cafe.common.auth.utill.AuthSessionValidator;
 import kr.codesqaud.cafe.common.web.PageHandler;
 import kr.codesqaud.cafe.question.controller.request.QuestionWriteRequestDTO;
 import kr.codesqaud.cafe.question.controller.response.QuestionBoardResponseDTO;
-import kr.codesqaud.cafe.question.controller.response.QuestionDetailDTO;
+import kr.codesqaud.cafe.question.controller.response.QuestionDetailResponseDTO;
 import kr.codesqaud.cafe.question.controller.response.QuestionTitleResponseDTO;
+import kr.codesqaud.cafe.question.domain.QuestionEntity;
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.question.service.QuestionService;
 
@@ -35,7 +38,7 @@ public class QuestionController {
 	}
 
 	/**
-	 * Q&A 게시글 작성 페이지로 이동
+	 * Q&A 게시글 작성 페이지로 이동 (접근 권한: 글쓴이)
 	 * @return Q&A 게시글 작성 페이지
 	 */
 	@GetMapping("/write-form")
@@ -45,13 +48,15 @@ public class QuestionController {
 	}
 
 	/**
-	 * Q&A 게시글 쓰기 기능
+	 * Q&A 게시글 쓰기 기능. (접근 권한: 글쓴이)
 	 * @param dto 게시글 쓰기용 dto
 	 * @return Q&A 게시글 작성 페이지로 redirect
 	 */
 	@PostMapping
-	public String questionAdd(QuestionWriteRequestDTO dto) {
-		service.save(dto.toEntity());
+	public String questionAdd(QuestionWriteRequestDTO dto, HttpSession session) throws NoAuthSessionException {
+		long writer_id = AuthSessionValidator.validatePageAnyoneCanAccess(session);
+		service.save(dto.toEntity(writer_id));
+
 		return "redirect:questions/write-form";
 	}
 
@@ -88,14 +93,54 @@ public class QuestionController {
 	@GetMapping("/{id}")
 	public String questionDetail(@PathVariable String id, @ModelAttribute("errorMessage") String errorMessage,
 		Model model, HttpSession session) throws QuestionNotExistException, NoAuthSessionException {
-
 		AuthSessionValidator.validatePageAnyoneCanAccess(session);
 
 		if (errorMessage.isBlank()) {
-			model.addAttribute("questionDetailDTO", QuestionDetailDTO.from(service.findById(Long.parseLong(id))));
+			model.addAttribute("questionDetailDTO",
+				QuestionDetailResponseDTO.from(service.findById(Long.parseLong(id))));
 		}
 
 		return "qna/show";
+	}
+
+	/**
+	 * 게시글 수정 페이지로 이동. (접근 권한: 게시글 작성자만)
+	 * @param id 게시글 id
+	 * @param model 게시글 내용을 보내주기 위한 model
+	 * @param session 세션
+	 * @return 게시글 수정 페이지
+	 * @throws QuestionNotExistException 수정할 게시글이 없는 경우(삭제된 경우)
+	 * @throws NoAccessPermissionException 접근 권한이 없는 경우
+	 */
+	@GetMapping("/{id}/modify-form")
+	public String modifyForm(@PathVariable long id, Model model, HttpSession session) throws
+		QuestionNotExistException, NoAccessPermissionException {
+
+		QuestionEntity question = service.findById(id);
+		AuthSessionValidator.validatePageOnlyWriterCanAccess(session, question.getWriter_id());
+		model.addAttribute("questionDetailDTO", QuestionDetailResponseDTO.from(question));
+
+		return "qna/modify-form";
+	}
+
+	/**
+	 * Q&A 게시글 수정 기능
+	 * @param id 게시글 id
+	 * @param dto 수정할 게시글 정보
+	 * @param session 세션
+	 * @return 수정 성공시 수정된 게시물 보기 페이지로 이동
+	 * @throws QuestionNotExistException 게시글이 없는 경우
+	 * @throws NoAccessPermissionException 접근 권한이 없는 경우
+	 */
+	@PutMapping("/{id}")
+	public String questionModify(@PathVariable long id, QuestionWriteRequestDTO dto, HttpSession session) throws
+		QuestionNotExistException, NoAccessPermissionException {
+
+		QuestionEntity question = service.findById(id);
+		AuthSessionValidator.validatePageOnlyWriterCanAccess(session, question.getWriter_id());
+		service.updateQuestion(dto.toEntity(id, question.getWriter_id()));
+
+		return "redirect:/questions/" + id;
 	}
 
 }

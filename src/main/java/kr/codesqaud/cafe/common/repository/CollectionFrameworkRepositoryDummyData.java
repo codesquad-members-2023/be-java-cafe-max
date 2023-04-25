@@ -27,7 +27,7 @@ public class CollectionFrameworkRepositoryDummyData {
 	 */
 	public void insertQuestionsDummyData(TempQuestionTable table) {
 		for (int i = 1; i <= 500; i++) {
-			table.insert(new QuestionEntity("apeintospace", "title" + i, "content" + i));
+			table.insert(new QuestionEntity(1, "title" + i, "content" + i));
 		}
 	}
 }

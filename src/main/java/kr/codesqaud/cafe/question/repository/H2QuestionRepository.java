@@ -23,9 +23,9 @@ public class H2QuestionRepository implements QuestionRepository {
 	}
 
 	public void save(QuestionEntity question) {
-		String sql = "INSERT INTO \"post\"(writer, title, contents) VALUES (:writer , :title, :contents)";
+		String sql = "INSERT INTO \"post\"(writer_id, title, contents) VALUES (:writer_id , :title, :contents)";
 		SqlParameterSource parameters = new MapSqlParameterSource()
-			.addValue("writer", question.getWriter())
+			.addValue("writer_id", question.getWriter_id())
 			.addValue("title", question.getTitle())
 			.addValue("contents", question.getContents());
 
@@ -38,7 +38,13 @@ public class H2QuestionRepository implements QuestionRepository {
 	}
 
 	public List<QuestionEntity> findPageBy(long offset, int pageSize) {
-		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\" ORDER BY id DESC LIMIT :pageSize OFFSET :offset";
+		String sql = "SELECT p.id, p.writer_id, u.userId as writer, p.title, p.contents, p.registrationdatetime "
+			+ "FROM \"post\" p "
+			+ "JOIN \"user\" u "
+			+ "ON p.writer_id = u.id "
+			+ "ORDER BY id DESC "
+			+ "LIMIT :pageSize OFFSET :offset";
+
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("offset", offset)
 			.addValue("pageSize", pageSize);
@@ -47,7 +53,12 @@ public class H2QuestionRepository implements QuestionRepository {
 	}
 
 	public Optional<QuestionEntity> findById(long id) {
-		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\"  WHERE id = :id";
+		String sql = "SELECT p.id, p.writer_id, u.userId as writer, p.title, p.contents, p.registrationdatetime "
+			+ "FROM \"post\" p "
+			+ "JOIN \"user\" u "
+			+ "ON p.writer_id = u.id "
+			+ "WHERE p.id = :id";
+
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("id", id);
 
@@ -59,9 +70,27 @@ public class H2QuestionRepository implements QuestionRepository {
 
 	}
 
+	@Override
+	public boolean update(QuestionEntity question) {
+		String sql = "UPDATE \"post\" SET title = :title, contents = :contents WHERE id = :id";
+
+		SqlParameterSource parameters = new MapSqlParameterSource()
+			.addValue("title", question.getTitle())
+			.addValue("contents", question.getContents())
+			.addValue("id", question.getId());
+		
+		try {
+			jdbcTemplate.update(sql, parameters);
+			return true;
+		} catch (DataAccessException e) {
+			return false;
+		}
+	}
+
 	private RowMapper<QuestionEntity> getQuestionRowMapper() {
 		return (rs, rowNum) ->
-			new QuestionEntity(rs.getInt("id"),
+			new QuestionEntity(rs.getLong("id"),
+				rs.getLong("writer_id"),
 				rs.getString("writer"),
 				rs.getString("title"),
 				rs.getString("contents"),

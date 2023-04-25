@@ -13,4 +13,6 @@ public interface QuestionRepository {
 	List<QuestionEntity> findPageBy(long offset, int pageSize);
 
 	Optional<QuestionEntity> findById(long id);
+
+	boolean update(QuestionEntity question);
 }

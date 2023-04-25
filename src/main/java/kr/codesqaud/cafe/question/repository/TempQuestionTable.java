@@ -12,9 +12,11 @@ public class TempQuestionTable {
 	private final AtomicInteger id = new AtomicInteger(1);
 
 	public synchronized void insert(QuestionEntity question) {
-		QuestionEntity questionGivenId = new QuestionEntity(id.getAndIncrement(), question.getWriter(),
+		QuestionEntity questionGivenId = new QuestionEntity(id.getAndIncrement(), question.getWriter_id(),
+			question.getWriter(),
 			question.getTitle(),
 			question.getContents(), question.getRegistrationDateTime());
+
 		questions.add(questionGivenId);
 	}
 
@@ -24,6 +26,17 @@ public class TempQuestionTable {
 
 	public int count() {
 		return questions.size();
+	}
+
+	public synchronized boolean update(QuestionEntity question) {
+		long id = question.getId();
+		for (QuestionEntity exgistingQuestion : questions) {
+			if (exgistingQuestion.getId() == id) {
+				exgistingQuestion.updateFrom(question);
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -38,4 +38,16 @@ public class QuestionService {
 			throw new QuestionNotExistException(id);
 		}
 	}
+
+	/**
+	 * Q&A 게시글 수정 기능
+	 * @param question 수정할 게시글 정보
+	 * @throws QuestionNotExistException 게시글이 존재하지 않을 경우(삭제된 경우) 예외 발생
+	 */
+	public void updateQuestion(QuestionEntity question) throws QuestionNotExistException {
+		if (repository.update(question)) {
+			return;
+		}
+		throw new QuestionNotExistException(question.getId());
+	}
 }

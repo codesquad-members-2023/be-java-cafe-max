@@ -44,4 +44,9 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 		return Optional.ofNullable(null);
 	}
 
+	@Override
+	public boolean update(QuestionEntity question) {
+		return questionTable.update(question);
+	}
+
 }
