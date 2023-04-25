@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.app.user.validator;
 
 import java.util.Objects;
-import kr.codesqaud.cafe.errors.exception.RestApiException;
 import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
+import kr.codesqaud.cafe.errors.exception.RestApiException;
 import org.springframework.stereotype.Component;
 
 @Component
