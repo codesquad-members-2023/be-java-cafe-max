@@ -46,7 +46,7 @@ public class MemberController {
     @GetMapping("/{id}/form")
     public String showProfileEditForm(@PathVariable Long id, Model model,
         @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
-        model.addAttribute("profileEditRequest", memberService.findProfileEditById(id, accountSession.getId()));
+        model.addAttribute("profileEditRequest", memberService.findProfileForEditing(id, accountSession.getId()));
         return "member/profileEdit";
     }
 

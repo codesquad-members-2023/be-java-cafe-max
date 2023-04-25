@@ -91,7 +91,7 @@ class MemberControllerTest {
         // given
         Long savedId = 1L;
         AccountSession accountSession = new AccountSession(savedId, "만두");
-        given(memberService.findProfileEditById(savedId, accountSession.getId()))
+        given(memberService.findProfileForEditing(savedId, accountSession.getId()))
             .willReturn(new ProfileEditRequest(savedId, "test@nave.com", null, null, "만두"));
 
         // when
@@ -127,7 +127,7 @@ class MemberControllerTest {
         // given
         Long savedId = 1L;
         AccountSession accountSession = new AccountSession(2L, "만두");
-        given(memberService.findProfileEditById(savedId, accountSession.getId()))
+        given(memberService.findProfileForEditing(savedId, accountSession.getId()))
             .willThrow(UnauthorizedException.class);
 
         // when

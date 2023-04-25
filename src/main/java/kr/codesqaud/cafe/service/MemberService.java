@@ -90,7 +90,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public ProfileEditRequest findProfileEditById(Long id, Long accountSessionId) {
+    public ProfileEditRequest findProfileForEditing(Long id, Long accountSessionId) {
         Member member = validateUnauthorized(id, accountSessionId);
         return new ProfileEditRequest(id, member.getEmail(), null, null, member.getNickname());
     }
