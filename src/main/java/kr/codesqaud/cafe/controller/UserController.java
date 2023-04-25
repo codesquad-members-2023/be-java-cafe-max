@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    public String userProfile(@PathVariable("userId") String userId, Model model) {  // ("userId") 이거 필요없는거 아닌지 확인
+    public String userProfile(@PathVariable("userId") Long userId, Model model) {  // ("userId") 이거 필요없는거 아닌지 확인 필요
         model.addAttribute("user", userService.getUserByUserId(userId));
         return "user/profile";
     }

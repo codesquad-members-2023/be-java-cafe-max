@@ -14,40 +14,42 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class JdbcUserRepository {
+public class JdbcUserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcUserRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
-    //        @Override
-    public User save(User user) {
+
+    @Override
+    public void save(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("Users_squad").usingGeneratedKeyColumns("userId");
-
         Map<String, Object> parameters = new ConcurrentHashMap<>();
         parameters.put("userNum", user.getUserNum());
         parameters.put("userLoginId", user.getUserLoginId());
         parameters.put("password", user.getPassword());
         parameters.put("email", user.getEmail());
-
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-
-        user.setUserId(key.longValue()); // 지금 가서 userId 속성 + setter 만들기 (기존의 userId는 userLoginId로 변경)
-        return user;
+        user.setUserId(key.longValue());
     }
-    //        @Override
-    public Optional<User> findById(Long id) {
-        List<User> result = jdbcTemplate.query("select * from users_squad where userId = ?", userRowMapper(), id);
+
+    @Override
+    public Optional<User> getUserByUserId(Long userId) {
+        List<User> result = jdbcTemplate.query("select * from users_squad where userId = ?", userRowMapper(), userId);
         return result.stream().findAny();
     }
-    //        @Override
-    public List<User> findAll() {
+
+    @Override
+    public List<User> getUserList() {
         return jdbcTemplate.query("select * from users_squad", userRowMapper());
     }
+
+    @Override
     public void clearStore() {
         jdbcTemplate.update("delete from users_squad");
     }
+
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
             User user = new User();

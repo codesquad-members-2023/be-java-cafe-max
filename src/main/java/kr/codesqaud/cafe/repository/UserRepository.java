@@ -2,32 +2,16 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
 
-//@Repository
-public class UserRepository {
-    private final List<User> userList;
-    private final Map<String, User> dataBase;
+public interface UserRepository {
+    public void save(User user);
 
-    public UserRepository() {
-        this.userList = new ArrayList<>();
-        this.dataBase = new ConcurrentHashMap<>();
-    }
+    public Optional<User> getUserByUserId(Long userId);
 
-    public void save(User user) {
-        userList.add(user);
-        dataBase.put(user.getUserLoginId(), user);
-    }
+    public List<User> getUserList();
 
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public User getUserByUserId(String userId) {
-        return dataBase.get(userId);
-    }
+    public void clearStore();
 
 }

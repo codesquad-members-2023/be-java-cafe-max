@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.domain;
 public class User {
     private static long userNumFactory = 0;    // 잠재적 문제요인(정확히 파악 아직 하는 중...)
     private long userId;
-    private long userNum;
+    private long userNum; // 이게 뭐였는지 까먹음(userId와 중복일 가능성)
     private String userLoginId;
     private String password;
     private String email;       // form에서 사용된 name에 맞춤
@@ -21,7 +21,7 @@ public class User {
     public void setUserNum(long userNum){
         this.userNum = userNum;
     }
-    public void setUserId(long Id){ this.userId = Id; }
+    public void setUserId(long userId){ this.userId = userId; }
     public String getUserLoginId() {
         return userLoginId;
     }
