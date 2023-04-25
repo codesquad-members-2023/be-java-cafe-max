@@ -39,7 +39,7 @@ public class QuestionController {
 	}
 
 	/**
-	 * Q&A 게시글 작성 페이지로 이동 (접근 권한: 글쓴이)
+	 * Q&A 게시글 작성 페이지로 이동 (접근 권한: 로그인한 모든 유저)
 	 * @return Q&A 게시글 작성 페이지
 	 */
 	@GetMapping("/write-form")
@@ -49,7 +49,7 @@ public class QuestionController {
 	}
 
 	/**
-	 * Q&A 게시글 쓰기 기능. (접근 권한: 글쓴이)
+	 * Q&A 게시글 쓰기 기능. (접근 권한: 로그인한 모든 유저)
 	 * @param dto 게시글 쓰기용 dto
 	 * @return Q&A 게시글 작성 페이지로 redirect
 	 */

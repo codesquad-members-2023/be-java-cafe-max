@@ -52,7 +52,9 @@ public class QuestionService {
 	}
 
 	/**
-	 *
+	 * Q&A 게시글 삭제 기능
+	 * @param id 삭제할 게시글의 id
+	 * @throws QuestionNotExistException 게시글이 존재하지 않을 경우(삭제된 경우) 예외 발생
 	 */
 	public void delete(long id) throws QuestionNotExistException {
 		if (repository.delete(id)) {
