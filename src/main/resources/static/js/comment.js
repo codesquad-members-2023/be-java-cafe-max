@@ -33,6 +33,10 @@ function addComment(e) {
             const template = commentTemplate.format(data.writerId, data.writer, data.writeDateTime, data.contents, data.postId, data.commentId);
             $(".qna-comment-slipp-articles").append(template);
             $("textarea[name=contents]").val("");
+
+            const commentCountTemplate = $(".qna-comment-count strong").text();
+            const commentCount = Number(commentCountTemplate) + 1;
+            $(".qna-comment-count strong").text(commentCount);
         }
     });
 }
@@ -53,6 +57,10 @@ function deleteComment(e) {
         },
         success : function(data, status) {
             deleteBtn.closest("article").remove();
+
+            const commentCountTemplate = $(".qna-comment-count strong").text();
+            const commentCount = Number(commentCountTemplate) - 1;
+            $(".qna-comment-count strong").text(commentCount);
         }
     });
 }
