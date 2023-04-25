@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import static kr.codesqaud.cafe.util.SignInSessionUtil.SIGN_IN_SESSION_NAME;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import kr.codesqaud.cafe.config.session.AccountSession;
@@ -16,8 +18,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @RequestMapping("/members")
 @Controller
@@ -43,14 +45,14 @@ public class MemberController {
 
     @GetMapping("/{id}/form")
     public String profileEditForm(@PathVariable Long id, Model model,
-        @RequestAttribute AccountSession accountSession) {
+        @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
         model.addAttribute("profileEditRequest", memberService.findProfileEditById(id, accountSession.getId()));
         return "member/profileEdit";
     }
 
     @PutMapping("/{id}")
     public String editProfile(@PathVariable Long id, @Valid ProfileEditRequest profileEditRequest,
-        BindingResult bindingResult, @RequestAttribute AccountSession accountSession) {
+        BindingResult bindingResult, @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
             return "member/profileEdit";
         }

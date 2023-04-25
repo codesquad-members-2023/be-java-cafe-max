@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import static kr.codesqaud.cafe.util.SignInSessionUtil.SIGN_IN_SESSION_NAME;
+
 import javax.validation.Valid;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
@@ -14,8 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @RequestMapping("/posts")
 @Controller
@@ -36,7 +38,7 @@ public class PostController {
 
     @PostMapping
     public String write(@Valid PostWriteRequest postWriteRequest, BindingResult bindingResult,
-        @RequestAttribute AccountSession accountSession) {
+        @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
             return "post/postWrite";
         }
@@ -55,14 +57,14 @@ public class PostController {
 
     @GetMapping("/{id}/form")
     public String modifyForm(@PathVariable Long id, Model model,
-        @RequestAttribute AccountSession accountSession) {
+        @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
         model.addAttribute("postModifyRequest", postService.findPostModifyById(id, accountSession.getId()));
         return "post/postModify";
     }
 
     @PutMapping("/{id}")
     public String modify(@Valid PostModifyRequest postModifyRequest, BindingResult bindingResult,
-        @RequestAttribute AccountSession accountSession) {
+        @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
             return "post/postModify";
         }
@@ -72,7 +74,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable Long id, @RequestAttribute AccountSession accountSession) {
+    public String delete(@PathVariable Long id,
+        @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
         postService.delete(id, accountSession.getId());
         return "redirect:/";
     }
