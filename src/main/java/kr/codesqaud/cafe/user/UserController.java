@@ -37,7 +37,8 @@ public class UserController {
             // TODO: 에러 내용이 출력되게끔 로직 추가
             return "redirect:/error";
         }
-        userService.join(signUpRequestDto);
+        User user = signUpRequestDto.toEntity();
+        userService.join(user);
         return "redirect:/users";
     }
 
@@ -63,7 +64,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(
             @Valid LoginRequestDto loginRequestDto, BindingResult bindingResult, HttpServletRequest request) {
-        User loginUser = userService.login(loginRequestDto);
+        User loginUser = userService.login(loginRequestDto.toEntity());
 
         if (bindingResult.hasErrors()) {
             logger.info("로그인 실패");
