@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.user.dto;
 
 import javax.validation.constraints.Size;
+import kr.codesqaud.cafe.user.User;
 
 public class LoginRequestDto {
 
@@ -10,19 +11,24 @@ public class LoginRequestDto {
     @Size(min = 8, max = 10)
     private String password;
 
-    public String getLoginId() {
-        return loginId;
+    public LoginRequestDto(String loginId, String password) {
+        this.loginId = loginId;
+        this.password = password;
     }
 
-    public void setLoginId(String loginId) {
-        this.loginId = loginId;
+    public User toEntity() {
+        return new User.Builder()
+                .loginId(loginId)
+                .password(password)
+                .build();
+    }
+
+    public String getLoginId() {
+        return loginId;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
