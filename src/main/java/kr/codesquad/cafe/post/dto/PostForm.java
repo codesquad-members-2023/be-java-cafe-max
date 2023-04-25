@@ -26,17 +26,11 @@ public class PostForm {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getTextContent() {
         return textContent;
     }
 
-    public void setTextContent(String textContent) {
-        this.textContent = textContent;
-    }
 
     public Post toPost(User user) {
         return new Post.Builder()

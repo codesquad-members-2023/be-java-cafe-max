@@ -89,7 +89,6 @@ public class Post {
 
     public void addComment(Comment comment) {
         comments.add(comment);
-        comment.setPost(this);
     }
 
     private boolean canDelete() {
