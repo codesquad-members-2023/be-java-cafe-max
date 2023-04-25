@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import kr.codesqaud.cafe.article.domain.Article;
+import kr.codesqaud.cafe.article.dto.PaginationDto;
 
 public interface ArticleRepository {
 
 	void save(Article article);
 
-	List<Article> findAll();
+	List<Article> findAll(PaginationDto paginationDto);
 
 	Optional<Article> findArticleByIdx(Long articleIdx);
 

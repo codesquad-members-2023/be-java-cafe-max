@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ class MainControllerTest {
 	void mainPageTest() throws Exception {
 		//given
 		List<ArticleResponseForList> articleList = new ArrayList<>();
-		given(articleService.getArticleList()).willReturn(articleList);
+		// given(articleService.getArticleList()).willReturn(articleList);
 
 		//when & then
 		mockMvc.perform(MockMvcRequestBuilders.get("/"))

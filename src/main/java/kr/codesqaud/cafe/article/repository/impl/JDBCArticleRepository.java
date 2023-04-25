@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.article.domain.Article;
+import kr.codesqaud.cafe.article.dto.PaginationDto;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
 
 @Repository
@@ -32,9 +33,13 @@ public class JDBCArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public List<Article> findAll() {
+	public List<Article> findAll(PaginationDto paginationDto) {
 		return namedParameterJdbcTemplate.query(
-			"SELECT A.nickName, B.* FROM USER A INNER JOIN ARTICLE B ON A.user_id = B.user_id WHERE is_visible = true",
+			"SELECT A.nickName, B.* FROM USER A INNER JOIN ARTICLE B ON A.user_id = B.user_id "
+				+ "WHERE is_visible = true LIMIT :start,:end",
+			new MapSqlParameterSource()
+				.addValue("start", paginationDto.getOffset())
+				.addValue("end", paginationDto.getOffset() + paginationDto.getRecordSize()),
 			(rs, rn) -> new Article(rs));
 	}
 

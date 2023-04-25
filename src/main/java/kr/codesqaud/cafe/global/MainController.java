@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import kr.codesqaud.cafe.article.ArticleService;
 import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
+import kr.codesqaud.cafe.article.dto.PaginationDto;
 
 @Controller
 public class MainController {
@@ -19,7 +20,8 @@ public class MainController {
 
 	@GetMapping("/")
 	public String mainPage(Model model) {
-		List<ArticleResponseForList> articles = articleService.getArticleList();
+		PaginationDto paginationDto = new PaginationDto();
+		List<ArticleResponseForList> articles = articleService.getArticleList(paginationDto);
 		model.addAttribute("articles", articles)
 			.addAttribute("countOfArticles", articles.size());
 		return "index";

@@ -12,6 +12,7 @@ import kr.codesqaud.cafe.article.dto.ArticleResponse;
 import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
+import kr.codesqaud.cafe.article.dto.PaginationDto;
 import kr.codesqaud.cafe.article.exception.ArticleDeleteException;
 import kr.codesqaud.cafe.article.exception.ArticleIdAndSessionIdMismatchException;
 import kr.codesqaud.cafe.article.exception.ArticleNotFoundException;
@@ -34,8 +35,8 @@ public class ArticleService {
 		articleRepository.save(article);
 	}
 
-	public List<ArticleResponseForList> getArticleList() {
-		return articleRepository.findAll().stream()
+	public List<ArticleResponseForList> getArticleList(PaginationDto paginationDto) {
+		return articleRepository.findAll(paginationDto).stream()
 			.sorted(Comparator.comparing(Article::getArticleIdx).reversed())
 			.map(articleMapper::toArticleResponseForList)
 			.collect(Collectors.toUnmodifiableList());
