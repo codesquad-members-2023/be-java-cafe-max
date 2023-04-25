@@ -30,7 +30,7 @@ class QuestionServiceTest {
 	@Test
 	@DisplayName("Q&A 게시글 상세보기: id값에 해당하는 게시글을 불러온다")
 	void testFindById() throws QuestionNotExistException {
-		QuestionEntity questionSample = new QuestionEntity(1, "writer", "title", "contents",
+		QuestionEntity questionSample = new QuestionEntity(1, 1, "writer", "title", "contents", false,
 			LocalDateTime.now());
 		Mockito.when(questionRepository.findById(1))
 			.thenReturn(Optional.ofNullable(questionSample));
@@ -50,9 +50,12 @@ class QuestionServiceTest {
 	void testFindAll() {
 		int pageSize = 2;
 		List<QuestionEntity> questionsSample = new ArrayList<>();
-		QuestionEntity questionSample1 = new QuestionEntity(1, "writer", "title", "contents", LocalDateTime.now());
-		QuestionEntity questionSample2 = new QuestionEntity(2, "writer", "title", "contents", LocalDateTime.now());
-		QuestionEntity questionSample3 = new QuestionEntity(3, "writer", "title", "contents", LocalDateTime.now());
+		QuestionEntity questionSample1 = new QuestionEntity(1, 1, "writer", "title", "contents", false,
+			LocalDateTime.now());
+		QuestionEntity questionSample2 = new QuestionEntity(2, 1, "writer", "title", "contents", false,
+			LocalDateTime.now());
+		QuestionEntity questionSample3 = new QuestionEntity(3, 1, "writer", "title", "contents", false,
+			LocalDateTime.now());
 		questionsSample.add(questionSample1);
 		questionsSample.add(questionSample2);
 		questionsSample.add(questionSample3);
