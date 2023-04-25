@@ -16,7 +16,7 @@ CREATE TABLE question
     title      VARCHAR(255) NOT NULL,
     content    TEXT         NOT NULL,
     createTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updateTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    modifyTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     userId     bigint       NOT NULL,
     primary key (id),
     foreign key (userId) references users (id) ON DELETE CASCADE

@@ -68,7 +68,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
             rs.getString("title"),
             rs.getString("content"),
             rs.getTimestamp("createTime").toLocalDateTime(),
-            rs.getTimestamp("updateTime").toLocalDateTime(),
+            rs.getTimestamp("modifyTime").toLocalDateTime(),
             rs.getLong("userId"));
     }
 

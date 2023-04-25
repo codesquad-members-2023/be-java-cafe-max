@@ -9,16 +9,16 @@ public class Question {
     private String title; // 제목
     private String content; // 내용
     private final LocalDateTime createTime; // 작성시간
-    private final LocalDateTime updateTime; // 갱신시간
+    private final LocalDateTime modifyTime; // 갱신시간
     private final Long userId; // 회원 등록번호
 
     public Question(Long id, String title, String content, LocalDateTime createTime,
-        LocalDateTime updateTime, Long userId) {
+        LocalDateTime modifyTime, Long userId) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.createTime = createTime;
-        this.updateTime = updateTime;
+        this.modifyTime = modifyTime;
         this.userId = userId;
     }
 
@@ -43,8 +43,8 @@ public class Question {
         return createTime;
     }
 
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
+    public LocalDateTime getModifyTime() {
+        return modifyTime;
     }
 
     public Long getUserId() {
@@ -70,8 +70,13 @@ public class Question {
 
     @Override
     public String toString() {
-        return String.format(
-            "Question={id=%d, title=%s, content=%s, createTime=%s, updateTime=%s, userId=%d}",
-            id, title, content, createTime, updateTime, userId);
+        return "Question{" +
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", content='" + content + '\'' +
+            ", createTime=" + createTime +
+            ", modifyTime=" + modifyTime +
+            ", userId=" + userId +
+            '}';
     }
 }

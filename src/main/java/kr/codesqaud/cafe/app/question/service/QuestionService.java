@@ -35,6 +35,7 @@ public class QuestionService {
         });
     }
 
+    // TODO: 로직 수정
     @Transactional
     public Question modifyQuestion(Long id, QuestionSavedRequest requestQuestion) {
         Question original = findQuestion(id);
@@ -43,7 +44,7 @@ public class QuestionService {
                 requestQuestion.getTitle(),
                 requestQuestion.getContent(),
                 original.getCreateTime(),
-                original.getUpdateTime(),
+                original.getModifyTime(),
                 original.getUserId());
         return repository.modify(modifiedQuestion);
     }
