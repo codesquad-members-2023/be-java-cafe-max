@@ -20,7 +20,7 @@ public class CommentService {
     }
 
     public void delete(long commentId, long userId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow();
+        Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
         comment.delete(userId);
     }
 }

@@ -73,7 +73,7 @@ public class Comment {
             isDeleted = true;
             return;
         }
-        throw new RuntimeException();
+        throw new UnauthorizedDeleteCommentException();
     }
 
     public boolean isSameId(Long id) {
