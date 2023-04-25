@@ -4,11 +4,10 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.dto.article.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleTimeForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleUpdateForm;
+import kr.codesqaud.cafe.domain.vo.PageForm;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
-import kr.codesqaud.cafe.session.SessionConst;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -26,9 +25,9 @@ public class ArticleService {
         return articleRepository.save(article);
     }
 
-    public List<ArticleTimeForm> findArticles() {
+    public List<ArticleTimeForm> findArticles(PageForm pageForm) {
         // DTO가 가지고 있는 변수로 필터링하는 과정
-        return articleRepository.findAll().stream()
+        return articleRepository.findAll(pageForm).stream()
                 .map(ArticleTimeForm::from)
                 .collect(Collectors.toUnmodifiableList());
     }
@@ -59,5 +58,9 @@ public class ArticleService {
 
     public void delete(Long id) {
         articleRepository.deleteArticle(id);
+    }
+
+    public Long countArticles() {
+        return articleRepository.count();
     }
 }
