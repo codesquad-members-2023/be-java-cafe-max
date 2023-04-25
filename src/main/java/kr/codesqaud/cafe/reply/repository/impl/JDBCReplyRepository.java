@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.reply.domain.Reply;
+import kr.codesqaud.cafe.reply.dto.LoadMoreReplyDto;
 import kr.codesqaud.cafe.reply.repository.ReplyRepository;
 
 @Repository
@@ -37,10 +38,15 @@ public class JDBCReplyRepository implements ReplyRepository {
 	}
 
 	@Override
-	public List<Reply> findAllReply(Long articleIdx) {
+	public List<Reply> findAllReply(LoadMoreReplyDto loadMoreReplyDto) {
 		return namedParameterJdbcTemplate.query(
-			"SELECT A.nickName, B.* FROM USER A INNER JOIN REPLY B ON A.user_id = B.user_id WHERE article_Idx = :articleIdx AND is_visible = true",
-			new MapSqlParameterSource("articleIdx", articleIdx), (rs, rn) -> new Reply(rs));
+			"SELECT A.nickName, B.* FROM USER A INNER JOIN REPLY B ON A.user_id = B.user_id "
+				+ "WHERE article_Idx = :articleIdx AND is_visible = true LIMIT :start,:end",
+			new MapSqlParameterSource()
+				.addValue("articleIdx", loadMoreReplyDto.getArticleIdx())
+				.addValue("start", loadMoreReplyDto.getCountOfReplies() - loadMoreReplyDto.getRecordSize())
+				.addValue("end", loadMoreReplyDto.getRecordSize()),
+			(rs, rn) -> new Reply(rs));
 	}
 
 	@Override
@@ -55,5 +61,14 @@ public class JDBCReplyRepository implements ReplyRepository {
 			"SELECT user_id FROM REPLY WHERE reply_idx = :replyIdx", new MapSqlParameterSource("replyIdx", replyIdx),
 			(rs, rowNum) -> rs.getString("user_id")
 		);
+	}
+
+	@Override
+	public int getCountOfReplies(Long articleIdx) {
+		List<Integer> countList = namedParameterJdbcTemplate.query(
+			"SELECT COUNT(*) FROM REPLY WHERE is_visible = true AND article_idx = :articleIdx ",
+			new MapSqlParameterSource("articleIdx", articleIdx),
+			(rs, rowNum) -> rs.getInt(1));
+		return countList.get(0);
 	}
 }

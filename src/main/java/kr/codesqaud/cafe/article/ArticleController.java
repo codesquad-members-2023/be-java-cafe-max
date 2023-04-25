@@ -18,6 +18,7 @@ import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 import kr.codesqaud.cafe.global.config.Session;
 import kr.codesqaud.cafe.reply.ReplyService;
+import kr.codesqaud.cafe.reply.dto.LoadMoreReplyDto;
 
 @Controller
 public class ArticleController {
@@ -48,8 +49,10 @@ public class ArticleController {
 	//todo join써서 db에 2번접근하지 말고 한번접근해 데이터 가져와보기
 	@GetMapping("/articles/{articleIdx}")
 	public String detail(@PathVariable Long articleIdx, Model model) {
+		LoadMoreReplyDto loadMoreReplyDto = new LoadMoreReplyDto(articleIdx,
+			replyService.getCountOfReplies(articleIdx));
 		model.addAttribute("article", articleService.findArticleByIdx(articleIdx));
-		model.addAttribute("replies", replyService.getRepliesByIdx(articleIdx));
+		model.addAttribute("replies", replyService.getRepliesByIdx(loadMoreReplyDto));
 		return "article/show";
 	}
 

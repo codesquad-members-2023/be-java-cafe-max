@@ -69,3 +69,6 @@ function increaseCommentCount() {
     countOfReply.textContent = "댓글 " + postCountOfReply + "개";
 }
 
+
+
+
