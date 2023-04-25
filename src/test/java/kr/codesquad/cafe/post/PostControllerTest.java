@@ -169,7 +169,7 @@ class PostControllerTest {
             void viewPostEditPageSuccess() throws Exception {
                 Post post = mock(Post.class);
                 given(post.getId()).willReturn(1L);
-                given(postService.findById(anyLong(), anyLong())).willReturn(post);
+                given(postService.findByIdForEditForm(anyLong(), anyLong())).willReturn(post);
 
                 mockMvc.perform(get("/posts/" + post.getId() + "/editForm")
                                 .session(session))
@@ -182,7 +182,7 @@ class PostControllerTest {
             void viewPostEditPageFailedByOtherUser() throws Exception {
                 Post post = mock(Post.class);
                 given(post.getId()).willReturn(1L);
-                given(postService.findById(anyLong(), anyLong())).willThrow(new IllegalAccessIdException());
+                given(postService.findByIdForEditForm(anyLong(), anyLong())).willThrow(new IllegalAccessIdException());
 
                 mockMvc.perform(get("/posts/" + post.getId() + "/editForm")
                                 .session(session))

@@ -93,6 +93,6 @@ public class UserProfileController {
         userService.checkEditInfo(user, profileEditForm);
         User updateUser = userService.update(user, profileEditForm);
         httpSession.setAttribute(ATTRIBUTE_USER, updateUser);
-        return "redirect:/users/{userId}/profile";
+        return "redirect:/users/"+userId+"/profile";
     }
 }

@@ -22,10 +22,12 @@ public class ApiPostController {
     }
 
     @PostMapping("/posts/{postId}/comments")
-    public String addComment(@RequestParam("commentText") String content, @PathVariable("postId") Post post, @SessionAttribute User user, Model model) {
+    public String addComment(@RequestParam("commentText") String content, @PathVariable long postId,
+                             @SessionAttribute User user, Model model) {
+        Post post = postService.findById(postId);
         Comment comment = commentService.save(content, post, user);
-        Post save = postService.save(post, comment);
-        model.addAttribute("post", save);
+        Post savedPost = postService.addComment(post, comment);
+        model.addAttribute("post", savedPost);
         return "post/detail :: #commentsContent";
     }
 

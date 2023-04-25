@@ -4,11 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.codesquad.cafe.post.Post;
 import kr.codesquad.cafe.user.domain.User;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 @Entity
 public class Comment {
@@ -58,6 +54,14 @@ public class Comment {
 
     public String getContent() {
         return content;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public boolean isDeleted() {

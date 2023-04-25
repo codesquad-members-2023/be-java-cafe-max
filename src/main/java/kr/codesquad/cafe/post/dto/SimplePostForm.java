@@ -3,6 +3,8 @@ package kr.codesquad.cafe.post.dto;
 import kr.codesquad.cafe.post.Post;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SimplePostForm {
     public static final int MAX_LENGTH = 150;
@@ -28,7 +30,7 @@ public class SimplePostForm {
         commentCount = builder.commentCount;
     }
 
-    public static SimplePostForm from(Post post) {
+    private static SimplePostForm from(Post post) {
         return new Builder()
                 .id(post.getId())
                 .nickname(post.getNickname())
@@ -37,6 +39,13 @@ public class SimplePostForm {
                 .commentCount(post.getComments().size())
                 .createdDateTime(post.getCreatedDateTime())
                 .build();
+    }
+
+    public static List<SimplePostForm> toSimplePostForm(List<Post> posts) {
+        return posts
+                .stream()
+                .map(SimplePostForm::from)
+                .collect(Collectors.toList());
     }
 
     private static String getSimpleTextContent(Post post) {

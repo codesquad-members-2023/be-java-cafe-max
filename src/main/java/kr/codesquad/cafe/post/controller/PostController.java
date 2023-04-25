@@ -46,7 +46,7 @@ public class PostController {
 
     @GetMapping("/posts/{postId}/editForm")
     public String viewEditPost(@PathVariable long postId, Model model, @SessionAttribute User user) {
-        Post post = postService.findById(postId, user.getId());
+        Post post = postService.findByIdForEditForm(postId, user.getId());
         model.addAttribute(PostForm.from(post));
         model.addAttribute(POST_ID, postId);
         return "post/editForm";

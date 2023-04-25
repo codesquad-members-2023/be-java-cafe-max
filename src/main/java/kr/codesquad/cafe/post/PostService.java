@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static kr.codesquad.cafe.global.PagesInfo.*;
+import static kr.codesquad.cafe.global.PagesInfo.getPageable;
+import static kr.codesquad.cafe.global.PagesInfo.getPages;
+import static kr.codesquad.cafe.post.dto.SimplePostForm.toSimplePostForm;
 
 @Service
 @Transactional(readOnly = true)
@@ -37,7 +39,7 @@ public class PostService {
         return postRepository.findByIdAndIsDeleted(postId, false).orElseThrow(PostNotFoundException::new);
     }
 
-    public Post findById(long postId, long userId) {
+    public Post findByIdForEditForm(long postId, long userId) {
         Post post = findById(postId);
         post.checkPermission(userId);
         return post;
@@ -65,7 +67,7 @@ public class PostService {
     }
 
     @Transactional
-    public Post save(Post post, Comment comment) {
+    public Post addComment(Post post, Comment comment) {
         post.addComment(comment);
         return postRepository.save(post);
     }
@@ -93,7 +95,4 @@ public class PostService {
         return getPages(allCount);
     }
 
-    public void deleteAll() {
-        postRepository.deleteAll();
-    }
 }

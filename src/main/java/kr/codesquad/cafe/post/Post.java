@@ -93,6 +93,7 @@ public class Post {
 
     public void addComment(Comment comment) {
         comments.add(comment);
+        comment.setPost(this);
     }
 
     private boolean canDelete() {
@@ -110,7 +111,7 @@ public class Post {
     }
 
     public void checkPermission(long userId) {
-        if (!user.getId().equals(userId)) {
+        if (!user.isSameId(userId)) {
             throw new IllegalAccessIdException();
         }
     }

@@ -80,13 +80,6 @@ public class PagesInfo {
         return startPage != START_PAGE;
     }
 
-    public static List<SimplePostForm> toSimplePostForm(List<Post> posts) {
-        return posts
-                .stream()
-                .map(SimplePostForm::from)
-                .collect(Collectors.toList());
-    }
-
     public static Pageable getPageable(int currentPage, int pageSize) {
         return PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.DESC, CREATED_DATE_TIME)).previous();
     }
