@@ -2,7 +2,6 @@ package kr.codesquad.cafe.user.controller;
 
 import kr.codesquad.cafe.post.PostService;
 import kr.codesquad.cafe.user.UserService;
-import kr.codesquad.cafe.user.controller.UserController;
 import kr.codesquad.cafe.user.domain.Role;
 import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.dto.JoinForm;
@@ -22,10 +21,9 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -166,8 +164,8 @@ class UserControllerTest {
 
         @DisplayName("입력한 내용이 형식에 맞지 않을 때 에러메시지를 담고 로그인 페이지로 이동")
         @ParameterizedTest
-        @CsvSource({"12314312,231231231a",",","1234@email.com,123456798"})
-        void loginFailedByType(String email,String password) throws Exception {
+        @CsvSource({"12314312,231231231a", ",", "1234@email.com,123456798"})
+        void loginFailedByType(String email, String password) throws Exception {
             mockMvc.perform(post("/users/login")
                             .param(EMAIL, email)
                             .param(PASSWORD, password).session(session))
