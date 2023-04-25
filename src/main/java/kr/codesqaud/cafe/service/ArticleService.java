@@ -11,7 +11,7 @@ public class ArticleService {
     public ArticleService(ArticleRepository articleRepository){
         this.articleRepository = articleRepository;
     }
-    public void join(Article article){
+    public void save(Article article){
         articleRepository.save(article);
     }
     public List<Article> getArticleList(){
@@ -19,6 +19,6 @@ public class ArticleService {
     }
 
     public Article getArticleByArticleNum(long articleNum){
-        return articleRepository.getArticleByArticleNum(articleNum).get(); // Optional 때문에 끝에 .get()추가 -> 'Optional 안의 값 반환'이란 뜻(인 듯..)
+        return articleRepository.getArticleByArticleNum(articleNum).get(); // 만약에 Optional 안에 Null 이라면...??  <<<<<<<< fix 필요 <<<<<
     }
 }

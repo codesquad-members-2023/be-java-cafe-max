@@ -18,7 +18,7 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String makeNewArticle(Article article) {
-        articleService.join(article);
+        articleService.save(article);
         return "redirect:/articles";
     }
 

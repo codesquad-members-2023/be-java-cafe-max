@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -12,22 +13,23 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class JdbcUserRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcUserRepository(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate();
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
     //        @Override
     public User save(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("User_squad").usingGeneratedKeyColumns("id");
+        jdbcInsert.withTableName("Users_squad").usingGeneratedKeyColumns("userId");
 
         Map<String, Object> parameters = new ConcurrentHashMap<>();
-        parameters.put("userNum", user.getUserNum());  // 지금 가서 getter 만들기
-        parameters.put("userId", user.getUserLoginId());
-        parameters.put("password", user.getPassword()); // 지금 가서 getter 만들기
-        parameters.put("email", user.getEmail()); // 지금 가서 getter 만들기
+        parameters.put("userNum", user.getUserNum());
+        parameters.put("userLoginId", user.getUserLoginId());
+        parameters.put("password", user.getPassword());
+        parameters.put("email", user.getEmail());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
@@ -36,7 +38,7 @@ public class JdbcUserRepository {
     }
     //        @Override
     public Optional<User> findById(Long id) {
-        List<User> result = jdbcTemplate.query("select * from user_squad where id = ?", userRowMapper(), id);
+        List<User> result = jdbcTemplate.query("select * from users_squad where userId = ?", userRowMapper(), id);
         return result.stream().findAny();
     }
     //        @Override
@@ -48,8 +50,8 @@ public class JdbcUserRepository {
     }
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
-            User user = new User(); // 없던 기본 생성자 지금 만들기
-            user.setUserId(rs.getLong("id"));
+            User user = new User();
+            user.setUserId(rs.getLong("userId"));
             user.setUserNum(rs.getLong("userNum"));
             user.setUserLoginId(rs.getString("userLoginId"));
             user.setPassword(rs.getString("password"));

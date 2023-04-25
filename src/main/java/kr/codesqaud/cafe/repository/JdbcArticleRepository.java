@@ -13,65 +13,55 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
+@Repository // 자동으로 빈으로 등록
 public class JdbcArticleRepository {
     private final JdbcTemplate jdbcTemplate;
-
-    public JdbcArticleRepository(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate();
-    }
-    //    @Override // 아 생각해보니 인터페이스 상속으로 만들지 않아서 오버라이드는 해당사항이 아닌..
+    public JdbcArticleRepository(DataSource dataSource)
+    {this.jdbcTemplate = new JdbcTemplate(dataSource);}
+    //    @Override
     public Article save(Article article) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate); // insert 하게 해주는
-        jdbcInsert.withTableName("articles_squad").usingGeneratedKeyColumns("id");
-        // 방금 만든(h2) articles_squad 테이블에 insert를 하겠다 + (pk 알려주기)인 것으로 추정...
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 
-        Map<String, Object> parameters = new ConcurrentHashMap<>();  // 이것은 무엇인지 짐작이 될 것 같으면서도 안 되는...?
+        simpleJdbcInsert.withTableName("articles_squad").usingGeneratedKeyColumns("articleId"); // 테이블 + pk(인덱스?)인 듯
+        // == 'SimpleJdbcInsertOperations'
 
+        Map<String, Object> parameters = new ConcurrentHashMap<>();
         parameters.put("writer", article.getWriter());
         parameters.put("title", article.getTitle());
         parameters.put("contents", article.getContents());
         parameters.put("createdTime", article.getCreatedTime());
         parameters.put("articleNum", article.getArticleNum());
-
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-        // Number 타입이 어디서 나온 것인지 몰라 (-> 처음 보는 것이라) 당황(;;)
-        article.setArticleId(key.longValue()); //  여기서 Id속성을 새로 만들어야 했는데 기존에 있던 articleNum으로 할 수 있지 않았을지 사소하고 소심한 궁금증이...
+        long thisId = simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters)).longValue(); // 맵을 이용한 SqlParamaeterSource...?????
+        // BeanPropertySqlParameterSource("tablename")라는 것도 있다는데.... //  Id속성을 -> articleNum로도....
+        article.setArticleId(thisId);
         return article;
     }
-
-    //        @Override
-    public Optional<Article> findById(Long id) { // 왜 Long 인지(도) 그러고보니 모름!
+    public Optional<Article> findById(Long id) { // Long!
         // import java.awt.List 하면 <T>밑에 빨간줄 있었던 <<<
-        List<Article> result = jdbcTemplate.query("select * from articles_squad where id = ?",
-                articleRowMapper(), id);
+        List<Article> result = jdbcTemplate.query("select * from articles_squad where articleId = ?", articleRowMapper(), id);
+        // jdbcTemplate.query(String query, RowMapper<Article>, Long id) -> List<Article> 반환(???)
         return result.stream().findAny();
     }
-
-    //        @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from articles_squad", // 'articles_squad' 테이블 선택 = sql문
-                articleRowMapper() // 정체불명 -> 이제 만드는 메소드(RowMapper<T>)
-        );
+        return jdbcTemplate.query("select * from articles_squad", articleRowMapper() );  // -> 뭔가 DB에서 정보들 가지고 Article 객체를 만들어 준다는 느낌..!?
+        //  jdbcTemplate.query(String query, RowMapper<Article>) --> List<Article> 반환
+        // -----> findAll이면 '다 주세요' 인데???
     }
-
-    //        @Override
     public void clearStore() {
-        jdbcTemplate.update( // 문자열로 쿼리문을 전송한다는 느낌(아마도 cs15에서 봤을 듯한...)
-                "delete from articles_squad"
-        );
+        jdbcTemplate.update("delete from articles_squad" );
+        //  jdbcTemplate.update(String 쿼리문)
     }
-
-    private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> {
-            Article article = new Article();  // 없던 기본 생성자 지금 만들기
+    private RowMapper<Article> articleRowMapper() { // RowMapper<T>인데 아무래도 'T를 만들어드립니다'라는 뜻인듯... -> RowMapper<Article>을 정의해서 반환
+        return
+                (rs, rowNum) -> {   // (resultSet, current row)    // query에 id(아 이게 rowNum인가?)가 있으면 1개 레코드만 주고 없으면 맨 위에서 맨 아래까지 다 긁어서 준다는?
+            Article article = new Article();
             article.setArticleId(rs.getLong("id"));
-            article.setWriter(rs.getString("writer"));    // 지금 가서 setter 만들기
-            article.setTitle(rs.getString("title"));        // 지금 가서 setter 만들기
-            article.setContents(rs.getString("contents"));      // 지금 가서 setter 만들기
+            article.setWriter(rs.getString("writer"));
+            article.setTitle(rs.getString("title"));
+            article.setContents(rs.getString("contents"));
             article.setCreatedTime(rs.getTimestamp("createdTime").toLocalDateTime());
             article.setArticleNum(rs.getLong("ArticleNum"));
             return article;
-        };
+        } ;
     }
 }
