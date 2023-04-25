@@ -1,13 +1,15 @@
-DROP TABLE IF EXISTS users;
-CREATE TABLE users(
-    user_id VARCHAR,
-    password VARCHAR NOT NULL,
-    user_name VARCHAR NOT NULL UNIQUE,
-    email VARCHAR NOT NULL,
-    PRIMARY KEY (user_id)
-);
-
+DROP TABLE IF EXISTS comment;
 DROP TABLE IF EXISTS post;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users(
+    user_id VARCHAR(50),
+    password VARCHAR(50) NOT NULL,
+    user_name VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(50) NOT NULL,
+    PRIMARY KEY (user_id)
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 CREATE TABLE post(
     post_id BIGINT AUTO_INCREMENT,
     writer VARCHAR(50) NOT NULL,
@@ -18,9 +20,8 @@ CREATE TABLE post(
     PRIMARY KEY (post_id),
     FOREIGN KEY (writer) REFERENCES users(user_name)
     ON UPDATE CASCADE
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS comment;
 CREATE TABLE comment(
     comment_id BIGINT AUTO_INCREMENT,
     post_id BIGINT NOT NULL,
@@ -32,4 +33,4 @@ CREATE TABLE comment(
     FOREIGN KEY (post_id) REFERENCES post(post_id),
     FOREIGN KEY (writer) REFERENCES users(user_name)
     ON UPDATE CASCADE
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
