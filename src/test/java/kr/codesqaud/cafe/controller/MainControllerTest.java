@@ -29,7 +29,7 @@ public class MainControllerTest {
 
     @DisplayName("ROOT URL을 접근하면 게시글 목록 페이지로 이동한다")
     @Test
-    void posts() throws Exception {
+    void showMain() throws Exception {
         // given
         given(postService.findAll()).willReturn(Collections.emptyList());
 

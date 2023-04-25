@@ -32,7 +32,7 @@ public class PostController {
     }
 
     @GetMapping("/form")
-    public String writeForm(PostWriteRequest postWriteRequest) {
+    public String showWriteForm(PostWriteRequest postWriteRequest) {
         return "post/postWrite";
     }
 
@@ -49,14 +49,14 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public String post(@PathVariable Long id, Model model) {
+    public String showPost(@PathVariable Long id, Model model) {
         model.addAttribute("postResponse", postService.findById(id));
         model.addAttribute("commentResponses", commentService.findAllByPostId(id));
         return "post/post";
     }
 
     @GetMapping("/{id}/form")
-    public String modifyForm(@PathVariable Long id, Model model,
+    public String showModifyForm(@PathVariable Long id, Model model,
         @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
         model.addAttribute("postModifyRequest", postService.findPostModifyById(id, accountSession.getId()));
         return "post/postModify";

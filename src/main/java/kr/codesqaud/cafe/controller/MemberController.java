@@ -32,19 +32,19 @@ public class MemberController {
     }
 
     @GetMapping
-    public String findAll(Model model) {
+    public String showMembers(Model model) {
         model.addAttribute("memberResponses", memberService.findAll());
         return "member/members";
     }
 
     @GetMapping("/{id}")
-    public String profile(@PathVariable Long id, Model model) {
+    public String showProfile(@PathVariable Long id, Model model) {
         model.addAttribute("memberResponse", memberService.findById(id));
         return "member/profile";
     }
 
     @GetMapping("/{id}/form")
-    public String profileEditForm(@PathVariable Long id, Model model,
+    public String showProfileEditForm(@PathVariable Long id, Model model,
         @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
         model.addAttribute("profileEditRequest", memberService.findProfileEditById(id, accountSession.getId()));
         return "member/profileEdit";
@@ -62,7 +62,7 @@ public class MemberController {
     }
 
     @GetMapping("/sign-up")
-    public String signUpForm(SignUpRequest signUpRequest) {
+    public String showSignUpForm(SignUpRequest signUpRequest) {
         return "member/signUp";
     }
 
@@ -78,7 +78,7 @@ public class MemberController {
     }
 
     @GetMapping("/sign-in")
-    public String signInForm(SignInRequest signInRequest) {
+    public String showSignInForm(SignInRequest signInRequest) {
         return "member/signIn";
     }
 

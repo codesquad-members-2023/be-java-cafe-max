@@ -51,7 +51,7 @@ class MemberControllerTest {
 
     @DisplayName("로그인 했을 때 회원목록을 조회하면 전체 회원목록 페이지로 이동한다")
     @Test
-    void findAll() throws Exception {
+    void showMembers() throws Exception {
         // given
         Long savedId = 1L;
         AccountSession accountSession = new AccountSession(savedId, "만두");
@@ -73,7 +73,7 @@ class MemberControllerTest {
 
     @DisplayName("로그인 하지 않았을 때 회원목록을 조회하면 로그인 페이지로 이동한다")
     @Test
-    void findAllFalse() throws Exception {
+    void showMembersFalse() throws Exception {
         // given
 
         // when
@@ -87,7 +87,7 @@ class MemberControllerTest {
 
     @DisplayName("로그인 한 회원과 수정할 회원이 같은 회원일 때 회원 프로필 페이지에 접근하면 회원 프로필 수정 페이지로 이동한다")
     @Test
-    void profileEditForm() throws Exception {
+    void showProfileEditForm() throws Exception {
         // given
         Long savedId = 1L;
         AccountSession accountSession = new AccountSession(savedId, "만두");
@@ -108,7 +108,7 @@ class MemberControllerTest {
 
     @DisplayName("로그인 하지 않았을 때 회원 프로필 페이지에 접근하면 로그인 페이지로 이동한다")
     @Test
-    void profileEditFormFalse() throws Exception {
+    void showProfileEditFormFalse() throws Exception {
         // given
         Long savedId = 1L;
 
@@ -123,7 +123,7 @@ class MemberControllerTest {
 
     @DisplayName("로그인 한 회원과 수정할 회원이 같은 회원일 아닐때 회원 프로필 페이지에 접근하면 에러 페이지로 이동한다")
     @Test
-    void profileEditFormFalse2() throws Exception {
+    void showProfileEditFormFalse2() throws Exception {
         // given
         Long savedId = 1L;
         AccountSession accountSession = new AccountSession(2L, "만두");

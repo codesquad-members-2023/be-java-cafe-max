@@ -53,7 +53,7 @@ public class PostControllerTest {
 
     @DisplayName("로그인을 했을 때 게시글 작성 페이지에 접근하면 게시글 작성 페이지로 이동한다")
     @Test
-    void writeForm() throws Exception {
+    void showWriteForm() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(1L, "만두");
 
@@ -147,7 +147,7 @@ public class PostControllerTest {
 
     @DisplayName("로그인을 하고 게시글 조회할 때 게시글이 있는 아이디를 조회하면 게시글 상세 조회 페이지로 이동한다")
     @Test
-    void detailPost() throws Exception {
+    void showPost() throws Exception {
         // given
         PostResponse postResponse = createPostResponseDummy();
         AccountSession accountSession = new AccountSession(postResponse.getWriter().getId(), "만두");
@@ -167,7 +167,7 @@ public class PostControllerTest {
 
     @DisplayName("로그인을 하고 게시글 상세 조회할 떄 게시글이 없는 번호를 조회하면 에러 페이지로 이동한다")
     @Test
-    void detailPostFalse() throws Exception {
+    void showPostFalse() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(1L, "만두");
         given(postService.findById(1L)).willThrow(PostNotFoundException.class);
@@ -185,7 +185,7 @@ public class PostControllerTest {
 
     @DisplayName("글 수정 페이지에 접근할 때 로그인 회원과 글 작성자가 같다면 글 수정 페이지로 이동한다")
     @Test
-    void modifyForm() throws Exception {
+    void showModifyForm() throws Exception {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(1L, "만두");
@@ -205,7 +205,7 @@ public class PostControllerTest {
 
     @DisplayName("게시글 수정 페이지 접근할 때 로그인 회원과 게시글 작성자가 다르다면 에러페이지로 이동한다")
     @Test
-    void modifyFormFalse() throws Exception {
+    void showModifyFormFalse() throws Exception {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(2L, "만두");
@@ -225,7 +225,7 @@ public class PostControllerTest {
 
     @DisplayName("로그인을 하고 게시글 수정 페이지 접근할 떄 게시글이 없는 번호를 조회하면 에러 페이지로 이동한다")
     @Test
-    void modifyFormFalse2() throws Exception {
+    void showModifyFormFalse2() throws Exception {
         // given
         Long id = 1L;
         AccountSession accountSession = new AccountSession(1L, "만두");

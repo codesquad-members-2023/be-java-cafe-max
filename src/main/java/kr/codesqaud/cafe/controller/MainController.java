@@ -15,7 +15,7 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String mainForm(Model model) {
+    public String showMain(Model model) {
         model.addAttribute("postResponses", postService.findAll());
         return "index";
     }
