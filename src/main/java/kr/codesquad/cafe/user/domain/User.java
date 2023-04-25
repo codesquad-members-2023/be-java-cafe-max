@@ -22,11 +22,14 @@ public class User {
     private String password;
     @Enumerated(value = EnumType.STRING)
     private Role role;
-
     @OneToMany(mappedBy = "user")
-    private final List<Post> posts = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
 
     public User() {
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     private User(Builder builder) {

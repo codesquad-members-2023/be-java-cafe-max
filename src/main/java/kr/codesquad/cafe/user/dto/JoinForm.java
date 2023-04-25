@@ -43,7 +43,7 @@ public class JoinForm {
     }
 
     public User toUser(StringEncryptor encryptor) {
-        return new User.Builder()
+        return User.builder()
                 .nickname(nickname)
                 .email(email)
                 .password(encryptor.encrypt(password))
