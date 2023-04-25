@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class Comment {
     private final Long commentId;
     private final Long postId;
+    private final String writerId;
     private final String writer;
     private final String contents;
     private final LocalDateTime writeDateTime;
@@ -12,6 +13,7 @@ public class Comment {
     private Comment(Builder builder) {
         this.commentId = builder.commentId;
         this.postId = builder.postId;
+        this.writerId = builder.writerId;
         this.writer = builder.writer;
         this.contents = builder.contents;
         this.writeDateTime = builder.writeDateTime;
@@ -23,6 +25,10 @@ public class Comment {
 
     public Long getPostId() {
         return postId;
+    }
+
+    public String getWriterId() {
+        return writerId;
     }
 
     public String getWriter() {
@@ -44,6 +50,7 @@ public class Comment {
     public static class Builder {
         private Long commentId;
         private Long postId;
+        private String writerId;
         private String writer;
         private String contents;
         private LocalDateTime writeDateTime;
@@ -55,6 +62,11 @@ public class Comment {
 
         public Builder postId(Long postId) {
             this.postId = postId;
+            return this;
+        }
+
+        public Builder writerId(String writerId) {
+            this.writerId = writerId;
             return this;
         }
 

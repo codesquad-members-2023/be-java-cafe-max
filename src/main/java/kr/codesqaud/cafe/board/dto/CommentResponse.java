@@ -8,20 +8,22 @@ import java.time.format.DateTimeFormatter;
 public class CommentResponse {
     private Long commentId;
     private Long postId;
+    private String writerId;
     private String writer;
     private String contents;
     private LocalDateTime writeDateTime;
 
-    public CommentResponse(Long commentId, Long postId, String writer, String contents, LocalDateTime writeDateTime) {
+    public CommentResponse(Long commentId, Long postId, String writerId, String writer, String contents, LocalDateTime writeDateTime) {
         this.commentId = commentId;
         this.postId = postId;
+        this.writerId = writerId;
         this.writer = writer;
         this.contents = contents;
         this.writeDateTime = writeDateTime;
     }
 
     public static CommentResponse from(Comment comment) {
-        return new CommentResponse(comment.getCommentId(), comment.getPostId(), comment.getWriter(), comment.getContents(), comment.getWriteDateTime());
+        return new CommentResponse(comment.getCommentId(), comment.getPostId(), comment.getWriterId(), comment.getWriter(), comment.getContents(), comment.getWriteDateTime());
     }
 
     public Long getCommentId() {
@@ -30,6 +32,10 @@ public class CommentResponse {
 
     public Long getPostId() {
         return postId;
+    }
+
+    public String getWriterId() {
+        return writerId;
     }
 
     public String getWriter() {

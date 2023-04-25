@@ -52,8 +52,8 @@ public class CommentJdbcRepository {
     }
 
     public List<Comment> findAllByPostId(Long postId) {
-        return jdbcTemplate.query("SELECT comment_id, post_id, writer, contents, write_date_time " +
-                        "FROM comment " +
+        return jdbcTemplate.query("SELECT comment_id, post_id, b.user_id AS writer_id, writer, contents, write_date_time " +
+                        "FROM comment a JOIN users b ON a.writer = b.user_name " +
                         "WHERE post_id = :postId AND deleted = FALSE " +
                         "ORDER BY write_date_time",
                 Collections.singletonMap("postId", postId), commentRowMapper);
@@ -65,6 +65,7 @@ public class CommentJdbcRepository {
             return Comment.builder()
                     .commentId(rs.getLong("comment_id"))
                     .postId(rs.getLong("post_id"))
+                    .writerId(rs.getString("writer_id"))
                     .writer(rs.getString("writer"))
                     .contents(rs.getString("contents"))
                     .writeDateTime(rs.getTimestamp("write_date_time").toLocalDateTime())
