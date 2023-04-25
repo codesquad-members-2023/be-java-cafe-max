@@ -14,4 +14,8 @@ public class Result {
     public static Result fail(String message) {
         return new Result(message);
     }
+
+    public String getMessage() {
+        return message;
+    }
 }
