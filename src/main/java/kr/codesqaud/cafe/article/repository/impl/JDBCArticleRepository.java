@@ -36,10 +36,10 @@ public class JDBCArticleRepository implements ArticleRepository {
 	public List<Article> findAll(PaginationDto paginationDto) {
 		return namedParameterJdbcTemplate.query(
 			"SELECT A.nickName, B.* FROM USER A INNER JOIN ARTICLE B ON A.user_id = B.user_id "
-				+ "WHERE is_visible = true LIMIT :start,:end",
+				+ "WHERE is_visible = true ORDER BY B.article_idx DESC LIMIT :start,:recordSize",
 			new MapSqlParameterSource()
 				.addValue("start", paginationDto.getOffset())
-				.addValue("end", paginationDto.getRecordSize()),
+				.addValue("recordSize", paginationDto.getRecordSize()),
 			(rs, rn) -> new Article(rs));
 	}
 
