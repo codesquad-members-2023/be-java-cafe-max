@@ -4,11 +4,12 @@ import kr.codesquad.cafe.post.Post;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class SimplePostForm {
-    public static final int MAX_LENGTH = 150;
-    public static final int BEGIN_INDEX = 0;
+    private static final int MAX_LENGTH = 150;
+    private static final int BEGIN_INDEX = 0;
     private final long id;
 
     private final long commentCount;
@@ -49,7 +50,9 @@ public class SimplePostForm {
     }
 
     private static String getSimpleTextContent(Post post) {
-        return (post.getTextContent().length() > MAX_LENGTH) ? post.getTextContent().substring(BEGIN_INDEX, MAX_LENGTH) : post.getTextContent();
+        return (post.getTextContent().length() > MAX_LENGTH)
+                ? post.getTextContent().substring(BEGIN_INDEX, MAX_LENGTH)
+                : post.getTextContent();
     }
 
     public Long getId() {
@@ -74,6 +77,19 @@ public class SimplePostForm {
 
     public long getCommentCount() {
         return commentCount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SimplePostForm)) return false;
+        SimplePostForm that = (SimplePostForm) o;
+        return getId() == that.getId() && getCommentCount() == that.getCommentCount() && Objects.equals(getNickname(), that.getNickname()) && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getTextContent(), that.getTextContent()) && Objects.equals(getCreatedDateTime(), that.getCreatedDateTime());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getCommentCount(), getNickname(), getTitle(), getTextContent(), getCreatedDateTime());
     }
 
     public static class Builder {
