@@ -1,12 +1,12 @@
 package kr.codesqaud.cafe.board.controller;
 
+import kr.codesqaud.cafe.board.dto.CommentResponse;
 import kr.codesqaud.cafe.board.dto.CommentWriteForm;
 import kr.codesqaud.cafe.board.service.CommentService;
 import kr.codesqaud.cafe.user.dto.SessionUser;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 public class CommentController {
 
     private final CommentService commentService;
@@ -16,9 +16,9 @@ public class CommentController {
     }
 
     @PostMapping("/board/{postId}/comment")
-    public String writeComment(@PathVariable Long postId, @ModelAttribute CommentWriteForm commentWriteForm, @SessionAttribute("sessionUser") SessionUser sessionUser) {
+    public CommentResponse writeComment(@PathVariable Long postId, @ModelAttribute CommentWriteForm commentWriteForm, @SessionAttribute("sessionUser") SessionUser sessionUser) {
         Long commentId = commentService.write(commentWriteForm, sessionUser.getUserName());
-        return "redirect:/board/" + postId;
+        return commentService.getComment(commentId);
     }
 
     @DeleteMapping("/board/{postId}/comment/{commentId}")
