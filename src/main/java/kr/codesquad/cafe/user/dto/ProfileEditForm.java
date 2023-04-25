@@ -41,7 +41,7 @@ public class ProfileEditForm {
     }
 
     public User setUser(User user) {
-        return new User.Builder()
+        return User.builder()
                 .id(user.getId())
                 .email(email)
                 .nickname(nickname)
