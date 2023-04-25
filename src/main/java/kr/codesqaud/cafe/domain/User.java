@@ -1,7 +1,5 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.user.UserForm;
-
 public class User {
 
     private Long customerId; // 회원번호
