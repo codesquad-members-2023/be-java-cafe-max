@@ -17,7 +17,12 @@ public class UserResponse {
     }
 
     public User toEntity() {
-        return new User(id, userId, null, name, email);
+        return User.builder()
+            .id(id)
+            .userId(userId)
+            .name(name)
+            .email(email)
+            .build();
     }
 
     public Long getId() {

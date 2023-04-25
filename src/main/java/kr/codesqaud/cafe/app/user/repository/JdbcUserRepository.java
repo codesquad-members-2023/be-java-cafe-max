@@ -11,12 +11,12 @@ import org.springframework.stereotype.Repository;
 
 @Primary
 @Repository
-public class UserJdbcRepository implements UserRepository {
+public class JdbcUserRepository implements UserRepository {
 
     private final JdbcTemplate template;
 
     @Autowired
-    public UserJdbcRepository(JdbcTemplate template) {
+    public JdbcUserRepository(JdbcTemplate template) {
         this.template = template;
     }
 
@@ -28,21 +28,21 @@ public class UserJdbcRepository implements UserRepository {
     @Override
     public Optional<User> findById(Long id) {
         List<User> users = template.query("SELECT * FROM users WHERE id = ?", userRowMapper(), id);
-        return users.stream().findFirst();
+        return users.stream().findAny();
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
         List<User> users =
             template.query("SELECT * FROM users WHERE userId = ?", userRowMapper(), userId);
-        return users.stream().findFirst();
+        return users.stream().findAny();
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
         List<User> users =
             template.query("SELECT * FROM users WHERE email = ?", userRowMapper(), email);
-        return users.stream().findFirst();
+        return users.stream().findAny();
     }
 
     @Override
@@ -56,7 +56,7 @@ public class UserJdbcRepository implements UserRepository {
     public User modify(User user) {
         template.update("UPDATE users SET name = ?, email = ? WHERE id = ?",
             user.getName(), user.getEmail(), user.getId());
-        return findByUserId(user.getUserId()).orElseThrow();
+        return user;
     }
 
     @Override
@@ -66,10 +66,12 @@ public class UserJdbcRepository implements UserRepository {
 
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) ->
-            new User(rs.getLong("id"),
-                rs.getString("userId"),
-                rs.getString("password"),
-                rs.getString("name"),
-                rs.getString("email"));
+            User.builder()
+                .id(rs.getLong("id"))
+                .userId(rs.getString("userId"))
+                .password(rs.getString("password"))
+                .name(rs.getString("name"))
+                .email(rs.getString("email"))
+                .build();
     }
 }

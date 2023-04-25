@@ -6,12 +6,11 @@ import kr.codesqaud.cafe.app.user.entity.User;
 public class UserLoginRequest {
 
     @Pattern(regexp = "^[a-z\\d_-]{5,20}$", message = "5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.")
-    private final String userId;
+    private String userId;
     @Pattern(regexp = "[A-Za-z\\d!@#$%^&*()_+]{8,16}$", message = "8~16자 영문 대 소문자, 숫자, 특수문자만 사용 가능합니다.")
-    private final String password;
+    private String password;
 
     public UserLoginRequest() {
-        this(null, null);
     }
 
     public UserLoginRequest(String userId, String password) {
@@ -20,7 +19,10 @@ public class UserLoginRequest {
     }
 
     public User toEntity() {
-        return new User(null, userId, password, null, null);
+        return User.builder()
+            .userId(userId)
+            .password(password)
+            .build();
     }
 
     public String getUserId() {
@@ -33,6 +35,9 @@ public class UserLoginRequest {
 
     @Override
     public String toString() {
-        return String.format("UserLoginRequestDto={userId=%s, password=%s}", userId, password);
+        return "UserLoginRequest{" +
+            "userId='" + userId + '\'' +
+            ", password='" + password + '\'' +
+            '}';
     }
 }

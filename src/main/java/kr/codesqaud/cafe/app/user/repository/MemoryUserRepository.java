@@ -8,7 +8,7 @@ import kr.codesqaud.cafe.app.user.entity.User;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserMemoryRepository implements UserRepository {
+public class MemoryUserRepository implements UserRepository {
 
     private final List<User> store = new ArrayList<>();
     private static long sequence = 0;
@@ -35,17 +35,22 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        User newUser = new User(nextId(), user.getUserId(), user.getPassword(), user.getName(),
-            user.getEmail());
+        User newUser = User.builder()
+            .id(nextId())
+            .userId(user.getUserId())
+            .password(user.getPassword())
+            .name(user.getName())
+            .email(user.getEmail())
+            .build();
         store.add(newUser);
         return newUser;
     }
 
     @Override
     public User modify(User user) {
-        store.remove(user);
-        store.add(user);
-        return user;
+        User originalUser = findById(user.getId()).orElseThrow();
+        originalUser.modify(user);
+        return originalUser;
     }
 
     @Override
