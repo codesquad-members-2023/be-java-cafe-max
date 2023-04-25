@@ -77,6 +77,7 @@ public class UserController {
         }
         HttpSession session = request.getSession(true);
         session.setAttribute("userId", loginUser.getUserId());
+        session.setAttribute("userName", loginUser.getUserName());
 
         Cookie idCookie = new Cookie("id", String.valueOf(loginUser.getId()));
         response.addCookie(idCookie);
