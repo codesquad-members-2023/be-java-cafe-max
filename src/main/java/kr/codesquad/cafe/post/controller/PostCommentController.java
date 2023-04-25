@@ -10,13 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-public class ApiPostController {
+public class PostCommentController {
 
     private final PostService postService;
 
     private final CommentService commentService;
 
-    public ApiPostController(PostService postService, CommentService commentService) {
+    public PostCommentController(PostService postService, CommentService commentService) {
         this.postService = postService;
         this.commentService = commentService;
     }
