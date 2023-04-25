@@ -1,7 +1,5 @@
 package kr.codesquad.cafe.global;
 
-import kr.codesquad.cafe.post.Post;
-import kr.codesquad.cafe.post.dto.SimplePostForm;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,7 +19,6 @@ public class PagesInfo {
     private static final int START_PAGE_OFFSET = 2;
     private static final int NEXT_PAGES_OFFSET = 3;
     private static final int MAIN_PAGE_SIZE = 15;
-    private static final int PROFILE_PAGE_SIZE = 6;
     private static final String CREATED_DATE_TIME = "createdDateTime";
     private final List<Integer> pageNumbers;
 

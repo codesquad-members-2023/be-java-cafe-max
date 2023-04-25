@@ -29,14 +29,11 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
 
-    public static final long NO_EXIST_ID = 100L;
     public static final String TEST_TITLE = "test_title";
     public static final String TEST_CONTENT = "test_content";
     public static final String TARGET_TITLE = "target_title";
     public static final String TARGET_CONTENT = "target_content";
     private static final String TEST_NICKNAME = "jack";
-    private static final String JACK_EMAIL = "jack@email.com";
-    private static final String TEST_PASSWORD = "123456789a";
     public static final long TEST_ID = 1L;
     public static final int CURRENT_PAGE = 0;
     public static final int TOTAL_PAGES = 100;
