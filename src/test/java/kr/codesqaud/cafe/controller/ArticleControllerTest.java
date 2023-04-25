@@ -39,7 +39,7 @@ class ArticleControllerTest {
 	@MockBean
 	private ArticleService articleService;
 
-	@DisplayName("[POST] 게시글 작성 - 정상호출")
+	@DisplayName("[POST] 게시글 작성 정보가 주어질 때 게시글 작성요청을 하면 홈으로 리다이렉트된다.")
 	@Test
 	void givenPostingData_whenPosting_thenRedirectsHome() throws Exception {
 		// given
@@ -59,7 +59,7 @@ class ArticleControllerTest {
 		then(articleService).should().post(any(PostingRequest.class), anyString());
 	}
 
-	@DisplayName("[POST] 게시글 작성 - 로그인 되어 있지 않을 때 로그인 페이지로 리다이렉트")
+	@DisplayName("[POST] 로그인 되어 있지 않을 때 게시글 작성 요청을 하면 로그인 페이지로 리다이렉트된다.")
 	@Test
 	void givenNoSession_whenPosting_thenRedirectsLoginPage() throws Exception {
 		// given
@@ -78,7 +78,7 @@ class ArticleControllerTest {
 		then(articleService).shouldHaveNoInteractions();
 	}
 
-	@DisplayName("[GET] 게시글 상세보기 - 정상호출")
+	@DisplayName("[GET] 게시글 상세보기 요청을 하면 게시글 상세화면 뷰가 반환된다.")
 	@Test
 	void givenNothing_whenShowArticleDetails_thenReturnsArticleDetailsView() throws Exception {
 		// given
@@ -98,7 +98,7 @@ class ArticleControllerTest {
 		then(articleService).should().getArticleDetails(1L);
 	}
 
-	@DisplayName("[GET] 게시글 상세보기 - 로그인 되어 있지 않을 때 로그인 페이지로 리다이렉트")
+	@DisplayName("[GET] 로그인 되어 있지 않을 때 게시글 상세보기 요청을 하면 로그인 페이지로 리다이렉트된다.")
 	@Test
 	void givenNoSession_whenShowArticleDetails_thenRedirectsLoginPage() throws Exception {
 		// given
@@ -112,7 +112,7 @@ class ArticleControllerTest {
 		then(articleService).shouldHaveNoInteractions();
 	}
 
-	@DisplayName("[GET] 게시글 수정 페이지 - 정상호출")
+	@DisplayName("[GET] 게시글 수정화면보기 요청을 하면 게시글 수정 뷰가 반환된다.")
 	@Test
 	void givenNothing_whenShowArticleEditPage_thenReturnsArticleEditView() throws Exception {
 		// given
@@ -128,7 +128,7 @@ class ArticleControllerTest {
 		then(articleService).should().validateHasAuthorization(1L, "bruni");
 	}
 
-	@DisplayName("[GET] 게시글 수정 페이지 - 세션이 없을 때 로그인 페이지로 리다이렉트")
+	@DisplayName("[GET] 세션이 없을 때 게시글 수정화면 보기를 요청하면 로그인 페이지로 리다이렉트된다.")
 	@Test
 	void givenNoSession_whenShowArticleEditPage_thenRedirectsLoginPage() throws Exception {
 		// given
@@ -142,7 +142,7 @@ class ArticleControllerTest {
 		then(articleService).shouldHaveNoInteractions();
 	}
 
-	@DisplayName("[GET] 게시글 수정 페이지 - 로그인한 사용자와 게시글 작성자가 일치하지 않을 때 error 뷰 반환")
+	@DisplayName("[GET] 로그인한 사용자와 게시글 작성자가 일치하지 않을 때 게시글 수정화면 보기를 요청하면 에러 뷰를 반환한다.")
 	@Test
 	void givenNotEqualUserId_whenShowArticleEditPage_thenReturnsErrorView() throws Exception {
 		// given
@@ -158,7 +158,7 @@ class ArticleControllerTest {
 		then(articleService).should().validateHasAuthorization(1L, "bruni");
 	}
 
-	@DisplayName("[PUT] 게시글 수정 - 정상호출")
+	@DisplayName("[PUT] 게시글 수정정보가 주어질 때 게시글 수정 요청을 하면 게시글 상세화면 페이지로 리다이렉트된다.")
 	@Test
 	void givenArticleEditInfo_whenEditArticle_thenRedirectsArticleDetailsPage() throws Exception {
 		// given
@@ -179,7 +179,7 @@ class ArticleControllerTest {
 		then(articleService).should().editArticle(anyLong(), any(ArticleEditRequest.class));
 	}
 
-	@DisplayName("[PUT] 게시글 수정 - 세션이 없을 때 로그인 페이지로 리다이렉트")
+	@DisplayName("[PUT] 세션이 없을 때 게시글 수정요청을 하면 로그인 페이지로 리다이렉트된다.")
 	@Test
 	void givenNoSession_whenEditArticle_thenRedirectsLoginPage() throws Exception {
 		// given
@@ -197,7 +197,7 @@ class ArticleControllerTest {
 		then(articleService).shouldHaveNoInteractions();
 	}
 
-	@DisplayName("[DELETE] 게시글 삭제 - 정상호출")
+	@DisplayName("[DELETE] 게시글을 삭제 요청을 하면 홈으로 리다이렉트된다.")
 	@Test
 	void givenNothing_whenDeleteArticle_thenRedirectsHomePage() throws Exception {
 		// given
@@ -215,7 +215,7 @@ class ArticleControllerTest {
 		then(articleService).should().deleteArticle(1L);
 	}
 
-	@DisplayName("[DELETE] 게시글 삭제 - 게시글 작성자와 세션 유저 아이디가 일치하지 않을 때 error 뷰를 반환한다.")
+	@DisplayName("[DELETE] 게시글 작성자와 세션 유저 아이디가 일치하지 않을 때 게시글 삭제 요청을 하면 에러 뷰를 반환한다.")
 	@Test
 	void givenNotEqualUserId_whenDeleteArticle_thenReturnsErrorView() throws Exception {
 		// given
@@ -234,7 +234,7 @@ class ArticleControllerTest {
 		then(articleService).should(times(0)).deleteArticle(anyLong());
 	}
 
-	@DisplayName("[DELETE] 게시글 삭제 - 세션이 없을 때 로그인 페이지로 리다이렉트")
+	@DisplayName("[DELETE] 세션이 없을 때 게시글 삭제 요청을 하면 로그인 페이지로 리다이렉트")
 	@Test
 	void givenNoSession_whenDeleteArticle_thenRedirectsLoginPage() throws Exception {
 		// given

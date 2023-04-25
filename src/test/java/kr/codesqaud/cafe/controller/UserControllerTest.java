@@ -34,7 +34,7 @@ class UserControllerTest {
 	@MockBean
 	private UserService userService;
 
-	@DisplayName("[POST] 회원가입 - 정상호출")
+	@DisplayName("[POST] 회원가입 정보가 주어질 때 회원 가입 요청을 하면 유저 목록화면으로 리다이렉트된다.")
 	@Test
 	void givenJoinInfo_whenJoin_thenRedirectsUserListPage() throws Exception {
 		// given
@@ -56,7 +56,7 @@ class UserControllerTest {
 		then(userService).should().join(any(JoinRequest.class));
 	}
 
-	@DisplayName("[GET] 유저 목록 - 정상호출")
+	@DisplayName("[GET] 유저 목록 화면보기를 요청하면 유저 리스트 뷰가 반환된다.")
 	@Test
 	void givenNothing_whenShowAllUsers_thenReturnsUserListView() throws Exception {
 		// given
@@ -74,7 +74,7 @@ class UserControllerTest {
 		then(userService).should().getUsers();
 	}
 
-	@DisplayName("[GET] 유저 프로필 화면 - 정상호출")
+	@DisplayName("[GET] 유저 프로필 화면 보기를 요청하면 유저 프로필 뷰가 반환된다.")
 	@Test
 	void givenNothing_whenShowProfile_thenReturnsProfileView() throws Exception {
 		// given
@@ -91,7 +91,7 @@ class UserControllerTest {
 		then(userService).should().findByUserId("bruni");
 	}
 
-	@DisplayName("[GET] 회원정보 수정 화면 - 정상호출")
+	@DisplayName("[GET] 회원 정보 수정화면을 요청하면 회원 정보 수정화면 뷰가 반환된다.")
 	@Test
 	void givenNothing_whenShowProfileEdit_thenReturnsEditFormView() throws Exception {
 		// given
@@ -108,7 +108,7 @@ class UserControllerTest {
 		then(userService).should().validateHasAuthorization("bruni", "bruni");
 	}
 
-	@DisplayName("[GET] 회원정보 수정 화면 - 세션 userId와 수정하려는 회원 userId가 일치하지 않을 때")
+	@DisplayName("[GET] 세션 userId와 수정하려는 회원 userId가 일치하지 않을 때 회원 정보 수정화면 보기를 요청하면 에러 뷰가 반환된다.")
 	@Test
 	void givenNotEqualUserId_whenShowProfileEdit_thenReturnsErrorView() throws Exception {
 		// given
@@ -124,7 +124,7 @@ class UserControllerTest {
 		then(userService).should().validateHasAuthorization("unknown", "bruni");
 	}
 
-	@DisplayName("[PUT] 회원정보 수정 - 정상호출")
+	@DisplayName("[PUT] 회원 정보 수정정보가 주어질 때 회원 정보 수정을 요청하면 유저 목록 페이지로 리다이렉트된다.")
 	@Test
 	void givenProfileEditInfo_whenEditProfile_thenRedirectsUserListPage() throws Exception {
 		// given
@@ -149,7 +149,7 @@ class UserControllerTest {
 		then(userService).should().editUserProfile(anyString(), any(ProfileEditRequest.class));
 	}
 
-	@DisplayName("[PUT] 회원정보 수정 - 세션의 userId와 수정하려는 회원의 userId가 일치하지 않을 때")
+	@DisplayName("[PUT] 세션의 userId와 수정하려는 회원의 userId가 일치하지 않을 때 회원 정보 수정을 요청하면 에러 뷰가 반환된다.")
 	@Test
 	void givenNotEqualUserId_whenEditProfile_thenReturnsErrorView() throws Exception {
 		// given
