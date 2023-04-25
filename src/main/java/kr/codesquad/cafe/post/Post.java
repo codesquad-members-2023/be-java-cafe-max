@@ -116,6 +116,10 @@ public class Post {
         }
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public static class Builder {
         private Long id;
 
