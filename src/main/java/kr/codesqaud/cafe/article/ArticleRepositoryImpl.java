@@ -45,7 +45,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public Optional<Article> findOneById(long id) {
         String sql = "select a.id, u.name as writer, a.title, a.contents "
-                + "from article a inner join users u on a.writer = u.userId where a.id = :id";
+                + "from article a inner join user u on a.writer = u.userId where a.id = :id";
         SqlParameterSource param = new MapSqlParameterSource("id", id);
         try {
             return Optional.ofNullable(template.queryForObject(sql, param, articleRowMapper()));
@@ -57,7 +57,7 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         String sql = "select a.id, u.name as writer, a.title, a.contents "
-                + "from article a inner join users u on a.writer = u.userId";
+                + "from article a inner join user u on a.writer = u.userId";
         return template.query(sql, articleRowMapper());
     }
 
