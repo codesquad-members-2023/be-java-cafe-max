@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.reply;
+package kr.codesqaud.cafe.controller;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import kr.codesqaud.cafe.global.config.Session;
+import kr.codesqaud.cafe.reply.ReplyController;
+import kr.codesqaud.cafe.reply.ReplyService;
 import kr.codesqaud.cafe.reply.dto.ReplyRequest;
 import kr.codesqaud.cafe.reply.dto.ReplyResponse;
 import kr.codesqaud.cafe.reply.dto.Result;
