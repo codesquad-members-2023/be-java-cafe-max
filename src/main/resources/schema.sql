@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS users
     user_name  VARCHAR(64)  NOT NULL,
     user_email VARCHAR(64)  NOT NULL,
     PRIMARY KEY (id)
-    );
+);
 
 CREATE TABLE IF NOT EXISTS articles
 (
@@ -18,4 +18,16 @@ CREATE TABLE IF NOT EXISTS articles
     content    VARCHAR(255) NOT NULL,
     created_at DATETIME     NOT NULL,
     PRIMARY KEY (id)
-    );
+);
+
+CREATE TABLE IF NOT EXISTS replies
+(
+    article_id INT          NOT NULL,
+    reply_id   BIGINT       NOT NULL AUTO_INCREMENT,
+    user_id    VARCHAR(64)  NOT NULL,
+    user_name  VARCHAR(64)  NOT NULL,
+    comment    VARCHAR(255) NOT NULL,
+    created_at DATETIME     NOT NULL,
+    PRIMARY KEY (reply_id)
+);
+
