@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.codesqaud.cafe.service.util.ArticleUtil.getUserIdFromSession;
+import static kr.codesqaud.cafe.service.Utility.getUserIdFromSession;
 
 @Service
 public class ArticleService {
@@ -38,14 +38,6 @@ public class ArticleService {
                 .map(ArticleDto::from)
                 .orElseThrow(() -> new RuntimeException("Article not found"));
     }
-
-//    public String getUserIdFromSession(HttpServletRequest request) {
-//        HttpSession session = request.getSession(false);
-//        if (session != null) {
-//            return (String) session.getAttribute("userId");
-//        }
-//        return null;
-//    }
 
     public void deleteArticle(Long articleId) {
         articleRepository.delete(articleId);
