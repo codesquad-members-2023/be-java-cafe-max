@@ -89,7 +89,7 @@
                                 </div>
                               </div>
                           </div>
-                          <div class="article-util">
+                          <div class="article-util" th:if="">
                               <ul class="article-util-list">
                                   <li>
                                         <button class="update-answer-button" type="button" id="reply-update-button" data-reply-id="${reply.id}">수정</button>
@@ -183,13 +183,16 @@
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(replyUpdateDto),
             success: function(response) {
-                if (!response.success) {
-                    alert(response.result);
-                }
                 printReplyList();
             },
-            error: function() {
-                alert("댓글 수정 실패");
+            error: function(jqXHR, status, err) {
+                const response = jqXHR.responseJSON;
+                if (!response.success) {
+                    const errorDto = response.result;
+                    alert(errorDto.errorStatus + " " + errorDto.errorMessage);
+                } else {
+                    alert("댓글 수정 실패");
+                }
             }
         });
     });

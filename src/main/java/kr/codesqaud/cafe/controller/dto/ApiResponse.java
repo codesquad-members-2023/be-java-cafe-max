@@ -18,6 +18,10 @@ public class ApiResponse<T> {
         return new ApiResponse<>(true, null);
     }
 
+    public static <T> ApiResponse<T> fail(T result) {
+        return new ApiResponse<>(false, result);
+    }
+
     public boolean isSuccess() {
         return success;
     }
