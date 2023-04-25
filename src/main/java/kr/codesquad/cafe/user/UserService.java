@@ -88,9 +88,4 @@ public class UserService {
             throw new InvalidPasswordException();
         }
     }
-
-    public void deleteAll() {
-        userRepository.deleteAll();
-    }
-
 }
