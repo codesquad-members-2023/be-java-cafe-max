@@ -3,15 +3,9 @@ package kr.codesquad.cafe.user.dto;
 import kr.codesquad.cafe.user.domain.User;
 
 public class UserForm {
-    private final Long id;
-    private final String nickname;
-    private final String email;
-
-    public UserForm(Long id, String nickname, String email) {
-        this.id = id;
-        this.nickname = nickname;
-        this.email = email;
-    }
+    private Long id;
+    private String nickname;
+    private String email;
 
     private UserForm(Builder builder) {
         this.id = builder.id;

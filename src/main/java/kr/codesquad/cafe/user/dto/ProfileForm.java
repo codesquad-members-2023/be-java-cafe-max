@@ -3,13 +3,8 @@ package kr.codesquad.cafe.user.dto;
 import kr.codesquad.cafe.user.domain.User;
 
 public class ProfileForm {
-    private final String nickname;
-    private final String email;
-
-    public ProfileForm(String nickname, String email) {
-        this.nickname = nickname;
-        this.email = email;
-    }
+    private String nickname;
+    private String email;
 
     private ProfileForm(Builder builder) {
         this.nickname = builder.nickname;
