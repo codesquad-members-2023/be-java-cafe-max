@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.SimpleArticle;
 import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class ArticleService {
     }
 
 
-    public List<Article> findArticles() {
+    public List<SimpleArticle> findArticles() {
         return articleRepository.findAll();
     }
 

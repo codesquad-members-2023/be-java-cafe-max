@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.SimpleArticle;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,7 @@ public interface ArticleRepository {
 
     Optional<Article> findById(Long id);
 
-    List<Article> findAll();
+    List<SimpleArticle> findAll();
 
     void updateWriter(String name, String updateName);
 

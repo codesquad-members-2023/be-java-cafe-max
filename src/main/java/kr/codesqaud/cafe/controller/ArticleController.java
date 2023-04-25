@@ -6,6 +6,7 @@ import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.dto.ArticleUpdateForm;
 import kr.codesqaud.cafe.dto.SessionDto;
+import kr.codesqaud.cafe.dto.SimpleArticle;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
@@ -55,7 +56,7 @@ public class ArticleController {
 
         model.addAttribute("loginUser", loginUser);
 
-        List<Article> articles = articleService.findArticles();
+        List<SimpleArticle> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         model.addAttribute("localDateTime", LocalDateTime.now());
 

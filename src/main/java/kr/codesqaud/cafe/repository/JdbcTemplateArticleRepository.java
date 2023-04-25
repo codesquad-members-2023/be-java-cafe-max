@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.SimpleArticle;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -44,8 +45,8 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAll() {
-        return jdbcTemplate.query("select * from article where deleted = false", articleRowMapper());
+    public List<SimpleArticle> findAll() {
+        return jdbcTemplate.query("select writer, userId, title, id, createdTime from article where deleted = false", simpleArticleRowMapper());
     }
 
     @Override
@@ -76,4 +77,17 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
             return article;
         };
     }
+
+    private RowMapper<SimpleArticle> simpleArticleRowMapper() {
+        return (rs, rowNum) -> {
+            SimpleArticle article = new SimpleArticle();
+            article.setWriter(rs.getString("writer"));
+            article.setUserId(rs.getString("userId"));
+            article.setTitle(rs.getString("title"));
+            article.setId(rs.getLong("id"));
+            article.setCreatedTime(rs.getTimestamp("createdTime").toLocalDateTime());
+            return article;
+        };
+    }
 }
+
