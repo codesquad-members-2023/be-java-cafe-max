@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.controller.dto.request.PostEditRequest;
 import kr.codesqaud.cafe.controller.dto.request.PostRequest;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,11 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class ArticleController {
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @PostMapping("/article")
@@ -34,6 +37,7 @@ public class ArticleController {
     @GetMapping("/articles/{articleId}")
     public String showArticleDetails(@PathVariable final Long articleId, final Model model) {
         model.addAttribute("article", articleService.findById(articleId));
+        model.addAttribute("reply", replyService.getReplies(articleId));
         return "qna/show";
     }
 
