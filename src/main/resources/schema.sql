@@ -8,7 +8,7 @@ CREATE TABLE users
     id       varchar(200) not null,
     password varchar(200) not null,
     name     varchar(200) not null,
-    email    varchar(200) not null,
+    email    varchar(255) not null,
     PRIMARY KEY (id)
 );
 
