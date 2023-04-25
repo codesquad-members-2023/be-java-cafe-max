@@ -1,7 +1,8 @@
-package kr.codesqaud.cafe.user;
+package kr.codesqaud.cafe.user.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import kr.codesqaud.cafe.user.User;
 
 /**
  * 회원 DTO 객체

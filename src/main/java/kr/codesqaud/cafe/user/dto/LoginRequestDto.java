@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.login;
+package kr.codesqaud.cafe.user.dto;
 
 import javax.validation.constraints.Size;
 
