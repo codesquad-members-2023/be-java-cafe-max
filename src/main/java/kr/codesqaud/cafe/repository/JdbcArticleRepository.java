@@ -34,6 +34,18 @@ public class JdbcArticleRepository implements ArticleRepository {
         return result.stream().findAny().get();
     }
 
+    @Override
+    public void update(Article article, long id) {
+        String sql = "update articles set title = ?, contents = ? where id = ?";
+        jdbcTemplate.update(sql, article.getTitle(), article.getContents(), id);
+    }
+
+    @Override
+    public void delete(long id) {
+        String sql = "delete from articles where id = ?";
+        jdbcTemplate.update(sql, id);
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
             return Article.builder()

@@ -10,4 +10,8 @@ public interface ArticleRepository {
     public List<Article> findAll();
 
     public Article findById(long id);
+
+    public void update(Article article, long id);
+
+    public void delete(long id);
 }

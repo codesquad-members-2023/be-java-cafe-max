@@ -9,7 +9,8 @@
 <div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default content-main">
-            <form name="question" method="post" th:action="@{/write}" th:object="${articleForm}" >
+            <form name="question" th:method="put" th:action="@{/articles/{id}/update(id = ${articleDto.getId()})}"
+                  th:object="${articleForm}">
                 <div class="form-group">
                     <label for="writer"></label>
                     <input hidden id="writer" name="writer" placeholder="글쓴이" th:value="${session.userId}"/>

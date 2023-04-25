@@ -34,7 +34,7 @@ public class LoginController {
         if (loginUser == null) {
             return "user/login";
         }
-        session.setAttribute("user", loginUser);
+        session.setAttribute("userId", loginUser.getUserId());
         return "redirect:/";
     }
 
@@ -45,6 +45,6 @@ public class LoginController {
         if(session != null) {
             session.invalidate();
         }
-        return "index";
+        return "redirect:/";
     }
 }

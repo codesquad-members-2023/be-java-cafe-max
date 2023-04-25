@@ -38,4 +38,10 @@ public class MemoryArticleRepository implements ArticleRepository {
     public Article findById(long id) {
         return repository.get(id);
     }
+
+    @Override
+    public void update(Article article, long id) {}
+
+    @Override
+    public void delete(long id) {}
 }
