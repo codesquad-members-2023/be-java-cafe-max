@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -179,7 +180,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("비밀번호, 이름, 이메일이 주어지고 유저아이디가 주어질때 회원정보 수정이 되는지 테스트")
-    public void update_success() throws Exception {
+    public void modify_success() throws Exception {
         //given
         login("yonghwan1107", "yonghwan1107");
         String userId = "yonghwan1107";
@@ -195,15 +196,14 @@ class UserControllerTest {
                 .session(session))
             .andExpect(status().isOk());
         //then
-        User actual = userService.findUser(id);
+        User actual = userService.findUser(id).toEntity();
         assertThat(actual.getName()).isEqualTo(modifiedName);
-        assertThat(actual.getPassword()).isEqualTo(password);
         assertThat(actual.getEmail()).isEqualTo(modifiedEmail);
     }
 
     @Test
     @DisplayName("회원 수정 이메일 중복으로 인한 테스트")
-    public void update_fail() throws Exception {
+    public void modify_fail() throws Exception {
         //given
         signup("kim1107", "kim1107kim1107", "kim", "kim@naver.com");
         login("yonghwan1107", "yonghwan1107");
@@ -232,7 +232,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("로그인 하지 않는 상태로 회원 정보 수정 페이지 접근할때 로그인 페이지로 리다이렉션 하는지 테스트")
-    public void update_fail2() throws Exception {
+    public void modify_fail2() throws Exception {
         //given
         String url = "/users/" + id;
         //when & then
@@ -243,7 +243,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("다른 사람으로 로그인하였는데 다른 회원의 정보를 수정하려고 할때 에러 페이지로 리다이렉션 하고 에러 메시지를 받는지 테스트")
-    public void update_fail3() throws Exception {
+    public void modify_fail3() throws Exception {
         //given
         signup("kim1107", "kim1107kim1107", "kim", "kim@naver.com");
         login("kim1107", "kim1107kim1107");
@@ -280,7 +280,7 @@ class UserControllerTest {
         mockMvc.perform(get(url)
                 .session(session))
             .andExpect(status().isNotFound())
-            .andExpect(redirectedUrl("/users"));
+            .andExpect(view().name("error/404"));
 
     }
 

@@ -111,7 +111,7 @@ class QuestionControllerTest {
     public void write_fail1() throws Exception {
         //given
         login("yonghwan1107", "yonghwan1107");
-        User user = userService.findUser(userId);
+        User user = userService.findUser(userId).toEntity();
         String title = "";
         String content = "내용1";
         String userId = user.getUserId();

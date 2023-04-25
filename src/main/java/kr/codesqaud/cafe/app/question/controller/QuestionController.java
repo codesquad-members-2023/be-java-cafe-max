@@ -43,7 +43,7 @@ public class QuestionController {
         List<Question> questions = questionService.findAllQuestions();
         List<QuestionResponse> questionResponses = new ArrayList<>();
         for (Question question : questions) {
-            User user = userService.findUser(question.getUserId());
+            User user = userService.findUser(question.getUserId()).toEntity();
             questionResponses.add(new QuestionResponse(question, user));
         }
         Collections.sort(questionResponses);
@@ -65,7 +65,7 @@ public class QuestionController {
     @GetMapping("/qna/{id}")
     public ModelAndView detailQuestion(@PathVariable(value = "id") Long id) {
         Question question = questionService.findQuestion(id);
-        User user = userService.findUser(question.getUserId());
+        User user = userService.findUser(question.getUserId()).toEntity();
         QuestionResponse questionResponse = new QuestionResponse(question, user);
         ModelAndView mav = new ModelAndView("qna/detail");
         mav.addObject("question", questionResponse);
@@ -114,7 +114,7 @@ public class QuestionController {
     @GetMapping("/qna/{id}/edit")
     public ModelAndView editQuestionForm(@PathVariable(value = "id") Long id) {
         Question original = questionService.findQuestion(id);
-        User writer = userService.findUser(original.getUserId());
+        User writer = userService.findUser(original.getUserId()).toEntity();
         ModelAndView mav = new ModelAndView("qna/edit");
         mav.addObject("question", new QuestionResponse(original, writer));
         return mav;
