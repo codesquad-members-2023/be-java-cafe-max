@@ -54,8 +54,7 @@ public class PostService {
     public Post updateFromPostForm(long postId, PostForm postForm, long userId) {
         Post post = postRepository.findById(postId).orElseThrow(IllegalAccessIdException::new);
         post.checkPermission(userId);
-        post.setTextContent(postForm.getTextContent());
-        post.setTitle(postForm.getTitle());
+        post.update(postForm.getTextContent(),postForm.getTitle());
         return post;
     }
 

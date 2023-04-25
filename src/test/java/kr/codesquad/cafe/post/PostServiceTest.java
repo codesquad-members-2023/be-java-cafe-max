@@ -190,8 +190,7 @@ class PostServiceTest {
                 user.getId());
 
         verify(postRepository, times(1)).findById(anyLong());
-        verify(post, times(1)).setTextContent(anyString());
-        verify(post, times(1)).setTitle(anyString());
+        verify(post, times(1)).update(anyString(),anyString());
     }
 
 

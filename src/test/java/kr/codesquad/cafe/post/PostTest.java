@@ -16,6 +16,10 @@ class PostTest {
     public static final long TEST_ID = 1L;
     public static final long NOT_MATCH_ID = 2L;
     public static final long OTHER_ID = 2L;
+    public static final String TEXT_TITLE = "title";
+    public static final String TEXT_CONTENT = "content";
+    public static final String TARGET_CONTENT = "targetContent";
+    public static final String TARGET_TITLE = "targetTitle";
 
     @DisplayName("post Delete상태로 변경한다")
     @Test
@@ -100,5 +104,19 @@ class PostTest {
                 .build();
 
         assertThatCode(() -> post.checkPermission(TEST_ID)).doesNotThrowAnyException();
+    }
+
+    @DisplayName("포스트의 타이틀과 내요을 업로드한다")
+    @Test
+    void update() {
+        Post post = Post.builder()
+                .title(TEXT_TITLE)
+                .textContent(TEXT_CONTENT)
+                .build();
+
+        post.update(TARGET_CONTENT, TARGET_TITLE);
+
+        assertThat(post.getTitle()).isEqualTo(TARGET_TITLE);
+        assertThat(post.getTextContent()).isEqualTo(TARGET_CONTENT);
     }
 }

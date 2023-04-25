@@ -67,16 +67,8 @@ public class Post {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getTextContent() {
         return textContent;
-    }
-
-    public void setTextContent(String textContent) {
-        this.textContent = textContent;
     }
 
     public LocalDateTime getCreatedDateTime() {
@@ -122,6 +114,11 @@ public class Post {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public void update(String textContent, String title) {
+        this.textContent = textContent;
+        this.title = title;
     }
 
     public static class Builder {
