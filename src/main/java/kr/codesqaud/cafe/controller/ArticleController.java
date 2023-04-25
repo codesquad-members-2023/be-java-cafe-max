@@ -60,7 +60,7 @@ public class ArticleController {
         return "qna/show";
     }
 
-    @DeleteMapping("/article-delete-form/{articleId}")
+    @DeleteMapping("/article-delete/{articleId}")
     public String deleteArticle(@PathVariable final Long articleId, HttpServletRequest httpRequest, Model model) {
         HttpSession session = httpRequest.getSession(false);
         ArticleDto article = articleService.findById(articleId);
