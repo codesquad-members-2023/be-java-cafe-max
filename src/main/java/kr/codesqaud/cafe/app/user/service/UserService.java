@@ -8,6 +8,7 @@ import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.repository.UserRepository;
 import kr.codesqaud.cafe.app.user.validator.UserValidator;
 import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
+import kr.codesqaud.cafe.errors.exception.ResourceNotFoundException;
 import kr.codesqaud.cafe.errors.exception.RestApiException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,14 +55,14 @@ public class UserService {
     // 특정 회원 조회
     public User findUser(Long id) {
         return userRepository.findById(id).orElseThrow(() -> {
-            throw new RestApiException(UserErrorCode.NOT_FOUND_USER);
+            throw new ResourceNotFoundException(UserErrorCode.NOT_FOUND_USER);
         });
     }
 
     // 특정 회원 조회
     public User findUser(String userId) {
         return userRepository.findByUserId(userId).orElseThrow(() -> {
-            throw new RestApiException(UserErrorCode.NOT_FOUND_USER);
+            throw new ResourceNotFoundException(UserErrorCode.NOT_FOUND_USER);
         });
     }
 

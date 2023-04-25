@@ -6,7 +6,7 @@ import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
 import kr.codesqaud.cafe.app.question.entity.Question;
 import kr.codesqaud.cafe.app.question.repository.QuestionRepository;
 import kr.codesqaud.cafe.errors.errorcode.QuestionErrorCode;
-import kr.codesqaud.cafe.errors.exception.RestApiException;
+import kr.codesqaud.cafe.errors.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,10 +31,11 @@ public class QuestionService {
 
     public Question findQuestion(Long id) {
         return repository.findById(id).orElseThrow(() -> {
-            throw new RestApiException(QuestionErrorCode.NOT_FOUND_QUESTION);
+            throw new ResourceNotFoundException(QuestionErrorCode.NOT_FOUND_QUESTION);
         });
     }
 
+    @Transactional
     public Question modifyQuestion(Long id, QuestionSavedRequest requestQuestion) {
         Question original = findQuestion(id);
         Question modifiedQuestion =
@@ -47,6 +48,7 @@ public class QuestionService {
         return repository.modify(modifiedQuestion);
     }
 
+    @Transactional
     public Question delete(Long id) {
         return repository.deleteById(id);
     }
