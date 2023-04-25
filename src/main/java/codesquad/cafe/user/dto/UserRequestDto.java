@@ -5,6 +5,7 @@ import codesquad.cafe.user.domain.User;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class UserRequestDto {
     @Pattern(regexp = "^[0-9a-z]+$", message = "아이디는 숫자, 영문만 입력 가능합니다.")
@@ -13,7 +14,7 @@ public class UserRequestDto {
     private String password;
     @NotBlank(message = "이름은 반드시 입력해야 합니다.")
     private String name;
-    @NotBlank
+    @Size(min = 1, max = 255, message = "이메일 주소의 길이가 1 이상 255 이하여야 합니다.")
     @Email(message = "유효하지 않은 이메일 주소입니다.")
     private String email;
 
