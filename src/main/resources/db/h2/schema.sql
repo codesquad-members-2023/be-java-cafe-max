@@ -16,8 +16,22 @@ CREATE TABLE question
     title      VARCHAR(255) NOT NULL,
     content    TEXT         NOT NULL,
     createTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    modifyTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    modifyTime TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
     userId     bigint       NOT NULL,
     primary key (id),
     foreign key (userId) references users (id) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS comment CASCADE;
+CREATE TABLE comment
+(
+    id         bigint auto_increment,
+    content    VARCHAR(3000) NOT NULL,
+    createTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    modifyTime TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    userId     bigint        NOT NULL,
+    questionId bigint        NOT NULL,
+    primary key (id),
+    foreign key (userId) references users (id) ON DELETE CASCADE,
+    foreign key (questionId) references question (id) ON DELETE CASCADE
 );
