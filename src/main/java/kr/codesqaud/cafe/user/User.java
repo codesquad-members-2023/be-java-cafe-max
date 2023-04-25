@@ -30,42 +30,21 @@ public class User {
         return id;
     }
 
-    public void setId(final long id) {
-        this.id = id;
-    }
-
     public String getLoginId() {
         return loginId;
-    }
-
-    public void setLoginId(final String loginId) {
-        this.loginId = loginId;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
     }
 
     public String getEmail() {
         return email;
     }
-
-    public void setEmail(final String email) {
-        this.email = email;
-    }
-
 
     public static class Builder {
 
