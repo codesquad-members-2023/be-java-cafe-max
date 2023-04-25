@@ -16,7 +16,7 @@ public class UserAddForm {
     }
 
     public User toEntity() {
-        return new User.Builder()
+        return User.builder()
                 .userId(userId)
                 .password(password)
                 .userName(userName)

@@ -21,7 +21,7 @@ public class PostResponse {
     }
 
     public BoardPost toEntity() {
-        return new BoardPost.Builder()
+        return BoardPost.builder()
                 .postId(postId)
                 .writer(writer)
                 .title(title)

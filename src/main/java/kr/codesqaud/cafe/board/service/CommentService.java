@@ -19,7 +19,7 @@ public class CommentService {
     }
 
     public void write(CommentWriteForm commentWriteForm, String userName) {
-        Comment comment = new Comment.Builder()
+        Comment comment = Comment.builder()
                 .postId(commentWriteForm.getPostId())
                 .writer(userName)
                 .contents(commentWriteForm.getContents())
