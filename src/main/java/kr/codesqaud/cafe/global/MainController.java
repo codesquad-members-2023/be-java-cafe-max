@@ -19,11 +19,10 @@ public class MainController {
 	}
 
 	@GetMapping("/")
-	public String mainPage(Model model) {
-		PaginationDto paginationDto = new PaginationDto();
+	public String mainPage(Model model, PaginationDto paginationDto) {
 		List<ArticleResponseForList> articles = articleService.getArticleList(paginationDto);
 		model.addAttribute("articles", articles)
-			.addAttribute("countOfArticles", articles.size());
+			.addAttribute("countOfArticles", articleService.getCountOfArticles());
 		return "index";
 	}
 }

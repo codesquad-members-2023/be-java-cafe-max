@@ -66,4 +66,8 @@ public class ArticleService {
 			throw new ArticleDeleteException();
 		}
 	}
+
+	public Long getCountOfArticles() {
+		return articleRepository.getCountOfArticles();
+	}
 }

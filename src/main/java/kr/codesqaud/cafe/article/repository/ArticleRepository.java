@@ -17,4 +17,6 @@ public interface ArticleRepository {
 	void updateArticle(Article article);
 
 	boolean deleteArticle(Long articleIdx, String userId);
+
+	Long getCountOfArticles();
 }

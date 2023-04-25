@@ -77,4 +77,11 @@ public class JDBCArticleRepository implements ArticleRepository {
 		);
 		return (rowsAffected > 0);
 	}
+
+	@Override
+	public Long getCountOfArticles() {
+		List<Long> countList = namedParameterJdbcTemplate.query("SELECT COUNT(*) FROM ARTICLE WHERE is_visible = true",
+			(rs, rowNum) -> rs.getLong(1));
+		return countList.get(0);
+	}
 }
