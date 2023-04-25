@@ -21,7 +21,7 @@
 - [x] 피드백 받은 부분 반영하기
   - 패키지 구조
   - email 정보 저장을 위한 메모리 공간 찾아보기
-- [ ] h2 -> mysql로 migration 하기
+- [x] h2 -> mysql로 migration 하기
   - 배포 시 빌드가 안되는 문제
 - [ ] mysql 용 ec2 인스턴스 생성
 
