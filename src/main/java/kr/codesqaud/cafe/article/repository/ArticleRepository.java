@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import kr.codesqaud.cafe.article.domain.Article;
-import kr.codesqaud.cafe.article.dto.PaginationDto;
+import kr.codesqaud.cafe.mainPage.PaginationDto;
 
 public interface ArticleRepository {
 
@@ -18,5 +18,5 @@ public interface ArticleRepository {
 
 	boolean deleteArticle(Long articleIdx, String userId);
 
-	Long getCountOfArticles();
+	int getCountOfArticles();
 }

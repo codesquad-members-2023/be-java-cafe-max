@@ -12,12 +12,12 @@ import kr.codesqaud.cafe.article.dto.ArticleResponse;
 import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
-import kr.codesqaud.cafe.article.dto.PaginationDto;
 import kr.codesqaud.cafe.article.exception.ArticleDeleteException;
 import kr.codesqaud.cafe.article.exception.ArticleIdAndSessionIdMismatchException;
 import kr.codesqaud.cafe.article.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
 import kr.codesqaud.cafe.global.mapper.ArticleMapper;
+import kr.codesqaud.cafe.mainPage.PaginationDto;
 
 @Service
 public class ArticleService {
@@ -67,7 +67,7 @@ public class ArticleService {
 		}
 	}
 
-	public Long getCountOfArticles() {
+	public int getCountOfArticles() {
 		return articleRepository.getCountOfArticles();
 	}
 }

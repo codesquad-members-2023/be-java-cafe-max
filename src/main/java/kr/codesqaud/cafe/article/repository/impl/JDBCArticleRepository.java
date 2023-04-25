@@ -8,8 +8,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.article.domain.Article;
-import kr.codesqaud.cafe.article.dto.PaginationDto;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
+import kr.codesqaud.cafe.mainPage.PaginationDto;
 
 @Repository
 public class JDBCArticleRepository implements ArticleRepository {
@@ -39,7 +39,7 @@ public class JDBCArticleRepository implements ArticleRepository {
 				+ "WHERE is_visible = true LIMIT :start,:end",
 			new MapSqlParameterSource()
 				.addValue("start", paginationDto.getOffset())
-				.addValue("end", paginationDto.getOffset() + paginationDto.getRecordSize()),
+				.addValue("end", paginationDto.getRecordSize()),
 			(rs, rn) -> new Article(rs));
 	}
 
@@ -79,9 +79,10 @@ public class JDBCArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public Long getCountOfArticles() {
-		List<Long> countList = namedParameterJdbcTemplate.query("SELECT COUNT(*) FROM ARTICLE WHERE is_visible = true",
-			(rs, rowNum) -> rs.getLong(1));
+	public int getCountOfArticles() {
+		List<Integer> countList = namedParameterJdbcTemplate.query(
+			"SELECT COUNT(*) FROM ARTICLE WHERE is_visible = true",
+			(rs, rowNum) -> rs.getInt(1));
 		return countList.get(0);
 	}
 }

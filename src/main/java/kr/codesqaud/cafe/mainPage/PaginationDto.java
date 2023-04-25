@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.article.dto;
+package kr.codesqaud.cafe.mainPage;
 
 public class PaginationDto {
 
@@ -6,12 +6,17 @@ public class PaginationDto {
 
 	private int recordSize; // 페이지당 출력할 데이터 갯수
 
-	private int pageSize;// 화면 하단에 출력할 페이지 사이즈
-
 	public PaginationDto() {
 		this.page = 1;
 		this.recordSize = 15;
-		this.pageSize = 5;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public int getPage() {
+		return page;
 	}
 
 	public int getOffset() {

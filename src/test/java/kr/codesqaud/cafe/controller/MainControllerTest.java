@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import kr.codesqaud.cafe.article.ArticleService;
 import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
-import kr.codesqaud.cafe.global.MainController;
+import kr.codesqaud.cafe.mainPage.MainController;
 
 @WebMvcTest(MainController.class)
 class MainControllerTest {
