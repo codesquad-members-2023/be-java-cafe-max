@@ -1,5 +1,5 @@
 #!/bin/sh
-REPOSITORY=/home/ubuntu/application
+REPOSITORY=$HOME/application
 PROJECT_NAME=cafe
 
 cd $REPOSITORY/$PROJECT_NAME/
