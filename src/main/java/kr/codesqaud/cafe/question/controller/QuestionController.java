@@ -27,15 +27,20 @@ import kr.codesqaud.cafe.question.controller.response.QuestionTitleResponseDTO;
 import kr.codesqaud.cafe.question.domain.QuestionEntity;
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.question.service.QuestionService;
+import kr.codesqaud.cafe.question_comment.controller.response.CommentResponseDTO;
+import kr.codesqaud.cafe.question_comment.service.CommentService;
+import kr.codesqaud.cafe.user.controller.response.AuthSession;
 
 @Controller
 @RequestMapping("/questions")
 public class QuestionController {
 
-	private final QuestionService service;
+	private final QuestionService questionService;
+	private final CommentService commentService;
 
-	public QuestionController(QuestionService service) {
-		this.service = service;
+	public QuestionController(QuestionService questionService, CommentService commentService) {
+		this.questionService = questionService;
+		this.commentService = commentService;
 	}
 
 	/**
@@ -55,8 +60,8 @@ public class QuestionController {
 	 */
 	@PostMapping
 	public String questionAdd(QuestionWriteRequestDTO dto, HttpSession session) throws NoAuthSessionException {
-		long writer_id = AuthSessionValidator.validateUserIsSignedIn(session);
-		service.save(dto.toEntity(writer_id));
+		AuthSession authSession = AuthSessionValidator.validateUserIsSignedIn(session);
+		questionService.save(dto.toEntity(authSession.getId()));
 
 		return "redirect:questions/write-form";
 	}
@@ -70,10 +75,10 @@ public class QuestionController {
 	@GetMapping
 	public String questionList(@RequestParam(value = "page", required = false, defaultValue = "1") long page,
 		Model model) {
-		PageHandler pageHandler = new PageHandler(service.countBy(), page);
+		PageHandler pageHandler = new PageHandler(questionService.countBy(), page);
 
 		List<QuestionTitleResponseDTO> questionTitles =
-			service.findPageBy(pageHandler.getPostOffset(), pageHandler.getPageSize())
+			questionService.findPageBy(pageHandler.getPostOffset(), pageHandler.getPageSize())
 				.stream()
 				.map(QuestionTitleResponseDTO::from)
 				.collect(Collectors.toUnmodifiableList());
@@ -92,13 +97,19 @@ public class QuestionController {
 	 * @return Q&A 게시글 상세 보기 페이지
 	 */
 	@GetMapping("/{id}")
-	public String questionDetail(@PathVariable String id, @ModelAttribute("errorMessage") String errorMessage,
+	public String questionDetail(@PathVariable long id, @ModelAttribute("errorMessage") String errorMessage,
 		Model model, HttpSession session) throws QuestionNotExistException, NoAuthSessionException {
 		AuthSessionValidator.validateUserIsSignedIn(session);
 
 		if (errorMessage.isBlank()) {
+			List<CommentResponseDTO> comment =
+				commentService.findByPostId(id)
+					.stream()
+					.map(CommentResponseDTO::from)
+					.collect(Collectors.toUnmodifiableList());
+
 			model.addAttribute("questionDetailDTO",
-				QuestionDetailResponseDTO.from(service.findById(Long.parseLong(id))));
+				QuestionDetailResponseDTO.from(questionService.findById(id), comment));
 		}
 
 		return "qna/show";
@@ -117,9 +128,9 @@ public class QuestionController {
 	public String modifyForm(@PathVariable long id, Model model, HttpSession session) throws
 		QuestionNotExistException, NoAccessPermissionException {
 
-		QuestionEntity question = service.findById(id);
+		QuestionEntity question = questionService.findById(id);
 		AuthSessionValidator.validatePageOnlyWriterCanAccess(session, question.getWriter_id());
-		model.addAttribute("questionDetailDTO", QuestionDetailResponseDTO.from(question));
+		model.addAttribute("questionDetailDTO", QuestionDetailResponseDTO.from(question, null));
 
 		return "qna/modify-form";
 	}
@@ -137,9 +148,9 @@ public class QuestionController {
 	public String questionModify(@PathVariable long id, QuestionWriteRequestDTO dto, HttpSession session) throws
 		QuestionNotExistException, NoAccessPermissionException {
 
-		QuestionEntity question = service.findById(id);
+		QuestionEntity question = questionService.findById(id);
 		AuthSessionValidator.validatePageOnlyWriterCanAccess(session, question.getWriter_id());
-		service.update(dto.toEntity(id, question.getWriter_id()));
+		questionService.update(dto.toEntity(id, question.getWriter_id()));
 
 		return "redirect:/questions/" + id;
 	}
@@ -156,9 +167,9 @@ public class QuestionController {
 	public String questionDelete(@PathVariable long id, HttpSession session) throws
 		QuestionNotExistException, NoAccessPermissionException {
 
-		QuestionEntity question = service.findById(id);
+		QuestionEntity question = questionService.findById(id);
 		AuthSessionValidator.validatePageOnlyWriterCanAccess(session, question.getWriter_id());
-		service.delete(id);
+		questionService.delete(id);
 
 		return "redirect:/questions";
 	}

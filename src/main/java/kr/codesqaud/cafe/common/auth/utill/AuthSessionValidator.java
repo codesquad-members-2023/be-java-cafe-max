@@ -27,15 +27,15 @@ public class AuthSessionValidator {
 	/**
 	 * 권한 검증: 로그인한 모든 유저가 접속 가능한 페이지.
 	 * @param session 세션
-	 * @return 로그인 검증에 성공한 경우 로그인된 유저의 id를 반환
+	 * @return 로그인 검증에 성공한 경우 로그인된 유저의 AuthSession을 반환
 	 * @throws NoAuthSessionException 로그인 하지 않은 상태인 경우 예외 발생
 	 */
-	public static long validateUserIsSignedIn(HttpSession session) throws NoAuthSessionException {
+	public static AuthSession validateUserIsSignedIn(HttpSession session) throws NoAuthSessionException {
 		AuthSession authSession = (AuthSession)session.getAttribute("authSession");
 		if (authSession == null) {
 			throw new NoAuthSessionException();
 		}
-		return authSession.getId();
+		return authSession;
 	}
 
 	/**

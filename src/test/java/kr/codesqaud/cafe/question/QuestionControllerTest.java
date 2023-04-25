@@ -52,8 +52,8 @@ public class QuestionControllerTest {
 			questionDetailDTOMockedStatic = mockStatic(QuestionDetailResponseDTO.class);
 			questionDetailDTOMockedStatic.when(
 					() -> QuestionDetailResponseDTO.from(
-						new QuestionEntity(1, 1, "writer", "title", "contents", false, null)))
-				.thenReturn(new QuestionDetailResponseDTO(1, 1, "writer", "title", "contents", null));
+						new QuestionEntity(1, 1, "writer", "title", "contents", false, null), null))
+				.thenReturn(new QuestionDetailResponseDTO(1, 1, "writer", "title", "contents", null, null));
 		}
 
 		@AfterEach
