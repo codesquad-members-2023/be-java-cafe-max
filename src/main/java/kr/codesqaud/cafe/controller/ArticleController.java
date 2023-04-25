@@ -43,8 +43,7 @@ public class ArticleController {
 
     @GetMapping("/posts/{id}/revision")
     public String modifyForm(@PathVariable final long id, final Model model) {
-        boolean isDifferentUser = !articleService.isOwner(id);
-        if(isDifferentUser) {
+        if(isDifferentUser(id)) {
             return "error/article403";
         }
 
@@ -60,8 +59,21 @@ public class ArticleController {
         return "redirect:/posts/{id}";
     }
 
+    @DeleteMapping("/posts/{id}")
+    public String deletePost(@PathVariable final long id) {
+        if(isDifferentUser(id)) {
+            return "error/article403";
+        }
+        articleService.delete(id);
+        return "redirect:/";
+    }
+
     public boolean isAnonymous(HttpSession session) {
         return session.getAttribute(LOGIN_USER) == null;
+    }
+
+    public boolean isDifferentUser(Long id) {
+        return !articleService.isOwner(id);
     }
 }
 

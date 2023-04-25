@@ -78,7 +78,10 @@
 
                                 <div class="post-actions">
                                     <a class="post-action-btn btn-modify" th:href="@{/posts/{id}/revision(id=${wantedPost.id})}">수정</a>
-                                    <a class="post-action-btn btn-modify">삭제</a>
+                                    <form method="post" th:action="@{/posts/{id}(id=${wantedPost.id})}">
+                                        <input type="hidden" name="_method" value="delete">
+                                        <button type="submit" class="post-action-btn btn-modify">삭제</button>
+                                    </form>
                                     <a class="post-action-btn btn-list" href="/">글목록</a>
                                 </div>
                             </div>

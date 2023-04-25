@@ -35,7 +35,7 @@ public class ArticleService {
     }
 
     public boolean isOwner(long id) {
-        return loginSessionManager.getLoginUser().getUserId().equals(findById(id).getUserName());
+        return loginSessionManager.getLoginUser().getName().equals(findById(id).getUserName());
     }
 
     public List<ArticleDTO> gatherPosts() {
@@ -50,4 +50,7 @@ public class ArticleService {
     }
 
 
+    public void delete(long id) {
+        articleRepository.deleteById(id);
+    }
 }

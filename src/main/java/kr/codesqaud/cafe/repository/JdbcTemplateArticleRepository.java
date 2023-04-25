@@ -67,6 +67,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
         }
     }
 
+    @Override
+    public void deleteById(long id) {
+        String sql = "DELETE FROM ARTICLE_TB WHERE id = :id";
+        Map<String, Object> param = Map.of("id", id);
+        template.update(sql, param);
+    }
+
     public RowMapper<Article> articleRowMapper() {
         return BeanPropertyRowMapper.newInstance(Article.class);
     }
