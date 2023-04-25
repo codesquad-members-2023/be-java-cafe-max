@@ -7,6 +7,7 @@ import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.dto.ArticleUpdateForm;
 import kr.codesqaud.cafe.dto.SessionDto;
 import kr.codesqaud.cafe.dto.SimpleArticle;
+import kr.codesqaud.cafe.pagination.Paging;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
@@ -52,13 +53,18 @@ public class ArticleController {
 
     @GetMapping(value = {"/", "index"})
     public String list(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                           SessionDto loginUser, Model model) {
+                                        SessionDto loginUser, @ModelAttribute Paging paging, @RequestParam(value = "nowPage", defaultValue = "1") int nowPage,
+                                        Model model) {
 
         model.addAttribute("loginUser", loginUser);
 
-        List<SimpleArticle> articles = articleService.findArticles();
+        paging = new Paging(nowPage, articleService.count());
+
+        List<SimpleArticle> articles = articleService.findArticles(paging);
+
         model.addAttribute("articles", articles);
-        model.addAttribute("localDateTime", LocalDateTime.now());
+        model.addAttribute("paging", paging);
+//        model.addAttribute("localDateTime", LocalDateTime.now());
 
         return "index";
     }

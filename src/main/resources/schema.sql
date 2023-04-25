@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS reply;
-DROP TABLE IF EXISTS article;
-DROP TABLE IF EXISTS users;
+-- DROP TABLE IF EXISTS reply;
+-- DROP TABLE IF EXISTS article;
+-- DROP TABLE IF EXISTS users;
 
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     userId          varchar(50),
     password        varchar(50) not null,
@@ -11,7 +11,7 @@ CREATE TABLE users
     primary key (userId)
 );
 
-CREATE TABLE  IF NOT EXISTS article
+CREATE TABLE IF NOT EXISTS article
 (
     id              bigint auto_increment,
     userId          varchar(50) not null,
@@ -23,7 +23,7 @@ CREATE TABLE  IF NOT EXISTS article
     primary key (id)
 );
 
-CREATE TABLE  IF NOT EXISTS reply
+CREATE TABLE IF NOT EXISTS reply
 (
     id              bigint auto_increment,
     userId          varchar(50) not null,

@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.SimpleArticle;
+import kr.codesqaud.cafe.pagination.Paging;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -45,8 +46,9 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<SimpleArticle> findAll() {
-        return jdbcTemplate.query("select writer, userId, title, id, createdTime from article where deleted = false", simpleArticleRowMapper());
+    public List<SimpleArticle> findAll(Paging paging) {
+        return jdbcTemplate.query("select writer, userId, title, id, createdTime from article where deleted = false order by createdTime desc limit ?, ?"
+                , simpleArticleRowMapper(), paging.getStart(), Paging.getCntPerPage());
     }
 
     @Override
@@ -63,6 +65,12 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     @Override
     public void delete(Long id) {
         jdbcTemplate.update("update article set deleted = ? where id = ?", true, id);
+    }
+
+    @Override
+    public int count() {
+        List<SimpleArticle> articles = jdbcTemplate.query("select writer, userId, title, id, createdTime from article where deleted = false", simpleArticleRowMapper());
+        return articles.size();
     }
 
     private RowMapper<Article> articleRowMapper() {
