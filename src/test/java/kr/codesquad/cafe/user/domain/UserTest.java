@@ -19,6 +19,8 @@ class UserTest {
     private static final String WRONG_PASSWORD = "wrongPassword";
     private static final String WRONG_EMAIL = "wrongEmail";
     public static final long NO_MATCH_ID = 2L;
+    public static final String TARGET_EMAIL = "jerry@email.com";
+    public static final String TARGET_NICKNAME = "jerry";
 
     User user;
 
@@ -69,5 +71,13 @@ class UserTest {
                 .build();
         assertThat(manager.isManager()).isTrue();
         assertThat(user.isManager()).isFalse();
+    }
+
+    @DisplayName("프로필 닉네임 및 이메일 설정")
+    @Test
+    void setProfile() {
+        user.setProfile(TARGET_NICKNAME, TARGET_EMAIL);
+        assertThat(user.getNickname()).isEqualTo(TARGET_NICKNAME);
+        assertThat(user.getEmail()).isEqualTo(TARGET_EMAIL);
     }
 }

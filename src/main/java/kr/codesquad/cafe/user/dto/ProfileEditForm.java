@@ -41,12 +41,7 @@ public class ProfileEditForm {
     }
 
     public User setUser(User user) {
-        return User.builder()
-                .id(user.getId())
-                .email(email)
-                .nickname(nickname)
-                .password(user.getPassword())
-                .build();
+        return user.setProfile(nickname, email);
     }
 
     public static class Builder {

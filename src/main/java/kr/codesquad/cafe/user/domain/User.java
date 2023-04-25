@@ -80,6 +80,12 @@ public class User {
         return role.equals(Role.MANAGER);
     }
 
+    public User setProfile(String nickname, String email) {
+        this.nickname = nickname;
+        this.email = email;
+        return this;
+    }
+
     public static class Builder {
         private Long id = Long.MIN_VALUE;
         private String nickname = EMPTY;
