@@ -49,4 +49,9 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 		return questionTable.update(question);
 	}
 
+	@Override
+	public boolean delete(long id) {
+		return questionTable.delete(id);
+	}
+
 }

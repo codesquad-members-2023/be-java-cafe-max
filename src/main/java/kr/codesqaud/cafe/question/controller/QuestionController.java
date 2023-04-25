@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -124,7 +125,7 @@ public class QuestionController {
 	}
 
 	/**
-	 * Q&A 게시글 수정 기능
+	 * Q&A 게시글 수정 기능. (접근 권한: 게시글 작성자만)
 	 * @param id 게시글 id
 	 * @param dto 수정할 게시글 정보
 	 * @param session 세션
@@ -138,9 +139,28 @@ public class QuestionController {
 
 		QuestionEntity question = service.findById(id);
 		AuthSessionValidator.validatePageOnlyWriterCanAccess(session, question.getWriter_id());
-		service.updateQuestion(dto.toEntity(id, question.getWriter_id()));
+		service.update(dto.toEntity(id, question.getWriter_id()));
 
 		return "redirect:/questions/" + id;
+	}
+
+	/**
+	 * Q&A 게시글 삭제 기능. (접근 권한: 게시글 작성자만)
+	 * @param id 삭제할 게시글의 id
+	 * @param session 세션
+	 * @return 게시글 삭제 성공시 Q&A 게시글 목록 페이지로 이동
+	 * @throws QuestionNotExistException 게시글이 없는 경우
+	 * @throws NoAccessPermissionException 접근 권한이 없는 경우
+	 */
+	@DeleteMapping("/{id}")
+	public String questionDelete(@PathVariable long id, HttpSession session) throws
+		QuestionNotExistException, NoAccessPermissionException {
+
+		QuestionEntity question = service.findById(id);
+		AuthSessionValidator.validatePageOnlyWriterCanAccess(session, question.getWriter_id());
+		service.delete(id);
+
+		return "redirect:/questions";
 	}
 
 }

@@ -8,6 +8,7 @@ public class QuestionEntity {
 	private String writer;
 	private String title;
 	private String contents;
+	private boolean is_deleted;
 	private LocalDateTime registrationDateTime;
 
 	public QuestionEntity(long writer_id, String title, String contents) {
@@ -23,13 +24,14 @@ public class QuestionEntity {
 		this.contents = contents;
 	}
 
-	public QuestionEntity(long id, long writer_id, String writer, String title, String contents,
-		LocalDateTime registrationDateTime) {
+	public QuestionEntity(long id, long writer_id, String writer, String title, String contents
+		, boolean is_deleted, LocalDateTime registrationDateTime) {
 		this.id = id;
 		this.writer_id = writer_id;
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
+		this.is_deleted = is_deleted;
 		this.registrationDateTime = registrationDateTime;
 	}
 
@@ -53,6 +55,10 @@ public class QuestionEntity {
 		return contents;
 	}
 
+	public boolean isIs_deleted() {
+		return is_deleted;
+	}
+
 	public LocalDateTime getRegistrationDateTime() {
 		return registrationDateTime;
 	}
@@ -60,5 +66,9 @@ public class QuestionEntity {
 	public void updateFrom(QuestionEntity question) {
 		this.title = question.getTitle();
 		this.contents = question.getContents();
+	}
+
+	public void updateToDeleteState() {
+		this.is_deleted = false;
 	}
 }

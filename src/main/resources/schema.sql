@@ -11,8 +11,9 @@ CREATE TABLE IF NOT EXISTS "user" (
 
 CREATE TABLE IF NOT EXISTS "post" (
     id        BIGINT PRIMARY KEY AUTO_INCREMENT,
-    writer    VARCHAR(20) NOT NULL,
+    writer_id        BIGINT NOT NULL,
     title     VARCHAR(50) NOT NULL,
     contents  TEXT NOT NULL,
+    is_deleted  BOOLEAN NOT NULL DEFAULT FALSE,
     registrationDateTime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

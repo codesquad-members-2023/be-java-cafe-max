@@ -15,7 +15,9 @@ public class TempQuestionTable {
 		QuestionEntity questionGivenId = new QuestionEntity(id.getAndIncrement(), question.getWriter_id(),
 			question.getWriter(),
 			question.getTitle(),
-			question.getContents(), question.getRegistrationDateTime());
+			question.getContents(),
+			question.isIs_deleted(),
+			question.getRegistrationDateTime());
 
 		questions.add(questionGivenId);
 	}
@@ -33,6 +35,16 @@ public class TempQuestionTable {
 		for (QuestionEntity exgistingQuestion : questions) {
 			if (exgistingQuestion.getId() == id) {
 				exgistingQuestion.updateFrom(question);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public synchronized boolean delete(long id) {
+		for (QuestionEntity exgistingQuestion : questions) {
+			if (exgistingQuestion.getId() == id) {
+				exgistingQuestion.updateToDeleteState();
 				return true;
 			}
 		}

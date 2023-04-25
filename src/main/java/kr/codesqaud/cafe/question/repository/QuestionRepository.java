@@ -15,4 +15,6 @@ public interface QuestionRepository {
 	Optional<QuestionEntity> findById(long id);
 
 	boolean update(QuestionEntity question);
+
+	boolean delete(long id);
 }

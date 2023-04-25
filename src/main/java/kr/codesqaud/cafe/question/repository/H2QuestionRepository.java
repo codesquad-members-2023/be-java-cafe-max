@@ -33,17 +33,19 @@ public class H2QuestionRepository implements QuestionRepository {
 	}
 
 	public long countBy() {
-		String sql = "SELECT COUNT(*) FROM \"post\";";
+		String sql = "SELECT COUNT(*) FROM \"post\" WHERE is_deleted = FALSE;";
 		return jdbcTemplate.queryForObject(sql, (SqlParameterSource)null, Long.class);
 	}
 
 	public List<QuestionEntity> findPageBy(long offset, int pageSize) {
-		String sql = "SELECT p.id, p.writer_id, u.userId as writer, p.title, p.contents, p.registrationdatetime "
-			+ "FROM \"post\" p "
-			+ "JOIN \"user\" u "
-			+ "ON p.writer_id = u.id "
-			+ "ORDER BY id DESC "
-			+ "LIMIT :pageSize OFFSET :offset";
+		String sql =
+			"SELECT p.id, p.writer_id, u.userId as writer, p.title, p.contents, p.is_deleted, p.registrationdatetime "
+				+ "FROM \"post\" p "
+				+ "JOIN \"user\" u "
+				+ "ON p.writer_id = u.id "
+				+ "WHERE is_deleted = FALSE "
+				+ "ORDER BY id DESC "
+				+ "LIMIT :pageSize OFFSET :offset";
 
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("offset", offset)
@@ -53,11 +55,13 @@ public class H2QuestionRepository implements QuestionRepository {
 	}
 
 	public Optional<QuestionEntity> findById(long id) {
-		String sql = "SELECT p.id, p.writer_id, u.userId as writer, p.title, p.contents, p.registrationdatetime "
-			+ "FROM \"post\" p "
-			+ "JOIN \"user\" u "
-			+ "ON p.writer_id = u.id "
-			+ "WHERE p.id = :id";
+		String sql =
+			"SELECT p.id, p.writer_id, u.userId as writer, p.title, p.contents, p.is_deleted, p.registrationdatetime "
+				+ "FROM \"post\" p "
+				+ "JOIN \"user\" u "
+				+ "ON p.writer_id = u.id "
+				+ "WHERE p.id = :id "
+				+ "AND is_deleted = FALSE";
 
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("id", id);
@@ -78,7 +82,21 @@ public class H2QuestionRepository implements QuestionRepository {
 			.addValue("title", question.getTitle())
 			.addValue("contents", question.getContents())
 			.addValue("id", question.getId());
-		
+
+		try {
+			jdbcTemplate.update(sql, parameters);
+			return true;
+		} catch (DataAccessException e) {
+			return false;
+		}
+	}
+
+	public boolean delete(long id) {
+		String sql = "UPDATE \"post\" SET is_deleted = TRUE WHERE id = :id";
+
+		SqlParameterSource parameters = new MapSqlParameterSource()
+			.addValue("id", id);
+
 		try {
 			jdbcTemplate.update(sql, parameters);
 			return true;
@@ -94,6 +112,7 @@ public class H2QuestionRepository implements QuestionRepository {
 				rs.getString("writer"),
 				rs.getString("title"),
 				rs.getString("contents"),
+				rs.getBoolean("is_deleted"),
 				rs.getTimestamp("registrationDateTime").toLocalDateTime());
 	}
 
