@@ -7,6 +7,8 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -26,10 +28,12 @@ public class CommentJdbcRepository {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public void save(Comment comment) {
+    public Long save(Comment comment) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 "INSERT INTO comment (post_id, writer, contents) VALUES (:postId, :writer, :contents)",
-                new BeanPropertySqlParameterSource(comment));
+                new BeanPropertySqlParameterSource(comment), keyHolder);
+        return keyHolder.getKey().longValue();
     }
 
     public void delete(Long commentId) {

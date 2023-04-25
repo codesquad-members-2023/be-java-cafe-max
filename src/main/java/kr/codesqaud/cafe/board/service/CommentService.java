@@ -18,13 +18,13 @@ public class CommentService {
         this.commentJdbcRepository = commentJdbcRepository;
     }
 
-    public void write(CommentWriteForm commentWriteForm, String userName) {
+    public Long write(CommentWriteForm commentWriteForm, String userName) {
         Comment comment = Comment.builder()
                 .postId(commentWriteForm.getPostId())
                 .writer(userName)
                 .contents(commentWriteForm.getContents())
                 .build();
-        commentJdbcRepository.save(comment);
+        return commentJdbcRepository.save(comment);
     }
 
     public CommentResponse getComment(Long commentId) {

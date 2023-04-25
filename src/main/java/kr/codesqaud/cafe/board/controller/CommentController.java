@@ -17,7 +17,7 @@ public class CommentController {
 
     @PostMapping("/board/{postId}/comment")
     public String writeComment(@PathVariable Long postId, @ModelAttribute CommentWriteForm commentWriteForm, @SessionAttribute("sessionUser") SessionUser sessionUser) {
-        commentService.write(commentWriteForm, sessionUser.getUserName());
+        Long commentId = commentService.write(commentWriteForm, sessionUser.getUserName());
         return "redirect:/board/" + postId;
     }
 
