@@ -9,10 +9,9 @@ public class Pagination {
 	//총 페이지수
 	private int totalPage;
 
-	//현재 페이지 기준 다음 페이지
+	//현재 페이지 기준 다음 페이지 리스트로 이동 ex) <1,2,3,4,5> 에서 누르면 <6,7,8,9,10>
 	private int nextPage;
 
-	//현재 페이지 기준 이전 페이지
 	private int previousPage;
 
 	public Pagination(PaginationDto paginationDto, int countOfArticles) {
@@ -31,11 +30,14 @@ public class Pagination {
 		// 끝 페이지 계산
 		int endPage = Math.min(startPage + pageSize - 1, totalPage);
 
-		// 다음 페이지 계산
-		nextPage = Math.min(page + 1, totalPage);
+		// 다음 페이지네이션 시작점
+		nextPage = Math.min(startPage + pageSize, endPage + 1);
+		if (nextPage > totalPage) {
+			nextPage = page;
+		}
 
-		// 이전 페이지 계산
-		previousPage = Math.max(page - 1, 1);
+		// 이전 페이지네이션 시작점
+		previousPage = Math.max(startPage - pageSize, 1);
 
 		for (int i = startPage; i <= endPage; i++) {
 			pageNumList.add(i);
