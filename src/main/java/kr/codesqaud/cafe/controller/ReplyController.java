@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.controller.dto.ReplyDto;
 import kr.codesqaud.cafe.controller.dto.request.ReplyEditRequest;
 import kr.codesqaud.cafe.controller.dto.request.ReplyRequest;
-import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,20 +41,27 @@ public class ReplyController {
     }
 
     @PutMapping("/replies/{replyId}")
-    public String editReply(@PathVariable final Long replyId, @ModelAttribute final ReplyEditRequest request) {
-        Reply reply = replyService.editReply(replyId, request);
+    public String editReply(@PathVariable final Long replyId, @ModelAttribute final ReplyEditRequest request, HttpServletRequest httpRequest, Model model) {
+        HttpSession session = httpRequest.getSession();
+        ReplyDto reply = replyService.findByReplyId(replyId);
         Long articleId = reply.getArticleId();
-        return "redirect:/articles/" + articleId;
+        if (session != null && session.getAttribute("userName").equals(reply.getUserName())) {
+            replyService.editReply(replyId, request);
+            return "redirect:/articles/" + articleId;
+        }
+        model.addAttribute("reply", reply);
+        return "qna/failed";
     }
 
     @DeleteMapping("/replies/{replyId}")
     public String deleteReply(@PathVariable final Long replyId, HttpServletRequest httpRequest, Model model) {
         HttpSession session = httpRequest.getSession();
         ReplyDto reply = replyService.findByReplyId(replyId);
+        Long articleId = reply.getArticleId();
         model.addAttribute("reply", reply);
         if (session != null && session.getAttribute("userName").equals(reply.getUserName())) {
             replyService.deleteReply(replyId);
-            return "qna/show";
+            return "redirect:/articles/" + articleId;
         }
         return "qna/failed";
     }
