@@ -43,13 +43,15 @@ public class ReplyController {
 
 	/**
 	 * 더이상 load할 댓글이 없는데 불필요한 db접근을 막기 위해서 if문을 사용한다.
-	 * @param loadMoreReplyDto
+	 * @param articleIdx
+	 * @param countOfRepliesInHtml
 	 * @return
 	 */
 	@GetMapping("/articles/reply/loadMoreReply")
-	public List<ReplyResponse> loadMoreReply(@ModelAttribute LoadMoreReplyDto loadMoreReplyDto) {
-		Long countOfReplies = replyService.getCountOfReplies(loadMoreReplyDto.getArticleIdx());
-		loadMoreReplyDto.setCountOfRepliesInDb(countOfReplies);
+	public List<ReplyResponse> loadMoreReply(Long articleIdx, Long countOfRepliesInHtml) {
+		Long countOfReplies = replyService.getCountOfReplies(articleIdx);
+		LoadMoreReplyDto loadMoreReplyDto = new LoadMoreReplyDto(articleIdx, countOfReplies, countOfRepliesInHtml);
+
 		if (loadMoreReplyDto.hasMoreRepliesToLoad()) {
 			return replyService.getRepliesByIdx(loadMoreReplyDto);
 		}

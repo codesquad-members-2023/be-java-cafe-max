@@ -46,8 +46,10 @@
 
                     <div class="post-comment">
                         <div class="post-comment-slipp">
-                            <p id="count-of-reply" class="post-comment-count">댓글 {{countOfReplies}}개</p>
+                            <p id="count-of-reply" class="post-comment-count">댓글 {{loadReplies.countOfRepliesInDb}}개</p>
+                            {{#loadReplies.moreRepliesToLoad}}
                             <button id="button-for-more-comment">더보기</button>
+                            {{/loadReplies.moreRepliesToLoad}}
                             <div class="post-comment-slipp-articles">
                                 <div id="comment-box">
                                     {{#replies}}
