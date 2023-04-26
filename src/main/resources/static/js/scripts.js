@@ -27,13 +27,13 @@ $('#post-reply').click(() => {
         $(".qna-comment-slipp-articles").append(template);
         $("textarea[name=replyContent]").val("");
 
-        $(".qna-comment-slipp-articles").on("click", ".delete-reply", deleteReply);
 
     }).fail((err) => {
         alert(JSON.stringify(err));
     });
 });
 
+$(".qna-comment-slipp-articles").on("click", ".delete-reply", deleteReply);
 function deleteReply(e) {
     // 이벤트의 기본 기능을 막는 것 (우선 이벤트를 멈춘 후 js의 소스의 기능을 먼저 따름)
     e.preventDefault();
