@@ -52,8 +52,8 @@ public class BoardJdbcRepository {
     public BoardPost findByPostId(Long postId) {
         try {
             return jdbcTemplate.queryForObject(
-                    "SELECT post_id, writer, title, contents, write_date_time " +
-                            "FROM post " +
+                    "SELECT post_id, b.user_id AS writer_id, writer, title, contents, write_date_time " +
+                            "FROM post a JOIN users b ON a.writer = b.user_name " +
                             "WHERE post_id = :postId AND deleted = FALSE",
                     Collections.singletonMap("postId", postId), postRowMapper);
         } catch (DataRetrievalFailureException e) {
@@ -62,8 +62,8 @@ public class BoardJdbcRepository {
     }
 
     public List<BoardPost> findAll() {
-        return jdbcTemplate.query("SELECT post_id, writer, title, contents, write_date_time " +
-                "FROM post " +
+        return jdbcTemplate.query("SELECT post_id, b.user_id AS writer_id, writer, title, contents, write_date_time " +
+                "FROM post a JOIN users b ON a.writer = b.user_name " +
                 "WHERE deleted = FALSE " +
                 "ORDER BY write_date_time DESC", postRowMapper);
     }
@@ -73,6 +73,7 @@ public class BoardJdbcRepository {
         public BoardPost mapRow(ResultSet rs, int rowNum) throws SQLException {
             return BoardPost.builder()
                     .postId(rs.getLong("post_id"))
+                    .writerId(rs.getString("writer_id"))
                     .writer(rs.getString("writer"))
                     .title(rs.getString("title"))
                     .contents(rs.getString("contents"))

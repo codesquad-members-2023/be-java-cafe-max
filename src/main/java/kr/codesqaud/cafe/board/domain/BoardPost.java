@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class BoardPost {
     private final Long postId;
+    private final String writerId;
     private final String writer;
     private final String title;
     private final String contents;
@@ -11,6 +12,7 @@ public class BoardPost {
 
     private BoardPost(Builder builder) {
         this.postId = builder.postId;
+        this.writerId = builder.writerId;
         this.writer = builder.writer;
         this.title = builder.title;
         this.contents = builder.contents;
@@ -19,6 +21,10 @@ public class BoardPost {
 
     public Long getPostId() {
         return postId;
+    }
+
+    public String getWriterId() {
+        return writerId;
     }
 
     public String getWriter() {
@@ -43,6 +49,7 @@ public class BoardPost {
 
     public static class Builder {
         private Long postId;
+        private String writerId;
         private String writer;
         private String title;
         private String contents;
@@ -50,6 +57,11 @@ public class BoardPost {
 
         public Builder postId(Long postId) {
             this.postId = postId;
+            return this;
+        }
+
+        public Builder writerId(String writerId) {
+            this.writerId = writerId;
             return this;
         }
 

@@ -7,13 +7,15 @@ import java.time.format.DateTimeFormatter;
 
 public class PostResponse {
     private Long postId;
+    private String writerId;
     private String writer;
     private String title;
     private String contents;
     private LocalDateTime writeDateTime;
 
-    public PostResponse(Long postId, String writer, String title, String contents, LocalDateTime writeDateTime) {
+    private PostResponse(Long postId, String writerId, String writer, String title, String contents, LocalDateTime writeDateTime) {
         this.postId = postId;
+        this.writerId = writerId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -30,11 +32,15 @@ public class PostResponse {
     }
 
     public static PostResponse from(BoardPost boardPost) {
-        return new PostResponse(boardPost.getPostId(), boardPost.getWriter(), boardPost.getTitle(), boardPost.getContents(), boardPost.getWriteDateTime());
+        return new PostResponse(boardPost.getPostId(), boardPost.getWriterId(), boardPost.getWriter(), boardPost.getTitle(), boardPost.getContents(), boardPost.getWriteDateTime());
     }
 
     public Long getPostId() {
         return postId;
+    }
+
+    public String getWriterId() {
+        return writerId;
     }
 
     public String getWriter() {
