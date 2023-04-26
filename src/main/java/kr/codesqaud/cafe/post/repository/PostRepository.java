@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.post.repository;
 
+import kr.codesqaud.cafe.post.controller.PostCreateRequest;
 import kr.codesqaud.cafe.post.domain.Post;
 
 import java.util.List;
@@ -10,5 +11,6 @@ public interface PostRepository {
     Post save(Post post);
     Optional<Post> findByIndex(long index);
     List<Post> findAll();
+    Post edit(PostCreateRequest postCreateRequest,long index);
 
 }

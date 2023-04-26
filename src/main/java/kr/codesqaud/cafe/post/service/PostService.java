@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.post.service;
 
+import kr.codesqaud.cafe.post.controller.PostCreateRequest;
 import kr.codesqaud.cafe.post.domain.Post;
 import kr.codesqaud.cafe.post.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class PostService {
 
     public Post findById(long id) {
         return postRepository.findByIndex(id).get();
+    }
+
+    public Post edit(PostCreateRequest postCreateRequest,long index) {
+        return postRepository.edit(postCreateRequest,index);
+
     }
 }
 
