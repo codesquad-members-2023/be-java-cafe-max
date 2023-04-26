@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RequestMapping("/articles/{articleId}")
@@ -49,18 +47,18 @@ public class ReplyController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/replies/{id}")
     public ApiResponse<Void> update(@PathVariable Long articleId, @PathVariable Long id, @RequestBody ReplyUpdateDto replyUpdateDto,
-                                    @SessionAttribute("loginUser") LoginUserSession loginUserSession) {
-        replyService.update(loginUserSession.getId(), replyUpdateDto);
+                                    @SessionAttribute(LoginUserSession.KEY) LoginUserSession session) {
+        replyService.update(session.getId(), replyUpdateDto);
 
         return ApiResponse.success();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/replies/{id}")
-    public ApiResponse<Void> delete(@PathVariable Long articleId, @PathVariable Long id, HttpSession session) {
-        final LoginUserSession loginUserSession = (LoginUserSession) session.getAttribute(LoginUserSession.KEY);
+    public ApiResponse<Void> delete(@PathVariable Long articleId, @PathVariable Long id,
+                                    @SessionAttribute(LoginUserSession.KEY) LoginUserSession session) {
 
-        replyService.delete(id, loginUserSession.getId());
+        replyService.delete(id, session.getId());
 
         return ApiResponse.success();
     }
