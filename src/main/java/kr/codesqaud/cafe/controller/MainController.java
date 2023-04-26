@@ -2,33 +2,31 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ArticleService;
-import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
-    private final UserService userService;
     private final ArticleService articleService;
 
-    public MainController(UserService userService, ArticleService articleService) {
-        this.userService = userService;
+    public MainController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
     @GetMapping
-    public String showMain(@CookieValue(name = "id", required = false) Long id, Model model) {
+    public String showMain(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
         model.addAttribute("articles", articleService.getArticles());
-        if (id == null) {
+        if (session == null || session.getAttribute("loginUser") == null) {
             return "index";
         }
-        User loginUser = userService.findById(id);
-        if (loginUser == null) {
-            return "index";
-        }
+        User loginUser = (User) session.getAttribute("loginUser");
         model.addAttribute("user", loginUser);
-        return "login_index";
+        return "index";
     }
+
 }
