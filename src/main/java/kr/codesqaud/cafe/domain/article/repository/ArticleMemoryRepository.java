@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain.article.repository;
 
 import kr.codesqaud.cafe.domain.article.Article;
+import kr.codesqaud.cafe.dto.Paging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +17,13 @@ public class ArticleMemoryRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAll() {
+    public List<Article> findAll(Paging paging) {
         return articles;
+    }
+
+    @Override
+    public int allCount() {
+        return 0;
     }
 
     @Override

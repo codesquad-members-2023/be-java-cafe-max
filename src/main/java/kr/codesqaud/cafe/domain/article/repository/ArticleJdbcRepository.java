@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.domain.article.repository;
 
 import kr.codesqaud.cafe.domain.article.Article;
+import kr.codesqaud.cafe.dto.Paging;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -33,9 +34,15 @@ public class ArticleJdbcRepository implements ArticleRepository {
                         .build();
     }
     @Override
-    public List<Article> findAll() {
+    public List<Article> findAll(Paging paging) {
         return jdbcTemplate.query(
-                "SELECT IDX , ID , WRITER , TITLE , CONTENTS , DATE FROM ARTICLES WHERE DELETED = FALSE ORDER BY IDX DESC ",rowMapper());
+                "SELECT IDX , ID , WRITER , TITLE , CONTENTS , DATE FROM ARTICLES WHERE DELETED = FALSE ORDER BY IDX DESC LIMIT ? , 5 ",rowMapper(),paging.getStart());
+    }
+
+    @Override
+    public int allCount() {
+        return jdbcTemplate.query(
+                "select count(*) from articles where deleted=false",(rs, rowNum) -> rs.getInt(1)).get(0);
     }
 
     @Override
