@@ -33,7 +33,7 @@ public class UserService {
     public SessionUser loginCheck(UserLoginForm userLoginForm) {
         if (userRepository.containsUserId(userLoginForm.getUserId())) {
             User user = userRepository.findByUserId(userLoginForm.getUserId());
-            if (userLoginForm.getPassword().equals(user.getPassword())) {
+            if (userLoginForm.isSamePassword(user.getPassword())) {
                 return SessionUser.from(user);
             } else {
                 throw new LoginFailedException("비밀번호가 틀렸습니다.");
@@ -62,7 +62,7 @@ public class UserService {
 
     private void validateUpdateForm(UserUpdateForm userUpdateForm) {
         String password = userRepository.findByUserId(userUpdateForm.getUserId()).getPassword();
-        if (!userUpdateForm.getPassword().equals(password)) {
+        if (!userUpdateForm.isSamePassword(password)) {
             throw new UserUpdateFailedException("비밀번호가 틀렸습니다.", "password");
         }
         if (userRepository.containsUserName(userUpdateForm.getUserName())) {
