@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.codesqaud.cafe.service.Utility.getUserIdFromSession;
-import static kr.codesqaud.cafe.service.Utility.getUserNameFromSession;
+import static kr.codesqaud.cafe.service.util.Utility.getUserIdFromSession;
+import static kr.codesqaud.cafe.service.util.Utility.getUserNameFromSession;
 
 @Service
 public class ReplyService {
