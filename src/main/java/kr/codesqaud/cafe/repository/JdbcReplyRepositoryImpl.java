@@ -62,6 +62,19 @@ public class JdbcReplyRepositoryImpl implements ReplyRepository {
         return template.update(sql, params) > 0;
     }
 
+    @Override
+    public boolean delete(Long replyId, Long userId) {
+        final String sql = "" +
+                "DELETE FROM reply " +
+                "WHERE id = :id AND user_id = :userId";
+
+        final MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", replyId)
+                .addValue("userId", userId);
+
+        return template.update(sql, params) > 0;
+    }
+
     private RowMapper<Reply> replyRowMapper() {
         return (rs, rowNum) -> new Reply(
                 rs.getLong("id"),

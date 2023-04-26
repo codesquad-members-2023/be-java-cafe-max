@@ -91,15 +91,8 @@
                           </div>
                           <div class="article-util" th:if="">
                               <ul class="article-util-list">
-                                  <li>
-                                        <button class="update-answer-button" type="button" id="reply-update-button" data-reply-id="${reply.id}">수정</button>
-                                  </li>
-                                  <li>
-                                      <form class="delete-answer-form" action="/questions/413/answers/1405" method="POST">
-                                          <input type="hidden" name="_method" value="DELETE">
-                                          <button type="submit" class="delete-answer-button">삭제</button>
-                                      </form>
-                                  </li>
+                                  <li><button class="update-answer-button" type="button" id="reply-update-button" data-reply-id="${reply.id}">수정</button></li>
+                                  <li><button class="delete-answer-button" type="button" id="reply-delete-button" data-reply-id="${reply.id}">삭제</button></li>
                               </ul>
                           </div>
                       </article>
@@ -168,7 +161,6 @@
 
     $(document).on('submit', '.reply-update-form', function(e) {
         e.preventDefault();
-        console.log("------------- test -------------");
         const replyId = $('#reply-id').val();
         const updatedComment = $('#reply-comments').val();
 
@@ -195,6 +187,28 @@
                 }
             }
         });
+    });
+
+    $(document).on('click', '#reply-delete-button', function (e) {
+        e.preventDefault();
+        const replyId = $(this).data('reply-id');
+
+        $.ajax({
+            url: "/articles/" + articleId + "/replies/" + replyId,
+            type: 'DELETE',
+            success: function (response) {
+                printReplyList();
+            },
+            error: function(xhr, status, error) {
+                const response = xhr.responseJSON;
+                if (!response.success) {
+                    const errorDto = response.result;
+                    alert(errorDto.errorStatus + " " + errorDto.errorMessage);
+                } else {
+                    alert("댓글 삭제 실패");
+                }
+            }
+        })
     });
 </script>
 </body>

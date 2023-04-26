@@ -10,4 +10,6 @@ public interface ReplyRepository {
     Long save(Reply reply);
 
     boolean update(Reply reply);
+
+    boolean delete(Long replyId, Long userId);
 }
