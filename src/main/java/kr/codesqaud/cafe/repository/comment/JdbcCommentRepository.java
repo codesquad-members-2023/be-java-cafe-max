@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.Comment;
-import kr.codesqaud.cafe.exception.CommentNotFoundException;
 
 @Repository
 public class JdbcCommentRepository implements CommentRepository {
@@ -24,15 +23,16 @@ public class JdbcCommentRepository implements CommentRepository {
 	}
 
 	private RowMapper<Comment> commentRowMapper() {
-		return (rs, rowNum) -> new Comment(rs.getLong("commentIndex"), rs.getLong("postIndex"), rs.getString("author"),
+		return (rs, rowNum) -> new Comment(rs.getLong("commentIndex"), rs.getLong("articleIndex"),
+			rs.getString("author"),
 			rs.getString("comment"), rs.getString("createdDate"), rs.getBoolean("deleted"));
 	}
 
 	@Override
-	public List<Comment> findByPostIndex(long postIndex) {
+	public List<Comment> findByArticleIndex(Long articleIndex) {
 		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("postIndex", postIndex);
-		return namedParameterJdbcTemplate.query(FIND_COMMENTS_BY_POST_INDEX, param, commentRowMapper());
+			.addValue("articleIndex", articleIndex);
+		return namedParameterJdbcTemplate.query(FIND_COMMENTS_BY_ARTICLE_INDEX, param, commentRowMapper());
 	}
 
 	@Override
@@ -42,31 +42,31 @@ public class JdbcCommentRepository implements CommentRepository {
 	}
 
 	@Override
-	public Comment findOne(Long postIndex, Long commentIndex) {
+	public Optional<Comment> findOne(Long articleIndex, Long commentIndex) {
 		SqlParameterSource params = new MapSqlParameterSource()
-			.addValue("postIndex", postIndex)
+			.addValue("articleIndex", articleIndex)
 			.addValue("commentIndex", commentIndex);
-		List<Comment> comments = namedParameterJdbcTemplate.query(FIND_BY_POST_INDEX_WITH_INDEX, params,
+		List<Comment> comments = namedParameterJdbcTemplate.query(FIND_BY_ARTICLE_INDEX_WITH_COMMENT_INDEX, params,
 			commentRowMapper());
-		return OptionalTo(comments).orElseThrow(CommentNotFoundException::new);
+		return optionalTo(comments);
 	}
 
 	@Override
-	public void delete(Long postIndex, Long commentIndex) {
+	public void delete(Long articleIndex, Long commentIndex) {
 		SqlParameterSource params = new MapSqlParameterSource()
-			.addValue("postIndex", postIndex)
+			.addValue("articleIndex", articleIndex)
 			.addValue("commentIndex", commentIndex);
 		namedParameterJdbcTemplate.update(DELETE_COMMENT, params);
 	}
 
 	@Override
-	public void deleteAll(Long postIndex) {
+	public void deleteAll(Long articleIndex) {
 		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("postIndex", postIndex);
+			.addValue("articleIndex", articleIndex);
 		namedParameterJdbcTemplate.update(DELETE_ALL_COMMENT, param);
 	}
 
-	private Optional<Comment> OptionalTo(List<Comment> comments) {
+	private Optional<Comment> optionalTo(List<Comment> comments) {
 		return comments.stream().findAny();
 	}
 }

@@ -1,7 +1,7 @@
 {{> fragments/header}}
 <div class="keyword"><strong>개인정보 수정</strong></div>
 <div class="form-box">
-    <form name="question" id="update-form" method="post" action="/user/update" onsubmit="return validateUpdateData()">
+    <form name="question" id="update-form" method="post" action="/users" onsubmit="return validateUpdateData()">
         <input type="hidden" name="_method" value="PATCH"/>
         <div class="box">
             <label for="userID">아이디</label>

@@ -1,12 +1,12 @@
 {{> fragments/header}}
 <div></div>
 <div class="wrap">
-    <form name="question" id="question" method="post" action="/article/update/{{article.postIndex}}"
+    <form name="question" id="question" method="post" action="/articles/{{article.articleIndex}}"
           onsubmit="return validateWritingUpdate()">
         <input type="hidden" name="_method" value="PATCH"/>
         <input type="hidden" name="writer" value="{{article.writer}}"/>
         <div class="h3">
-            <h3>글쓰기</h3>
+            <h3>글 수정</h3>
         </div>
         <div class="title-form">
             <label for="title">제목</label>

@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.UserDto;
 
 @Repository
 public class JdbcUserRepository implements UserRepository {
@@ -31,8 +30,8 @@ public class JdbcUserRepository implements UserRepository {
 	}
 
 	@Override
-	public boolean update(UserDto userDto) {
-		SqlParameterSource params = new BeanPropertySqlParameterSource(userDto);
+	public boolean update(User user) {
+		SqlParameterSource params = new BeanPropertySqlParameterSource(user);
 		namedParameterJdbcTemplate.update(UPDATE, params);
 		return true;
 	}
@@ -42,10 +41,10 @@ public class JdbcUserRepository implements UserRepository {
 		SqlParameterSource param = new MapSqlParameterSource()
 			.addValue("userID", userID);
 		List<User> users = namedParameterJdbcTemplate.query(FIND_BY_USERID, param, userRowMapper());
-		return OptionalTo(users);
+		return optionalTo(users);
 	}
 
-	private Optional<User> OptionalTo(List<User> users) {
+	private Optional<User> optionalTo(List<User> users) {
 		return users.stream().findAny();
 	}
 
@@ -59,20 +58,6 @@ public class JdbcUserRepository implements UserRepository {
 		SqlParameterSource param = new MapSqlParameterSource()
 			.addValue("userID", userID);
 		return Boolean.TRUE.equals(namedParameterJdbcTemplate.queryForObject(EXISTS_USERID, param, Boolean.class));
-	}
-
-	@Override
-	public boolean existEmail(String email) {
-		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("email", email);
-		return Boolean.TRUE.equals(namedParameterJdbcTemplate.queryForObject(EXISTS_EMAIL, param, Boolean.class));
-	}
-
-	@Override
-	public boolean existNickname(String nickname) {
-		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("nickname", nickname);
-		return Boolean.TRUE.equals(namedParameterJdbcTemplate.queryForObject(EXISTS_NICKNAME, param, Boolean.class));
 	}
 
 	@Override
@@ -91,14 +76,6 @@ public class JdbcUserRepository implements UserRepository {
 			.addValue("nickname", nickname);
 		return Boolean.TRUE.equals(
 			namedParameterJdbcTemplate.queryForObject(EXISTS_UPDATE_NICKNAME, param, Boolean.class));
-	}
-
-	@Override
-	public Optional<User> findByNickname(String nickname) {
-		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("nickname", nickname);
-		List<User> users = namedParameterJdbcTemplate.query(FIND_BY_NICKNAME, param, userRowMapper());
-		return OptionalTo(users);
 	}
 
 	private RowMapper<User> userRowMapper() {

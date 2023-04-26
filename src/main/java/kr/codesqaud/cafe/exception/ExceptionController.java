@@ -21,19 +21,18 @@ import kr.codesqaud.cafe.domain.User;
 @ControllerAdvice
 public class ExceptionController {
 	@ExceptionHandler(BindException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public String invalidException(BindException e, HttpServletRequest request, HttpSession session,
 		RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
 		ErrorResponse errorResponse = makeErrorResponse(e.getBindingResult());
 		redirectAttributes.addFlashAttribute("errorMessage", errorResponse.getDetail());
-		if (requestUri.contains("/create")) {
-			return "redirect:/user/form";
-		} else if (requestUri.contains("/update")) {
+		if (requestUri.contains("/users/")) {
 			User user = (User)session.getAttribute("sessionUser");
 			redirectAttributes.addFlashAttribute("user", user);
-			return "redirect:/user/updateForm";
+			return "redirect:/users/update-form";
 		}
-		return "/";
+		return "redirect:/users/form";
 	}
 
 	private ErrorResponse makeErrorResponse(BindingResult bindingResult) {
@@ -55,47 +54,77 @@ public class ExceptionController {
 		return "error/error";
 	}
 
-	@ExceptionHandler(DeniedDataModificationException.class)
-	public String deniedDataException(DeniedDataModificationException e, Model model) {
+	@ExceptionHandler(DeniedArticleModificationException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	public String deniedArticleModificationException(DeniedArticleModificationException e, Model model) {
+		model.addAttribute("errorMessage", e.getMessage());
+		return "error/error";
+	}
+
+	@ExceptionHandler(DeniedUserModificationException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	public String deniedUserModificationException(DeniedUserModificationException e, Model model) {
+		model.addAttribute("errorMessage", e.getMessage());
+		return "error/error";
+	}
+
+	@ExceptionHandler(DeniedCommentModificationException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	public String deniedCommentModificationException(DeniedCommentModificationException e, Model model) {
+		model.addAttribute("errorMessage", e.getMessage());
+		return "error/error";
+	}
+
+	@ExceptionHandler(OtherCommentExistsException.class)
+	@ResponseStatus(value = HttpStatus.FORBIDDEN)
+	public String otherCommentExistsException(OtherCommentExistsException e, Model model) {
+		model.addAttribute("errorMessage", e.getMessage());
+		return "error/error";
+	}
+
+	@ExceptionHandler(InvalidAccessException.class)
+	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+	public String invalidAccessException(InvalidAccessException e, Model model) {
 		model.addAttribute("errorMessage", e.getMessage());
 		return "error/error";
 	}
 
 	@ExceptionHandler(DuplicateUserException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public String duplicateUserException(DuplicateUserException e, HttpServletRequest request, HttpSession session,
 		RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
 		redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-		if (requestUri.contains("/create")) {
-			return "redirect:/user/form";
-		} else if (requestUri.contains("/update")) {
+		if (requestUri.contains("/users/")) {
 			User user = (User)session.getAttribute("sessionUser");
 			redirectAttributes.addFlashAttribute("user", user);
-			return "redirect:/user/updateForm";
+			return "redirect:/users/update-form";
 		}
-		return "/";
+		return "redirect:/users/form";
 	}
 
 	@ExceptionHandler(UserNotFoundException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public String userNotFoundException(UserNotFoundException e, HttpServletRequest request,
 		RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
 		redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-		if (requestUri.contains("/create")) {
-			return "redirect:/user/form";
+		if (requestUri.contains("/login")) {
+			return "redirect:/login";
 		}
-		return "redirect:user/login";
+		return "redirect:/users/form";
 	}
 
 	@ExceptionHandler(InvalidPasswordException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public String invalidPasswordException(InvalidPasswordException e, HttpServletRequest request,
 		RedirectAttributes redirectAttributes) {
 		String requestUri = request.getRequestURI();
 		redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-		if (requestUri.contains("/form")) {
-			String userId = requestUri.split("/")[3];
-			return "redirect:/check/" + userId;
+		if (requestUri.contains("/users")) {
+			String userId = requestUri.split("/")[2];
+			return "redirect:/users/check/" + userId;
 		}
-		return "redirect:user/login";
+		return "redirect:/login";
 	}
 }

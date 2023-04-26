@@ -27,10 +27,10 @@ function addComment() {
 }
 
 function createComment(comment) {
-    let button = "<form name='comment-update-form' method='post' action='/comment/update/" + comment.postIndex + "/" + comment.commentIndex + "'>"
+    let button = "<form name='comment-update-form' method='post' action='/comments/" + comment.articleIndex + "/" + comment.commentIndex + "'>"
         + "<input type='hidden' name='_method' value='PATCH'/>"
         + "<button class='updateComment button next-writing' type='button' style='border: none;'>수정</button></form>"
-        + "<form name='comment-delete-form' method='post' action='/comment/delete/" + comment.postIndex + "/" + comment.commentIndex + "'>"
+        + "<form name='comment-delete-form' method='post' action='/comments/" + comment.articleIndex + "/" + comment.commentIndex + "'>"
         + "<input type='hidden' name='_method' value='DELETE'/>"
         + "<button class='deleteComment button next-writing' type='button' style='border: none;'>삭제</button></form>";
 
@@ -48,8 +48,8 @@ function createComment(comment) {
 }
 
 function showComments() {
-    const postIndex = window.location.pathname.split("/")[2];
-    url = "/comments/" + postIndex;
+    const articleIndex = window.location.pathname.split("/")[2];
+    url = "/comments/" + articleIndex;
     $.ajax({
           type : 'get',
           url : url,

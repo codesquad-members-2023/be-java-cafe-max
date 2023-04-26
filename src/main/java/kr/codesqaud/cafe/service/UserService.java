@@ -2,11 +2,13 @@ package kr.codesqaud.cafe.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.UserDto;
+import kr.codesqaud.cafe.dto.UserRequest;
+import kr.codesqaud.cafe.dto.UserResponse;
 import kr.codesqaud.cafe.exception.DuplicateUserException;
 import kr.codesqaud.cafe.exception.UserNotFoundException;
 import kr.codesqaud.cafe.repository.user.UserRepository;
@@ -19,53 +21,68 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public boolean create(UserDto userDto) {
-		validateDuplicate(userDto);
-		User user = new User(userDto.getUserID(), userDto.getEmail(), userDto.getNickname(),
-			userDto.getPassword(), LocalDate.now());
+	public boolean create(UserRequest userRequest) {
+		validateDuplicate(userRequest);
+		User user = new User(userRequest.getUserID(), userRequest.getEmail(), userRequest.getNickname(),
+			userRequest.getPassword(), LocalDate.now());
 		userRepository.create(user);
 		return true;
 	}
 
-	private boolean validateDuplicate(UserDto userDto) {
-		if (userRepository.existUserID(userDto.getUserID())) {
+	private boolean validateDuplicate(UserRequest userRequest) {
+		if (userRepository.existUserID(userRequest.getUserID())) {
 			throw new DuplicateUserException("아이디");
 		}
-		if (userRepository.existEmail(userDto.getEmail())) {
-			throw new DuplicateUserException("이메일");
-		}
-		if (userRepository.existNickname(userDto.getNickname())) {
-			throw new DuplicateUserException("닉네임");
-		}
+		validateUpdateDuplicate(userRequest);
 		return true;
 	}
 
-	public boolean update(UserDto userDto) {
-		validateUpdateDuplicate(userDto);
-		userRepository.update(userDto);
-		return true;
-	}
-
-	private void validateUpdateDuplicate(UserDto userDto) {
-		if (userRepository.existUpdateEmail(userDto.getUserID(), userDto.getEmail())) {
+	private void validateUpdateDuplicate(UserRequest userRequest) {
+		if (userRepository.existUpdateEmail(userRequest.getUserID(), userRequest.getEmail())) {
 			throw new DuplicateUserException("이메일");
 		}
-		if (userRepository.existUpdateNickname(userDto.getUserID(), userDto.getNickname())) {
+		if (userRepository.existUpdateNickname(userRequest.getUserID(), userRequest.getNickname())) {
 			throw new DuplicateUserException("닉네임");
 		}
 	}
 
-	public List<User> findUsers() {
-		return userRepository.findAll();
+	public boolean update(UserRequest userRequest) {
+		validateUpdateDuplicate(userRequest);
+		User user = new User(userRequest.getUserID(), userRequest.getEmail(), userRequest.getNickname(),
+			userRequest.getPassword());
+		userRepository.update(user);
+		return true;
 	}
 
-	public User findOne(String userID) {
-		return userRepository.findByUserID(userID)
-			.orElseThrow(() -> new UserNotFoundException("유저 아이디를 찾을 수 없습니다."));
+	public List<UserResponse> findUsers() {
+		return userRepository.findAll().stream().map(user -> new UserResponse(user.getUserIndex(), user.getUserID(),
+				user.getEmail(), user.getNickname(), user.getPassword(), user.getSignUpDate()))
+			.collect(Collectors.toList());
 	}
 
-	public User findByNickname(String nickname) {
-		return userRepository.findByNickname(nickname)
-			.orElseThrow(() -> new UserNotFoundException("유저 닉네임을 찾을 수 없습니다."));
+	public UserRequest checkLogin(String userID, String password) {
+		User user = userRepository.findByUserID(userID)
+			.orElseThrow(UserNotFoundException::new);
+		user.validatePassword(password);
+		return new UserRequest(user.getUserID(), user.getEmail(), user.getNickname(), user.getPassword());
+	}
+
+	public void checkPassword(UserRequest userRequest, String password) {
+		User user = new User(userRequest.getUserID(), userRequest.getEmail(), userRequest.getNickname(),
+			userRequest.getPassword());
+		user.validatePassword(password);
+	}
+
+	public void checkUserID(UserRequest userRequest, String userID) {
+		User user = new User(userRequest.getUserID(), userRequest.getEmail(), userRequest.getNickname(),
+			userRequest.getPassword());
+		user.validateUserId(userID);
+	}
+
+	public UserResponse findByUserID(String userID) {
+		User user = userRepository.findByUserID(userID)
+			.orElseThrow(UserNotFoundException::new);
+		return new UserResponse(user.getUserIndex(), user.getUserID(), user.getEmail(), user.getNickname(),
+			user.getPassword(), user.getSignUpDate());
 	}
 }

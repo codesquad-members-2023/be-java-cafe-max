@@ -1,14 +1,14 @@
 package kr.codesqaud.cafe.controller;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.dto.UserDto;
+import kr.codesqaud.cafe.dto.UserRequest;
+import kr.codesqaud.cafe.dto.ValidationGroups;
 import kr.codesqaud.cafe.service.UserService;
 
 @Controller
@@ -19,35 +19,24 @@ public class UserCommandController {
 		this.userService = userService;
 	}
 
-	@PostMapping("/user/create")
-	public String createUser(@Valid UserDto userDto) {
-		userService.create(userDto);
+	@PostMapping("/users")
+	public String createUser(@Validated(ValidationGroups.userCreateValidationGroup.class) UserRequest userRequest) {
+		userService.create(userRequest);
 		return "redirect:/users";
 	}
 
-	@PatchMapping("/user/update")
-	public String updateUser(@Valid UserDto userDto, HttpSession httpSession) {
-		String original = (userService.findOne(userDto.getUserID())).getNickname();
-		userService.update(userDto);
-		User user = userService.findOne(userDto.getUserID());
-		httpSession.setAttribute("sessionUser", user);
+	@PatchMapping("/users")
+	public String updateUser(@Validated(ValidationGroups.userUpdateValidationGroup.class) UserRequest userRequest,
+		HttpSession httpSession) {
+		userService.update(userRequest);
+		httpSession.setAttribute("sessionUser", userRequest);
 		return "redirect:/users";
 	}
 
-	@PostMapping("/login")
-	public String login(String userID, String password, HttpSession session) {
-		User user = userService.findOne(userID);
-		user.validatePassword(password);
-		session.setAttribute("sessionUser", user);
-		return "redirect:/";
-	}
-
-	@PostMapping("/user/form/{userId}")
+	@PostMapping("/users/{userID}")
 	public String getUpdateForm(String password, HttpSession session) {
-		User user = (User)session.getAttribute("sessionUser");
-		user.validatePassword(password);
-		boolean passwordCheck = true;
-		session.setAttribute("passwordCheck", passwordCheck);
-		return "redirect:/user/updateForm";
+		userService.checkPassword((UserRequest)session.getAttribute("sessionUser"), password);
+		session.setAttribute("passwordCheck", true);
+		return "redirect:/users/update-form";
 	}
 }
