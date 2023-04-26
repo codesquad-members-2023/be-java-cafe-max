@@ -35,7 +35,7 @@ public class BoardController {
     @PostMapping
     public String writePost(@ModelAttribute PostWriteForm postWriteForm) {
         boardService.write(postWriteForm);
-        return "redirect:/board/list";
+        return "redirect:/board";
     }
 
     @GetMapping
