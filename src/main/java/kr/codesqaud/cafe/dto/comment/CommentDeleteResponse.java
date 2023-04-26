@@ -2,13 +2,13 @@ package kr.codesqaud.cafe.dto.comment;
 
 public class CommentDeleteResponse {
 
-    private Boolean isValid;
+    private final Boolean isDeleted;
 
     public CommentDeleteResponse(Boolean isValid) {
-        this.isValid = isValid;
+        this.isDeleted = isValid;
     }
 
-    public Boolean getValid() {
-        return isValid;
+    public Boolean isDeleted() {
+        return isDeleted;
     }
 }

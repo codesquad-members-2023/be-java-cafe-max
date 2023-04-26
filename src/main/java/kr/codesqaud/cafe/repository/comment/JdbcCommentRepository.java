@@ -58,6 +58,14 @@ public class JdbcCommentRepository implements CommentRepository {
     }
 
     @Override
+    public Boolean existByIdAndMemberId(Long id, Long writerId) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM comment WHERE id = :id AND writer_id = :writerId)";
+        MapSqlParameterSource parameter = new MapSqlParameterSource("id", id);
+        parameter.addValue("writerId", writerId);
+        return jdbcTemplate.queryForObject(sql, parameter, Boolean.class);
+    }
+
+    @Override
     public int delete(Long id) {
         String sql = "UPDATE comment "
                       + "SET is_deleted = true "

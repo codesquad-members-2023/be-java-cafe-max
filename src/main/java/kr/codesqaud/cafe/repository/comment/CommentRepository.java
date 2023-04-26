@@ -14,5 +14,7 @@ public interface CommentRepository {
 
     List<Comment> findAllByPostId(Long postId);
 
+    Boolean existByIdAndMemberId(Long id, Long writerId);
+
     void deleteAllByPostId(Long postId);
 }
