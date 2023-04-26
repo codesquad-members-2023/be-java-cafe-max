@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.reply.Reply;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
 import kr.codesqaud.cafe.dto.LoginSessionDto;
+import kr.codesqaud.cafe.dto.Paging;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,8 +51,12 @@ public class ArticleController {
     }
 
     @GetMapping
-    public String getIndex(Model model) {
-        model.addAttribute("articleList", articleService.getAricleList());
+    public String getIndex(Model model, @RequestParam(defaultValue = "1")int nowPage) {
+        Paging paging = articleService.createPaging(nowPage);
+        model.addAttribute("first",1);
+        model.addAttribute("last",paging.getLastPage());
+        model.addAttribute("paging", articleService.pagingList(paging));
+        model.addAttribute("articleList", articleService.getAricleList(paging));
         return "index";
     }
 

@@ -6,11 +6,13 @@ import kr.codesqaud.cafe.domain.reply.Reply;
 import kr.codesqaud.cafe.domain.reply.repository.ReplyRepository;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
 import kr.codesqaud.cafe.dto.LoginSessionDto;
+import kr.codesqaud.cafe.dto.Paging;
 import kr.codesqaud.cafe.exception.DeniedAccessException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,8 +56,8 @@ public class ArticleService {
     }
 
 
-    public List<Article> getAricleList() {
-        return articleRepository.findAll();
+    public List<Article> getAricleList(Paging paging) {
+        return articleRepository.findAll(paging);
     }
 
     public Article findByIdx(int idx) {
@@ -115,4 +117,19 @@ public class ArticleService {
         }
         return false;
     }
+
+    public Paging createPaging(int nowPage){
+        int all = articleRepository.allCount();
+        return new Paging(nowPage,all);
+    }
+
+    public List<Paging> pagingList(Paging paging){
+        List<Paging> list = new ArrayList<>();
+        for (int i = paging.getStartPage(); i <= paging.getEndPage(); i++) {
+            list.add(new Paging(i, paging.getTotalCount()));
+        }
+        return list;
+    }
+
+
 }
