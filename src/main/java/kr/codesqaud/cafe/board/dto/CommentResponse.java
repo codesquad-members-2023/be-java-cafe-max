@@ -13,7 +13,7 @@ public class CommentResponse {
     private String contents;
     private LocalDateTime writeDateTime;
 
-    public CommentResponse(Long commentId, Long postId, String writerId, String writer, String contents, LocalDateTime writeDateTime) {
+    private CommentResponse(Long commentId, Long postId, String writerId, String writer, String contents, LocalDateTime writeDateTime) {
         this.commentId = commentId;
         this.postId = postId;
         this.writerId = writerId;

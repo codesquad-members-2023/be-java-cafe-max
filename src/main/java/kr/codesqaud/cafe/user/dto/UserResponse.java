@@ -7,7 +7,7 @@ public class UserResponse {
     private final String userName;
     private final String email;
 
-    public UserResponse(String userId, String userName, String email) {
+    private UserResponse(String userId, String userName, String email) {
         this.userId = userId;
         this.userName = userName;
         this.email = email;
