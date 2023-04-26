@@ -41,4 +41,13 @@ public class CommentSavedRequest {
             .writer(User.builder().id(userId).build())
             .build();
     }
+
+    @Override
+    public String toString() {
+        return "CommentSavedRequest{" +
+            "content='" + content + '\'' +
+            ", questionId=" + questionId +
+            ", userId=" + userId +
+            '}';
+    }
 }

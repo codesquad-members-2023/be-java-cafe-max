@@ -9,12 +9,14 @@ public class CommentResponse implements Comparable<CommentResponse> {
     private final String content;
     private final LocalDateTime createTime;
     private final String writerName;
+    private final Long questionId;
 
     public CommentResponse(Comment comment) {
         this.id = comment.getId();
         this.content = comment.getContent();
         this.createTime = comment.getCreateTime();
         this.writerName = comment.getWriter().getName();
+        this.questionId = comment.getQuestion().getId();
     }
 
     public Long getId() {
@@ -33,6 +35,10 @@ public class CommentResponse implements Comparable<CommentResponse> {
         return writerName;
     }
 
+    public Long getQuestionId() {
+        return questionId;
+    }
+
     @Override
     public int compareTo(CommentResponse dto) {
         return dto.getCreateTime().compareTo(this.createTime);
@@ -45,6 +51,7 @@ public class CommentResponse implements Comparable<CommentResponse> {
             ", content='" + content + '\'' +
             ", createTime=" + createTime +
             ", writerName='" + writerName + '\'' +
+            ", questionId=" + questionId +
             '}';
     }
 }
