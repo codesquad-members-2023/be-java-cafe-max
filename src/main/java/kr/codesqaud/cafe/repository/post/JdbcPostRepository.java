@@ -27,7 +27,7 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public Long save(Post post) {
         String sql = "INSERT INTO post(title, content, writer_id, write_date, views, is_deleted) "
-                   + "VALUES(:title, :content, :writer.id, :writeDate, :views, false)";
+                   + "VALUES(:title, :content, :writer.id, :writeDateTime, :views, false)";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(post);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, parameter, keyHolder);

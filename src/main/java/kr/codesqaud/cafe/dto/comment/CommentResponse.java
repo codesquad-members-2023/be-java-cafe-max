@@ -10,20 +10,20 @@ public class CommentResponse {
     private final Long postId;
     private final WriterResponse writer;
     private final String content;
-    private final LocalDateTime writeDate;
+    private final LocalDateTime writeDateTime;
 
     public CommentResponse(Long id, Long postId, WriterResponse writer, String content,
-        LocalDateTime writeDate) {
+        LocalDateTime writeDateTime) {
         this.id = id;
         this.postId = postId;
         this.writer = writer;
         this.content = content;
-        this.writeDate = writeDate;
+        this.writeDateTime = writeDateTime;
     }
 
     public static CommentResponse from(Comment comment) {
         return new CommentResponse(comment.getId(), comment.getPostId(), WriterResponse.from(comment.getWriter()),
-            comment.getContent(), comment.getWriteDate());
+            comment.getContent(), comment.getWriteDateTime());
     }
 
     public Long getId() {
@@ -42,7 +42,7 @@ public class CommentResponse {
         return content;
     }
 
-    public LocalDateTime getWriteDate() {
-        return writeDate;
+    public LocalDateTime getWriteDateTime() {
+        return writeDateTime;
     }
 }

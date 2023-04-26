@@ -27,7 +27,7 @@ public class JdbcCommentRepository implements CommentRepository {
     @Override
     public Comment save(Comment comment) {
         String sql = "INSERT INTO comment(post_id, writer_id, content, write_date, is_deleted) "
-                   + "VALUES(:postId, :writer.id, :content, :writeDate, false)";
+                   + "VALUES(:postId, :writer.id, :content, :writeDateTime, false)";
         SqlParameterSource param = new BeanPropertySqlParameterSource(comment);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, param, keyHolder);

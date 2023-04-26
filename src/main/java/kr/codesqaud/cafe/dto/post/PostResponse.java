@@ -9,22 +9,22 @@ public class PostResponse {
     private final String title;
     private final String content;
     private final WriterResponse writer;
-    private final LocalDateTime writeDate;
+    private final LocalDateTime writeDateTime;
     private final Long views;
 
     public PostResponse(Long id, String title, String content, WriterResponse writer,
-        LocalDateTime writeDate, Long views) {
+        LocalDateTime writeDateTime, Long views) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
-        this.writeDate = writeDate;
+        this.writeDateTime = writeDateTime;
         this.views = views;
     }
 
     public static PostResponse from(Post post) {
         return new PostResponse(post.getId(), post.getTitle(), post.getContent(),
-            WriterResponse.from(post.getWriter()), post.getWriteDate(), post.getViews());
+            WriterResponse.from(post.getWriter()), post.getWriteDateTime(), post.getViews());
     }
 
     public Long getId() {
@@ -43,8 +43,8 @@ public class PostResponse {
         return writer;
     }
 
-    public LocalDateTime getWriteDate() {
-        return writeDate;
+    public LocalDateTime getWriteDateTime() {
+        return writeDateTime;
     }
 
     public Long getViews() {

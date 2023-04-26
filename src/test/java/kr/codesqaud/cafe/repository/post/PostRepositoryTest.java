@@ -60,7 +60,7 @@ class PostRepositoryTest {
             () -> assertEquals(post.getTitle(), findPost.getTitle()),
             () -> assertEquals(post.getContent(), findPost.getContent()),
             () -> assertEquals(post.getWriter().getId(), findPost.getWriter().getId()),
-            () -> assertEquals(post.getWriteDate(), findPost.getWriteDate()),
+            () -> assertEquals(post.getWriteDateTime(), findPost.getWriteDateTime()),
             () -> assertEquals(post.getViews(), findPost.getViews()));
     }
 

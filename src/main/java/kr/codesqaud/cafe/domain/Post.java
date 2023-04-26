@@ -8,16 +8,16 @@ public class Post {
     private final String title;
     private final String content;
     private final Member writer;
-    private final LocalDateTime writeDate;
+    private final LocalDateTime writeDateTime;
     private final Long views;
 
-    private Post(Long id, String title, String content, Member writer, LocalDateTime writeDate,
+    private Post(Long id, String title, String content, Member writer, LocalDateTime writeDateTime,
         Long views) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
-        this.writeDate = writeDate;
+        this.writeDateTime = writeDateTime;
         this.views = views;
     }
 
@@ -37,8 +37,8 @@ public class Post {
         return writer;
     }
 
-    public LocalDateTime getWriteDate() {
-        return writeDate;
+    public LocalDateTime getWriteDateTime() {
+        return writeDateTime;
     }
 
     public Long getViews() {

@@ -26,7 +26,7 @@ public class JdbcMemberRepository implements MemberRepository {
     @Override
     public Long save(Member member) {
         String sql = "INSERT INTO member(email, password, nickname, create_date) "
-                   + "VALUES(:email, :password, :nickname, :createDate)";
+                   + "VALUES(:email, :password, :nickname, :createDateTime)";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(member);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, parameter, keyHolder);

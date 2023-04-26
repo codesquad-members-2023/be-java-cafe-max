@@ -8,14 +8,14 @@ public class Comment {
     private final Long postId;
     private final Member writer;
     private final String content;
-    private final LocalDateTime writeDate;
+    private final LocalDateTime writeDateTime;
 
-    private Comment(Long id, Long postId, Member writer, String content, LocalDateTime writeDate) {
+    private Comment(Long id, Long postId, Member writer, String content, LocalDateTime writeDateTime) {
         this.id = id;
         this.postId = postId;
         this.writer = writer;
         this.content = content;
-        this.writeDate = writeDate;
+        this.writeDateTime = writeDateTime;
     }
 
     public Long getId() {
@@ -34,8 +34,8 @@ public class Comment {
         return content;
     }
 
-    public LocalDateTime getWriteDate() {
-        return writeDate;
+    public LocalDateTime getWriteDateTime() {
+        return writeDateTime;
     }
 
     public void injectionAutoIncrement(Long autoIncrement) {

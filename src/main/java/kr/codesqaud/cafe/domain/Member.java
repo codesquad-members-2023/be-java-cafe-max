@@ -9,15 +9,15 @@ public class Member {
     private final String email;
     private final String password;
     private final String nickname;
-    private final LocalDateTime createDate;
+    private final LocalDateTime createDateTime;
 
     private Member(Long id, String email, String password, String nickname,
-        LocalDateTime createDate) {
+        LocalDateTime createDateTime) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.createDate = createDate;
+        this.createDateTime = createDateTime;
     }
 
     public Long getId() {
@@ -36,8 +36,8 @@ public class Member {
         return nickname;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
+    public LocalDateTime getCreateDateTime() {
+        return createDateTime;
     }
 
     public boolean equalsId(Long id) {

@@ -256,7 +256,7 @@ class MemberControllerTest {
                 .param("email", signUpRequest.getEmail())
                 .param("password", signUpRequest.getPassword())
                 .param("nickname", signUpRequest.getNickname())
-                .param("createDate", signUpRequest.getCreateDate().toString())
+                .param("createDate", signUpRequest.getCreateDateTime().toString())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/"))
