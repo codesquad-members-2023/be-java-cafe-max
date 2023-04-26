@@ -4,7 +4,6 @@ import kr.codesqaud.cafe.controller.dto.ReplyDto;
 import kr.codesqaud.cafe.controller.dto.request.ReplyEditRequest;
 import kr.codesqaud.cafe.controller.dto.request.ReplyRequest;
 import kr.codesqaud.cafe.domain.Reply;
-import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,18 +15,15 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class ReplyController {
     private final ReplyService replyService;
-    private final ArticleService articleService;
 
-    public ReplyController(ReplyService replyService, ArticleService articleService) {
+    public ReplyController(ReplyService replyService) {
         this.replyService = replyService;
-        this.articleService = articleService;
     }
 
     @PostMapping("/{articleId}/reply")
-    public String reply(@PathVariable Long articleId, @ModelAttribute final ReplyRequest request, HttpServletRequest httpRequest, Model model) {
+    public String reply(@PathVariable Long articleId, @ModelAttribute final ReplyRequest request, HttpServletRequest httpRequest) {
         replyService.reply(articleId, request, httpRequest);
-        model.addAttribute("article", articleService.findById(articleId));
-        return "qna/show";
+        return "redirect:/articles/" + articleId;
     }
 
     @GetMapping("/replies/{replyId}")
