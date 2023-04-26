@@ -69,12 +69,16 @@ public class JdbcCommentRepository implements CommentRepository {
 
     @Override
     public Comment modify(Comment comment) {
-        return null;
+        template.update("UPDATE comment SET content = ? WHERE id = ?", comment.getContent(),
+            comment.getId());
+        return comment;
     }
 
     @Override
     public Comment deleteById(Long id) {
-        return null;
+        Comment delComment = findById(id).orElseThrow();
+        template.update("DELETE FROM comment WHERE id = ?", id);
+        return delComment;
     }
 
     private PreparedStatement getPreparedStatement(Comment comment, Connection con, String sql)

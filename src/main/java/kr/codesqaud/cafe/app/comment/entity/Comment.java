@@ -7,7 +7,7 @@ import kr.codesqaud.cafe.app.user.entity.User;
 public class Comment {
 
     private final Long id;
-    private final String content;
+    private String content;
     private final LocalDateTime createTime;
     private final LocalDateTime modifyTime;
     private final Question question;
@@ -21,6 +21,10 @@ public class Comment {
         this.modifyTime = modifyTime;
         this.question = question;
         this.writer = writer;
+    }
+
+    public void modify(Comment comment) {
+        this.content = comment.getContent();
     }
 
     public Long getId() {
@@ -50,6 +54,7 @@ public class Comment {
     public static Builder builder() {
         return new Builder();
     }
+
 
     public static class Builder {
 

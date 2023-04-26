@@ -2,7 +2,6 @@ package kr.codesqaud.cafe.app.comment.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import kr.codesqaud.cafe.app.comment.controller.dto.CommentModifyRequest;
 import kr.codesqaud.cafe.app.comment.controller.dto.CommentResponse;
 import kr.codesqaud.cafe.app.comment.controller.dto.CommentSavedRequest;
 import kr.codesqaud.cafe.app.comment.entity.Comment;
@@ -45,8 +44,10 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponse modifyComment(CommentModifyRequest commentRequest) {
-        Comment modifyComment = commentRepository.modify(commentRequest.toEntity());
+    public CommentResponse modifyComment(CommentSavedRequest commentRequest) {
+        Comment original = commentRepository.findById(commentRequest.getId()).orElseThrow();
+        original.modify(commentRequest.toEntity());
+        Comment modifyComment = commentRepository.modify(original);
         return new CommentResponse(modifyComment);
     }
 

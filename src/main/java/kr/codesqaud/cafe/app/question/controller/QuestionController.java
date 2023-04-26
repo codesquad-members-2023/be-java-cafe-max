@@ -60,7 +60,7 @@ public class QuestionController {
     // TODO : 인증 인터셉터 추가
     // 특정 질문 수정
     @PutMapping("/qna/{id}")
-    public QuestionResponse editQuestion(
+    public QuestionResponse modifyQuestion(
         @PathVariable(value = "id") Long id,
         @Valid @RequestBody QuestionSavedRequest questionRequest,
         HttpSession session) {
