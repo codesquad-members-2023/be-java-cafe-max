@@ -90,6 +90,52 @@ class CommentControllerTest {
         Assertions.assertThat(map.get("content")).isEqualTo("댓글1");
     }
 
+    @Test
+    @DisplayName("부적절한 댓글 내용 입력이 주어지고 댓글 작성 요청시 에러 응답하는지 테스트")
+    public void createComment_fail1() throws Exception {
+        //given
+        String content = "";
+        CommentSavedRequest dto = new CommentSavedRequest(content, questionId, userId);
+        String url = String.format("/qna/%d/comments", questionId);
+        //when
+        String json = mockMvc.perform(post(url)
+                .content(toJSON(dto))
+                .contentType(MediaType.APPLICATION_JSON)
+                .session(session))
+            .andExpect(status().isBadRequest())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        //then
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> map = objectMapper.readValue(json, typeReference);
+        Assertions.assertThat(map.get("httpStatus")).isEqualTo("BAD_REQUEST");
+        Assertions.assertThat(map.get("name")).isEqualTo("INVALID_INPUT_FORMAT");
+        Assertions.assertThat(map.get("errorMessage")).isEqualTo("유효하지 않은 입력 형식입니다.");
+    }
+
+    @Test
+    @DisplayName("3000글자가 넘는 댓글 내용 입력이 주어지고 댓글 작성 요청시 에러 응답하는지 테스트")
+    public void createComment_fail2() throws Exception {
+        //given
+        String content = "a".repeat(3001);
+        CommentSavedRequest dto = new CommentSavedRequest(content, questionId, userId);
+        String url = String.format("/qna/%d/comments", questionId);
+        //when
+        String json = mockMvc.perform(post(url)
+                .content(toJSON(dto))
+                .contentType(MediaType.APPLICATION_JSON)
+                .session(session))
+            .andExpect(status().isBadRequest())
+            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        //then
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> map = objectMapper.readValue(json, typeReference);
+        Assertions.assertThat(map.get("httpStatus")).isEqualTo("BAD_REQUEST");
+        Assertions.assertThat(map.get("name")).isEqualTo("INVALID_INPUT_FORMAT");
+        Assertions.assertThat(map.get("errorMessage")).isEqualTo("유효하지 않은 입력 형식입니다.");
+    }
+
     private <T> String toJSON(T data) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(data);
     }

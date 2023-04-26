@@ -1,11 +1,13 @@
 package kr.codesqaud.cafe.app.comment.controller.dto;
 
+import javax.validation.constraints.Size;
 import kr.codesqaud.cafe.app.comment.entity.Comment;
 import kr.codesqaud.cafe.app.question.entity.Question;
 import kr.codesqaud.cafe.app.user.entity.User;
 
 public class CommentSavedRequest {
 
+    @Size(min = 1, max = 3000, message = "3000자 이내로 입력해주세요.")
     private String content;
     private Long questionId;
     private Long userId;
