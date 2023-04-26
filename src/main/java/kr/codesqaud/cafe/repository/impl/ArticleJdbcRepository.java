@@ -55,7 +55,8 @@ public class ArticleJdbcRepository implements ArticleRepository {
 				+ "FROM article AS a "
 				+ "LEFT JOIN comment AS ac ON a.id = ac.article_id AND ac.is_deleted = FALSE "
 				+ "WHERE a.is_deleted = FALSE "
-				+ "GROUP BY a.id, a.writer, a.title, a.content, a.created_at",
+				+ "GROUP BY a.id, a.writer, a.title, a.content, a.created_at "
+				+ "ORDER BY a.created_at DESC",
 			(rs, rowNum) -> new ArticleWithCommentCount(rs.getLong("id"),
 			                                            rs.getString("writer"),
 			                                            rs.getString("title"),
