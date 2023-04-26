@@ -52,7 +52,7 @@ public class ReplyService {
 		return replyRepository.findReplyIdByIdx(replyIdx);
 	}
 
-	public Long getCountOfReplies(Long articleIdx) {
+	public Integer getCountOfReplies(Long articleIdx) {
 		return replyRepository.getCountOfReplies(articleIdx);
 	}
 }

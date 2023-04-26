@@ -48,8 +48,8 @@ public class ReplyController {
 	 * @return
 	 */
 	@GetMapping("/articles/reply/loadMoreReply")
-	public List<ReplyResponse> loadMoreReply(Long articleIdx, Long countOfRepliesInHtml) {
-		Long countOfReplies = replyService.getCountOfReplies(articleIdx);
+	public List<ReplyResponse> loadMoreReply(Long articleIdx, Integer countOfRepliesInHtml) {
+		Integer countOfReplies = replyService.getCountOfReplies(articleIdx);
 		LoadMoreReplyDto loadMoreReplyDto = new LoadMoreReplyDto(articleIdx, countOfReplies, countOfRepliesInHtml);
 
 		if (loadMoreReplyDto.hasMoreRepliesToLoad()) {

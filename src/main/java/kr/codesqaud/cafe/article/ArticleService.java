@@ -67,7 +67,7 @@ public class ArticleService {
 		}
 	}
 
-	public int getCountOfArticles() {
+	public Long getCountOfArticles() {
 		return articleRepository.getCountOfArticles();
 	}
 }

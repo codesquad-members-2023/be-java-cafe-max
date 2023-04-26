@@ -64,11 +64,11 @@ public class JDBCReplyRepository implements ReplyRepository {
 	}
 
 	@Override
-	public Long getCountOfReplies(Long articleIdx) {
-		List<Long> countList = namedParameterJdbcTemplate.query(
+	public Integer getCountOfReplies(Long articleIdx) {
+		List<Integer> countList = namedParameterJdbcTemplate.query(
 			"SELECT COUNT(is_visible) FROM REPLY WHERE is_visible = true AND article_idx = :articleIdx ",
 			new MapSqlParameterSource("articleIdx", articleIdx),
-			(rs, rowNum) -> rs.getLong(1));
+			(rs, rowNum) -> rs.getInt(1));
 		return countList.get(0);
 	}
 }

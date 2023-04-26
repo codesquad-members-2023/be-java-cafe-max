@@ -21,7 +21,7 @@ public class MainController {
 	@GetMapping("/")
 	public String mainPage(Model model, @ModelAttribute PaginationDto paginationDto) {
 		List<ArticleResponseForList> articles = articleService.getArticleList(paginationDto);
-		int countOfArticles = articleService.getCountOfArticles();
+		Long countOfArticles = articleService.getCountOfArticles();
 
 		model.addAttribute("articles", articles)
 			.addAttribute("countOfArticles", countOfArticles)

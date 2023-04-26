@@ -15,5 +15,5 @@ public interface ReplyRepository {
 
 	String findReplyIdByIdx(Long replyIdx);
 
-	Long getCountOfReplies(Long articleIdx);
+	Integer getCountOfReplies(Long articleIdx);
 }

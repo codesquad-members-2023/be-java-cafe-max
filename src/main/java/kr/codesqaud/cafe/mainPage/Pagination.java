@@ -14,13 +14,13 @@ public class Pagination {
 
 	private int previousPage;
 
-	public Pagination(PaginationDto paginationDto, int countOfArticles) {
+	public Pagination(PaginationDto paginationDto, Long countOfArticles) {
 		pageNumList = new ArrayList<>();
 		int pageSize = 5;
 		calculatePage(paginationDto.getPage(), pageSize, countOfArticles, paginationDto.getRecordSize());
 	}
 
-	private void calculatePage(int page, int pageSize, int countOfArticles, int recordSize) {
+	private void calculatePage(int page, int pageSize, Long countOfArticles, int recordSize) {
 		// 총 페이지 수 계산
 		totalPage = (int)Math.ceil((double)countOfArticles / recordSize);
 

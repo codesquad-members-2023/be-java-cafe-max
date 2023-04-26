@@ -6,13 +6,13 @@ public class LoadMoreReplyDto {
 
 	private int recordSize = 5;
 
-	private Long countOfRepliesInDb;
+	private Integer countOfRepliesInDb;
 
-	private Long countOfRepliesInHtml;
+	private Integer countOfRepliesInHtml;
 
 	private boolean moreRepliesToLoad;
 
-	public LoadMoreReplyDto(Long articleIdx, Long countOfRepliesInDb, Long countOfRepliesInHtml) {
+	public LoadMoreReplyDto(Long articleIdx, Integer countOfRepliesInDb, Integer countOfRepliesInHtml) {
 		this.articleIdx = articleIdx;
 		this.countOfRepliesInHtml = countOfRepliesInHtml;
 		this.countOfRepliesInDb = countOfRepliesInDb;

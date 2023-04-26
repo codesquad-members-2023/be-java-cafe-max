@@ -18,5 +18,5 @@ public interface ArticleRepository {
 
 	boolean deleteArticle(Long articleIdx, String userId);
 
-	int getCountOfArticles();
+	Long getCountOfArticles();
 }
