@@ -32,7 +32,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select * from article";
+        String sql = "select id, title, contents, createdAt, writer_id from article where status = true";
         return namedParameterJdbcTemplate.query(sql,
                 (rs, rowNum) -> new Article(
                             rs.getLong("id")
@@ -44,7 +44,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Article findById(final Long id){
-        String sql = "SELECT * FROM article WHERE id = :id";
+        String sql = "SELECT id, title, contents, createdAt, writer_id FROM article WHERE id = :id AND status = true";
         SqlParameterSource params = new MapSqlParameterSource("id", id);
         return namedParameterJdbcTemplate.queryForObject(sql, params,
                     (rs, rowNum) -> {
@@ -78,7 +78,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void deletePostById(final Long postId) {
-        String sql = "DELETE FROM article WHERE id = :id";
+        String sql = "UPDATE article SET status = false WHERE id = :id";
         MapSqlParameterSource params = new MapSqlParameterSource("id", postId);
         namedParameterJdbcTemplate.update(sql, params);
     }

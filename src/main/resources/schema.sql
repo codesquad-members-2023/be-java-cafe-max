@@ -18,6 +18,7 @@ CREATE TABLE article
     title     varchar(200) not null,
     contents  text         not null,
     createdAt datetime,
+    status boolean default true,
     writer_id varchar(200) not null,
     PRIMARY KEY (id),
     FOREIGN KEY (writer_id) REFERENCES users (id) ON UPDATE CASCADE
@@ -28,6 +29,7 @@ CREATE TABLE reply
     id bigint auto_increment,
     contents text not null,
     createdAt datetime,
+    status boolean default true,
     user_id varchar(200) not null,
     article_id bigint not null,
     PRIMARY KEY (id),
