@@ -53,9 +53,11 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public void updateUser(UserUpdateForm userUpdateForm) {
+    public SessionUser updateUser(UserUpdateForm userUpdateForm) {
         validateUpdateForm(userUpdateForm);
-        userRepository.update(userUpdateForm.toEntity());
+        User user = userUpdateForm.toEntity();
+        userRepository.update(user);
+        return SessionUser.from(user);
     }
 
     private void validateUpdateForm(UserUpdateForm userUpdateForm) {

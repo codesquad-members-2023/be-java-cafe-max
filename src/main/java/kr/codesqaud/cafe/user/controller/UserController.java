@@ -61,8 +61,8 @@ public class UserController {
     }
 
     @PutMapping
-    public String updateUser(@ModelAttribute UserUpdateForm userUpdateForm, Model model) {
-        userService.updateUser(userUpdateForm);
+    public String updateUser(@ModelAttribute UserUpdateForm userUpdateForm, HttpSession session) {
+        session.setAttribute("sessionUser", userService.updateUser(userUpdateForm));
         return "redirect:/users";
     }
 
