@@ -13,9 +13,7 @@ import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -56,15 +54,13 @@ public class ArticleController {
                                         SessionDto loginUser, @ModelAttribute Paging paging, @RequestParam(value = "nowPage", defaultValue = "1") int nowPage,
                                         Model model) {
 
-        model.addAttribute("loginUser", loginUser);
-
         paging = new Paging(nowPage, articleService.count());
 
         List<SimpleArticle> articles = articleService.findArticles(paging);
 
+        model.addAttribute("loginUser", loginUser);
         model.addAttribute("articles", articles);
         model.addAttribute("paging", paging);
-//        model.addAttribute("localDateTime", LocalDateTime.now());
 
         return "index";
     }

@@ -33,11 +33,13 @@ function addAnswer(e) {
       $("textarea[name=contents]").val("");
 
       // $(".delete-answer-form button[type=button]").last().on("click", deleteAnswer());
-      $(".qna-comment-slipp-articles").on("click", ".delete-answer-form button[type=button]", deleteAnswer);
+      // $(".qna-comment-slipp-articles").on("click", ".delete-answer-form button[type=button]", deleteAnswer);
 
     },
   });
 }
+
+$(".qna-comment-slipp-articles").on("click", ".delete-answer-form button[type=button]", deleteAnswer);
 
 
 $(".delete-answer-form button[type=button]").click(deleteAnswer);

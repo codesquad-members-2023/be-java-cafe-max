@@ -1,7 +1,3 @@
--- DROP TABLE IF EXISTS reply;
--- DROP TABLE IF EXISTS article;
--- DROP TABLE IF EXISTS users;
-
 CREATE TABLE IF NOT EXISTS users
 (
     userId          varchar(50),
