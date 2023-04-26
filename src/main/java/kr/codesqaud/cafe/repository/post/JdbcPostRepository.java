@@ -70,10 +70,7 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public void increaseViews(Long id) {
         String sql = "UPDATE post "
-                      + "SET views = (SELECT p.views "
-                                    + "FROM (SELECT views + 1 as views "
-                                                + "FROM post "
-                                                + "WHERE id = :id) p) "
+                      + "SET views = views + 1 "
                     + "WHERE id = :id";
         SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         jdbcTemplate.update(sql, parameter);
