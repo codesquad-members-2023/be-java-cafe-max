@@ -38,3 +38,6 @@ out/
 
 ### YML ###
 application-db.yml
+
+### LOG ###
+logs/**
