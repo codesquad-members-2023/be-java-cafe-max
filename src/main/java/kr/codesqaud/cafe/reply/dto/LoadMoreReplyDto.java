@@ -10,9 +10,6 @@ public class LoadMoreReplyDto {
 
 	private Long countOfRepliesInHtml;
 
-	// replydb에서 꺼내올 댓글의 시작 지점
-	private Long start;
-
 	public LoadMoreReplyDto(Long articleIdx) {
 		this.articleIdx = articleIdx;
 		this.recordSize = 5;
@@ -39,14 +36,23 @@ public class LoadMoreReplyDto {
 	 * db에 저장된 맨뒤 데이터에서 recordSize만큼 떨어진 데이터부터 recordSize 만큼 가져온다.
 	 * @return
 	 */
-
-	//todo 근데 if문은 여기말고 controller에 있는게 나을듯 db에 필요없는 접근함
 	public Long getStart() {
-		if (countOfRepliesInHtml >= countOfRepliesInDb) {
-			return countOfRepliesInDb;
+		if (hasMoreRepliesToLoad()) {
+			long difference = countOfRepliesInDb - countOfRepliesInHtml;
+			recordSize = (int)Math.min(difference, recordSize);
+			return difference - recordSize;
 		}
-		long difference = countOfRepliesInDb - countOfRepliesInHtml;
-		recordSize = (int)Math.min(difference, recordSize);
-		return difference - recordSize;
+		return countOfRepliesInDb;
+	}
+
+	/**
+	 * db에서 가져올 댓글이 더 남았는지 확인하는 기능 수행.
+	 * @return
+	 */
+	public boolean hasMoreRepliesToLoad() {
+		if (countOfRepliesInHtml < countOfRepliesInDb) {
+			return true;
+		}
+		return false;
 	}
 }

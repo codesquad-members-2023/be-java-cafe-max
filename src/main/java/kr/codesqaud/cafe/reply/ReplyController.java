@@ -41,10 +41,19 @@ public class ReplyController {
 		return replyService.delete(session.getId(), replyIdx);
 	}
 
+	/**
+	 * 더이상 load할 댓글이 없는데 불필요한 db접근을 막기 위해서 if문을 사용한다.
+	 * @param loadMoreReplyDto
+	 * @return
+	 */
 	@GetMapping("/articles/reply/loadMoreReply")
 	public List<ReplyResponse> loadMoreReply(@ModelAttribute LoadMoreReplyDto loadMoreReplyDto) {
-		loadMoreReplyDto.setCountOfRepliesInDb(replyService.getCountOfReplies(loadMoreReplyDto.getArticleIdx()));
-		return replyService.getRepliesByIdx(loadMoreReplyDto);
+		Long countOfReplies = replyService.getCountOfReplies(loadMoreReplyDto.getArticleIdx());
+		loadMoreReplyDto.setCountOfRepliesInDb(countOfReplies);
+		if (loadMoreReplyDto.hasMoreRepliesToLoad()) {
+			return replyService.getRepliesByIdx(loadMoreReplyDto);
+		}
+		return null;
 	}
 
 }
