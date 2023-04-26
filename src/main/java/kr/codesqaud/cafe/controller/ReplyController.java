@@ -30,15 +30,26 @@ public class ReplyController {
         return "qna/show";
     }
 
-    @PutMapping("/replies/{replyId}")
-    public String editReply(@PathVariable final Long replyId, @ModelAttribute final ReplyEditRequest request, HttpSession session, Model model) {
-        Reply reply = replyService.editReply(replyId, request);
-        model.addAttribute("reply", reply);
+    @GetMapping("/replies/{replyId}")
+    public String showReplyEditForm(@PathVariable final Long replyId, HttpServletRequest httpRequest, Model model) {
+        HttpSession session = httpRequest.getSession(false);
+        ReplyDto reply = replyService.findByReplyId(replyId);
 
-        if (session != null && session.getAttribute("userName").equals(reply.getUserName())) {
-            return "qna/show";
+        model.addAttribute("reply", reply);
+        model.addAttribute("comment", reply.getComment());
+
+        if (session != null && session.getAttribute("userId").equals(reply.getUserId())) {
+            return "qna/reply_edit_form";
         }
+
         return "qna/failed";
+    }
+
+    @PutMapping("/replies/{replyId}")
+    public String editReply(@PathVariable final Long replyId, @ModelAttribute final ReplyEditRequest request) {
+        Reply reply = replyService.editReply(replyId, request);
+        Long articleId = reply.getArticleId();
+        return "redirect:/articles/" + articleId;
     }
 
     @DeleteMapping("/replies/{replyId}")
