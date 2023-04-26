@@ -45,7 +45,7 @@ public class BoardController {
     }
 
     @GetMapping("/{postId}")
-    public String getDetailPost(@PathVariable Long postId, @SessionAttribute("sessionUser") SessionUser sessionUser, Model model) {
+    public String getDetailPost(@PathVariable Long postId, @SessionAttribute SessionUser sessionUser, Model model) {
         PostResponse postResponse = boardService.getPost(postId);
         model.addAttribute("post", postResponse);
 
@@ -62,7 +62,7 @@ public class BoardController {
     }
 
     @GetMapping("/{postId}/update")
-    public String updateForm(@PathVariable Long postId, @SessionAttribute("sessionUser") SessionUser sessionUser,
+    public String updateForm(@PathVariable Long postId, @SessionAttribute SessionUser sessionUser,
                              Model model, HttpSession session) {
         PostResponse postResponse = boardService.getPost(postId);
         model.addAttribute("post", postResponse);

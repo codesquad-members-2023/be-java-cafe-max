@@ -18,13 +18,13 @@ public class CommentController {
     }
 
     @PostMapping("/board/{postId}")
-    public CommentResponse writeComment(@PathVariable Long postId, @ModelAttribute CommentWriteForm commentWriteForm, @SessionAttribute("sessionUser") SessionUser sessionUser) {
+    public CommentResponse writeComment(@PathVariable Long postId, @ModelAttribute CommentWriteForm commentWriteForm, @SessionAttribute SessionUser sessionUser) {
         Long commentId = commentService.write(commentWriteForm, sessionUser.getUserName());
         return commentService.getComment(commentId);
     }
 
     @DeleteMapping("/board/{postId}/comments/{commentId}")
-    public ResponseEntity<String> deleteComment(@PathVariable Long postId, @PathVariable Long commentId, @SessionAttribute("sessionUser") SessionUser sessionUser) {
+    public ResponseEntity<String> deleteComment(@PathVariable Long postId, @PathVariable Long commentId, @SessionAttribute SessionUser sessionUser) {
         if (!commentService.isSameWriter(commentId, sessionUser.getUserName())) {
             return new ResponseEntity<>("작성자가 아니어서 삭제할 수 없습니다.", HttpStatus.BAD_REQUEST);
         }
