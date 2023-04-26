@@ -48,4 +48,20 @@ $(document).ready(function () {
       alert(errorResponse.errorMessage)
     })
   })
+
+  $("#deleteCommentForm").submit(async function (e) {
+    e.preventDefault()
+
+    const id = $("#id").val()
+
+    $.ajax({
+      type: "DELETE",
+      url: `/qna/${id}/comments`
+    }).done(function (resp) {
+      alert("댓글이 삭제되었습니다.")
+    }).fail(function (response) {
+      const errorResponse = response.responseJSON
+      alert(errorResponse.errorMessage)
+    })
+  })
 })

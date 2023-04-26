@@ -14,3 +14,5 @@ VALUES ('제목1', '내용1', 1);
 
 INSERT INTO comment(content, userId, questionId)
 VALUES ('댓글1', 1, 1);
+INSERT INTO comment(content, userId, questionId)
+VALUES ('댓글2', 2, 1);

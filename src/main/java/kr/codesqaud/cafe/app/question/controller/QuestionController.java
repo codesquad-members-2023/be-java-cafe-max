@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.app.question.controller;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import kr.codesqaud.cafe.app.comment.service.CommentService;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
 import kr.codesqaud.cafe.app.question.service.QuestionService;
@@ -25,9 +26,11 @@ public class QuestionController {
 
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
     private final QuestionService questionService;
+    private final CommentService commentService;
 
-    public QuestionController(QuestionService questionService) {
+    public QuestionController(QuestionService questionService, CommentService commentService) {
         this.questionService = questionService;
+        this.commentService = commentService;
     }
 
     // 전체 질문 목록 조회
@@ -50,6 +53,7 @@ public class QuestionController {
     public ModelAndView detailQuestion(@PathVariable(value = "id") Long id) {
         ModelAndView mav = new ModelAndView("qna/detail");
         mav.addObject("question", questionService.findQuestion(id));
+        mav.addObject("comments", commentService.getComments(id));
         return mav;
     }
 

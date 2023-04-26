@@ -23,7 +23,7 @@
                   <div class="auth-info">
                     <i class="icon-add-comment"></i>
                     <span class="time"
-                          th:text="${#temporals.format(question.createTime, 'YYYY-MM-dd HH:mm')}"></span>
+                          th:text="${question.createTime}"></span>
                     <a class="author" th:href="@{/users/{id}(id=${question.userId})}"
                        th:text="${question.writer}"></a>
                   </div>
