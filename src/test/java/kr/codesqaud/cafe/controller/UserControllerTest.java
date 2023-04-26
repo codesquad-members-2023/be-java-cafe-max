@@ -13,11 +13,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import kr.codesqaud.cafe.common.filter.RequestContext;
 import kr.codesqaud.cafe.controller.dto.UserParam;
 import kr.codesqaud.cafe.controller.dto.req.JoinRequest;
 import kr.codesqaud.cafe.controller.dto.req.ProfileEditRequest;
@@ -26,6 +28,7 @@ import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.service.UserService;
 
 @WebMvcTest(UserController.class)
+@Import(RequestContext.class)
 class UserControllerTest {
 
 	@Autowired
