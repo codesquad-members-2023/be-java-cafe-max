@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.app.question.controller;
 
-import java.util.Collections;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -8,7 +7,6 @@ import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
 import kr.codesqaud.cafe.app.question.service.QuestionService;
 import kr.codesqaud.cafe.app.user.controller.dto.UserResponse;
-import kr.codesqaud.cafe.app.user.service.UserService;
 import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
 import kr.codesqaud.cafe.errors.exception.RestApiException;
 import org.slf4j.Logger;
@@ -27,18 +25,15 @@ public class QuestionController {
 
     private static final Logger log = LoggerFactory.getLogger(QuestionController.class);
     private final QuestionService questionService;
-    private final UserService userService;
 
-    public QuestionController(QuestionService questionService, UserService userService) {
+    public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
-        this.userService = userService;
     }
 
     // 전체 질문 목록 조회
     @GetMapping({"/", "/qna"})
     public ModelAndView listQuestion() {
         List<QuestionResponse> questions = questionService.getAllQuestion();
-        Collections.sort(questions);
         ModelAndView mav = new ModelAndView("index");
         mav.addObject("questions", questions);
         return mav;

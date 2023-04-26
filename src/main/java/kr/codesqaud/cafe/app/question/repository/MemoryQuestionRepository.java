@@ -27,12 +27,14 @@ public class MemoryQuestionRepository implements QuestionRepository {
     @Override
     public Question save(Question question) {
         Question newQuestion =
-            new Question(nextId(),
-                question.getTitle(),
-                question.getContent(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                question.getWriter());
+            Question.builder()
+                .id(nextId())
+                .title(question.getTitle())
+                .content(question.getContent())
+                .createTime(LocalDateTime.now())
+                .writer(question.getWriter())
+                .comments(question.getComments())
+                .build();
         store.add(newQuestion);
         return newQuestion;
     }

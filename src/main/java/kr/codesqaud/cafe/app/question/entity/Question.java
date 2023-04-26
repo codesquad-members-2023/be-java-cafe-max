@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.app.question.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import kr.codesqaud.cafe.app.comment.entity.Comment;
 import kr.codesqaud.cafe.app.user.entity.User;
 
 public class Question {
@@ -12,15 +14,17 @@ public class Question {
     private final LocalDateTime createTime; // 작성시간
     private final LocalDateTime modifyTime; // 갱신시간
     private final User writer; // 회원 등록번호
+    private final List<Comment> comments; // 질문 게시글의 댓글들
 
     public Question(Long id, String title, String content, LocalDateTime createTime,
-        LocalDateTime modifyTime, User writer) {
+        LocalDateTime modifyTime, User writer, List<Comment> comments) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.createTime = createTime;
         this.modifyTime = modifyTime;
         this.writer = writer;
+        this.comments = comments;
     }
 
     public void modify(Question question) {
@@ -52,6 +56,10 @@ public class Question {
         return writer;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -64,6 +72,7 @@ public class Question {
         private LocalDateTime createTime;
         private LocalDateTime modifyTime;
         private User writer;
+        private List<Comment> comments;
 
         public Builder id(Long id) {
             this.id = id;
@@ -95,8 +104,13 @@ public class Question {
             return this;
         }
 
+        public Builder comments(List<Comment> comments) {
+            this.comments = comments;
+            return this;
+        }
+
         public Question build() {
-            return new Question(id, title, content, createTime, modifyTime, writer);
+            return new Question(id, title, content, createTime, modifyTime, writer, comments);
         }
     }
 

@@ -30,7 +30,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
     @Override
     public List<Question> findAll() {
         return template.query(
-            "SELECT q.ID, q.TITLE, q.CONTENT, q.CREATETIME, u.ID as uid, u.NAME FROM question q INNER JOIN users u ON q.USERID = u.ID",
+            "SELECT q.ID, q.TITLE, q.CONTENT, q.CREATETIME, u.ID uid, u.NAME FROM question q INNER JOIN users u ON q.USERID = u.ID",
             questionRowMapper());
     }
 
