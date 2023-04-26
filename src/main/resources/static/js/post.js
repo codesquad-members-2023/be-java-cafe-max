@@ -17,12 +17,7 @@ function updateCommentsSize(plus) {
 
 function errorAlert(request) {
     let messages = JSON.stringify(request.responseJSON.message, null, 2);
-
-    if (request.responseJSON.message.errorMessage != null) {
-        messages = JSON.stringify(request.responseJSON.message.errorMessage[0]);
-    }
-
-    alert(`에러 상태 코드 : ${request.responseJSON.status}\n에러 메시지 : ${messages}`);
+    alert(`에러 상태 코드 : ${request.responseJSON.statusCode}\n에러 상태 메세지 : ${request.responseJSON.status}\n에러 메시지 : ${messages}`);
 }
 
 function writeAjax(e) {
@@ -74,7 +69,7 @@ function deleteAjax(e) {
                 return;
             }
 
-            alert("에러가 발생하였습니다.");
+            alert("삭제가 되지 않았습니다.");
         },
     });
 }

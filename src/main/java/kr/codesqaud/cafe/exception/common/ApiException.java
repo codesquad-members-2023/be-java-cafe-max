@@ -1,16 +1,18 @@
 package kr.codesqaud.cafe.exception.common;
 
+import org.springframework.http.HttpStatus;
+
 public class ApiException extends RuntimeException {
 
-    private final Integer status;
+    private final HttpStatus status;
     private final String message;
 
-    public ApiException(Integer status, String message) {
+    public ApiException(HttpStatus status, String message) {
         this.status = status;
         this.message = message;
     }
 
-    public Integer getStatus() {
+    public HttpStatus getStatus() {
         return status;
     }
 

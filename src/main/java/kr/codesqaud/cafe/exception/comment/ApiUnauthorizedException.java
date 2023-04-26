@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.UNAUTHORIZED)
 public class ApiUnauthorizedException extends ApiException {
 
-    private static final String ERROR_MESSAGE = "권환이 없습니다.";
+    private static final String ERROR_MESSAGE = "권한이 없습니다.";
 
     public ApiUnauthorizedException() {
-        super(HttpStatus.UNAUTHORIZED.value(), ERROR_MESSAGE);
+        super(HttpStatus.UNAUTHORIZED, ERROR_MESSAGE);
     }
 }
