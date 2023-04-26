@@ -11,9 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -65,7 +63,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute LoginRequest loginRequest, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+    public String login(@Validated @ModelAttribute LoginRequest loginRequest, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "user/login";
         }
@@ -76,28 +74,21 @@ public class UserController {
             return "user/login_failed";
         }
         HttpSession session = request.getSession(true);
+
+        session.setAttribute("loginUser", loginUser);
         session.setAttribute("userId", loginUser.getUserId());
         session.setAttribute("userName", loginUser.getUserName());
-
-        Cookie idCookie = new Cookie("id", String.valueOf(loginUser.getId()));
-        response.addCookie(idCookie);
 
         return "redirect:/";
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
+    public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
-        expireCookie(response, "id");
         return "redirect:/";
     }
 
-    private static void expireCookie(HttpServletResponse response, String cookieName) {
-        Cookie cookie = new Cookie(cookieName, null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-    }
 }
