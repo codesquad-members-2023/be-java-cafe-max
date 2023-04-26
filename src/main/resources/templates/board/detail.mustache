@@ -38,7 +38,7 @@
                                 </li>
                             {{/isWriter}}
                             <li>
-                                <a class="link-modify-article" href="/board/list">목록</a>
+                                <a class="link-modify-article" href="/board">목록</a>
                             </li>
                         </ul>
                     </div>
@@ -73,7 +73,7 @@
                                             <!--                                            </li>-->
                                             <li>
                                                 <form class="delete-answer-form"
-                                                      action="/board/{{post.postId}}/comment/{{commentId}}"
+                                                      action="/board/{{post.postId}}/comments/{{commentId}}"
                                                       method="POST">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <button type="button" class="delete-answer-button">삭제</button>
@@ -84,7 +84,7 @@
                                 </article>
                             {{/comments}}
                         </div>
-                        <form class="submit-write" method="post" action="/board/{{post.postId}}/comment">
+                        <form class="submit-write" method="post" action="/board/{{post.postId}}">
                             <div class="form-group" style="padding:14px;">
                                 <input type="hidden" class="form-control" id="postId" name="postId"
                                        value="{{post.postId}}"/>
@@ -121,7 +121,7 @@
                 <!--                    <a class="link-modify-article" href="/api/qna/updateAnswer/{4}">수정</a>-->
                 <!--                </li>-->
                 <li>
-                    <form class="delete-answer-form" action="/board/{4}/comment/{5}" method="POST">
+                    <form class="delete-answer-form" action="/board/{4}/comments/{5}" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="button" class="delete-answer-button">삭제</button>
                     </form>

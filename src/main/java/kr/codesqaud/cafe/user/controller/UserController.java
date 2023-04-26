@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -26,13 +26,13 @@ public class UserController {
     public String addUser(@ModelAttribute UserAddForm userAddForm, HttpSession session) {
         String userId = userService.addUser(userAddForm);
         session.setAttribute("sessionUser", new SessionUser(userAddForm.getUserId(), userAddForm.getUserName()));
-        return "redirect:/user/list";
+        return "redirect:/users";
     }
 
     @PostMapping("/login")
     public String loginUser(@ModelAttribute UserLoginForm userLoginForm, HttpSession session) {
         session.setAttribute("sessionUser", userService.loginCheck(userLoginForm));
-        return "redirect:/board/list";
+        return "redirect:/board";
     }
 
     @GetMapping("/logout")
@@ -41,7 +41,7 @@ public class UserController {
         return "user/login";
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public String getUserList(Model model) {
         model.addAttribute("users", userService.getUserList());
         return "user/list";
@@ -63,7 +63,7 @@ public class UserController {
     @PutMapping
     public String updateUser(@ModelAttribute UserUpdateForm userUpdateForm, Model model) {
         userService.updateUser(userUpdateForm);
-        return "redirect:/user/list";
+        return "redirect:/users";
     }
 
 }

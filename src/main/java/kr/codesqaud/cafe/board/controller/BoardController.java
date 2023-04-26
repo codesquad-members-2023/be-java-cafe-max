@@ -38,7 +38,7 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public String getPostList(Model model) {
         model.addAttribute("postList", boardService.getPostList());
         return "index";

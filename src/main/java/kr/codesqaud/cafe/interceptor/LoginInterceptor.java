@@ -11,7 +11,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
         if (session.getAttribute("sessionUser") == null) {
-            response.sendRedirect("/user/loginForm");
+            response.sendRedirect("/users/loginForm");
             return false;
         }
         return true;
