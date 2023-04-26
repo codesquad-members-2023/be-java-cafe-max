@@ -1,14 +1,14 @@
 package kr.codesqaud.cafe.app.question.controller.dto;
 
-import java.time.LocalDateTime;
 import kr.codesqaud.cafe.app.question.entity.Question;
+import kr.codesqaud.cafe.util.LocalDateTimeUtil;
 
 public class QuestionResponse implements Comparable<QuestionResponse> {
 
     private final Long id;
     private final String title;
     private final String content;
-    private final LocalDateTime createTime;
+    private final String createTime;
     private final Long userId;
     private final String writer;
 
@@ -16,7 +16,7 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
         this.id = question.getId();
         this.title = question.getTitle();
         this.content = question.getContent();
-        this.createTime = question.getCreateTime();
+        this.createTime = LocalDateTimeUtil.formatLocalDateTime(question.getCreateTime());
         this.userId = question.getWriter().getId();
         this.writer = question.getWriter().getName();
     }
@@ -33,7 +33,7 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
         return content;
     }
 
-    public LocalDateTime getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -54,6 +54,7 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
 
     @Override
     public int compareTo(QuestionResponse dto) {
-        return dto.getCreateTime().compareTo(this.createTime);
+        return LocalDateTimeUtil.toLocalDateTime(dto.getCreateTime())
+            .compareTo(LocalDateTimeUtil.toLocalDateTime(this.createTime));
     }
 }
