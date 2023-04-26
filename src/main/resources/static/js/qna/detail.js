@@ -33,7 +33,7 @@ $(document).ready(function () {
       data: JSON.stringify(data),
       contentType: 'application/json; charset=utf-8'
     }).done(function (resp) {
-      const commentTemplate = $("#answerTemplate").html()
+      const commentTemplate = $("#commentTemplate").html()
       const template = commentTemplate.format(
           resp.writerName,
           resp.createTime,
@@ -53,12 +53,14 @@ $(document).ready(function () {
     e.preventDefault()
 
     const id = $("#id").val()
+    const commentId = $("#deleteCommentForm input[name='commentId']").val()
 
     $.ajax({
       type: "DELETE",
-      url: `/qna/${id}/comments`
+      url: `/qna/${id}/comments/${commentId}`
     }).done(function (resp) {
       alert("댓글이 삭제되었습니다.")
+      location.reload()
     }).fail(function (response) {
       const errorResponse = response.responseJSON
       alert(errorResponse.errorMessage)

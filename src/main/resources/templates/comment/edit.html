@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="kr"
+      layout:decorate="layout/defaultLayout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>댓글 수정</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+  <div class="container" id="main">
+    <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
+      <div class="panel panel-default content-main">
+        <form class="submit-write" id="form">
+          <div class="form-group" style="padding:14px;">
+            <textarea class="form-control" id="content" placeholder="Update your status"
+                      th:text="${comment.content}"></textarea>
+            <p id="contentError"></p>
+          </div>
+          <input class="hidden" id="commentId" name="commentId" th:value="${comment.id}">
+          <input class="hidden" id="questionId" name="questionId" th:value="${comment.questionId}">
+          <input class="hidden" id="userId" name="userId" th:value="${session.user.id}">
+          <button class="btn btn-success pull-right" type="submit">수정</button>
+          <a class="btn btn-default pull-right"
+             th:href="@{/qna/{questionId}(questionId=${comment.questionId})}">취소</a>
+          <div class="clearfix"/>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+</th:block>
+<th:block layout:fragment="pageCustomScript">
+  <script src="/js/comment/edit.js" type="text/javascript">
+  </script>
+</th:block>
+</body>
+</html>
