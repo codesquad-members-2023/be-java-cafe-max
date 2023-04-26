@@ -13,14 +13,6 @@ public class PostCreateRequest {
         this.title = title;
     }
 
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
     public String getContents() {
         return contents;
     }
