@@ -3,50 +3,73 @@ package kr.codesqaud.cafe.post.controller;
 import kr.codesqaud.cafe.post.domain.Post;
 import kr.codesqaud.cafe.post.service.AuthService;
 import kr.codesqaud.cafe.post.service.PostService;
+import kr.codesqaud.cafe.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.nio.file.AccessDeniedException;
 
-
+@RequestMapping("/post")
 @Controller
 public class PostController {
     private final PostService postService;
     private final AuthService authService;
 
     @Autowired
-    public PostController(PostService postService, AuthService authService, HttpSession httpSession) {
+    public PostController(PostService postService, AuthService authService) {
         this.postService = postService;
         this.authService = authService;
 
     }
 
-    @GetMapping("/posts/form")
-    public String form() {
+    @GetMapping("/form")
+    public String form(HttpSession httpSession) {
+        if(!authService.checkLogin(httpSession)){
+            return "redirect:/user/login";
+        }
         return "post/form";
     }
 
-    @GetMapping("/posts/{index}")
+    @GetMapping("/{index}")
     public String show(@PathVariable long index, Model model,HttpSession httpSession) throws AccessDeniedException {
-        authService.checkLogin(httpSession);
+        if(!authService.checkLogin(httpSession)){
+            return "redirect:/user/login";
+        }
         model.addAttribute("post", postService.findById(index));
         return "post/show";
     }
 
-    @PostMapping("/posts/form")
-    public String write(PostCreateRequest postCreateRequest) {
+    @PostMapping("/form")
+    public String write(PostCreateRequest postCreateRequest,HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("sessionUser");
         Post post = new Post.Builder()
                 .title(postCreateRequest.getTitle())
                 .contents(postCreateRequest.getContents())
-                .writer(postCreateRequest.getWriter())
+                .writer(user.getName())
                 .build();
         postService.create(post);
         return "redirect:/";
+    }
+
+    @GetMapping("/{index}/edit")
+    public String edit(@PathVariable long index, HttpSession httpSession,Model model){
+        if(!authService.checkLogin(httpSession)){
+            return "redirect:/user/login";
+        }
+        if(!authService.checkAuth(httpSession, postService.findById(index))){
+            return "redirect:/post/error";
+        }
+        model.addAttribute("index",index);
+        return "post/edit";
+    }
+
+    @PutMapping("/{index}/edit")
+    public String update(@PathVariable long index,PostCreateRequest postCreateRequest){
+        postService.edit(postCreateRequest,index);
+        return "redirect:/post/"+index;
     }
 }
 
