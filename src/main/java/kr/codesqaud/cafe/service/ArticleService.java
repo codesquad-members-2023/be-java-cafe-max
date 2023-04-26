@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.codesqaud.cafe.service.Utility.getUserIdFromSession;
+import static kr.codesqaud.cafe.service.util.Utility.getUserIdFromSession;
 
 @Service
 public class ArticleService {
