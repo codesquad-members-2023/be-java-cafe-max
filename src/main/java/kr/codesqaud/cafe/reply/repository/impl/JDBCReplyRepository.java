@@ -32,7 +32,7 @@ public class JDBCReplyRepository implements ReplyRepository {
 	}
 
 	private Reply findReplyByReplyIdx() {
-		return namedParameterJdbcTemplate.queryForObject("SELECT A.nickName,B.* FROM USER A INNER JOIN REPLY B "
+		return namedParameterJdbcTemplate.queryForObject("SELECT A.nickName,B.* FROM USER A JOIN REPLY B "
 				+ "ON A.user_id = B.user_id WHERE reply_idx = LAST_INSERT_ID()",
 			new MapSqlParameterSource(), (rs, rn) -> new Reply(rs));
 	}
@@ -40,7 +40,7 @@ public class JDBCReplyRepository implements ReplyRepository {
 	@Override
 	public List<Reply> findAllReply(LoadMoreReplyDto loadMoreReplyDto) {
 		return namedParameterJdbcTemplate.query(
-			"SELECT A.nickName, B.* FROM USER A INNER JOIN REPLY B ON A.user_id = B.user_id "
+			"SELECT A.nickName, B.* FROM USER A JOIN REPLY B ON A.user_id = B.user_id "
 				+ "WHERE article_Idx = :articleIdx AND is_visible = true LIMIT :start,:count",
 			new MapSqlParameterSource()
 				.addValue("articleIdx", loadMoreReplyDto.getArticleIdx())
@@ -66,7 +66,7 @@ public class JDBCReplyRepository implements ReplyRepository {
 	@Override
 	public Long getCountOfReplies(Long articleIdx) {
 		List<Long> countList = namedParameterJdbcTemplate.query(
-			"SELECT COUNT(*) FROM REPLY WHERE is_visible = true AND article_idx = :articleIdx ",
+			"SELECT COUNT(is_visible) FROM REPLY WHERE is_visible = true AND article_idx = :articleIdx ",
 			new MapSqlParameterSource("articleIdx", articleIdx),
 			(rs, rowNum) -> rs.getLong(1));
 		return countList.get(0);

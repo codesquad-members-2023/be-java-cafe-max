@@ -35,7 +35,7 @@ public class JDBCArticleRepository implements ArticleRepository {
 	@Override
 	public List<Article> findAll(PaginationDto paginationDto) {
 		return namedParameterJdbcTemplate.query(
-			"SELECT A.nickName, B.* FROM USER A INNER JOIN ARTICLE B ON A.user_id = B.user_id "
+			"SELECT A.nickName, B.* FROM USER A JOIN ARTICLE B ON A.user_id = B.user_id "
 				+ "WHERE is_visible = true ORDER BY B.article_idx DESC LIMIT :start,:recordSize",
 			new MapSqlParameterSource()
 				.addValue("start", paginationDto.getOffset())
@@ -81,7 +81,7 @@ public class JDBCArticleRepository implements ArticleRepository {
 	@Override
 	public int getCountOfArticles() {
 		List<Integer> countList = namedParameterJdbcTemplate.query(
-			"SELECT COUNT(*) FROM ARTICLE WHERE is_visible = true",
+			"SELECT COUNT(is_visible) FROM ARTICLE WHERE is_visible = true",
 			(rs, rowNum) -> rs.getInt(1));
 		return countList.get(0);
 	}
