@@ -22,7 +22,9 @@ public class ReplyController {
 	}
 
 	@PostMapping("/reply/{articleId}")
-	public String saveReply(@PathVariable("articleId") Long articleId, ReplySaveRequestDto replySaveRequestDto,
+	public String saveReply(
+		@PathVariable("articleId") Long articleId,
+		ReplySaveRequestDto replySaveRequestDto,
 		HttpSession httpSession) {
 		replyRepository.save(replySaveRequestDto.toEntity(articleId,
 			(String)httpSession.getAttribute(SessionAttributeNames.LOGIN_USER_NAME.type())));
@@ -30,7 +32,8 @@ public class ReplyController {
 	}
 
 	@DeleteMapping("/articles/{articleId}/replies/{replyId}")
-	public String deleteReply(@PathVariable("articleId") Long articleId, @PathVariable("replyId") String replyId,
+	public String deleteReply(@PathVariable("articleId") Long articleId,
+		@PathVariable("replyId") String replyId,
 		HttpSession httpSession, Model model) {
 		if (replyRepository.findById(replyId).get().getWriter() != httpSession.getAttribute(
 			SessionAttributeNames.LOGIN_USER_NAME.type())) {
