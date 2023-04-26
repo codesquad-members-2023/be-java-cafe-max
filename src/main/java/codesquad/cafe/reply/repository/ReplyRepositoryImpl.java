@@ -29,7 +29,7 @@ public class ReplyRepositoryImpl implements ReplyRepository {
 
     @Override
     public List<Reply> findAllByPost(final Long postId) {
-        String sql = "SELECT * FROM reply WHERE article_id = :article_id";
+        String sql = "SELECT id, contents, createdAt, user_id, article_id FROM reply WHERE article_id = :article_id and status = true";
         MapSqlParameterSource params = new MapSqlParameterSource("article_id", postId);
         return namedParameterJdbcTemplate.query(sql, params,
                 (rs, rowNum) -> new Reply(
@@ -49,7 +49,7 @@ public class ReplyRepositoryImpl implements ReplyRepository {
 
     @Override
     public User findUserById(final Long replyId) {
-        String sql = "SELECT * FROM users JOIN reply ON reply.user_id = users.id WHERE reply.id = :replyId";
+        String sql = "SELECT users.id, password, name, email FROM users JOIN reply ON reply.user_id = users.id WHERE reply.id = :replyId";
         MapSqlParameterSource params = new MapSqlParameterSource("replyId", replyId);
         return namedParameterJdbcTemplate.queryForObject(sql, params,
                 (rs, rowNum) -> new User(
@@ -61,8 +61,15 @@ public class ReplyRepositoryImpl implements ReplyRepository {
 
     @Override
     public void delete(final Long replyId) {
-        String sql = "DELETE FROM reply WHERE id = :id";
+        String sql = "UPDATE reply SET status = false WHERE id = :id";
         MapSqlParameterSource params = new MapSqlParameterSource("id", replyId);
+        namedParameterJdbcTemplate.update(sql, params);
+    }
+
+    @Override
+    public void deleteAllByPostId(final Long postId) {
+        String sql = "UPDATE reply SET status = false WHERE article_id = :postId";
+        MapSqlParameterSource params = new MapSqlParameterSource("postId", postId);
         namedParameterJdbcTemplate.update(sql, params);
     }
 }

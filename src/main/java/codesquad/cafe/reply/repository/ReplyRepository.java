@@ -16,4 +16,6 @@ public interface ReplyRepository {
     User findUserById(Long replyId);
 
     void delete(Long replyId);
+
+    void deleteAllByPostId(Long postId);
 }

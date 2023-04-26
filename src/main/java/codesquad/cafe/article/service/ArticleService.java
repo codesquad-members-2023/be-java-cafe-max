@@ -5,6 +5,8 @@ import codesquad.cafe.article.dto.ArticleUpdateRequestDto;
 import codesquad.cafe.article.repository.ArticleRepository;
 import codesquad.cafe.article.domain.Article;
 import codesquad.cafe.article.dto.ArticleRequestDto;
+import codesquad.cafe.reply.domain.Reply;
+import codesquad.cafe.reply.repository.ReplyRepository;
 import codesquad.cafe.user.domain.User;
 import codesquad.cafe.global.exception.CustomException;
 import org.springframework.stereotype.Service;
@@ -12,15 +14,18 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static codesquad.cafe.global.exception.ErrorCode.NOT_MATCH_ARTICLE_USER_AND_REPLY_USER;
 import static codesquad.cafe.global.exception.ErrorCode.NOT_MATCH_USER_AND_ARTICLE;
 
 @Service
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ReplyRepository replyRepository;
 
-    public ArticleService(final ArticleRepository articleRepository) {
+    public ArticleService(final ArticleRepository articleRepository, final ReplyRepository replyRepository) {
         this.articleRepository = articleRepository;
+        this.replyRepository = replyRepository;
     }
 
     public void createPost(final ArticleRequestDto articleRequestDto, final User user) {
@@ -60,7 +65,27 @@ public class ArticleService {
     public void deletePost(final Long postId, final User user) {
         Article article = articleRepository.findById(postId);
         validateWriter(user, article);
+        List<Reply> replies = replyRepository.findAllByPost(postId);
+        if (validateReplyExistence(replies)) {
+            validateReplyAndPost(replies, user);
+        }
+        replyRepository.deleteAllByPostId(postId);
         articleRepository.deletePostById(postId);
+    }
+
+    private void validateReplyAndPost(final List<Reply> replies, final User user) {
+        for (Reply reply : replies) {
+            if (!reply.getUserId().equals(user.getId())) {
+                throw new CustomException(NOT_MATCH_ARTICLE_USER_AND_REPLY_USER);
+            }
+        }
+    }
+
+    private boolean validateReplyExistence(final List<Reply> replies) {
+        if (replies.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
     public ArticleResponseDto findPostByIdAndUser(final Long postId, final User user) {
