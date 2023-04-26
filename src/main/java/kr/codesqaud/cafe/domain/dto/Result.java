@@ -1,9 +1,9 @@
 package kr.codesqaud.cafe.domain.dto;
 
 public class Result {
-    private String message;
+    private final String message;
 
-    public Result(String message) {
+    private Result(String message) {
         this.message = message;
     }
 

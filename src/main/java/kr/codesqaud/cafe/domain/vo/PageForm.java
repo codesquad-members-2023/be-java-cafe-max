@@ -9,7 +9,7 @@ public class PageForm {
     /* 시작 페이지, 끝 페이지, 현재 페이지, 마지막 페이지, 쿼리에서 사용할 start */
     private int startPage, endPage, nowPage, lastPage, start;
 
-    public PageForm() {
+    private PageForm() {
     }
 
     public PageForm(int nowPage, Long total) {
