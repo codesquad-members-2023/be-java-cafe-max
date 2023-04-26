@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="/fragments/header :: fragment-header"></div>
+    <div th:replace="fragments/header :: fragment-header"></div>
 </head>
 <body>
-<div th:replace="/fragments/nav :: fragment-nav"></div>
+<div th:replace="fragments/nav :: fragment-nav"></div>
 <div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default qna-list">
@@ -22,7 +22,7 @@
                                 <span class="time" th:text="${article.getCreatedAt()}"></span>
                                 <a href="user/profile.html" class="author" th:text="${article.getWriter()}"></a>
                             </div>
-                            <div class="reply" title="댓글">
+                            <div class="reply" title="댓글">\
                                 <i class="icon-reply"></i>
                                 <span class="point" th:text="${article.getArticleId()}"></span>
                             </div>
