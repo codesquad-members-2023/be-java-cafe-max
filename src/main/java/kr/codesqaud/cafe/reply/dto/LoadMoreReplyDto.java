@@ -36,7 +36,7 @@ public class LoadMoreReplyDto {
 	}
 
 	/**
-	 * db에 저장된 맨뒤에서 recordSize만큼 떨어진 데이터부터 가져온다.
+	 * db에 저장된 맨뒤 데이터에서 recordSize만큼 떨어진 데이터부터 recordSize 만큼 가져온다.
 	 * @return
 	 */
 
