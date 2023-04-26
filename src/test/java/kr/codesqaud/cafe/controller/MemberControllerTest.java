@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
-import kr.codesqaud.cafe.dto.member.SignInRequest;
+import kr.codesqaud.cafe.dto.authentication.SignInRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.member.MemberDuplicateEmailException;
@@ -81,7 +81,7 @@ class MemberControllerTest {
         // then
         mockMvc.perform(get("/members"))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/members/sign-in"))
+            .andExpect(redirectedUrl("/sign-in"))
             .andDo(print());
     }
 
@@ -117,7 +117,7 @@ class MemberControllerTest {
         // then
         mockMvc.perform(get("/members/{id}/form", savedId))
             .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/members/sign-in"))
+            .andExpect(redirectedUrl("/sign-in"))
             .andDo(print());
     }
 
@@ -360,79 +360,6 @@ class MemberControllerTest {
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
             .andExpect(view().name("member/signUp"))
             .andExpect(model().attributeHasFieldErrorCode("signUpRequest", "email", "Duplicate"))
-            .andDo(print());
-    }
-
-    @DisplayName("로그인 페이지 URL를 입력하면 로그인 페이지로 이동한다")
-    @Test
-    void signInPage() throws Exception {
-        // given
-
-        // when
-
-        // then
-        mockMvc.perform(get("/members/sign-in"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-            .andExpect(view().name("member/signIn"))
-            .andDo(print());
-    }
-
-    @DisplayName("이메일과 패스워드를 입력 받아서 일치하는 회원이 있을 때 로그인을 하면 홈 화면으로 이동한다")
-    @Test
-    void signIn() throws Exception {
-        // given
-        String email = "test@gmail.com";
-        String password = "Test1234";
-        MemberResponse memberResponse = new MemberResponse(1L, email, "test", LocalDateTime.now());
-        given(memberService.signIn(any())).willReturn(memberResponse);
-
-        // when
-
-        // then
-        mockMvc.perform(post("/members/sign-in")
-                .param("email", email)
-                .param("password", password)
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/"))
-            .andDo(print());
-    }
-
-    @DisplayName("이메일과 패스워드를 입력 받아서 일치하는 회원이 없는 때 로그인을 하면 에러 메시지를 담고서 로그인 페이지로 이동한다")
-    @Test
-    void signInFalse() throws Exception {
-        // given
-        SignInRequest signInRequest = new SignInRequest("test@gmail.com", "Test1234");
-        given(memberService.signIn(any())).willThrow(new MemberInvalidPassword(signInRequest));
-
-        // when
-
-        // then
-        mockMvc.perform(post("/members/sign-in")
-                .param("email", "test@gmail.com")
-                .param("password", "Test1234")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-            .andExpect(status().isOk())
-            .andExpect(view().name("member/signIn"))
-            .andExpect(model().attributeHasFieldErrorCode("signInRequest", "password", "Invalid"))
-            .andDo(print());
-    }
-
-    @DisplayName("로그인 상태일 때 로그아웃을 하면 세션이 무효화 된다")
-    @Test
-    void signOut() throws Exception {
-        // given
-        AccountSession accountSession = new AccountSession(1L, "만두");
-
-        // when
-
-        // then
-        mockMvc.perform(post("/members/sign-out")
-                .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/"))
-            .andExpect(request().sessionAttributeDoesNotExist(SignInSessionUtil.SIGN_IN_SESSION_NAME))
             .andDo(print());
     }
 }

@@ -13,7 +13,7 @@ import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
-import kr.codesqaud.cafe.dto.member.SignInRequest;
+import kr.codesqaud.cafe.dto.authentication.SignInRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.member.MemberDuplicateEmailException;
@@ -61,44 +61,6 @@ class MemberServiceTest {
 
         // then
         assertThrows(MemberDuplicateEmailException.class, () -> memberService.signUp(signUpRequest));
-    }
-
-    @DisplayName("이메일, 패스워드 입력시 일치하는 회원이 있을 때 로그인을 하면 회원DTO를 반환한다")
-    @Test
-    void signIn() {
-        // given
-        SignInRequest signInRequest = new SignInRequest("test@gmail.com", "Test1234");
-        Member member = Member.builder()
-            .id(1L)
-            .email(signInRequest.getEmail())
-            .password(signInRequest.getPassword())
-            .nickname("test")
-            .createDate(LocalDateTime.now())
-            .build();
-        given(memberRepository.findByEmail(any())).willReturn(Optional.of(member));
-
-        // when
-        MemberResponse memberResponse = memberService.signIn(signInRequest);
-
-        // then
-        assertAll(
-            () -> assertEquals(1L, memberResponse.getId()),
-            () -> assertEquals("test@gmail.com", memberResponse.getEmail()),
-            () -> assertEquals("test", memberResponse.getNickname()));
-    }
-
-    @DisplayName("이메일, 패스워드 입력시 일치하는 회원이 없을 때 로그인을 하면 에러를 반환한다")
-    @Test
-    void signInFalse() {
-        // given
-        SignInRequest signInRequest = new SignInRequest("test@gmail.com", "Test1234");
-        given(memberRepository.findByEmail(any())).willThrow(MemberInvalidPassword.class);
-
-        // when
-
-        // then
-        assertThrows(MemberInvalidPassword.class,
-            () -> memberService.signIn(signInRequest));
     }
 
     @DisplayName("아이디를 입력시 해당 회원이 있을 때 조회하면 회원을 반한한다")

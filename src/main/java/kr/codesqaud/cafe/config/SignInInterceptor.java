@@ -31,6 +31,6 @@ public class SignInInterceptor implements HandlerInterceptor {
             throw new ApiUnauthorizedException();
         }
 
-        response.sendRedirect("/members/sign-in");
+        response.sendRedirect("/sign-in");
     }
 }

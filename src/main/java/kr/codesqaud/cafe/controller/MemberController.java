@@ -2,15 +2,11 @@ package kr.codesqaud.cafe.controller;
 
 import static kr.codesqaud.cafe.util.SignInSessionUtil.SIGN_IN_SESSION_NAME;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import kr.codesqaud.cafe.config.session.AccountSession;
-import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
-import kr.codesqaud.cafe.dto.member.SignInRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.service.MemberService;
-import kr.codesqaud.cafe.util.SignInSessionUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -74,29 +70,6 @@ public class MemberController {
         }
 
         memberService.signUp(signUpRequest);
-        return "redirect:/";
-    }
-
-    @GetMapping("/sign-in")
-    public String showSignInForm(SignInRequest signInRequest) {
-        return "member/signIn";
-    }
-
-    @PostMapping("/sign-in")
-    public String signIn(@Valid SignInRequest signInRequest, BindingResult bindingResult,
-        HttpSession httpSession) {
-        if (bindingResult.hasErrors()) {
-            return "member/signIn";
-        }
-
-        MemberResponse memberResponse = memberService.signIn(signInRequest);
-        SignInSessionUtil.create(httpSession, new AccountSession(memberResponse.getId(), memberResponse.getNickname()));
-        return "redirect:/";
-    }
-
-    @PostMapping("/sign-out")
-    public String signOut(HttpSession httpSession) {
-        SignInSessionUtil.invalidate(httpSession);
         return "redirect:/";
     }
 }

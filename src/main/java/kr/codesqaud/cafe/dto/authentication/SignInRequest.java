@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.dto.member;
+package kr.codesqaud.cafe.dto.authentication;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
