@@ -25,13 +25,15 @@ public class LoginController {
         return "user/login";
     }
 
+    // TODO: HTTP Referer 이용해서 redirect 구현하기
     @PostMapping("/login")
     public String login(@RequestParam(required = false, defaultValue = "/", value = "redirectURL") String redirectURL,
-                        LoginForm loginForm, HttpSession session){
+                        LoginForm loginForm, HttpSession session, HttpServletRequest request){
         User loginUser = loginService.login(loginForm.getUserId(), loginForm.getPassword());
         if (loginUser == null){
             return "user/login_failed";
         }
+
         // 세션 성공 시
         session.setAttribute(SessionConst.LOGIN_USER, loginUser);
         return "redirect:" + redirectURL;
