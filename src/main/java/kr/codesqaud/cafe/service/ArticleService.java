@@ -35,7 +35,7 @@ public class ArticleService {
         return articleRepository.findById(id).orElseThrow(() -> new IllegalStateException("찾으시는 게시물은 없는 게시물 입니다."));
     }
 
-    public boolean validateUserIdDuplicate(Long id, HttpSession session){
+    public boolean isAuthCurrentUser(Long id, HttpSession session){
         Article article = findOne(id);
         User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
         return article.getWriter().equals(user.getUserId());
