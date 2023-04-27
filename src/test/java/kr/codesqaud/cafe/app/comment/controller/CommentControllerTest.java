@@ -30,8 +30,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 @AutoConfigureMockMvc
+@Transactional
 @SpringBootTest
 class CommentControllerTest {
 
@@ -104,7 +106,7 @@ class CommentControllerTest {
     @DisplayName("댓글 내용이 주어졌을때 댓글 작성 요청시 댓글이 달아지고 해당 질문 게시글로 이동되는지 테스트")
     public void createComment_success() throws Exception {
         //given
-        CommentSavedRequest dto = new CommentSavedRequest(null, "댓글1", questionId, userId);
+        CommentSavedRequest dto = new CommentSavedRequest("댓글1", questionId, userId);
         String url = String.format("/qna/%d/comments", questionId);
 
         //when
@@ -126,7 +128,7 @@ class CommentControllerTest {
     public void createComment_fail1() throws Exception {
         //given
         String content = "";
-        CommentSavedRequest dto = new CommentSavedRequest(null, content, questionId, userId);
+        CommentSavedRequest dto = new CommentSavedRequest(content, questionId, userId);
         String url = String.format("/qna/%d/comments", questionId);
         //when
         String json = mockMvc.perform(post(url)
@@ -148,8 +150,8 @@ class CommentControllerTest {
     @DisplayName("3000글자가 넘는 댓글 내용 입력이 주어지고 댓글 작성 요청시 에러 응답하는지 테스트")
     public void createComment_fail2() throws Exception {
         //given
-        String content = "a".repeat(3001);
-        CommentSavedRequest dto = new CommentSavedRequest(null, content, questionId, userId);
+        String content = "a" .repeat(3001);
+        CommentSavedRequest dto = new CommentSavedRequest(content, questionId, userId);
         String url = String.format("/qna/%d/comments", questionId);
         //when
         String json = mockMvc.perform(post(url)
@@ -191,7 +193,7 @@ class CommentControllerTest {
     public void modifyComment_success() throws Exception {
         //given
         String url = String.format("/qna/%d/comments/%d", questionId, commentId);
-        CommentSavedRequest dto = new CommentSavedRequest(commentId, "수정된 댓글1", questionId, userId);
+        CommentSavedRequest dto = new CommentSavedRequest("수정된 댓글1", questionId, userId);
         //when
         String json = mockMvc.perform(put(url)
                 .content(toJSON(dto))
@@ -211,7 +213,7 @@ class CommentControllerTest {
     public void modifyComment_fail1() throws Exception {
         //given
         String url = String.format("/qna/%d/comments/%d", questionId, commentId);
-        CommentSavedRequest dto = new CommentSavedRequest(commentId, "", questionId, userId);
+        CommentSavedRequest dto = new CommentSavedRequest("", questionId, userId);
         //when
         String json = mockMvc.perform(put(url)
                 .content(toJSON(dto))
@@ -233,7 +235,7 @@ class CommentControllerTest {
     public void modifyComment_fail2() throws Exception {
         //given
         String url = String.format("/qna/%d/comments/%d", questionId, commentId);
-        CommentSavedRequest dto = new CommentSavedRequest(commentId, "수정된 댓글1", questionId, userId);
+        CommentSavedRequest dto = new CommentSavedRequest("수정된 댓글1", questionId, userId);
         session.setAttribute("user", new UserResponse(otherUser));
         //when
         String json = mockMvc.perform(put(url)

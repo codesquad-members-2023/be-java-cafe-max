@@ -95,8 +95,8 @@ class QuestionControllerTest {
     }
 
     public void writeComment(Long questionId, Long userId) {
-        CommentSavedRequest dto1 = new CommentSavedRequest(null, "댓글1", questionId, userId);
-        CommentSavedRequest dto2 = new CommentSavedRequest(null, "댓글2", questionId, userId);
+        CommentSavedRequest dto1 = new CommentSavedRequest("댓글1", questionId, userId);
+        CommentSavedRequest dto2 = new CommentSavedRequest("댓글2", questionId, userId);
         commentService.answerComment(dto1);
         commentService.answerComment(dto2);
     }
