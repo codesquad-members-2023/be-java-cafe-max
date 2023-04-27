@@ -19,6 +19,8 @@ import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.CommentRepository;
+import kr.codesqaud.cafe.service.paging.Page;
+import kr.codesqaud.cafe.service.paging.Pageable;
 
 @Transactional(readOnly = true)
 @Service
@@ -46,10 +48,12 @@ public class ArticleService {
 			.collect(Collectors.toUnmodifiableList()));
 	}
 
-	public List<ArticleWithCommentCount> getArticlesWithCommentCount() {
-		return articleRepository.findAllArticleWithCommentCount()
+	public Page<ArticleWithCommentCount> getArticlesWithCommentCount(final Pageable pageable) {
+		List<ArticleWithCommentCount> articles = articleRepository.findAllArticleWithCommentCount(pageable)
 			.stream()
 			.collect(Collectors.toUnmodifiableList());
+		Long totalCount = articleRepository.countAllArticles();
+		return new Page<>(articles, totalCount);
 	}
 
 	public void validateHasAuthorization(final Long articleId, final String userId) {
