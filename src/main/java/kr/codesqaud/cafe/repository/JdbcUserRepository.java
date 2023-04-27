@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.User;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Primary
 @Repository
 public class JdbcUserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
