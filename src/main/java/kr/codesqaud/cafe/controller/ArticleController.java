@@ -29,8 +29,8 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/article")
-    public String showArticle() {
+    @GetMapping("/article-post-form")
+    public String showArticlePostForm() {
         return "qna/form";
     }
 
@@ -38,6 +38,7 @@ public class ArticleController {
     public String showArticleDetails(@PathVariable final Long articleId, final Model model) {
         model.addAttribute("article", articleService.findById(articleId));
         model.addAttribute("reply", replyService.getReplies(articleId));
+        model.addAttribute("replyCount", replyService.getReplyCount(articleId));
         return "qna/show";
     }
 
