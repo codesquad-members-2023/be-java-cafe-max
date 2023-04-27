@@ -30,7 +30,7 @@ public class JdbcReplyRepository implements ReplyRepository{
         parameters.put("contents", reply.getContents());
         parameters.put("created_at", reply.getCreatedAt());
         parameters.put("article_id", reply.getArticleId());
-        parameters.put("deleted", reply.getDeleted() ? 0 : 1);
+        parameters.put("deleted", reply.getDeleted() ? 1 : 0);
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         reply.setReplyId(key.longValue());

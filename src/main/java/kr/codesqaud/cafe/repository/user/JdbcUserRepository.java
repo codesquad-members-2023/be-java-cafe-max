@@ -32,7 +32,7 @@ public class JdbcUserRepository implements UserRepository{
         parameters.put("password", user.getPassword());
         parameters.put("name", user.getName());
         parameters.put("email", user.getEmail());
-        parameters.put("deleted", user.getDeleted() ? 0 : 1);
+        parameters.put("deleted", user.getDeleted() ? 1 : 0);
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         user.setCustomerId(key.longValue());

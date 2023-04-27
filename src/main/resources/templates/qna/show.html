@@ -45,7 +45,6 @@
                         </ul>
                     </div>
                 </article>
-                {{/article}}
                 <div class="qna-comment">
                     <div class="qna-comment-slipp">
                         <p class="qna-comment-count"><strong>{{replyNum}}</strong>개의 의견</p>
@@ -72,11 +71,11 @@
                                     <ul class="article-util-list">
                                         <li>
                                             <a class="link-modify-article"
-                                               href="/answers/{{replyId}}/edit">수정</a>
+                                               href="/questions/{{id}}/answers/{{replyId}}/edit">수정</a>
                                         </li>
                                         <li>
 
-                                            <form class="form-delete" action="/answers/{{replyId}}/delete"
+                                            <form class="form-delete" action="/questions/{{id}}/answers/{{replyId}}/delete"
                                                   method="POST">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button type="submit" class="delete-answer-button">삭제</button>
@@ -86,12 +85,11 @@
                                 </div>
                             </article>
                             {{/reply}}
-                            {{#article}}
                             <form class="submit-write" method="post" action="/answers/{{id}}">
                                 <div class="form-group" style="padding:14px;">
-                                    <textarea class="form-control" placeholder="Update your status"></textarea>
+                                    <textarea class="form-control" name="contents" placeholder="Update your status"></textarea>
                                 </div>
-                                <button class="btn btn-success pull-right" type="button">답변하기</button>
+                                <button class="btn btn-success pull-right" type="submit">답변하기</button>
                                 <div class="clearfix"/>
                             </form>
                             {{/article}}
