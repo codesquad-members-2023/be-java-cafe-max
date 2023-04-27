@@ -36,12 +36,16 @@ function addComment() {
 }
 
 function createComment(comment) {
-    let button = "<form name='comment-update-form' method='post' action='/comments/" + comment.articleIndex + "/" + comment.commentIndex + "'>"
-        + "<input type='hidden' name='_method' value='PATCH'/>"
-        + "<button class='updateComment button next-writing' type='button' style='border: none;'>수정</button></form>"
-        + "<form name='comment-delete-form' method='post' action='/comments/" + comment.articleIndex + "/" + comment.commentIndex + "'>"
-        + "<input type='hidden' name='_method' value='DELETE'/>"
-        + "<button class='deleteComment button next-writing' type='button' style='border: none;'>삭제</button></form>";
+    let button = "";
+    const nickname = $("input[name=author]").val();
+    if(nickname == comment.author) {
+        button += "<form name='comment-update-form' method='post' action='/comments/" + comment.articleIndex + "/" + comment.commentIndex + "'>"
+                + "<input type='hidden' name='_method' value='PATCH'/>"
+                + "<button class='updateComment button next-writing' type='button' style='border: none;'>수정</button></form>"
+                + "<form name='comment-delete-form' method='post' action='/comments/" + comment.articleIndex + "/" + comment.commentIndex + "'>"
+                + "<input type='hidden' name='_method' value='DELETE'/>"
+                + "<button class='deleteComment button next-writing' type='button' style='border: none;'>삭제</button></form>";
+    }
 
     var content = "<div class='comment-detail'>"
                     + "<div class='comment-in-wrap'>"
@@ -113,7 +117,9 @@ function deleteComment() {
 function showMoreComments() {
     const articleIndex = window.location.pathname.split("/")[2];
     url = "/comments/" + articleIndex +"/" + commentLastIndex;
-    commentLastIndex += commentSize;
+    if(comments >= commentLastIndex) {
+        commentLastIndex += commentSize;
+    }
     $.ajax({
               type : 'get',
               url : url,
