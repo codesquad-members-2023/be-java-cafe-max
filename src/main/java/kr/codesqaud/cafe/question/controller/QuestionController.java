@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import kr.codesqaud.cafe.common.auth.exception.NoAccessPermissionException;
 import kr.codesqaud.cafe.common.auth.exception.NoAuthSessionException;
 import kr.codesqaud.cafe.common.auth.utill.AuthSessionValidator;
+import kr.codesqaud.cafe.common.web.CursorPageHandler;
 import kr.codesqaud.cafe.common.web.PageHandler;
 import kr.codesqaud.cafe.question.controller.request.QuestionWriteRequestDTO;
 import kr.codesqaud.cafe.question.controller.response.QuestionBoardResponseDTO;
@@ -97,13 +98,17 @@ public class QuestionController {
 	 * @return Q&A 게시글 상세 보기 페이지
 	 */
 	@GetMapping("/{id}")
-	public String questionDetail(@PathVariable long id, @ModelAttribute("errorMessage") String errorMessage,
+	public String questionDetail(@PathVariable long id,
+		@RequestParam(value = "curser", defaultValue = "-1") long curser,
+		@ModelAttribute("errorMessage") String errorMessage,
 		Model model, HttpSession session) throws QuestionNotExistException, NoAuthSessionException {
 		AuthSessionValidator.validateUserIsSignedIn(session);
 
+		CursorPageHandler cursorPageHandler = new CursorPageHandler(curser);
+
 		if (errorMessage.isBlank()) {
 			List<CommentResponseDTO> comment =
-				commentService.findByPostId(id)
+				commentService.findBy(id, cursorPageHandler.getCursor(), cursorPageHandler.getSize())
 					.stream()
 					.map(CommentResponseDTO::from)
 					.collect(Collectors.toUnmodifiableList());

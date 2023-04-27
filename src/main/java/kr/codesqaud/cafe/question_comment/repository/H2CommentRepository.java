@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.question_comment.repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
@@ -8,6 +9,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.question_comment.domain.CommentEntity;
@@ -20,27 +23,56 @@ public class H2CommentRepository implements CommentRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public void save(CommentEntity comment) {
+	public long save(CommentEntity comment) {
 		String sql = "INSERT INTO \"comment\"(post_id, writer_id, content) "
 			+ "VALUES (:post_id, :writer_id, :content)";
+
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("post_id", comment.getPost_id())
 			.addValue("writer_id", comment.getWriter_id())
 			.addValue("content", comment.getContent());
 
-		jdbcTemplate.update(sql, parameters);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		jdbcTemplate.update(sql, parameters, keyHolder, new String[] {"id"});
+
+		return Objects.requireNonNull(keyHolder.getKey()).longValue();
 	}
 
-	public List<CommentEntity> findByPostId(long post_id) {
+	public List<CommentEntity> findByPostIdAndSize(long post_id, int size) {
 		String sql =
 			"SELECT c.id, c.post_id, c.writer_id, u.userId as writer, c.content, c.is_deleted, c.registrationDateTime "
 				+ "FROM \"comment\" c "
 				+ "JOIN \"user\" u "
 				+ "ON c.writer_id = u.id "
 				+ "WHERE c.post_id = :post_id "
-				+ "AND c.is_deleted = FALSE";
+				+ "AND c.is_deleted = FALSE "
+				+ "ORDER BY c.id DESC "
+				+ "LIMIT :size";
+
 		SqlParameterSource parameters = new MapSqlParameterSource()
-			.addValue("post_id", post_id);
+			.addValue("post_id", post_id)
+			.addValue("size", size);
+
+		return jdbcTemplate.query(sql, parameters, getReplyRowMapper());
+	}
+
+	public List<CommentEntity> findByPostIdAndCursorAndSize(long post_id, long cursor, int size) {
+		String sql =
+			"SELECT c.id, c.post_id, c.writer_id, u.userId as writer, c.content, c.is_deleted, c.registrationDateTime "
+				+ "FROM \"comment\" c "
+				+ "JOIN \"user\" u "
+				+ "ON c.writer_id = u.id "
+				+ "WHERE c.post_id = :post_id "
+				+ "AND c.is_deleted = FALSE "
+				+ "AND c.id < :cursor "
+				+ "ORDER BY c.id DESC "
+				+ "LIMIT :size";
+
+		SqlParameterSource parameters = new MapSqlParameterSource()
+			.addValue("post_id", post_id)
+			.addValue("cursor", cursor)
+			.addValue("size", size);
 
 		return jdbcTemplate.query(sql, parameters, getReplyRowMapper());
 	}

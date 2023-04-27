@@ -17,12 +17,15 @@ public class CommentService {
 		this.repository = repository;
 	}
 
-	public void save(CommentEntity comment) {
-		repository.save(comment);
+	public long save(CommentEntity comment) {
+		return repository.save(comment);
 	}
 
-	public List<CommentEntity> findByPostId(long post_id) {
-		return repository.findByPostId(post_id);
+	public List<CommentEntity> findBy(long post_id, long cursor, int size) {
+		if (cursor <= 0) {
+			return repository.findByPostIdAndSize(post_id, size);
+		}
+		return repository.findByPostIdAndCursorAndSize(post_id, cursor, size);
 	}
 
 	public CommentEntity findById(long id) throws CommentNotExistException {
