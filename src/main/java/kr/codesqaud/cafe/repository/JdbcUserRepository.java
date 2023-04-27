@@ -22,7 +22,7 @@ public class JdbcUserRepository implements UserRepository {
     public JdbcUserRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
-//    @Override
+    @Override
     public void save(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("userTable").usingGeneratedKeyColumns("id");

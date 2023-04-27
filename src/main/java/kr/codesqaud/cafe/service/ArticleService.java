@@ -22,7 +22,7 @@ public class ArticleService {
         return articleRepository.getArticleList();
     }
 
-    public Article getArticleById(long id) {
+    public Article getArticleById(Long id) {
         return articleRepository.getArticleById(id).get(); // 만약에 Optional 안에 Null 이라면...??  <<<<<<<< fix 필요 <<<<<
     }
 }

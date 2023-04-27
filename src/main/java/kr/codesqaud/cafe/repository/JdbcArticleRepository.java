@@ -43,7 +43,7 @@ public class JdbcArticleRepository implements ArticleRepository{
 
     @Override
     public Optional<Article> getArticleById(Long id) { // Long!
-        List<Article> result = jdbcTemplate.query("select * from articleTable where articleId = ?", articleRowMapper(), id);
+        List<Article> result = jdbcTemplate.query("select * from articleTable where id = ?", articleRowMapper(), id);
         // jdbcTemplate.query(String query, RowMapper<Article>, Long id) -> List<Article> 반환(???)
         return result.stream().findAny();
     }
