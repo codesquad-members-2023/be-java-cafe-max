@@ -99,12 +99,12 @@ public class QuestionController {
 	 */
 	@GetMapping("/{id}")
 	public String questionDetail(@PathVariable long id,
-		@RequestParam(value = "curser", defaultValue = "-1") long curser,
+		@RequestParam(value = "cursor", defaultValue = "-1") long cursor,
 		@ModelAttribute("errorMessage") String errorMessage,
 		Model model, HttpSession session) throws QuestionNotExistException, NoAuthSessionException {
 		AuthSessionValidator.validateUserIsSignedIn(session);
 
-		CursorPageHandler cursorPageHandler = new CursorPageHandler(curser);
+		CursorPageHandler cursorPageHandler = new CursorPageHandler(cursor);
 
 		if (errorMessage.isBlank()) {
 			List<CommentResponseDTO> comment =

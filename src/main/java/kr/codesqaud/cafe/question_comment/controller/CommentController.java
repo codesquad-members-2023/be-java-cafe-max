@@ -1,16 +1,22 @@
 package kr.codesqaud.cafe.question_comment.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.codesqaud.cafe.common.auth.exception.NoAccessPermissionException;
 import kr.codesqaud.cafe.common.auth.exception.NoAuthSessionException;
 import kr.codesqaud.cafe.common.auth.utill.AuthSessionValidator;
+import kr.codesqaud.cafe.common.web.CursorPageHandler;
 import kr.codesqaud.cafe.question_comment.controller.request.CommentWriteRequestDTO;
 import kr.codesqaud.cafe.question_comment.controller.response.CommentResponseDTO;
 import kr.codesqaud.cafe.question_comment.domain.CommentEntity;
@@ -36,7 +42,7 @@ public class CommentController {
 	 * @throws NoAuthSessionException 로그인 하지 않은 상태인 경우 예외 발생
 	 */
 	@PostMapping
-	public CommentResponseDTO replyAdd(@PathVariable long post_id, CommentWriteRequestDTO dto,
+	public CommentResponseDTO commentAdd(@PathVariable long post_id, CommentWriteRequestDTO dto,
 		HttpSession session) throws
 		NoAuthSessionException, CommentNotExistException {
 
@@ -45,6 +51,22 @@ public class CommentController {
 		long id = service.save(dto.toEntity(post_id, authSession.getId(), authSession.getUserId()));
 
 		return CommentResponseDTO.from(service.findById(id));
+	}
+
+	@GetMapping
+	public List<CommentResponseDTO> commentList(@PathVariable long post_id,
+		@RequestParam(value = "cursor", defaultValue = "-1") long cursor,
+		HttpSession session) throws NoAuthSessionException {
+
+		AuthSession authSession = AuthSessionValidator.validateUserIsSignedIn(session);
+
+		CursorPageHandler cursorPageHandler = new CursorPageHandler(cursor);
+
+		return service.findBy(post_id, cursorPageHandler.getCursor(), cursorPageHandler.getSize())
+			.stream()
+			.map(CommentResponseDTO::from)
+			.collect(
+				Collectors.toUnmodifiableList());
 	}
 
 	/**
@@ -57,7 +79,7 @@ public class CommentController {
 	 * @throws NoAccessPermissionException 댓글 작성자가 아닌 경우 예외 발생
 	 */
 	@DeleteMapping("/{id}")
-	public String replyDelete(@PathVariable long post_id, @PathVariable long id, HttpSession session) throws
+	public String commentDelete(@PathVariable long post_id, @PathVariable long id, HttpSession session) throws
 		CommentNotExistException,
 		NoAccessPermissionException {
 
