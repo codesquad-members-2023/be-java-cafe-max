@@ -16,4 +16,6 @@ public interface ReplyRepository {
     void delete(Long replyId);
 
     void update(Reply reply);
+
+    Optional<Integer> countReply(Long articleId);
 }
