@@ -118,7 +118,7 @@ public class ArticleService {
 		List<Article> articles = articleRepository.findPage(page);
 		return articles.stream()
 			.map(a -> new ArticleResponse(a.getArticleIndex(), a.getTitle(), a.getWriter(), a.getContents(),
-				a.getWriteDate(), a.getHits(), a.isDeleted()))
+				a.getWriteDate(), a.getHits(), a.isDeleted(), commentRepository.getCommentsSize(a.getArticleIndex())))
 			.collect(Collectors.toList());
 	}
 
