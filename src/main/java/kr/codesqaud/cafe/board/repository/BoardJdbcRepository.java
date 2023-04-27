@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.board.repository;
 
 import kr.codesqaud.cafe.board.domain.BoardPost;
 import kr.codesqaud.cafe.exception.ResourceNotFoundException;
+import kr.codesqaud.cafe.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,7 +29,7 @@ public class BoardJdbcRepository {
 
     public void save(BoardPost boardPost) {
         jdbcTemplate.update(
-                "INSERT INTO post (writer, title, contents) VALUES (:writer, :title, :contents)",
+                "INSERT INTO post (writer, title, contents) VALUES (:writer.userName, :title, :contents)",
                 new BeanPropertySqlParameterSource(boardPost));
     }
 
@@ -73,11 +74,13 @@ public class BoardJdbcRepository {
         public BoardPost mapRow(ResultSet rs, int rowNum) throws SQLException {
             return BoardPost.builder()
                     .postId(rs.getLong("post_id"))
-                    .writerId(rs.getString("writer_id"))
-                    .writer(rs.getString("writer"))
                     .title(rs.getString("title"))
                     .contents(rs.getString("contents"))
                     .writeDateTime(rs.getTimestamp("write_date_time").toLocalDateTime())
+                    .writer(User.builder()
+                            .userId(rs.getString("writer_id"))
+                            .userName(rs.getString("writer"))
+                            .build())
                     .build();
         }
     };

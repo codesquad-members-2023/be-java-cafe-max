@@ -14,7 +14,8 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/users/{{post.writerId}}" class="article-author-name">{{post.writer}}</a>
+                            <a href="/users/{{post.writer.userId}}"
+                               class="article-author-name">{{post.writer.userName}}</a>
                             <a class="article-header-time">
                                 {{post.writeDateTime}}
                                 <i class="icon-link"></i>

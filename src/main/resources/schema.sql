@@ -8,7 +8,7 @@ CREATE TABLE users(
     user_name VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(50) NOT NULL,
     PRIMARY KEY (user_id)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+);
 
 CREATE TABLE post(
     post_id BIGINT AUTO_INCREMENT,
@@ -20,7 +20,7 @@ CREATE TABLE post(
     PRIMARY KEY (post_id),
     FOREIGN KEY (writer) REFERENCES users(user_name)
     ON UPDATE CASCADE
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+);
 
 CREATE TABLE comment(
     comment_id BIGINT AUTO_INCREMENT,
@@ -33,4 +33,4 @@ CREATE TABLE comment(
     FOREIGN KEY (post_id) REFERENCES post(post_id),
     FOREIGN KEY (writer) REFERENCES users(user_name)
     ON UPDATE CASCADE
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+);

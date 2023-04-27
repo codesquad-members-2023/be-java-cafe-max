@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.board.dto;
 
 import kr.codesqaud.cafe.board.domain.BoardPost;
+import kr.codesqaud.cafe.user.domain.User;
 
 public class PostWriteForm {
     private final String writer;
@@ -15,9 +16,11 @@ public class PostWriteForm {
 
     public BoardPost toEntity() {
         return BoardPost.builder()
-                .writer(writer)
                 .title(title)
                 .contents(contents)
+                .writer(User.builder()
+                        .userName(writer)
+                        .build())
                 .build();
     }
 
