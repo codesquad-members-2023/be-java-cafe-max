@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UserRepository {
     public void save(User user);
 
-    public Optional<User> getUserByUserId(Long userId);
+    public Optional<User> getUserById(Long Id);
 
     public List<User> getUserList();
 

@@ -28,6 +28,6 @@ public class UserService {
     }
 
     public User getUserById(Long id) {
-        return userRepository.getUserByUserId(id).get(); //
+        return userRepository.getUserById(id).get(); //
     }   // 원래 Optional 아닌데 인터페이스 때문에 어쩔 수 없이 Optional이 되버림 -> fix 하게 될 듯
 }

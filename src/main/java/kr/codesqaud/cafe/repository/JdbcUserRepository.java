@@ -32,8 +32,8 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> getUserByUserId(Long id) {
-        List<User> result = jdbcTemplate.query("select * from userTable where userId = ?", userRowMapper(), id);
+    public Optional<User> getUserById(Long id) {
+        List<User> result = jdbcTemplate.query("select * from userTable where id = ?", userRowMapper(), id);
         return result.stream().findAny();   // 뭔지 모름
     }
 

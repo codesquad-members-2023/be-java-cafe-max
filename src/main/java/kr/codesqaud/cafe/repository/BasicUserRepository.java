@@ -24,8 +24,8 @@ public class BasicUserRepository implements UserRepository {
         dataBase.put(user.getUserId(), user);
     }
     @Override
-    public Optional<User> getUserByUserId(Long userId) {
-        return Optional.ofNullable(dataBase.get(userId)); // 아 자동으로 포장해준건 좋은데;;; (그래도 fix 해야지)
+    public Optional<User> getUserById(Long Id) {
+        return Optional.ofNullable(dataBase.get(Id)); // 아 자동으로 포장해준건 좋은데;;; (그래도 fix 해야지)
     }  // 원래 User인데 인터페이스 때문에 굳이 Optional<User>로..(;;;) -> fix 할지도
     @Override
     public List<User> getUserList() {
