@@ -31,8 +31,6 @@ INSERT INTO post(writer, title, contents) VALUES('name1', '27번째 게시글', 
 INSERT INTO post(writer, title, contents) VALUES('name1', '28번째 게시글', 'TEST용 데이터');
 INSERT INTO post(writer, title, contents) VALUES('name1', '29번째 게시글', 'TEST용 데이터');
 INSERT INTO post(writer, title, contents) VALUES('name1', '30번째 게시글', 'TEST용 데이터');
-INSERT INTO post(writer, title, contents) VALUES('name1', '31번째 게시글', 'TEST용 데이터');
-INSERT INTO post(writer, title, contents) VALUES('name1', '32번째 게시글', 'TEST용 데이터');
 INSERT INTO post(writer, title, contents) VALUES('name1', '1번째 게시글', 'TEST용 데이터');
 INSERT INTO post(writer, title, contents) VALUES('name1', '2번째 게시글', 'TEST용 데이터');
 INSERT INTO post(writer, title, contents) VALUES('name1', '3번째 게시글', 'TEST용 데이터');
@@ -63,8 +61,6 @@ INSERT INTO post(writer, title, contents) VALUES('name1', '27번째 게시글', 
 INSERT INTO post(writer, title, contents) VALUES('name1', '28번째 게시글', 'TEST용 데이터');
 INSERT INTO post(writer, title, contents) VALUES('name1', '29번째 게시글', 'TEST용 데이터');
 INSERT INTO post(writer, title, contents) VALUES('name1', '30번째 게시글', 'TEST용 데이터');
-INSERT INTO post(writer, title, contents) VALUES('name1', '31번째 게시글', 'TEST용 데이터');
-INSERT INTO post(writer, title, contents) VALUES('name1', '32번째 게시글', 'TEST용 데이터');
 INSERT INTO post(writer, title, contents) VALUES('name1', '1번째 게시글', 'TEST용 데이터');
 INSERT INTO post(writer, title, contents) VALUES('name1', '2번째 게시글', 'TEST용 데이터');
 INSERT INTO post(writer, title, contents) VALUES('name1', '3번째 게시글', 'TEST용 데이터');
@@ -95,5 +91,3 @@ INSERT INTO post(writer, title, contents) VALUES('name1', '27번째 게시글', 
 INSERT INTO post(writer, title, contents) VALUES('name1', '28번째 게시글', 'TEST용 데이터');
 INSERT INTO post(writer, title, contents) VALUES('name1', '29번째 게시글', 'TEST용 데이터');
 INSERT INTO post(writer, title, contents) VALUES('name1', '30번째 게시글', 'TEST용 데이터');
-INSERT INTO post(writer, title, contents) VALUES('name1', '31번째 게시글', 'TEST용 데이터');
-INSERT INTO post(writer, title, contents) VALUES('name1', '32번째 게시글', 'TEST용 데이터');
