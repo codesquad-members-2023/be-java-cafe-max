@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
+import kr.codesqaud.cafe.controller.dto.request.ArticleWithReplyCount;
 import kr.codesqaud.cafe.controller.dto.request.PostEditRequest;
 import kr.codesqaud.cafe.controller.dto.request.PostRequest;
 import kr.codesqaud.cafe.domain.Article;
@@ -30,6 +31,12 @@ public class ArticleService {
         return articleRepository.findAll()
                 .stream()
                 .map(ArticleDto::from)
+                .collect(Collectors.toUnmodifiableList());
+    }
+
+    public List<ArticleWithReplyCount> getArticlesWithCommentCount() {
+        return articleRepository.findAllArticlesWithReplyCount()
+                .stream()
                 .collect(Collectors.toUnmodifiableList());
     }
 
