@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import kr.codesqaud.cafe.app.comment.controller.dto.CommentSavedRequest;
+import kr.codesqaud.cafe.app.comment.repository.CommentRepository;
+import kr.codesqaud.cafe.app.comment.service.CommentService;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
 import kr.codesqaud.cafe.app.question.entity.Question;
@@ -56,6 +59,12 @@ class QuestionControllerTest {
     private QuestionRepository questionRepository;
 
     @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -73,6 +82,7 @@ class QuestionControllerTest {
         httpSession = new MockHttpSession();
         userId = signUp("yonghwan1107", "yonghwan1107", "김용환", "yonghwan1107@gmail.com");
         questionId = writeQuestion();
+        writeComment(questionId, userId);
     }
 
 
@@ -82,6 +92,13 @@ class QuestionControllerTest {
         String content = "내용1";
         QuestionSavedRequest dto = new QuestionSavedRequest(title, content, user.getId());
         return questionService.writeQuestion(dto).getId();
+    }
+
+    public void writeComment(Long questionId, Long userId) {
+        CommentSavedRequest dto1 = new CommentSavedRequest(null, "댓글1", questionId, userId);
+        CommentSavedRequest dto2 = new CommentSavedRequest(null, "댓글2", questionId, userId);
+        commentService.answerComment(dto1);
+        commentService.answerComment(dto2);
     }
 
     @Test
@@ -228,6 +245,25 @@ class QuestionControllerTest {
         String url = "/qna/" + question.getId();
         //when & then
         mockMvc.perform(delete(url).session(httpSession)).andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("삭제할 질문게시글 등록번호가 주어지고 삭제 요청시 게시글과 댓글들이 deleted 상태가 되는지 테스트")
+    public void givenQuestionId_whenDeleteQuestion_thenModifyQuestionAndCommentsToDeletedStatus()
+        throws Exception {
+        //given
+        login("yonghwan1107", "yonghwan1107");
+        String url = "/qna/" + questionId;
+        //when
+        mockMvc.perform(delete(url)
+                .session(httpSession))
+            .andExpect(status().isOk());
+        //then
+        boolean emptyQuestion = questionRepository.findById(questionId).isEmpty();
+        boolean emptyComments = commentRepository.findAll(questionId).isEmpty();
+        Assertions.assertThat(emptyQuestion).isTrue();
+        Assertions.assertThat(emptyComments).isTrue();
     }
 
     @Test
