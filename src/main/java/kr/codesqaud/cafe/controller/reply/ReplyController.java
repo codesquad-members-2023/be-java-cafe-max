@@ -28,7 +28,7 @@ public class ReplyController {
 
     @GetMapping("/questions/{articleId}/answers/{replyId}/edit")
     public String editForm(@PathVariable Long articleId, @PathVariable Long replyId, Model model, HttpSession session){
-        if (!replyService.validateUserIdDuplicate(replyId, session)){
+        if (!replyService.isAuthorCurrentUser(replyId, session)){
             model.addAttribute("id", articleId);
             return "qna/edit_failed";
         }
@@ -45,14 +45,12 @@ public class ReplyController {
 
     @DeleteMapping("/questions/{articleId}/answers/{replyId}/delete")
     public String delete(@PathVariable Long articleId, @PathVariable Long replyId, HttpSession session, Model model) {
-        if (!replyService.validateUserIdDuplicate(replyId, session)) {
+        if (!replyService.isAuthorCurrentUser(replyId, session)) {
             model.addAttribute("id", articleId);
             return "qna/edit_failed";
         }
 
-        Long articleId = replyService.findOne(replyId).getArticleId();
         replyService.delete(replyId);
-
         return "redirect:/questions/" + articleId;
     }
 }

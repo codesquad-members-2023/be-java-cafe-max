@@ -31,8 +31,9 @@ public class ReplyService {
     public List<Reply> findAll(Long articleId){
         return replyRepository.findByArticleId(articleId).stream().collect(Collectors.toUnmodifiableList());
     }
-    public boolean validateUserIdDuplicate(Long replyId, HttpSession session){
+
     // 현재 유저와 댓글 작성자의 아이디가 일치하는지 확인하고 권한 부여
+    public boolean isAuthorCurrentUser(Long replyId, HttpSession session){
         User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
         return findOne(replyId).getWriter().equals(user.getUserId());
     }
