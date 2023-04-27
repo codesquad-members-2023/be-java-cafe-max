@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Article {
-    private long id;
+    private long id;     // 자꾸 헷갈려서 단순하게 변경완료
     private String writer;
     private String title;
     private String contents;

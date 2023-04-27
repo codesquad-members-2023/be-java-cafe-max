@@ -14,8 +14,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class JdbcUserRepository {
-//        implements UserRepository {
+public class JdbcUserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcUserRepository(DataSource dataSource) {
@@ -32,18 +31,18 @@ public class JdbcUserRepository {
         jdbcInsert.executeAndReturnKey(param); // 이거 지우면 list에 안 나옴(?????????) 어디서 왜 필요한건지
     }
 
-//    @Override
-    public Optional<User> getUserByUserId(Long userId) {
-        List<User> result = jdbcTemplate.query("select * from userTable where userId = ?", userRowMapper(), userId);
-        return result.stream().findAny();
+    @Override
+    public Optional<User> getUserByUserId(Long id) {
+        List<User> result = jdbcTemplate.query("select * from userTable where userId = ?", userRowMapper(), id);
+        return result.stream().findAny();   // 뭔지 모름
     }
 
-//    @Override
+    @Override
     public List<User> getUserList() {
         return jdbcTemplate.query("select * from userTable", userRowMapper());
-    }
+    } // 이거까지 작동된 듯(3-2)
 
-//    @Override
+    @Override
     public void clearStore() {
         jdbcTemplate.update("delete from userTable");
     }
