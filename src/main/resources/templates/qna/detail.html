@@ -86,7 +86,9 @@
                           commentId=${comment.id})}">수정</a>
                         </li>
                         <li>
-                          <form class="delete-answer-form" id="deleteCommentForm">
+                          <form class="delete-answer-form"
+                                th:action="@{/qna/{questionId}/comments/{id}
+                                (questionId=${question.id},id=${comment.id})}">
                             <input class="hidden" name="commentId" th:value="${comment.id}">
                             <button class="delete-answer-button" type="submit">삭제</button>
                           </form>
@@ -96,13 +98,14 @@
                   </article>
                 </th:block>
               </div>
-              <form class="submit-write" id="addCommentForm">
+              <form class="submit-write" name="answer"
+                    th:action="@{/qna/{questionId}/comments(questionId=${question.id})}">
                 <div class="form-group" style="padding:14px;">
-                    <textarea class="form-control" id="content"
+                    <textarea class="form-control" name="content"
                               placeholder="Update your status"></textarea>
                 </div>
-                <input class="hidden" id="questionId" name="questionId" th:value="${question.id}">
-                <input class="hidden" id="userId" name="userId" th:value="${session.user.id}">
+                <input class="hidden" name="questionId" th:value="${question.id}">
+                <input class="hidden" name="userId" th:value="${session.user.id}">
                 <button class="btn btn-success pull-right" type="submit">답변하기</button>
                 <div class="clearfix"/>
               </form>
@@ -114,7 +117,7 @@
   </div>
 </th:block>
 <th:block layout:fragment="pageCustomScript">
-  <script id="commentTemplate" type="text/template">
+  <script id="answerTemplate" type="text/template">
     <article class="article">
       <div class="article-header">
         <div class="article-header-thumb">

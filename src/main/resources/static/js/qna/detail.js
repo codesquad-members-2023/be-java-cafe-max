@@ -16,54 +16,59 @@ $(document).ready(function () {
     })
   })
 
-  $("#addCommentForm").submit(async function (e) {
-    e.preventDefault()
+  $(".submit-write button[type=submit]").on("click", addAnswer);
+  $(".qna-comment-slipp-articles").on("click",
+      ".delete-answer-form button[type=submit]", deleteAnswer);
 
-    const id = $("#id").val()
-
-    const data = {
-      content: $("#addCommentForm #content").val(),
-      questionId: $("#questionId").val(),
-      userId: $("#userId").val()
-    }
-
-    $.ajax({
-      type: "POST",
-      url: `/qna/${id}/comments`,
-      data: JSON.stringify(data),
-      contentType: 'application/json; charset=utf-8'
-    }).done(function (resp) {
-      const commentTemplate = $("#commentTemplate").html()
-      const template = commentTemplate.format(
-          resp.writerName,
-          resp.createTime,
-          resp.content,
-          resp.questionId,
-          resp.id)
-
-      $(".qna-comment-slipp-articles").append(template);
-      $("#content").val("");
-    }).fail(function (response) {
-      const errorResponse = response.responseJSON
-      alert(errorResponse.errorMessage)
-    })
-  })
-
-  $("#deleteCommentForm").submit(async function (e) {
-    e.preventDefault()
-
-    const id = $("#id").val()
-    const commentId = $("#deleteCommentForm input[name='commentId']").val()
-
-    $.ajax({
-      type: "DELETE",
-      url: `/qna/${id}/comments/${commentId}`
-    }).done(function (resp) {
-      alert("댓글이 삭제되었습니다.")
-      location.reload()
-    }).fail(function (response) {
-      const errorResponse = response.responseJSON
-      alert(errorResponse.errorMessage)
-    })
-  })
 })
+
+function addAnswer(e) {
+  e.preventDefault(); //submit 이 자동으로 동작하는 것을 막는다.
+
+  let jsonData = {}
+  $("form[name=answer]").serializeArray().map(function (x) {
+    jsonData[x.name] = x.value;
+  });
+  const urlPath = $(".submit-write").attr("action");
+
+  $.ajax({
+    type: 'post',
+    url: urlPath,
+    data: JSON.stringify(jsonData),
+    contentType: 'application/json; charset=utf-8',
+    error: function (resp) {
+      alert(resp.responseJSON.errorMessage)
+    },
+    success: function (data) {
+      const answerTemplate = $("#answerTemplate").html();
+      const template = answerTemplate.format(
+          data.writerName,
+          data.createTime,
+          data.content,
+          data.questionId,
+          data.id);
+      $(".qna-comment-slipp-articles").prepend(template);
+      $("textarea[name=content]").val("");
+    }
+  });
+}
+
+function deleteAnswer(e) {
+  e.preventDefault();
+
+  const deleteBtn = $(this);
+  const urlPath = $(".delete-answer-form").attr("action");
+
+  $.ajax({
+    type: 'delete',
+    url: urlPath,
+    dataType: 'json',
+    error: function (xhr, status) {
+      console.log("error");
+    },
+    success: function (data) {
+      deleteBtn.closest("article").remove();
+    }
+  });
+}
+
