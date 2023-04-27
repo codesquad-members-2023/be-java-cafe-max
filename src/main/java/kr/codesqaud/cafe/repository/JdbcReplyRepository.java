@@ -62,4 +62,14 @@ public class JdbcReplyRepository implements ReplyRepository {
         jdbcTemplate.update("UPDATE replies SET comment = ? WHERE reply_id = ?",
                 reply.getComment(), reply.getReplyId());
     }
+
+    @Override
+    public Optional<Integer> countReply(Long articleId) {
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject("SELECT COUNT(*) FROM replies WHERE article_id = ?", Integer.class, articleId));
+        } catch (EmptyResultDataAccessException e){
+            return Optional.empty();
+        }
+    }
 }

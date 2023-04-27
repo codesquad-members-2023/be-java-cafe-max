@@ -28,7 +28,7 @@ public class ReplyService {
         replyRepository.save(reply);
     }
 
-    public List<ReplyDto> getReplies(Long articleId){
+    public List<ReplyDto> getReplies(Long articleId) {
         return replyRepository.findAllByArticleId(articleId)
                 .stream()
                 .map(ReplyDto::from)
@@ -50,5 +50,9 @@ public class ReplyService {
         savedReply.editReply(request.getNewComment());
         replyRepository.update(savedReply);
         return savedReply;
+    }
+
+    public int getReplyCount(Long articleId) {
+        return replyRepository.countReply(articleId).orElseThrow(() -> new RuntimeException("Replies not found because the article doesn't exist."));
     }
 }
