@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.user.User;
+import kr.codesqaud.cafe.user.UserDTO;
 import kr.codesqaud.cafe.user.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,7 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String showProfile(@PathVariable("userId") String userId, Model model) {
 
-        User user = userRepository.findById(userId);
+        UserDTO user = userRepository.findById(userId);
         model.addAttribute("user", user);
 
         return "user/profile";
@@ -48,7 +49,7 @@ public class UserController {
     @GetMapping("/users/{userId}/check")
     public String showCheckPasswordForm(@PathVariable String userId, Model model) {
 
-        User user = userRepository.findById(userId);
+        UserDTO user = userRepository.findById(userId);
         model.addAttribute("user", user);
 
         return "user/checkPassword";
@@ -57,7 +58,7 @@ public class UserController {
     @PutMapping("/users/{userId}/check")
     public String checkPassword(@PathVariable String userId, String password, Model model, RedirectAttributes redirectAttributes) {
 
-        User user = userRepository.findById(userId);
+        UserDTO user = userRepository.findById(userId);
         model.addAttribute("user", user);
 
         if (!user.getPassword().equals(password)) {
@@ -74,7 +75,7 @@ public class UserController {
     @GetMapping("/users/{userId}/form")
     public String showUpdateForm(@PathVariable String userId, Model model) {
 
-        User user = userRepository.findById(userId);
+        UserDTO user = userRepository.findById(userId);
         model.addAttribute("user", user);
 
         return "user/updateForm";

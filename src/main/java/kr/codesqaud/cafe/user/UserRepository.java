@@ -9,9 +9,9 @@ public interface UserRepository {
 
     void save(User user);
 
-    List<User> findAll();
+    List<UserDTO> findAll();
 
-    User findById(String userId);
+    UserDTO findById(String userId);
 
     void update(User updatedUser);
 }

@@ -15,6 +15,7 @@ public class HomeController {
 
     @GetMapping(value = {"/", "/index"})
     public String home(Model model) {
+        System.out.println(articleRepository.findAll().get(0).getCreatedAt());
         model.addAttribute("articles", articleRepository.findAll());
         return "index";
     }

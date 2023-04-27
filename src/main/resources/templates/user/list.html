@@ -25,7 +25,7 @@
                     <td th:text="${user.getName()}"
                         th:onclick="|location.href='@{/users/{userId}(userId=${user.getUserId()})}'|"
                         style="cursor: pointer"></td>
-                    <td th:text="${user.getEmail()}">slipp@sample.net</td>
+                    <td th:text="${user.getEmail()}"></td>
                     <td><a href="#" class="btn btn-success" role="button" th:onclick="|location.href='@{/users/{userId}/check(userId=${user.getUserId()})}'|">수정</a></td>
                 </tr>
                 </tbody>

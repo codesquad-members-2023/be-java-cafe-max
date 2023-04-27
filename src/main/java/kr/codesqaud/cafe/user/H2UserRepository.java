@@ -1,7 +1,11 @@
 package kr.codesqaud.cafe.user;
 
+import kr.codesqaud.cafe.article.ArticleDTO;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -22,13 +26,16 @@ public class H2UserRepository implements UserRepository {
     }
 
     @Override
-    public List<User> findAll() {
-        return null;
+    public List<UserDTO> findAll() {
+        final String SQL = "SELECT * FROM Users";
+        return jdbcTemplate.query(SQL, BeanPropertyRowMapper.newInstance(UserDTO.class));
     }
 
     @Override
-    public User findById(String userId) {
-        return null;
+    public UserDTO findById(String userId) {
+        SqlParameterSource namedParameterSource = new MapSqlParameterSource().addValue("userId", userId);
+        final String SQL = "SELECT * FROM Users WHERE userId = :userId";
+        return jdbcTemplate.queryForObject(SQL, namedParameterSource, new BeanPropertyRowMapper<>(UserDTO.class));
     }
 
     @Override
