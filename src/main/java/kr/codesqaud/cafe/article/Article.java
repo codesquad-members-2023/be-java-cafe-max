@@ -1,23 +1,39 @@
 package kr.codesqaud.cafe.article;
 
+import kr.codesqaud.cafe.controller.UserController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 /**
  * 게시글 엔티티
  */
 public class Article {
+    private final Logger logger = LoggerFactory.getLogger(Article.class);
     private BigInteger articleId;
     private String writer;
     private String title;
     private String contents;
-    private Timestamp createdAt;
+    private String createdAt;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.createdAt = new Timestamp(System.currentTimeMillis());
+        saveCurrentTime();
+    }
+
+    private void saveCurrentTime() {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        TimeZone timeZone = TimeZone.getTimeZone("Seoul/Korea");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(timeZone);
+        this.createdAt = sdf.format(timestamp);
+        logger.info(createdAt);
     }
 
     public BigInteger getArticleId() {
@@ -36,7 +52,7 @@ public class Article {
         return contents;
     }
 
-    public Timestamp getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 

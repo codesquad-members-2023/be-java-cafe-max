@@ -8,7 +8,7 @@ public class ArticleDTO {
     private String writer;
     private String title;
     private String contents;
-    private Timestamp createdAt;
+    private String createdAt;
 
     public ArticleDTO() {
     }
@@ -45,11 +45,11 @@ public class ArticleDTO {
         this.contents = contents;
     }
 
-    public Timestamp getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 }
