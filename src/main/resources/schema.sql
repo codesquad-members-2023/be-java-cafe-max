@@ -1,8 +1,8 @@
-drop table if exists `user`;
+drop table if exists users;
 drop table if exists article;
 drop table if exists reply;
 
-create table `user`
+create table users
 (
     customer_id bigint not null auto_increment,
     user_id varchar(16) not null,

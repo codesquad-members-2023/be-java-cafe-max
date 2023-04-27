@@ -8,7 +8,7 @@ VALUES ('jianId', '댓글도 성공!', '20230413', '1', '0');
 INSERT INTO reply(writer, contents, created_at, article_id, deleted)
 VALUES ('yukiId', '🐟냠냠', '20230413', '2', '0');
 
-INSERT INTO `user`(user_id, password, name, email, deleted)
+INSERT INTO users(user_id, password, name, email, deleted)
 VALUES ('jianId', '1234', 'jian', 'jian@gmail.com', '0');
-INSERT INTO `user`(user_id, password, name, email, deleted)
+INSERT INTO users(user_id, password, name, email, deleted)
 VALUES ('yukiId', '1234', 'yuki', 'yuki@gmail.com', '0');
