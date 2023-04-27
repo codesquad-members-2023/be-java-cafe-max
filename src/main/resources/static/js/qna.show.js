@@ -1,13 +1,12 @@
 $("#addReplyForm button[type=submit]").click(addComment);
 $("#moreCommentsBtn").on("click", addMoreComment);
+$(".qna-comment-slipp-articles").on("click", ".delete-answer-form button[type='submit']", deleteComment);
 
 function addComment(e) {
     e.preventDefault();
 
     var queryString = $("form[name=addReplyForm]").serialize();
-
-    var url = $("#addReplyForm").attr("action");
-    console.log("url : " + url);
+    const url = $("#addReplyForm").attr("action");
 
     $.ajax({
         type: 'post',
@@ -33,8 +32,7 @@ function addMoreComment(e) {
     let queryString = {'cursor': cursor};
     console.log("cursor : " + cursor);
 
-    let url = $("#addReplyForm").attr("action");
-    console.log("url : " + url);
+    const url = $("#addReplyForm").attr("action");
 
     $.ajax({
         type: 'get',
@@ -52,6 +50,25 @@ function addMoreComment(e) {
                 var template = answerTemplate.format(data[i].writer, data[i].registrationDateTime, data[i].content, data[i].post_id, data[i].id);
                 $("#moreCommentLine").append(template);
             }
+        }
+    });
+}
+
+function deleteComment(e) {
+    e.preventDefault();
+
+    const url = $(e.target).parent('form').attr('action');
+
+    $.ajax({
+        type: 'delete',
+        url: url,
+        dataType: 'json',
+        error: function (request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        },
+        success: function (data, status) {
+            console.log(data);
+            $(e.target).closest('article').remove();
         }
     });
 }

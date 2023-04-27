@@ -79,15 +79,17 @@ public class CommentController {
 	 * @throws NoAccessPermissionException 댓글 작성자가 아닌 경우 예외 발생
 	 */
 	@DeleteMapping("/{id}")
-	public String commentDelete(@PathVariable long post_id, @PathVariable long id, HttpSession session) throws
+	public long commentDelete(@PathVariable long post_id, @PathVariable long id,
+		HttpSession session) throws
 		CommentNotExistException,
 		NoAccessPermissionException {
 
 		CommentEntity comment = service.findById(id);
 		AuthSessionValidator.validatePageOnlyWriterCanAccess(session, comment.getWriter_id());
+
 		service.deleteById(id);
 
-		return "redirect:/questions/" + post_id;
+		return 1;
 	}
 
 }
