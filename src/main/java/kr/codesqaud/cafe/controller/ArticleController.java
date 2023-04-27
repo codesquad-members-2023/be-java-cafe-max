@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
 import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.service.CommentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,11 @@ import static kr.codesqaud.cafe.util.LoginSessionManager.LOGIN_USER;
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final CommentService commentService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, CommentService commentService) {
         this.articleService = articleService;
+        this.commentService = commentService;
     }
 
 
@@ -36,8 +39,8 @@ public class ArticleController {
     @GetMapping("/posts/{id}")
     public String showPost(@PathVariable final long id, final Model model, HttpSession session) {
         if(isAnonymous(session)) return "redirect:/login";
-        ArticleDTO wantedPost = articleService.findById(id);
-        model.addAttribute("wantedPost", wantedPost);
+        model.addAttribute("wantedPost", articleService.findById(id));
+        model.addAttribute("comments", commentService.gather(id));
         return "post/show";
     }
 
