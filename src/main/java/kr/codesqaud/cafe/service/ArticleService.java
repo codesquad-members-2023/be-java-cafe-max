@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.controller.article.ArticleForm;
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import kr.codesqaud.cafe.util.SessionConst;
@@ -39,6 +40,11 @@ public class ArticleService {
         Article article = findOne(id);
         User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
         return article.getWriter().equals(user.getUserId());
+    }
+
+    // 게시글의 작성자와 게시글에 있는 모든 댓글의 작성자가 같으면 게시글 삭제 가능
+    public boolean isWriterMatched(Long articleId, List<Reply> replies){
+        return replies.stream().allMatch(reply -> reply.getArticleId().equals(articleId));
     }
 
     @Transactional
