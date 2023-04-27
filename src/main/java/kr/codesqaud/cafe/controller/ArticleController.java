@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.ArticleDto;
 import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.dto.ReplyDto;
@@ -90,9 +89,9 @@ public class ArticleController {
     }
 
     @PostMapping("/articles/{id}/reply")
-    public String saveReply(@PathVariable("id") long articleId, ReplyForm replyForm) {
+    public String saveReply(ReplyForm replyForm) {
         replyService.save(replyForm);
 
-        return "redirect:/}";
+        return "redirect:/articles/{id}";
     }
 }
