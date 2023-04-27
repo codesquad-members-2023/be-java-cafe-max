@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import kr.codesqaud.cafe.common.auth.exception.NoAccessPermissionException;
 import kr.codesqaud.cafe.common.auth.exception.NoAuthSessionException;
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
+import kr.codesqaud.cafe.question_comment.exception.CommentNotExistException;
 import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
 import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
 import kr.codesqaud.cafe.user.exception.UserNotExistException;
@@ -30,7 +31,7 @@ public class ControllerExceptionHandler {
 		return getRedirectRequestURI(request);
 	}
 
-	@ExceptionHandler(QuestionNotExistException.class)
+	@ExceptionHandler({QuestionNotExistException.class, CommentNotExistException.class})
 	public String catchNoSuchElementException(HttpServletRequest request, RedirectAttributes redirect,
 		QuestionNotExistException e) {
 		printExceptionLogger(e);
