@@ -15,4 +15,6 @@ public interface CommentRepository {
     Comment modify(Comment comment);
 
     Comment deleteById(Long id);
+
+    void deleteAllByQuestionId(Long questionId);
 }

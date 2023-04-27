@@ -17,6 +17,7 @@ CREATE TABLE question
     content    TEXT         NOT NULL,
     createTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modifyTime TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    deleted    boolean   DEFAULT false,
     userId     bigint       NOT NULL,
     primary key (id),
     foreign key (userId) references users (id) ON DELETE CASCADE
@@ -29,6 +30,7 @@ CREATE TABLE comment
     content    VARCHAR(3000) NOT NULL,
     createTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modifyTime TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+    deleted    boolean   DEFAULT false,
     userId     bigint        NOT NULL,
     questionId bigint        NOT NULL,
     primary key (id),

@@ -1,9 +1,7 @@
 package kr.codesqaud.cafe.app.question.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
-import kr.codesqaud.cafe.app.comment.entity.Comment;
 import kr.codesqaud.cafe.app.user.entity.User;
 
 public class Question {
@@ -13,23 +11,27 @@ public class Question {
     private String content; // 내용
     private final LocalDateTime createTime; // 작성시간
     private final LocalDateTime modifyTime; // 갱신시간
+    private Boolean deleted;
     private final User writer; // 회원 등록번호
-    private final List<Comment> comments; // 질문 게시글의 댓글들
 
-    public Question(Long id, String title, String content, LocalDateTime createTime,
-        LocalDateTime modifyTime, User writer, List<Comment> comments) {
+    private Question(Long id, String title, String content, LocalDateTime createTime,
+        LocalDateTime modifyTime, Boolean deleted, User writer) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.createTime = createTime;
         this.modifyTime = modifyTime;
+        this.deleted = deleted;
         this.writer = writer;
-        this.comments = comments;
     }
 
     public void modify(Question question) {
         this.title = question.getTitle();
         this.content = question.getContent();
+    }
+
+    public void delete() {
+        this.deleted = true;
     }
 
     public Long getId() {
@@ -52,17 +54,18 @@ public class Question {
         return modifyTime;
     }
 
-    public User getWriter() {
-        return writer;
+    public Boolean getDeleted() {
+        return deleted;
     }
 
-    public List<Comment> getComments() {
-        return comments;
+    public User getWriter() {
+        return writer;
     }
 
     public static Builder builder() {
         return new Builder();
     }
+
 
     public static class Builder {
 
@@ -71,8 +74,8 @@ public class Question {
         private String content;
         private LocalDateTime createTime;
         private LocalDateTime modifyTime;
+        private Boolean deleted;
         private User writer;
-        private List<Comment> comments;
 
         public Builder id(Long id) {
             this.id = id;
@@ -99,18 +102,18 @@ public class Question {
             return this;
         }
 
+        public Builder deleted(Boolean deleted) {
+            this.deleted = deleted;
+            return this;
+        }
+
         public Builder writer(User writer) {
             this.writer = writer;
             return this;
         }
 
-        public Builder comments(List<Comment> comments) {
-            this.comments = comments;
-            return this;
-        }
-
         public Question build() {
-            return new Question(id, title, content, createTime, modifyTime, writer, comments);
+            return new Question(id, title, content, createTime, modifyTime, deleted, writer);
         }
     }
 
@@ -139,7 +142,8 @@ public class Question {
             ", content='" + content + '\'' +
             ", createTime=" + createTime +
             ", modifyTime=" + modifyTime +
-            ", userId=" + writer +
+            ", deleted=" + deleted +
+            ", writer=" + writer +
             '}';
     }
 }

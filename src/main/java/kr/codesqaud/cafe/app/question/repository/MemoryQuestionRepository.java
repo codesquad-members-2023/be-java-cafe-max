@@ -32,8 +32,8 @@ public class MemoryQuestionRepository implements QuestionRepository {
                 .title(question.getTitle())
                 .content(question.getContent())
                 .createTime(LocalDateTime.now())
+                .deleted(question.getDeleted())
                 .writer(question.getWriter())
-                .comments(question.getComments())
                 .build();
         store.add(newQuestion);
         return newQuestion;
@@ -49,7 +49,7 @@ public class MemoryQuestionRepository implements QuestionRepository {
     @Override
     public Question deleteById(Long id) {
         Question delQuestion = findById(id).orElseThrow();
-        store.remove(delQuestion);
+        delQuestion.delete();
         return delQuestion;
     }
 

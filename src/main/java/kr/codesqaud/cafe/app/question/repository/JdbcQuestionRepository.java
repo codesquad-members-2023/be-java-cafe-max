@@ -29,15 +29,25 @@ public class JdbcQuestionRepository implements QuestionRepository {
 
     @Override
     public List<Question> findAll() {
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append(
+                "SELECT q.ID, q.TITLE, q.CONTENT, q.CREATETIME, u.ID uid, u.NAME ")
+            .append("FROM question q INNER JOIN users u ON q.USERID = u.ID ")
+            .append("WHERE q.DELETED = false");
         return template.query(
-            "SELECT q.ID, q.TITLE, q.CONTENT, q.CREATETIME, u.ID uid, u.NAME FROM question q INNER JOIN users u ON q.USERID = u.ID",
+            sqlBuilder.toString(),
             questionRowMapper());
     }
 
     @Override
     public Optional<Question> findById(Long id) {
+        StringBuilder sqlBuilder = new StringBuilder();
+        sqlBuilder.append(
+                "SELECT q.ID, q.TITLE, q.CONTENT, q.CREATETIME, u.ID uid, u.NAME ")
+            .append("FROM question q INNER JOIN users u ON q.USERID = u.ID ")
+            .append("WHERE q.ID = ? and q.DELETED = false");
         List<Question> result = template.query(
-            "SELECT q.ID, q.TITLE, q.CONTENT, q.CREATETIME, u.ID as uid, u.NAME FROM question q INNER JOIN users u ON q.USERID = u.ID WHERE q.ID = ?",
+            sqlBuilder.toString(),
             questionRowMapper(), id);
         return result.stream().findAny();
     }
@@ -84,7 +94,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
     @Override
     public Question deleteById(Long id) {
         Question delQuestion = findById(id).orElseThrow();
-        template.update("DELETE FROM question q WHERE q.ID = ?", id);
+        template.update("UPDATE question SET deleted = true WHERE ID = ?", id);
         return delQuestion;
     }
 }

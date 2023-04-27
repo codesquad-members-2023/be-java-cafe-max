@@ -27,34 +27,25 @@ public class JdbcCommentRepository implements CommentRepository {
 
     @Override
     public List<Comment> findAll(Long questionId) {
-        StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder
-            .append(
-                "SELECT c.ID id, c.CONTENT content, c.CREATETIME createTime, c.USERID uid, u.NAME name, c.QUESTIONID qid")
-            .append(" ");
-        sqlBuilder
-            .append("FROM comment c INNER JOIN question q ON c.QUESTIONID = q.ID")
-            .append(" ");
-        sqlBuilder.append("INNER JOIN users u ON c.USERID = u.ID").append(" ");
-        sqlBuilder.append("WHERE q.ID = ?");
-        String sql = sqlBuilder.toString();
-        return template.query(sql, commentRowMapper(), questionId);
+        StringBuilder sql = new StringBuilder();
+        sql
+            .append("SELECT c.ID id, c.CONTENT content, c.CREATETIME createTime, ")
+            .append("c.USERID uid, u.NAME name, c.QUESTIONID qid ")
+            .append("FROM comment c INNER JOIN question q ON c.QUESTIONID = q.ID ")
+            .append("INNER JOIN users u ON c.USERID = u.ID ")
+            .append("WHERE q.ID = ? and c.DELETED = false");
+        return template.query(sql.toString(), commentRowMapper(), questionId);
     }
 
     @Override
     public Optional<Comment> findById(Long id) {
-        StringBuilder sqlBuilder = new StringBuilder();
-        sqlBuilder
-            .append(
-                "SELECT c.ID id, c.CONTENT content, c.CREATETIME createTime, c.USERID uid, u.NAME name, c.QUESTIONID qid")
-            .append(" ");
-        sqlBuilder
-            .append("FROM comment c INNER JOIN question q ON c.QUESTIONID = q.ID")
-            .append(" ");
-        sqlBuilder.append("INNER JOIN users u ON c.USERID = u.ID").append(" ");
-        sqlBuilder.append("WHERE c.ID = ?");
-        String sql = sqlBuilder.toString();
-        List<Comment> result = template.query(sql, commentRowMapper(), id);
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT c.ID id, c.CONTENT content, c.CREATETIME createTime, ")
+            .append("c.USERID uid, u.NAME name, c.QUESTIONID qid ")
+            .append("FROM comment c INNER JOIN question q ON c.QUESTIONID = q.ID ")
+            .append("INNER JOIN users u ON c.USERID = u.ID ")
+            .append("WHERE c.ID = ? and c.DELETED = false");
+        List<Comment> result = template.query(sql.toString(), commentRowMapper(), id);
         return result.stream().findAny();
     }
 
@@ -79,6 +70,11 @@ public class JdbcCommentRepository implements CommentRepository {
         Comment delComment = findById(id).orElseThrow();
         template.update("DELETE FROM comment WHERE id = ?", id);
         return delComment;
+    }
+
+    @Override
+    public void deleteAllByQuestionId(Long questionId) {
+        template.update("UPDATE comment SET deleted = true WHERE questionId = ?", questionId);
     }
 
     private PreparedStatement getPreparedStatement(Comment comment, Connection con, String sql)

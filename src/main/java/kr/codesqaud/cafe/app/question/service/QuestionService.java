@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.app.question.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.codesqaud.cafe.app.comment.repository.CommentRepository;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
 import kr.codesqaud.cafe.app.question.entity.Question;
@@ -15,9 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class QuestionService {
 
     private final QuestionRepository repository;
+    private final CommentRepository commentRepository;
 
-    public QuestionService(QuestionRepository repository) {
+    public QuestionService(QuestionRepository repository, CommentRepository commentRepository) {
         this.repository = repository;
+        this.commentRepository = commentRepository;
     }
 
     @Transactional
@@ -49,6 +52,7 @@ public class QuestionService {
 
     @Transactional
     public QuestionResponse delete(Long id) {
+        commentRepository.deleteAllByQuestionId(id);
         return new QuestionResponse(repository.deleteById(id));
     }
 }

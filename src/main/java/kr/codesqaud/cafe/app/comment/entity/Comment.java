@@ -10,15 +10,17 @@ public class Comment {
     private String content;
     private final LocalDateTime createTime;
     private final LocalDateTime modifyTime;
+    private final Boolean deleted;
     private final Question question;
     private final User writer;
 
     private Comment(Long id, String content, LocalDateTime createTime, LocalDateTime modifyTime,
-        Question question, User writer) {
+        Boolean deleted, Question question, User writer) {
         this.id = id;
         this.content = content;
         this.createTime = createTime;
         this.modifyTime = modifyTime;
+        this.deleted = deleted;
         this.question = question;
         this.writer = writer;
     }
@@ -43,6 +45,10 @@ public class Comment {
         return modifyTime;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
     public Question getQuestion() {
         return question;
     }
@@ -62,6 +68,7 @@ public class Comment {
         private String content;
         private LocalDateTime createTime;
         private LocalDateTime modifyTime;
+        private Boolean deleted;
         private Question question;
         private User writer;
 
@@ -85,6 +92,11 @@ public class Comment {
             return this;
         }
 
+        public Builder deleted(Boolean deleted) {
+            this.deleted = deleted;
+            return this;
+        }
+
         public Builder question(Question question) {
             this.question = question;
             return this;
@@ -96,7 +108,7 @@ public class Comment {
         }
 
         public Comment build() {
-            return new Comment(id, content, createTime, modifyTime, question, writer);
+            return new Comment(id, content, createTime, modifyTime, deleted, question, writer);
         }
     }
 }
