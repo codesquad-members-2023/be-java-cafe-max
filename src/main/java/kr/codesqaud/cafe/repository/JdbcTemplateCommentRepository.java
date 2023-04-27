@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Comment;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -11,6 +13,8 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 public class JdbcTemplateCommentRepository implements CommentRepository{
@@ -34,27 +38,15 @@ public class JdbcTemplateCommentRepository implements CommentRepository{
     }
 
     @Override
-    public void deleteById(Long id) {
-        String sql = "DELETE FROM COMMENT_TB WHERE id = :id";
-        Map<String, Object> param = Map.of("id", id);
-        template.update(sql, param);
+    public List<Comment> gatherAllByArticleId(Long articleId) {
+        String sql = "SELECT * FROM COMMENT_TB WHERE articleId = :articleId ORDER BY id ASC";
+        Map<String, Object> param = Map.of("articleId", articleId);
+        try (Stream<Comment> result = template.queryForStream(sql, param, commentRowMapper())) {
+            return result.collect(Collectors.toList());
+        }
     }
 
-    @Override
-    public void deleteByReId(Long reId) {
-        String sql = "DELETE FROM COMMENT_TB WHERE reId = :reId";
-        Map<String, Object> param = Map.of("reId", reId);
-        template.update(sql, param);
-    }
-
-
-    @Override
-    public Optional<Comment> findById(Long id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<Comment> gatherAll() {
-        return null;
+    private RowMapper<Comment> commentRowMapper() {
+        return BeanPropertyRowMapper.newInstance(Comment.class);
     }
 }
