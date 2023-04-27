@@ -8,7 +8,7 @@
 </div>
 <div class="board">
     <div class="countOfPost">
-        <p>전체 글 <span id="post_count">{{articles.size}}</span>개</p>
+        <p>전체 글 <span id="post_count">{{articlesSize}}</span>개</p>
     </div>
     <div class="board_list">
         <ul class="line_list">
@@ -32,13 +32,19 @@
         <div class="write-menu">
             <div class="page">
                 <ul class="pagination">
-                    <li><a href="#" class="prev">«</a></li>
-                    <li><a href="#" class="num on">1</a></li>
-                    <li><a href="#" class="num">2</a></li>
-                    <li><a href="#" class="num">3</a></li>
-                    <li><a href="#" class="num">4</a></li>
-                    <li><a href="#" class="num">5</a></li>
-                    <li><a href="#" class="next">»</a></li>
+                    {{#prev}}
+                    <li><a href="/{{prev}}" class="prev">«</a></li>
+                    {{/prev}}
+                    {{#pagingPrevNum}}
+                    <li><a href="/{{.}}" class="num">{{.}}</a></li>
+                    {{/pagingPrevNum}}
+                    <li><a href="/{{current}}" class="num on">{{current}}</a></li>
+                    {{#pagingNextNum}}
+                    <li><a href="/{{.}}" class="num">{{.}}</a></li>
+                    {{/pagingNextNum}}
+                    {{#next}}
+                    <li><a href="/{{next}}" class="next">»</a></li>
+                    {{/next}}
                 </ul>
             </div>
             <div class="write">

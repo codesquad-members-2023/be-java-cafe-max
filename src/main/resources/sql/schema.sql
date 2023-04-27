@@ -36,3 +36,15 @@ CREATE TABLE IF NOT EXISTS COMMENT_INFO
     FOREIGN KEY (author)
     REFERENCES USER_INFO(nickname) ON UPDATE CASCADE
 );
+
+DELIMITER $$
+CREATE PROCEDURE createNewArticle()
+BEGIN DECLARE i INT DEFAULT 1;
+WHILE (i <= 80) DO
+INSERT INTO ARTICLE_INFO(title, writer, contents, writeDate, hits) VALUES ("제목" + i, "wis", "내용" + i, "2023-04-27 22:23:05", 0);
+SET i = i + 1;
+END WHILE;
+END$$
+DELIMITER ;
+
+CALL createNewArticle();

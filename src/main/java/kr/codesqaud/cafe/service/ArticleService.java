@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,6 +14,7 @@ import kr.codesqaud.cafe.dto.ArticleRequest;
 import kr.codesqaud.cafe.dto.ArticleResponse;
 import kr.codesqaud.cafe.dto.CommentRequest;
 import kr.codesqaud.cafe.dto.CommentResponse;
+import kr.codesqaud.cafe.dto.Paging;
 import kr.codesqaud.cafe.dto.UserRequest;
 import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.exception.CommentNotFoundException;
@@ -46,16 +48,6 @@ public class ArticleService {
 		return new ArticleResponse(article.getArticleIndex(), article.getTitle(), article.getWriter(),
 			article.getContents(),
 			article.getWriteDate(), article.getHits(), article.isDeleted());
-	}
-
-	public List<ArticleResponse> findArticleResponses() {
-		List<Article> articles = articleRepository.findAll();
-		return articles.stream()
-			.map(
-				a -> new ArticleResponse(a.getArticleIndex(), a.getTitle(), a.getWriter(), a.getContents(),
-					a.getWriteDate(),
-					a.getHits(), a.isDeleted()))
-			.collect(Collectors.toList());
 	}
 
 	public void increaseHits(Long articleIndex) {
@@ -121,5 +113,38 @@ public class ArticleService {
 		Comment comment = commentRepository.findOne(articleIndex, commentIndex)
 			.orElseThrow(CommentNotFoundException::new);
 		comment.validateAuthor(nickname);
+	}
+
+	public List<ArticleResponse> findArticleResponsesPage(int page) {
+		List<Article> articles = articleRepository.findPage(page);
+		return articles.stream()
+			.map(a -> new ArticleResponse(a.getArticleIndex(), a.getTitle(), a.getWriter(), a.getContents(),
+				a.getWriteDate(), a.getHits(), a.isDeleted()))
+			.collect(Collectors.toList());
+	}
+
+	public Paging paging(int page) {
+		int articleSize = getArticleSize();
+		return new Paging(page, articleSize);
+	}
+
+	public int getArticleSize() {
+		return (articleRepository.getArticleSize() == null) ? 0 : articleRepository.getArticleSize();
+	}
+
+	public List<Integer> makePagingPrevNumber(Integer start, int page) {
+		List<Integer> pagingNum = new ArrayList<>();
+		for (int i = start; i < page; i++) {
+			pagingNum.add(i);
+		}
+		return pagingNum;
+	}
+
+	public List<Integer> makePagingNextNumber(int page, Integer end) {
+		List<Integer> pagingNum = new ArrayList<>();
+		for (int i = page + 1; i <= end; i++) {
+			pagingNum.add(i);
+		}
+		return pagingNum;
 	}
 }

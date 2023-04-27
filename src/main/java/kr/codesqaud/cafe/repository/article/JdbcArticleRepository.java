@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.repository.article;
 
+import static kr.codesqaud.cafe.dto.Paging.*;
 import static kr.codesqaud.cafe.repository.article.ArticleSql.*;
 
 import java.util.List;
@@ -43,8 +44,11 @@ public class JdbcArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public List<Article> findAll() {
-		return namedParameterJdbcTemplate.query(SELECT_ALL_FOR_ARTICLE_LIST, articleRowMapper());
+	public List<Article> findPage(int page) {
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("page", PAGE_SIZE * (page - 1))
+			.addValue("pageSize", PAGE_SIZE);
+		return namedParameterJdbcTemplate.query(SELECT_ALL_FOR_ARTICLE_LIST, param, articleRowMapper());
 	}
 
 	@Override
@@ -78,6 +82,13 @@ public class JdbcArticleRepository implements ArticleRepository {
 			.addValue("articleIndex", articleIndex);
 		return namedParameterJdbcTemplate.query(SELECT_WRITER_BY_ARTICLE_INDEX, param,
 			articleWriterRowMapper()).get(0);
+	}
+
+	@Override
+	public Integer getArticleSize() {
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("deleted", false);
+		return namedParameterJdbcTemplate.queryForObject(COUNT_ARTICLE_SIZE, param, Integer.class);
 	}
 
 	private RowMapper<Article> articleRowMapper() {

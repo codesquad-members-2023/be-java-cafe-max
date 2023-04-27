@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import kr.codesqaud.cafe.dto.ArticleResponse;
 import kr.codesqaud.cafe.dto.CommentResponse;
+import kr.codesqaud.cafe.dto.Paging;
 import kr.codesqaud.cafe.dto.UserRequest;
 import kr.codesqaud.cafe.service.ArticleService;
 
@@ -22,10 +23,25 @@ public class ArticleQueryController {
 		this.articleService = articleService;
 	}
 
-	@GetMapping("/")
-	public String getArticleList(Model model) {
-		List<ArticleResponse> articleResponses = articleService.findArticleResponses();
+	@GetMapping
+	public String getArticleList() {
+		return "/1";
+	}
+
+	@GetMapping("/{page}")
+	public String getArticleListPage(@PathVariable int page, Model model) {
+		List<ArticleResponse> articleResponses = articleService.findArticleResponsesPage(page);
+		Paging paging = articleService.paging(page);
+		List<Integer> pagingPrevNum = articleService.makePagingPrevNumber(paging.getStart(), page);
+		List<Integer> pagingNextNum = articleService.makePagingNextNumber(page, paging.getEnd());
+		int articlesSize = articleService.getArticleSize();
 		model.addAttribute("articles", articleResponses);
+		model.addAttribute("articlesSize", articlesSize);
+		model.addAttribute("prev", paging.getPrev());
+		model.addAttribute("next", paging.getNext());
+		model.addAttribute("current", page);
+		model.addAttribute("pagingPrevNum", pagingPrevNum);
+		model.addAttribute("pagingNextNum", pagingNextNum);
 		return "index";
 	}
 

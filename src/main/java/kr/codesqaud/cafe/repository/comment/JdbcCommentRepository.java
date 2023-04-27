@@ -24,8 +24,7 @@ public class JdbcCommentRepository implements CommentRepository {
 
 	private RowMapper<Comment> commentRowMapper() {
 		return (rs, rowNum) -> new Comment(rs.getLong("commentIndex"), rs.getLong("articleIndex"),
-			rs.getString("author"),
-			rs.getString("comment"), rs.getString("createdDate"), rs.getBoolean("deleted"));
+			rs.getString("author"), rs.getString("comment"), rs.getString("createdDate"), rs.getBoolean("deleted"));
 	}
 
 	@Override

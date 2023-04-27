@@ -3,7 +3,9 @@ package kr.codesqaud.cafe.repository.article;
 public class ArticleSql {
 	public static final String SELECT_ALL_FOR_ARTICLE_LIST
 		= "SELECT articleIndex, title, writer, contents, writeDate, hits "
-		+ "FROM ARTICLE_INFO WHERE deleted = false";
+		+ "FROM ARTICLE_INFO WHERE deleted = false "
+		+ "ORDER BY articleIndex DESC "
+		+ "LIMIT :page, :pageSize";
 
 	public static final String FIND_BY_INDEX
 		= "SELECT articleIndex, title, writer, contents, writeDate, hits "
@@ -26,4 +28,8 @@ public class ArticleSql {
 	public static final String SELECT_WRITER_BY_ARTICLE_INDEX
 		= "SELECT writer "
 		+ "FROM ARTICLE_INFO WHERE articleIndex = :articleIndex";
+
+	public static final String COUNT_ARTICLE_SIZE
+		= "SELECT COUNT(*) "
+		+ "FROM ARTICLE_INFO WHERE deleted = :deleted";
 }

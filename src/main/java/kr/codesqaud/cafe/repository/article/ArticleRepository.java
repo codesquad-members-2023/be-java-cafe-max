@@ -11,7 +11,7 @@ public interface ArticleRepository {
 
 	Optional<Article> findByArticleIndex(Long articleIndex);
 
-	List<Article> findAll();
+	List<Article> findPage(int page);
 
 	boolean increaseHits(Long index);
 
@@ -20,4 +20,6 @@ public interface ArticleRepository {
 	boolean update(Long index, ArticleRequest articleRequest);
 
 	Article findWriterByArticleIndex(Long articleIndex);
+
+	Integer getArticleSize();
 }
