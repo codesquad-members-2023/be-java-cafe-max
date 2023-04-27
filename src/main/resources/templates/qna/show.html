@@ -120,11 +120,17 @@
                                     </ul>
                                 </div>
                             </article>
-                            <form class="submit-write">
-                                <div class="form-group" style="padding:14px;">
-                                    <textarea class="form-control" placeholder="Update your status"></textarea>
+                            <form class="submit-write" th:action="@{{id}/reply(id = ${articleDto.getId()})}"
+                                  th:method="post" th:object="${replyForm}">
+                                <div>
+                                    <input type="hidden" id="articleId" name="articleId" th:value="${articleDto.getId()}"/>
+                                    <input type="hidden" id="writer" name="writer" th:value="${articleDto.getWriter()}"/>
                                 </div>
-                                <button class="btn btn-success pull-right" type="button">답변하기</button>
+                                <div class="form-group" style="padding:14px;">
+                                    <textarea name="contents" id="contents" class="form-control"
+                                              placeholder="Update your status"></textarea>
+                                </div>
+                                <button class="btn btn-success pull-right" type="submit">답변하기</button>
                                 <div class="clearfix"/>
                             </form>
                         </div>

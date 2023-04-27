@@ -3,7 +3,10 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.dto.ArticleDto;
 import kr.codesqaud.cafe.dto.ArticleForm;
+import kr.codesqaud.cafe.dto.ReplyDto;
+import kr.codesqaud.cafe.dto.ReplyForm;
 import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +17,13 @@ import java.util.List;
 @Controller
 @RequestMapping
 public class ArticleController {
-    private final ArticleService articleService;
 
-    public ArticleController(ArticleService articleService) {
+    private final ArticleService articleService;
+    private final ReplyService replyService;
+
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
     @GetMapping
@@ -41,10 +47,12 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public String showArticleById(@PathVariable("id") long id, Model model) {
+    public String showArticleById(@PathVariable("id") long id, Model model, ReplyForm replyForm) {
         ArticleDto articleDto = articleService.findById(id);
-        model.addAttribute("articleDto", articleDto);
+        List<ReplyDto> replyDtos = replyService.findAllByArticleId(id);
 
+        model.addAttribute("articleDto", articleDto);
+        model.addAttribute("replyDtos", replyDtos);
         return "qna/show";
     }
 
@@ -81,4 +89,10 @@ public class ArticleController {
         return "redirect:/articles/{id}";
     }
 
+    @PostMapping("/articles/{id}/reply")
+    public String saveReply(@PathVariable("id") long articleId, ReplyForm replyForm) {
+        replyService.save(replyForm);
+
+        return "redirect:/}";
+    }
 }
