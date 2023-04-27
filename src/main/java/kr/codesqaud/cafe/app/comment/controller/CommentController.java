@@ -64,7 +64,7 @@ public class CommentController {
             throw new RestApiException(UserErrorCode.PERMISSION_DENIED);
         }
 
-        return commentService.modifyComment(commentRequest);
+        return commentService.modifyComment(commentId, commentRequest);
     }
 
     // 댓글 삭제

@@ -7,7 +7,6 @@ import kr.codesqaud.cafe.app.user.entity.User;
 
 public class CommentSavedRequest {
 
-    private Long id;
     @Size(min = 1, max = 3000, message = "3000자 이내로 입력해주세요.")
     private String content;
     private Long questionId;
@@ -17,8 +16,7 @@ public class CommentSavedRequest {
 
     }
 
-    public CommentSavedRequest(Long id, String content, Long questionId, Long userId) {
-        this.id = id;
+    public CommentSavedRequest(String content, Long questionId, Long userId) {
         this.content = content;
         this.questionId = questionId;
         this.userId = userId;
@@ -36,10 +34,6 @@ public class CommentSavedRequest {
         return userId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public Comment toEntity() {
         return Comment.builder()
             .content(content)
@@ -51,8 +45,7 @@ public class CommentSavedRequest {
     @Override
     public String toString() {
         return "CommentSavedRequest{" +
-            "id=" + id +
-            ", content='" + content + '\'' +
+            "content='" + content + '\'' +
             ", questionId=" + questionId +
             ", userId=" + userId +
             '}';

@@ -44,8 +44,8 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponse modifyComment(CommentSavedRequest commentRequest) {
-        Comment original = commentRepository.findById(commentRequest.getId()).orElseThrow();
+    public CommentResponse modifyComment(Long id, CommentSavedRequest commentRequest) {
+        Comment original = commentRepository.findById(id).orElseThrow();
         original.modify(commentRequest.toEntity());
         Comment modifyComment = commentRepository.modify(original);
         return new CommentResponse(modifyComment);
