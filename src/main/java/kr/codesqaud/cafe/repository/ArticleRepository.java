@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
+import kr.codesqaud.cafe.controller.dto.request.ArticleWithReplyCount;
 import kr.codesqaud.cafe.domain.Article;
 
 import java.util.List;
@@ -9,6 +10,8 @@ public interface ArticleRepository {
     Article save(Article article);
 
     List<Article> findAll();
+
+    List<ArticleWithReplyCount> findAllArticlesWithReplyCount();
 
     Optional<Article> findById(Long id);
 
