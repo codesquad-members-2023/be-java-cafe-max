@@ -18,6 +18,8 @@ $(document).ready(function () {
 
   $(".submit-write button[type=submit]").on("click", addAnswer);
   $(".qna-comment-slipp-articles").on("click",
+      ".link-modify-article", showModifyAnswer);
+  $(".qna-comment-slipp-articles").on("click",
       ".delete-answer-form button[type=submit]", deleteAnswer);
 
 })
@@ -47,10 +49,15 @@ function addAnswer(e) {
           data.content,
           data.questionId,
           data.id);
-      $(".qna-comment-slipp-articles").prepend(template);
+      $(".qna-comment-slipp-articles").append(template);
       $("textarea[name=content]").val("");
     }
   });
+}
+
+function showModifyAnswer(e) {
+  console.log($(this).attr("href"))
+  location.href = $(this).attr("href")
 }
 
 function deleteAnswer(e) {
