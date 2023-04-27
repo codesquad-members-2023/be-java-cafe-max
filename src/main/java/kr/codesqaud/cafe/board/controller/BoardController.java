@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.board.controller;
 import kr.codesqaud.cafe.board.dto.CommentResponse;
 import kr.codesqaud.cafe.board.dto.PostResponse;
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
+import kr.codesqaud.cafe.board.paging.PageInfo;
 import kr.codesqaud.cafe.board.service.BoardService;
 import kr.codesqaud.cafe.board.service.CommentService;
 import kr.codesqaud.cafe.exception.ForbiddenException;
@@ -39,8 +40,10 @@ public class BoardController {
     }
 
     @GetMapping
-    public String getPostList(Model model) {
-        model.addAttribute("postList", boardService.getPostList());
+    public String getPostList(@RequestParam(value = "page", defaultValue = "1") int pageNum, Model model) {
+        PageInfo pageInfo = new PageInfo(pageNum, boardService.getTotalCount());
+        model.addAttribute("postList", boardService.getPostList(pageInfo));
+        model.addAttribute("pageInfo", pageInfo);
         return "index";
     }
 

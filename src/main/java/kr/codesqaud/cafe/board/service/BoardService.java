@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.board.service;
 
 import kr.codesqaud.cafe.board.dto.PostResponse;
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
+import kr.codesqaud.cafe.board.paging.PageInfo;
 import kr.codesqaud.cafe.board.repository.BoardJdbcRepository;
 import kr.codesqaud.cafe.board.repository.CommentJdbcRepository;
 import kr.codesqaud.cafe.exception.ForbiddenException;
@@ -42,8 +43,12 @@ public class BoardService {
         return PostResponse.from(boardJdbcRepository.findByPostId(postId));
     }
 
-    public List<PostResponse> getPostList() {
-        return boardJdbcRepository.findAll().stream()
+    public int getTotalCount() {
+        return boardJdbcRepository.countOfTotalPost();
+    }
+
+    public List<PostResponse> getPostList(PageInfo pageInfo) {
+        return boardJdbcRepository.findAll(pageInfo).stream()
                 .map(PostResponse::from)
                 .collect(Collectors.toList());
     }

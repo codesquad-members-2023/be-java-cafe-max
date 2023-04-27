@@ -1,12 +1,14 @@
 package kr.codesqaud.cafe.board.repository;
 
 import kr.codesqaud.cafe.board.domain.BoardPost;
+import kr.codesqaud.cafe.board.paging.PageInfo;
 import kr.codesqaud.cafe.exception.ResourceNotFoundException;
 import kr.codesqaud.cafe.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -62,11 +64,21 @@ public class BoardJdbcRepository {
         }
     }
 
-    public List<BoardPost> findAll() {
+    //TODO: ORDER BY 작성일자로 변경하기
+    public List<BoardPost> findAll(PageInfo pageInfo) {
         return jdbcTemplate.query("SELECT post_id, b.user_id AS writer_id, writer, title, contents, write_date_time " +
                 "FROM post a JOIN users b ON a.writer = b.user_name " +
                 "WHERE deleted = FALSE " +
-                "ORDER BY write_date_time DESC", postRowMapper);
+                "ORDER BY post_id DESC " +
+                "LIMIT :PAGE_SIZE OFFSET :startNum", new BeanPropertySqlParameterSource(pageInfo), postRowMapper);
+    }
+
+    public int countOfTotalPost() {
+        Optional<Integer> totalCount = Optional.ofNullable(jdbcTemplate.queryForObject("SELECT COUNT(*) " +
+                "FROM post " +
+                "WHERE deleted = FALSE " +
+                "ORDER BY post_id DESC", new MapSqlParameterSource(), Integer.class));
+        return totalCount.orElse(0);
     }
 
     public RowMapper<BoardPost> postRowMapper = new RowMapper<BoardPost>() {
