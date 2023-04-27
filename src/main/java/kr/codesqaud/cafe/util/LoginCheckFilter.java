@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.util;
 
-import com.mysql.cj.Session;
+//import com.mysql.cj.Session;
 import org.springframework.util.PatternMatchUtils;
 
 import javax.servlet.*;
