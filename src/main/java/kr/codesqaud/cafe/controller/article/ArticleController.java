@@ -79,7 +79,7 @@ public class ArticleController {
     public String deleteArticle(@PathVariable Long id, HttpSession session, Model model) {
         // 게시글 작성자와 현재 유저가 일치하지 않거나, 게시글과 댓글의 작성자가 일치하지 않으면
         if (!articleService.isAuthCurrentUser(id, session)
-                || articleService.isWriterMatched(id, replyService.findAll(id))) {
+                || !articleService.isWriterMatched(id, replyService.findAll(id))) {
             model.addAttribute("id", id);
             return "qna/edit_failed";
         }
