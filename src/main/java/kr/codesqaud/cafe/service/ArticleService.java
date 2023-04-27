@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.util.LoginSessionManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,12 +22,14 @@ public class ArticleService {
         this.loginSessionManager = loginSessionManager;
     }
 
+    @Transactional
     public void write(final ArticleDTO articleDto) {
         String userName = loginSessionManager.getLoginUser().getName();
         Article article = articleDto.toEntity(userName);
         articleRepository.save(article);
     }
 
+    @Transactional
     public void modify(final long id, final ArticleDTO articleDTO) {
         Article originArticle = articleRepository.findById(id).orElse(null);
         assert originArticle != null;
@@ -44,6 +47,7 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public ArticleDTO findById(final long id) {
         Optional<Article> wantedPost = articleRepository.findById(id);
         return wantedPost.map(ArticleDTO::from).orElse(null);

@@ -9,6 +9,7 @@ import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import kr.codesqaud.cafe.util.LoginSessionManager;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,7 @@ public class UserService {
         return userRepository.findByUserId(userId).isPresent();
     }
 
-    //todo : null 예외처리 하기
+    @Transactional
     public void modify(final long id, final ModifiedUserDTO modifiedUserDTO) {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         user.update(modifiedUserDTO);
@@ -42,7 +43,7 @@ public class UserService {
         loginSessionManager.updateInfo(LoggedInDTO.from(user));
     }
 
-    //todo : null 예외처리 하기
+
     public boolean isPasswordRight(long id, ModifiedUserDTO modifiedUserDTO) {
         User originUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         return originUser.matchPassword(modifiedUserDTO.getOriginPassword());
