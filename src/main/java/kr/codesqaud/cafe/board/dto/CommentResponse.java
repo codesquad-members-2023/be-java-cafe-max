@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.board.dto;
 
 import kr.codesqaud.cafe.board.domain.Comment;
+import kr.codesqaud.cafe.user.domain.User;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -8,22 +9,20 @@ import java.time.format.DateTimeFormatter;
 public class CommentResponse {
     private Long commentId;
     private Long postId;
-    private String writerId;
-    private String writer;
     private String contents;
     private LocalDateTime writeDateTime;
+    private User writer;
 
-    private CommentResponse(Long commentId, Long postId, String writerId, String writer, String contents, LocalDateTime writeDateTime) {
+    private CommentResponse(Long commentId, Long postId, String contents, LocalDateTime writeDateTime, User writer) {
         this.commentId = commentId;
         this.postId = postId;
-        this.writerId = writerId;
-        this.writer = writer;
         this.contents = contents;
         this.writeDateTime = writeDateTime;
+        this.writer = writer;
     }
 
     public static CommentResponse from(Comment comment) {
-        return new CommentResponse(comment.getCommentId(), comment.getPostId(), comment.getWriterId(), comment.getWriter(), comment.getContents(), comment.getWriteDateTime());
+        return new CommentResponse(comment.getCommentId(), comment.getPostId(), comment.getContents(), comment.getWriteDateTime(), comment.getWriter());
     }
 
     public Long getCommentId() {
@@ -34,19 +33,15 @@ public class CommentResponse {
         return postId;
     }
 
-    public String getWriterId() {
-        return writerId;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
     public String getContents() {
         return contents;
     }
 
     public String getWriteDateTime() {
         return writeDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    public User getWriter() {
+        return writer;
     }
 }

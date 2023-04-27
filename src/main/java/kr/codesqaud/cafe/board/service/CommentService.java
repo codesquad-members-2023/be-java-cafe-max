@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.board.domain.Comment;
 import kr.codesqaud.cafe.board.dto.CommentResponse;
 import kr.codesqaud.cafe.board.dto.CommentWriteForm;
 import kr.codesqaud.cafe.board.repository.CommentJdbcRepository;
+import kr.codesqaud.cafe.user.domain.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,10 @@ public class CommentService {
     public Long write(CommentWriteForm commentWriteForm, String userName) {
         Comment comment = Comment.builder()
                 .postId(commentWriteForm.getPostId())
-                .writer(userName)
                 .contents(commentWriteForm.getContents())
+                .writer(User.builder()
+                        .userName(userName)
+                        .build())
                 .build();
         return commentJdbcRepository.save(comment);
     }
@@ -42,6 +45,6 @@ public class CommentService {
 
     public boolean isSameWriter(Long commentId, String sessionUserName) {
         Comment comment = commentJdbcRepository.findByCommentId(commentId);
-        return sessionUserName.equals(comment.getWriter());
+        return sessionUserName.equals(comment.getWriter().getUserName());
     }
 }

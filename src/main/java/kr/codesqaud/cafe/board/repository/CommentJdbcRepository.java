@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.board.repository;
 
 import kr.codesqaud.cafe.board.domain.Comment;
 import kr.codesqaud.cafe.exception.ResourceNotFoundException;
+import kr.codesqaud.cafe.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.RowMapper;
@@ -31,7 +32,7 @@ public class CommentJdbcRepository {
     public Long save(Comment comment) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
-                "INSERT INTO comment (post_id, writer, contents) VALUES (:postId, :writer, :contents)",
+                "INSERT INTO comment (post_id, writer, contents) VALUES (:postId, :writer.userName, :contents)",
                 new BeanPropertySqlParameterSource(comment), keyHolder);
         return keyHolder.getKey().longValue();
     }
@@ -69,10 +70,12 @@ public class CommentJdbcRepository {
             return Comment.builder()
                     .commentId(rs.getLong("comment_id"))
                     .postId(rs.getLong("post_id"))
-                    .writerId(rs.getString("writer_id"))
-                    .writer(rs.getString("writer"))
                     .contents(rs.getString("contents"))
                     .writeDateTime(rs.getTimestamp("write_date_time").toLocalDateTime())
+                    .writer(User.builder()
+                            .userId(rs.getString("writer_id"))
+                            .userName(rs.getString("writer"))
+                            .build())
                     .build();
         }
     };

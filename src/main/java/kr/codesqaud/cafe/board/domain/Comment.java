@@ -1,22 +1,22 @@
 package kr.codesqaud.cafe.board.domain;
 
+import kr.codesqaud.cafe.user.domain.User;
+
 import java.time.LocalDateTime;
 
 public class Comment {
     private final Long commentId;
     private final Long postId;
-    private final String writerId;
-    private final String writer;
     private final String contents;
     private final LocalDateTime writeDateTime;
+    private final User writer;
 
     private Comment(Builder builder) {
         this.commentId = builder.commentId;
         this.postId = builder.postId;
-        this.writerId = builder.writerId;
-        this.writer = builder.writer;
         this.contents = builder.contents;
         this.writeDateTime = builder.writeDateTime;
+        this.writer = builder.writer;
     }
 
     public Long getCommentId() {
@@ -27,20 +27,16 @@ public class Comment {
         return postId;
     }
 
-    public String getWriterId() {
-        return writerId;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
     public String getContents() {
         return contents;
     }
 
     public LocalDateTime getWriteDateTime() {
         return writeDateTime;
+    }
+
+    public User getWriter() {
+        return writer;
     }
 
     public static Builder builder() {
@@ -50,10 +46,9 @@ public class Comment {
     public static class Builder {
         private Long commentId;
         private Long postId;
-        private String writerId;
-        private String writer;
         private String contents;
         private LocalDateTime writeDateTime;
+        private User writer;
 
         public Builder commentId(Long commentId) {
             this.commentId = commentId;
@@ -65,16 +60,6 @@ public class Comment {
             return this;
         }
 
-        public Builder writerId(String writerId) {
-            this.writerId = writerId;
-            return this;
-        }
-
-        public Builder writer(String writer) {
-            this.writer = writer;
-            return this;
-        }
-
         public Builder contents(String contents) {
             this.contents = contents;
             return this;
@@ -82,6 +67,11 @@ public class Comment {
 
         public Builder writeDateTime(LocalDateTime writeDateTime) {
             this.writeDateTime = writeDateTime;
+            return this;
+        }
+
+        public Builder writer(User writer) {
+            this.writer = writer;
             return this;
         }
 

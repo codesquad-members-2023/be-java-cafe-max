@@ -50,7 +50,7 @@ public class BoardController {
         model.addAttribute("post", postResponse);
 
         String sessionUserName = sessionUser.getUserName();
-        if (sessionUserName.equals(postResponse.getWriter())) {
+        if (sessionUserName.equals(postResponse.getWriter().getUserName())) {
             model.addAttribute("isWriter", true);
         }
 
@@ -68,7 +68,7 @@ public class BoardController {
         model.addAttribute("post", postResponse);
 
         String sessionUserName = sessionUser.getUserName();
-        if (!sessionUserName.equals(postResponse.getWriter())) {
+        if (!sessionUserName.equals(postResponse.getWriter().getUserName())) {
             throw new ForbiddenException("접근할 수 없는 페이지입니다.");
         }
 

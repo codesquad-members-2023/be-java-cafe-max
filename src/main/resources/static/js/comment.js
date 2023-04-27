@@ -30,7 +30,7 @@ function addComment(e) {
         success : function(data, status) {
             console.log(data);
             const commentTemplate = $("#answerTemplate").html();
-            const template = commentTemplate.format(data.writerId, data.writer, data.writeDateTime, data.contents, data.postId, data.commentId);
+            const template = commentTemplate.format(data.writer.userId, data.writer.userName, data.writeDateTime, data.contents, data.postId, data.commentId);
             $(".qna-comment-slipp-articles").append(template);
             $("textarea[name=contents]").val("");
 
