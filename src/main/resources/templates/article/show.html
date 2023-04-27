@@ -82,14 +82,14 @@
                                   <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
                               </div>
                               <div class="article-header-text">
-                                <div class="article-author-name">&nbsp ${reply.writer}</div>
-                                <div class="article-header-time">${reply.createdAt}</div>
+                                <div class="article-author-name" data-reply-writer="${reply.writer}">&nbsp ${reply.writer}</div>
+                                <div class="article-header-time" data-reply-created-at="${reply.createdAt}">${reply.createdAt}</div>
                                 <div class="article-doc comment-doc">
                                     <p id="reply-comments-${reply.id}">${reply.comments}</p>
                                 </div>
                               </div>
                           </div>
-                          <div class="article-util" th:if="">
+                          <div class="article-util">
                               <ul class="article-util-list">
                                   <li><button class="update-answer-button" type="button" id="reply-update-button" data-reply-id="${reply.id}">수정</button></li>
                                   <li><button class="delete-answer-button" type="button" id="reply-delete-button" data-reply-id="${reply.id}">삭제</button></li>
@@ -139,22 +139,28 @@
         e.preventDefault();
         const replyId = $(this).data('reply-id');
         const comments = $(`#reply-comments-${replyId}`).text().trim();
+        const writer = $("#article-" + replyId + " .article-author-name").data("reply-writer");
+        const createdAt = $("#article-" + replyId + " .article-header-time").data("reply-created-at");
 
         const editForm = `
-          <div class="qna-comment">
-            <div class="qna-comment-slipp">
-                <div class="qna-comment-slipp-articles">
-                    <form class="reply-update-form" style="padding:14px;">
-                        <input type="hidden" id="reply-id" value="${replyId}"/>
-                        <div class="form-group" style="padding:14px;">
-                            <textarea class="form-control" id="reply-comments">${comments}</textarea>
-                        </div>
-                        <button class="btn btn-success pull-right" type="submit" id="reply-update-success">수정 완료</button>
-                        <div class="clearfix"></div>
-                    </form>
+          <article class="article" id="article-${replyId}">
+              <div class="qna-comment">
+                <div class="qna-comment-slipp">
+                    <div class="qna-comment-slipp-articles">
+                        <form class="reply-update-form" style="padding:14px;">
+                            <input type="hidden" id="reply-id" value="${replyId}"/>
+                            <input type="hidden" id="reply-writer" value="${writer}"/>
+                            <input type="hidden" id="reply-created-at" value="${createdAt}"/>
+                            <div class="form-group" style="padding:14px;">
+                                <textarea class="form-control" id="reply-comments">${comments}</textarea>
+                            </div>
+                            <button class="btn btn-success pull-right" type="submit" id="reply-update-success">수정 완료</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
                 </div>
-            </div>
-        </div>
+              </div>
+          </article>
         `;
         $(`#article-${replyId}`).replaceWith(editForm);
     });
@@ -162,6 +168,8 @@
     $(document).on('submit', '.reply-update-form', function(e) {
         e.preventDefault();
         const replyId = $('#reply-id').val();
+        const writer = $('#reply-writer').val();
+        const createdAt = $('#reply-created-at').val();
         const updatedComment = $('#reply-comments').val();
 
         let replyUpdateDto = {
@@ -175,7 +183,29 @@
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(replyUpdateDto),
             success: function(response) {
-                printReplyList();
+                const updatedReplyHtml = `
+                      <article class="article" id="article-${replyId}">
+                          <div class="article-header">
+                              <div class="article-header-thumb">
+                                  <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
+                              </div>
+                              <div class="article-header-text">
+                                <div class="article-author-name" data-reply-writer="${writer}">&nbsp ${writer}</div>
+                                <div class="article-header-time" data-reply-created-at="${createdAt}">${createdAt}</div>
+                                <div class="article-doc comment-doc">
+                                    <p id="reply-comments-${replyId}">${updatedComment}</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="article-util">
+                              <ul class="article-util-list">
+                                  <li><button class="update-answer-button" type="button" id="reply-update-button" data-reply-id="${replyId}">수정</button></li>
+                                  <li><button class="delete-answer-button" type="button" id="reply-delete-button" data-reply-id="${replyId}">삭제</button></li>
+                              </ul>
+                          </div>
+                      </article>
+                `;
+                $(`#article-${replyId}`).replaceWith(updatedReplyHtml);
             },
             error: function(jqXHR, status, err) {
                 const response = jqXHR.responseJSON;
@@ -197,7 +227,9 @@
             url: "/articles/" + articleId + "/replies/" + replyId,
             type: 'DELETE',
             success: function (response) {
-                printReplyList();
+                const deletedReplyElement = document.getElementById(`article-${replyId}`);
+
+                deletedReplyElement.style.display = 'none';
             },
             error: function(xhr, status, error) {
                 const response = xhr.responseJSON;
