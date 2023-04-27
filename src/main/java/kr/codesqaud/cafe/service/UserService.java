@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.controller.dto.user.JoinDTO;
 import kr.codesqaud.cafe.controller.dto.user.ModifiedUserDTO;
 import kr.codesqaud.cafe.controller.dto.user.ProfileDTO;
 import kr.codesqaud.cafe.domain.User;
+import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.repository.UserRepository;
 import kr.codesqaud.cafe.util.LoginSessionManager;
 import org.springframework.stereotype.Service;
@@ -35,8 +36,7 @@ public class UserService {
 
     //todo : null 예외처리 하기
     public void modify(final long id, final ModifiedUserDTO modifiedUserDTO) {
-        User user = userRepository.findById(id).orElse(null);
-        assert user != null;
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         user.update(modifiedUserDTO);
         userRepository.update(user);
         loginSessionManager.updateInfo(LoggedInDTO.from(user));
@@ -44,8 +44,7 @@ public class UserService {
 
     //todo : null 예외처리 하기
     public boolean isPasswordRight(long id, ModifiedUserDTO modifiedUserDTO) {
-        User originUser = userRepository.findById(id).orElse(null);
-        assert originUser != null;
+        User originUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
         return originUser.matchPassword(modifiedUserDTO.getOriginPassword());
     }
 
@@ -56,7 +55,7 @@ public class UserService {
 
     public ProfileDTO findOne(final long id) {
         Optional<User> wantedUser = userRepository.findById(id);
-        return wantedUser.map(ProfileDTO::from).orElse(null);
+        return wantedUser.map(ProfileDTO::from).orElseThrow(UserNotFoundException::new);
     }
 
     public List<ProfileDTO> findUsers() {

@@ -48,7 +48,7 @@ public class UserController {
     public String modifyProfileForm(@PathVariable final long id, final Model model) {
         boolean isDifferentUser = !userService.isOwner(id);
         if(isDifferentUser) {
-            return "error/userProfile403";
+            return "error/403";
         }
         ProfileDTO wantedUser = userService.findOne(id);
         model.addAttribute("profileDTO", wantedUser);

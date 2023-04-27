@@ -44,7 +44,7 @@ public class ArticleController {
     @GetMapping("/posts/{id}/revision")
     public String modifyForm(@PathVariable final long id, final Model model) {
         if(isDifferentUser(id)) {
-            return "error/article403";
+            return "error/403";
         }
 
         ArticleDTO wantedPost = articleService.findById(id);
@@ -62,7 +62,7 @@ public class ArticleController {
     @DeleteMapping("/posts/{id}")
     public String deletePost(@PathVariable final long id) {
         if(isDifferentUser(id)) {
-            return "error/article403";
+            return "error/403";
         }
         articleService.delete(id);
         return "redirect:/";
