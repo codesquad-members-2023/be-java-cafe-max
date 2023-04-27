@@ -16,11 +16,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.stream.Stream;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
-import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
@@ -51,6 +51,21 @@ public class PostControllerTest {
     @MockBean
     private CommentService commentService;
 
+    @DisplayName("로그인을 안하고 ROOT URL 접근하면 게시글 목록 조회 페이지로 리다이렉트 된다.")
+    @Test
+    void showMain() throws Exception {
+        // given
+        given(postService.findAll()).willReturn(Collections.emptyList());
+
+        // when
+
+        // then
+        mockMvc.perform(get("/"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/posts"))
+            .andDo(print());
+    }
+
     @DisplayName("로그인을 했을 때 게시글 작성 페이지에 접근하면 게시글 작성 페이지로 이동한다")
     @Test
     void showWriteForm() throws Exception {
@@ -60,7 +75,7 @@ public class PostControllerTest {
         // when
 
         // then
-        mockMvc.perform(get("/posts/form")
+        mockMvc.perform(get("/posts/write/form")
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -78,7 +93,7 @@ public class PostControllerTest {
         // when
 
         // then
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/posts/write")
                 .param("title", "게시글 제목")
                 .param("content", "게시글 내용")
                 .param("writerId", "1")
@@ -99,7 +114,7 @@ public class PostControllerTest {
         // when
 
         // then
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/posts/write")
                 .param("title", title)
                 .param("content", "게시글 내용")
                 .param("writerId", "1")
@@ -127,7 +142,7 @@ public class PostControllerTest {
         // when
 
         // then
-        mockMvc.perform(post("/posts")
+        mockMvc.perform(post("/posts/write")
                 .param("title", "게시글 제목")
                 .param("content", content)
                 .param("writerId", "1")

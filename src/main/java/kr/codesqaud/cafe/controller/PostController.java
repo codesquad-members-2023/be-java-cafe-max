@@ -31,12 +31,18 @@ public class PostController {
         this.commentService = commentService;
     }
 
-    @GetMapping("/form")
+    @GetMapping
+    public String showPosts(Model model) {
+        model.addAttribute("postResponses", postService.findAll());
+        return "post/posts";
+    }
+
+    @GetMapping("/write/form")
     public String showWriteForm(PostWriteRequest postWriteRequest) {
         return "post/postWrite";
     }
 
-    @PostMapping
+    @PostMapping("/write")
     public String write(@Valid PostWriteRequest postWriteRequest, BindingResult bindingResult,
         @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
         if (bindingResult.hasErrors()) {
