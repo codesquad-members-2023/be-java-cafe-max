@@ -10,6 +10,10 @@ public class PageInfo {
     private final int pageNum;
     private final int startNum;
     private final int totalPage;
+    private int prevPage;
+    private int nextPage;
+    private boolean prev = false;
+    private boolean next = false;
 
     private final List<Integer> pages = new ArrayList<>();
 
@@ -25,6 +29,16 @@ public class PageInfo {
         int endPage = Math.min(startPage + (MAX_PAGE_COUNT - 1), totalPage);
         for (int i = startPage; i <= endPage; i++) {
             pages.add(i);
+        }
+
+        if (startPage > MAX_PAGE_COUNT) {
+            prev = true;
+            prevPage = startPage - 1;
+        }
+
+        if (endPage < totalPage) {
+            next = true;
+            nextPage = endPage + 1;
         }
     }
 
