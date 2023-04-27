@@ -35,6 +35,11 @@ public class ProfileEditRequest {
         this.nickname = nickname;
     }
 
+
+    public static ProfileEditRequest of(Long id, String email, String nickname) {
+        return new ProfileEditRequest(id, email, null, null, nickname);
+    }
+
     public Long getId() {
         return id;
     }
@@ -60,11 +65,6 @@ public class ProfileEditRequest {
     }
 
     public Member toMember() {
-        return Member.builder()
-            .id(id)
-            .email(email)
-            .password(newPassword)
-            .nickname(nickname)
-            .build();
+        return new Member(id, email, newPassword, nickname);
     }
 }

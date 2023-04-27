@@ -77,7 +77,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public ProfileEditRequest findProfileForEditing(Long id, Long accountSessionId) {
         Member member = validateUnauthorized(id, accountSessionId);
-        return new ProfileEditRequest(id, member.getEmail(), null, null, member.getNickname());
+        return ProfileEditRequest.of(id, member.getEmail(), member.getNickname());
     }
 
     private Member validateUnauthorized(Long id, Long accountSessionId) {

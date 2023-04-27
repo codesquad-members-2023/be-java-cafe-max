@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.service;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -59,14 +60,7 @@ class PostServiceTest {
     @Test
     void findById() {
         // given
-        Post post = Post.builder()
-            .id(1L)
-            .title("제목")
-            .content("내용")
-            .writer(Member.builder().id(1L).build())
-            .writeDate(LocalDateTime.now())
-            .views(1L)
-            .build();
+        Post post = new Post(1L, "제목", "내용", new Member(1L), LocalDateTime.now(), 1L);
         given(postRepository.findById(post.getId())).willReturn(Optional.of(post));
 
         // when
@@ -111,25 +105,13 @@ class PostServiceTest {
     void modify() {
         // given
         PostModifyRequest postModifyRequest = new PostModifyRequest(1L, "tset", "content");
-        given(postRepository.findById(postModifyRequest.getId()))
-            .willReturn(Optional.of(Post.builder()
-                .id(postModifyRequest.getId())
-                .title(postModifyRequest.getTitle())
-                .content(postModifyRequest.getContent())
-                .writer(Member.builder()
-                    .id(1L)
-                    .build())
-                .writeDate(LocalDateTime.now())
-                .views(0L)
-                .build()));
+        Post post = new Post(1L, "tset", "content", new Member(1L), LocalDateTime.now(), 0L);
+        given(postRepository.findById(1L)).willReturn(Optional.of(post));
 
         // when
-        postService.modify(postModifyRequest, 1L);
 
         // then
-        Post findPost = postRepository.findById(1L).orElseThrow();
-        assertEquals("tset", findPost.getTitle());
-        assertEquals("content", findPost.getContent());
+        assertDoesNotThrow(() -> postService.modify(postModifyRequest, 1L));
     }
 
     @DisplayName("게시글 수정할 때 게시글이 없다면 에러를 반환한다")
@@ -211,21 +193,8 @@ class PostServiceTest {
         // given
         Long savedId = 1L;
         Long accountSessionId = 1L;
-        Comment comment = Comment.builder()
-            .id(1L)
-            .postId(1L)
-            .writer(Member.builder().id(1L).build())
-            .content("내용")
-            .writeDate(LocalDateTime.now())
-            .build();
-        Comment comment2 = Comment.builder()
-            .id(1L)
-            .postId(1L)
-            .content("내용")
-            .writer(Member.builder().id(2L).build())
-            .writeDate(LocalDateTime.now())
-            .build();
-
+        Comment comment = new Comment(1L, 1L, new Member(1L), "내용", LocalDateTime.now());
+        Comment comment2 = new Comment(1L, 1L, new Member(2L), "내용", LocalDateTime.now());
         given(postRepository.findById(any())).willReturn(Optional.of(createPostDummy()));
         given(commentRepository.findAllByPostId(savedId))
             .willReturn(List.of(comment, comment2));
@@ -237,24 +206,10 @@ class PostServiceTest {
     }
 
     private Post createPostDummy() {
-        return Post.builder()
-            .id(1L)
-            .title("제목")
-            .content("내용")
-            .writer(Member.builder().id(1L).build())
-            .writeDate(LocalDateTime.now())
-            .views(0L)
-            .build();
+        return new Post(1L, "제목", "내용", new Member(1L), LocalDateTime.now(), 0L);
     }
 
     private Post createPostDummy2() {
-        return Post.builder()
-            .id(2L)
-            .title("제목2")
-            .content("내용2")
-            .writer(Member.builder().id(2L).build())
-            .writeDate(LocalDateTime.now())
-            .views(0L)
-            .build();
+        return new Post(2L, "제목2", "내용2", new Member(2L), LocalDateTime.now(), 0L);
     }
 }

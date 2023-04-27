@@ -47,11 +47,6 @@ public class SignUpRequest {
     }
 
     public Member toMember() {
-        return Member.builder()
-            .email(email)
-            .password(password)
-            .nickname(nickname)
-            .createDate(createDateTime)
-            .build();
+        return new Member(email, password, nickname, createDateTime);
     }
 }

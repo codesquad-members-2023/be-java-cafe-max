@@ -27,9 +27,7 @@ public class PostService {
 
     @Transactional
     public Long write(PostWriteRequest postWriteRequest) {
-        return postRepository.save(postWriteRequest.toPost(Member.builder()
-            .id(postWriteRequest.getWriterId())
-            .build()));
+        return postRepository.save(postWriteRequest.toPost(new Member(postWriteRequest.getWriterId())));
     }
 
     @Transactional

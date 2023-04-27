@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.authentication.AccountResponse;
@@ -34,10 +33,7 @@ class AuthenticationServiceTest {
     void signIn() {
         // given
         SignInRequest signInRequest = new SignInRequest("test@gmail.com", "Test1234");
-        Member member = Member.builder()
-            .id(1L)
-            .nickname("test")
-            .build();
+        Member member = Member.of(1L, "test");
         given(memberRepository.findByEmailAndPassword(any(), any())).willReturn(Optional.of(member));
 
         // when

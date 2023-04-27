@@ -48,12 +48,6 @@ public class PostWriteRequest {
     }
 
     public Post toPost(Member member) {
-        return Post.builder()
-            .title(title)
-            .content(content)
-            .writer(member)
-            .writeDate(writeDateTime)
-            .views(0L)
-            .build();
+        return new Post(title, content, member, writeDateTime);
     }
 }

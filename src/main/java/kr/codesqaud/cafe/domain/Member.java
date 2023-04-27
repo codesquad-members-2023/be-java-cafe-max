@@ -11,13 +11,36 @@ public class Member {
     private final String nickname;
     private final LocalDateTime createDateTime;
 
-    private Member(Long id, String email, String password, String nickname,
+    public Member(Long id) {
+        this(id, null, null, null, null);
+    }
+    public Member(Long id, String email) {
+        this(id, email, null, null, null);
+    }
+
+    public Member(String email, String password, String nickname) {
+        this(null, email, password, nickname, LocalDateTime.now());
+    }
+
+    public Member(Long id, String email, String password, String nickname) {
+        this(id, email, password, nickname, null);
+    }
+
+    public Member(String email, String password, String nickname, LocalDateTime createDateTime) {
+        this(null, email, password, nickname, createDateTime);
+    }
+
+    public Member(Long id, String email, String password, String nickname,
         LocalDateTime createDateTime) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.createDateTime = createDateTime;
+    }
+
+    public static Member of(Long id, String nickname) {
+        return new Member(id, null, null, nickname, null);
     }
 
     public Long getId() {
@@ -50,50 +73,5 @@ public class Member {
 
     public boolean equalsPassword(String password) {
         return this.password.equals(password);
-    }
-
-    public static MemberBuilder builder() {
-        return new MemberBuilder();
-    }
-
-    public static class MemberBuilder {
-
-        private Long id;
-        private String email;
-        private String password;
-        private String nickname;
-        private LocalDateTime createDate;
-
-        public MemberBuilder() {
-        }
-
-        public MemberBuilder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public MemberBuilder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public MemberBuilder password(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public MemberBuilder nickname(String nickName) {
-            this.nickname = nickName;
-            return this;
-        }
-
-        public MemberBuilder createDate(LocalDateTime createDate) {
-            this.createDate = createDate;
-            return this;
-        }
-
-        public Member build() {
-            return new Member(id, email, password, nickname, createDate);
-        }
     }
 }

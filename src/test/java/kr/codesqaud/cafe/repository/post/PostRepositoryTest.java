@@ -74,15 +74,7 @@ class PostRepositoryTest {
             .forEach(index -> {
                     String title = String.format("제목%d", index);
                     String content = String.format("내용%d", index);
-                    postRepository.save(Post.builder()
-                            .title(title)
-                            .content(content)
-                            .writer(Member.builder()
-                                .id(savedMemberId)
-                                .build())
-                            .writeDate(LocalDateTime.now())
-                            .views((long) index)
-                            .build());
+                    postRepository.save(new Post(title, content, new Member(savedMemberId), LocalDateTime.now()));
             });
 
         // when
@@ -99,11 +91,7 @@ class PostRepositoryTest {
         Long savedMemberId = saveMember();
         Post post = postDummy(savedMemberId);
         Long savedId = postRepository.save(post);
-        Post updatePost = Post.builder()
-            .id(savedId)
-            .title("업데이트")
-            .content("업데이트 내용")
-            .build();
+        Post updatePost = new Post(savedId, "업데이트", "업데이트 내용");
 
         // when
         postRepository.update(updatePost);
@@ -131,23 +119,10 @@ class PostRepositoryTest {
     }
 
     private Post postDummy(Long writerId) {
-        return Post.builder()
-            .title("제목")
-            .content("내용")
-            .writer(Member.builder()
-                .id(writerId)
-                .build())
-            .writeDate(LocalDateTime.now())
-            .views(0L)
-            .build();
+        return new Post("제목", "내용", new Member(writerId), LocalDateTime.now());
     }
 
     private Long saveMember() {
-        return memberRepository.save(Member.builder()
-            .email("test@naver.com")
-            .password("Test1234")
-            .nickname("만두")
-            .createDate(LocalDateTime.now())
-            .build());
+        return memberRepository.save(new Member("test@naver.com", "Test1234", "만두"));
     }
 }

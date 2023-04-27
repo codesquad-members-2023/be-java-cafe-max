@@ -52,11 +52,6 @@ public class CommentWriteRequest {
     }
 
     public Comment toComment(Member member) {
-        return Comment.builder()
-            .postId(postId)
-            .writer(member)
-            .content(content)
-            .writeDate(writeDateTime)
-            .build();
+        return new Comment(postId, member, content, writeDateTime);
     }
 }

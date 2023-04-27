@@ -69,13 +69,7 @@ class MemberServiceTest {
     void findById() {
         // given
         Long savedId = 1L;
-        Member member = Member.builder()
-            .id(savedId)
-            .email("mandu@gmail.com")
-            .password("Mandu1234")
-            .nickname("mandu")
-            .createDate(LocalDateTime.now())
-            .build();
+        Member member = new Member(savedId, "mandu@gmail.com", "Mandu1234", "mandu");
         given(memberRepository.findById(any()))
             .willReturn(Optional.of(member));
 
@@ -107,13 +101,7 @@ class MemberServiceTest {
         // given
         Long savedId = 1L;
         String email = "test@gmail.com";
-        Member member = Member.builder()
-            .id(savedId)
-            .email(email)
-            .password("Test1234")
-            .nickname("test")
-            .createDate(LocalDateTime.now())
-            .build();
+        Member member = new Member(savedId, email, "Test1234", "test");
         given(memberRepository.findByEmail(email)).willReturn(Optional.of(member));
 
         // when
@@ -141,20 +129,8 @@ class MemberServiceTest {
     @Test
     void findAll() {
         // given
-        Member member = Member.builder()
-            .id(1L)
-            .email("test@naver.com")
-            .password("Test1234")
-            .nickname("test")
-            .createDate(LocalDateTime.now())
-            .build();
-        Member member2 = Member.builder()
-            .id(2L)
-            .email("mandu@gmail.com")
-            .password("Mandu1234")
-            .nickname("mandu")
-            .createDate(LocalDateTime.now())
-            .build();
+        Member member = new Member(1L, "test@naver.com", "Test1234", "test");
+        Member member2 = new Member(2L, "mandu@naver.com", "Mandu1234", "mandu");
         given(memberRepository.findAll()).willReturn(List.of(member, member2));
 
         // when
@@ -172,13 +148,7 @@ class MemberServiceTest {
         AccountSession accountSession = new AccountSession(memberId, "만두");
         ProfileEditRequest memberUpdateRequest = new ProfileEditRequest(memberId, "mandu@gmail.com"
             , "Test1234", "Mandu1234", "mandu");
-        Member member = Member.builder()
-            .id(memberId)
-            .email("mandu@gmail.com")
-            .password("Test1234")
-            .nickname("mandu")
-            .createDate(LocalDateTime.now())
-            .build();
+        Member member = new Member(memberId, "mandu@naver.com", "Test1234", "mandu");
         given(memberRepository.findById(any()))
             .willReturn(Optional.of(member))
             .willReturn(Optional.of(memberUpdateRequest.toMember()));
@@ -255,13 +225,8 @@ class MemberServiceTest {
         AccountSession accountSession = new AccountSession(1L, "만두");
         ProfileEditRequest profileEditRequest = new ProfileEditRequest(memberId, "est@naver.com",
             "Test1234", "Test1234", "test");
-        Member member = Member.builder()
-            .id(profileEditRequest.getId())
-            .email(profileEditRequest.getEmail())
-            .password("Test1222")
-            .nickname(profileEditRequest.getNickname())
-            .createDate(LocalDateTime.now())
-            .build();
+        Member member = new Member(profileEditRequest.getId(), profileEditRequest.getEmail(),
+            "Test1222", profileEditRequest.getNickname());
         given(memberRepository.findById(any())).willReturn(Optional.of(member));
 
         // when
