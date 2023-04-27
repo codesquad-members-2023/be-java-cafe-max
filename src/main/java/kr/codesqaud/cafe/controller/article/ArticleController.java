@@ -59,7 +59,8 @@ public class ArticleController {
     // 게시글 수정
     @GetMapping("/questions/{id}/edit")
     public String editArticleForm(@PathVariable Long id, Model model, HttpSession session) {
-        if (!articleService.validateUserIdDuplicate(id, session)){
+        if (!articleService.validateUserIdDuplicate(id, session)) {
+            model.addAttribute("id", id);
             return "qna/edit_failed";
         }
 
@@ -68,15 +69,16 @@ public class ArticleController {
     }
 
     @PutMapping("/questions/{id}/edit")
-    public String updateArticle(@PathVariable Long id, ArticleForm form, HttpSession session){
+    public String updateArticle(@PathVariable Long id, ArticleForm form){
         articleService.update(id, form);
         return "redirect:/";
     }
 
     // 게시글 삭제
     @DeleteMapping ("/questions/{id}/delete")
-    public String deleteArticle(@PathVariable Long id, HttpSession session){
-        if (!articleService.validateUserIdDuplicate(id, session)){
+    public String deleteArticle(@PathVariable Long id, HttpSession session, Model model){
+        if (!articleService.validateUserIdDuplicate(id, session)) {
+            model.addAttribute("id", id);
             return "qna/edit_failed";
         }
 

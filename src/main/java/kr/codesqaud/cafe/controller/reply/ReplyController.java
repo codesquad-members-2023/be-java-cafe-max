@@ -29,6 +29,7 @@ public class ReplyController {
     @GetMapping("/answers/{replyId}/edit")
     public String editForm(@PathVariable Long replyId, Model model, HttpSession session){
         if (!replyService.validateUserIdDuplicate(replyId, session)){
+            model.addAttribute("id", articleId);
             return "qna/edit_failed";
         }
 
@@ -47,6 +48,7 @@ public class ReplyController {
     @DeleteMapping("/answers/{replyId}/delete")
     public String delete(@PathVariable Long replyId, HttpSession session) {
         if (!replyService.validateUserIdDuplicate(replyId, session)) {
+            model.addAttribute("id", articleId);
             return "qna/edit_failed";
         }
 
