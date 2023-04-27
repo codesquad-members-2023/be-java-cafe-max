@@ -15,4 +15,10 @@ public interface CommentRepository {
 	void delete(Long articleIndex, Long commentIndex);
 
 	void deleteAll(Long articleIndex);
+
+	Integer getCommentsSize(Long articleIndex);
+
+	Integer equalsAuthor(Long articleIndex);
+
+	List<Comment> findMoreComments(Long articleIndex, Long commentLastIndex);
 }

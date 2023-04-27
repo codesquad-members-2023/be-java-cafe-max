@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
 import kr.codesqaud.cafe.exception.DeniedCommentModificationException;
-import kr.codesqaud.cafe.exception.OtherCommentExistsException;
 
 public class Comment {
 	private Long commentIndex;
@@ -56,12 +55,6 @@ public class Comment {
 	public void validateAuthor(String nickname) {
 		if (!author.equals(nickname)) {
 			throw new DeniedCommentModificationException();
-		}
-	}
-
-	public void validateAuthors(String nickname) {
-		if (!author.equals(nickname)) {
-			throw new OtherCommentExistsException();
 		}
 	}
 }

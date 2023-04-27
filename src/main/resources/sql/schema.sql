@@ -48,3 +48,15 @@ END$$
 DELIMITER ;
 
 CALL createNewArticle();
+
+DELIMITER $$
+CREATE PROCEDURE createComments()
+BEGIN DECLARE i INT DEFAULT 1;
+WHILE (i <= 31) DO
+INSERT INTO COMMENT_INFO(articleIndex, author, comment, createdDate) VALUES (83, "wisdom", i, "2023-04-27 22:42:24");
+SET i = i + 1;
+END WHILE;
+END$$
+DELIMITER ;
+
+CALL createComments();

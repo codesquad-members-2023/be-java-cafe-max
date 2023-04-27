@@ -17,6 +17,9 @@
         <p>댓글 <span id="comment_count"></span>개</p>
     </div>
     <div class="comment-box"></div>
+    <div class="more">
+        <div class="more-button">더보기</div>
+    </div>
     <div class="write-comment">
         <form name="comment-form" id="comment" method="post" action="/comments/{{article.writer}}">
             <input type="hidden" name="articleIndex" value="{{article.articleIndex}}"/>

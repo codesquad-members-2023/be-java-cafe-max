@@ -1,22 +1,31 @@
+let comments = 0;
+const commentSize = 15;
+let commentLastIndex = 0;
 showComments();
+moreButton();
 $("#comment-write").click(addComment);
+$(".more-button").click(showMoreComments);
 $(document).on("click", "form[name=comment-delete-form]", deleteComment);
 
 function addComment() {
       var queryString = $("form[name=comment-form]").serialize();
 
       var url = $("#comment").attr("action");
+      commentLastIndex = commentSize;
 
       $.ajax({
           type : 'post',
           url : url,
+          async : false,
           data : queryString,
           dataType : 'json',
           error: function () {
               alert("error");
           },
           success : function (data, status) {
-              $('#comment_count').text(data.length);
+              commentsSize();
+              moreButton();
+              $('#comment_count').text(comments);
 
               var template = format(data);
               $(".comment-box").html(template);
@@ -50,17 +59,21 @@ function createComment(comment) {
 function showComments() {
     const articleIndex = window.location.pathname.split("/")[2];
     url = "/comments/" + articleIndex;
+    commentLastIndex += commentSize;
     $.ajax({
           type : 'get',
           url : url,
+          async : false,
           error: function () {
               alert("error");
           },
           success : function (data) {
-              $('#comment_count').text(data.length);
+              commentsSize();
+              moreButton();
+              $('#comment_count').text(comments);
 
               var template = format(data);
-              $(".comment-box").html(template);
+              $(".comment-box").append(template);
           }
       });
 }
@@ -75,15 +88,19 @@ function format(data) {
 
 function deleteComment() {
     var url = $(this).attr("action");
+    commentLastIndex = commentSize;
 
     $.ajax({
       type : 'delete',
       url : url,
+      async : false,
       error: function () {
           alert("다른 사람의 댓글은 삭제할 수 없습니다.");
       },
       success : function (data, status) {
-          $('#comment_count').text(data.length);
+          commentsSize();
+          moreButton();
+          $('#comment_count').text(comments);
 
           var template = format(data);
           $(".comment-box").html(template);
@@ -91,4 +108,50 @@ function deleteComment() {
           $("textarea[name=comment]").val("");
       }
     });
+}
+
+function showMoreComments() {
+    const articleIndex = window.location.pathname.split("/")[2];
+    url = "/comments/" + articleIndex +"/" + commentLastIndex;
+    commentLastIndex += commentSize;
+    $.ajax({
+              type : 'get',
+              url : url,
+              async : false,
+              error: function () {
+                  alert("error");
+              },
+              success : function (data) {
+                  commentsSize();
+                  moreButton();
+                  $('#comment_count').text(comments);
+
+                  var template = format(data);
+                  $(".comment-box").append(template);
+              }
+          });
+}
+
+function commentsSize() {
+    const articleIndex = window.location.pathname.split("/")[2];
+    url = "/comments/size/" + articleIndex;
+    $.ajax({
+          type : 'get',
+          url : url,
+          async : false,
+          error: function () {
+              alert("error");
+          },
+          success(result) {
+              comments = result;
+          }
+    });
+}
+
+function moreButton() {
+    if(comments <= commentLastIndex) {
+        $('.more-button').css('display', 'none');
+    }else {
+        $('.more-button').css('display', 'block');
+    }
 }

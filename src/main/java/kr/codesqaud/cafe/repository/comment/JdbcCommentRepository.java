@@ -16,6 +16,7 @@ import kr.codesqaud.cafe.domain.Comment;
 
 @Repository
 public class JdbcCommentRepository implements CommentRepository {
+	public static final int COMMENT_SIZE = 15;
 	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	public JdbcCommentRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -29,9 +30,10 @@ public class JdbcCommentRepository implements CommentRepository {
 
 	@Override
 	public List<Comment> findByArticleIndex(Long articleIndex) {
-		SqlParameterSource param = new MapSqlParameterSource()
-			.addValue("articleIndex", articleIndex);
-		return namedParameterJdbcTemplate.query(FIND_COMMENTS_BY_ARTICLE_INDEX, param, commentRowMapper());
+		SqlParameterSource params = new MapSqlParameterSource()
+			.addValue("articleIndex", articleIndex)
+			.addValue("commentSize", COMMENT_SIZE);
+		return namedParameterJdbcTemplate.query(FIND_COMMENTS_BY_ARTICLE_INDEX, params, commentRowMapper());
 	}
 
 	@Override
@@ -63,6 +65,29 @@ public class JdbcCommentRepository implements CommentRepository {
 		SqlParameterSource param = new MapSqlParameterSource()
 			.addValue("articleIndex", articleIndex);
 		namedParameterJdbcTemplate.update(DELETE_ALL_COMMENT, param);
+	}
+
+	@Override
+	public Integer getCommentsSize(Long articleIndex) {
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("articleIndex", articleIndex);
+		return namedParameterJdbcTemplate.queryForObject(COUNT_COMMENTS_SIZE, param, Integer.class);
+	}
+
+	@Override
+	public Integer equalsAuthor(Long articleIndex) {
+		SqlParameterSource param = new MapSqlParameterSource()
+			.addValue("articleIndex", articleIndex);
+		return namedParameterJdbcTemplate.queryForObject(EQUAL_AUTHOR, param, Integer.class);
+	}
+
+	@Override
+	public List<Comment> findMoreComments(Long articleIndex, Long commentLastIndex) {
+		SqlParameterSource params = new MapSqlParameterSource()
+			.addValue("articleIndex", articleIndex)
+			.addValue("commentLastIndex", commentLastIndex)
+			.addValue("commentSize", COMMENT_SIZE);
+		return namedParameterJdbcTemplate.query(FIND_MORE_COMMENTS, params, commentRowMapper());
 	}
 
 	private Optional<Comment> optionalTo(List<Comment> comments) {

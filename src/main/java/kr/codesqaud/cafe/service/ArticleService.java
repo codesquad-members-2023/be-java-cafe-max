@@ -18,6 +18,7 @@ import kr.codesqaud.cafe.dto.Paging;
 import kr.codesqaud.cafe.dto.UserRequest;
 import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.exception.CommentNotFoundException;
+import kr.codesqaud.cafe.exception.OtherCommentExistsException;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import kr.codesqaud.cafe.repository.comment.CommentRepository;
 
@@ -73,8 +74,7 @@ public class ArticleService {
 		List<Comment> comments = commentRepository.findByArticleIndex(articleIndex);
 		return comments.stream()
 			.map(comment -> new CommentResponse(comment.getCommentIndex(), comment.getArticleIndex(),
-				comment.getAuthor(),
-				comment.getComment(), comment.getCreatedDate(), comment.isDeleted()))
+				comment.getAuthor(), comment.getComment(), comment.getCreatedDate(), comment.isDeleted()))
 			.collect(Collectors.toList());
 	}
 
@@ -89,9 +89,8 @@ public class ArticleService {
 	public void checkWriterEqualsSessionUser(UserRequest userRequest, Long articleIndex) {
 		Article article = articleRepository.findWriterByArticleIndex(articleIndex);
 		article.validateWriter(userRequest.getNickname());
-		List<Comment> comments = commentRepository.findByArticleIndex(articleIndex);
-		for (Comment comment : comments) {
-			comment.validateAuthors(userRequest.getNickname());
+		if (commentRepository.equalsAuthor(articleIndex) != 0) {
+			throw new OtherCommentExistsException();
 		}
 	}
 
@@ -146,5 +145,18 @@ public class ArticleService {
 			pagingNum.add(i);
 		}
 		return pagingNum;
+	}
+
+	public int getCommentsSize(Long articleIndex) {
+		return (commentRepository.getCommentsSize(articleIndex) == null) ? 0 :
+			commentRepository.getCommentsSize(articleIndex);
+	}
+
+	public List<CommentResponse> showMoreComments(Long articleIndex, Long commentLastIndex) {
+		List<Comment> comments = commentRepository.findMoreComments(articleIndex, commentLastIndex);
+		return comments.stream()
+			.map(comment -> new CommentResponse(comment.getCommentIndex(), comment.getArticleIndex(),
+				comment.getAuthor(), comment.getComment(), comment.getCreatedDate(), comment.isDeleted()))
+			.collect(Collectors.toList());
 	}
 }

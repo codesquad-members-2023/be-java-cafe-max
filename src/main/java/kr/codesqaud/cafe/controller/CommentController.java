@@ -41,4 +41,15 @@ public class CommentController {
 		articleService.deleteComment(articleIndex, commentIndex);
 		return articleService.findCommentsByArticleIndex(articleIndex);
 	}
+
+	@GetMapping("/comments/size/{articleIndex}")
+	public int commentsSize(@PathVariable Long articleIndex) {
+		return articleService.getCommentsSize(articleIndex);
+	}
+
+	@GetMapping("/comments/{articleIndex}/{commentLastIndex}")
+	public List<CommentResponse> showMoreComments(@PathVariable Long articleIndex,
+		@PathVariable Long commentLastIndex) {
+		return articleService.showMoreComments(articleIndex, commentLastIndex);
+	}
 }
