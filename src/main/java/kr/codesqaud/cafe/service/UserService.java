@@ -1,17 +1,21 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.User;
-import kr.codesqaud.cafe.repository.BasicUserRepository;
-import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.repository.JdbcUserRepository;
+//import kr.codesqaud.cafe.repository.BasicUserRepository;
+//import kr.codesqaud.cafe.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    private final JdbcUserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(
+//            @Qualifier("JdbcArticleRepository")
+                       JdbcUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

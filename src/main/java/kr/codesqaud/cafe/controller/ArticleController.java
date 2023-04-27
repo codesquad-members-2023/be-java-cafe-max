@@ -29,8 +29,8 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{articleNum}")
-    public String articleProfile(@PathVariable long articleNum, Model model) {
-        Article article = articleService.getArticleByArticleNum(articleNum);
+    public String articleProfile(@PathVariable long id, Model model) {
+        Article article = articleService.getArticleById(id);
         model.addAttribute("article", article);
         return "qna/show";
     }

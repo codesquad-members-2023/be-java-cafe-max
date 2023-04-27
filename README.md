@@ -6,13 +6,14 @@
 > [] 3단계 (Jdbc연결) 돌아가는지 확인하기<br>
 > [] 배포....!!!!!!<br>
 > [] (시간 남으면) 4단계 직행....!!!!
+> [] (필요성을 절감하여) logging 사용하기
 
 ### 경과
 
 #### 학습 주제
 - Dependency: '외부 객체를 필수 속성으로 갖게 될 경우 그 객체'
 - Dependency Injection: D를 가지게 만드는 방법(@Autowired를 속성/세터/생성자에 사용 -> 생성자1개일 때 불필요)
-- Bean: 'Ioc 컨테이너에서 만든 자바 클래스'(확인 필요....)
+- Bean: 'Ioc 컨테이너에서 만든 자바 클래스' / '자바 객체를 재사용이 가능하도록 정의(한 것)'
 - GET과 POST의 차이: Get은 여러 번의 요청을 해도 항상 일정한 결과가 나오는(멱등) 반면 Post는 요청을 할 때마다 다른 결과가 나오는(안 멱등)  
 - query parameter: ex) url 주소에 '?'과 희망사항 값(parameter)이 포함되서, 필터된 결과 반환 가능! (더 확인 필요...)  
 - MESSEAGE BODY: http 메세지 body는 1. 실제 전송할 데이터이다 2. byte로 표현 가능한 모든 결과가 다 갈 수 있다.
@@ -20,16 +21,16 @@
 - Model.addAttribute: ("amumal", amumal.get()) ---mustache--> {{#amumal}} .. {{/amumal}}
 - @Repository -> @Service -> @Controller 관계(매우 명쾌하면 좋겠다!)
 - @RequestBody:
-- Ioc 컨테이너: '프레임워크'이고 하는 일은....(확인중)
+- Ioc 컨테이너: (Ioc는 이론 개념이고) 스프링 컨테이너는...
 - @Repository -> @Service -> @Controller (흐름)
-- @Configuration:  '설정 클래스 선언'<<<
+- @Configuration -> 설정 클래스 선언
 - @ModelAttribute:
 - wrapper 클래스!: '원시 타입 자체를 객체로 만들어주는' 것인데(아직 정확히 이해하지 못함 -> 몇 번 예제로 연습을...)
 - 자료구조 선택기준!: 성능 스펙이 다 있으므로 생각을 해서 선택(!)
 - WebMVCConfigurer(인터페이스): ~를 구현한 클래스로 .... (이 것으로 할 수 있는 것들을 더 찾아봐야 겠다는)
-- Data Access 0bject: @Repository <<< 
-- Persistence Layer == (DB)
-- Spring Jdbc: == JdbcTemplate ...
+- DAO == Data Access 0bject == @Repository  
+- Persistence Layer == 데이터베이스(영구저장)
+- EJB = Enterprise Java Bean
 
 # 5주차
 ## 미션 진행 상황 <2단계 구현> (완료)

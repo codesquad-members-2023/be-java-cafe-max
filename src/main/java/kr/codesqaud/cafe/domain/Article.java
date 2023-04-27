@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Article {
-    private long articleNum;
+    private long id;
     private String writer;
     private String title;
     private String contents;
@@ -17,16 +17,13 @@ public class Article {
         this.contents = contents;
         this.createdTime = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)); // this.createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
-//    public void setArticleId(long id) { // 이건 아무 문제 없는데...????
-//        this.articleId = id;
-//    }
 
-    public void setArticleNum(long articleNum) {
-        this.articleNum = articleNum;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public long getArticleNum() {
-        return articleNum;
+    public long getId() {
+        return id;
     }
 
     public String getWriter() {
@@ -45,9 +42,9 @@ public class Article {
 
     public void setTitle(String title) { this.title = title; }
 
-    public LocalDateTime getCreatedTime() { return createdTime; }
+//    public LocalDateTime getCreatedTime() { return createdTime; }
 
     public void setCreatedTime(LocalDateTime createdTime) {
-        this.createdTime = LocalDateTime.parse(createdTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        this.createdTime = createdTime;
     }
 }

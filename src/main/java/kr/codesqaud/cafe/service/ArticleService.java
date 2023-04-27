@@ -1,15 +1,20 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.repository.ArticleRepository;
-import kr.codesqaud.cafe.repository.BasicArticleRepository;
+import kr.codesqaud.cafe.repository.JdbcArticleRepository;
+//import kr.codesqaud.cafe.repository.ArticleRepository;
+//import kr.codesqaud.cafe.repository.BasicArticleRepository;
+
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class ArticleService {
-    private final ArticleRepository articleRepository;
-    public ArticleService(ArticleRepository articleRepository){
+    private final JdbcArticleRepository articleRepository;
+    public ArticleService(
+//                    @Qualifier("JdbcArticleRepository")
+                          JdbcArticleRepository articleRepository){
         this.articleRepository = articleRepository;
     }
     public void save(Article article){
@@ -18,8 +23,7 @@ public class ArticleService {
     public List<Article> getArticleList(){
         return articleRepository.getArticleList();
     }
-
-    public Article getArticleByArticleNum(long articleNum){
-        return articleRepository.getArticleByArticleNum(articleNum).get(); // 만약에 Optional 안에 Null 이라면...??  <<<<<<<< fix 필요 <<<<<
+    public Article getArticleById(long id){
+        return articleRepository.getArticleById(id).get(); // 만약에 Optional 안에 Null 이라면...??  <<<<<<<< fix 필요 <<<<<
     }
 }

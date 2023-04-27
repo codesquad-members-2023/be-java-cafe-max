@@ -1,17 +1,16 @@
 -- 이것은 DDL
 
-create table if not exists articles_squad
+create table if not exists articleTable
 (
---    articleId bigint not null auto_increment,
+    id bigint not null auto_increment,
     writer varchar(16) not null,
     title varchar(32) not null,
     contents varchar(255) not null,
     createdTime datetime not null,
-    articleNum bigint not null auto_increment,
-    primary key (articleNum)
+    primary key (id)
 );
 
-create table if not exists users_squad
+create table if not exists userTable
 (
     userId bigint not null auto_increment,
     userNum bigint not null,
