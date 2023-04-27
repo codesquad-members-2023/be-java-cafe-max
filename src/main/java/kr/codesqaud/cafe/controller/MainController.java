@@ -20,7 +20,7 @@ public class MainController {
     @GetMapping
     public String showMain(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
-        model.addAttribute("articles", articleService.getArticles());
+        model.addAttribute("articles", articleService.getArticlesWithCommentCount());
         if (session == null || session.getAttribute("loginUser") == null) {
             return "index";
         }
