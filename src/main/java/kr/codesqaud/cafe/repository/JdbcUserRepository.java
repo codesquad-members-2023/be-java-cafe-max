@@ -4,8 +4,6 @@ import kr.codesqaud.cafe.domain.User;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlParameter;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -26,39 +24,35 @@ public class JdbcUserRepository {
 //    @Override
     public void save(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("Users_squad").usingGeneratedKeyColumns("userId");
-        Map<String, Object> parameters = new ConcurrentHashMap<>();
-        parameters.put("userNum", user.getUserNum());
-        parameters.put("userLoginId", user.getUserLoginId());
-        parameters.put("password", user.getPassword());
-        parameters.put("email", user.getEmail());
-        Number key = jdbcInsert.executeAndReturnKey(parameters);
-        long longKey = key.longValue();
-        user.setUserId(longKey);
+        jdbcInsert.withTableName("userTable").usingGeneratedKeyColumns("id");
+        Map<String, Object> param = new ConcurrentHashMap<>();
+        param.put("userId", user.getUserId());
+        param.put("password", user.getPassword());
+        param.put("email", user.getEmail());
+        jdbcInsert.executeAndReturnKey(param); // 이거 지우면 list에 안 나옴(?????????) 어디서 왜 필요한건지
     }
 
 //    @Override
     public Optional<User> getUserByUserId(Long userId) {
-        List<User> result = jdbcTemplate.query("select * from users_squad where userId = ?", userRowMapper(), userId);
+        List<User> result = jdbcTemplate.query("select * from userTable where userId = ?", userRowMapper(), userId);
         return result.stream().findAny();
     }
 
 //    @Override
     public List<User> getUserList() {
-        return jdbcTemplate.query("select * from users_squad", userRowMapper());
+        return jdbcTemplate.query("select * from userTable", userRowMapper());
     }
 
 //    @Override
     public void clearStore() {
-        jdbcTemplate.update("delete from users_squad");
+        jdbcTemplate.update("delete from userTable");
     }
 
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
             User user = new User();
-            user.setUserId(rs.getLong("userId"));
-            user.setUserNum(rs.getLong("userNum"));
-            user.setUserLoginId(rs.getString("userLoginId"));
+            user.setId(rs.getLong("id"));
+            user.setUserId(rs.getString("userId"));
             user.setPassword(rs.getString("password"));
             user.setEmail(rs.getString("email"));
             return user;

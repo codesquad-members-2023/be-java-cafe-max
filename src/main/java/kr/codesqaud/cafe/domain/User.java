@@ -1,36 +1,27 @@
 package kr.codesqaud.cafe.domain;
 
 public class User {
-    private static long userNumFactory = 0;    // 잠재적 문제요인(정확히 파악 아직 하는 중...)
-    private long userId;
-    private long userNum; // 이게 뭐였는지 까먹음(userId와 중복일 가능성)
-    private String userLoginId;
+    private long id;           // 자꾸 헷갈려서 단순하게 변경
+    private String userId;     // form에서 사용된 name에 맞춤
     private String password;
-    private String email;       // form에서 사용된 name에 맞춤
+    private String email;
 
-    public User(){}
-    public User(String userLoginId, String password, String email) {
-        userNumFactory += 1;                  //    고민하기! -> Article에선 @Repository에서 생성(아직 여기의 static이 문제가 되는 정확한 이유는 -> 지금도 파악 중!)
-        this.userNum = userNumFactory;
-        this.userLoginId = userLoginId;
+    public User(){}  // 없으면 (Row?)Mapping이 안된다는...?!?!
+    public User(String userId, String password, String email) {
+        this.userId = userId;
         this.password = password;
         this.email = email;
     }
 
-    public long getUserNum(){ return userNum; }
-    public void setUserNum(long userNum){
-        this.userNum = userNum;
+    public void setId(long id){ this.id = id; }
+    public String getUserId() {
+        return userId;
     }
-    public void setUserId(long userId){ this.userId = userId; }
-    public String getUserLoginId() {
-        return userLoginId;
-    }
-    public void setUserLoginId(String userLoginId){
-        this.userLoginId = userLoginId;
+    public void setUserId(String userId){
+        this.userId = userId;
     }
     public String getPassword(){ return password; }
-    public void setPassword(String password){
-        this.password = password;
+    public void setPassword(String password){ this.password = password;
     }
     public String getEmail(){ return email; }
     public void setEmail(String email){

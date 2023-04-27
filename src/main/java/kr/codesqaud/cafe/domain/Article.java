@@ -10,7 +10,7 @@ public class Article {
     private String contents;
     private LocalDateTime createdTime;
 
-    public Article(){}
+    public Article(){}   // 없으면 (Row?)Mapping이 안된다는...?!?!
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
@@ -42,7 +42,7 @@ public class Article {
 
     public void setTitle(String title) { this.title = title; }
 
-//    public LocalDateTime getCreatedTime() { return createdTime; }
+    public LocalDateTime getCreatedTime() { return createdTime; }
 
     public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;

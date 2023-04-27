@@ -18,7 +18,7 @@ public class UserController {
 
     @PostMapping("/users")
     public String joinUser(User user) {
-        userService.join(user);
+        userService.save(user);
         return "redirect:/users";
     }
 
@@ -28,9 +28,9 @@ public class UserController {
         return "/user/list";
     }
 
-    @GetMapping("/users/{userId}")
-    public String userProfile(@PathVariable("userId") Long userId, Model model) {  // ("userId") 이거 필요없는거 아닌지 확인 필요
-        model.addAttribute("user", userService.getUserByUserId(userId));
+    @GetMapping("/users/{id}")
+    public String userProfile(@PathVariable("id") Long id, Model model) {  // ("id") 이거 필요없는거 아닌지 확인 필요
+        model.addAttribute("user", userService.getUserById(id));
         return "user/profile";
     }
 }

@@ -19,7 +19,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void join(User user) {
+    public void save(User user) {
         userRepository.save(user);
     }
 
@@ -27,7 +27,7 @@ public class UserService {
         return userRepository.getUserList();
     }
 
-    public User getUserByUserId(Long userId) {
-        return userRepository.getUserByUserId(userId).get(); //
+    public User getUserById(Long id) {
+        return userRepository.getUserByUserId(id).get(); //
     }   // 원래 Optional 아닌데 인터페이스 때문에 어쩔 수 없이 Optional이 되버림 -> fix 하게 될 듯
 }

@@ -12,10 +12,9 @@ create table if not exists articleTable
 
 create table if not exists userTable
 (
-    userId bigint not null auto_increment,
-    userNum bigint not null,
-    userLoginId varchar(16) not null,
+    id bigint not null auto_increment,
+    userId varchar(16) not null,
     password varchar(32) not null,
     email varchar(64) not null,
-    primary key (userId)
+    primary key (id)
 );
