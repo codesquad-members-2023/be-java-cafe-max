@@ -93,7 +93,7 @@ class PostServiceTest {
         assertThrows(PostNotFoundException.class, () -> postService.findById(1L));
     }
 
-    @DisplayName("게시글 전체 조회할 때 게시글 있으면 모든 게시글을 반한환다")
+    @DisplayName("게시글 전체 조회할 때 게시글 있으면 모든 게시글을 반환환다")
     @Test
     void findAll() {
         // given
@@ -124,10 +124,10 @@ class PostServiceTest {
                 .build()));
 
         // when
-        postService.modify(postModifyRequest, postModifyRequest.getId());
+        postService.modify(postModifyRequest, 1L);
 
         // then
-        Post findPost = postRepository.findById(postModifyRequest.getId()).orElseThrow();
+        Post findPost = postRepository.findById(1L).orElseThrow();
         assertEquals("tset", findPost.getTitle());
         assertEquals("content", findPost.getContent());
     }
@@ -143,7 +143,7 @@ class PostServiceTest {
 
         // then
         assertThrows(PostNotFoundException.class,
-            () -> postService.modify(postModifyRequest, postModifyRequest.getId()));
+            () -> postService.modify(postModifyRequest, 1L));
     }
 
     @DisplayName("게시글 수정할 때 게시글 작성자와 로그인 회원이 다르다면 에러를 반환한다")

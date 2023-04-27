@@ -64,7 +64,7 @@ class PostRepositoryTest {
             () -> assertEquals(post.getViews(), findPost.getViews()));
     }
 
-    @DisplayName("게시글 전체 조회할 때 게시글이 있다면 모든 게시글을 반한한다")
+    @DisplayName("게시글 전체 조회할 때 게시글이 있다면 모든 게시글을 반환한다")
     @Test
     void findAll() {
         // given

@@ -13,6 +13,8 @@ public interface MemberRepository {
 
     List<Member> findAll();
 
+    Optional<Member> findByEmailAndPassword(String email, String password);
+
     void update(Member member);
 
     boolean existsByEmail(String email);

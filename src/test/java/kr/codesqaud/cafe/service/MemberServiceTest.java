@@ -20,6 +20,7 @@ import kr.codesqaud.cafe.exception.member.MemberDuplicateEmailException;
 import kr.codesqaud.cafe.exception.member.MemberInvalidPassword;
 import kr.codesqaud.cafe.exception.member.MemberNotFoundException;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,7 +64,7 @@ class MemberServiceTest {
         assertThrows(MemberDuplicateEmailException.class, () -> memberService.signUp(signUpRequest));
     }
 
-    @DisplayName("아이디를 입력시 해당 회원이 있을 때 조회하면 회원을 반한한다")
+    @DisplayName("아이디를 입력시 해당 회원이 있을 때 조회하면 회원을 반환한다")
     @Test
     void findById() {
         // given
@@ -88,7 +89,7 @@ class MemberServiceTest {
             () -> assertEquals("mandu", memberResponse.getNickname()));
     }
 
-    @DisplayName("아이디를 입력시 해당 회원이 없을 때 조회하면 에러를 반한한다")
+    @DisplayName("아이디를 입력시 해당 회원이 없을 때 조회하면 에러를 반환한다")
     @Test
     void findByIdFalse() {
         // given
@@ -119,6 +120,7 @@ class MemberServiceTest {
         MemberResponse findMemberResponse = memberService.findByEmail(email);
 
         // then
+        Assertions.assertThat(findMemberResponse.getId()).isEqualTo(1L);
         assertEquals(1L, findMemberResponse.getId());
     }
 
@@ -135,7 +137,7 @@ class MemberServiceTest {
         assertThrows(MemberNotFoundException.class, () -> memberService.findByEmail(email));
     }
 
-    @DisplayName("회원이 있을 때 회원들을 조회하면 모든 회원을 반한한다")
+    @DisplayName("회원이 있을 때 회원들을 조회하면 모든 회원을 반환한다")
     @Test
     void findAll() {
         // given
@@ -193,7 +195,7 @@ class MemberServiceTest {
             () -> assertEquals("mandu", findMember.getNickname()));
     }
 
-    @DisplayName("아이디, 패스워드, 변경할 비밀번호, 닉네임, 세션 아이디 입력시 수정할 회원이 없을 때 회원 정보를 수정하면 에러를 반한한다")
+    @DisplayName("아이디, 패스워드, 변경할 비밀번호, 닉네임, 세션 아이디 입력시 수정할 회원이 없을 때 회원 정보를 수정하면 에러를 반환한다")
     @Test
     void updateFalse() {
         // given
@@ -210,7 +212,7 @@ class MemberServiceTest {
             () -> memberService.update(profileEditRequest, accountSession.getId()));
     }
 
-    @DisplayName("아이디, 패스워드, 변경할 비밀번호, 닉네임, 세션 아이디 입력시 세션 아이디랑 아이디가 다를 때 회원 정보를 수정하면 에러를 반한한다")
+    @DisplayName("아이디, 패스워드, 변경할 비밀번호, 닉네임, 세션 아이디 입력시 세션 아이디랑 아이디가 다를 때 회원 정보를 수정하면 에러를 반환한다")
     @Test
     void updateFalse2() {
         // given
@@ -227,7 +229,7 @@ class MemberServiceTest {
             () -> memberService.update(profileEditRequest, accountSession.getId()));
     }
 
-    @DisplayName("아이디, 패스워드, 변경할 비밀번호, 닉네임, 세션 아이디 입력시 회원 중에 중복된 이메일이 있을 때 회원 정보를 수정하면 에러를 반한한다")
+    @DisplayName("아이디, 패스워드, 변경할 비밀번호, 닉네임, 세션 아이디 입력시 회원 중에 중복된 이메일이 있을 때 회원 정보를 수정하면 에러를 반환한다")
     @Test
     void updateFalse3() {
         // given
@@ -245,7 +247,7 @@ class MemberServiceTest {
             () -> memberService.update(profileEditRequest, accountSession.getId()));
     }
 
-    @DisplayName("아이디, 패스워드, 변경할 비밀번호, 닉네임, 세션 아이디 입력시 기존 비밀번호 틀릴 때 회원 정보를 수정하면 에러를 반한한다")
+    @DisplayName("아이디, 패스워드, 변경할 비밀번호, 닉네임, 세션 아이디 입력시 기존 비밀번호 틀릴 때 회원 정보를 수정하면 에러를 반환한다")
     @Test
     void updateFalse4() {
         // given

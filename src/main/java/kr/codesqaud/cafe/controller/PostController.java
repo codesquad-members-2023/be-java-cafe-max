@@ -58,7 +58,7 @@ public class PostController {
     @GetMapping("/{id}/form")
     public String showModifyForm(@PathVariable Long id, Model model,
         @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
-        model.addAttribute("postModifyRequest", postService.findPostModifyById(id, accountSession.getId()));
+        model.addAttribute("postModifyRequest", postService.findPostForModifying(id, accountSession.getId()));
         return "post/postModify";
     }
 

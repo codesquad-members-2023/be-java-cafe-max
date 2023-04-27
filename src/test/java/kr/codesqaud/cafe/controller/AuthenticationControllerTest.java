@@ -57,8 +57,6 @@ class AuthenticationControllerTest {
     @Test
     void signIn() throws Exception {
         // given
-        String email = "test@gmail.com";
-        String password = "Test1234";
         AccountResponse accountResponse = new AccountResponse(1L, "test");
         given(authenticationService.signIn(any())).willReturn(accountResponse);
 
@@ -66,8 +64,8 @@ class AuthenticationControllerTest {
 
         // then
         mockMvc.perform(post("/sign-in")
-                .param("email", email)
-                .param("password", password)
+                .param("email", "test@gmail.com")
+                .param("password", "Test1234")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/"))

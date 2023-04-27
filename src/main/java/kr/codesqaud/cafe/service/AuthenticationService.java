@@ -19,15 +19,9 @@ public class AuthenticationService {
 
     @Transactional(readOnly = true)
     public AccountResponse signIn(SignInRequest signInRequest) {
-        Member member = memberRepository.findByEmail(signInRequest.getEmail())
+        Member member = memberRepository.findByEmailAndPassword(signInRequest.getEmail(),
+                signInRequest.getPassword())
             .orElseThrow(() -> new MemberInvalidPassword(signInRequest));
-        validateSamePassword(member, signInRequest);
         return AccountResponse.from(member);
-    }
-
-    private void validateSamePassword(Member member, SignInRequest signInRequest) {
-        if (!member.equalsPassword(signInRequest.getPassword())) {
-            throw new MemberInvalidPassword(signInRequest);
-        }
     }
 }

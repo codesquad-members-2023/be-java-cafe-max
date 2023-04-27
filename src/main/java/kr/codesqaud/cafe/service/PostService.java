@@ -39,7 +39,7 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostModifyRequest findPostModifyById(Long id, Long accountSessionId) {
+    public PostModifyRequest findPostForModifying(Long id, Long accountSessionId) {
         Post post = validateUnauthorized(id, accountSessionId);
         return new PostModifyRequest(post.getId(), post.getTitle(), post.getContent());
     }

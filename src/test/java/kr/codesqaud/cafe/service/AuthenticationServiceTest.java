@@ -36,12 +36,9 @@ class AuthenticationServiceTest {
         SignInRequest signInRequest = new SignInRequest("test@gmail.com", "Test1234");
         Member member = Member.builder()
             .id(1L)
-            .email(signInRequest.getEmail())
-            .password(signInRequest.getPassword())
             .nickname("test")
-            .createDate(LocalDateTime.now())
             .build();
-        given(memberRepository.findByEmail(any())).willReturn(Optional.of(member));
+        given(memberRepository.findByEmailAndPassword(any(), any())).willReturn(Optional.of(member));
 
         // when
         AccountResponse accountResponse = authenticationService.signIn(signInRequest);
@@ -57,7 +54,7 @@ class AuthenticationServiceTest {
     void signInFalse() {
         // given
         SignInRequest signInRequest = new SignInRequest("test@gmail.com", "Test1234");
-        given(memberRepository.findByEmail(any())).willThrow(MemberInvalidPassword.class);
+        given(memberRepository.findByEmailAndPassword(any(), any())).willThrow(MemberInvalidPassword.class);
 
         // when
 

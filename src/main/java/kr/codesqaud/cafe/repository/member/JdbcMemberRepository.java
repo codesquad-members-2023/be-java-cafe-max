@@ -1,9 +1,11 @@
 package kr.codesqaud.cafe.repository.member;
 
+import java.sql.ResultSetMetaData;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.domain.Member.MemberBuilder;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -52,6 +54,24 @@ public class JdbcMemberRepository implements MemberRepository {
     }
 
     @Override
+    public Optional<Member> findByEmailAndPassword(String email, String password) {
+        String sql = "SELECT id, email "
+                    + "FROM member "
+                   + "WHERE email = :email "
+                     + "AND password = :password";
+        MapSqlParameterSource parameter = new MapSqlParameterSource("email", email);
+        parameter.addValue("password", password);
+        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, memberRowMapper)));
+    }
+
+    @Override
+    public List<Member> findAll() {
+        String sql = "SELECT id, email, password, nickname, create_date "
+            + "FROM member";
+        return jdbcTemplate.query(sql, memberRowMapper);
+    }
+
+    @Override
     public boolean existsByEmail(String email) {
         String sql = "SELECT EXISTS(SELECT 1 FROM member WHERE email = :email)";
         MapSqlParameterSource parameter = new MapSqlParameterSource("email", email);
@@ -67,13 +87,6 @@ public class JdbcMemberRepository implements MemberRepository {
     }
 
     @Override
-    public List<Member> findAll() {
-        String sql = "SELECT id, email, password, nickname, create_date "
-                     + "FROM member";
-        return jdbcTemplate.query(sql, memberRowMapper);
-    }
-
-    @Override
     public void update(Member member) {
         String sql = "UPDATE member "
                       + "SET email = :email, "
@@ -84,12 +97,32 @@ public class JdbcMemberRepository implements MemberRepository {
         jdbcTemplate.update(sql, parameter);
     }
 
-    private final RowMapper<Member> memberRowMapper = (rs, rowNum) ->
-        Member.builder()
-            .id(rs.getLong("id"))
-            .email(rs.getString("email"))
-            .password(rs.getString("password"))
-            .nickname(rs.getString("nickname"))
-            .createDate(rs.getTimestamp("create_date").toLocalDateTime())
-            .build();
+    private final RowMapper<Member> memberRowMapper = (rs, rowNum) -> {
+        MemberBuilder builder = Member.builder();
+        ResultSetMetaData metaData = rs.getMetaData();
+
+        for (int i= 1; i <= metaData.getColumnCount(); i++) {
+            String columnName = metaData.getColumnName(i).toLowerCase();
+
+            switch (columnName) {
+                case "id":
+                    builder.id(rs.getLong(columnName));
+                    break;
+                case "email":
+                    builder.email(rs.getString(columnName));
+                    break;
+                case "password":
+                    builder.password(rs.getString(columnName));
+                    break;
+                case "nickname":
+                    builder.nickname(rs.getString(columnName));
+                    break;
+                case "create_date":
+                    builder.createDate(rs.getTimestamp(columnName).toLocalDateTime());
+                    break;
+            }
+        }
+
+        return builder.build();
+    };
 }
