@@ -8,6 +8,7 @@ public class Article {
     private String title;
     private String contents;
     private String date;
+    private int replySize;
 
     public static class Builder {
         private int index;
@@ -17,6 +18,8 @@ public class Article {
         private String contents;
 
         private String date;
+
+        private int replySize;
 
         public Builder index(int val) {
             index = val;
@@ -48,6 +51,12 @@ public class Article {
             return this;
         }
 
+        public Builder replySize(int val) {
+            replySize = val;
+            return this;
+        }
+
+
         public Article build() {
             return new Article(this);
         }
@@ -60,6 +69,7 @@ public class Article {
         title = builder.title;
         contents = builder.contents;
         date = builder.date;
+        replySize = builder.replySize;
     }
 
     public String getWriter() {
@@ -80,5 +90,13 @@ public class Article {
 
     public String getUserId() {
         return userId;
+    }
+
+    public int getReplySize() {
+        return replySize;
+    }
+
+    public void setReplySize(int replySize) {
+        this.replySize = replySize;
     }
 }

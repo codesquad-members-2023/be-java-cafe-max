@@ -57,7 +57,11 @@ public class ArticleService {
 
 
     public List<Article> getAricleList(Paging paging) {
-        return articleRepository.findAll(paging);
+        List<Article> list = articleRepository.findAll(paging);
+        for(int i = 0 ; i<list.size(); i++) {
+            list.get(i).setReplySize(replyRepository.allCount(list.get(i).getIndex()));
+        }
+        return list;
     }
 
     public Article findByIdx(int idx) {
