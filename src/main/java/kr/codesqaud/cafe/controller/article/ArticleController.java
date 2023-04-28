@@ -42,11 +42,7 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String addArticles(@RequestParam(value = "nowPage", required = false) Integer nowPage, Model model) {
-        if (nowPage == null) {
-            nowPage = 1;
-        }
-
+    public String addArticles(@RequestParam(value = "nowPage", defaultValue = "1", required = false) Integer nowPage, Model model) {
         PageForm pageForm = new PageForm(nowPage, articleService.countArticles());
         model.addAttribute("articles", articleService.findArticles(pageForm));
         model.addAttribute("pageForm", pageForm);
