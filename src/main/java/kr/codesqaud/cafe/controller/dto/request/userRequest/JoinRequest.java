@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto.request;
+package kr.codesqaud.cafe.controller.dto.request.userRequest;
 
 public class JoinRequest {
     private final String userId;

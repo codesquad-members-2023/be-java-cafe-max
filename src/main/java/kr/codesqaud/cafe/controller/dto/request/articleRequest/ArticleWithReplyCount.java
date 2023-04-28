@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto.request;
+package kr.codesqaud.cafe.controller.dto.request.articleRequest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

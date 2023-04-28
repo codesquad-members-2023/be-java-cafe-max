@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto.request;
+package kr.codesqaud.cafe.controller.dto.request.replyRequest;
 
 public class ReplyRequest {
     private final String comment;

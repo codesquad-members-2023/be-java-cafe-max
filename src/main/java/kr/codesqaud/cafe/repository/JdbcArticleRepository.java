@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
-import kr.codesqaud.cafe.controller.dto.request.ArticleWithReplyCount;
+import kr.codesqaud.cafe.controller.dto.request.articleRequest.ArticleWithReplyCount;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

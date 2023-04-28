@@ -1,9 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.UserDto;
-import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
-import kr.codesqaud.cafe.controller.dto.request.LoginRequest;
-import kr.codesqaud.cafe.controller.dto.request.ProfileEditRequest;
+import kr.codesqaud.cafe.controller.dto.request.userRequest.JoinRequest;
+import kr.codesqaud.cafe.controller.dto.request.userRequest.LoginRequest;
+import kr.codesqaud.cafe.controller.dto.request.userRequest.ProfileEditRequest;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;

@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.ReplyDto;
-import kr.codesqaud.cafe.controller.dto.request.ReplyEditRequest;
-import kr.codesqaud.cafe.controller.dto.request.ReplyRequest;
+import kr.codesqaud.cafe.controller.dto.request.replyRequest.ReplyEditRequest;
+import kr.codesqaud.cafe.controller.dto.request.replyRequest.ReplyRequest;
 import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

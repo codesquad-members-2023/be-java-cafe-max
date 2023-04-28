@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.request.ReplyRequest;
+import kr.codesqaud.cafe.controller.dto.request.replyRequest.ReplyRequest;
 
 import java.time.LocalDateTime;
 

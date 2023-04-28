@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
-import kr.codesqaud.cafe.controller.dto.request.PostEditRequest;
-import kr.codesqaud.cafe.controller.dto.request.PostRequest;
+import kr.codesqaud.cafe.controller.dto.request.articleRequest.PostEditRequest;
+import kr.codesqaud.cafe.controller.dto.request.articleRequest.PostRequest;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;

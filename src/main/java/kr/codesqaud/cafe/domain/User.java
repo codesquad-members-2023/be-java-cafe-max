@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
+import kr.codesqaud.cafe.controller.dto.request.userRequest.JoinRequest;
 
 public class User {
     private final Long id;

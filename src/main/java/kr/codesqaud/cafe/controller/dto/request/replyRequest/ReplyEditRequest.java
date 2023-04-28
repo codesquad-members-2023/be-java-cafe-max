@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto.request;
+package kr.codesqaud.cafe.controller.dto.request.replyRequest;
 
 public class ReplyEditRequest {
     private final String newComment;
