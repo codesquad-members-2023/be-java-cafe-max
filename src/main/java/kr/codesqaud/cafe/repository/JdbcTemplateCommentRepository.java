@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,7 +38,7 @@ public class JdbcTemplateCommentRepository implements CommentRepository{
 
     @Override
     public List<Comment> gatherAllByArticleId(Long articleId) {
-        String sql = "SELECT * FROM COMMENT_TB WHERE articleId = :articleId ORDER BY id ASC";
+        String sql = "SELECT * FROM COMMENT_TB WHERE articleId = :articleId ORDER BY id";
         Map<String, Object> param = Map.of("articleId", articleId);
         try (Stream<Comment> result = template.queryForStream(sql, param, commentRowMapper())) {
             return result.collect(Collectors.toList());
