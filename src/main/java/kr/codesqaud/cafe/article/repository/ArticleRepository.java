@@ -65,4 +65,17 @@ public class ArticleRepository {
                 rs.getTimestamp("created_time").toLocalDateTime()
         );
     }
+
+    public int countAll() {
+        String sql = "SELECT COUNT(*) FROM article";
+        return namedParameterJdbcTemplate.queryForObject(sql, new MapSqlParameterSource(), Integer.class);
+    }
+
+    public List<Article> findByRange(int from, int range) {
+        String sql = "SELECT id, author, title, contents, created_time FROM article ORDER BY created_time DESC LIMIT :from, :range";
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("from", from);
+        parameters.addValue("range", range);
+        return namedParameterJdbcTemplate.query(sql, parameters, articleRowMapper());
+    }
 }
