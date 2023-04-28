@@ -25,7 +25,7 @@ public class ReplyService {
                 .build();
         long id = replyRepository.save(reply);
 
-        replyRepository.updateHasReply(articleId);
+        replyRepository.updateHasReply(articleId, true);
         logger.info("댓글 저장 성공, 댓글 id: {}", id);
         return id;
     }
@@ -43,14 +43,22 @@ public class ReplyService {
 //    }
 
     /**
-     * @param id reply id
+     * @return 댓글 삭제 후 댓글 개수
      */
-    public long deleteByReplyId(long id, String requesterId) {
-        String originId = findOne(id).getLoginId();
+    @Transactional
+    public long deleteByReplyId(long articleId, long replyId, String requesterId) {
+        String originId = findOne(replyId).getLoginId();
         if (!requesterId.equals(originId)) {
             throw new IllegalArgumentException(); // TODO: 커스텀 에러로 변경
         }
-        return replyRepository.deleteOneByReplyId(id);
+        if (replyRepository.getReplyCountOf(articleId) == 1) {
+            replyRepository.updateHasReply(articleId, false);
+        }
+
+        replyRepository.deleteOneByReplyId(replyId);
+
+        logger.info("댓글 삭제 성공, 게시글 id : {}, 댓글 id : {}", articleId, replyId);
+        return replyRepository.getReplyCountOf(articleId);
     }
 
     public Reply findOne(long id) {
@@ -62,5 +70,9 @@ public class ReplyService {
      */
     public List<Reply> findReplies(long id) {
         return replyRepository.findAllByArticleId(id);
+    }
+
+    public Long getReplyCountOf(long articleId) {
+        return replyRepository.getReplyCountOf(articleId);
     }
 }

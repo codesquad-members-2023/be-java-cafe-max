@@ -30,9 +30,11 @@ public class ReplyRepositoryImpl implements ReplyRepository {
     }
 
     @Override
-    public void updateHasReply(long articleId) {
-        String sql = "UPDATE article SET has_reply = true WHERE id = :articleId";
-        SqlParameterSource param = new MapSqlParameterSource("articleId", articleId);
+    public void updateHasReply(long articleId, boolean hasReply) {
+        String sql = "UPDATE article SET has_reply = :hasReply WHERE id = :articleId";
+        SqlParameterSource param = new MapSqlParameterSource()
+                .addValue("hasReply", hasReply)
+                .addValue("articleId", articleId);
         template.update(sql, param);
     }
 
