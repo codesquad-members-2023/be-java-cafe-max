@@ -27,15 +27,14 @@ public class UserController {
     }
 
     @GetMapping("/users/new")
-    public String signUpPage() {
+    public String signUpPage(SignUpRequestDto signUpRequestDto) {
         return "user/form";
     }
 
     @PostMapping("/users")
     public String create(@Valid final SignUpRequestDto signUpRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            // TODO: 에러 내용이 출력되게끔 로직 추가
-            return "redirect:/error";
+            return "user/form";
         }
         User user = signUpRequestDto.toEntity();
         userService.join(user);
