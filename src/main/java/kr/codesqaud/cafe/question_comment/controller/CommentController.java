@@ -88,7 +88,6 @@ public class CommentController {
 	 * @throws CommentNotExistException 댓글이 존재하지 않을 때 예외 발생
 	 * @throws NoAccessPermissionException 댓글 작성자가 아닌 경우 예외 발생
 	 */
-	//@DeleteMapping(path = "/{id}", produces = "text/plain")
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<String> commentDelete(@PathVariable long post_id, @PathVariable long id,
 		HttpSession session) throws
