@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
 
 
 public class MemoryArticleRepository implements ArticleRepository {
@@ -16,7 +15,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     private AtomicLong id = new AtomicLong();
 
     @Override
-    public void save(final Article article, final String id) {
+    public void save(final Article article) {
         this.id.getAndIncrement();
         store.put(this.id.get(), article.createdWith(this.id.get()));
     }

@@ -19,7 +19,8 @@ public class Article {
         this.writerId = writerId;
     }
 
-    public Article(final String title, final String contents) {
+    public Article(final String writerId, final String title, final String contents) {
+        this.writerId = writerId;
         this.title = title;
         this.contents = contents;
         this.createdAt = LocalDateTime.now();

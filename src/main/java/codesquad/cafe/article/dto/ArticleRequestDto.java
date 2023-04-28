@@ -18,7 +18,7 @@ public class ArticleRequestDto {
         this.contents = contents;
     }
 
-    public Article toEntity() {
-        return new Article(title, contents);
+    public Article toEntity(final String id) {
+        return new Article(id, title, contents);
     }
 }

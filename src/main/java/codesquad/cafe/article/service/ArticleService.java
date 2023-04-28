@@ -30,7 +30,7 @@ public class ArticleService {
     }
 
     public void createPost(final ArticleRequestDto articleRequestDto, final User user) {
-        articleRepository.save(articleRequestDto.toEntity(), user.getId());
+        articleRepository.save(articleRequestDto.toEntity(user.getId()));
     }
 
     public List<ArticleResponseDto> getPagingArticles(final Criteria criteria) {
