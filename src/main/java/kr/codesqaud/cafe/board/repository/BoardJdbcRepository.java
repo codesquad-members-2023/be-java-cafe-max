@@ -64,6 +64,7 @@ public class BoardJdbcRepository {
         }
     }
 
+    // 더미 데이터가 작성일자 순서대로 생성되지 않아서 post_id로 정렬했습니다.
     //TODO: ORDER BY 작성일자로 변경하기
     public List<BoardPost> findAll(PageInfo pageInfo) {
         return jdbcTemplate.query("SELECT post_id, b.user_id AS writer_id, writer, title, contents, write_date_time " +
