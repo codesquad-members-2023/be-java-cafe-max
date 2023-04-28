@@ -8,11 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-
-import static kr.codesqaud.cafe.util.LoginSessionManager.LOGIN_USER;
-
-
 @Controller
 public class ArticleController {
 
@@ -28,8 +23,8 @@ public class ArticleController {
 
 
     @GetMapping("/posts/new")
-    public String writeForm(HttpSession session) {
-        if(isAnonymous(session)) return "redirect:/login";
+    public String writeForm() {
+        loginSessionManager.throwErrorIfAnonymous();
         return "post/form";
     }
 
@@ -40,8 +35,8 @@ public class ArticleController {
     }
 
     @GetMapping("/posts/{id}")
-    public String showPost(@PathVariable final long id, final Model model, HttpSession session) {
-        if(loginSessionManager == null) return "redirect:/login";
+    public String showPost(@PathVariable final long id, final Model model) {
+        loginSessionManager.throwErrorIfAnonymous();
         model.addAttribute("loggedUser", loginSessionManager.getLoginUser().getId());
         model.addAttribute("wantedPost", articleService.findById(id));
         model.addAttribute("comments", commentService.gather(id));
@@ -50,7 +45,7 @@ public class ArticleController {
 
     @GetMapping("/posts/{id}/revision")
     public String modifyForm(@PathVariable final long id, final Model model) {
-        if(isDifferentUser(id)) {
+        if (isDifferentUser(id)) {
             return "error/403";
         }
 
@@ -68,15 +63,11 @@ public class ArticleController {
 
     @DeleteMapping("/posts/{id}")
     public String deletePost(@PathVariable final long id) {
-        if(isDifferentUser(id)) {
+        if (isDifferentUser(id)) {
             return "error/403";
         }
         articleService.delete(id);
         return "redirect:/";
-    }
-
-    public boolean isAnonymous(HttpSession session) {
-        return session.getAttribute(LOGIN_USER) == null;
     }
 
     public boolean isDifferentUser(Long id) {

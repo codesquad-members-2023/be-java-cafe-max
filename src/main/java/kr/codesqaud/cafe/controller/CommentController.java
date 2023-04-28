@@ -5,10 +5,6 @@ import kr.codesqaud.cafe.service.CommentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
-
-import static kr.codesqaud.cafe.util.LoginSessionManager.LOGIN_USER;
-
 @Controller
 public class CommentController {
 
@@ -19,20 +15,15 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/posts/{articleId}/comments/new")
-    public String write(@PathVariable long articleId, CommentDTO commentDTO, HttpSession session) {
-        if(isAnonymous(session)) return "redirect:/login";
+    @PostMapping("/posts/{articleId}/comments")
+    public String write(@PathVariable long articleId, CommentDTO commentDTO) {
         commentService.write(articleId, commentDTO);
         return "redirect:/posts/{articleId}";
     }
 
     @DeleteMapping("/posts/{articleId}/comments/{id}")
-    public String delete(@PathVariable long articleId, @PathVariable long id) {
+    public String delete(@PathVariable long id) {
         commentService.delete(id);
         return "redirect:/posts/{articleId}";
-    }
-
-    private boolean isAnonymous(HttpSession session) {
-        return session.getAttribute(LOGIN_USER) == null;
     }
 }
