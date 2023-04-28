@@ -1,7 +1,7 @@
 package kr.codesqaud.cafe.user.dto;
 
 public class ResponseUserPreview {
-    //회원 목록 조회영 사용자DTO
+    //회원 목록 조회용 사용자DTO
     private final String userId;
 
     private final String name;
