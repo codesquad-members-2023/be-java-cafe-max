@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.article;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +36,6 @@ public class ArticleService {
 
 	public List<ArticleResponseForList> getArticleList(PaginationDto paginationDto) {
 		return articleRepository.findAll(paginationDto).stream()
-			.sorted(Comparator.comparing(Article::getArticleIdx).reversed())
 			.map(articleMapper::toArticleResponseForList)
 			.collect(Collectors.toUnmodifiableList());
 	}

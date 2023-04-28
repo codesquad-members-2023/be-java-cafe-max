@@ -85,26 +85,21 @@ class ArticleServiceTest {
 	@Test
 	@DisplayName("db에 저장된 모든 article을 역순으로 list에 담아 반환한다.")
 	void getArticleListTest() {
-		Article article1 = createArticle1ContainsIdx();
-		Article article2 = createArticle2ContainsIdx();
 		PaginationDto paginationDto = new PaginationDto();
-		ArticleResponseForList articleResponse1 = createArticleResponseForList1();
-		ArticleResponseForList articleResponse2 = createArticleResponseForList2();
-		List<Article> articles = new ArrayList<>(Arrays.asList(article1, article2));
+		ArticleResponseForList articleResponseForList = new ArticleResponseForList(title, articleIdx, date, nickName);
+		List<Article> articles = new ArrayList<>(Arrays.asList(article));
 
 		//given
 		given(articleRepository.findAll(any(PaginationDto.class))).willReturn(articles);
-		given(articleMapper.toArticleResponseForList(article1)).willReturn(articleResponse1);
-		given(articleMapper.toArticleResponseForList(article2)).willReturn(articleResponse2);
+		given(articleMapper.toArticleResponseForList(article)).willReturn(articleResponseForList);
 
 		//when
 		List<ArticleResponseForList> result = articleService.getArticleList(paginationDto);
 
 		//then
 		Assertions.assertAll(
-			() -> assertThat(result.size() == 2).isTrue(),
-			() -> assertThat(result.get(0)).isEqualTo(articleResponse2),
-			() -> assertThat(result.get(1)).isEqualTo(articleResponse1)
+			() -> assertThat(result.size() == 1).isTrue(),
+			() -> assertThat(result.get(0)).isEqualTo(articleResponseForList)
 		);
 	}
 
@@ -187,19 +182,4 @@ class ArticleServiceTest {
 			ArticleDeleteException.class);
 	}
 
-	private static ArticleResponseForList createArticleResponseForList1() {
-		return new ArticleResponseForList("title2", 1L, "2023-4-23", "nickName");
-	}
-
-	private static ArticleResponseForList createArticleResponseForList2() {
-		return new ArticleResponseForList("title2", 2L, "2023-4-23", "nickName");
-	}
-
-	private static Article createArticle2ContainsIdx() {
-		return new Article("title2", "content2", 2L);
-	}
-
-	private static Article createArticle1ContainsIdx() {
-		return new Article("title1", "content1", 1L);
-	}
 }
