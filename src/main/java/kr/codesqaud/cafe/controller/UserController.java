@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.controller.dto.UserDto;
 import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
 import kr.codesqaud.cafe.controller.dto.request.LoginRequest;
 import kr.codesqaud.cafe.controller.dto.request.ProfileEditRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -39,8 +41,16 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String listAllUsers(Model model) {
-        model.addAttribute("users", userService.getUsers());
+    public String listAllUsers(HttpServletRequest httpRequest, Model model) {
+        List<UserDto> users = userService.getUsers();
+        HttpSession session = httpRequest.getSession();
+        if (session != null) {
+            String loginUserId = (String) session.getAttribute("userId");
+            for (UserDto user : users) {
+                user.setAuth(loginUserId != null && loginUserId.equals(user.getUserId()));
+            }
+        }
+        model.addAttribute("users", users);
         return "user/list";
     }
 
