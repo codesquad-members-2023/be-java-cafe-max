@@ -4,6 +4,7 @@ import kr.codesqaud.cafe.comment.domain.Comment;
 import kr.codesqaud.cafe.comment.dto.RequestCommentForm;
 import kr.codesqaud.cafe.comment.service.CommentService;
 import kr.codesqaud.cafe.utils.Session;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,16 +32,9 @@ public class CommentController {
 
     @DeleteMapping
     public ResponseEntity<Map<String, Object>> deleteComment(long commentId, String userId, HttpSession session) {
+        HttpStatus status = commentService.delete(commentId, userId, Session.getUserId(session));
         Map<String, Object> response = new HashMap<>();
-        try {
-            if (Session.getUserId(session).equals(userId)) {
-                commentService.delete(commentId);
-            }
-            response.put("success", true);
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("error", e.getMessage());
-        }
-        return ResponseEntity.ok(response);
+        response.put("status", status.value());
+        return ResponseEntity.status(status).body(response);
     }
 }
