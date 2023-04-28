@@ -4,10 +4,7 @@ import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.article.repository.ArticleRepository;
 import kr.codesqaud.cafe.domain.reply.Reply;
 import kr.codesqaud.cafe.domain.reply.repository.ReplyRepository;
-import kr.codesqaud.cafe.dto.ArticleFormDto;
-import kr.codesqaud.cafe.dto.IndexResponseDto;
-import kr.codesqaud.cafe.dto.LoginSessionDto;
-import kr.codesqaud.cafe.dto.Paging;
+import kr.codesqaud.cafe.dto.*;
 import kr.codesqaud.cafe.exception.DeniedAccessException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -16,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ArticleService {
@@ -69,8 +67,10 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public Article findByIdx(int idx) {
-        return articleRepository.findByIdx(idx).orElseThrow(() -> new NotFoundException("게시글 찾을수 없음"));
+    public IndexResponseDto findByIdx(int idx) {
+        Article article = articleRepository.findByIdx(idx)
+                .orElseThrow(() -> new NotFoundException("게시글 찾을수 없음"));
+        return new IndexResponseDto(article);
     }
 
     public void update(int index, ArticleFormDto dto, String name) {
@@ -101,8 +101,11 @@ public class ArticleService {
         return reply;
     }
 
-    public List<Reply> replyList(int index,int start) {
-        return replyRepository.findAll(index,start);
+    public List<ReplyResponseDto> replyList(int index, int start) {
+        return replyRepository.findAll(index,start)
+                .stream()
+                .map(ReplyResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     public boolean deleteReply( int index, LoginSessionDto dto ) {

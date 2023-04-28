@@ -2,9 +2,7 @@ package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.reply.Reply;
-import kr.codesqaud.cafe.dto.ArticleFormDto;
-import kr.codesqaud.cafe.dto.LoginSessionDto;
-import kr.codesqaud.cafe.dto.Paging;
+import kr.codesqaud.cafe.dto.*;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +41,7 @@ public class ArticleController {
     public String getShow(@PathVariable int index, Model model, HttpSession session) {
         LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
         articleService.checkLogin(sessionDto);
-        Article article = articleService.findByIdx(index);
+        IndexResponseDto article = articleService.findByIdx(index);
         model.addAttribute("article", article);
         model.addAttribute("auth", articleService.checkIdentity(article.getUserId(), sessionDto.getId()));
         model.addAttribute("nickname", sessionDto.getName());
@@ -62,7 +60,7 @@ public class ArticleController {
 
     @GetMapping("/article/update/{index}")
     public String getUpdatePage(@PathVariable int index, Model model, HttpSession session) {
-        Article article = articleService.findByIdx(index);
+        IndexResponseDto article = articleService.findByIdx(index);
         LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
         articleService.checkAuth(article.getUserId(), sessionDto);
         model.addAttribute("setTitle", article.getTitle());
@@ -86,7 +84,7 @@ public class ArticleController {
 
     @GetMapping("/article/reply/{index}")
     @ResponseBody
-    public List<Reply> getReply(@PathVariable int index, @RequestParam int start) {
+    public List<ReplyResponseDto> getReply(@PathVariable int index, @RequestParam int start) {
         return articleService.replyList(index, start);
     }
 
