@@ -53,14 +53,7 @@ function handleSubmit(e) {
     });
 }
 
-let articleCount = 0;
-
-//todo 이거 지금은 보여지고 있는 개수로 초기화되서 추후 server에서 model을 통해 개수를 보내줘야함
-function findCountOfRepliesInHTML() {
-    const commentBox = document.getElementById('comment-box');
-    const articles = commentBox.querySelectorAll('article');
-    articleCount = articles.length;
-}
+// 댓글 개수 count를 위한 함수
 
 let countOfReply = document.getElementById('count-of-reply');
 

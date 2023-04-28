@@ -9,7 +9,7 @@ $(document).ready(function () {
             dataType: 'json',
             data: ({
                 "articleIdx": articleIdx,
-                "countOfRepliesInHtml": articleCount
+                "countOfRepliesInHtml": countOfRepliesInHtml
             }),
             success: function (data) {
                 for (let i = data.length - 1; i >= 0; i--) {
@@ -23,11 +23,32 @@ $(document).ready(function () {
                     $("#comment-box").prepend(template);
                     findCountOfRepliesInHTML();
                 }
+                hideLoadMoreButton();
                 ;
             },
             error: function (status) {
                 console.log('Error:', status);
+
             }
         });
     });
 });
+
+let countOfRepliesInHtml = 0;
+
+function findCountOfRepliesInHTML() {
+    const commentBox = document.getElementById('comment-box');
+    const articles = commentBox.querySelectorAll('article');
+    countOfRepliesInHtml = articles.length;
+}
+
+// 더보기 버튼을 없애기 위한 기능.
+const loadMoreButton = document.getElementById("button-for-more-comment");
+
+function hideLoadMoreButton() {
+    let countOfReplyInDbWithText = countOfReply.textContent;
+    let countOfReplyInDb = parseInt(countOfReplyInDbWithText.replace(/[^0-9]/g, ""));
+    if (countOfReplyInDb === countOfRepliesInHtml) {
+        loadMoreButton.style.display = "none";
+    }
+}
