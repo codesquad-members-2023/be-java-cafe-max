@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller.reply;
 
+import io.swagger.annotations.Api;
 import kr.codesqaud.cafe.domain.dto.Result;
 import kr.codesqaud.cafe.domain.dto.reply.ReplyForm;
 import kr.codesqaud.cafe.domain.dto.reply.ReplyTimeForm;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
 @RestController
+@Api(tags = "댓글 정보")
 public class ReplyController {
     private final ReplyService replyService;
 

@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller.user;
 
+import io.swagger.annotations.Api;
 import kr.codesqaud.cafe.domain.dto.user.UserForm;
 import kr.codesqaud.cafe.domain.dto.user.UserListForm;
 import kr.codesqaud.cafe.domain.dto.user.UserProfileForm;
@@ -14,6 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+@Api(tags = "사용자 정보")
 public class UserController {
     private final UserService userService;
 

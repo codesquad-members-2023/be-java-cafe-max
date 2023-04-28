@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller.article;
 
+import io.swagger.annotations.Api;
 import kr.codesqaud.cafe.domain.dto.article.ArticleForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleTimeForm;
 import kr.codesqaud.cafe.domain.dto.article.ArticleUpdateForm;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
+@Api(tags = "게시글 정보")
 public class ArticleController {
     private final ArticleService articleService;
     private final ReplyService replyService;
