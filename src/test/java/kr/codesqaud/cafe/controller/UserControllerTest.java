@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import static kr.codesqaud.cafe.utils.SessionTestUtils.*;
+import static kr.codesqaud.cafe.utils.UserTestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -38,19 +40,22 @@ class UserControllerTest {
 
 	private MockHttpSession httpSession;
 
+	private List<UserResponseForList> users;
+
+	private UserResponse userResponse;
+
 	@BeforeEach
 	public void setUp() {
-		httpSession = new MockHttpSession();
-		Session session = new Session("id", "testUser");
-		httpSession.setAttribute(Session.LOGIN_USER, session);
+		httpSession = createMockHttpSession();
+		userResponse = createUserResponse();
+		users = new ArrayList<>();
 	}
 
 	@Test
 	@DisplayName("회원가입 성공시 회원들의 list 를 user/list 에서 나열한다.")
 	void userListTest() throws Exception {
 		//given
-		List<UserResponseForList> userList = new ArrayList<>();
-		given(userService.getUserList()).willReturn(userList);
+		given(userService.getUserList()).willReturn(users);
 
 		//when & then
 		mockMvc.perform(MockMvcRequestBuilders.get("/users/list")
@@ -58,14 +63,13 @@ class UserControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(view().name("user/list"))
 			.andExpect(model().attributeExists("users"))//객체 검증
-			.andExpect(model().attribute("users", userList));
+			.andExpect(model().attribute("users", users));
 	}
 
 	@Test
 	@DisplayName("유저의 id,nickName,email정보를 db로부터 가져와 user/profile에서 볼수있다.")
 	void userProfileTest() throws Exception {
 		//given
-		UserResponse userResponse = createUserResponse();
 		given(userService.getUserById("testId")).willReturn(userResponse);
 
 		//when & then
@@ -105,20 +109,15 @@ class UserControllerTest {
 
 		assertAll(
 			() -> Assertions.assertThat(isEqualsWithSessionIdWithParamId(session, paramId)).isTrue(),
-			() -> Assertions.assertThat(isEqualsWithSessionNickNameWithParmNickName(session, paramNickName)).isTrue()
+			() -> Assertions.assertThat(isEqualsWithSessionNickNameWithParamNickName(session, paramNickName)).isTrue()
 		);
 	}
 
-	private static boolean isEqualsWithSessionNickNameWithParmNickName(Session session, String paramId) {
+	private static boolean isEqualsWithSessionNickNameWithParamNickName(Session session, String paramId) {
 		return session.getNickName().equals(paramId);
 	}
 
 	private static boolean isEqualsWithSessionIdWithParamId(Session session, String paramNickName) {
 		return session.getId().equals(paramNickName);
-	}
-
-	private static UserResponse createUserResponse() {
-		return new UserResponse("nickName", "aaa@naver.com", "password123",
-			"testId");
 	}
 }

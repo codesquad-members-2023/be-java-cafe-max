@@ -1,9 +1,8 @@
 package kr.codesqaud.cafe.service;
 
+import static kr.codesqaud.cafe.utils.UserTestUtils.*;
 import static org.mockito.BDDMockito.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,36 +43,34 @@ class UserServiceTest {
 	UserMapper userMapper;
 
 	private User user;
-
 	private UserSignUpRequest userSignUpRequest;
-
 	private UserResponse userResponse;
-
 	private UserResponseForList userResponseForList;
-
-	private static final String nickName = "nickName";
-
-	private static final String email = "test@Email.com";
-
-	private static final String password = "password";
-
-	private static final String userId = "tester";
-
-	private static final String date = "2023-4-27";
+	private List<User> users;
+	private ProfileEditRequest profileEditRequestWithSameOriPassword;
+	private ProfileEditRequest profileEditRequestWithDifferentOriPassword;
+	private SignInRequest signInRequestWithCorrectPassword;
+	private SignInRequest signInRequestWithInCorrectPassword;
+	private static final String USER_ID = "tester";
 
 	@BeforeEach
 	void setUp() {
-		user = new User(nickName, email, password, userId);
-		userSignUpRequest = new UserSignUpRequest(nickName, email, password, userId);
-		userResponse = new UserResponse(nickName, email, password, userId);
-		userResponseForList = new UserResponseForList(nickName, email, userId, date);
+		user = createUser();
+		userSignUpRequest = createUserSignUpRequest();
+		userResponse = createUserResponse();
+		userResponseForList = createUserResponseForList();
+		users = createUsers();
+		profileEditRequestWithSameOriPassword = createProfileEditRequestWithSameOriPassword();
+		profileEditRequestWithDifferentOriPassword = createProfileEditRequestWithDifferentOriPassword();
+		signInRequestWithCorrectPassword = createSignInRequestWithCorrectPassword();
+		signInRequestWithInCorrectPassword = createSignInRequestWithInCorrectPassword();
 	}
 
 	@Test
 	@DisplayName("중복되지 않은 아이디는 회원가입할수있다.")
 	void addUser() {
 		//given
-		given(userRepository.exist(userId)).willReturn(false);
+		given(userRepository.exist(USER_ID)).willReturn(false);
 		given(userMapper.toUser(userSignUpRequest)).willReturn(user);
 
 		//when
@@ -87,7 +84,7 @@ class UserServiceTest {
 	@DisplayName("중복된 아이디는 회원가입할수없다.")
 	void addUser_throwsException() {
 		//given
-		given(userRepository.exist(userId)).willReturn(true);
+		given(userRepository.exist(USER_ID)).willReturn(true);
 
 		//when
 		Assertions.assertThatThrownBy(() -> userService.addUser(userSignUpRequest))
@@ -101,9 +98,8 @@ class UserServiceTest {
 	@DisplayName("getUserList 메서드를 통해 사용자 리스트를 가져올수있다.")
 	void getUserList() {
 		//given
-		List<User> users = new ArrayList<>(Arrays.asList(user));
 		given(userRepository.findAll()).willReturn(users);
-		given(userMapper.toUserListResponse(user)).willReturn(userResponseForList);
+		given(userMapper.toUserListResponse(any(User.class))).willReturn(userResponseForList);
 
 		//when
 		List<UserResponseForList> result = userService.getUserList();
@@ -119,24 +115,24 @@ class UserServiceTest {
 	@DisplayName("아이디가 userId인 사용자에 대한 정보를 가져올수있다.")
 	void getUserById() {
 		//given
-		given(userRepository.findUserById(userId)).willReturn(Optional.of(user));
+		given(userRepository.findUserById(USER_ID)).willReturn(Optional.of(user));
 		given(userMapper.toUserResponse(user)).willReturn(userResponse);
 
 		//when
-		UserResponse result = userService.getUserById(userId);
+		UserResponse result = userService.getUserById(USER_ID);
 
 		//then
-		Assertions.assertThat(result.getUserId()).isEqualTo(userId);
+		Assertions.assertThat(result.getUserId()).isEqualTo(USER_ID);
 	}
 
 	@Test
 	@DisplayName("아이디가 userId인 사용자에 대한 정보가 존재하지 않으면 UserNotFoundException이 발생한다.")
 	void getUserById_throwsException() {
 		//given
-		given(userRepository.findUserById(userId)).willReturn(Optional.empty());
+		given(userRepository.findUserById(USER_ID)).willReturn(Optional.empty());
 
 		//when
-		Assertions.assertThatThrownBy(() -> userService.getUserById(userId))
+		Assertions.assertThatThrownBy(() -> userService.getUserById(USER_ID))
 			.isInstanceOf(UserNotFoundException.class);
 	}
 
@@ -144,29 +140,27 @@ class UserServiceTest {
 	@DisplayName("개인정보를 수정할때 비밀번호가 일치하면 정보수정에 성공한다.")
 	void updateUser() {
 		//given
-		ProfileEditRequest profileEditRequest = new ProfileEditRequest(nickName, email, password, password, userId);
-		User newUser = new User(nickName, nickName, password, userId);
-		given(userRepository.findUserById(userId)).willReturn(Optional.of(user));
+		given(userRepository.findUserById(USER_ID)).willReturn(Optional.of(user));
 		given(userMapper.toUserResponse(user)).willReturn(userResponse);
-		given(userMapper.toUser(profileEditRequest)).willReturn(newUser);
+		given(userMapper.toUser(profileEditRequestWithSameOriPassword)).willReturn(user);
 
 		//when & then
-		Assertions.assertThatCode(() -> userService.updateUser(profileEditRequest)).doesNotThrowAnyException();
-		verify(userRepository, times(1)).updateUser(newUser);
+		Assertions.assertThatCode(() -> userService.updateUser(profileEditRequestWithSameOriPassword))
+			.doesNotThrowAnyException();
+		verify(userRepository, times(1)).updateUser(user);
 	}
 
 	@Test
 	@DisplayName("개인정보를 수정할때 비밀번호가 일치하지 않으면 UserUpdateInvalidPasswordException이 발생한다.")
 	void updateUser_throwsException() {
 		//given
-		ProfileEditRequest profileEditRequest = new ProfileEditRequest(nickName, email, password,
-			password + "different", userId);
-		given(userRepository.findUserById(userId)).willReturn(Optional.of(user));
+		given(userRepository.findUserById(USER_ID)).willReturn(Optional.of(user));
 		given(userMapper.toUserResponse(user)).willReturn(userResponse);
 
 		//when & then
-		Assertions.assertThatThrownBy(() -> userService.updateUser(profileEditRequest)).isInstanceOf(
-			UserUpdateInvalidPasswordException.class);
+		Assertions.assertThatThrownBy(() -> userService.updateUser(profileEditRequestWithDifferentOriPassword))
+			.isInstanceOf(
+				UserUpdateInvalidPasswordException.class);
 
 	}
 
@@ -174,24 +168,23 @@ class UserServiceTest {
 	@DisplayName("로그인시 비밀번호를 정확히 입력해야 로그인에 성공한다.")
 	void matchPassword() {
 		//given
-		SignInRequest signInRequest = new SignInRequest(userId, password);
-		given(userRepository.findUserById(userId)).willReturn(Optional.of(user));
+		given(userRepository.findUserById(USER_ID)).willReturn(Optional.of(user));
 		given(userMapper.toUserResponse(user)).willReturn(userResponse);
 
 		//when & then
-		Assertions.assertThatCode(() -> userService.matchPassword(signInRequest)).doesNotThrowAnyException();
+		Assertions.assertThatCode(() -> userService.matchPassword(signInRequestWithCorrectPassword))
+			.doesNotThrowAnyException();
 	}
 
 	@Test
 	@DisplayName("로그인시 비밀번호를 정확히 입력하지 않으면 LoginInvalidPasswordException이 발생한다.")
 	void matchPassword_throwsException() {
 		//given
-		SignInRequest signInRequest = new SignInRequest(userId, password + "different");
-		given(userRepository.findUserById(userId)).willReturn(Optional.of(user));
+		given(userRepository.findUserById(USER_ID)).willReturn(Optional.of(user));
 		given(userMapper.toUserResponse(user)).willReturn(userResponse);
 
 		//when & then
-		Assertions.assertThatThrownBy(() -> userService.matchPassword(signInRequest)).isInstanceOf(
+		Assertions.assertThatThrownBy(() -> userService.matchPassword(signInRequestWithInCorrectPassword)).isInstanceOf(
 			LoginInvalidPasswordException.class);
 	}
 }

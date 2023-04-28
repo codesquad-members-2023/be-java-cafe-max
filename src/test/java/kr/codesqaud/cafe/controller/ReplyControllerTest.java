@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import static kr.codesqaud.cafe.utils.ReplyTestUtils.*;
+import static kr.codesqaud.cafe.utils.SessionTestUtils.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -19,7 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import kr.codesqaud.cafe.global.config.Session;
 import kr.codesqaud.cafe.reply.ReplyController;
 import kr.codesqaud.cafe.reply.ReplyService;
 import kr.codesqaud.cafe.reply.dto.LoadMoreReplyDto;
@@ -38,30 +39,36 @@ class ReplyControllerTest {
 
 	private MockHttpSession httpSession;
 
-	private Long articleIdx = 1L;
-
 	private List<ReplyResponse> replies = new ArrayList<>();
+
+	private ReplyResponse replyResponse;
+
+	private Result result;
+
+	private static final String CONTENT = "댓글 내용";
+	private static final String NICK_NAME = "tester";
+	private static final Long COUNT_OF_REPLIES_IN_HTML = 5L;
+	private static Long ARTICLE_IDX = 1L;
 
 	@BeforeEach
 	public void setUp() {
-		httpSession = new MockHttpSession();
-		Session session = new Session("id", "testUser");
-		httpSession.setAttribute(Session.LOGIN_USER, session);
+		httpSession = createMockHttpSession();
+		replyResponse = createReplyResponse();
+		result = createResult();
 	}
 
 	@Test
 	@DisplayName("댓글 작성시 replyDB에 댓글 저장후 ReplyResponse 객체를 json 형태로 return 한다.")
 	void reply() throws Exception {
-		ReplyResponse replyResponse = new ReplyResponse("testUser", "댓글 내용입니다",
-			"2023-4-23", 1L, 1L);
-
+		//given
 		given(replyService.save(any(ReplyRequest.class))).willReturn(replyResponse);
 
+		//when & then
 		mockMvc.perform(MockMvcRequestBuilders.post("/articles/reply/1")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("content", "댓글 내용입니다")
-				.param("nickName", "testUser"))
+				.param("content", CONTENT)
+				.param("nickName", NICK_NAME))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.nickName").value(replyResponse.getNickName()))
 			.andExpect(jsonPath("$.articleIdx").value(replyResponse.getArticleIdx()))
@@ -72,10 +79,10 @@ class ReplyControllerTest {
 	@Test
 	@DisplayName("삭제버튼 클릭시 delete 메서드 실행후 result 객체를 json형태로 return한다.")
 	void deleteReply() throws Exception {
-		Result result = new Result(true, null);
+		//given
+		given(replyService.delete(any(String.class), any(Long.class))).willReturn(result);
 
-		given(replyService.delete("id", 1L)).willReturn(result);
-
+		//when & then
 		mockMvc.perform(MockMvcRequestBuilders.delete(("/articles/reply/1"))
 				.session(httpSession))
 			.andExpect(status().isOk())
@@ -86,14 +93,14 @@ class ReplyControllerTest {
 	@DisplayName("더보기 버튼 클릭시 loadMoreReply 메서드 실행후 추가로 load될 댓글이 존재하면 댓글 list를 return한다.")
 	void loadMoreReplySuccessTest() throws Exception {
 		//given
-		given(replyService.getCountOfReplies(articleIdx)).willReturn(10);
+		given(replyService.getCountOfReplies(ARTICLE_IDX)).willReturn(10);
 		given(replyService.getRepliesByIdx(any(LoadMoreReplyDto.class))).willReturn(replies);
 
 		//when
 		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/articles/reply/loadMoreReply")
 				.session(httpSession)
-				.param("articleIdx", String.valueOf(articleIdx))
-				.param("countOfRepliesInHtml", "5"))
+				.param("articleIdx", String.valueOf(ARTICLE_IDX))
+				.param("countOfRepliesInHtml", String.valueOf(COUNT_OF_REPLIES_IN_HTML)))
 			//then
 			.andExpect(status().isOk())
 			.andReturn();
@@ -106,14 +113,14 @@ class ReplyControllerTest {
 	@DisplayName("더보기 버튼 클릭시 추가로 load될 댓글이 존재하지 않으면 null을 return한다.")
 	void loadMoreReplyFailTest() throws Exception {
 		//given
-		given(replyService.getCountOfReplies(articleIdx)).willReturn(5);
+		given(replyService.getCountOfReplies(ARTICLE_IDX)).willReturn(5);
 		given(replyService.getRepliesByIdx(any(LoadMoreReplyDto.class))).willReturn(replies);
 
 		//when
 		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/articles/reply/loadMoreReply")
 				.session(httpSession)
-				.param("articleIdx", String.valueOf(articleIdx))
-				.param("countOfRepliesInHtml", "5"))
+				.param("articleIdx", String.valueOf(ARTICLE_IDX))
+				.param("countOfRepliesInHtml", String.valueOf(COUNT_OF_REPLIES_IN_HTML)))
 			//then
 			.andExpect(status().isOk())
 			.andReturn();

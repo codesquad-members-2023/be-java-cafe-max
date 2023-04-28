@@ -28,20 +28,20 @@ class JDBCUserRepositoryTest {
 
 	private User user;
 
-	private static final String nickName = "nickName";
+	private static final String NICK_NAME = "nickName";
 
-	private static final String email = "test@Email.com";
+	private static final String EMAIL = "test@Email.com";
 
-	private static final String password = "password";
+	private static final String PASSWORD = "password";
 
-	private static final String userId = "tester";
+	private static final String USER_ID = "tester";
 
 	@Captor
 	private ArgumentCaptor<MapSqlParameterSource> paramCaptor;
 
 	@BeforeEach
 	void setUp() {
-		user = new User(nickName, email, password, userId);
+		user = new User(NICK_NAME, EMAIL, PASSWORD, USER_ID);
 	}
 
 	@Test

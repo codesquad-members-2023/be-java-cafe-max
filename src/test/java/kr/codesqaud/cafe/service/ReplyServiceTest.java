@@ -2,8 +2,6 @@ package kr.codesqaud.cafe.service;
 
 import static org.mockito.BDDMockito.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
@@ -23,6 +21,7 @@ import kr.codesqaud.cafe.reply.dto.ReplyRequest;
 import kr.codesqaud.cafe.reply.dto.ReplyResponse;
 import kr.codesqaud.cafe.reply.dto.Result;
 import kr.codesqaud.cafe.reply.repository.ReplyRepository;
+import kr.codesqaud.cafe.utils.ReplyTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class ReplyServiceTest {
@@ -39,19 +38,18 @@ class ReplyServiceTest {
 	private Reply reply;
 	private ReplyRequest replyRequest;
 	private ReplyResponse replyResponse;
-
-	private static final String content = "댓글 내용";
-	private static final String nickName = "tester";
-	private static final String userId = "testId";
-	private static final Long articleIdx = 1L;
-	private static final String date = "2023-4-27";
-	private static final Long replyIdx = 1L;
+	private LoadMoreReplyDto loadedReplyDto;
+	private List<Reply> replies;
+	private static final Long REPLY_IDX = 1L;
+	private static final String USER_ID = "testId";
 
 	@BeforeEach
-	void setup() {
-		reply = new Reply(userId, articleIdx, nickName, content);
-		replyRequest = new ReplyRequest(content, nickName);
-		replyResponse = new ReplyResponse(nickName, content, date, articleIdx, replyIdx);
+	void setUp() {
+		reply = ReplyTestUtils.createReply();
+		replyRequest = ReplyTestUtils.createReplyRequest();
+		replyResponse = ReplyTestUtils.createReplyResponse();
+		loadedReplyDto = ReplyTestUtils.createLoadedReplyDto();
+		replies = ReplyTestUtils.createReplies();
 	}
 
 	@Test
@@ -73,8 +71,6 @@ class ReplyServiceTest {
 	@DisplayName("ArticleIdx를 통해 해당 게시글의 댓글을 가져올수 있다.")
 	void getRepliesByIdxTest() {
 		//given
-		LoadMoreReplyDto loadedReplyDto = new LoadMoreReplyDto(articleIdx, 10, 0);
-		List<Reply> replies = new ArrayList<>(Arrays.asList(reply));
 		given(replyRepository.findAllReply(loadedReplyDto)).willReturn(replies);
 		given(replyMapper.toReplyResponse(any(Reply.class))).willReturn(replyResponse);
 
@@ -90,10 +86,10 @@ class ReplyServiceTest {
 	@DisplayName("사용자는 자신이 작성한 댓글을 삭제할수 있다.")
 	void deleteTest() {
 		//given
-		given(replyService.findIdByIdx(replyIdx)).willReturn(userId);
+		given(replyService.findIdByIdx(REPLY_IDX)).willReturn(USER_ID);
 
 		//when
-		Result result = replyService.delete(userId, replyIdx);
+		Result result = replyService.delete(USER_ID, REPLY_IDX);
 
 		//then
 		Assertions.assertThat(result.isOk()).isTrue();
@@ -103,10 +99,10 @@ class ReplyServiceTest {
 	@DisplayName("사용자는 다른 사용자가 작성한 댓글을 삭제할수 없다.")
 	void deleteFailTest() {
 		//given
-		given(replyService.findIdByIdx(replyIdx)).willReturn(userId + "k");
+		given(replyService.findIdByIdx(REPLY_IDX)).willReturn(USER_ID + "k");
 
 		//when
-		Result result = replyService.delete(userId, replyIdx);
+		Result result = replyService.delete(USER_ID, REPLY_IDX);
 
 		//then
 		Assertions.assertThat(result.isOk()).isFalse();
