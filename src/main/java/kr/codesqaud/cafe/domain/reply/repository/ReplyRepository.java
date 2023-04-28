@@ -10,7 +10,9 @@ public interface ReplyRepository {
 
     void save(Reply reply);
 
-    List<Reply> findAll(int index);
+    List<Reply> findAll(int index,int start);
+
+    int allCount(int articleIndex);
 
     void delete(int index);
 

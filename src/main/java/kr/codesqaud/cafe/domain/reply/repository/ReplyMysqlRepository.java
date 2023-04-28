@@ -31,12 +31,24 @@ public class ReplyMysqlRepository implements ReplyRepository {
     }
 
     @Override
-    public List<Reply> findAll(int articleIdx) {
-        SqlParameterSource namedParameters = new MapSqlParameterSource("articleIdx", articleIdx);
+    public List<Reply> findAll(int articleIdx, int start) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("articleIdx", articleIdx);
+        namedParameters.addValue("start", start);
         return namedParameterJdbcTemplate.query(
-                "SELECT IDX , ARTICLE_IDX , REPLY_WRITER , REPLY_CONTENTS , DATE FROM REPLY WHERE DELETED = FALSE AND ARTICLE_IDX = :articleIdx ",
+                "SELECT IDX , ARTICLE_IDX , REPLY_WRITER , REPLY_CONTENTS , DATE " +
+                        "FROM REPLY WHERE DELETED = FALSE" +
+                        " AND ARTICLE_IDX = :articleIdx LIMIT :start , 5  ",
                 namedParameters, rowMapper()
         );
+    }
+
+    @Override
+    public int allCount(int articleIdx) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("articleIdx", articleIdx);
+        return namedParameterJdbcTemplate.query("SELECT COUNT(*) FROM REPLY " +
+                        "WHERE DELETED = FALSE AND ARTICLE_IDX = :articleIdx",
+                namedParameters, (rs, rowNum) -> rs.getInt(1)).get(0);
     }
 
     @Override

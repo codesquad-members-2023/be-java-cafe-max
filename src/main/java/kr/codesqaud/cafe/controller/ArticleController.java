@@ -105,4 +105,10 @@ public class ArticleController {
         return articleService.deleteReply(articleIndex,index,sessionDto);
     }
 
+    @GetMapping("/getReplyCount/{index}")
+    @ResponseBody
+    public int getReplyCount(@PathVariable int index) {
+        return articleService.replyCount(index);
+    }
+
 }
