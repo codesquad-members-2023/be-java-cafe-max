@@ -1,12 +1,11 @@
 package kr.codesqaud.cafe.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.codesqaud.cafe.controller.dto.CommentRequest;
 import kr.codesqaud.cafe.service.CommentService;
@@ -20,16 +19,15 @@ public class CommentController {
 	}
 
 	@PostMapping("/articles/{articleId}/comments")
-	public String newComment(@ModelAttribute CommentRequest request, HttpSession session) {
-		Object userId = session.getAttribute("sessionedUser");
-		commentService.save(request, (String)userId, request.getArticleId());
+	public String newComment(@ModelAttribute CommentRequest request, @SessionAttribute("sessionedUser") String userId) {
+		commentService.save(request, userId, request.getArticleId());
 		return "redirect:/articles/" + request.getArticleId();
 	}
 
 	@DeleteMapping("/articles/{articleId}/comments/{id}")
-	public String deleteComment(@PathVariable Long id, HttpSession session, String userId, Long articleId) {
-		Object user = session.getAttribute("sessionedUser");
-		if (!user.equals(userId)) {
+	public String deleteComment(@PathVariable Long id, @SessionAttribute("sessionedUser") String sessionUserId,
+		String userId, Long articleId) {
+		if (!sessionUserId.equals(userId)) {
 			return "user/error";
 		}
 		commentService.delete(id);
