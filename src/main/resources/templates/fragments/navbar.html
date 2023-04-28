@@ -50,19 +50,18 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="/">Posts</a></li>
 
-                {{#userId}}
-
+                {{#loginUser}}
                     <li><a href="../profile-edit-form/{{userId}}" role="textbox">로그인 사용자 : {{userId}}</a></li>
                     <li>
                         <form method="post" action="../logout">
                             <button type="submit">로그아웃</button>
                         </form>
                     </li>
-                {{/userId}}
-                {{^userId}}
+                {{/loginUser}}
+                {{^loginUser}}
                     <li><a href="../login-user-form" role="button">로그인</a></li>
                     <li><a href="../create-user-form" role="button">회원가입</a></li>
-                {{/userId}}
+                {{/loginUser}}
 
             </ul>
         </div>
