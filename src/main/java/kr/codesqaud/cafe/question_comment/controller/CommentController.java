@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -86,8 +88,9 @@ public class CommentController {
 	 * @throws CommentNotExistException 댓글이 존재하지 않을 때 예외 발생
 	 * @throws NoAccessPermissionException 댓글 작성자가 아닌 경우 예외 발생
 	 */
-	@DeleteMapping("/{id}")
-	public long commentDelete(@PathVariable long post_id, @PathVariable long id,
+	//@DeleteMapping(path = "/{id}", produces = "text/plain")
+	@DeleteMapping(path = "/{id}")
+	public ResponseEntity<String> commentDelete(@PathVariable long post_id, @PathVariable long id,
 		HttpSession session) throws
 		CommentNotExistException,
 		NoAccessPermissionException {
@@ -97,7 +100,7 @@ public class CommentController {
 
 		service.deleteById(id);
 
-		return 1;
+		return new ResponseEntity<>("성공", HttpStatus.OK);
 	}
 
 }
