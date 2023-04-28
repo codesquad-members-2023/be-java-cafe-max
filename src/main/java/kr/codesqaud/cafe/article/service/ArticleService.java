@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.RequestArticleWriteForm;
 import kr.codesqaud.cafe.article.dto.ResponseArticleDetail;
 import kr.codesqaud.cafe.article.dto.ResponseArticlePreview;
+import kr.codesqaud.cafe.article.dto.ResponsePaginationDto;
 import kr.codesqaud.cafe.article.mapper.ArticleDtoMapper;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -51,5 +52,24 @@ public class ArticleService {
 
     public void delete(long id) {
         articleRepository.deleteById(id);
+    }
+
+    public int countAll() {
+        return articleRepository.countAll();
+    }
+
+    public List<ResponseArticlePreview> findByRange(int from, int to) {
+        List<Article> articleList = articleRepository.findByRange(from, to);
+        List<ResponseArticlePreview> articlePreviews = new ArrayList<>();
+        for(Article article : articleList){
+            articlePreviews.add(ArticleDtoMapper.INSTANCE.toPreviewDto(article));
+        }
+        return articlePreviews;
+    }
+
+    public ResponsePaginationDto getPaginationInfo(int currentPage, int pageSize) {
+        int totalSize = articleRepository.countAll();
+        int totalPages = (int) Math.ceil((double) totalSize / pageSize);
+        return new ResponsePaginationDto(currentPage, totalPages);
     }
 }
