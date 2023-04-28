@@ -11,16 +11,20 @@ public class ArticleResponseDto {
     private String loginId;
     private String title;
     private String contents;
+    private boolean isDeleted;
 
-    public ArticleResponseDto(long id, String loginId, String title, String contents) {
+    public ArticleResponseDto(long id, String loginId, String title, String contents, boolean isDeleted) {
         this.id = id;
         this.loginId = loginId;
         this.title = title;
         this.contents = contents;
+        this.isDeleted = isDeleted;
     }
 
     public static ArticleResponseDto from(Article article) {
-        return new ArticleResponseDto(article.getId(), article.getLoginId(), article.getTitle(), article.getContents());
+        return new ArticleResponseDto(
+                article.getId(), article.getLoginId(), article.getTitle(), article.getContents(), article.getIsDeleted()
+        );
     }
 
     public long getId() {

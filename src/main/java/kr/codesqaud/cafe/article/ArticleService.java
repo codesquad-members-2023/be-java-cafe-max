@@ -2,7 +2,8 @@ package kr.codesqaud.cafe.article;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
+import kr.codesqaud.cafe.exception.article.InvalidArticleDeletionException;
 import kr.codesqaud.cafe.exception.article.InvalidRequesterIdException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,15 +37,20 @@ public class ArticleService {
      * @return 저장소 내 전체 게시글
      */
     public List<Article> findArticles() {
-        return Collections.unmodifiableList(articleRepository.findAll()); // TODO: 불변값으로 수정
+        return Collections.unmodifiableList(articleRepository.findAll());
     }
 
     /**
      * @param id Article id
      * @return 게시글
      */
-    public Optional<Article> findOne(long id) {
-        return articleRepository.findOneById(id);
+    public Article findOne(long id) {
+        Article findArticle = articleRepository.findOneById(id).orElseThrow(ArticleNotFoundException::new);
+        System.out.println(findArticle.getIsDeleted());
+        if (findArticle.getIsDeleted()) {
+            throw new ArticleNotFoundException();
+        }
+        return findArticle;
     }
 
     /**
@@ -64,4 +70,24 @@ public class ArticleService {
         return id;
     }
 
+    public void delete(long articleId, String requesterId) {
+        Article findArticle = articleRepository.findOneById(articleId).orElseThrow(ArticleNotFoundException::new);
+        String originLoginId = articleRepository.findLoginIdOf(articleId); // TODO: findOneById 조인 쿼리 수정 필요, 수정 후 값을 getter로 가져올 예정
+        boolean hasReply = findArticle.getHasReply();
+
+        if (!originLoginId.equals(requesterId)) {
+            logger.info(
+                    "게시글 삭제 요청 Id와 기존 게시글 Id 불일치, requesterId: {}, originLoginId: {}", requesterId, originLoginId
+            );
+            throw new InvalidRequesterIdException();
+        }
+
+        if (hasReply) {
+            logger.info("게시글에 댓글이 있어 삭제 불가, requesterId: {}, articleId: {}", requesterId, articleId);
+            throw new InvalidArticleDeletionException();
+        }
+
+        articleRepository.delete(articleId);
+        logger.info("게시글 삭제 성공, 게시글 id: {}", articleId);
+    }
 }

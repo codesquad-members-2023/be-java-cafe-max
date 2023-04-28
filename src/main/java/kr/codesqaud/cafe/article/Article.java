@@ -9,14 +9,16 @@ public class Article {
     private final String loginId;
     private final String title;
     private final String contents;
-    private boolean isDeleted = false;
-    private boolean hasReply = false;
+    private final boolean isDeleted;
+    private final boolean hasReply;
 
     private Article(Builder builder) {
         id = builder.id;
         loginId = builder.loginId;
         title = builder.title;
         contents = builder.contents;
+        isDeleted = builder.isDeleted;
+        hasReply = builder.hasReply;
     }
 
     public long getId() {
@@ -49,8 +51,8 @@ public class Article {
         private String loginId;
         private String title;
         private String contents;
-        private boolean isDeleted = false;
-        private boolean hasReply = false;
+        private boolean isDeleted;
+        private boolean hasReply;
 
         public Builder id(long id) {
             this.id = id;

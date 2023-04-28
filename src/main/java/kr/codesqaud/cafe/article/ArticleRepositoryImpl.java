@@ -37,15 +37,15 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public String findLoginIdOf(long articleId) {
-        String sql = "select id, user_login_Id, title, contents from article where id = :id";
+        String sql = "SELECT id, user_login_Id, title, contents, is_deleted, has_reply FROM article WHERE id = :id";
         SqlParameterSource param = new MapSqlParameterSource("id", articleId);
-        return template.queryForObject(sql, param, articleRowMapper()).getLoginId();
+        return Objects.requireNonNull(template.queryForObject(sql, param, articleRowMapper())).getLoginId();
     }
 
     @Override
-    public Optional<Article> findOneById(long id) {
-        String sql = "select a.id, u.name as user_login_id, a.title, a.contents "
-                + "from article a inner join user u on a.user_login_id = u.login_id where a.id = :id";
+    public Optional<Article> findOneById(long id) { // TODO: 조인 쿼리 수정 필요, 수정 후 위에 메서드 삭제
+        String sql = "SELECT a.id, u.name AS user_login_id, a.title, a.contents, a.is_deleted, a.has_reply "
+                + "FROM article a INNER JOIN user u ON a.user_login_id = u.login_id WHERE a.id = :id";
         SqlParameterSource param = new MapSqlParameterSource("id", id);
         try {
             return Optional.ofNullable(template.queryForObject(sql, param, articleRowMapper()));
@@ -56,8 +56,9 @@ public class ArticleRepositoryImpl implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        String sql = "select a.id, u.name as user_login_id, a.title, a.contents "
-                + "from article a inner join user u on a.user_login_id = u.login_id";
+        String sql = "SELECT a.id, u.name AS user_login_id, a.title, a.contents, a.is_deleted, a.has_reply "
+                + "FROM article a INNER JOIN user u ON a.user_login_id = u.login_id "
+                + "WHERE a.is_deleted = false";
         return template.query(sql, articleRowMapper());
     }
 
@@ -72,12 +73,21 @@ public class ArticleRepositoryImpl implements ArticleRepository {
         return id;
     }
 
+    @Override
+    public void delete(long articleId) {
+        String sql = "UPDATE article SET is_deleted = true WHERE id = :articleId";
+        SqlParameterSource param = new MapSqlParameterSource("articleId", articleId);
+        template.update(sql, param);
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return (resultSet, rowNumber) -> new Article.Builder()
                 .id(resultSet.getLong("id"))
                 .loginId(resultSet.getString("user_login_id"))
                 .title(resultSet.getString("title"))
                 .contents(resultSet.getString("contents"))
+                .isDeleted(resultSet.getBoolean("is_deleted"))
+                .hasReply(resultSet.getBoolean("has_reply"))
                 .build();
     }
 }
