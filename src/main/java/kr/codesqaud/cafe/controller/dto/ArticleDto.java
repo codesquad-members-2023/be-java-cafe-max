@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.Article;
 
 public class ArticleDto {
-	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm");
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 	private final Long id;
 	private final String writer;
