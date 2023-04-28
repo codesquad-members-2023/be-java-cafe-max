@@ -2,7 +2,7 @@ function addComment(data) {
     return `<div class="comment">
                 <strong class="comment-writer">${data.writer.nickname}</strong>
                 <pre class="comment-content">${data.content}</pre>
-                <span class="comment-date">${data.writeDate}</span>
+                <span class="comment-date">${data.writeDateTime}</span>
                 <form class="comment-delete" action="/api/posts/${data.postId}/comments/${data.id}">
                      <button class="btn btn-primary btn-sm" type="submit">삭제</button>
                 </form>

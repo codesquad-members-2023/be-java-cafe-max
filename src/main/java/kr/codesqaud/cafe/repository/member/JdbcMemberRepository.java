@@ -53,14 +53,14 @@ public class JdbcMemberRepository implements MemberRepository {
 
     @Override
     public Optional<Member> findByEmailAndPassword(String email, String password) {
-        String sql = "SELECT id, email "
+        String sql = "SELECT id, nickname "
                     + "FROM member "
                    + "WHERE email = :email "
                      + "AND password = :password";
         MapSqlParameterSource parameter = new MapSqlParameterSource("email", email);
         parameter.addValue("password", password);
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter,
-            (rs, rowNum) -> new Member(rs.getLong("id"), rs.getString("email")))));
+            (rs, rowNum) -> new Member(rs.getLong("id"), rs.getString("nickname")))));
     }
 
     @Override

@@ -85,6 +85,6 @@ public class JdbcCommentRepository implements CommentRepository {
 
     private final RowMapper<Comment> commentRowMapper = (rs, rowNum) ->
         new Comment(rs.getLong("id"), rs.getLong("post_id"),
-            Member.of(rs.getLong("writer_id"), rs.getString("nickname")),
+            new Member(rs.getLong("writer_id"), rs.getString("nickname")),
             rs.getString("content"), rs.getTimestamp("write_date").toLocalDateTime());
 }

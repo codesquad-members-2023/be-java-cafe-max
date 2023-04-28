@@ -14,8 +14,8 @@ public class Member {
     public Member(Long id) {
         this(id, null, null, null, null);
     }
-    public Member(Long id, String email) {
-        this(id, email, null, null, null);
+    public Member(Long id, String nickname) {
+        this(id, null, null, nickname, null);
     }
 
     public Member(String email, String password, String nickname) {
@@ -37,10 +37,6 @@ public class Member {
         this.password = password;
         this.nickname = nickname;
         this.createDateTime = createDateTime;
-    }
-
-    public static Member of(Long id, String nickname) {
-        return new Member(id, null, null, nickname, null);
     }
 
     public Long getId() {

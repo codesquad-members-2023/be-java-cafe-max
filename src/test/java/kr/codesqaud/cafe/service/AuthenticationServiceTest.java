@@ -33,7 +33,7 @@ class AuthenticationServiceTest {
     void signIn() {
         // given
         SignInRequest signInRequest = new SignInRequest("test@gmail.com", "Test1234");
-        Member member = Member.of(1L, "test");
+        Member member = new Member(1L, "test");
         given(memberRepository.findByEmailAndPassword(any(), any())).willReturn(Optional.of(member));
 
         // when
