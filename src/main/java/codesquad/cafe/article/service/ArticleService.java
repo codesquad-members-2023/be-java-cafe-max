@@ -10,6 +10,7 @@ import codesquad.cafe.reply.domain.Reply;
 import codesquad.cafe.reply.repository.ReplyRepository;
 import codesquad.cafe.user.domain.User;
 import codesquad.cafe.global.exception.CustomException;
+import codesquad.cafe.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,10 +24,12 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ReplyRepository replyRepository;
+    private final UserRepository userRepository;
 
-    public ArticleService(final ArticleRepository articleRepository, final ReplyRepository replyRepository) {
+    public ArticleService(final ArticleRepository articleRepository, final ReplyRepository replyRepository, final UserRepository userRepository) {
         this.articleRepository = articleRepository;
         this.replyRepository = replyRepository;
+        this.userRepository = userRepository;
     }
 
     public void createPost(final ArticleRequestDto articleRequestDto, final User user) {
@@ -37,18 +40,14 @@ public class ArticleService {
         List<Article> articles = articleRepository.findPagingArticles(criteria);
         List<ArticleResponseDto> articleResponseDtos = new ArrayList<>();
         for (Article article : articles) {
-            articleResponseDtos.add(new ArticleResponseDto(article, findWriterName(article)));
+            articleResponseDtos.add(new ArticleResponseDto(article, userRepository.findNameById(article.getWriterId())));
         }
         return articleResponseDtos;
     }
 
     public ArticleResponseDto findPost(final Long id) {
         Article article = articleRepository.findById(id);
-        return new ArticleResponseDto(article, findWriterName(article));
-    }
-
-    private String findWriterName(final Article article) {
-        return articleRepository.findWriterByUserId(article);
+        return new ArticleResponseDto(article, userRepository.findNameById(article.getWriterId()));
     }
 
     public void updatePost(final ArticleUpdateRequestDto articleUpdateRequestDto, final Long postId, final User user) {
@@ -92,7 +91,7 @@ public class ArticleService {
     public ArticleResponseDto findPostByIdAndUser(final Long postId, final User user) {
         Article article = articleRepository.findById(postId);
         validateWriter(user, article);
-        return new ArticleResponseDto(article, findWriterName(article));
+        return new ArticleResponseDto(article, userRepository.findNameById(article.getWriterId()));
     }
 
     public int getTotal() {

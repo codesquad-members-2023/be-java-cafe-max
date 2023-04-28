@@ -26,11 +26,6 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public String findWriterByUserId(final Article writerId) {
-        return null;
-    }
-
-    @Override
     public void update(final Article article) {
     }
 

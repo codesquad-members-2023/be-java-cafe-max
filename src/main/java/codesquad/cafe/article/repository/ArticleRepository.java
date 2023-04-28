@@ -10,8 +10,6 @@ public interface ArticleRepository {
 
     Article findById(Long id);
 
-    String findWriterByUserId(Article article);
-
     void update(Article article);
 
     void deletePostById(Long postId);

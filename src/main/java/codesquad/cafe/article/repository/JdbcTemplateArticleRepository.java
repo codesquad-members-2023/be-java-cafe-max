@@ -71,15 +71,6 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public String findWriterByUserId(final Article article) {
-        String sql = "SELECT users.name FROM users JOIN article ON users.id = article.writer_id WHERE writer_id = :writerId and article.id = :id";
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("writerId", article.getWriterId());
-        params.addValue("id", article.getId());
-        return namedParameterJdbcTemplate.queryForObject(sql, params, String.class);
-    }
-
-    @Override
     public void update(final Article article) {
         String sql = "update article set title = :title, contents = :contents where id = :id";
         MapSqlParameterSource params = new MapSqlParameterSource();

@@ -71,4 +71,11 @@ public class JdbcUserRepository implements UserRepository {
 
         namedParameterJdbcTemplate.update(sql, params);
     }
+
+    @Override
+    public String findNameById(final String id) {
+        String sql = "select name from users where id = :id";
+        SqlParameterSource params = new MapSqlParameterSource("id", id);
+        return namedParameterJdbcTemplate.queryForObject(sql, params, String.class);
+    }
 }

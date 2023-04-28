@@ -28,4 +28,9 @@ public class MemoryUserRepository implements UserRepository {
     public void update(final User user) {
         save(user);
     }
+
+    @Override
+    public String findNameById(final String id) {
+        return null;
+    }
 }
