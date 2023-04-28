@@ -23,7 +23,7 @@ public class CommentDTO {
         return new CommentDTO(comment.getId(), comment.getArticleId(), comment.getContent(), comment.getUserId(), comment.getUserName(), comment.getCreateTime());
     }
 
-    public Comment toEntity(Long articleId, Long userId, String userName) {
+    public Comment toEntity(Long articleId, Long userId) {
         return new Comment(id, articleId, content, userId, userName, createTime);
     }
 

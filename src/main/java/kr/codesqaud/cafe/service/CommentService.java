@@ -20,9 +20,9 @@ public class CommentService {
     }
 
     public void write(Long articleId, CommentDTO commentDto) {
+        loginSessionManager.throwErrorIfAnonymous();
         Long userId = loginSessionManager.getLoginUser().getId();
-        String userName = loginSessionManager.getLoginUser().getName();
-        Comment comment = commentDto.toEntity(articleId, userId, userName);
+        Comment comment = commentDto.toEntity(articleId, userId);
         commentRepository.save(comment);
     }
 

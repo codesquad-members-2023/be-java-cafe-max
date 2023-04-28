@@ -63,7 +63,8 @@
 
                                 <!-- 댓글 쓰기 -->
                                 <form class="submit-write" method="post"
-                                      th:action="@{/posts/{articleId}/comments/new(articleId=${wantedPost.id})}">
+                                      th:action="@{/posts/{articleId}/comments(articleId=${wantedPost.id})}">
+                                    <input type="hidden" id="userName" name="userName" th:value="${wantedPost.userName}">
                                     <input type="hidden" id="createTime" name="createTime"
                                            th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm')}">
                                     <div class="form-group">
