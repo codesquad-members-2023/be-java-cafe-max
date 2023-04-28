@@ -53,6 +53,14 @@ public class CommentController {
 		return CommentResponseDTO.from(service.findById(id));
 	}
 
+	/**
+	 * 커서 기반 페이징 댓글 리스트 불러오기
+	 * @param post_id 불러올 댓글이 달린 게시글 id
+	 * @param cursor 몇 번 째 댓글부터 불러올 것인지
+	 * @param session 세션
+	 * @return 댓글 List 반환
+	 * @throws NoAuthSessionException 로그인 하지 않은 상태이면 예외 발생
+	 */
 	@GetMapping
 	public List<CommentResponseDTO> commentList(@PathVariable long post_id,
 		@RequestParam(value = "cursor", defaultValue = "-1") long cursor,
