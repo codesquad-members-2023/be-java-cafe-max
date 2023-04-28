@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.reply;
 
 import java.util.List;
+import java.util.Objects;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -25,7 +26,14 @@ public class ReplyRepositoryImpl implements ReplyRepository {
         SqlParameterSource param = new BeanPropertySqlParameterSource(reply);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         template.update(sql, param, keyHolder);
-        return keyHolder.getKey().longValue();
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    }
+
+    @Override
+    public void updateHasReply(long articleId) {
+        String sql = "UPDATE article SET has_reply = true WHERE id = :articleId";
+        SqlParameterSource param = new MapSqlParameterSource("articleId", articleId);
+        template.update(sql, param);
     }
 
     // TODO: 댓글 수정 기능 구현 필요

@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS article
     user_login_id varchar(10) NOT NULL,
     title         varchar(10) NOT NULL,
     contents      text(1000)  NOT NULL,
+    is_deleted    boolean default FALSE,
+    has_reply     boolean default FALSE,
     PRIMARY KEY (id),
     FOREIGN KEY (user_login_id)
         REFERENCES user (login_id) ON UPDATE CASCADE

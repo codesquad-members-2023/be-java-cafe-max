@@ -6,6 +6,8 @@ public interface ReplyRepository {
 
     long save(Reply reply);
 
+    void updateHasReply(long articleId);
+
     // TODO: 댓글 수정 기능 구현 필요
 //    long update(Reply reply);
 

@@ -9,6 +9,8 @@ public class Article {
     private final String loginId;
     private final String title;
     private final String contents;
+    private boolean isDeleted = false;
+    private boolean hasReply = false;
 
     private Article(Builder builder) {
         id = builder.id;
@@ -33,12 +35,22 @@ public class Article {
         return contents;
     }
 
+    public boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public boolean getHasReply() {
+        return hasReply;
+    }
+
     public static class Builder {
 
         private long id;
         private String loginId;
         private String title;
         private String contents;
+        private boolean isDeleted = false;
+        private boolean hasReply = false;
 
         public Builder id(long id) {
             this.id = id;
@@ -57,6 +69,16 @@ public class Article {
 
         public Builder contents(String contents) {
             this.contents = contents;
+            return this;
+        }
+
+        public Builder isDeleted(boolean isDeleted) {
+            this.isDeleted = isDeleted;
+            return this;
+        }
+
+        public Builder hasReply(boolean hasReply) {
+            this.hasReply = hasReply;
             return this;
         }
 
