@@ -29,14 +29,6 @@ public class JdbcCommentRepository implements CommentRepository {
 	}
 
 	@Override
-	public List<Comment> findByArticleIndex(Long articleIndex) {
-		SqlParameterSource params = new MapSqlParameterSource()
-			.addValue("articleIndex", articleIndex)
-			.addValue("commentSize", COMMENT_SIZE);
-		return namedParameterJdbcTemplate.query(FIND_COMMENTS_BY_ARTICLE_INDEX, params, commentRowMapper());
-	}
-
-	@Override
 	public void create(Comment comment) {
 		SqlParameterSource params = new BeanPropertySqlParameterSource(comment);
 		namedParameterJdbcTemplate.update(CREATE_COMMENT, params);
@@ -82,7 +74,7 @@ public class JdbcCommentRepository implements CommentRepository {
 	}
 
 	@Override
-	public List<Comment> findMoreComments(Long articleIndex, Long commentLastIndex) {
+	public List<Comment> findComments(Long articleIndex, Long commentLastIndex) {
 		SqlParameterSource params = new MapSqlParameterSource()
 			.addValue("articleIndex", articleIndex)
 			.addValue("commentLastIndex", commentLastIndex)

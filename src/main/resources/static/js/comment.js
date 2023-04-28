@@ -4,7 +4,7 @@ let commentLastIndex = 0;
 showComments();
 moreButton();
 $("#comment-write").click(addComment);
-$(".more-button").click(showMoreComments);
+$(".more-button").click(showComments);
 $(document).on("click", "form[name=comment-delete-form]", deleteComment);
 
 function addComment() {
@@ -62,8 +62,10 @@ function createComment(comment) {
 
 function showComments() {
     const articleIndex = window.location.pathname.split("/")[2];
-    url = "/comments/" + articleIndex;
-    commentLastIndex += commentSize;
+    url = "/comments/" + articleIndex + "/" + commentLastIndex;
+    if(comments >= commentLastIndex) {
+        commentLastIndex += commentSize;
+    }
     $.ajax({
           type : 'get',
           url : url,
@@ -112,30 +114,6 @@ function deleteComment() {
           $("textarea[name=comment]").val("");
       }
     });
-}
-
-function showMoreComments() {
-    const articleIndex = window.location.pathname.split("/")[2];
-    url = "/comments/" + articleIndex +"/" + commentLastIndex;
-    if(comments >= commentLastIndex) {
-        commentLastIndex += commentSize;
-    }
-    $.ajax({
-              type : 'get',
-              url : url,
-              async : false,
-              error: function () {
-                  alert("error");
-              },
-              success : function (data) {
-                  commentsSize();
-                  moreButton();
-                  $('#comment_count').text(comments);
-
-                  var template = format(data);
-                  $(".comment-box").append(template);
-              }
-          });
 }
 
 function commentsSize() {

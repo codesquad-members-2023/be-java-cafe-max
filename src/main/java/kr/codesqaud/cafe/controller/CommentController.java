@@ -23,9 +23,10 @@ public class CommentController {
 		this.articleService = articleService;
 	}
 
-	@GetMapping("/comments/{articleIndex}")
-	public List<CommentResponse> show(@PathVariable Long articleIndex) {
-		return articleService.findCommentsByArticleIndex(articleIndex);
+	@GetMapping("/comments/{articleIndex}/{commentLastIndex}")
+	public List<CommentResponse> show(@PathVariable Long articleIndex,
+		@PathVariable Long commentLastIndex) {
+		return articleService.showComments(articleIndex, commentLastIndex);
 	}
 
 	@PostMapping("/comments/{author}")
@@ -39,17 +40,11 @@ public class CommentController {
 		String nickname = ((UserRequest)session.getAttribute("sessionUser")).getNickname();
 		articleService.checkIsAuthor(nickname, articleIndex, commentIndex);
 		articleService.deleteComment(articleIndex, commentIndex);
-		return articleService.findCommentsByArticleIndex(articleIndex);
+		return articleService.showComments(articleIndex, 0L);
 	}
 
 	@GetMapping("/comments/size/{articleIndex}")
 	public int commentsSize(@PathVariable Long articleIndex) {
 		return articleService.getCommentsSize(articleIndex);
-	}
-
-	@GetMapping("/comments/{articleIndex}/{commentLastIndex}")
-	public List<CommentResponse> showMoreComments(@PathVariable Long articleIndex,
-		@PathVariable Long commentLastIndex) {
-		return articleService.showMoreComments(articleIndex, commentLastIndex);
 	}
 }

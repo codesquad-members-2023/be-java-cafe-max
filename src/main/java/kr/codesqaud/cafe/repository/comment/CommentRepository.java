@@ -6,8 +6,6 @@ import java.util.Optional;
 import kr.codesqaud.cafe.domain.Comment;
 
 public interface CommentRepository {
-	List<Comment> findByArticleIndex(Long articleIndex);
-
 	void create(Comment comment);
 
 	Optional<Comment> findOne(Long articleIndex, Long commentIndex);
@@ -20,5 +18,5 @@ public interface CommentRepository {
 
 	Boolean equalsAuthor(Long articleIndex);
 
-	List<Comment> findMoreComments(Long articleIndex, Long commentLastIndex);
+	List<Comment> findComments(Long articleIndex, Long commentLastIndex);
 }

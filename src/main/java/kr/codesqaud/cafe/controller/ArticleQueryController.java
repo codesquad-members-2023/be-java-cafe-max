@@ -55,7 +55,7 @@ public class ArticleQueryController {
 		String author = ((UserRequest)session.getAttribute("sessionUser")).getNickname();
 		String equal = articleService.checkIsWriter(author, writer);
 		ArticleResponse articleResponse = articleService.findByIndex(articleIndex);
-		List<CommentResponse> commentResponses = articleService.findCommentsByArticleIndex(articleIndex);
+		List<CommentResponse> commentResponses = articleService.showComments(articleIndex, 0L);
 
 		model.addAttribute("author", author);
 		model.addAttribute("article", articleResponse);

@@ -67,15 +67,7 @@ public class ArticleService {
 		Comment comment = new Comment(commentRequest.getArticleIndex(), commentRequest.getAuthor(),
 			commentRequest.getComment(), writeDate(), false);
 		commentRepository.create(comment);
-		return findCommentsByArticleIndex(commentRequest.getArticleIndex());
-	}
-
-	public List<CommentResponse> findCommentsByArticleIndex(Long articleIndex) {
-		List<Comment> comments = commentRepository.findByArticleIndex(articleIndex);
-		return comments.stream()
-			.map(comment -> new CommentResponse(comment.getCommentIndex(), comment.getArticleIndex(),
-				comment.getAuthor(), comment.getComment(), comment.getCreatedDate(), comment.isDeleted()))
-			.collect(Collectors.toList());
+		return showComments(commentRequest.getArticleIndex(), 0L);
 	}
 
 	public void deleteComment(Long articleIndex, Long commentIndex) {
@@ -152,8 +144,8 @@ public class ArticleService {
 			commentRepository.getCommentsSize(articleIndex);
 	}
 
-	public List<CommentResponse> showMoreComments(Long articleIndex, Long commentLastIndex) {
-		List<Comment> comments = commentRepository.findMoreComments(articleIndex, commentLastIndex);
+	public List<CommentResponse> showComments(Long articleIndex, Long commentLastIndex) {
+		List<Comment> comments = commentRepository.findComments(articleIndex, commentLastIndex);
 		return comments.stream()
 			.map(comment -> new CommentResponse(comment.getCommentIndex(), comment.getArticleIndex(),
 				comment.getAuthor(), comment.getComment(), comment.getCreatedDate(), comment.isDeleted()))
