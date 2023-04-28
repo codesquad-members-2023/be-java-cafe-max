@@ -4,6 +4,8 @@
 ## 기능 목록
 - [x] 루트 경로일 때 홈 화면을 출력한다.
   - 모든 사용자가 게시글의 목록(홈)을 볼 수 있다.
+  - 한 페이지에 15개씩 가져오도록 한다.
+  - 생성일 기준 내림차순으로 보여준다.
 - [x] 아이디, 비밀번호, 이름, 이메일을 입력받아 회원가입을 한다.
   - 같은 id를 가진 회원이 있다면 중복 회원 예외를 발생시킨다. 
   - 회원가입이 완료되면 회원 목록 조회로 이동한다.
@@ -72,7 +74,7 @@
 
 
 ## 배포 url
-[codesquad_cafe](http://52.79.232.139:8080/)
+[codesquad_cafe](http://13.125.255.132:8080/)
 
 
 ## 동작 화면
@@ -115,7 +117,7 @@
 <summary>글 목록 조회 화면</summary>
 <div>
 
-![home](https://user-images.githubusercontent.com/57451700/230138874-eaf86b43-34a4-40c7-be5d-4568c614798b.png)
+![home](https://user-images.githubusercontent.com/57451700/235206818-0a4070af-e313-4ba8-9be8-8e25e04d41d3.png)
 
 </div>
 </details>
