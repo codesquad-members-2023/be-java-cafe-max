@@ -48,6 +48,9 @@ public class ArticleController {
         ArticleResponseDto articleResponseDto = ArticleResponseDto.from(findArticle);
         model.addAttribute("article", articleResponseDto);
 
+        Long replyCount = replyService.getReplyCountOf(articleId);
+        model.addAttribute("replyCount", replyCount);
+
         List<Reply> findReplies = replyService.findReplies(articleId);
         model.addAttribute("replies", findReplies);
         return "qna/show";

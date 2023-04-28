@@ -17,4 +17,6 @@ public interface ReplyRepository {
 
     List<Reply> findAllByArticleId(long id);
 
+    Long getReplyCountOf(long articleId);
+
 }

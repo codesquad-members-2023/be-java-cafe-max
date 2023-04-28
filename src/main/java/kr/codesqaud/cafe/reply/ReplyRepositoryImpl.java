@@ -82,6 +82,13 @@ public class ReplyRepositoryImpl implements ReplyRepository {
         return template.query(sql, param, replyRowMapper());
     }
 
+    @Override // TODO: 댓글 개수는 Reply Or Article 어떤 레포지토리에서 가져와야 할지..?
+    public Long getReplyCountOf(long articleId) {
+        String sql = "SELECT COUNT(id) as reply_count FROM reply WHERE article_id = :articleId;";
+        SqlParameterSource param = new MapSqlParameterSource("articleId", articleId);
+        return template.queryForObject(sql, param, Long.class);
+    }
+
     private RowMapper<Reply> replyRowMapper() {
         return (resultSet, rowNumber) -> new Reply.Builder()
                 .id(resultSet.getLong("id"))
