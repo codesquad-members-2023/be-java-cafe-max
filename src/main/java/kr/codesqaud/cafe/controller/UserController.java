@@ -45,9 +45,12 @@ public class UserController {
         List<UserDto> users = userService.getUsers();
         HttpSession session = httpRequest.getSession();
         if (session != null) {
-            String loginUserId = (String) session.getAttribute("userId");
-            for (UserDto user : users) {
-                user.setAuth(loginUserId != null && loginUserId.equals(user.getUserId()));
+            User loginUser = (User) session.getAttribute("loginUser");
+            if (loginUser != null) {
+                String loginUserId = loginUser.getUserId();
+                for (UserDto user : users) {
+                    user.setAuth(loginUserId != null && loginUserId.equals(user.getUserId()));
+                }
             }
         }
         model.addAttribute("users", users);
@@ -86,8 +89,6 @@ public class UserController {
         HttpSession session = request.getSession(true);
 
         session.setAttribute("loginUser", loginUser);
-        session.setAttribute("userId", loginUser.getUserId());
-        session.setAttribute("userName", loginUser.getUserName());
 
         return "redirect:/";
     }
