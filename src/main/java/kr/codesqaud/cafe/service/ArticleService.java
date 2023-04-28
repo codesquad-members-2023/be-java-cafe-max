@@ -76,12 +76,8 @@ public class ArticleService {
     }
 
     public void delete(int index) {
-        Article article = articleRepository.findByIdx(index).orElseThrow(() -> new NotFoundException("게시글 찾을 수 없음"));
-        List<Reply> replyList = replyRepository.findAll(index);
-        for(Reply temp : replyList) {
-            if(!temp.validateAuthor(article.getWriter())){
-                throw new DeniedAccessException("다른 사람이 댓글을 남기면 지울 수 없습니다.");
-            }
+        if(replyRepository.existReply(index) != 0) {
+            throw new DeniedAccessException("다른 사람이 댓글을 남기면 지울 수 없습니다.");
         }
         articleRepository.delete(index);
     }
@@ -100,8 +96,8 @@ public class ArticleService {
         return replyRepository.findAll(index,start);
     }
 
-    public boolean deleteReply(int articleIndex, int index, LoginSessionDto dto) {
-        if (replyRepository.exist(index) && deleteAuth(articleIndex, dto)) {
+    public boolean deleteReply( int index, LoginSessionDto dto ) {
+        if (replyRepository.exist(index) && deleteAuth(index, dto)) {
             replyRepository.delete(index);
             return true;
         }
@@ -109,12 +105,10 @@ public class ArticleService {
     }
 
     public boolean deleteAuth(int index, LoginSessionDto dto) {
-        List<Reply> list = replyRepository.findAll(index);
-        for (Reply temp : list) {
-            if(temp.validateAuthor(dto.getName())){
+        Reply reply = replyRepository.findByIdx(index).orElseThrow(() -> new NotFoundException("댓글 찾을수 없음"));
+            if(reply.validateAuthor(dto.getName())){
                 return true;
             }
-        }
         return false;
     }
 

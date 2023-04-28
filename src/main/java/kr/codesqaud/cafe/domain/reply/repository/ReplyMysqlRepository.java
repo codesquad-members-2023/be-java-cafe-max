@@ -59,14 +59,26 @@ public class ReplyMysqlRepository implements ReplyRepository {
         );
     }
 
-//    @Override
-//    public Optional<Reply> findByIdx(int index) {
-//        SqlParameterSource namedParameters = new MapSqlParameterSource("index", index);
-//        List<Reply> replies = namedParameterJdbcTemplate.query(
-//                "SELECT  ID  WHERE IDX = :index", namedParameters, rowMapper()
-//        );
-//        return replies.stream().findFirst();
-//    }
+    @Override
+    public Optional<Reply> findByIdx(int index) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("index", index);
+        List<Reply> replies = namedParameterJdbcTemplate.query(
+                "SELECT IDX, ARTICLE_IDX , REPLY_WRITER , REPLY_CONTENTS , DATE , DELETED  " +
+                        "FROM REPLY  WHERE IDX = :index",
+                namedParameters, rowMapper()
+        );
+        return replies.stream().findFirst();
+    }
+
+    @Override
+    public int existReply(int index) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("index", index);
+        return namedParameterJdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM ARTICLES " +
+                        "AS A LEFT JOIN REPLY AS R ON A.IDX = R.ARTICLE_IDX " +
+                        "WHERE A.IDX = :index AND R.REPLY_WRITER != A.WRITER AND R.DELETED = FALSE",
+                namedParameters, Integer.class);
+    }
 
     private RowMapper<Reply> rowMapper() {
         return (rs, rowNum) ->
