@@ -10,6 +10,7 @@ create table users
     userName varchar(20) not null,
     email    varchar(30) not null
 );
+create unique index userIdIndex on users(userId);
 
 create table articles
 (
@@ -33,4 +34,4 @@ insert into users(userId, password, userName, email)
 values ('tester', '1234', 'tester', 'email');
 
 insert into articles(writer, title, contents, writtenTime)
-values ('tester', 'title', 'this is from universe. S..t...a...y...', current_timestamp)
+values ('tester', 'title', 'this is from universe. S..t...a...y...', current_timestamp);
