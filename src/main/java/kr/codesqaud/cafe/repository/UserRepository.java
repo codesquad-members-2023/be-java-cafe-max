@@ -14,4 +14,5 @@ public interface UserRepository {
 
     public void clearStore();
 
+    public void update(User user);
 }

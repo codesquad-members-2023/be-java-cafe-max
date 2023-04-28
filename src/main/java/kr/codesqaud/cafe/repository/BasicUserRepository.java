@@ -32,4 +32,8 @@ public class BasicUserRepository implements UserRepository {
         return userList;
     }
     public void clearStore(){} // 아직 필요한지도 모르는데 인터페이스 때문에 형식적으로 맞춰서.. (!)
+
+    @Override
+    public void update(User user) {} // ...
+
 }

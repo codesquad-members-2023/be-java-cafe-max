@@ -5,6 +5,9 @@ import kr.codesqaud.cafe.domain.User;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SqlParameter;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
@@ -44,9 +47,21 @@ public class JdbcUserRepository implements UserRepository {
         return jdbcTemplate.query("select * from userTable", userRowMapper());
     } // 이거까지 작동된 듯(3-2)
 
+
     @Override
     public void clearStore() {
         jdbcTemplate.update("delete from userTable");
+    }
+
+    @Override
+    public void update(User user) {
+        String sql = "update userTable set userId=:userId, password=:password; email=:email where id=:id";
+
+        SqlParameterSource param = new MapSqlParameterSource() // 이게 뭐였더라....
+                .addValue("password", user.getPassword())
+                .addValue("userId", user.getUserId())
+                .addValue("email", user.getEmail());
+        jdbcTemplate.update(sql, param); // 되면 다행
     }
 
     private RowMapper<User> userRowMapper() {
