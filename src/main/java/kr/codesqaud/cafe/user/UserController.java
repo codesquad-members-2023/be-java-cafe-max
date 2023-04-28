@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import kr.codesqaud.cafe.user.dto.LoginRequestDto;
 import kr.codesqaud.cafe.user.dto.ProfileResponseDto;
 import kr.codesqaud.cafe.user.dto.SignUpRequestDto;
@@ -51,7 +52,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String viewUserProfile(@PathVariable final String userId, final Model model) {
-        User findUser = userService.findOne(userId).get();
+        User findUser = userService.findOne(userId).orElseThrow(UserNotFoundException::new);  // TODO: 예외 처리를 서비스에서 해야하는지 컨트롤러에서 해야하는지?
         ProfileResponseDto profileResponseDto = ProfileResponseDto.from(findUser);
         model.addAttribute("user", profileResponseDto);
         return "user/profile";
