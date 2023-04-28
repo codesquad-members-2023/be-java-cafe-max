@@ -7,9 +7,13 @@ import kr.codesqaud.cafe.article.Article;
  */
 public class ArticleRequestDto {
 
-    private String loginId;
-    private String title;
-    private String contents;
+    private final String title;
+    private final String contents;
+
+    public ArticleRequestDto(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 
     public Article toEntity(String loginId) {
         return new Article.Builder()
@@ -19,27 +23,12 @@ public class ArticleRequestDto {
                 .build();
     }
 
-    public String getLoginId() {
-        return loginId;
-    }
-
-    public void setLoginId(final String loginId) {
-        this.loginId = loginId;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(final String title) {
-        this.title = title;
     }
 
     public String getContents() {
         return contents;
     }
 
-    public void setContents(final String contents) {
-        this.contents = contents;
-    }
 }
