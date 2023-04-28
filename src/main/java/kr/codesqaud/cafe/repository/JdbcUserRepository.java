@@ -55,13 +55,17 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public void update(User user) {
-        String sql = "update userTable set userId=:userId, password=:password; email=:email where id=:id";
+//        String sql = "update userTable set userId=:userId, password=:password; email=:email where id=:id";
+//
+//        SqlParameterSource param = new MapSqlParameterSource() // 이게 뭐였더라....
+//                .addValue("password", user.getPassword())
+//                .addValue("userId", user.getUserId())
+//                .addValue("email", user.getEmail());
+//        jdbcTemplate.update(sql, param); // 되면 다행
 
-        SqlParameterSource param = new MapSqlParameterSource() // 이게 뭐였더라....
-                .addValue("password", user.getPassword())
-                .addValue("userId", user.getUserId())
-                .addValue("email", user.getEmail());
-        jdbcTemplate.update(sql, param); // 되면 다행
+        jdbcTemplate.update("UPDATE userTable set password = ? , userId = ? , email = ? where id = ?",
+                user.getPassword(), user.getUserId(), user.getEmail(), user.getId()
+                );
     }
 
     private RowMapper<User> userRowMapper() {
