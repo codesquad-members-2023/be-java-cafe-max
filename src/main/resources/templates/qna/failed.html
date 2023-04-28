@@ -45,7 +45,9 @@
                     </div>
                 </article>
 
-                {{> qna/reply}}
+                {{#isLogin}}
+                    {{> qna/reply}}
+                {{/isLogin}}
 
                 {{/article}}
 
