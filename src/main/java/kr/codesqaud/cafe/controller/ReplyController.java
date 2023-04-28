@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.controller.dto.ReplyDto;
 import kr.codesqaud.cafe.controller.dto.request.replyRequest.ReplyEditRequest;
 import kr.codesqaud.cafe.controller.dto.request.replyRequest.ReplyRequest;
+import kr.codesqaud.cafe.controller.modelBuilder.ModelBuilder;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,11 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class ReplyController {
     private final ReplyService replyService;
+    private final ModelBuilder modelBuilder;
 
-    public ReplyController(ReplyService replyService) {
+    public ReplyController(ReplyService replyService, ModelBuilder modelBuilder) {
         this.replyService = replyService;
+        this.modelBuilder = modelBuilder;
     }
 
     @PostMapping("/{articleId}/reply")
@@ -36,7 +39,7 @@ public class ReplyController {
     public String showReplyEditForm(@PathVariable final Long replyId, HttpServletRequest httpRequest, Model model) {
         HttpSession session = httpRequest.getSession(false);
         ReplyDto reply = replyService.findByReplyId(replyId);
-
+        Long articleId = reply.getArticleId();
         model.addAttribute("reply", reply);
         model.addAttribute("comment", reply.getComment());
 
@@ -46,7 +49,7 @@ public class ReplyController {
                 return "qna/reply_edit_form";
             }
         }
-
+        modelBuilder.showFailed(articleId, model);
         return "qna/failed";
     }
 
@@ -63,8 +66,7 @@ public class ReplyController {
                 return "redirect:/articles/" + articleId;
             }
         }
-
-        model.addAttribute("reply", reply);
+        modelBuilder.showFailed(articleId, model);
         return "qna/failed";
     }
 
@@ -82,7 +84,7 @@ public class ReplyController {
                 return "redirect:/articles/" + articleId;
             }
         }
-
+        modelBuilder.showFailed(articleId, model);
         return "qna/failed";
     }
 }

@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.request.articleRequest.PostEditRequest;
 import kr.codesqaud.cafe.controller.dto.request.articleRequest.PostRequest;
+import kr.codesqaud.cafe.controller.modelBuilder.ModelBuilder;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;
@@ -17,10 +18,12 @@ import javax.servlet.http.HttpSession;
 public class ArticleController {
     private final ArticleService articleService;
     private final ReplyService replyService;
+    private final ModelBuilder modelBuilder;
 
-    public ArticleController(ArticleService articleService, ReplyService replyService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService, ModelBuilder modelBuilder) {
         this.articleService = articleService;
         this.replyService = replyService;
+        this.modelBuilder = modelBuilder;
     }
 
     @PostMapping("/article")
@@ -47,7 +50,6 @@ public class ArticleController {
         HttpSession session = httpRequest.getSession(false);
         ArticleDto article = articleService.findById(articleId);
 
-        model.addAttribute("article", article);
         model.addAttribute("title", article.getTitle());
         model.addAttribute("content", article.getContent());
 
@@ -57,7 +59,7 @@ public class ArticleController {
                 return "qna/edit_form";
             }
         }
-
+        modelBuilder.showFailed(articleId, model);
         return "qna/failed";
     }
 
@@ -79,6 +81,7 @@ public class ArticleController {
                 return "redirect:/";
             }
         }
+        modelBuilder.showFailed(articleId, model);
         return "qna/failed";
     }
 }
