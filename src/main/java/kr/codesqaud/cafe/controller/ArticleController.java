@@ -2,8 +2,6 @@ package kr.codesqaud.cafe.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,8 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.CommentDto;
 import kr.codesqaud.cafe.controller.dto.PostingRequest;
 import kr.codesqaud.cafe.service.ArticleService;
@@ -30,9 +28,9 @@ public class ArticleController {
 	}
 
 	@PostMapping("/qna/form")
-	public String createNewPosting(@ModelAttribute PostingRequest postingRequest, HttpSession session) {
-		Object userId = session.getAttribute("sessionedUser");
-		articleService.articleSave(postingRequest, (String)userId);
+	public String createNewPosting(@ModelAttribute PostingRequest postingRequest,
+		@SessionAttribute("sessionedUser") String userId) {
+		articleService.articleSave(postingRequest, userId);
 		return "redirect:/";
 	}
 
@@ -43,11 +41,7 @@ public class ArticleController {
 	}
 
 	@GetMapping("/articles/{id}")
-	public String postDetails(Model model, @PathVariable Long id, HttpSession session) {
-		Object user = session.getAttribute("sessionedUser");
-		if (user == null) {
-			return "redirect:/users/login";
-		}
+	public String postDetails(Model model, @PathVariable Long id) {
 		model.addAttribute("details", articleService.findById(id));
 		List<CommentDto> comments = commentService.getAllCommentsByArticleId(id);
 
@@ -57,41 +51,28 @@ public class ArticleController {
 	}
 
 	@GetMapping("/questions/form")
-	public String newPosting(HttpSession session) {
-		Object user = session.getAttribute("sessionedUser");
-		if (user == null) {
-			return "redirect:/users/login";
-		}
+	public String newPosting() {
 		return "qna/form";
 	}
 
 	@GetMapping("/articles/{id}/edit")
-	public String editPost(Model model, @PathVariable Long id, HttpSession session) {
-		Object userId = session.getAttribute("sessionedUser");
-		ArticleDto articleDto = articleService.findById(id);
-		if (!articleDto.getWriter().equals(userId)) {
-			return "qna/access_error";
-		}
-		model.addAttribute("edits", articleDto);
+	public String editPost(Model model, @PathVariable Long id, @SessionAttribute("sessionedUser") String userId) {
+		articleService.validateAuthorization(id, userId);
+		model.addAttribute("edits", articleService.findById(id));
 		return "qna/edit_form";
 	}
 
 	@DeleteMapping("/articles/{id}")
-	public String deletePost(@PathVariable Long id, HttpSession session) {
-		Object userId = session.getAttribute("sessionedUser");
-		ArticleDto articleDto = articleService.findById(id);
-		if (!articleDto.getWriter().equals(userId)) {
-			return "qna/access_error";
-		}
+	public String deletePost(@PathVariable Long id, @SessionAttribute("sessionedUser") String userId) {
+		articleService.validateAuthorization(id, userId);
 		articleService.deleteRequest(id);
 		return "redirect:/";
 	}
 
 	@PutMapping("/articles/{id}")
 	public String updatePost(@ModelAttribute PostingRequest postingRequest, @PathVariable Long id,
-		HttpSession session) {
-		Object writer = session.getAttribute("sessionedUser");
-		articleService.updateRequest(postingRequest, id, (String)writer);
-		return "redirect:/";
+		@SessionAttribute("sessionedUser") String writer) {
+		articleService.updateRequest(postingRequest, id, writer);
+		return "redirect:/articles/{id}";
 	}
 }
