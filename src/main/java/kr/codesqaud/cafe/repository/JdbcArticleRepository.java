@@ -36,8 +36,8 @@ public class JdbcArticleRepository implements ArticleRepository{
         param.put("title", article.getTitle());
         param.put("contents", article.getContents());
         param.put("createdTime", LocalDate.now());
-        simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(param));  // 이거 없으면 list(index)에 안 보이는데 영문을 모르겠(;;)
-        // 맵을 이용한 SqlParamaeterSource...????? --> 그냥 Map을 넣어도 작동하는데 이게 무슨....
+        simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(param));  // 이 코드 지우면 list(index)에 안 보이게 되는(!)
+        // 맵을 이용한 SqlParamaeterSource...????? --> 그냥 Map을 넣어도 작동하는데 이게 무슨....?
         // BeanPropertySqlParameterSource("tablename")라는 것도 있다는데....
     }
 
@@ -57,7 +57,7 @@ public class JdbcArticleRepository implements ArticleRepository{
         @Override
     public void clearStore() {
         jdbcTemplate.update("delete from articleTable");
-    } // 필요는 없는데 그냥 두기로..
+    } // 필요한지 모르겠는데 그냥 둘 수밖에 없는
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {

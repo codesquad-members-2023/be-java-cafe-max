@@ -1,12 +1,12 @@
 package kr.codesqaud.cafe.domain;
 
 public class User {
-    private long id;           // 자꾸 헷갈려서 단순하게 변경
-    private String userId;     // form에서 사용된 name에 맞춤
+    private long id;           // 자꾸 헷갈려서 단순하게 변경   // 아이디
+    private String userId;     // form에서 사용된 name에 맞춤  // 닉네임
     private String password;
     private String email;
 
-    public User(){}  // 없으면 (Row?)Mapping이 안된다는...?!?!
+    public User(){}  // 없으면 (Row?)Mapping이 안된다고 하는데....!!!??
     public User(String userId, String password, String email) {
         this.userId = userId;
         this.password = password;

@@ -33,20 +33,20 @@ public class JdbcUserRepository implements UserRepository {
         param.put("userId", user.getUserId());
         param.put("password", user.getPassword());
         param.put("email", user.getEmail());
-        jdbcInsert.executeAndReturnKey(param); // 이거 지우면 list에 안 나옴(?????????) 어디서 왜 필요한건지
+        jdbcInsert.executeAndReturnKey(param); // 이거 지우면 list에 안 나오는데(??) 어디서 왜 필요한건지 확인 필요
     }
 
     @Override
     public Optional<User> getUserById(Long id) {
         List<User> result = jdbcTemplate.query("select * from userTable where id = ?", userRowMapper(), id);
-        return result.stream().findAny();   // 뭔지 모름
+        return result.stream().findAny();   // 확인 필요
+        // 이 부분이 정상작동했으면 모든 필드를 가진 user가 반환되야 하는데....
     }
 
     @Override
     public List<User> getUserList() {
         return jdbcTemplate.query("select * from userTable", userRowMapper());
     } // 이거까지 작동된 듯(3-2)
-
 
     @Override
     public void clearStore() {
@@ -55,6 +55,7 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public void update(User user) {
+        // Full pyojeol 1 -> 안 되서 일단 패스
 //        String sql = "update userTable set userId=:userId, password=:password; email=:email where id=:id";
 //
 //        SqlParameterSource param = new MapSqlParameterSource() // 이게 뭐였더라....
@@ -63,8 +64,10 @@ public class JdbcUserRepository implements UserRepository {
 //                .addValue("email", user.getEmail());
 //        jdbcTemplate.update(sql, param); // 되면 다행
 
-        jdbcTemplate.update("UPDATE userTable set password = ? , userId = ? , email = ? where id = ?",
-                user.getPassword(), user.getUserId(), user.getEmail(), user.getId()
+        // Full pyojeol 2 -> 아 이건 뭔가 되긴 되는 -> (기쁨)
+        jdbcTemplate.update("UPDATE userTable set password = ?, email = ? where id = ?",
+                user.getPassword(), user.getEmail(), user.getId()
+                // 변경되는걸 원치 않으면 여기서 UserId를 지워야 한다 <<----
                 );
     }
 

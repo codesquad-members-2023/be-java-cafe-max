@@ -10,7 +10,7 @@ public class Article {
     private String contents;
     private LocalDateTime createdTime;
 
-    public Article(){}   // 없으면 (Row?)Mapping이 안된다는...?!?!
+    public Article(){}   // 없으면 (Row?)Mapping이 안된다고 하는데....!!!??
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;

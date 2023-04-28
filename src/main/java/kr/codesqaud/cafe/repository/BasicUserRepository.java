@@ -31,9 +31,9 @@ public class BasicUserRepository implements UserRepository {
     public List<User> getUserList() {
         return userList;
     }
-    public void clearStore(){} // 아직 필요한지도 모르는데 인터페이스 때문에 형식적으로 맞춰서.. (!)
+    public void clearStore(){} // 아직 필요한지도 모르는데 인터페이스 때문에 형식적으로 맞춰서.. (!?;;)
 
     @Override
-    public void update(User user) {} // ...
+    public void update(User user) {} // ... (메모리 낭비?)
 
 }
