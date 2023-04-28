@@ -44,11 +44,10 @@ public class ReplyService {
         replyRepository.delete(replyId);
     }
 
-    public Reply editReply(final Long replyId, final ReplyEditRequest request) {
+    public void editReply(final Long replyId, final ReplyEditRequest request) {
         Reply savedReply = replyRepository.findByReplyId(replyId).orElseThrow(() -> new RuntimeException("Reply not found"));
         savedReply.editReply(request.getNewComment());
         replyRepository.update(savedReply);
-        return savedReply;
     }
 
     public int getReplyCount(Long articleId) {
