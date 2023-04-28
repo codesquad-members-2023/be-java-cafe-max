@@ -4,18 +4,19 @@
 
 # TODO
 
-## 230427
+## 230427 thu.
 - [x] 게시글 번호 앞에 슬래시 없애기
-  - [ ] <class>, <title> 태그 수정 고민해보기 
 - [x] 게시글 timestamp 재설정
 - [x] 회원가입 후 유저 목록 보여주기
-- [소스파일 전송 참고하기](https://doheejin.github.io/linux/2021/03/03/linux-scp.html)
+- [소스파일 전송 참고하기](https://ict-nroo.tistory.com/40)
 
-## 230426
+## 230426 wed.
+
+- [x] 배포하기
 
 ## 230414 fri.
 
-- [ ] 호눅스 AWS 강의
+- [x] 호눅스 AWS 강의
 
 ## 230413 thu.
 
