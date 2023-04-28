@@ -32,7 +32,6 @@ public class QuestionService {
     public List<QuestionResponse> getAllQuestion() {
         return repository.findAll().stream()
             .map(QuestionResponse::new)
-            .sorted()
             .collect(Collectors.toUnmodifiableList());
     }
 

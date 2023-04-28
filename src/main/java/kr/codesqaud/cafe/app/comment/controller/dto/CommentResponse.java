@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.app.comment.controller.dto;
 import kr.codesqaud.cafe.app.comment.entity.Comment;
 import kr.codesqaud.cafe.util.LocalDateTimeUtil;
 
-public class CommentResponse implements Comparable<CommentResponse> {
+public class CommentResponse {
 
     private final Long id;
     private final String content;
@@ -43,11 +43,6 @@ public class CommentResponse implements Comparable<CommentResponse> {
 
     public Long getQuestionId() {
         return questionId;
-    }
-
-    @Override
-    public int compareTo(CommentResponse dto) {
-        return dto.getCreateTime().compareTo(this.createTime);
     }
 
     @Override

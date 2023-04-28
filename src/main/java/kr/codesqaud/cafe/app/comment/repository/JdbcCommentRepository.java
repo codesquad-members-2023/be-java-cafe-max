@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import kr.codesqaud.cafe.app.comment.entity.Comment;
 import kr.codesqaud.cafe.app.question.entity.Question;
@@ -33,7 +34,8 @@ public class JdbcCommentRepository implements CommentRepository {
             .append("c.USERID uid, u.NAME name, c.QUESTIONID qid ")
             .append("FROM comment c INNER JOIN question q ON c.QUESTIONID = q.ID ")
             .append("INNER JOIN users u ON c.USERID = u.ID ")
-            .append("WHERE q.ID = ? and c.DELETED = false");
+            .append("WHERE q.ID = ? and c.DELETED = false ")
+            .append("ORDER BY createTime");
         return template.query(sql.toString(), commentRowMapper(), questionId);
     }
 
@@ -54,7 +56,7 @@ public class JdbcCommentRepository implements CommentRepository {
         String sql = "INSERT INTO comment(content, questionId, userId) VALUES(?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         template.update(con -> getPreparedStatement(comment, con, sql), keyHolder);
-        Long id = keyHolder.getKeyAs(Long.class);
+        Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         return findById(id).orElseThrow();
     }
 

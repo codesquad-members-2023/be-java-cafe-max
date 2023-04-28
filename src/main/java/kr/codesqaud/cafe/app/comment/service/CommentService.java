@@ -31,7 +31,6 @@ public class CommentService {
 
         return comments.stream()
             .map(CommentResponse::new)
-            .sorted()
             .collect(Collectors.toUnmodifiableList());
     }
 

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import kr.codesqaud.cafe.app.question.entity.Question;
 import kr.codesqaud.cafe.app.user.entity.User;
@@ -33,7 +34,8 @@ public class JdbcQuestionRepository implements QuestionRepository {
         sqlBuilder.append(
                 "SELECT q.ID, q.TITLE, q.CONTENT, q.CREATETIME, u.ID uid, u.NAME ")
             .append("FROM question q INNER JOIN users u ON q.USERID = u.ID ")
-            .append("WHERE q.DELETED = false");
+            .append("WHERE q.DELETED = false ")
+            .append("ORDER BY q.CREATETIME DESC");
         return template.query(
             sqlBuilder.toString(),
             questionRowMapper());
@@ -57,7 +59,7 @@ public class JdbcQuestionRepository implements QuestionRepository {
         String sql = "INSERT INTO question(title, content, userId) VALUES(?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         template.update(con -> getPreparedStatement(question, con, sql), keyHolder);
-        Long id = keyHolder.getKeyAs(Long.class);
+        Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         return findById(id).orElseThrow();
     }
 

@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.app.question.controller.dto;
 import kr.codesqaud.cafe.app.question.entity.Question;
 import kr.codesqaud.cafe.util.LocalDateTimeUtil;
 
-public class QuestionResponse implements Comparable<QuestionResponse> {
+public class QuestionResponse {
 
     private final Long id;
     private final String title;
@@ -50,11 +50,5 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
         return String.format(
             "ArticleResponseDto{id=%d, writer=%s, title=%s, content=%s, createTime=%s, user_id=%d}",
             id, writer, title, content, createTime, userId);
-    }
-
-    @Override
-    public int compareTo(QuestionResponse dto) {
-        return LocalDateTimeUtil.toLocalDateTime(dto.getCreateTime())
-            .compareTo(LocalDateTimeUtil.toLocalDateTime(this.createTime));
     }
 }
