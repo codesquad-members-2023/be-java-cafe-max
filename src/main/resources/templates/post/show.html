@@ -30,7 +30,7 @@
                                 <p class="article-content" th:text="${wantedPost.createTime}"></p>
 
                                 <!--조회 횟수 쓰는 곳-->
-                                <p class="article-content" ></p>
+                                <p class="article-content"></p>
                             </div>
                         </div>
                         <div class="article-doc">
@@ -47,20 +47,29 @@
                                 <!-- 댓글 목록 -->
                                 <article class="comment" th:each="comment : ${comments}">
                                     <div class="article-text">
-                                        <p class="comment-content comment-author-name" th:text="${comment.userName}"></p>
+                                        <p class="comment-content comment-author-name"
+                                           th:text="${comment.userName}"></p>
                                         <div class="comment-content comment-doc">
                                             <p th:text="${comment.content}"></p>
                                         </div>
                                         <p class="comment-content comment-time" th:text="${comment.createTime}"></p>
+                                        <!-- 삭제 버튼 -->
+                                        <form method="post" th:action="@{/posts/{id}/comments/{commentId}(id=${wantedPost.id},commentId=${comment.id})}">
+                                            <input type="hidden" name="_method" value="delete">
+                                            <button class="remove-btn" th:if="${comment.userId == loggedUser}" type="submit">삭제</button>
+                                        </form>
                                     </div>
                                 </article>
 
                                 <!-- 댓글 쓰기 -->
-                                <form class="submit-write" method="post" th:action="@{/posts/{articleId}/new(articleId=${wantedPost.id})}">
-                                    <input type="hidden" id="createTime" name="createTime" th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm')}">
+                                <form class="submit-write" method="post"
+                                      th:action="@{/posts/{articleId}/comments/new(articleId=${wantedPost.id})}">
+                                    <input type="hidden" id="createTime" name="createTime"
+                                           th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm')}">
                                     <div class="form-group">
                                         <label for="content">
-                                            <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
+                                            <textarea class="form-control" id="content" name="content"
+                                                      placeholder="내용을 입력하세요"></textarea>
                                         </label>
                                     </div>
                                     <input class="post-write-btn" type="submit" value="등록">
