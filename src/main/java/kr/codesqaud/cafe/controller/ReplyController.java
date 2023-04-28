@@ -22,7 +22,13 @@ public class ReplyController {
 
     @PostMapping("/{articleId}/reply")
     public String reply(@PathVariable Long articleId, @ModelAttribute final ReplyRequest request, HttpServletRequest httpRequest) {
-        replyService.reply(articleId, request, httpRequest);
+        HttpSession session = httpRequest.getSession();
+        if (session != null) {
+            User loginUser = (User) session.getAttribute("loginUser");
+            if (loginUser != null){
+                replyService.reply(articleId, request, httpRequest);
+            }
+        }
         return "redirect:/articles/" + articleId;
     }
 
