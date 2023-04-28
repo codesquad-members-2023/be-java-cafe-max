@@ -29,7 +29,7 @@ public class Article {
 
     private void saveCurrentTime() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        TimeZone timeZone = TimeZone.getTimeZone("Seoul/Korea");
+        TimeZone timeZone = TimeZone.getTimeZone("Asia/Seoul");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sdf.setTimeZone(timeZone);
         this.createdAt = sdf.format(timestamp);
