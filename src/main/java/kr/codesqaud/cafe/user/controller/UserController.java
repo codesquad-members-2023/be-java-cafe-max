@@ -20,7 +20,6 @@ public class UserController {
     private final UserService userService;
     private final LoginService loginService;
 
-    @Autowired
     public UserController(UserService userService, LoginService loginService) {
         this.userService = userService;
         this.loginService = loginService;
@@ -33,7 +32,7 @@ public class UserController {
 
     @GetMapping("/user/list")
     public String list(Model model) {
-        List<kr.codesqaud.cafe.user.domain.User> users = userService.findUsers();
+        List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
