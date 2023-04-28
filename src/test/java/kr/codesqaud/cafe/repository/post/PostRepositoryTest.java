@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 import kr.codesqaud.annotation.RepositoryTest;
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.post.Pagination;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -78,7 +79,7 @@ class PostRepositoryTest {
             });
 
         // when
-        List<Post> findAll = postRepository.findAll();
+        List<Post> findAll = postRepository.findAll(0, Pagination.MAX_PAGE_SIZE);
 
         // then
         assertEquals(postCount, findAll.size());

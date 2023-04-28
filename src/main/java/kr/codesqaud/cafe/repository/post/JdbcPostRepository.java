@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.post;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import kr.codesqaud.cafe.domain.Member;
@@ -36,36 +37,37 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Optional<Post> findById(Long id) {
-        String sql =
-            "SELECT p.id, p.title, p.content, m.id as writer_id, m.nickname as writer_name, "
-                + "p.write_date, p.views "
-                + "FROM post p "
-                + "INNER JOIN member m on m.id = p.writer_id "
-                + "        WHERE p.id = :id "
-                + "AND p.is_deleted = false ";
+        String sql = "SELECT p.id, p.title, p.content, m.id as writer_id, m.nickname as writer_name, "
+                          + "p.write_date, p.views "
+                    + "FROM post p "
+                    + "INNER JOIN member m on m.id = p.writer_id "
+                    + "WHERE p.id = :id "
+                    + "AND p.is_deleted = false ";
         SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         return Optional.ofNullable(
             DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, postRowMapper)));
     }
 
     @Override
-    public List<Post> findAll() {
-        String sql =
-            "SELECT p.id, p.title, p.content, m.id as writer_id, m.nickname as writer_name,"
-                + " p.write_date, p.views "
-                + "FROM post p "
-                + "INNER JOIN member m on m.id = p.writer_id "
-                + "WHERE p.is_deleted = false "
-                + "ORDER BY id DESC";
-        return jdbcTemplate.query(sql, postRowMapper);
+    public List<Post> findAll(Integer startPage, Integer pageSize) {
+        String sql = "SELECT p.id, p.title, p.content, m.id as writer_id, m.nickname as writer_name,"
+                         + " p.write_date, p.views "
+                    + "FROM post p "
+                    + "INNER JOIN member m on m.id = p.writer_id "
+                    + "WHERE p.is_deleted = false "
+                    + "ORDER BY id DESC "
+                    + "LIMIT :startPage, :pageSize";
+        MapSqlParameterSource param = new MapSqlParameterSource("startPage", startPage);
+        param.addValue("pageSize", pageSize);
+        return jdbcTemplate.query(sql, param, postRowMapper);
     }
 
     @Override
     public void update(Post post) {
         String sql = "UPDATE post "
-            + "SET title = :title, "
-            + "content = :content "
-            + "WHERE id = :id";
+                      + "SET title = :title, "
+                          + "content = :content "
+                    + "WHERE id = :id";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(post);
         jdbcTemplate.update(sql, parameter);
     }
@@ -73,8 +75,8 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public void increaseViews(Long id) {
         String sql = "UPDATE post "
-            + "SET views = views + 1 "
-            + "WHERE id = :id";
+                      + "SET views = views + 1 "
+                    + "WHERE id = :id";
         SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         jdbcTemplate.update(sql, parameter);
     }
@@ -82,10 +84,16 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public void delete(Long id) {
         String sql = "UPDATE post "
-            + "SET is_deleted = true "
-            + "WHERE id = :id";
+                      + "SET is_deleted = true "
+                    + "WHERE id = :id";
         SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         jdbcTemplate.update(sql, parameter);
+    }
+
+    @Override
+    public int postsSize() {
+        String sql = "SELECT count(id) FROM post WHERE is_deleted = false";
+        return jdbcTemplate.queryForObject(sql, Map.of(), Integer.class);
     }
 
     private final RowMapper<Post> postRowMapper = (rs, rowNum) ->

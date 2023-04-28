@@ -18,7 +18,7 @@
                     </form>
             </div>
             <div class="row row-cols-3 post-detail">
-                <span class="col-sm-2" th:text="${postResponse.writer.nickname}">비회원</span>
+                <span class="col-sm-2"><a class="btn" th:href="@{/members/{id}(id=${postResponse.writer.id})}" th:text="${postResponse.writer.nickname}"></a></span>
                 <span class="col-sm-4">작성일자:[[${#temporals.format(postResponse.writeDateTime, 'yyyy-MM-dd HH:mm:ss')}]]</span>
                 <span class="col-sm-2">조회 [[${postResponse.views}]]</span>
             </div>

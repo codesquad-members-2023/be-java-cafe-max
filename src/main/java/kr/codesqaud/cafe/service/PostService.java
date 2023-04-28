@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.post.Pagination;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
@@ -54,11 +55,16 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostResponse> findAll() {
-        return postRepository.findAll()
+    public List<PostResponse> findAll(Integer startPage) {
+        return postRepository.findAll(startPage, Pagination.MAX_PAGE_SIZE)
             .stream()
             .map(PostResponse::from)
             .collect(Collectors.toUnmodifiableList());
+    }
+
+    @Transactional(readOnly = true)
+    public Pagination getPagination(Integer currentPage) {
+        return new Pagination(currentPage, postRepository.postsSize());
     }
 
     @Transactional

@@ -55,7 +55,7 @@ public class PostControllerTest {
     @Test
     void showMain() throws Exception {
         // given
-        given(postService.findAll()).willReturn(Collections.emptyList());
+        given(postService.findAll(1)).willReturn(Collections.emptyList());
 
         // when
 

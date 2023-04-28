@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.post.Pagination;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
@@ -91,10 +92,11 @@ class PostServiceTest {
     @Test
     void findAll() {
         // given
-        given(postRepository.findAll()).willReturn(List.of(createPostDummy(), createPostDummy2()));
+        given(postRepository.findAll(1, Pagination.MAX_PAGE_SIZE))
+            .willReturn(List.of(createPostDummy(), createPostDummy2()));
 
         // when
-        List<PostResponse> findAll = postService.findAll();
+        List<PostResponse> findAll = postService.findAll(1);
 
         // then
         assertEquals(2, findAll.size());

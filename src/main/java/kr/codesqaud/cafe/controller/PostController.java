@@ -4,6 +4,7 @@ import static kr.codesqaud.cafe.util.SignInSessionUtil.SIGN_IN_SESSION_NAME;
 
 import javax.validation.Valid;
 import kr.codesqaud.cafe.config.session.AccountSession;
+import kr.codesqaud.cafe.dto.post.Pagination;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.service.CommentService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 @RequestMapping("/posts")
@@ -32,8 +34,10 @@ public class PostController {
     }
 
     @GetMapping
-    public String showPosts(Model model) {
-        model.addAttribute("postResponses", postService.findAll());
+    public String showPosts(@RequestParam(defaultValue = "1") Integer page, Model model) {
+        Pagination pagination = postService.getPagination(page);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("postResponses", postService.findAll(pagination.startPage()));
         return "post/posts";
     }
 

@@ -10,11 +10,13 @@ public interface PostRepository {
 
     Optional<Post> findById(Long id);
 
-    List<Post> findAll();
+    List<Post> findAll(Integer startPage, Integer pageSize);
 
     void update(Post post);
 
     void increaseViews(Long id);
 
     void delete(Long id);
+
+    int postsSize();
 }
