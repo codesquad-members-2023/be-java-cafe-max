@@ -51,11 +51,11 @@ public class ArticleService {
      * @param id Article id
      */
     public long edit(long id, Article article) {
-        String originWriter = articleRepository.findIdBySequence(id);
+        String originLoginId = articleRepository.findLoginIdOf(id);
         String requesterId = article.getLoginId();
 
-        if (!originWriter.equals(requesterId)) {
-            logger.info("게시글 수정 요청 ID와 기존 게시글 ID 불일치, requesterId: {}, originId: {}", requesterId, originWriter);
+        if (!originLoginId.equals(requesterId)) {
+            logger.info("게시글 수정 요청 ID와 기존 게시글 ID 불일치, requesterId: {}, originLoginId: {}", requesterId, originLoginId);
             throw new InvalidRequesterIdException();
         }
 

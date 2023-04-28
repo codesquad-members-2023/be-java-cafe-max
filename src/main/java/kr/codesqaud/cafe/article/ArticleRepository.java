@@ -7,7 +7,7 @@ public interface ArticleRepository {
 
     long save(Article article);
 
-    String findIdBySequence(long sequence);
+    String findLoginIdOf(long articleId);
 
     Optional<Article> findOneById(long id);
 

@@ -36,9 +36,9 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public String findIdBySequence(long id) {
+    public String findLoginIdOf(long articleId) {
         String sql = "select id, user_login_Id, title, contents from article where id = :id";
-        SqlParameterSource param = new MapSqlParameterSource("id", id);
+        SqlParameterSource param = new MapSqlParameterSource("id", articleId);
         return template.queryForObject(sql, param, articleRowMapper()).getLoginId();
     }
 
