@@ -54,7 +54,7 @@ public class UserService {
         validateUpdateUser(sessionUser, id);
         User user = isExistUser(id);
         validatePassword(user, userUpdateRequestDto.getPassword());
-        userRepository.update(user.update(userUpdateRequestDto));
+        userRepository.update(user.update(userUpdateRequestDto.getName(), userUpdateRequestDto.getEmail()));
     }
 
     private User isExistUser(final String id) {

@@ -37,14 +37,14 @@ public class ArticleService {
         List<Article> articles = articleRepository.findPagingArticles(criteria);
         List<ArticleResponseDto> articleResponseDtos = new ArrayList<>();
         for (Article article : articles) {
-            articleResponseDtos.add(article.toDto(findWriterName(article)));
+            articleResponseDtos.add(new ArticleResponseDto(article, findWriterName(article)));
         }
         return articleResponseDtos;
     }
 
     public ArticleResponseDto findPost(final Long id) {
         Article article = articleRepository.findById(id);
-        return article.toDto(findWriterName(article));
+        return new ArticleResponseDto(article, findWriterName(article));
     }
 
     private String findWriterName(final Article article) {
@@ -54,7 +54,7 @@ public class ArticleService {
     public void updatePost(final ArticleUpdateRequestDto articleUpdateRequestDto, final Long postId, final User user) {
         Article article = articleRepository.findById(postId);
         validateWriter(user, article);
-        articleRepository.update(article.update(articleUpdateRequestDto));
+        articleRepository.update(article.update(articleUpdateRequestDto.getTitle(), articleUpdateRequestDto.getContents()));
     }
 
     private void validateWriter(final User user, final Article article) {
@@ -92,7 +92,7 @@ public class ArticleService {
     public ArticleResponseDto findPostByIdAndUser(final Long postId, final User user) {
         Article article = articleRepository.findById(postId);
         validateWriter(user, article);
-        return article.toDto(findWriterName(article));
+        return new ArticleResponseDto(article, findWriterName(article));
     }
 
     public int getTotal() {

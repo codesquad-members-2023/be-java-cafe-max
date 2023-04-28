@@ -1,9 +1,6 @@
 package codesquad.cafe.user.domain;
 
-import codesquad.cafe.user.dto.UserUpdateRequestDto;
-
 public class User {
-
     private String id;
     private String password;
     private String name;
@@ -32,9 +29,9 @@ public class User {
         return password;
     }
 
-    public User update(final UserUpdateRequestDto userUpdateRequestDto) {
-        this.name = userUpdateRequestDto.getName();
-        this.email = userUpdateRequestDto.getEmail();
+    public User update(final String name, final String email) {
+        this.name = name;
+        this.email = email;
         return this;
     }
 }

@@ -1,6 +1,10 @@
 package codesquad.cafe.reply.dto;
 
 
+import codesquad.cafe.reply.domain.Reply;
+
+import java.time.format.DateTimeFormatter;
+
 public class ReplyResponseDto {
     private Long id;
     private String contents;
@@ -9,12 +13,12 @@ public class ReplyResponseDto {
     private Long postId;
     private String userName;
 
-    public ReplyResponseDto(final Long id, final String contents, final String createdAt, final String userId, final Long postId, final String userName) {
-        this.id = id;
-        this.contents = contents;
-        this.createdAt = createdAt;
-        this.userId = userId;
-        this.postId = postId;
+    public ReplyResponseDto(final Reply reply, final String userName) {
+        this.id = reply.getId();
+        this.contents = reply.getContents();
+        this.createdAt = reply.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.userId = reply.getUserId();
+        this.postId = reply.getPostId();
         this.userName = userName;
     }
 

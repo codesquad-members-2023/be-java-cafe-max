@@ -22,7 +22,7 @@ public class ReplyService {
     }
 
     public void createReply(final Long postId, final User user, final ReplyRequestDto replyRequestDto) {
-        replyRepository.save(new Reply(postId, user, replyRequestDto));
+        replyRepository.save(new Reply(postId, user, replyRequestDto.getReplyContents()));
     }
 
     public List<ReplyResponseDto> findReplies(final Long postId) {
@@ -30,7 +30,7 @@ public class ReplyService {
         List<ReplyResponseDto> replyResponseDtos = new ArrayList<>();
         for (Reply reply : replies) {
             String userName = replyRepository.findUserNameByReply(reply);
-            replyResponseDtos.add(reply.toDto(userName));
+            replyResponseDtos.add(new ReplyResponseDto(reply, userName));
         }
         return replyResponseDtos;
     }

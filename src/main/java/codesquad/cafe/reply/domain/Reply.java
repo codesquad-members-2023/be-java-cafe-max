@@ -1,11 +1,8 @@
 package codesquad.cafe.reply.domain;
 
-import codesquad.cafe.reply.dto.ReplyRequestDto;
-import codesquad.cafe.reply.dto.ReplyResponseDto;
 import codesquad.cafe.user.domain.User;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Reply {
 
@@ -15,8 +12,8 @@ public class Reply {
     private String userId;
     private Long postId;
 
-    public Reply(final Long postId, final User user, final ReplyRequestDto replyRequestDto) {
-        this.contents = replyRequestDto.getReplyContents();
+    public Reply(final Long postId, final User user, final String replyContents) {
+        this.contents = replyContents;
         this.createdAt = LocalDateTime.now();
         this.userId = user.getId();
         this.postId = postId;
@@ -50,13 +47,4 @@ public class Reply {
         return postId;
     }
 
-    public ReplyResponseDto toDto(final String userName) {
-        return new ReplyResponseDto(
-                this.id,
-                this.contents,
-                this.createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
-                this.userId,
-                this.postId,
-                userName);
-    }
 }
