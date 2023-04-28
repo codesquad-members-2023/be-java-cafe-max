@@ -34,7 +34,7 @@ public class ArticleService {
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    public List<ArticleWithReplyCount> getArticlesWithCommentCount() {
+    public List<ArticleWithReplyCount> getArticlesWithReplyCount() {
         return articleRepository.findAllArticlesWithReplyCount()
                 .stream()
                 .collect(Collectors.toUnmodifiableList());
