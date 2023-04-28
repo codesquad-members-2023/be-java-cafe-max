@@ -5,6 +5,7 @@ import codesquad.cafe.article.dto.ArticleUpdateRequestDto;
 import codesquad.cafe.article.repository.ArticleRepository;
 import codesquad.cafe.article.domain.Article;
 import codesquad.cafe.article.dto.ArticleRequestDto;
+import codesquad.cafe.global.util.Criteria;
 import codesquad.cafe.reply.domain.Reply;
 import codesquad.cafe.reply.repository.ReplyRepository;
 import codesquad.cafe.user.domain.User;
@@ -32,8 +33,8 @@ public class ArticleService {
         articleRepository.save(articleRequestDto.toEntity(), user.getId());
     }
 
-    public List<ArticleResponseDto> findPosts() {
-        List<Article> articles = articleRepository.findAll();
+    public List<ArticleResponseDto> getPagingArticles(final Criteria criteria) {
+        List<Article> articles = articleRepository.findPagingArticles(criteria);
         List<ArticleResponseDto> articleResponseDtos = new ArrayList<>();
         for (Article article : articles) {
             articleResponseDtos.add(article.toDto(findWriterName(article)));
@@ -47,7 +48,7 @@ public class ArticleService {
     }
 
     private String findWriterName(final Article article) {
-        return articleRepository.findWriterByUserId(article.getWriterId());
+        return articleRepository.findWriterByUserId(article);
     }
 
     public void updatePost(final ArticleUpdateRequestDto articleUpdateRequestDto, final Long postId, final User user) {
@@ -92,5 +93,9 @@ public class ArticleService {
         Article article = articleRepository.findById(postId);
         validateWriter(user, article);
         return article.toDto(findWriterName(article));
+    }
+
+    public int getTotal() {
+        return articleRepository.getTotal();
     }
 }

@@ -4,6 +4,8 @@ import codesquad.cafe.article.dto.ArticleRequestDto;
 import codesquad.cafe.article.dto.ArticleResponseDto;
 import codesquad.cafe.article.dto.ArticleUpdateRequestDto;
 import codesquad.cafe.article.service.ArticleService;
+import codesquad.cafe.global.util.Criteria;
+import codesquad.cafe.global.util.Page;
 import codesquad.cafe.reply.dto.ReplyResponseDto;
 import codesquad.cafe.reply.service.ReplyService;
 import codesquad.cafe.user.domain.User;
@@ -33,9 +35,13 @@ public class ArticleController {
     }
 
     @GetMapping
-    public String showHome(Model model) {
-        List<ArticleResponseDto> posts = articleService.findPosts();
-        model.addAttribute("posts", posts);
+    public String showHome(@RequestParam(defaultValue = "1") int page, Model model) {
+        Criteria criteria = new Criteria(page);
+        List<ArticleResponseDto> articles = articleService.getPagingArticles(criteria);
+        int total = articleService.getTotal();
+
+        model.addAttribute("articles", articles);
+        model.addAttribute("page", new Page(criteria, total));
         return "index";
     }
 

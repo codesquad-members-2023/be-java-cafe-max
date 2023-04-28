@@ -1,12 +1,14 @@
 package codesquad.cafe.article.repository;
 
 import codesquad.cafe.article.domain.Article;
+import codesquad.cafe.global.util.Criteria;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -31,15 +33,25 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAll() {
-        String sql = "select id, title, contents, createdAt, writer_id from article where status = true";
-        return namedParameterJdbcTemplate.query(sql,
+    public List<Article> findPagingArticles(final Criteria criteria) {
+        String sql = "SELECT id, title, contents, createdAt, writer_id FROM article WHERE status = true LIMIT :offset, :limit";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("offset", criteria.getSkip());
+        params.addValue("limit", criteria.getAmount());
+
+        return namedParameterJdbcTemplate.query(sql, params,
                 (rs, rowNum) -> new Article(
-                            rs.getLong("id")
-                            , rs.getString("title")
-                            , rs.getString("contents")
-                            , rs.getTimestamp("createdAt").toLocalDateTime()
-                            ,rs.getString("writer_id")));
+                        rs.getLong("id")
+                        , rs.getString("title")
+                        , rs.getString("contents")
+                        , rs.getTimestamp("createdAt").toLocalDateTime()
+                        ,rs.getString("writer_id")));
+    }
+
+    @Override
+    public int getTotal() {
+        String sql = "select count(id) from article";
+        return namedParameterJdbcTemplate.queryForObject(sql, new HashMap<>(), Integer.class);
     }
 
     @Override
@@ -59,9 +71,11 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public String findWriterByUserId(final String writerId) {
-        String sql = "SELECT users.name FROM users JOIN article ON users.id = article.writer_id WHERE writer_id = :writerId";
-        SqlParameterSource params = new MapSqlParameterSource("writerId", writerId);
+    public String findWriterByUserId(final Article article) {
+        String sql = "SELECT users.name FROM users JOIN article ON users.id = article.writer_id WHERE writer_id = :writerId and article.id = :id";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("writerId", article.getWriterId());
+        params.addValue("id", article.getId());
         return namedParameterJdbcTemplate.queryForObject(sql, params, String.class);
     }
 

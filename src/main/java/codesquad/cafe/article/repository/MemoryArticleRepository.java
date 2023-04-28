@@ -1,6 +1,7 @@
 package codesquad.cafe.article.repository;
 
 import codesquad.cafe.article.domain.Article;
+import codesquad.cafe.global.util.Criteria;
 
 import java.util.List;
 import java.util.Map;
@@ -21,17 +22,12 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAll() {
-        return store.values().stream().collect(Collectors.toUnmodifiableList());
-    }
-
-    @Override
     public Article findById(final Long id) {
         return store.get(id);
     }
 
     @Override
-    public String findWriterByUserId(final String writerId) {
+    public String findWriterByUserId(final Article writerId) {
         return null;
     }
 
@@ -41,6 +37,16 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public void deletePostById(final Long postId) {
+    }
+
+    @Override
+    public List<Article> findPagingArticles(final Criteria criteria) {
+        return null;
+    }
+
+    @Override
+    public int getTotal() {
+        return 0;
     }
 
 }
