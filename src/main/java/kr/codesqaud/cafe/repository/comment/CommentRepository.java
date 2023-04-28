@@ -18,7 +18,7 @@ public interface CommentRepository {
 
 	Integer getCommentsSize(Long articleIndex);
 
-	Integer equalsAuthor(Long articleIndex);
+	Boolean equalsAuthor(Long articleIndex);
 
 	List<Comment> findMoreComments(Long articleIndex, Long commentLastIndex);
 }

@@ -27,10 +27,10 @@ public class CommentSql {
 		+ "FROM COMMENT_INFO WHERE articleIndex = :articleIndex AND deleted = false";
 
 	public static final String EQUAL_AUTHOR
-		= "SELECT COUNT(*) "
-		+ "FROM ARTICLE_INFO AS A "
+		= "SELECT EXISTS "
+		+ "(SELECT 1 FROM ARTICLE_INFO AS A "
 		+ "LEFT JOIN COMMENT_INFO AS C ON A.articleIndex = C.articleIndex "
-		+ "WHERE A.articleIndex = :articleIndex AND C.author != A.writer AND C.deleted = false";
+		+ "WHERE A.articleIndex = :articleIndex AND C.author != A.writer AND C.deleted = false)";
 
 	public static final String FIND_MORE_COMMENTS
 		= "SELECT commentIndex, articleIndex, author, comment, createdDate, deleted "

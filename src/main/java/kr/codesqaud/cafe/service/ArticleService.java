@@ -89,7 +89,7 @@ public class ArticleService {
 	public void checkWriterEqualsSessionUser(UserRequest userRequest, Long articleIndex) {
 		Article article = articleRepository.findWriterByArticleIndex(articleIndex);
 		article.validateWriter(userRequest.getNickname());
-		if (commentRepository.equalsAuthor(articleIndex) != 0) {
+		if (commentRepository.equalsAuthor(articleIndex)) {
 			throw new OtherCommentExistsException();
 		}
 	}

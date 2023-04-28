@@ -75,10 +75,10 @@ public class JdbcCommentRepository implements CommentRepository {
 	}
 
 	@Override
-	public Integer equalsAuthor(Long articleIndex) {
+	public Boolean equalsAuthor(Long articleIndex) {
 		SqlParameterSource param = new MapSqlParameterSource()
 			.addValue("articleIndex", articleIndex);
-		return namedParameterJdbcTemplate.queryForObject(EQUAL_AUTHOR, param, Integer.class);
+		return namedParameterJdbcTemplate.queryForObject(EQUAL_AUTHOR, param, Boolean.class);
 	}
 
 	@Override
