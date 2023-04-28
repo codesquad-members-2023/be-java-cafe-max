@@ -12,10 +12,11 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.dto.ArticleRequest;
 import kr.codesqaud.cafe.dto.ArticleResponse;
+import kr.codesqaud.cafe.dto.ArticleUpdateRequest;
 import kr.codesqaud.cafe.dto.CommentRequest;
 import kr.codesqaud.cafe.dto.CommentResponse;
+import kr.codesqaud.cafe.dto.CommentUpdateRequest;
 import kr.codesqaud.cafe.dto.Paging;
-import kr.codesqaud.cafe.dto.UserRequest;
 import kr.codesqaud.cafe.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.exception.CommentNotFoundException;
 import kr.codesqaud.cafe.exception.OtherCommentExistsException;
@@ -47,8 +48,7 @@ public class ArticleService {
 	public ArticleResponse findByIndex(Long articleIndex) {
 		Article article = articleRepository.findByArticleIndex(articleIndex).orElseThrow(ArticleNotFoundException::new);
 		return new ArticleResponse(article.getArticleIndex(), article.getTitle(), article.getWriter(),
-			article.getContents(),
-			article.getWriteDate(), article.getHits(), article.isDeleted());
+			article.getContents(), article.getWriteDate(), article.getHits(), article.isDeleted());
 	}
 
 	public void increaseHits(Long articleIndex) {
@@ -59,28 +59,31 @@ public class ArticleService {
 		articleRepository.delete(articleIndex);
 	}
 
-	public void updateArticle(Long articleIndex, ArticleRequest articleRequest) {
-		articleRepository.update(articleIndex, articleRequest);
+	public void updateArticle(Long articleIndex, ArticleUpdateRequest articleUpdateRequest) {
+		Article article = new Article(articleUpdateRequest.getTitle(), articleUpdateRequest.getTitle(), writeDate());
+		articleRepository.update(articleIndex, article);
 	}
 
-	public List<CommentResponse> createComment(CommentRequest commentRequest) {
+	public void createComment(CommentRequest commentRequest) {
 		Comment comment = new Comment(commentRequest.getArticleIndex(), commentRequest.getAuthor(),
 			commentRequest.getComment(), writeDate(), false);
 		commentRepository.create(comment);
-		return showComments(commentRequest.getArticleIndex(), 0L);
 	}
 
-	public void deleteComment(Long articleIndex, Long commentIndex) {
-		commentRepository.delete(articleIndex, commentIndex);
+	public void deleteComment(Long commentIndex) {
+		commentRepository.delete(commentIndex);
 	}
 
 	public void deleteAllComment(Long articleIndex) {
 		commentRepository.deleteAll(articleIndex);
 	}
 
-	public void checkWriterEqualsSessionUser(UserRequest userRequest, Long articleIndex) {
+	public void checkWriterEqualsSessionUser(String nickname, Long articleIndex) {
 		Article article = articleRepository.findWriterByArticleIndex(articleIndex);
-		article.validateWriter(userRequest.getNickname());
+		article.validateWriter(nickname);
+	}
+
+	public void checkAuthorEqualsSessionUser(Long articleIndex) {
 		if (commentRepository.equalsAuthor(articleIndex)) {
 			throw new OtherCommentExistsException();
 		}
@@ -100,8 +103,8 @@ public class ArticleService {
 			article.getContents(), article.getWriteDate(), article.getHits(), article.isDeleted());
 	}
 
-	public void checkIsAuthor(String nickname, Long articleIndex, Long commentIndex) {
-		Comment comment = commentRepository.findOne(articleIndex, commentIndex)
+	public void checkIsAuthor(String nickname, Long commentIndex) {
+		Comment comment = commentRepository.findOne(commentIndex)
 			.orElseThrow(CommentNotFoundException::new);
 		comment.validateAuthor(nickname);
 	}
@@ -150,5 +153,10 @@ public class ArticleService {
 			.map(comment -> new CommentResponse(comment.getCommentIndex(), comment.getArticleIndex(),
 				comment.getAuthor(), comment.getComment(), comment.getCreatedDate(), comment.isDeleted()))
 			.collect(Collectors.toList());
+	}
+
+	public void updateComment(Long commentIndex, CommentUpdateRequest commentUpdateRequest) {
+		Comment comment = new Comment(commentUpdateRequest.getComment(), writeDate());
+		commentRepository.update(commentIndex, comment);
 	}
 }

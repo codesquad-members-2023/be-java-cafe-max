@@ -35,19 +35,16 @@ public class JdbcCommentRepository implements CommentRepository {
 	}
 
 	@Override
-	public Optional<Comment> findOne(Long articleIndex, Long commentIndex) {
+	public Optional<Comment> findOne(Long commentIndex) {
 		SqlParameterSource params = new MapSqlParameterSource()
-			.addValue("articleIndex", articleIndex)
 			.addValue("commentIndex", commentIndex);
-		List<Comment> comments = namedParameterJdbcTemplate.query(FIND_BY_ARTICLE_INDEX_WITH_COMMENT_INDEX, params,
-			commentRowMapper());
+		List<Comment> comments = namedParameterJdbcTemplate.query(FIND_BY_COMMENT_INDEX, params, commentRowMapper());
 		return optionalTo(comments);
 	}
 
 	@Override
-	public void delete(Long articleIndex, Long commentIndex) {
+	public void delete(Long commentIndex) {
 		SqlParameterSource params = new MapSqlParameterSource()
-			.addValue("articleIndex", articleIndex)
 			.addValue("commentIndex", commentIndex);
 		namedParameterJdbcTemplate.update(DELETE_COMMENT, params);
 	}
@@ -84,5 +81,14 @@ public class JdbcCommentRepository implements CommentRepository {
 
 	private Optional<Comment> optionalTo(List<Comment> comments) {
 		return comments.stream().findAny();
+	}
+
+	@Override
+	public void update(Long commentIndex, Comment comment) {
+		SqlParameterSource params = new MapSqlParameterSource()
+			.addValue("commentIndex", commentIndex)
+			.addValue("comment", comment.getComment())
+			.addValue("modDate", comment.getModDate());
+		namedParameterJdbcTemplate.update(UPDATE_COMMENT, params);
 	}
 }

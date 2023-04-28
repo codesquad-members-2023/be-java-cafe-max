@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.dto.ArticleRequest;
 
 public interface ArticleRepository {
 	Article create(Article article);
@@ -17,7 +16,7 @@ public interface ArticleRepository {
 
 	boolean delete(Long index);
 
-	boolean update(Long index, ArticleRequest articleRequest);
+	boolean update(Long articleIndex, Article article);
 
 	Article findWriterByArticleIndex(Long articleIndex);
 

@@ -10,13 +10,13 @@ public class CommentSql {
 		= "INSERT INTO COMMENT_INFO(articleIndex, author, comment, createdDate, deleted) "
 		+ "VALUES (:articleIndex, :author, :comment, :createdDate, :deleted)";
 
-	public static final String FIND_BY_ARTICLE_INDEX_WITH_COMMENT_INDEX
+	public static final String FIND_BY_COMMENT_INDEX
 		= "SELECT commentIndex, articleIndex, author, comment, createdDate, deleted "
-		+ "FROM COMMENT_INFO WHERE articleIndex = :articleIndex AND commentIndex = :commentIndex AND deleted = false";
+		+ "FROM COMMENT_INFO WHERE commentIndex = :commentIndex AND deleted = false";
 
 	public static final String DELETE_COMMENT
 		= "UPDATE COMMENT_INFO SET deleted = true "
-		+ "WHERE articleIndex = :articleIndex AND commentIndex = :commentIndex";
+		+ "WHERE commentIndex = :commentIndex";
 
 	public static final String DELETE_ALL_COMMENT
 		= "UPDATE COMMENT_INFO SET deleted = true "
@@ -36,4 +36,8 @@ public class CommentSql {
 		= "SELECT commentIndex, articleIndex, author, comment, createdDate, deleted "
 		+ "FROM COMMENT_INFO WHERE articleIndex = :articleIndex AND deleted = false "
 		+ "LIMIT :commentLastIndex, :commentSize";
+
+	public static final String UPDATE_COMMENT
+		= "UPDATE COMMENT_INFO SET comment = :comment, modDate = :modDate "
+		+ "WHERE commentIndex = :commentIndex";
 }

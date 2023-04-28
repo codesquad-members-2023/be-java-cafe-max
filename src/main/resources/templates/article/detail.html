@@ -40,10 +40,7 @@
         </div>
         <div class="post-bottom-list">
             {{#equal}}
-            <form name='question' method='post' action='/articles/{{article.articleIndex}}'>
-                <input type='hidden' name='_method' value='PATCH'/>
-                <button class='button next-writing' type='submit' style='border: none;'>수정</button>
-            </form>
+            <a class='button next-writing' href='/articles/update-form/{{article.articleIndex}}' style='border: none;'>수정</a>
             <form name="question" method="post" action="/articles/{{article.articleIndex}}">
                 <input type="hidden" name="_method" value="DELETE"/>
                 <button class="button next-writing" type="submit" style="border: none;">삭제</button>

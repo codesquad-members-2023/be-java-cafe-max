@@ -71,4 +71,13 @@ public class ArticleQueryController {
 		model.addAttribute("article", articleResponse);
 		return "article/updateDetail";
 	}
+
+	@GetMapping("/articles/update-form/{articleIndex}")
+	public String getArticleUpdateForm(@PathVariable Long articleIndex, HttpSession session, Model model) {
+		String nickname = ((UserRequest)session.getAttribute("sessionUser")).getNickname();
+		articleService.checkWriterEqualsSessionUser(nickname, articleIndex);
+		ArticleResponse articleResponse = articleService.findByIndex(articleIndex);
+		model.addAttribute("article", articleResponse);
+		return "article/updateDetail";
+	}
 }

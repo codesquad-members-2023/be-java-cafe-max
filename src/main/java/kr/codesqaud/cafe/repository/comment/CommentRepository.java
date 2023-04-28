@@ -8,9 +8,9 @@ import kr.codesqaud.cafe.domain.Comment;
 public interface CommentRepository {
 	void create(Comment comment);
 
-	Optional<Comment> findOne(Long articleIndex, Long commentIndex);
+	Optional<Comment> findOne(Long commentIndex);
 
-	void delete(Long articleIndex, Long commentIndex);
+	void delete(Long commentIndex);
 
 	void deleteAll(Long articleIndex);
 
@@ -19,4 +19,6 @@ public interface CommentRepository {
 	Boolean equalsAuthor(Long articleIndex);
 
 	List<Comment> findComments(Long articleIndex, Long commentLastIndex);
+
+	void update(Long commentIndex, Comment commentRequest);
 }

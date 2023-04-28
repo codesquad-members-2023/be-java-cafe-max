@@ -22,7 +22,7 @@ public class ArticleSql {
 		= "UPDATE ARTICLE_INFO SET deleted = true WHERE articleIndex = :articleIndex";
 
 	public static final String UPDATE
-		= "UPDATE ARTICLE_INFO SET title = :title, contents = :contents, writer = :writer "
+		= "UPDATE ARTICLE_INFO SET title = :title, contents = :contents, modDate = :modDate "
 		+ "WHERE articleIndex = :articleIndex";
 
 	public static final String SELECT_WRITER_BY_ARTICLE_INDEX

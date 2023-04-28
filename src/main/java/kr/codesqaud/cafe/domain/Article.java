@@ -10,6 +10,7 @@ public class Article {
 	private String writeDate;
 	private long hits;
 	private boolean deleted;
+	private String modDate;
 
 	public Article(Long articleIndex, String title, String writer, String contents, String writeDate, long hits,
 		boolean deleted) {
@@ -41,6 +42,12 @@ public class Article {
 
 	public Article(String writer) {
 		this.writer = writer;
+	}
+
+	public Article(String title, String contents, String modDate) {
+		this.title = title;
+		this.contents = contents;
+		this.modDate = modDate;
 	}
 
 	public Long getArticleIndex() {
@@ -80,5 +87,9 @@ public class Article {
 		if (!writer.equals(nickname)) {
 			throw new DeniedArticleModificationException();
 		}
+	}
+
+	public String getModDate() {
+		return modDate;
 	}
 }

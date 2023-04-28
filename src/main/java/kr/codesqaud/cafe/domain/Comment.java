@@ -9,6 +9,7 @@ public class Comment {
 	private String comment;
 	private String createdDate;
 	private boolean deleted;
+	private String modDate;
 
 	public Comment(Long commentIndex, Long articleIndex, String author, String comment, String createdDate,
 		boolean deleted) {
@@ -26,6 +27,11 @@ public class Comment {
 		this.comment = comment;
 		this.createdDate = createdDate;
 		this.deleted = deleted;
+	}
+
+	public Comment(String comment, String modDate) {
+		this.comment = comment;
+		this.modDate = modDate;
 	}
 
 	public Long getCommentIndex() {
@@ -56,5 +62,9 @@ public class Comment {
 		if (!author.equals(nickname)) {
 			throw new DeniedCommentModificationException();
 		}
+	}
+
+	public String getModDate() {
+		return modDate;
 	}
 }

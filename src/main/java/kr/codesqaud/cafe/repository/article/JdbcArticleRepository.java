@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.dto.ArticleRequest;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository {
@@ -67,11 +66,11 @@ public class JdbcArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public boolean update(Long articleIndex, ArticleRequest articleRequest) {
+	public boolean update(Long articleIndex, Article article) {
 		SqlParameterSource params = new MapSqlParameterSource("articleIndex", articleIndex)
-			.addValue("title", articleRequest.getTitle())
-			.addValue("writer", articleRequest.getWriter())
-			.addValue("contents", articleRequest.getContents());
+			.addValue("title", article.getTitle())
+			.addValue("contents", article.getContents())
+			.addValue("modDate", article.getModDate());
 		namedParameterJdbcTemplate.update(UPDATE, params);
 		return true;
 	}

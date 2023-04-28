@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.codesqaud.cafe.dto.ArticleRequest;
+import kr.codesqaud.cafe.dto.ArticleUpdateRequest;
 import kr.codesqaud.cafe.dto.UserRequest;
 import kr.codesqaud.cafe.service.ArticleService;
 
@@ -29,7 +30,9 @@ public class ArticleCommandController {
 
 	@DeleteMapping("/articles/{articleIndex}")
 	public String deleteArticle(@PathVariable Long articleIndex, HttpSession session) {
-		articleService.checkWriterEqualsSessionUser((UserRequest)session.getAttribute("sessionUser"), articleIndex);
+		String nickname = ((UserRequest)session.getAttribute("sessionUser")).getNickname();
+		articleService.checkWriterEqualsSessionUser(nickname, articleIndex);
+		articleService.checkAuthorEqualsSessionUser(articleIndex);
 		articleService.deleteArticle(articleIndex);
 		articleService.deleteAllComment(articleIndex);
 		return "redirect:/";
@@ -37,8 +40,8 @@ public class ArticleCommandController {
 
 	@PatchMapping("/articles/{articleIndex}")
 	public String updateArticle(@PathVariable Long articleIndex,
-		@Valid ArticleRequest articleRequest) {
-		articleService.updateArticle(articleIndex, articleRequest);
+		@Valid ArticleUpdateRequest articleUpdateRequest) {
+		articleService.updateArticle(articleIndex, articleUpdateRequest);
 		return "redirect:/";
 	}
 }

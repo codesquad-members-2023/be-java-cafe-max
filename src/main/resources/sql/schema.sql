@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS ARTICLE_INFO
     writeDate TIMESTAMP(0) NOT NULL,
     hits      bigint       NOT NULL,
     deleted   BOOLEAN      NOT NULL DEFAULT FALSE,
+    modDate   TIMESTAMP(0),
     PRIMARY KEY (articleIndex),
     FOREIGN KEY (writer)
     REFERENCES USER_INFO(nickname) ON UPDATE CASCADE
@@ -32,6 +33,7 @@ CREATE TABLE IF NOT EXISTS COMMENT_INFO
     comment      TEXT         NOT NULL,
     createdDate  TIMESTAMP(0) NOT NULL,
     deleted      BOOLEAN      NOT NULL DEFAULT FALSE,
+    modDate      TIMESTAMP(0),
     PRIMARY KEY (commentIndex),
     FOREIGN KEY (author)
     REFERENCES USER_INFO(nickname) ON UPDATE CASCADE

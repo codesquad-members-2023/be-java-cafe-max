@@ -106,9 +106,9 @@ function verifyTitle() {
 }
 
 function verifyContent() {
-    const title = document.getElementById("content").value;
+    const content = document.getElementById("content").value;
 
-    if(title.length >= 3 && title.length <= 1000) {
+    if(content.length >= 3 && content.length <= 1000) {
         validWriteCheck[1] = true;
         validWriteUpdateCheck[1] = true;
     } else {
@@ -127,7 +127,7 @@ function validateWriting() {
 }
 
 function validateWritingUpdate() {
-    if(validWriteCheck[0] && validWriteCheck[1]) {
+    if(validWriteUpdateCheck[0] && validWriteUpdateCheck[1]) {
         return true;
     } else {
         invalidView('#allMessage', WRITING_NUM);
