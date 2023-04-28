@@ -10,6 +10,7 @@ import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.PostingRequest;
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.exception.InvalidSessionException;
+import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 
 @Service
@@ -52,5 +53,13 @@ public class ArticleService {
 	public void updateRequest(PostingRequest postingRequest, Long id, String writer) {
 		Article article = postingRequest.getArticleEntity(writer);
 		articleRepository.update(article, id);
+	}
+
+	@Transactional(readOnly = true)
+	public void validateAuthorization(Long articleId, String userId) {
+		Article article = articleRepository.findPosting(articleId);
+		if (!article.getWriter().equals(userId)) {
+			throw new NoAuthorizationException();
+		}
 	}
 }

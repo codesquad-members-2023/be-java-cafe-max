@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import kr.codesqaud.cafe.controller.dto.CommentDto;
 import kr.codesqaud.cafe.controller.dto.PostingRequest;
+import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.CommentService;
 
@@ -25,6 +27,11 @@ public class ArticleController {
 	public ArticleController(ArticleService articleService, CommentService commentService) {
 		this.articleService = articleService;
 		this.commentService = commentService;
+	}
+
+	@ExceptionHandler(NoAuthorizationException.class)
+	public String handleNoAuthorization(NoAuthorizationException exception) {
+		return "qna/access_error";
 	}
 
 	@PostMapping("/qna/form")
