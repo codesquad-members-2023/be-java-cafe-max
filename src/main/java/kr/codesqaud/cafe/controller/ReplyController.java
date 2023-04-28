@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.controller.dto.ReplyDto;
 import kr.codesqaud.cafe.controller.dto.request.replyRequest.ReplyEditRequest;
 import kr.codesqaud.cafe.controller.dto.request.replyRequest.ReplyRequest;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,8 +34,11 @@ public class ReplyController {
         model.addAttribute("reply", reply);
         model.addAttribute("comment", reply.getComment());
 
-        if (session != null && session.getAttribute("userId").equals(reply.getUserId())) {
-            return "qna/reply_edit_form";
+        if (session != null) {
+            User loginUser = (User) session.getAttribute("loginUser");
+            if (loginUser != null && loginUser.getUserId().equals(reply.getUserId())) {
+                return "qna/reply_edit_form";
+            }
         }
 
         return "qna/failed";
@@ -45,10 +49,15 @@ public class ReplyController {
         HttpSession session = httpRequest.getSession();
         ReplyDto reply = replyService.findByReplyId(replyId);
         Long articleId = reply.getArticleId();
-        if (session != null && session.getAttribute("userName").equals(reply.getUserName())) {
-            replyService.editReply(replyId, request);
-            return "redirect:/articles/" + articleId;
+
+        if (session != null) {
+            User loginUser = (User) session.getAttribute("loginUser");
+            if (loginUser != null && loginUser.getUserName().equals(reply.getUserName())) {
+                replyService.editReply(replyId, request);
+                return "redirect:/articles/" + articleId;
+            }
         }
+
         model.addAttribute("reply", reply);
         return "qna/failed";
     }
@@ -59,10 +68,15 @@ public class ReplyController {
         ReplyDto reply = replyService.findByReplyId(replyId);
         Long articleId = reply.getArticleId();
         model.addAttribute("reply", reply);
-        if (session != null && session.getAttribute("userName").equals(reply.getUserName())) {
-            replyService.deleteReply(replyId);
-            return "redirect:/articles/" + articleId;
+
+        if (session != null) {
+            User loginUser = (User) session.getAttribute("loginUser");
+            if (loginUser != null && loginUser.getUserName().equals(reply.getUserName())) {
+                replyService.deleteReply(replyId);
+                return "redirect:/articles/" + articleId;
+            }
         }
+
         return "qna/failed";
     }
 }

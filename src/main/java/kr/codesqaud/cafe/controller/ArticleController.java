@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.controller;
 import kr.codesqaud.cafe.controller.dto.ArticleDto;
 import kr.codesqaud.cafe.controller.dto.request.articleRequest.PostEditRequest;
 import kr.codesqaud.cafe.controller.dto.request.articleRequest.PostRequest;
-import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
@@ -51,18 +51,20 @@ public class ArticleController {
         model.addAttribute("title", article.getTitle());
         model.addAttribute("content", article.getContent());
 
-        if (session != null && session.getAttribute("userId").equals(article.getWriter())) {
-            return "qna/edit_form";
+        if (session != null) {
+            User loginUser = (User) session.getAttribute("loginUser");
+            if (loginUser != null && loginUser.getUserId().equals(article.getWriter())) {
+                return "qna/edit_form";
+            }
         }
 
         return "qna/failed";
     }
 
     @PutMapping("/articles/{articleId}")
-    public String editArticle(@PathVariable final Long articleId, @ModelAttribute final PostEditRequest request, Model model) {
-        Article article = articleService.editArticle(articleId, request);
-        model.addAttribute("article", article);
-        return "qna/show";
+    public String editArticle(@PathVariable final Long articleId, @ModelAttribute final PostEditRequest request) {
+        articleService.editArticle(articleId, request);
+        return "redirect:/articles/{articleId}";
     }
 
     @DeleteMapping("/articles/{articleId}")
@@ -70,9 +72,12 @@ public class ArticleController {
         HttpSession session = httpRequest.getSession(false);
         ArticleDto article = articleService.findById(articleId);
         model.addAttribute("article", article);
-        if (session != null && session.getAttribute("userId").equals(article.getWriter())) {
-            articleService.deleteArticle(articleId);
-            return "redirect:/";
+        if (session != null) {
+            User loginUser = (User) session.getAttribute("loginUser");
+            if (loginUser != null && loginUser.getUserId().equals(article.getWriter())) {
+                articleService.deleteArticle(articleId);
+                return "redirect:/";
+            }
         }
         return "qna/failed";
     }
