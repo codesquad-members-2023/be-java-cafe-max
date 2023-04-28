@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import kr.codesqaud.cafe.user.dto.LoginRequestDto;
+import kr.codesqaud.cafe.user.dto.ProfileResponseDto;
 import kr.codesqaud.cafe.user.dto.SignUpRequestDto;
 import kr.codesqaud.cafe.web.SessionConstant;
 import org.slf4j.Logger;
@@ -51,7 +52,8 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String viewUserProfile(@PathVariable final String userId, final Model model) {
         User findUser = userService.findOne(userId).get();
-        model.addAttribute("user", findUser);
+        ProfileResponseDto profileResponseDto = ProfileResponseDto.from(findUser);
+        model.addAttribute("user", profileResponseDto);
         return "user/profile";
     }
 
