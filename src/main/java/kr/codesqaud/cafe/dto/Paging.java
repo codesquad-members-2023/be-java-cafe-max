@@ -4,6 +4,7 @@ public class Paging {
 	public static final int PAGE_SIZE = 15;
 	public static final int PAGE_BAR_SIZE = 5;
 	int totalPage;
+	int articleSize;
 	Integer prev;
 	Integer start;
 	Integer current;
@@ -12,6 +13,7 @@ public class Paging {
 
 	public Paging(int current, int articleSize) {
 		this.current = current;
+		this.articleSize = articleSize;
 		totalPage = (int)Math.ceil(articleSize / (double)PAGE_SIZE);
 		int lastBar = 5 * (int)Math.ceil(current / (double)PAGE_BAR_SIZE);
 		end = setEnd(lastBar);

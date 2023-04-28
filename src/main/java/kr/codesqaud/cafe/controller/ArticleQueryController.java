@@ -34,12 +34,8 @@ public class ArticleQueryController {
 		Paging paging = articleService.paging(page);
 		List<Integer> pagingPrevNum = articleService.makePagingPrevNumber(paging.getStart(), page);
 		List<Integer> pagingNextNum = articleService.makePagingNextNumber(page, paging.getEnd());
-		int articlesSize = articleService.getArticleSize();
 		model.addAttribute("articles", articleResponses);
-		model.addAttribute("articlesSize", articlesSize);
-		model.addAttribute("prev", paging.getPrev());
-		model.addAttribute("next", paging.getNext());
-		model.addAttribute("current", page);
+		model.addAttribute("paging", paging);
 		model.addAttribute("pagingPrevNum", pagingPrevNum);
 		model.addAttribute("pagingNextNum", pagingNextNum);
 		return "index";

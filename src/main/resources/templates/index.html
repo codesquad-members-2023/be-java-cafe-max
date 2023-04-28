@@ -6,9 +6,10 @@
         <div class="big text">HELLO JAVA! 입니다.</div>
     </div>
 </div>
+{{#paging}}
 <div class="board">
     <div class="countOfPost">
-        <p>전체 글 <span id="post_count">{{articlesSize}}</span>개</p>
+        <p>전체 글 <span id="post_count">{{articleSize}}</span>개</p>
     </div>
     <div class="board_list">
         <ul class="line_list">
@@ -55,4 +56,5 @@
         </div>
     </div>
 </div>
+{{/paging}}
 {{> fragments/footer}}
