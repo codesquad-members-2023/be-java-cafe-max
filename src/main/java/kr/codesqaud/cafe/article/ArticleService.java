@@ -46,7 +46,6 @@ public class ArticleService {
      */
     public Article findOne(long id) {
         Article findArticle = articleRepository.findOneById(id).orElseThrow(ArticleNotFoundException::new);
-        System.out.println(findArticle.getIsDeleted());
         if (findArticle.getIsDeleted()) {
             throw new ArticleNotFoundException();
         }
