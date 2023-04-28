@@ -61,7 +61,7 @@ public class ReplyController {
 
         if (session != null) {
             User loginUser = (User) session.getAttribute("loginUser");
-            if (loginUser != null && loginUser.getUserName().equals(reply.getUserName())) {
+            if (loginUser != null && loginUser.getUserId().equals(reply.getUserId())) {
                 replyService.editReply(replyId, request);
                 return "redirect:/articles/" + articleId;
             }
@@ -79,7 +79,7 @@ public class ReplyController {
 
         if (session != null) {
             User loginUser = (User) session.getAttribute("loginUser");
-            if (loginUser != null && loginUser.getUserName().equals(reply.getUserName())) {
+            if (loginUser != null && loginUser.getUserId().equals(reply.getUserId())) {
                 replyService.deleteReply(replyId);
                 return "redirect:/articles/" + articleId;
             }
