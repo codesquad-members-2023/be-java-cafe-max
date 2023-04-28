@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.article.dto;
 import java.util.ArrayList;
 import java.util.List;
 public class ResponsePaginationDto {
+    private final static int PAGE_GROUP_SIZE = 5;
     private final int currentPage;
     private final int previousPage;
     private final int totalPages;
@@ -23,8 +24,8 @@ public class ResponsePaginationDto {
 
     private List<Integer> getPageNumbers(int currentPage){
         List<Integer> pageNumbers = new ArrayList<>();
-        int startPage = ((currentPage - 1) / 5) * 5 + 1;
-        int endPage = Math.min(startPage + 4, totalPages);
+        int startPage = ((currentPage - 1) / PAGE_GROUP_SIZE) * PAGE_GROUP_SIZE + 1;
+        int endPage = Math.min(startPage + PAGE_GROUP_SIZE - 1, totalPages);
 
         for (int i = startPage; i <= endPage; i++) {
             pageNumbers.add(i);
