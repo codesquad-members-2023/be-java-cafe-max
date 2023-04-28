@@ -22,7 +22,7 @@ public class LoginController {
     }
 
     @GetMapping
-    public String login(LoginForm loginForm) {
+    public String login() {
         return "user/login";
     }
 

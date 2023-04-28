@@ -2,17 +2,17 @@ package kr.codesqaud.cafe.dto;
 
 public class ReplyForm {
 
-    private Long articleId;
-    private String writer;
-    private String contents;
+    private final long articleId;
+    private final String writer;
+    private final String contents;
 
-    public ReplyForm(Long articleId, String writer, String contents) {
+    public ReplyForm(long articleId, String writer, String contents) {
         this.articleId = articleId;
         this.writer = writer;
         this.contents = contents;
     }
 
-    public Long getArticleId() {
+    public long getArticleId() {
         return articleId;
     }
 
