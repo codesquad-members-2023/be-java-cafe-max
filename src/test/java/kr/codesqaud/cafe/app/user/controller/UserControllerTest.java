@@ -281,7 +281,6 @@ class UserControllerTest {
                 .session(session))
             .andExpect(status().isNotFound())
             .andExpect(view().name("error/404"));
-
     }
 
     private Long signup(String userId, String password, String name, String email) {

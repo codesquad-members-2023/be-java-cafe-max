@@ -8,6 +8,7 @@ import kr.codesqaud.cafe.app.comment.controller.dto.CommentSavedRequest;
 import kr.codesqaud.cafe.app.comment.service.CommentService;
 import kr.codesqaud.cafe.app.user.controller.dto.UserResponse;
 import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
+import kr.codesqaud.cafe.errors.exception.PermissionDeniedException;
 import kr.codesqaud.cafe.errors.exception.RestApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +85,14 @@ public class CommentController {
     // 댓글 수정 페이지
     @GetMapping("/comments/{commentId}/edit")
     public ModelAndView editCommentForm(@PathVariable(value = "id") Long questionId,
-        @PathVariable(value = "commentId") Long commentId) {
+        @PathVariable(value = "commentId") Long commentId,
+        HttpSession session) {
+        UserResponse user = (UserResponse) session.getAttribute("user");
+        CommentResponse comment = commentService.getComment(commentId);
+        if (!comment.getUserId().equals(user.getId())) {
+            throw new PermissionDeniedException(UserErrorCode.PERMISSION_DENIED);
+        }
+
         ModelAndView mav = new ModelAndView("comment/edit");
         mav.addObject("comment", commentService.getComment(commentId));
         return mav;

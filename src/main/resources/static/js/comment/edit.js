@@ -30,6 +30,11 @@ $(document).ready(function () {
           $(`#${item.field}Error`).text(item.message)
         })
       }
+
+      if (errorResponse.name === 'PERMISSION_DENIED') {
+        alert(errorResponse.errorMessage)
+        location.href = `/qna/${questionId}`
+      }
     })
   })
 })
