@@ -1,11 +1,12 @@
 package kr.codesqaud.cafe.repository;
 
+import kr.codesqaud.cafe.controller.dto.Pageable;
 import kr.codesqaud.cafe.domain.Reply;
 
 import java.util.List;
 
 public interface ReplyRepository {
-    List<Reply> findAll(Long articleId);
+    List<Reply> findReplies(Long articleId, Pageable pageable);
 
     Long save(Reply reply);
 

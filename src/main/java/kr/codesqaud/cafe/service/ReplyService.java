@@ -2,14 +2,12 @@ package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.common.exception.reply.ReplyDeleteFailException;
 import kr.codesqaud.cafe.common.exception.reply.ReplyUpdateFailException;
+import kr.codesqaud.cafe.controller.dto.Pageable;
 import kr.codesqaud.cafe.controller.dto.reply.ReplyCreateDto;
-import kr.codesqaud.cafe.controller.dto.reply.ReplyReadDto;
+import kr.codesqaud.cafe.controller.dto.reply.ReplyListDto;
 import kr.codesqaud.cafe.controller.dto.reply.ReplyUpdateDto;
 import kr.codesqaud.cafe.repository.ReplyRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ReplyService {
@@ -19,10 +17,8 @@ public class ReplyService {
         this.replyRepository = replyRepository;
     }
 
-    public List<ReplyReadDto> findAll(Long articleId) {
-        return replyRepository.findAll(articleId).stream()
-                .map(ReplyReadDto::from)
-                .collect(Collectors.toList());
+    public ReplyListDto findReplies(Long articleId, Pageable pageable) {
+        return ReplyListDto.of(replyRepository.findReplies(articleId, pageable), pageable);
     }
 
     public Long save(ReplyCreateDto replyCreateDto) {

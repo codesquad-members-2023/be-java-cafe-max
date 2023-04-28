@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
+import kr.codesqaud.cafe.controller.dto.Pageable;
 import kr.codesqaud.cafe.domain.Reply;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Repository
@@ -38,13 +38,19 @@ public class JdbcReplyRepositoryImpl implements ReplyRepository {
     }
 
     @Override
-    public List<Reply> findAll(Long articleId) {
+    public List<Reply> findReplies(Long articleId, Pageable pageable) {
         final String sql = "" +
                 "SELECT id, article_id, user_id, writer, comments, created_at, updated_at " +
                 "FROM reply " +
-                "WHERE reply.article_id = :articleId";
+                "WHERE reply.article_id = :articleId AND id >= :startId " +
+                "LIMIT :size";
 
-        return template.query(sql, Map.of("articleId", articleId), replyRowMapper());
+        final MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("articleId", articleId)
+                .addValue("startId", pageable.getStartId())
+                .addValue("size", pageable.getSize() + 1);
+
+        return template.query(sql, params, replyRowMapper());
     }
 
     @Override

@@ -24,7 +24,7 @@
                         <p th:text="${article.contents}"></p>
                     </div>
                     <div class="article-util">
-                        <ul class="article-util-list" th:if="${session.loginUser != null && article.userId == session.loginUser.id}">
+                        <ul class="article-util-list" th:if="${session.loginUser != null and article.userId == session.loginUser.id}">
                             <li>
                                 <a class="link-modify-article" th:href="@{/articles/{id}/update-form(id = ${article.id})}">수정</a>
                             </li>
@@ -39,7 +39,15 @@
                 </article>
                  <div class="qna-comment">
                       <div class="qna-comment-slipp">
-                          <div class="reply-list"></div>
+                          <div class="qna-comment-slipp">
+                            <p class="qna-comment-count"><strong id="reply-count"></strong>개의 의견</p>
+                          </div>
+                          <div class="qna-comment-slipp-articles">
+                            <div class="reply-list"></div>
+                          </div>
+                          <div class="reply-more">
+                            <button type="button" class="btn btn-success" style="display: block; margin: 0 auto;" id="reply-more-btn">더보기</button>
+                          </div>
                           <div class="qna-comment-slipp-articles">
                               <form class="submit-write">
                                   <input type="hidden" th:if="${session.loginUser}" id="reply-user-id" th:value="${session.loginUser.id}"/>
@@ -60,20 +68,31 @@
 <footer th:replace="~{fragment/layout/footer :: common_footer}"></footer>
 <script th:inline="javascript">
     let articleId = [[${article.id}]];
+    let startId = 1;
+    let lastId = 1;
+    let size = 15;
+    let total = 0;
+    let hasNext = true;
+
     $(function (e) {
         printReplyList();
     });
 
     function printReplyList() {
         let url = "/articles/" + articleId + "/replies";
-        $.get(url, function (response) {
-            let replyListHtml = "";
-            let replyList = response.result;
 
-            replyListHtml += `<div className="qna-comment-slipp">
-                    <p class="qna-comment-count"><strong>${replyList.length}</strong>개의 의견</p>
-                    <div class="qna-comment-slipp-articles">`;
+        let pageData = {
+            startId: startId,
+            size: size
+        };
 
+        $.get(url, pageData, function (response) {
+            let replyListHtml = $(".reply-list").html();
+            let replyList = response.result.replies;
+
+            lastId = replyList[replyList.length - 1].id;
+            hasNext = response.result.hasNext;
+            total += replyList.length;
             $(replyList).each(function (idx, reply) {
                 replyListHtml += `
                       <article class="article" id="article-${reply.id}">
@@ -90,17 +109,28 @@
                               </div>
                           </div>
                           <div class="article-util">
-                              <ul class="article-util-list">
+                            <ul class="article-util-list">
                                   <li><button class="update-answer-button" type="button" id="reply-update-button" data-reply-id="${reply.id}">수정</button></li>
                                   <li><button class="delete-answer-button" type="button" id="reply-delete-button" data-reply-id="${reply.id}">삭제</button></li>
-                              </ul>
+                            </ul>
                           </div>
                       </article>
                 `;
             });
             $(".reply-list").html(replyListHtml);
+
+            if (!hasNext) {
+                document.getElementById(`reply-more-btn`).style.display = 'none';
+            }
+            document.getElementById("reply-count").innerHTML = total;
         })
     }
+
+    $("button#reply-more-btn").on('click', function() {
+        startId = lastId + 1;
+        console.log("startId = " + startId);
+        printReplyList();
+    });
 
     $("button#reply-create").click( function (e) {
         e.preventDefault();
@@ -126,7 +156,9 @@
             data: JSON.stringify(sendReplyData),
             success: function (response) {
                 document.getElementById("reply-comments").value = "";
-                printReplyList();
+                let replyListHtml = $(".reply-list").html();
+                replyListHtml += `<div><p>댓글이 추가되었습니다.</p></div>`
+                $(".reply-list").html(replyListHtml);
             },
             error: function (err) {
                 console.log(sendReplyData);
