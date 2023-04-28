@@ -89,7 +89,7 @@ public class UserController {
         HttpSession session = request.getSession(true);
 
         session.setAttribute("loginUser", loginUser);
-
+        session.setAttribute("isLogin", true);
         return "redirect:/";
     }
 
@@ -97,7 +97,8 @@ public class UserController {
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.invalidate();
+            session.removeAttribute("loginUser");
+            session.setAttribute("isLogin", false);
         }
         return "redirect:/";
     }

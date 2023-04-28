@@ -21,10 +21,13 @@ public class MainController {
     public String showMain(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);
         model.addAttribute("articles", articleService.getArticlesWithCommentCount());
+
         if (session == null || session.getAttribute("loginUser") == null) {
             return "index";
         }
+
         User loginUser = (User) session.getAttribute("loginUser");
+        session.setAttribute("isLogin", true);
         model.addAttribute("user", loginUser);
         return "index";
     }
