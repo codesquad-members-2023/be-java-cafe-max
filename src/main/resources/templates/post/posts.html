@@ -45,7 +45,8 @@
                 </li>
                 <th:block th:each="number : ${#numbers.sequence(1, pagination.lastPage)}">
                     <li class="page-item">
-                        <a class="page-link" th:href="@{/posts/(page=${number})}" th:text="${number}"></a>
+                        <a class="page-link" th:href="@{/posts/(page=${number})}" th:text="${number}"
+                           th:classappend="${pagination.currentPage == number} ? 'active' : ''"></a>
                     </li>
                 </th:block>
                 <li class="page-item" th:classappend="${pagination.nextPage <= pagination.lastPage} ? '' : 'disabled'">
