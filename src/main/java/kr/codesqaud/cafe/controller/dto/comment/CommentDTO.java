@@ -39,6 +39,10 @@ public class CommentDTO {
         return content;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
     public String getUserName() {
         return userName;
     }

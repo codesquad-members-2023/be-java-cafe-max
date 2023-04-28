@@ -19,10 +19,16 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/posts/{articleId}/new")
+    @PostMapping("/posts/{articleId}/comments/new")
     public String write(@PathVariable long articleId, CommentDTO commentDTO, HttpSession session) {
         if(isAnonymous(session)) return "redirect:/login";
         commentService.write(articleId, commentDTO);
+        return "redirect:/posts/{articleId}";
+    }
+
+    @DeleteMapping("/posts/{articleId}/comments/{id}")
+    public String delete(@PathVariable long articleId, @PathVariable long id) {
+        commentService.delete(id);
         return "redirect:/posts/{articleId}";
     }
 

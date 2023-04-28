@@ -31,4 +31,8 @@ public class CommentService {
                 .map(CommentDTO::from)
                 .collect(Collectors.toList());
     }
+
+    public void delete(Long id) {
+        commentRepository.deleteById(id);
+    }
 }
