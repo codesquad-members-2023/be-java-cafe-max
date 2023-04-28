@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.exception;
 
 import kr.codesqaud.cafe.exception.common.NotFoundException;
+import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,6 +17,13 @@ public class GlobalExceptionHandler {
     public String handleNotFoundException(NotFoundException e, Model model) {
         model.addAttribute("errorMessage", e.getErrorMessage());
         return "error/404";
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(UnauthorizedException.class)
+    public String handleUnauthorizedException(UnauthorizedException e, Model model) {
+        model.addAttribute("errorMessage", e.getErrorMessage());
+        return "/login";
     }
 
 }

@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.exception.common;
 
 public class NotFoundException extends RuntimeException {
 
-    private String errorMessage;
+    private final String errorMessage;
 
     public NotFoundException(String errorMessage) {
         super(errorMessage);
