@@ -13,9 +13,9 @@
 |                 **\/questions**                  |     GET     | 게시글 작성 폼  |
 |                   \/questions                    |    POST     |  게시글 작성   |
 |                 \/questions/{id}                 |     GET     | 게시글 상세 조회 |
-|              \/questions/edit/{id}               |     GET     | 게시글 수정 폼  |
-|              \/questions/edit/{id}               |    POST     |  게시글 수정   |
-|             \/questions/delete/{id}              |    POST     |  게시글 삭제   |
+|              \/questions/{id}/edit               |     GET     | 게시글 수정 폼  |
+|              \/questions/{id}/edit               |    POST     |  게시글 수정   |
+|             \/questions/{id}/delete              |    POST     |  게시글 삭제   |
 |            **\/answers/{articleId}**             |    POST     |   댓글 작성   |
 |  \/questions/{articleId}/answers/{replyId}/edit  |     GET     |  댓글 수정 폼  |
 |  \/questions/{articleId}/answers/{replyId}/edit  |    POST     |   댓글 수정   |
