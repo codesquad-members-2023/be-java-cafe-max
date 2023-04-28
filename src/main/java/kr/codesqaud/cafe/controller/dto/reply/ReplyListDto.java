@@ -9,12 +9,10 @@ import java.util.stream.Collectors;
 public class ReplyListDto {
     private final List<ReplyReadDto> replies;
     private final boolean hasNext;
-    private final boolean isLast;
 
-    private ReplyListDto(List<ReplyReadDto> replies, boolean hasNext, boolean isLast) {
+    private ReplyListDto(List<ReplyReadDto> replies, boolean hasNext) {
         this.replies = replies;
         this.hasNext = hasNext;
-        this.isLast = isLast;
     }
 
     public List<ReplyReadDto> getReplies() {
@@ -25,18 +23,10 @@ public class ReplyListDto {
         return hasNext;
     }
 
-    public boolean isLast() {
-        return isLast;
-    }
-
     public static ReplyListDto of(List<Reply> replies, Pageable pageable) {
         final int size = pageable.getSize();
 
-        return new ReplyListDto(toReplyReadDtoList(replies, size), hasNext(replies, size), isLast(replies, size));
-    }
-
-    private static boolean isLast(List<Reply> replies, int size) {
-        return replies.size() <= size;
+        return new ReplyListDto(toReplyReadDtoList(replies, size), hasNext(replies, size));
     }
 
     private static boolean hasNext(List<Reply> replies, int size) {

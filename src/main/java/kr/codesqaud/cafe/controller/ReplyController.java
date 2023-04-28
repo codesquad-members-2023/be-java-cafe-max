@@ -4,7 +4,6 @@ import kr.codesqaud.cafe.controller.dto.ApiResponse;
 import kr.codesqaud.cafe.controller.dto.Pageable;
 import kr.codesqaud.cafe.controller.dto.reply.ReplyCreateDto;
 import kr.codesqaud.cafe.controller.dto.reply.ReplyListDto;
-import kr.codesqaud.cafe.controller.dto.reply.ReplyReadDto;
 import kr.codesqaud.cafe.controller.dto.reply.ReplyUpdateDto;
 import kr.codesqaud.cafe.controller.dto.user.LoginUserSession;
 import kr.codesqaud.cafe.service.ReplyService;
@@ -22,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
-
-import java.util.List;
 
 @RequestMapping("/articles/{articleId}")
 @RestController
