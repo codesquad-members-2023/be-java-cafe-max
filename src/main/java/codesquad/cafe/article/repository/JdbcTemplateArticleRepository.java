@@ -34,7 +34,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findPagingArticles(final Criteria criteria) {
-        String sql = "SELECT id, title, contents, createdAt, writer_id FROM article WHERE status = true LIMIT :offset, :limit";
+        String sql = "SELECT id, title, contents, createdAt, writer_id FROM article WHERE status = true ORDER BY createdAt DESC LIMIT :offset, :limit";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("offset", criteria.getSkip());
         params.addValue("limit", criteria.getAmount());
