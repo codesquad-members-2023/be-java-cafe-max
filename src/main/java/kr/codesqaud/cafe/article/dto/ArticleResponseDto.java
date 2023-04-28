@@ -12,43 +12,31 @@ public class ArticleResponseDto {
     private String title;
     private String contents;
 
-    public ArticleResponseDto fromEntity(Article article) {
-        id = article.getId();
-        loginId = article.getLoginId();
-        title = article.getTitle();
-        contents = article.getContents();
-        return this;
+    public ArticleResponseDto(long id, String loginId, String title, String contents) {
+        this.id = id;
+        this.loginId = loginId;
+        this.title = title;
+        this.contents = contents;
+    }
+
+    public static ArticleResponseDto from(Article article) {
+        return new ArticleResponseDto(article.getId(), article.getLoginId(), article.getTitle(), article.getContents());
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getLoginId() {
         return loginId;
-    }
-
-    public void setLoginId(final String loginId) {
-        this.loginId = loginId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(final String title) {
-        this.title = title;
-    }
-
     public String getContents() {
         return contents;
     }
 
-    public void setContents(final String contents) {
-        this.contents = contents;
-    }
 }

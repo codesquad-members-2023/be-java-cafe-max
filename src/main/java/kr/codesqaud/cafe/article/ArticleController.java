@@ -44,7 +44,7 @@ public class ArticleController {
     @GetMapping("/articles/{articleId}")
     public String viewArticle(@PathVariable final long articleId, final Model model) {
         Article findArticle = articleService.findOne(articleId).get();
-        ArticleResponseDto articleResponseDto = new ArticleResponseDto().fromEntity(findArticle);
+        ArticleResponseDto articleResponseDto = ArticleResponseDto.from(findArticle);
         model.addAttribute("article", articleResponseDto);
 
         List<Reply> findReplies = replyService.findReplies(articleId);
@@ -55,7 +55,7 @@ public class ArticleController {
     @GetMapping("/articles/{articleId}/edit")
     public String showEditPage(@PathVariable final long articleId, final Model model) {
         Article findArticle = articleService.findOne(articleId).get();
-        ArticleResponseDto articleResponseDto = new ArticleResponseDto().fromEntity(findArticle);
+        ArticleResponseDto articleResponseDto = ArticleResponseDto.from(findArticle);
 
         logger.info("게시글 수정 페이지 조회 요청 / " + "제목: " + findArticle.getTitle());
 
