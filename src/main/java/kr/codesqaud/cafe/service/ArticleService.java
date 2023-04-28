@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.domain.article.repository.ArticleRepository;
 import kr.codesqaud.cafe.domain.reply.Reply;
 import kr.codesqaud.cafe.domain.reply.repository.ReplyRepository;
 import kr.codesqaud.cafe.dto.ArticleFormDto;
+import kr.codesqaud.cafe.dto.IndexResponseDto;
 import kr.codesqaud.cafe.dto.LoginSessionDto;
 import kr.codesqaud.cafe.dto.Paging;
 import kr.codesqaud.cafe.exception.DeniedAccessException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ArticleService {
@@ -56,12 +58,15 @@ public class ArticleService {
     }
 
 
-    public List<Article> getAricleList(Paging paging) {
-        List<Article> list = articleRepository.findAll(paging);
-        for(int i = 0 ; i<list.size(); i++) {
-            list.get(i).setReplySize(replyRepository.allCount(list.get(i).getIndex()));
-        }
-        return list;
+    public List<IndexResponseDto> getAricleList(Paging paging) {
+        return articleRepository.findAll(paging)
+                .stream()
+                .map(article -> {
+                    IndexResponseDto dto = new IndexResponseDto(article);
+                    dto.setReplySize(replyRepository.allCount(article.getIndex()));
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     public Article findByIdx(int idx) {

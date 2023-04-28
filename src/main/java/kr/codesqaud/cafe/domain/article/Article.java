@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.domain.article;
 
 
+import kr.codesqaud.cafe.dto.IndexResponseDto;
+
 public class Article {
     private int index;
     private String userId;
@@ -8,7 +10,6 @@ public class Article {
     private String title;
     private String contents;
     private String date;
-    private int replySize;
 
     public static class Builder {
         private int index;
@@ -51,11 +52,6 @@ public class Article {
             return this;
         }
 
-        public Builder replySize(int val) {
-            replySize = val;
-            return this;
-        }
-
 
         public Article build() {
             return new Article(this);
@@ -69,7 +65,6 @@ public class Article {
         title = builder.title;
         contents = builder.contents;
         date = builder.date;
-        replySize = builder.replySize;
     }
 
     public String getWriter() {
@@ -92,11 +87,9 @@ public class Article {
         return userId;
     }
 
-    public int getReplySize() {
-        return replySize;
+    public String getDate() {
+        return date;
     }
 
-    public void setReplySize(int replySize) {
-        this.replySize = replySize;
-    }
+
 }
