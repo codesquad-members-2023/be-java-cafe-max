@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.util;
 
 import kr.codesqaud.cafe.controller.dto.login.LoggedInDTO;
+import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
@@ -28,5 +29,9 @@ public class LoginSessionManager {
 
     public void updateInfo(LoggedInDTO updatedLoginUser) {
         save(updatedLoginUser);
+    }
+
+    public void throwErrorIfAnonymous() {
+        if(getLoginUser() == null) throw new UnauthorizedException();
     }
 }
