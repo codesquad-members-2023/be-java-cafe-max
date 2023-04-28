@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;
+import kr.codesqaud.cafe.util.Paging;
 import kr.codesqaud.cafe.util.SessionConst;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,19 +27,21 @@ public class ArticleController {
 
     // 게시글 목록 보기
     @GetMapping
-    public String list(Model model){
-        List<Article> articles = articleService.findArticles();
+    public String list(@RequestParam(defaultValue = "1") int nowPage, Model model){
+        Paging paging = new Paging(nowPage, articleService.count());
+        List<Article> articles = articleService.findArticles(paging);
+
         model.addAttribute("articles", articles);
+        model.addAttribute("paging", paging);
         return "index";
     }
 
-    // 게시글 작성 페이지로 이동
+    // 게시글 작성
     @GetMapping("/questions")
     public String create(){
         return "qna/form";
     }
 
-    // 게시글 작성 페이지. 세션을 이용해서 글쓴이 부분을 userId로 할당.
     @PostMapping("/questions")
     public String create(ArticleForm form, HttpSession session) {
         User user = (User) session.getAttribute(SessionConst.LOGIN_USER);

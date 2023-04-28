@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.controller.article.ArticleForm;
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.util.Paging;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,7 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public List<Article> findAll() {
+    public List<Article> findAll(Paging paging) {
         return store.values().stream().collect(Collectors.toUnmodifiableList());
     }
 
@@ -47,4 +48,9 @@ public class MemoryArticleRepository implements ArticleRepository{
 
     @Override
     public void clearStore() {store.clear();}
+
+    @Override
+    public Long count(){
+        return 0L;
+    }
 }

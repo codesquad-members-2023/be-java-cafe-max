@@ -5,6 +5,7 @@ import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
+import kr.codesqaud.cafe.util.Paging;
 import kr.codesqaud.cafe.util.SessionConst;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +29,12 @@ public class ArticleService {
         return articleRepository.save(article).getId();
     }
 
-    public List<Article> findArticles(){
-        return articleRepository.findAll().stream().collect(Collectors.toUnmodifiableList());
+    public List<Article> findArticles(Paging paging){
+        return articleRepository.findAll(paging).stream().collect(Collectors.toUnmodifiableList());
+    }
+
+    public Long count(){
+        return articleRepository.count();
     }
 
     public Article findOne(Long id){
