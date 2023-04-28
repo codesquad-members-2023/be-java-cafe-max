@@ -1,8 +1,8 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.domain.dto.DataType;
 import kr.codesqaud.cafe.domain.vo.PageForm;
+import kr.codesqaud.cafe.global.Tables;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,7 +28,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        String sql = "insert into " + DataType.ARTICLES.getType() + " (user_id, title, contents, currentTime, deleted) " +
+        String sql = "insert into " + Tables.ARTICLES + " (user_id, title, contents, currentTime, deleted) " +
                 "values (:userId, :title, :contents, :currentTime, false)";
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
         template.update(sql, param);
@@ -39,8 +39,8 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     public synchronized Optional<Article> findById(Long id) {
         String sql = "select a.id, a.title, a.contents, a.currentTime, a.user_id, " +
                 "count(r.article_id) as replyCount " +
-                "from " + DataType.ARTICLES.getType() + " a " +
-                "left join " + DataType.REPLIES.getType() + " r " + "on a.id=r.article_id and r.deleted=false " +
+                "from " + Tables.ARTICLES + " a " +
+                "left join " + Tables.REPLIES + " r " + "on a.id=r.article_id and r.deleted=false " +
                 "where a.id=:id and a.deleted=false " +
                 "group by a.id, a.title, a.contents, a.currentTime, a.user_id";
 
@@ -57,9 +57,9 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     public synchronized List<Article> findAll(PageForm pageForm) {
         String sql = "select a.id, a.title, a.contents, a.currentTime, a.user_id, u.user_id, " +
                 "count(r.article_id) as replyCount " +
-                "from " + DataType.ARTICLES.getType() + " a " +
-                "join " + DataType.USERS.getType() + " u on a.user_id = u.user_id " +
-                "left join " + DataType.REPLIES.getType() + " r on a.id = r.article_id and r.deleted = false " +
+                "from " + Tables.ARTICLES + " a " +
+                "join " + Tables.USERS + " u on a.user_id = u.user_id " +
+                "left join " + Tables.REPLIES + " r on a.id = r.article_id and r.deleted = false " +
                 "where a.deleted = false " +
                 "group by a.id, a.title, a.contents, a.currentTime, a.user_id, u.user_id " +
                 "order by a.id desc " +
@@ -71,7 +71,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void update(Long id, Article article) {
-        String sql = "update " + DataType.ARTICLES.getType() +
+        String sql = "update " + Tables.ARTICLES +
                 " set title=:title, contents=:contents " +
                 "where id=:id";
 
@@ -85,7 +85,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void deleteArticle(Long id) {
-        String articleDeletedSql = "update " + DataType.ARTICLES.getType() + " set deleted=true where id=:id";
+        String articleDeletedSql = "update " + Tables.ARTICLES + " set deleted=true where id=:id";
 
         Map<String, Object> param = Map.of("id", id);
         template.update(articleDeletedSql, param);
@@ -93,7 +93,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Long count() {
-        String sql = "select count(*) from " + DataType.ARTICLES.getType() + " where deleted=:flag";
+        String sql = "select count(*) from " + Tables.ARTICLES + " where deleted=:flag";
         return template.queryForObject(sql, Map.of("flag", false), Long.class);
     }
 }
