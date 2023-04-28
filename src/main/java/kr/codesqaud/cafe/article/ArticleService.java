@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.article;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.exception.article.InvalidRequesterIdException;
@@ -35,7 +36,7 @@ public class ArticleService {
      * @return 저장소 내 전체 게시글
      */
     public List<Article> findArticles() {
-        return articleRepository.findAll(); // TODO: 불변값으로 수정
+        return Collections.unmodifiableList(articleRepository.findAll()); // TODO: 불변값으로 수정
     }
 
     /**
