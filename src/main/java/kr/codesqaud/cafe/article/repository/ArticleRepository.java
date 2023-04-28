@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 public class ArticleRepository {
@@ -28,7 +27,10 @@ public class ArticleRepository {
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(article);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
-        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+        if (keyHolder.getKey() == null) {
+            throw new RuntimeException("저장시 키 값을 가져오지 못했습니다.");
+        }
+        return keyHolder.getKey() .longValue();
     }
 
 
