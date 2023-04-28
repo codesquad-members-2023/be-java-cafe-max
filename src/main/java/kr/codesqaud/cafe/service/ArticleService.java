@@ -96,8 +96,8 @@ public class ArticleService {
         return reply;
     }
 
-    public List<Reply> replyList(int index) {
-        return replyRepository.findAll(index);
+    public List<Reply> replyList(int index,int start) {
+        return replyRepository.findAll(index,start);
     }
 
     public boolean deleteReply(int articleIndex, int index, LoginSessionDto dto) {
@@ -129,6 +129,10 @@ public class ArticleService {
             list.add(new Paging(i, paging.getTotalCount()));
         }
         return list;
+    }
+
+    public int replyCount(int index){
+        return replyRepository.allCount(index);
     }
 
 

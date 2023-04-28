@@ -86,8 +86,8 @@ public class ArticleController {
 
     @GetMapping("/article/reply/{index}")
     @ResponseBody
-    public List<Reply> getReply(@PathVariable int index) {
-        return articleService.replyList(index);
+    public List<Reply> getReply(@PathVariable int index, @RequestParam int start) {
+        return articleService.replyList(index, start);
     }
 
     @PostMapping("/article/{index}/reply")
@@ -98,11 +98,11 @@ public class ArticleController {
         return articleService.writeReply(index, contents, sessionDto.getName());
     }
 
-    @DeleteMapping("/article/{articleIndex}/delete/{index}")
+    @DeleteMapping("/article/deleteReply/{index}")
     @ResponseBody
-    public boolean deleteReply(@PathVariable int articleIndex, @PathVariable int index, HttpSession session) {
+    public boolean deleteReply(@PathVariable int index, HttpSession session) {
         LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
-        return articleService.deleteReply(articleIndex,index,sessionDto);
+        return articleService.deleteReply(index, sessionDto);
     }
 
     @GetMapping("/getReplyCount/{index}")
