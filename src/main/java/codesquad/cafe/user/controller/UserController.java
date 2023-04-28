@@ -46,7 +46,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public String showProfile(@PathVariable String userId, final Model model) {
-        UserResponseDto user = userService.findUser(userId);
+        UserResponseDto user = userService.findUserById(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }

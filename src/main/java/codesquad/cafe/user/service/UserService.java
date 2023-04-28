@@ -45,19 +45,19 @@ public class UserService {
         return userResponseDtos;
     }
 
-    public UserResponseDto findUser(final String id) {
-        User user = isExistUser(id);
+    public UserResponseDto findUserById(final String id) {
+        User user = findUser(id);
         return new UserResponseDto(user.getId(), user.getName(), user.getEmail());
     }
 
     public void updateUser(final String id, final UserUpdateRequestDto userUpdateRequestDto, final User sessionUser) {
         validateUpdateUser(sessionUser, id);
-        User user = isExistUser(id);
+        User user = findUser(id);
         validatePassword(user, userUpdateRequestDto.getPassword());
         userRepository.update(user.update(userUpdateRequestDto.getName(), userUpdateRequestDto.getEmail()));
     }
 
-    private User isExistUser(final String id) {
+    private User findUser(final String id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
     }
@@ -69,7 +69,7 @@ public class UserService {
     }
 
     public User login(final UserLoginRequestDto userLoginRequestDto) {
-        User user = isExistUser(userLoginRequestDto.getUserId());
+        User user = findUser(userLoginRequestDto.getUserId());
         validatePassword(user, userLoginRequestDto.getPassword());
         return user;
     }
