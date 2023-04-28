@@ -15,7 +15,7 @@ public class MemoryUserRepository implements UserRepository {
     private final Map<Long, User> repository = new ConcurrentHashMap<>();
 
     @Override
-    public void save(User input) {
+    public synchronized void save(User input) {
         User user = User.builder()
                 .id(id)
                 .userId(input.getUserId())

@@ -16,7 +16,7 @@ import java.util.List;
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    public ArticleService(JdbcArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 

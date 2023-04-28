@@ -16,7 +16,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     private final Map<Long, Article> repository = new ConcurrentHashMap();
 
     @Override
-    public void save(Article input) {
+    public synchronized void save(Article input) {
         Article article = Article.builder()
                 .id(id)
                 .writer(input.getWriter())
