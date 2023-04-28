@@ -36,12 +36,11 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 	}
 
 	public Optional<QuestionEntity> findById(long id) {
-		for (QuestionEntity question : questionTable.select()) {
-			if (question.getId() == id) {
-				return Optional.ofNullable(question);
-			}
-		}
-		return Optional.ofNullable(null);
+		return questionTable.select()
+			.stream()
+			.filter(question
+				-> question.getId() == id)
+			.findAny();
 	}
 
 	@Override

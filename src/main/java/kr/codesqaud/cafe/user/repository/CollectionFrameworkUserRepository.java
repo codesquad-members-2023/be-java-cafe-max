@@ -27,12 +27,11 @@ public class CollectionFrameworkUserRepository implements UserRepository {
 	}
 
 	public Optional<UserEntity> findByUserId(String userId) {
-		for (UserEntity exgistingUser : userTable.select()) {
-			if (exgistingUser.getUserId().equals(userId)) {
-				return Optional.ofNullable(exgistingUser);
-			}
-		}
-		return Optional.ofNullable(null);
+		return userTable.select()
+			.stream()
+			.filter(exgistingUser
+				-> exgistingUser.getUserId().equals(userId))
+			.findAny();
 	}
 
 	public boolean update(UserEntity user) {
