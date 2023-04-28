@@ -4,6 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import kr.codesqaud.cafe.article.dto.ArticleRequestDto;
 import kr.codesqaud.cafe.article.dto.ArticleResponseDto;
+import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
 import kr.codesqaud.cafe.reply.Reply;
 import kr.codesqaud.cafe.reply.ReplyService;
 import kr.codesqaud.cafe.web.SessionConstant;
@@ -43,7 +44,7 @@ public class ArticleController {
 
     @GetMapping("/articles/{articleId}")
     public String viewArticle(@PathVariable final long articleId, final Model model) {
-        Article findArticle = articleService.findOne(articleId).get();
+        Article findArticle = articleService.findOne(articleId).orElseThrow(ArticleNotFoundException::new);
         ArticleResponseDto articleResponseDto = ArticleResponseDto.from(findArticle);
         model.addAttribute("article", articleResponseDto);
 

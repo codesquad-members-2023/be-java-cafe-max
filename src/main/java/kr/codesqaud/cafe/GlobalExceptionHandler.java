@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe;
 
+import kr.codesqaud.cafe.exception.article.ArticleNotFoundException;
 import kr.codesqaud.cafe.exception.signUpException.InvalidUserIdException;
 import kr.codesqaud.cafe.exception.user.UserNotFoundException;
 import org.springframework.ui.Model;
@@ -15,8 +16,14 @@ public class GlobalExceptionHandler {
         return "error";  // TODO: redirect 해줘야 맞는 것 같은데, redirect하면 error 메시지가 뷰에 전달되지 않고 있음
     }
 
-    @ExceptionHandler({UserNotFoundException.class})
+    @ExceptionHandler(UserNotFoundException.class)
     public String handleUnregisteredID(UserNotFoundException e, Model model) {
+        model.addAttribute("error", e.getMessage());
+        return "error";
+    }
+
+    @ExceptionHandler(ArticleNotFoundException.class)
+    public String handleInvalidArticle(ArticleNotFoundException e, Model model) {
         model.addAttribute("error", e.getMessage());
         return "error";
     }
