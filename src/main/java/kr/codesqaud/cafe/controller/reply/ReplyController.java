@@ -24,7 +24,7 @@ public class ReplyController {
     }
 
     @DeleteMapping("/questions/{articleId}/replies/{id}")
-    public Result deleteArticle(@PathVariable Long id, HttpSession session) {
+    public Result deleteReply(@PathVariable Long id, HttpSession session) {
         validateReplyId(id, (String) session.getAttribute(SessionConst.LOGIN_USER_ID));
 
         replyService.delete(id);
