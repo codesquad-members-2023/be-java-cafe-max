@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.Member;
 
 public class MemberResponseDto {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final Long memberId;
     private final String email;
     private final String password;
