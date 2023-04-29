@@ -4,53 +4,47 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Article {
-    private long articleId;
-    private long articleNum;
+    private long id;     // 자꾸 헷갈려서 단순하게 변경완료
     private String writer;
     private String title;
-    private String contents;  // 생각해보니 왠지 final을 해도 set은 될 듯하여 final 처리 -> jdbc 코딩 중 기본 생성자 생성 -> final에 빨간 줄 -> 롤백..
+    private String contents;
     private LocalDateTime createdTime;
 
-    public Article(){}  // 그러고보니 이제 생성자 2개 됐는데 AutoWired 없어도 문제 안 생기나 궁금(!)
-
+    public Article(){}   // 없으면 (Row?)Mapping이 안된다고 하는데....!!!??
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.createdTime = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
-//        this.createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+        this.createdTime = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)); // this.createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
-    public void setArticleId(long id){ // 이건 아무 문제 없는데...????
-        this.articleId = id;
-    }
-    public void setArticleNum(long articleNum) {
-        this.articleNum = articleNum;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public long getArticleNum() {
-        return articleNum;
+    public long getId() {
+        return id;
     }
+
     public String getWriter() {
-       return writer;
+        return writer;
     }
-    public void setWriter(String writer){
-        this.writer = writer;
-    }
+
+    public void setWriter(String writer) { this.writer = writer; }
+
     public String getContents() {
         return contents;
     }
-    public void setContents(String contents){
-        this.contents = contents;
+
+    public void setContents(String contents) { this.contents = contents; }
+
+    public String getTitle() { return title; }
+
+    public void setTitle(String title) { this.title = title; }
+
+    public LocalDateTime getCreatedTime() { return createdTime; }
+
+    public void setCreatedTime(LocalDateTime createdTime) {
+        this.createdTime = createdTime;
     }
-    public String getTitle(){
-        return title;
-    }
-    public void setTitle(String title){
-        this.title = title;
-    }
-    public LocalDateTime getCreatedTime(){
-        return createdTime;
-    }
-    public void setCreatedTime(LocalDateTime createdTime) { this.createdTime = LocalDateTime.parse(createdTime.format(DateTimeFormatter.ISO_LOCAL_DATE)); }
 }

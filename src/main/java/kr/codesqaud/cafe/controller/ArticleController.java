@@ -18,7 +18,7 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public String makeNewArticle(Article article) {
-        articleService.join(article);
+        articleService.save(article);   //
         return "redirect:/articles";
     }
 
@@ -28,9 +28,9 @@ public class ArticleController {
         return "index";
     }
 
-    @GetMapping("/articles/{articleNum}")
-    public String articleProfile(@PathVariable long articleNum, Model model) {
-        Article article = articleService.getArticleByArticleNum(articleNum);
+    @GetMapping("/articles/{id}")
+    public String articleProfile(@PathVariable long id, Model model) {
+        Article article = articleService.getArticleById(id);
         model.addAttribute("article", article);
         return "qna/show";
     }

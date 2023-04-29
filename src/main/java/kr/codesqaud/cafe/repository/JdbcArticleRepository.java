@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -8,69 +9,64 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
-public class JdbcArticleRepository {
+@Primary
+@Repository // 자동으로 빈으로 등록
+public class JdbcArticleRepository implements ArticleRepository{
     private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     public JdbcArticleRepository(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate();
-    }
-    //    @Override // 아 생각해보니 인터페이스 상속으로 만들지 않아서 오버라이드는 해당사항이 아닌..
-    public Article save(Article article) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate); // insert 하게 해주는
-        jdbcInsert.withTableName("articles_squad").usingGeneratedKeyColumns("id");
-        // 방금 만든(h2) articles_squad 테이블에 insert를 하겠다 + (pk 알려주기)인 것으로 추정...
-
-        Map<String, Object> parameters = new ConcurrentHashMap<>();  // 이것은 무엇인지 짐작이 될 것 같으면서도 안 되는...?
-
-        parameters.put("writer", article.getWriter());
-        parameters.put("title", article.getTitle());
-        parameters.put("contents", article.getContents());
-        parameters.put("createdTime", article.getCreatedTime());
-        parameters.put("articleNum", article.getArticleNum());
-
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-        // Number 타입이 어디서 나온 것인지 몰라 (-> 처음 보는 것이라) 당황(;;)
-        article.setArticleId(key.longValue()); //  여기서 Id속성을 새로 만들어야 했는데 기존에 있던 articleNum으로 할 수 있지 않았을지 사소하고 소심한 궁금증이...
-        return article;
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
+                .withTableName("articleTable").usingGeneratedKeyColumns("id");
     }
 
-    //        @Override
-    public Optional<Article> findById(Long id) { // 왜 Long 인지(도) 그러고보니 모름!
-        // import java.awt.List 하면 <T>밑에 빨간줄 있었던 <<<
-        List<Article> result = jdbcTemplate.query("select * from articles_squad where id = ?",
-                articleRowMapper(), id);
+    @Override
+    public void save(Article article) {  // SimpleJdbcInsert를 사용하고 있는데
+        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
+        simpleJdbcInsert.withTableName("articleTable").usingGeneratedKeyColumns("id");
+        Map<String, Object> param = new ConcurrentHashMap<>();
+        param.put("writer", article.getWriter());
+        param.put("title", article.getTitle());
+        param.put("contents", article.getContents());
+        param.put("createdTime", LocalDate.now());
+        simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(param));  // 이 코드 지우면 list(index)에 안 보이게 되는(!)
+        // 맵을 이용한 SqlParamaeterSource...????? --> 그냥 Map을 넣어도 작동하는데 이게 무슨....?
+        // BeanPropertySqlParameterSource("tablename")라는 것도 있다는데....
+    }
+
+    @Override
+    public Optional<Article> getArticleById(Long id) { // Long!
+        List<Article> result = jdbcTemplate.query("select * from articleTable where id = ?", articleRowMapper(), id);
+        // jdbcTemplate.query(String query, RowMapper<Article>, Long id) -> List<Article> 반환(???)
         return result.stream().findAny();
     }
 
-    //        @Override
-    public List<Article> findAll() {
-        return jdbcTemplate.query("select * from articles_squad", // 'articles_squad' 테이블 선택 = sql문
-                articleRowMapper() // 정체불명 -> 이제 만드는 메소드(RowMapper<T>)
-        );
+        @Override
+    public List<Article> getArticleList() { // 이거까지 작동된 듯(3-2)
+        return jdbcTemplate.query("select * from articleTable", articleRowMapper());  // -> 뭔가 DB에서 정보들 가지고 Article 객체를 만들어 준다는 느낌..!?
+        //  jdbcTemplate.query(String query, RowMapper<Article>) --> List<Article> 반환
     }
 
-    //        @Override
+        @Override
     public void clearStore() {
-        jdbcTemplate.update( // 문자열로 쿼리문을 전송한다는 느낌(아마도 cs15에서 봤을 듯한...)
-                "delete from articles_squad"
-        );
-    }
+        jdbcTemplate.update("delete from articleTable");
+    } // 필요한지 모르겠는데 그냥 둘 수밖에 없는
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
-            Article article = new Article();  // 없던 기본 생성자 지금 만들기
-            article.setArticleId(rs.getLong("id"));
-            article.setWriter(rs.getString("writer"));    // 지금 가서 setter 만들기
-            article.setTitle(rs.getString("title"));        // 지금 가서 setter 만들기
-            article.setContents(rs.getString("contents"));      // 지금 가서 setter 만들기
+            Article article = new Article();
+            article.setWriter(rs.getString("writer"));
+            article.setTitle(rs.getString("title"));
+            article.setContents(rs.getString("contents"));
             article.setCreatedTime(rs.getTimestamp("createdTime").toLocalDateTime());
-            article.setArticleNum(rs.getLong("ArticleNum"));
+            article.setId(rs.getLong("id"));
             return article;
         };
     }

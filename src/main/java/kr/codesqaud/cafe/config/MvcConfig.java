@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);  // ( = Integer.MIN_VALUE  ....)
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);  //    Integer.MIN_VALUE
         registry.addViewController("/ask").setViewName("/qna/form");  // article 등록 폼 가기
         registry.addViewController("/join").setViewName("/user/form"); // user 등록 폼 가기
 //        (일종의 GetMapping 구현)
