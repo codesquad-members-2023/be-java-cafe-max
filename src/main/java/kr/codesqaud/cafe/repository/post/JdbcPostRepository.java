@@ -23,13 +23,13 @@ import kr.codesqaud.cafe.domain.Post;
 @Repository
 public class JdbcPostRepository implements PostRepository {
     private final RowMapper<Post> postRowMapper = (rs, rowNum) -> {
-        Long postId = rs.getLong("postId");
+        Long id = rs.getLong("id");
         String title = rs.getString("title");
         String content = rs.getString("content");
-        String writerEmail = rs.getString("writerEmail");
+        String writerEmail = rs.getString("writer_email");
         LocalDateTime writeDate = rs.getTimestamp("write_date").toLocalDateTime();
         Long views = rs.getLong("views");
-        return new Post(postId, title, content, writerEmail, writeDate, views);
+        return new Post(id, title, content, writerEmail, writeDate, views);
     };
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
@@ -40,7 +40,7 @@ public class JdbcPostRepository implements PostRepository {
 
     @Override
     public Long save(Post post, Member member) {
-        String sql = "INSERT INTO post(title,content,writerEmail,write_date,views) VALUES(:title, :content, :writerEmail,:writeDate,:views)";
+        String sql = "INSERT INTO post(title,content,writer_email,write_date,views) VALUES(:title, :content, :writerEmail,:writeDate,:views)";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(post);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, parameter, keyHolder);
@@ -48,29 +48,29 @@ public class JdbcPostRepository implements PostRepository {
     }
 
     @Override
-    public Optional<Post> findById(Long postId) {
-        String sql = "SELECT postId,title,content,writerEmail,write_date,views FROM post WHERE postId=:postId";
-        SqlParameterSource parameter = new MapSqlParameterSource("postId", postId);
+    public Optional<Post> findById(Long id) {
+        String sql = "SELECT id,title,content,writer_email,write_date,views FROM post WHERE id=:id";
+        SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         List<Post> posts = jdbcTemplate.query(sql, parameter, postRowMapper);
         return posts.stream().findFirst();
     }
 
     @Override
     public List<Post> findPostByWriterEmail(String writerEmail) {
-        String sql = "SELECT postId,title,content,writerEmail,write_date,views FROM post WHERE writerEmail = :writerEmail ORDER BY write_date";
+        String sql = "SELECT id,title,content,writer_email,write_date,views FROM post WHERE writerEmail = :writerEmail ORDER BY write_date";
         SqlParameterSource parameter = new MapSqlParameterSource("writerEmail", writerEmail);
         return jdbcTemplate.query(sql, parameter, postRowMapper);
     }
 
     @Override
     public List<Post> findAll() {
-        String sql = "SELECT postId, title, content,writerEmail,write_date,views,FROM post";
+        String sql = "SELECT id,title,content,writer_email,write_date,views FROM post";
         return jdbcTemplate.query(sql, postRowMapper);
     }
 
     @Override
     public void update(Post post) {
-        String sql = "UPDATE post SET title=:title, content=:content, views=:views WHERE postId = :postId";
+        String sql = "UPDATE post SET title=:title, content=:content, views=:views WHERE id = :id";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(post);
         jdbcTemplate.update(sql, parameter);
     }
@@ -82,9 +82,9 @@ public class JdbcPostRepository implements PostRepository {
     }
 
     @Override
-    public void deletePostId(Long postId) {
-        String sql = "DELETE FROM post WHERE postId = :postId";
-        SqlParameterSource parameter = new MapSqlParameterSource("postId", postId);
+    public void deleteId(Long id) {
+        String sql = "DELETE FROM post WHERE id = :id";
+        SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         jdbcTemplate.update(sql, parameter);
     }
 }
