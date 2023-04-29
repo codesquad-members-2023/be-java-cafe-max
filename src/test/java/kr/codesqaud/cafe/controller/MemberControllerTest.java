@@ -101,7 +101,7 @@ class MemberControllerTest {
                 .param("nickname", memberJoinRequestDto.getNickname())
                 .param("password", memberJoinRequestDto.getPassword()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/register"))
+                .andExpect(redirectedUrl("/members"))
                 .andExpect(model().attributeExists("memberJoinRequestDto"));
     }
 
@@ -115,7 +115,7 @@ class MemberControllerTest {
                         .param("email", memberLoginRequestDto.getEmail())
                         .param("password", memberLoginRequestDto.getPassword()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login"))
+                .andExpect(redirectedUrl("/posts"))
                 .andDo(print());
 
 
@@ -127,7 +127,7 @@ class MemberControllerTest {
 
         mockMvc.perform(get("/members/login"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/login"))
+                .andExpect(view().name("member/login"))
                 .andDo(print());
     }
 
@@ -168,7 +168,7 @@ class MemberControllerTest {
                         .param("password", profileEditRequestDto.getPassword())
                         .param("nickname",profileEditRequestDto.getNickname()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("/members/{email}/profile"));
+                .andExpect(redirectedUrlPattern("/members/{email}"));
     }
 
     @Test
@@ -178,7 +178,7 @@ class MemberControllerTest {
 
         // when,then
         mockMvc.perform(get("/members/{email}/profile", basicMemberData().getEmail())
-                        .sessionAttr("loginMember", new LoginMemberSession("test@test.com")))
+                        .sessionAttr("loginMember", new LoginMemberSession("test@test.com", 0L)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("member/profileEdit"))
                 .andDo(print());
