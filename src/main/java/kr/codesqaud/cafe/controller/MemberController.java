@@ -85,7 +85,7 @@ public class MemberController {
     }
 
     @PutMapping("/{email}/profile")
-    public String editProfile(@ModelAttribute @Valid ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String editProfile(@PathVariable String email, @Valid ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "member/profiledEdit";
         }
