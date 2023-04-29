@@ -52,7 +52,7 @@ public class PostService {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public PostResponse findById(Long id) {
         postRepository.increaseViews(id);
         Post post = postRepository.findById(id)
