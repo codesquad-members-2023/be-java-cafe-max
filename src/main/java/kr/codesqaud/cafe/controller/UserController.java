@@ -1,8 +1,10 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.dto.RoginRequestDto;
 import kr.codesqaud.cafe.dto.SignupRequestDto;
 import kr.codesqaud.cafe.model.User;
 import kr.codesqaud.cafe.repository.UserRepository;
+import kr.codesqaud.cafe.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,32 +13,31 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+        this.userService = new UserService(userRepository);
     }
-
 
     @PostMapping
     public String signup(@RequestBody SignupRequestDto signupRequestDto) {
-        userRepository.save(signupRequestDto);
+        userService.signUp(signupRequestDto);
         return "회원가입 성공 DTO";
     }
 
     @PostMapping("/login")
-    public String login(String email, String password) {
-        return "토큰 DTO";
+    public String login(@RequestBody RoginRequestDto roginRequestDto) {
+        return userService.login(roginRequestDto);
     }
 
     @GetMapping
     public List<User> list() {
-        return userRepository.findAll();
+        return userService.findAll();
     }
 
     @GetMapping("/{userId}")
-    public String profile(@PathVariable Long userId) {
-        return "특정 회원 정보 DTO";
+    public User profile(@PathVariable Long userId) {
+        return userService.findById(userId);
     }
 
 }

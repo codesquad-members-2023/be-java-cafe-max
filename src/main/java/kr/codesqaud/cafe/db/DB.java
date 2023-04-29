@@ -1,25 +1,28 @@
 package kr.codesqaud.cafe.db;
 
-import kr.codesqaud.cafe.model.Article;
-import kr.codesqaud.cafe.model.Reply;
-import kr.codesqaud.cafe.model.User;
+import kr.codesqaud.cafe.model.*;
 
 import java.util.*;
 
 public class DB {
     private static DB instance;
 
-    // Map<테이블명, Map<id, 객체>> 랑 고민
-    // ArrayList<User> 와 같이 객체 지정하려면 어떻게? (리턴할 때 애매)
-    // 찾기 편하게 Map 으로 -> Map<Long, Map<String, String>>
-    // 근데 가장 많이 쓰는 find 에서 리스트로 매번 변환하는 게 비효율적인 것 같아서
-    // 다시 List 로 바꿀 예정
-    private Map<Long, Map<String, String>> user = new HashMap<>();
-    private Map<Long, Map<String, String>> article = new HashMap<>();
-    private Map<Long, Map<String, String>> reply = new HashMap<>();
+    public Map<TableName, Map<Long, ?>> data = new HashMap<>();
+    private Map<TableName, Map<String, String>> metaData = new HashMap<>();
 
     // 생성자를 private 으로 생성
-    private DB() {}
+    private DB() {
+        // 테이블 생성
+        data.put(TableName.USER, new HashMap<Long, User>());
+
+        // 테이블 메타데이터 생성
+        Map<String, String> initUserMeta = new HashMap<>();
+        initUserMeta.put("maxId", "0");
+        initUserMeta.put("total", "0");
+
+        metaData.put(TableName.USER, initUserMeta);
+
+    }
 
     public static final DB getInstance() {
         // 최초 1회만 생성
@@ -30,59 +33,35 @@ public class DB {
         return instance;
     }
 
-    // generic 사용?
     // crud 에서는 read 지만 보통 find 라고 쓰는 듯
-    public final Map<Long,Map<String, String>> getMaps(String tableName) {
-        switch (tableName) {
-            case "User":
-                return user;
-            case "Article":
-                return article;
-            case "Comment":
-                return reply;
-            default:
-                return null;
-        }
+    // generic 사용이 어려움 물음표는 리턴에서 안 된다고 함
+    // 타입을 생략하는 건??
+    public Map getTableMap(TableName tableName) {
+        return data.get(tableName);
     }
 
-    // 차라리 DB 에 ArrayList 로 저장하는 게 나을 것 같은데
-    public <T> List<T> findAll(String tableName) {
-        switch (tableName) {
-            case "User":
-                List<User> userList = new ArrayList<>();
-                for (Map<String, String> userMap : user.values()) {
-                    User userDto = new User(
-                            Long.parseLong(userMap.get("id")),
-                            userMap.get("email"),
-                            userMap.get("nickname"),
-                            userMap.get("password")
-                    );
-                    userList.add(userDto);
-                }
-                return (List<T>) userList;
-            case "Article":
-                break;
-            case "Reply":
-                break;
-        }
-        return null;
+    // 밸류만 리스트로 바꾸는 게 리스트를 탐색하는 것 보다는 비교 연산이 없으니 낫지 않을까?
+    // DB 에 ArrayList 로 저장하는 게 나을까?
+    // 그러면 id 를 어떻게 관리하지?
+    // 제네릭이 맞는지 모르겠음
+    public ArrayList getTableList(TableName tableName) {
+        return new ArrayList<>(getTableMap(tableName).values());
     }
 
-    public final <T> void create(T t, String tableName) {
-        switch (tableName) {
-            case "User":
-                User newUser = (User) t;
-                long maxId = this.user.keySet().stream().max(Long::compareTo).orElse(0L);
-                newUser.setId(maxId + 1);
-                Map<String, String> userMap = newUser.toMap();
-                user.put(maxId + 1, userMap);
-                break;
-            case "Article":
-                break;
-            case "Reply":
-                break;
-            default:
-                break;
-        }
+
+    // id 는 null 인 객체를 받아서 maxId 로 추가
+    // 여기서 객체의 id 를 설정하기 위해 id 를 가진 상위 엔티티를 만들어야겠다 느낌
+    public <T> void create(T t, TableName tableName) {
+        Map<Long, T> table = (Map<Long, T>) data.get(tableName);
+        BaseEntity obj = (BaseEntity) t;
+        long maxId = Long.parseLong(metaData.get(tableName).get("maxId"));
+        long total = Long.parseLong(metaData.get(tableName).get("total"));
+
+        obj.setId(maxId + 1);
+        table.put(maxId + 1, (T) obj);
+
+        metaData.get(tableName).put("maxId", String.valueOf(maxId + 1));
+        metaData.get(tableName).put("total", String.valueOf(total + 1));
+
     }
 }

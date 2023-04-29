@@ -21,7 +21,7 @@ public class SignupRequestDto {
         }
 
         public User toUser() {
-            return new User(0L, email, nickname, password);
+            return new User(email, nickname, password);
         }
 
 }

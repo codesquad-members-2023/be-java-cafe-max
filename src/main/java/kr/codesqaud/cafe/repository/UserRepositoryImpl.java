@@ -2,6 +2,7 @@ package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.db.DB;
 import kr.codesqaud.cafe.dto.SignupRequestDto;
+import kr.codesqaud.cafe.model.TableName;
 import kr.codesqaud.cafe.model.User;
 import org.springframework.stereotype.Repository;
 
@@ -14,24 +15,27 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void save(SignupRequestDto signupRequestDto) {
+        // dto -> entity
         User user = signupRequestDto.toUser();
-        db.create(user, "User");
+        db.create(user, TableName.USER);
     }
 
     @Override
     public List<User> findAll() {
-        return db.findAll("User");
+        return (List<User>) db.getTableList(TableName.USER);
     }
+
     @Override
     public User findById(Long id) {
-        List<User> userList = db.findAll("User");
-        User userDto = userList.stream()
-                .filter(user -> user.getId().equals(id))
+        return (User) db.data.get(TableName.USER).get(id);
+    }
+    @Override
+    public User findByEmail(String email) {
+        // key 는 id 니까 key 를 모르는 채로 순회하면 리스트가 낫지 않을까?
+        List<User> userList = db.getTableList(TableName.USER);
+        return userList.stream()
+                .filter(u -> u.getEmail().equals(email))
                 .findFirst()
                 .orElse(null);
-        if (userDto == null) {
-            throw new IllegalArgumentException("존재하지 않는 회원입니다.");
-        }
-        return userDto;
     }
 }

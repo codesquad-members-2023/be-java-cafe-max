@@ -5,27 +5,33 @@ import kr.codesqaud.cafe.dto.SignupRequestDto;
 import java.util.HashMap;
 import java.util.Map;
 
-public class User {
+public class User extends BaseEntity {
 
-    public User(Long id, String email, String nickname, String password) {
-        this.id = id;
+    public User(String email, String nickname, String password) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
     }
 
-    private Long id;
     private String email;
     private String nickname;
     private String password;
 
 
-    public Long getId() {
-        return id;
+    @Override
+    public Object getColumn(String column) {
+        switch (column) {
+            case "email":
+                return this.getEmail();
+            case "nickname":
+                return this.getNickname();
+            case "password":
+                return this.getPassword();
+            default:
+                return null;
+        }
     }
-    public void setId(long id) {
-        this.id = id;
-    }
+
 
     public String getEmail() {
         return email;
@@ -42,7 +48,7 @@ public class User {
     // User 객체를 Map 으로 만들어서 반환
     public Map<String, String> toMap() {
         Map<String, String> userMap = new HashMap<>();
-        userMap.put("id", String.valueOf(this.id));
+        userMap.put("id", String.valueOf(this.getId()));
         userMap.put("email", this.email);
         userMap.put("nickname", this.nickname);
         userMap.put("password", this.password);
