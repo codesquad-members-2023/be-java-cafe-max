@@ -41,9 +41,8 @@ public class MemberController {
         return "member/members";
     }
 
-    @GetMapping("/register")
-    public String registerMember(@ModelAttribute MemberJoinRequestDto memberJoinRequestDto,Model model) {
-        model.addAttribute("memberJoinRequestDto", new MemberJoinRequestDto());
+    @GetMapping("/registration")
+    public String registerMember(@ModelAttribute MemberJoinRequestDto memberJoinRequestDto) {
         return "member/register";
     }
 
