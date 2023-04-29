@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.util.List;
 import java.util.Objects;
+import kr.codesqaud.cafe.errors.errorcode.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
@@ -16,15 +17,11 @@ public class ErrorResponse {
     @JsonInclude(value = Include.NON_EMPTY)
     private final List<ValidationError> errors;
 
-    public ErrorResponse() {
-        this(null, null, null, null);
-    }
-
-    public ErrorResponse(String name, HttpStatus httpStatus, String errorMessage,
+    public ErrorResponse(ErrorCode errorCode,
         List<ValidationError> errors) {
-        this.name = name;
-        this.httpStatus = httpStatus;
-        this.errorMessage = errorMessage;
+        this.name = errorCode.getName();
+        this.httpStatus = errorCode.getHttpStatus();
+        this.errorMessage = errorCode.getMessage();
         this.errors = errors;
     }
 

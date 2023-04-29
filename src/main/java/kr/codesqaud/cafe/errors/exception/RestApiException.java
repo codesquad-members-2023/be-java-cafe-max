@@ -13,4 +13,11 @@ public class RestApiException extends RuntimeException {
     public ErrorCode getErrorCode() {
         return errorCode;
     }
+
+    @Override
+    public String toString() {
+        return "RestApiException{" +
+            "errorCode=" + errorCode +
+            '}';
+    }
 }

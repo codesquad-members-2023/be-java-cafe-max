@@ -1,25 +1,24 @@
 package kr.codesqaud.cafe.app.question.controller.dto;
 
-import java.time.LocalDateTime;
 import kr.codesqaud.cafe.app.question.entity.Question;
-import kr.codesqaud.cafe.app.user.entity.User;
+import kr.codesqaud.cafe.util.LocalDateTimeUtil;
 
-public class QuestionResponse implements Comparable<QuestionResponse> {
+public class QuestionResponse {
 
     private final Long id;
     private final String title;
     private final String content;
-    private final LocalDateTime createTime;
+    private final String createTime;
     private final Long userId;
     private final String writer;
 
-    public QuestionResponse(Question question, User user) {
+    public QuestionResponse(Question question) {
         this.id = question.getId();
         this.title = question.getTitle();
         this.content = question.getContent();
-        this.createTime = question.getCreateTime();
-        this.userId = user.getId();
-        this.writer = user.getName();
+        this.createTime = LocalDateTimeUtil.formatLocalDateTime(question.getCreateTime());
+        this.userId = question.getWriter().getId();
+        this.writer = question.getWriter().getName();
     }
 
     public Long getId() {
@@ -34,7 +33,7 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
         return content;
     }
 
-    public LocalDateTime getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -51,10 +50,5 @@ public class QuestionResponse implements Comparable<QuestionResponse> {
         return String.format(
             "ArticleResponseDto{id=%d, writer=%s, title=%s, content=%s, createTime=%s, user_id=%d}",
             id, writer, title, content, createTime, userId);
-    }
-
-    @Override
-    public int compareTo(QuestionResponse dto) {
-        return dto.getCreateTime().compareTo(this.createTime);
     }
 }

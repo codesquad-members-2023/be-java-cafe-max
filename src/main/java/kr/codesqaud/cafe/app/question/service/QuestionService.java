@@ -2,11 +2,13 @@ package kr.codesqaud.cafe.app.question.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import kr.codesqaud.cafe.app.comment.repository.CommentRepository;
+import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
 import kr.codesqaud.cafe.app.question.entity.Question;
 import kr.codesqaud.cafe.app.question.repository.QuestionRepository;
 import kr.codesqaud.cafe.errors.errorcode.QuestionErrorCode;
-import kr.codesqaud.cafe.errors.exception.RestApiException;
+import kr.codesqaud.cafe.errors.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,40 +16,42 @@ import org.springframework.transaction.annotation.Transactional;
 public class QuestionService {
 
     private final QuestionRepository repository;
+    private final CommentRepository commentRepository;
 
-    public QuestionService(QuestionRepository repository) {
+    public QuestionService(QuestionRepository repository, CommentRepository commentRepository) {
         this.repository = repository;
+        this.commentRepository = commentRepository;
     }
 
     @Transactional
-    public Question write(Question question) {
-        return repository.save(question);
+    public QuestionResponse writeQuestion(QuestionSavedRequest questionRequest) {
+        Question savedQuestion = repository.save(questionRequest.toEntity());
+        return new QuestionResponse(savedQuestion);
     }
 
-    public List<Question> findAllQuestions() {
+    public List<QuestionResponse> getAllQuestion() {
         return repository.findAll().stream()
+            .map(QuestionResponse::new)
             .collect(Collectors.toUnmodifiableList());
     }
 
-    public Question findQuestion(Long id) {
-        return repository.findById(id).orElseThrow(() -> {
-            throw new RestApiException(QuestionErrorCode.NOT_FOUND_QUESTION);
+    public QuestionResponse findQuestion(Long id) {
+        Question findQuestion = repository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(QuestionErrorCode.NOT_FOUND_QUESTION);
         });
+        return new QuestionResponse(findQuestion);
     }
 
-    public Question modifyQuestion(Long id, QuestionSavedRequest requestQuestion) {
-        Question original = findQuestion(id);
-        Question modifiedQuestion =
-            new Question(original.getId(),
-                requestQuestion.getTitle(),
-                requestQuestion.getContent(),
-                original.getCreateTime(),
-                original.getUpdateTime(),
-                original.getUserId());
-        return repository.modify(modifiedQuestion);
+    @Transactional
+    public QuestionResponse modifyQuestion(Long id, QuestionSavedRequest questionRequest) {
+        Question original = repository.findById(id).orElseThrow();
+        original.modify(questionRequest.toEntity());
+        return new QuestionResponse(repository.modify(original));
     }
 
-    public int delete(Long id) {
-        return repository.deleteById(id);
+    @Transactional
+    public QuestionResponse delete(Long id) {
+        commentRepository.deleteAllByQuestionId(id);
+        return new QuestionResponse(repository.deleteById(id));
     }
 }

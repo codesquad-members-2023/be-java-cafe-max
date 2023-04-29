@@ -27,34 +27,30 @@ public class MemoryQuestionRepository implements QuestionRepository {
     @Override
     public Question save(Question question) {
         Question newQuestion =
-            new Question(nextId(),
-                question.getTitle(),
-                question.getContent(),
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                question.getUserId());
+            Question.builder()
+                .id(nextId())
+                .title(question.getTitle())
+                .content(question.getContent())
+                .createTime(LocalDateTime.now())
+                .deleted(question.getDeleted())
+                .writer(question.getWriter())
+                .build();
         store.add(newQuestion);
         return newQuestion;
     }
 
     @Override
     public Question modify(Question question) {
-        Question modifiedQuestion =
-            new Question(nextId(),
-                question.getTitle(),
-                question.getContent(),
-                question.getCreateTime(),
-                LocalDateTime.now(),
-                question.getUserId());
-        store.remove(question);
-        store.add(modifiedQuestion);
-        return modifiedQuestion;
+        Question original = findById(question.getId()).orElseThrow();
+        original.modify(question);
+        return original;
     }
 
     @Override
-    public int deleteById(Long id) {
-        findById(id).ifPresent(store::remove);
-        return 1;
+    public Question deleteById(Long id) {
+        Question delQuestion = findById(id).orElseThrow();
+        delQuestion.delete();
+        return delQuestion;
     }
 
     private synchronized Long nextId() {

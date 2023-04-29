@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -14,21 +15,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import kr.codesqaud.cafe.app.comment.controller.dto.CommentSavedRequest;
+import kr.codesqaud.cafe.app.comment.repository.CommentRepository;
+import kr.codesqaud.cafe.app.comment.service.CommentService;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionResponse;
 import kr.codesqaud.cafe.app.question.controller.dto.QuestionSavedRequest;
 import kr.codesqaud.cafe.app.question.entity.Question;
+import kr.codesqaud.cafe.app.question.repository.QuestionRepository;
 import kr.codesqaud.cafe.app.question.service.QuestionService;
 import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequest;
 import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.service.UserService;
-import kr.codesqaud.cafe.errors.errorcode.CommonErrorCode;
-import kr.codesqaud.cafe.errors.response.ErrorResponse;
 import kr.codesqaud.cafe.errors.response.ErrorResponse.ValidationError;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +39,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
@@ -55,7 +56,17 @@ class QuestionControllerTest {
     private QuestionService questionService;
 
     @Autowired
+    private QuestionRepository questionRepository;
+
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
     private UserService userService;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -71,15 +82,23 @@ class QuestionControllerTest {
         httpSession = new MockHttpSession();
         userId = signUp("yonghwan1107", "yonghwan1107", "김용환", "yonghwan1107@gmail.com");
         questionId = writeQuestion();
+        writeComment(questionId, userId);
     }
 
 
     public Long writeQuestion() {
-        User user = userService.findUser("yonghwan1107");
+        User user = userService.findUser("yonghwan1107").toEntity();
         String title = "제목1";
         String content = "내용1";
-        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, user.getUserId());
-        return questionService.write(dto.toEntity(user.getId())).getId();
+        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, user.getId());
+        return questionService.writeQuestion(dto).getId();
+    }
+
+    public void writeComment(Long questionId, Long userId) {
+        CommentSavedRequest dto1 = new CommentSavedRequest("댓글1", questionId, userId);
+        CommentSavedRequest dto2 = new CommentSavedRequest("댓글2", questionId, userId);
+        commentService.answerComment(dto1);
+        commentService.answerComment(dto2);
     }
 
     @Test
@@ -88,20 +107,17 @@ class QuestionControllerTest {
         //given
         login("yonghwan1107", "yonghwan1107");
         String userId = "yonghwan1107";
-        User user = userService.findUser(userId);
+        User user = userService.findUser(userId).toEntity();
         String writer = user.getName();
         String title = "제목1";
         String content = "내용1";
-        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, userId);
+        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, user.getId());
         String url = "/qna";
         //when
-        String jsonArticle =
-            mockMvc.perform(post(url)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(toJSON(dto))
-                    .session(httpSession))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        String jsonArticle = mockMvc.perform(
+                post(url).contentType(MediaType.APPLICATION_JSON).content(toJSON(dto))
+                    .session(httpSession)).andExpect(status().isOk()).andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
         //then
         TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
         };
@@ -116,31 +132,26 @@ class QuestionControllerTest {
     public void write_fail1() throws Exception {
         //given
         login("yonghwan1107", "yonghwan1107");
-        User user = userService.findUser(userId);
+        User user = userService.findUser(userId).toEntity();
         String title = "";
         String content = "내용1";
-        String userId = user.getUserId();
-        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, userId);
+        QuestionSavedRequest dto = new QuestionSavedRequest(title, content, user.getId());
         String url = "/qna";
         //when
-        String jsonErrors =
-            mockMvc.perform(post(url)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(toJSON(dto))
-                    .session(httpSession))
-                .andExpect(status().isBadRequest()).andReturn().getResponse()
-                .getContentAsString(StandardCharsets.UTF_8);
+        String jsonErrors = mockMvc.perform(
+                post(url).contentType(MediaType.APPLICATION_JSON).content(toJSON(dto))
+                    .session(httpSession)).andExpect(status().isBadRequest()).andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
         //then
         List<ValidationError> errors = new ArrayList<>();
         errors.add(new ValidationError("title", "제목은 100자 이내여야 합니다."));
 
-        ErrorResponse actual = objectMapper.readValue(jsonErrors, ErrorResponse.class);
-        ErrorResponse expected = new ErrorResponse(
-            CommonErrorCode.INVALID_INPUT_FORMAT.getName(),
-            HttpStatus.BAD_REQUEST,
-            "유효하지 않은 입력 형식입니다.",
-            errors);
-        assertThat(actual).isEqualTo(expected);
+        TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
+        };
+        HashMap<String, Object> errorMap = objectMapper.readValue(jsonErrors, typeReference);
+        Assertions.assertThat(errorMap.get("httpStatus")).isEqualTo("BAD_REQUEST");
+        Assertions.assertThat(errorMap.get("name")).isEqualTo("INVALID_INPUT_FORMAT");
+        Assertions.assertThat(errorMap.get("errorMessage")).isEqualTo("유효하지 않은 입력 형식입니다.");
     }
 
     @Test
@@ -161,10 +172,8 @@ class QuestionControllerTest {
         String url = "/qna/" + questionId;
         //when
         QuestionResponse question = (QuestionResponse) Objects.requireNonNull(
-            mockMvc.perform(get(url)
-                    .session(httpSession))
-                .andExpect(status().isOk())
-                .andReturn().getModelAndView()).getModelMap().get("question");
+            mockMvc.perform(get(url).session(httpSession)).andExpect(status().isOk()).andReturn()
+                .getModelAndView()).getModelMap().get("question");
         //then
         assertThat(question.getTitle()).isEqualTo("제목1");
         assertThat(question.getContent()).isEqualTo("내용1");
@@ -177,8 +186,7 @@ class QuestionControllerTest {
         //given
         String url = "/qna/1";
         //when & then
-        mockMvc.perform(get(url))
-            .andExpect(redirectedUrl("/login"));
+        mockMvc.perform(get(url)).andExpect(redirectedUrl("/login"));
     }
 
     @Test
@@ -186,19 +194,17 @@ class QuestionControllerTest {
     public void edit_success() throws Exception {
         //given
         login("yonghwan1107", "yonghwan1107");
-        String str_userId = userService.findUser(userId).getUserId();
+        User user = userService.findUser(userId).toEntity();
         String modifiedTitle = "변경된 제목1";
         String modifiedContent = "변경된 내용1";
         QuestionSavedRequest dto = new QuestionSavedRequest(modifiedTitle, modifiedContent,
-            str_userId);
+            user.getId());
         String url = "/qna/" + questionId;
         //when
-        String json = mockMvc.perform(put(url)
-                .content(toJSON(dto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .session(httpSession))
-            .andExpect(status().isOk())
-            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        String json = mockMvc.perform(
+                put(url).content(toJSON(dto)).contentType(MediaType.APPLICATION_JSON)
+                    .session(httpSession)).andExpect(status().isOk()).andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
         //then
         TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
         };
@@ -212,16 +218,15 @@ class QuestionControllerTest {
     public void edit_fail1() throws Exception {
         //given
         login("yonghwan1107", "yonghwan1107");
-        Long id = write("제목1", "내용1");
-        QuestionSavedRequest dto = new QuestionSavedRequest("", "변경된 내용1", "yonghwan1107");
-        String url = "/qna/" + id;
+        Question question = write("제목1", "내용1");
+        QuestionSavedRequest dto = new QuestionSavedRequest("", "변경된 내용1",
+            question.getWriter().getId());
+        String url = "/qna/" + question.getId();
         //when
-        String json = mockMvc.perform(put(url)
-                .content(toJSON(dto))
-                .contentType(MediaType.APPLICATION_JSON)
-                .session(httpSession))
-            .andExpect(status().isBadRequest())
-            .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8);
+        String json = mockMvc.perform(
+                put(url).content(toJSON(dto)).contentType(MediaType.APPLICATION_JSON)
+                    .session(httpSession)).andExpect(status().isBadRequest()).andReturn().getResponse()
+            .getContentAsString(StandardCharsets.UTF_8);
         //then
         TypeReference<HashMap<String, Object>> typeReference = new TypeReference<>() {
         };
@@ -236,27 +241,54 @@ class QuestionControllerTest {
     public void delete_success() throws Exception {
         //given
         login("yonghwan1107", "yonghwan1107");
-        Long id = write("제목1", "내용1");
-        String url = "/qna/" + id;
+        Question question = write("제목1", "내용1");
+        String url = "/qna/" + question.getId();
         //when & then
+        mockMvc.perform(delete(url).session(httpSession)).andExpect(status().isOk());
+    }
+
+
+    @Test
+    @DisplayName("삭제할 질문게시글 등록번호가 주어지고 삭제 요청시 게시글과 댓글들이 deleted 상태가 되는지 테스트")
+    public void givenQuestionId_whenDeleteQuestion_thenModifyQuestionAndCommentsToDeletedStatus()
+        throws Exception {
+        //given
+        login("yonghwan1107", "yonghwan1107");
+        String url = "/qna/" + questionId;
+        //when
         mockMvc.perform(delete(url)
                 .session(httpSession))
             .andExpect(status().isOk());
+        //then
+        boolean emptyQuestion = questionRepository.findById(questionId).isEmpty();
+        boolean emptyComments = commentRepository.findAll(questionId).isEmpty();
+        Assertions.assertThat(emptyQuestion).isTrue();
+        Assertions.assertThat(emptyComments).isTrue();
     }
 
     @Test
     @DisplayName("다른 사람으로 로그인 후 다른 사람의 질문 게시글을 삭제 요청할때 에러 응답을 받는지 테스트")
     public void delete_fail1() throws Exception {
         //given
-        Long id = write("제목1", "내용1");
+        Question question = write("제목1", "내용1");
         signUp("kim1107", "kim1107kim1107", "kim", "kim1107@naver.com");
         login("kim1107", "kim1107kim1107");
-        String url = "/qna/" + id;
+        String url = "/qna/" + question.getId();
         //when
-        mockMvc.perform(delete(url)
-                .session(httpSession))
-            .andExpect(status().isForbidden());
+        mockMvc.perform(delete(url).session(httpSession)).andExpect(status().isForbidden());
         //then
+    }
+
+    @Test
+    @DisplayName("클라이언트가 서버에 없는 게시물을 요청할때 404 페이지가 응답되는지 테스트")
+    public void givenNotExistQuestionId_whenListQuestion_thenRedirection() throws Exception {
+        //given
+        login("yonghwan1107", "yonghwan1107");
+        long id = 9999L;
+        String url = "/qna/" + id;
+        //when & then
+        mockMvc.perform(get(url).session(httpSession)).andExpect(status().isNotFound())
+            .andExpect(view().name("error/404"));
     }
 
     private Long signUp(String userId, String password, String name, String email) {
@@ -264,16 +296,14 @@ class QuestionControllerTest {
     }
 
     private void login(String userId, String password) throws Exception {
-        mockMvc.perform(post("/login")
-            .content(toJSON(new UserLoginRequest(userId, password)))
-            .contentType(MediaType.APPLICATION_JSON)
-            .session(httpSession));
+        mockMvc.perform(post("/login").content(toJSON(new UserLoginRequest(userId, password)))
+            .contentType(MediaType.APPLICATION_JSON).session(httpSession));
     }
 
-    private Long write(String title, String content) {
-        return questionService.write(
-                new Question(null, title, content, LocalDateTime.now(), LocalDateTime.now(), userId))
-            .getId();
+    private Question write(String title, String content) {
+        Question question = Question.builder().title(title).content(content)
+            .writer(User.builder().id(userId).build()).build();
+        return questionRepository.save(question);
     }
 
     private <T> String toJSON(T data) throws JsonProcessingException {

@@ -3,11 +3,13 @@ package kr.codesqaud.cafe.app.user.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.app.user.controller.dto.UserLoginRequest;
+import kr.codesqaud.cafe.app.user.controller.dto.UserResponse;
 import kr.codesqaud.cafe.app.user.controller.dto.UserSavedRequest;
 import kr.codesqaud.cafe.app.user.entity.User;
 import kr.codesqaud.cafe.app.user.repository.UserRepository;
 import kr.codesqaud.cafe.app.user.validator.UserValidator;
 import kr.codesqaud.cafe.errors.errorcode.UserErrorCode;
+import kr.codesqaud.cafe.errors.exception.ResourceNotFoundException;
 import kr.codesqaud.cafe.errors.exception.RestApiException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,17 +26,19 @@ public class UserService {
     }
 
     // 전체 회원 목록
-    public List<User> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream()
+            .map(UserResponse::new)
             .collect(Collectors.toUnmodifiableList());
     }
 
     // 회원가입
     @Transactional
-    public User signUp(UserSavedRequest requestDto) {
-        validateDuplicatedUserId(requestDto.getUserId());
-        validateDuplicatedUserEmail(requestDto.getEmail());
-        return userRepository.save(requestDto.toEntity());
+    public UserResponse signUp(UserSavedRequest userRequest) {
+        validateDuplicatedUserId(userRequest.getUserId());
+        validateDuplicatedUserEmail(userRequest.getEmail());
+        User savedUser = userRepository.save(userRequest.toEntity());
+        return new UserResponse(savedUser);
     }
 
     // 회원 아이디 중복 검증
@@ -52,17 +56,19 @@ public class UserService {
     }
 
     // 특정 회원 조회
-    public User findUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> {
-            throw new RestApiException(UserErrorCode.NOT_FOUND_USER);
+    public UserResponse findUser(Long id) {
+        User findUser = userRepository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException(UserErrorCode.NOT_FOUND_USER);
         });
+        return new UserResponse(findUser);
     }
 
     // 특정 회원 조회
-    public User findUser(String userId) {
-        return userRepository.findByUserId(userId).orElseThrow(() -> {
-            throw new RestApiException(UserErrorCode.NOT_FOUND_USER);
+    public UserResponse findUser(String userId) {
+        User findUser = userRepository.findByUserId(userId).orElseThrow(() -> {
+            throw new ResourceNotFoundException(UserErrorCode.NOT_FOUND_USER);
         });
+        return new UserResponse(findUser);
     }
 
     // 로그인
@@ -77,15 +83,15 @@ public class UserService {
 
     // 회원 정보 수정
     @Transactional
-    public User modifyUser(Long id, UserSavedRequest requestDto) {
-        User requestUser = requestDto.toEntity(id);
-        User currentUser = findUser(id);
+    public UserResponse modifyUser(Long id, UserSavedRequest userRequest) {
+        User originalUser = userRepository.findById(id).orElseThrow();
         // 기존 이메일과 수정하고자 하는 이메일이 같지 않다면 수정하고자 하는 이메일이 중복되지 않았는지 검증합니다.
-        if (!validator.isEmailUnChanged(currentUser.getEmail(), requestUser.getEmail())) {
-            validateDuplicatedUserEmail(requestUser.getEmail());
+        if (!validator.isEmailUnChanged(originalUser.getEmail(), userRequest.getEmail())) {
+            validateDuplicatedUserEmail(userRequest.getEmail());
         }
-        validator.validateEqualConfirmPassword(requestUser.getPassword(),
-            currentUser.getPassword());
-        return userRepository.modify(requestUser);
+        validator.validateEqualConfirmPassword(userRequest.getPassword(),
+            originalUser.getPassword());
+        originalUser.modify(userRequest.toEntity());
+        return new UserResponse(userRepository.modify(originalUser));
     }
 }

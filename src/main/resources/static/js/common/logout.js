@@ -7,7 +7,7 @@ $(document).ready(function () {
     }).done(function (redirectURL) {
       location.href = redirectURL
     }).fail(function () {
-      location.href = "/error/server-error"
+      alert("로그아웃에 실패하였습니다.")
     })
   })
 })

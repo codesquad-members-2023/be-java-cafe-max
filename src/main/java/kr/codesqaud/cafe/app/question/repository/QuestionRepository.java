@@ -14,6 +14,6 @@ public interface QuestionRepository {
 
     Question modify(Question question);
 
-    int deleteById(Long id);
+    Question deleteById(Long id);
 
 }

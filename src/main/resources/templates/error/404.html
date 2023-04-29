@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="kr"
+      layout:decorate="layout/defaultLayout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>에러</title>
+</head>
+<body>
+<th:block layout:fragment="content">
+  <div class="container" id="main">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default content-main">
+        <p th:text="${message}"></p>
+        <a href="/">홈으로 돌아가기</a>
+      </div>
+    </div>
+  </div>
+</th:block>
+
+<th:block layout:fragment="pageCustomScript">
+</th:block>
+
+</body>
+</html>

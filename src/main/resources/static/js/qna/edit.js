@@ -28,6 +28,13 @@ $(document).ready(function () {
           $(`#${item.field}Error`).text(item.message)
         })
       }
+
+      // 권한 오류
+      if (errorResponse.name === 'PERMISSION_DENIED') {
+        alert('접근 권한이 없습니다.')
+        location.href = errorResponse.redirectUrl
+      }
+
     })
   })
 
