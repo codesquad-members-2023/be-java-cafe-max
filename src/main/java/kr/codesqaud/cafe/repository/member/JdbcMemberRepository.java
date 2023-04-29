@@ -65,7 +65,7 @@ public class JdbcMemberRepository implements MemberRepository {
 
    @Override
     public Optional<Member> findByNickname(String nickname) {
-        String sql = "SELECT memberId, email, password, nickName, create_date FROM member WHERE nickName = :nickName";
+        String sql = "SELECT memberId, email, password, nickname, create_date FROM member WHERE nickname = :nickname";
         SqlParameterSource parameter = new MapSqlParameterSource("nickname", nickname);
         List<Member> members = jdbcTemplate.query(sql, parameter, memberRowMapper);
         return members.stream().findFirst();
