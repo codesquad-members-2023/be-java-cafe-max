@@ -80,8 +80,8 @@ public class MemberController {
 
     @GetMapping("/{email}")
     public String profile(@PathVariable String email, Model model) {
-        Member member = memberService.findByEmail(email);
-        model.addAttribute("memberResponsesDto", memberService.findById(member.getMemberId()));
+        MemberResponseDto memberResponseDto = memberService.findByEmail(email);
+        model.addAttribute("memberResponsesDto", memberService.findById(memberResponseDto.getMemberId()));
         return "member/profile";
     }
 
@@ -101,16 +101,16 @@ public class MemberController {
         if (longinMemberSession.isNotEqualMember(email)) {
             throw new CommonException(CommonExceptionType.ACCESS_DENIED);
         }
-        Member member = memberService.findByEmail(email);
-        model.addAttribute("profileEditRequestDto", ProfileEditRequestDto.of(memberService.findById(member.getMemberId())));
+        MemberResponseDto memberResponseDto = memberService.findByEmail(email);
+        model.addAttribute("profileEditRequestDto", ProfileEditRequestDto.of(memberService.findById(memberResponseDto.getMemberId())));
         return "member/profileEdit";
     }
 
 
     @DeleteMapping("/{email}")
     public void deleteId(@PathVariable String email) {
-        Member member = memberService.findByEmail(email);
-        memberService.deleteById(member.getMemberId());
+        MemberResponseDto memberResponseDto = memberService.findByEmail(email);
+        memberService.deleteById(memberResponseDto.getMemberId());
     }
 
     @PostMapping("/logout")
