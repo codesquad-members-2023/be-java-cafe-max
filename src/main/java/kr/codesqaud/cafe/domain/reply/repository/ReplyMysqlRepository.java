@@ -44,7 +44,7 @@ public class ReplyMysqlRepository implements ReplyRepository {
     }
 
     @Override
-    public int allCount(int articleIdx) {
+    public int count(int articleIdx) {
         SqlParameterSource namedParameters = new MapSqlParameterSource("articleIdx", articleIdx);
         return namedParameterJdbcTemplate.query("SELECT COUNT(*) FROM REPLY " +
                         "WHERE DELETED = FALSE AND ARTICLE_IDX = :articleIdx",

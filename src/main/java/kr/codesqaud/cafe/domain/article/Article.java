@@ -1,8 +1,6 @@
 package kr.codesqaud.cafe.domain.article;
 
 
-import kr.codesqaud.cafe.dto.IndexResponseDto;
-
 public class Article {
     private int index;
     private String userId;

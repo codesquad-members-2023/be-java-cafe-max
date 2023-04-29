@@ -10,10 +10,9 @@ import kr.codesqaud.cafe.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 @Service
 public class ArticleService {
@@ -56,21 +55,21 @@ public class ArticleService {
     }
 
 
-    public List<IndexResponseDto> getAricleList(Paging paging) {
+    public List<ArticleResponseDto> getAricleList(Paging paging) {
         return articleRepository.findAll(paging)
                 .stream()
                 .map(article -> {
-                    IndexResponseDto dto = new IndexResponseDto(article);
-                    dto.setReplySize(replyRepository.allCount(article.getIndex()));
+                    ArticleResponseDto dto = new ArticleResponseDto(article);
+                    dto.setReplyCount(replyRepository.count(article.getIndex()));
                     return dto;
                 })
                 .collect(Collectors.toList());
     }
 
-    public IndexResponseDto findByIdx(int idx) {
+    public ArticleResponseDto findByIdx(int idx) {
         Article article = articleRepository.findByIdx(idx)
                 .orElseThrow(() -> new NotFoundException("게시글 찾을수 없음"));
-        return new IndexResponseDto(article);
+        return new ArticleResponseDto(article);
     }
 
     public void update(int index, ArticleFormDto dto, String name) {
@@ -130,15 +129,13 @@ public class ArticleService {
     }
 
     public List<Paging> pagingList(Paging paging){
-        List<Paging> list = new ArrayList<>();
-        for (int i = paging.getStartPage(); i <= paging.getEndPage(); i++) {
-            list.add(new Paging(i, paging.getTotalCount()));
-        }
-        return list;
+        return IntStream.rangeClosed(paging.getStartPage(), paging.getEndPage())
+                .mapToObj(i -> new Paging(i, paging.getTotalCount()))
+                .collect(Collectors.toList());
     }
 
     public int replyCount(int index){
-        return replyRepository.allCount(index);
+        return replyRepository.count(index);
     }
 
 

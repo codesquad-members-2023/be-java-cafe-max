@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.dto;
 
 import kr.codesqaud.cafe.domain.article.Article;
 
-public class IndexResponseDto {
+public class ArticleResponseDto {
 
     private int index;
     private String userId;
@@ -10,9 +10,9 @@ public class IndexResponseDto {
     private String title;
     private String contents;
     private String date;
-    private int replySize;
+    private int replyCount;
 
-    public IndexResponseDto(Article article) {
+    public ArticleResponseDto(Article article) {
         this.index = article.getIndex();
         this.userId = article.getUserId();
         this.writer = article.getWriter();
@@ -45,11 +45,11 @@ public class IndexResponseDto {
         return date;
     }
 
-    public int getReplySize() {
-        return replySize;
+    public int getReplyCount() {
+        return replyCount;
     }
 
-    public void setReplySize(int replySize) {
-        this.replySize = replySize;
+    public void setReplyCount(int replyCount) {
+        this.replyCount = replyCount;
     }
 }

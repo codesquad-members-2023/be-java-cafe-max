@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.reply.Reply;
 import kr.codesqaud.cafe.dto.*;
 import kr.codesqaud.cafe.service.ArticleService;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -41,7 +39,7 @@ public class ArticleController {
     public String getShow(@PathVariable int index, Model model, HttpSession session) {
         LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
         articleService.checkLogin(sessionDto);
-        IndexResponseDto article = articleService.findByIdx(index);
+        ArticleResponseDto article = articleService.findByIdx(index);
         model.addAttribute("article", article);
         model.addAttribute("auth", articleService.checkIdentity(article.getUserId(), sessionDto.getId()));
         model.addAttribute("nickname", sessionDto.getName());
@@ -60,7 +58,7 @@ public class ArticleController {
 
     @GetMapping("/article/update/{index}")
     public String getUpdatePage(@PathVariable int index, Model model, HttpSession session) {
-        IndexResponseDto article = articleService.findByIdx(index);
+        ArticleResponseDto article = articleService.findByIdx(index);
         LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
         articleService.checkAuth(article.getUserId(), sessionDto);
         model.addAttribute("setTitle", article.getTitle());
@@ -96,7 +94,7 @@ public class ArticleController {
         return articleService.writeReply(index, contents, sessionDto.getName());
     }
 
-    @DeleteMapping("/article/deleteReply/{index}")
+    @DeleteMapping("/article/reply/{index}")
     @ResponseBody
     public boolean deleteReply(@PathVariable int index, HttpSession session) {
         LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");

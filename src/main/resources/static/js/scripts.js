@@ -22,7 +22,7 @@ function createArticleTemplate(reply) {
   if(nickname == reply["replyWriter"]) {
     template += '<ul class="article-util-list">'+
         '  <li>'+
-        '    <form class="delete-answer-form" action="/article/deleteReply/'+ reply["index"] +'" method="POST">'+
+        '    <form class="delete-answer-form" action="/article/reply/'+ reply["index"] +'" method="POST">'+
         '      <input type="hidden" name="_method" value="DELETE">'+
         '      <button type="button" class="delete-answer-button">삭제</button>'+
         '    </form>'+

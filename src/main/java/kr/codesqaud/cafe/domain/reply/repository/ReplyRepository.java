@@ -12,7 +12,7 @@ public interface ReplyRepository {
 
     List<Reply> findAll(int index,int start);
 
-    int allCount(int articleIndex);
+    int count(int articleIndex);
 
     void delete(int index);
 
