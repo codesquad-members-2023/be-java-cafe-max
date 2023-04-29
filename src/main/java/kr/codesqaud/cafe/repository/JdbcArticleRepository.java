@@ -27,7 +27,7 @@ public class JdbcArticleRepository implements ArticleRepository {
 
 	@Override
 	public List<Article> findAllPosting() {
-		return jdbcTemplate.query("SELECT * FROM article", (rs, rowNum) -> new Article(
+		return jdbcTemplate.query("SELECT * FROM article ORDER BY created_at DESC", (rs, rowNum) -> new Article(
 			rs.getString("writer"),
 			rs.getString("title"),
 			rs.getString("contents"),

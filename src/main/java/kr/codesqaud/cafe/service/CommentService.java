@@ -21,19 +21,19 @@ public class CommentService {
 		this.commentRepository = commentRepository;
 	}
 
-	public void commentSave(CommentRequest request, String userId, Long articleId) {
+	public void save(CommentRequest request, String userId, Long articleId) {
 		Comment comment = new Comment(userId, request.getContents(), articleId);
 		commentRepository.save(comment);
 	}
 
-	public List<CommentDto> articleComment(Long id) {
-		return commentRepository.articleComment(id)
+	public List<CommentDto> getAllCommentsByArticleId(Long articleId) {
+		return commentRepository.findAllCommentsByArticleId(articleId)
 			.stream()
 			.map(CommentDto::fromEntity)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public void commentDelete(Long id) {
+	public void delete(Long id) {
 		commentRepository.delete(id);
 	}
 }

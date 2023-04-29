@@ -27,7 +27,7 @@ public class JdbcCommentRepository implements CommentRepository {
 	}
 
 	@Override
-	public List<Comment> articleComment(Long id) {
+	public List<Comment> findAllCommentsByArticleId(Long id) {
 		return jdbcTemplate.query("SELECT * FROM article_comment WHERE article_id = ?", (rs, rowNum) -> new Comment(
 			rs.getLong("id"),
 			rs.getString("user_id"),
@@ -35,6 +35,13 @@ public class JdbcCommentRepository implements CommentRepository {
 			rs.getTimestamp("created_at").toLocalDateTime(),
 			rs.getLong("article_id")
 		), id);
+	}
+
+	@Override
+	public Long commentCountingByArticleId(Long articleId) {
+		int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM article_comment WHERE article_id = ?",
+			Integer.class, articleId);
+		return (long)count;
 	}
 
 	@Override
