@@ -199,7 +199,7 @@ public class PostControllerTest {
     void showModifyForm() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(1L, "만두");
-        given(postService.findPostForModifying(1L, accountSession.getId()))
+        given(postService.findPostForModifying(1L, accountSession.getMemberId()))
             .willReturn(new PostModifyRequest(1L, "제목", "내용"));
 
         // when
@@ -218,7 +218,7 @@ public class PostControllerTest {
     void showModifyFormFalse() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(2L, "만두");
-        given(postService.findPostForModifying(1L, accountSession.getId()))
+        given(postService.findPostForModifying(1L, accountSession.getMemberId()))
             .willThrow(new UnauthorizedException());
 
         // when
@@ -237,7 +237,7 @@ public class PostControllerTest {
     void showModifyFormFalse2() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(1L, "만두");
-        given(postService.findPostForModifying(1L, accountSession.getId()))
+        given(postService.findPostForModifying(1L, accountSession.getMemberId()))
             .willThrow(new PostNotFoundException());
 
         // when
@@ -332,7 +332,7 @@ public class PostControllerTest {
     void deleteFalse() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(1L, "만두");
-        willThrow(new PostNotFoundException()).given(postService).delete(1L, accountSession.getId());
+        willThrow(new PostNotFoundException()).given(postService).delete(1L, accountSession.getMemberId());
 
         // when
 
@@ -350,7 +350,7 @@ public class PostControllerTest {
     void deleteFalse2() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(1L, "만두");
-        willThrow(new UnauthorizedException()).given(postService).delete(1L, accountSession.getId());
+        willThrow(new UnauthorizedException()).given(postService).delete(1L, accountSession.getMemberId());
 
         // when
 
@@ -369,7 +369,7 @@ public class PostControllerTest {
         // given
         AccountSession accountSession = new AccountSession(1L, "만두");
         willThrow(new UnauthorizedException("게시글 작성자와 댓글 작성자가 다릅니다.")).given(postService)
-            .delete(1L, accountSession.getId());
+            .delete(1L, accountSession.getMemberId());
 
         // when
 

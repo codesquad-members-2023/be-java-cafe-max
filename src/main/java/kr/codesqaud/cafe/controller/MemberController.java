@@ -42,7 +42,7 @@ public class MemberController {
     @GetMapping("/{id}/form")
     public String showProfileEditForm(@PathVariable Long id, Model model,
         @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
-        model.addAttribute("profileEditRequest", memberService.findProfileForEditing(id, accountSession.getId()));
+        model.addAttribute("profileEditRequest", memberService.findProfileForEditing(id, accountSession.getMemberId()));
         return "member/profileEdit";
     }
 
@@ -53,7 +53,7 @@ public class MemberController {
             return "member/profileEdit";
         }
 
-        memberService.update(profileEditRequest, accountSession.getId());
+        memberService.update(profileEditRequest, accountSession.getMemberId());
         return "redirect:/members/{id}";
     }
 

@@ -2,11 +2,9 @@ package kr.codesqaud.cafe.controller;
 
 import static kr.codesqaud.cafe.util.SignInSessionUtil.SIGN_IN_SESSION_NAME;
 
-import java.util.List;
 import javax.validation.Valid;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.comment.CommentDeleteResponse;
-import kr.codesqaud.cafe.dto.comment.CommentPagination;
 import kr.codesqaud.cafe.dto.comment.CommentResponse;
 import kr.codesqaud.cafe.dto.comment.CommentWriteRequest;
 import kr.codesqaud.cafe.dto.comment.CommentsResponse;
@@ -48,6 +46,6 @@ public class CommentController {
     @DeleteMapping("/{id}")
     public CommentDeleteResponse delete(@PathVariable Long id,
         @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
-        return commentService.delete(id, accountSession.getId());
+        return commentService.delete(id, accountSession.getMemberId());
     }
 }

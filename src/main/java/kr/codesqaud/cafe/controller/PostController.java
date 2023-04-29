@@ -4,7 +4,6 @@ import static kr.codesqaud.cafe.util.SignInSessionUtil.SIGN_IN_SESSION_NAME;
 
 import javax.validation.Valid;
 import kr.codesqaud.cafe.config.session.AccountSession;
-import kr.codesqaud.cafe.dto.comment.CommentPagination;
 import kr.codesqaud.cafe.dto.post.PostPagination;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
@@ -54,7 +53,7 @@ public class PostController {
             return "post/postWrite";
         }
 
-        postWriteRequest.setWriterId(accountSession.getId());
+        postWriteRequest.setWriterId(accountSession.getMemberId());
         postService.write(postWriteRequest);
         return "redirect:/";
     }
@@ -69,7 +68,7 @@ public class PostController {
     @GetMapping("/{id}/form")
     public String showModifyForm(@PathVariable Long id, Model model,
         @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
-        model.addAttribute("postModifyRequest", postService.findPostForModifying(id, accountSession.getId()));
+        model.addAttribute("postModifyRequest", postService.findPostForModifying(id, accountSession.getMemberId()));
         return "post/postModify";
     }
 
@@ -80,14 +79,14 @@ public class PostController {
             return "post/postModify";
         }
 
-        postService.modify(postModifyRequest, accountSession.getId());
+        postService.modify(postModifyRequest, accountSession.getMemberId());
         return "redirect:/posts/{id}";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id,
         @SessionAttribute(SIGN_IN_SESSION_NAME) AccountSession accountSession) {
-        postService.delete(id, accountSession.getId());
+        postService.delete(id, accountSession.getMemberId());
         return "redirect:/";
     }
 }

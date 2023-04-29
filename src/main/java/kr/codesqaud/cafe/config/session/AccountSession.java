@@ -10,11 +10,11 @@ public class AccountSession {
         this.memberNickname = memberNickname;
     }
 
-    public Long getId() {
+    public Long getMemberId() {
         return memberId;
     }
 
-    public String getName() {
+    public String getMemberNickname() {
         return memberNickname;
     }
 }

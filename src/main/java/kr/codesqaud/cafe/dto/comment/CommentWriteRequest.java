@@ -47,7 +47,7 @@ public class CommentWriteRequest {
     }
 
     public void initializeWriterAndPostId(AccountSession accountSession, Long postId) {
-        this.writer = new WriterRequest(accountSession.getId(), accountSession.getName());
+        this.writer = new WriterRequest(accountSession.getMemberId(), accountSession.getMemberNickname());
         this.postId = postId;
     }
 

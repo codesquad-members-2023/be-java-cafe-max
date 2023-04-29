@@ -152,7 +152,7 @@ class MemberServiceTest {
             .willReturn(Optional.of(memberUpdateRequest.toMember()));
 
         // when
-        memberService.update(memberUpdateRequest, accountSession.getId());
+        memberService.update(memberUpdateRequest, accountSession.getMemberId());
 
         // then
         Member findMember = memberRepository.findById(1L).orElseThrow();
@@ -177,7 +177,7 @@ class MemberServiceTest {
 
         // then
         assertThrows(MemberNotFoundException.class,
-            () -> memberService.update(profileEditRequest, accountSession.getId()));
+            () -> memberService.update(profileEditRequest, accountSession.getMemberId()));
     }
 
     @DisplayName("아이디, 패스워드, 변경할 비밀번호, 닉네임, 세션 아이디 입력시 세션 아이디랑 아이디가 다를 때 회원 정보를 수정하면 에러를 반환한다")
@@ -194,7 +194,7 @@ class MemberServiceTest {
 
         // then
         assertThrows(UnauthorizedException.class,
-            () -> memberService.update(profileEditRequest, accountSession.getId()));
+            () -> memberService.update(profileEditRequest, accountSession.getMemberId()));
     }
 
     @DisplayName("아이디, 패스워드, 변경할 비밀번호, 닉네임, 세션 아이디 입력시 회원 중에 중복된 이메일이 있을 때 회원 정보를 수정하면 에러를 반환한다")
@@ -212,7 +212,7 @@ class MemberServiceTest {
 
         // then
         assertThrows(MemberDuplicateEmailException.class,
-            () -> memberService.update(profileEditRequest, accountSession.getId()));
+            () -> memberService.update(profileEditRequest, accountSession.getMemberId()));
     }
 
     @DisplayName("아이디, 패스워드, 변경할 비밀번호, 닉네임, 세션 아이디 입력시 기존 비밀번호 틀릴 때 회원 정보를 수정하면 에러를 반환한다")
@@ -231,7 +231,7 @@ class MemberServiceTest {
 
         // then
         assertThrows(MemberInvalidPassword.class,
-            () -> memberService.update(profileEditRequest, accountSession.getId()));
+            () -> memberService.update(profileEditRequest, accountSession.getMemberId()));
     }
 
     private SignUpRequest createRequestDummy() {

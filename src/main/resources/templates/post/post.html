@@ -12,7 +12,7 @@
         <div>
             <div>
                 <h2 class="post-title" th:text="${postResponse.title}">자바 웹개발 교육 홈페이지 디자인 개발</h2>
-                    <form th:action="@{/posts/{id}(id = ${postResponse.id})}" th:method="delete" th:if="${session.account.id == postResponse.writer.id}">
+                    <form th:action="@{/posts/{id}(id = ${postResponse.id})}" th:method="delete" th:if="${session.account.memberId == postResponse.writer.id}">
                         <a class="btn btn-primary btn-sm" th:href="@{/posts/{id}/form(id = ${postResponse.id})}">수정</a>
                         <button class="btn btn-primary btn-sm" type="submit">삭제</button>
                     </form>
@@ -45,7 +45,7 @@
         </div>
         <form class="comment-submit" th:action="@{/api/posts/{postId}/comments(postId = __${id}__)}" th:method="post">
             <div class="form-group">
-                <div class="comment-from-writer" th:text="${session.account.name}">만두</div>
+                <div class="comment-from-writer" th:text="${session.account.memberNickname}">만두</div>
                 <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
                 <div class="col text-end">
                     <button class="btn btn-primary btn-sm comment-button" type="submit">등록</button>

@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -21,7 +20,6 @@ import java.util.stream.Stream;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
-import kr.codesqaud.cafe.dto.authentication.SignInRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.member.MemberDuplicateEmailException;
@@ -90,7 +88,7 @@ class MemberControllerTest {
     void showProfileEditForm() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(1L, "만두");
-        given(memberService.findProfileForEditing(1L, accountSession.getId()))
+        given(memberService.findProfileForEditing(1L, accountSession.getMemberId()))
             .willReturn(new ProfileEditRequest(1L, "test@nave.com", null, null, "만두"));
 
         // when
@@ -124,7 +122,7 @@ class MemberControllerTest {
     void showProfileEditFormFalse2() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(2L, "만두");
-        given(memberService.findProfileForEditing(1L, accountSession.getId()))
+        given(memberService.findProfileForEditing(1L, accountSession.getMemberId()))
             .willThrow(UnauthorizedException.class);
 
         // when
