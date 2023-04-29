@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
@@ -69,14 +70,14 @@ class PostControllerTest {
         Long savedId = postRepository.save(dummyPostData(member), member);
         PostResponse postResponse = postService.findById(savedId);
 
-        LoginMemberSession loginMemberSession = new LoginMemberSession(dummyMemberData().getEmail());
+        LoginMemberSession loginMemberSession = new LoginMemberSession(dummyMemberData().getEmail(),savedId);
 
         //when,then
         mockMvc.perform(post("/posts/write/")
                         .param("title", postResponse.getTitle())
                         .param("content", postResponse.getContent())
                         .param("writerEmail", postResponse.getWriter().getWriterEmail())
-                        .sessionAttr("loginMember",loginMemberSession)
+                        .sessionAttr("loginMember", loginMemberSession)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/posts"))

@@ -18,7 +18,10 @@ import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
 import kr.codesqaud.cafe.session.LoginMemberSession;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Sql(scripts = "classpath:schema.sql")
@@ -52,13 +55,7 @@ class PostServiceTest {
         PostResponse postResponse = postService.findById(savedId);
 
         //then
-        assertAll(
-                () -> assertEquals("피에스타", postResponse.getTitle()),
-                () -> assertEquals("내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게", postResponse.getContent()),
-                () -> assertEquals("test@gmail.com", postResponse.getWriter().getWriterEmail()),
-                () -> assertEquals(basicPostData(member).getWriteDate().withNano(0), postResponse.getWriteDate().withNano(0)),
-                () -> assertEquals(1L, postResponse.getViews()),
-                () -> assertNotNull(savedId));
+        assertAll(() -> assertEquals("피에스타", postResponse.getTitle()), () -> assertEquals("내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게", postResponse.getContent()), () -> assertEquals("test@gmail.com", postResponse.getWriter().getWriterEmail()), () -> assertEquals(basicPostData(member).getWriteDate().withNano(0), postResponse.getWriteDate().withNano(0)), () -> assertEquals(1L, postResponse.getViews()), () -> assertNotNull(savedId));
     }
 
     @Test
@@ -76,6 +73,23 @@ class PostServiceTest {
         //then
         assertEquals(id, postResponse.getId());
         assertEquals("test@gmail.com", postResponse.getWriter().getWriterEmail());
+    }
+
+    @Test
+    void findByIdForCheckViews() {
+        //given
+        MemberJoinRequestDto requestDtoMember = basicMemberData();
+        Long memberId = memberService.join(requestDtoMember);
+        Member member = memberRepository.findById(memberId).orElseThrow();
+
+        Long id = postRepository.save(basicPostData(member), member);
+
+        //when
+        PostResponse postResponse = postService.findById(id);
+
+        //then
+        assertEquals(id, postResponse.getId());
+        assertEquals(1, postResponse.getViews());
     }
 
     @Test
@@ -97,14 +111,12 @@ class PostServiceTest {
         List<PostResponse> result = postService.findAll();
 
         // then
-        assertAll(
-                () -> assertNotNull(result),
+        assertAll(() -> assertNotNull(result),
                 () -> assertFalse(result.contains(null)),
                 () -> assertEquals(post1Id, result.get(1).getId()),
                 () -> assertEquals(post2Id, result.get(0).getId()),
                 () -> assertEquals("차차", result.get(1).getWriter().getNickname()),
-                () -> assertEquals("피오니", result.get(0).getWriter().getNickname())
-        );
+                () -> assertEquals("피오니", result.get(0).getWriter().getNickname()));
     }
 
     @Test
@@ -120,6 +132,18 @@ class PostServiceTest {
 
         // then
         assertEquals(writer.getNickname(), writerResponse.getNickname());
+    }
+
+    @Test
+    void deletePost() {
+        MemberJoinRequestDto requestDtoMember = basicMemberData();
+        Long memberId = memberService.join(requestDtoMember);
+        Member member = memberRepository.findById(memberId).orElseThrow();
+
+        Long id = postRepository.save(basicPostData(member), member);
+        LoginMemberSession loginMemberSession = new LoginMemberSession(member.getEmail(), id);
+
+        postService.deleteId(id, loginMemberSession);
     }
 
 
