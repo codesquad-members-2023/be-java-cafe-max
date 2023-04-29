@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="/fragments/header :: fragment-header"></div>
+    <div th:replace="fragments/header :: fragment-header"></div>
 </head>
 <body>
-<div th:replace="/fragments/nav :: fragment-nav"></div>
+<div th:replace="fragments/nav :: fragment-nav"></div>
 <div class="container" id="main">
     <div class="col-md-10 col-md-offset-1">
         <div class="panel panel-default">
@@ -25,7 +25,7 @@
                     <td th:text="${user.getName()}"
                         th:onclick="|location.href='@{/users/{userId}(userId=${user.getUserId()})}'|"
                         style="cursor: pointer"></td>
-                    <td th:text="${user.getEmail()}">slipp@sample.net</td>
+                    <td th:text="${user.getEmail()}"></td>
                     <td><a href="#" class="btn btn-success" role="button" th:onclick="|location.href='@{/users/{userId}/check(userId=${user.getUserId()})}'|">수정</a></td>
                 </tr>
                 </tbody>
