@@ -64,8 +64,8 @@ class PostControllerTest {
         Long memberId = memberService.join(requestDtoMember);
         Member member = memberRepository.findById(memberId).orElseThrow();
 
-        Long savedPostId = postRepository.save(dummyPostData(member), member);
-        PostResponse postResponse = postService.findById(savedPostId);
+        Long savedId = postRepository.save(dummyPostData(member), member);
+        PostResponse postResponse = postService.findById(savedId);
 
         LoginMemberSession loginMemberSession = new LoginMemberSession(dummyMemberData().getEmail());
 
@@ -87,9 +87,9 @@ class PostControllerTest {
         MemberJoinRequestDto requestDtoMember = basicMemberData();
         Long memberId = memberService.join(requestDtoMember);
         Member member = memberRepository.findById(memberId).orElseThrow();
-        Long savedPostId = postRepository.save(basicPostData(member), member);
+        Long savedId = postRepository.save(basicPostData(member), member);
 
-        mockMvc.perform(get("/posts/{postId}/", savedPostId))
+        mockMvc.perform(get("/posts/{id}/", savedId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("post/post"))
                 .andDo(print());
