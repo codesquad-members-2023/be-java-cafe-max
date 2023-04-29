@@ -74,9 +74,7 @@ public class PostController {
     }
 
     @GetMapping("/write")
-    public String writeForm(Model model) {
-        PostWriteRequest postWriteRequest = new PostWriteRequest("", "", null);
-        model.addAttribute("postWriteRequest", postWriteRequest);
+    public String writeForm(@ModelAttribute PostWriteRequest postWriteRequest) {
         return "post/write";
     }
 
