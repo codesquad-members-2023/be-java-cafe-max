@@ -1,9 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +19,12 @@ import kr.codesqaud.cafe.repository.post.PostRepository;
 import kr.codesqaud.cafe.service.MemberService;
 import kr.codesqaud.cafe.service.PostService;
 import kr.codesqaud.cafe.session.LoginMemberSession;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 
 @SpringBootTest
@@ -77,7 +79,7 @@ class PostControllerTest {
                         .sessionAttr("loginMember",loginMemberSession)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/write"))
+                .andExpect(view().name("redirect:/posts"))
                 .andDo(print());
     }
 

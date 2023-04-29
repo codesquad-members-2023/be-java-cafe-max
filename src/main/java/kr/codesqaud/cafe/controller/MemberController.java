@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
+import kr.codesqaud.cafe.dto.member.MemberResponseDto;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
 import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
 import kr.codesqaud.cafe.exception.common.CommonException;

@@ -6,15 +6,16 @@ import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.Post;
 
 public class PostResponse {
-    private final Long postId;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final Long id;
     private final String title;
     private final String content;
     private final WriterResponse writer;
     private final LocalDateTime writeDate;
     private final Long views;
 
-    public PostResponse(Long postId, String title, String content, WriterResponse writer, LocalDateTime writeDate, Long views) {
-        this.postId = postId;
+    public PostResponse(Long id, String title, String content, WriterResponse writer, LocalDateTime writeDate, Long views) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
@@ -22,8 +23,12 @@ public class PostResponse {
         this.views = views;
     }
 
-    public Long getPostId() {
-        return postId;
+    public static PostResponse of(Post post, WriterResponse writerResponse) {
+        return new PostResponse(post.getid(), post.getTitle(), post.getContent(), writerResponse, post.getWriteDate(), post.getViews());
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getTitle() {
@@ -46,11 +51,11 @@ public class PostResponse {
         return views;
     }
 
-    public String convertLocalDateTime() {
-        return writeDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public String getWriterEmail() {
+        return writer.getWriterEmail();
     }
 
-    public static PostResponse of(Post post, WriterResponse writerResponse) {
-        return new PostResponse(post.getPostId(), post.getTitle(), post.getContent(), writerResponse, post.getWriteDate(),post.getViews());
+    public String convertLocalDateTime() {
+        return writeDate.format(FORMATTER);
     }
 }

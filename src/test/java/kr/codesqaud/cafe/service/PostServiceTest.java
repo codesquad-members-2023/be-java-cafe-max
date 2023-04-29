@@ -16,6 +16,7 @@ import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
+import kr.codesqaud.cafe.session.LoginMemberSession;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,8 +57,8 @@ class PostServiceTest {
                 () -> assertEquals("내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게", postResponse.getContent()),
                 () -> assertEquals("test@gmail.com", postResponse.getWriter().getWriterEmail()),
                 () -> assertEquals(basicPostData(member).getWriteDate().withNano(0), postResponse.getWriteDate().withNano(0)),
-                () -> assertEquals(0L, postResponse.getViews()),
-                () -> assertNotNull(savedPostId));
+                () -> assertEquals(1L, postResponse.getViews()),
+                () -> assertNotNull(savedId));
     }
 
     @Test

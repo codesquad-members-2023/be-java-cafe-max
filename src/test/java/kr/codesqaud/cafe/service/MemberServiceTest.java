@@ -17,7 +17,8 @@ import kr.codesqaud.cafe.dto.member.MemberResponseDto;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Sql(scripts = "classpath:schema.sql")

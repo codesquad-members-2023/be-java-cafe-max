@@ -24,9 +24,6 @@ public class MemberJoinRequestDto {
     @Pattern(regexp = "^[가-힣]{2,4}$", message = "닉네임 형식에 맞게 입력하세요.")
     private String nickname;
 
-    public MemberJoinRequestDto() {
-    }
-
     public MemberJoinRequestDto(String email, String password, String nickname) {
         this.email = email;
         this.password = password;

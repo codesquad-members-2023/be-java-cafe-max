@@ -1,23 +1,5 @@
 package kr.codesqaud.cafe.controller;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import java.time.LocalDateTime;
-import java.util.Objects;
-
-import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
-import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
-import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
-import kr.codesqaud.cafe.repository.member.MemberRepository;
-import kr.codesqaud.cafe.service.MemberService;
-import kr.codesqaud.cafe.session.LoginMemberSession;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +12,33 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 import javax.servlet.http.HttpSession;
+
+import kr.codesqaud.cafe.domain.Member;
+import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
+import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
+import kr.codesqaud.cafe.dto.member.MemberResponseDto;
+import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
+import kr.codesqaud.cafe.repository.member.MemberRepository;
+import kr.codesqaud.cafe.service.MemberService;
+import kr.codesqaud.cafe.session.LoginMemberSession;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -56,7 +64,7 @@ class MemberControllerTest {
 
         mockMvc.perform(get("/members"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/all"))
+                .andExpect(view().name("member/members"))
                 .andDo(print());
     }
 
@@ -71,7 +79,7 @@ class MemberControllerTest {
                         .param("nickname", basicMemberData().getNickname())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/register"))
+                .andExpect(redirectedUrl("/members"))
                 .andDo(print());
 
         Member member = memberService.findByEmail(basicMemberData().getEmail());
