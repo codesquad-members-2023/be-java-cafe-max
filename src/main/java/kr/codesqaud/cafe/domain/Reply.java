@@ -9,7 +9,7 @@ public class Reply {
     private String replyContent;
     private LocalDateTime replyTime;
 
-    public Reply() {
+    private Reply() {
     }
 
     public Reply(Long articleId, String userId, String replyContent) {

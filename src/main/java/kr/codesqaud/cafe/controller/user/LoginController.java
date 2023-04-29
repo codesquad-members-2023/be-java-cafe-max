@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.controller.user;
 
+import io.swagger.annotations.Api;
 import kr.codesqaud.cafe.session.SessionConst;
 import kr.codesqaud.cafe.domain.dto.user.UserLoginForm;
 import kr.codesqaud.cafe.domain.User;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
+@Api(tags = "로그인 정보")
 public class LoginController {
     private final LoginService loginService;
 

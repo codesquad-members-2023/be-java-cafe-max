@@ -12,7 +12,7 @@ public class ReplyTimeForm {
     private String replyContent;
     private String replyTime;
 
-    public ReplyTimeForm() {
+    private ReplyTimeForm() {
     }
 
     private ReplyTimeForm(Long id, Long articleId, String userId, String replyContent, LocalDateTime replyTime) {
@@ -27,7 +27,7 @@ public class ReplyTimeForm {
         return new ReplyTimeForm(reply.getId(), reply.getArticleId(), reply.getUserId(), reply.getReplyContent(), reply.getReplyTime());
     }
 
-    public static ReplyTimeForm from(Long replyId, Reply reply) {
+    public static ReplyTimeForm of(Long replyId, Reply reply) {
         return new ReplyTimeForm(replyId, reply.getArticleId(), reply.getUserId(), reply.getReplyContent(), reply.getReplyTime());
     }
 

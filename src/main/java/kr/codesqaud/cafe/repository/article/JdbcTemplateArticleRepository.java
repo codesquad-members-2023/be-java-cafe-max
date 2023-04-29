@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.repository.article;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.domain.vo.PageForm;
+import kr.codesqaud.cafe.global.Tables;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -26,7 +28,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        String sql = "insert into ARTICLES (user_id, title, contents, currentTime, deleted) " +
+        String sql = "insert into " + Tables.ARTICLES + " (user_id, title, contents, currentTime, deleted) " +
                 "values (:userId, :title, :contents, :currentTime, false)";
         SqlParameterSource param = new BeanPropertySqlParameterSource(article);
         template.update(sql, param);
@@ -34,11 +36,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findById(Long id) {
-        String sql = "select a.id, a.title, a.contents, a.currentTime, a.user_id, u.user_id, " +
-                "(select count(*) from REPLIES r where a.id=r.article_id and r.deleted=false) as replyCount " +
-                "from ARTICLES a join USERS u on a.user_id=u.user_id " +
-                "where a.id=:id and a.deleted=false";
+    public synchronized Optional<Article> findById(Long id) {
+        String sql = "select a.id, a.title, a.contents, a.currentTime, a.user_id, " +
+                "count(r.article_id) as replyCount " +
+                "from " + Tables.ARTICLES + " a " +
+                "left join " + Tables.REPLIES + " r " + "on a.id=r.article_id and r.deleted=false " +
+                "where a.id=:id and a.deleted=false " +
+                "group by a.id, a.title, a.contents, a.currentTime, a.user_id";
 
         try {
             Map<String, Object> param = Map.of("id", id);
@@ -50,19 +54,25 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAll() {
+    public synchronized List<Article> findAll(PageForm pageForm) {
         String sql = "select a.id, a.title, a.contents, a.currentTime, a.user_id, u.user_id, " +
-                "(select count(*) from REPLIES r where a.id=r.article_id and r.deleted=false) as replyCount " +
-                "from ARTICLES a join USERS u on a.user_id=u.user_id " +
-                "where a.deleted=false order by a.id desc";
+                "count(r.article_id) as replyCount " +
+                "from " + Tables.ARTICLES + " a " +
+                "join " + Tables.USERS + " u on a.user_id = u.user_id " +
+                "left join " + Tables.REPLIES + " r on a.id = r.article_id and r.deleted = false " +
+                "where a.deleted = false " +
+                "group by a.id, a.title, a.contents, a.currentTime, a.user_id, u.user_id " +
+                "order by a.id desc " +
+                "limit :start, :cntPerPage";
 
-        return template.query(sql, articleRowMapper);
+        Map<String, Integer> param = Map.of("start", pageForm.getStart(), "cntPerPage", pageForm.getCntPerPage());
+        return template.query(sql, param, articleRowMapper);
     }
 
     @Override
     public void update(Long id, Article article) {
-        String sql = "update ARTICLES " +
-                "set title=:title, contents=:contents " +
+        String sql = "update " + Tables.ARTICLES +
+                " set title=:title, contents=:contents " +
                 "where id=:id";
 
         SqlParameterSource param = new MapSqlParameterSource()
@@ -75,9 +85,15 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void deleteArticle(Long id) {
-        String articleDeletedSql = "update ARTICLES set deleted=true where id=:id";
+        String articleDeletedSql = "update " + Tables.ARTICLES + " set deleted=true where id=:id";
 
         Map<String, Object> param = Map.of("id", id);
         template.update(articleDeletedSql, param);
+    }
+
+    @Override
+    public Long count() {
+        String sql = "select count(*) from " + Tables.ARTICLES + " where deleted=:flag";
+        return template.queryForObject(sql, Map.of("flag", false), Long.class);
     }
 }

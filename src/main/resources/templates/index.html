@@ -11,25 +11,25 @@
 <div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default qna-list">
-            <ul class="list">
-                <li th:each="article : ${articles}">
+            <ul class="list" th:each="article : ${articles}">
+                <li>
                     <div class="wrap">
-                        <div class="main">
+                        <div class="main"  th:object="${article}">
                             <strong class="subject">
-                                <a th:href="@{/questions/{id}(id=${article.id})}" th:text="${article.title}">국내에서 Ruby
+                                <a th:href="@{/questions/{id}(id=*{id})}" th:text="*{title}">국내에서 Ruby
                                     on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
-                                <span class="time" th:text="${article.currentTime}">2016-01-15 18:47</span>
-<!--                                <a href="user/profile.html" class="author"-->
-<!--                                   th:href="@{/users/{id}(id=${session.loginUser.id})}" th:text="${session.loginUser.name}">자바지기</a>-->
+                                <span class="time" th:text="*{currentTime}">2016-01-15 18:47</span>
+                                <!--                                <a href="user/profile.html" class="author"-->
+                                <!--                                   th:href="@{/users/{id}(id=${session.loginUser.id})}" th:text="${session.loginUser.name}">자바지기</a>-->
                                 <a href="user/profile.html" class="author"
-                                   th:href="@{/users/{userId}(userId=${article.userId})}" th:text="${article.userId}">자바지기</a>
+                                   th:href="@{/users/{userId}(userId=*{userId})}" th:text="*{userId}">자바지기</a>
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
-                                <span class="point" th:text="${article.replyCount}">2</span>
+                                <span class="point" th:text="*{replyCount}">2</span>
                             </div>
                         </div>
                     </div>
@@ -53,17 +53,18 @@
                 <!--                    </div>-->
                 <!--                </li>-->
             </ul>
-            <div class="row">
+            <div class="row" th:object="${pageForm}">
                 <div class="col-md-3"></div>
                 <div class="col-md-6 text-center">
                     <ul class="pagination center-block" style="display:inline-block;">
-                        <li><a href="#">«</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">»</a></li>
+                        <li th:if="*{startPage != 1}"><a th:href="@{/(nowPage=*{startPage} - 1)}">«</a></li>
+
+                        <th:block th:each="p : ${#numbers.sequence(pageForm.startPage, pageForm.endPage)}">
+                            <li th:class="${pageForm.nowPage == p} ? active"><a th:href="@{/(nowPage=${p})}"
+                                                                                th:text="${p}"></a></li>
+                        </th:block>
+
+                        <li th:if="*{endPage != lastPage}"><a th:href="@{/(nowPage=*{endPage} + 1)}">»</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">
