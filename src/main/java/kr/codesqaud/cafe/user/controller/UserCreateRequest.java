@@ -1,13 +1,13 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.user.controller;
 
-public class UserForm {
+public class UserCreateRequest {
     private String userId;
     private String name;
     private String email;
     private String password;
 
 
-    public UserForm(String userId,String name, String email, String password){
+    public UserCreateRequest(String userId, String name, String email, String password) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -30,5 +30,4 @@ public class UserForm {
     public String getPassword() {
         return password;
     }
-
 }

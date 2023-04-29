@@ -1,6 +1,6 @@
-package kr.codesqaud.cafe.controller;
+package kr.codesqaud.cafe.post.controller;
 
-public class PostForm {
+public class PostCreateRequest {
     private String title;
     private String writer;
     private String contents;
@@ -11,14 +11,6 @@ public class PostForm {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
     }
 
     public String getContents() {

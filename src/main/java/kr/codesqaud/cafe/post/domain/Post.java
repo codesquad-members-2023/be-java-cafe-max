@@ -1,17 +1,24 @@
-package kr.codesqaud.cafe.domain;
+package kr.codesqaud.cafe.post.domain;
+
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Post {
     private String title;
     private String writer;
     private String contents;
-    private long id;
+    private long index;
+    private Timestamp wroteTime;
 
     public static class Builder{
         private String title;
         private String writer;
         private String contents;
+        private Timestamp wroteTime;
 
         public Builder(){
+            wroteTime = new Timestamp(System.currentTimeMillis());
         }
 
         public Builder title(String title){
@@ -27,22 +34,45 @@ public class Post {
             this.contents = contents;
             return this;
         }
+        public Builder wroteTime(Timestamp wroteTime){
+            this.wroteTime = wroteTime;
+            return this;
+        }
+
         public Post build(){
             return new Post(this);
         }
+    }
+
+    public Timestamp getWroteTime() {
+        return wroteTime;
     }
 
     public Post (Builder builder){
         title = builder.title;
         writer = builder.writer;
         contents = builder.contents;
+        wroteTime = builder.wroteTime;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Post setIndex(long index) {
+        this.index = index;
+        return this;
     }
 
-    public long getId() {
-        return id;
+    public String getTitle() {
+        return title;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public long getIndex() {
+        return index;
     }
 }
