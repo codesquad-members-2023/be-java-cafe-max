@@ -17,6 +17,7 @@ import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
 import kr.codesqaud.cafe.exception.common.CommonException;
 import kr.codesqaud.cafe.exception.common.CommonExceptionType;
+import kr.codesqaud.cafe.repository.comment.CommentRepository;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 import kr.codesqaud.cafe.repository.post.PostRepository;
 import kr.codesqaud.cafe.session.LoginMemberSession;
@@ -26,9 +27,12 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
-    public PostService(PostRepository postRepository, MemberRepository memberRepository) {
+    private final CommentRepository commentRepository;
+
+    public PostService(PostRepository postRepository, MemberRepository memberRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.memberRepository = memberRepository;
+        this.commentRepository = commentRepository;
     }
 
     @Transactional
@@ -86,6 +90,7 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("해당 id를 가진 글을 찾을 수 없습니다."));
         checkPostWriter(loginMemberSession, post);
+        commentRepository.deletePostId(id);
         postRepository.deleteId(id);
     }
 }

@@ -38,7 +38,7 @@ public class CommentService {
     @Transactional
     public void deleteId(String commentMemberEmail, String writerEmail, Long commentId) {
         validateCommentUser(writerEmail, commentMemberEmail);
-        commentRepository.deleteId(commentId);
+        commentRepository.deleteCommentId(commentId);
     }
 
     private void validateCommentUser(final String writerEmail, final String commentMemberEmail) {

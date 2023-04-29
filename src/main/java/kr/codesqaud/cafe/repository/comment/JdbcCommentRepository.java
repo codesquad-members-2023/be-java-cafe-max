@@ -63,9 +63,16 @@ public class JdbcCommentRepository implements CommentRepository {
     }
 
     @Override
-    public void deleteId(Long commentId) {
+    public void deleteCommentId(Long commentId) {
         String sql = "DELETE FROM comment WHERE commentId = :commentId";
         SqlParameterSource parameter = new MapSqlParameterSource("commentId", commentId);
+        jdbcTemplate.update(sql, parameter);
+    }
+
+    @Override
+    public void deletePostId(Long postId) {
+        String sql = "DELETE FROM comment WHERE postId = :postId";
+        SqlParameterSource parameter = new MapSqlParameterSource("postId", postId);
         jdbcTemplate.update(sql, parameter);
     }
 }
