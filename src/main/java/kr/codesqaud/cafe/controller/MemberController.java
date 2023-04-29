@@ -96,8 +96,8 @@ public class MemberController {
     }
 
     @GetMapping("/{email}/profile")
-    public String profileEditForm(@PathVariable String email, Model model, @SessionAttribute("loginMember") LoginMemberSession longinMemberSession) {
-        if (longinMemberSession.isNotEqualMember(email)) {
+    public String profileEditForm(@PathVariable String email, Model model, @SessionAttribute("loginMember") LoginMemberSession loginMemberSession) {
+        if (loginMemberSession.isNotEqualMember(email)) {
             throw new CommonException(CommonExceptionType.ACCESS_DENIED);
         }
         MemberResponseDto memberResponseDto = memberService.findByEmail(email);
