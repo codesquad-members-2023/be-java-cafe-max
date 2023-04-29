@@ -7,16 +7,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
-
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    public String signup(SignupRequestDto signupRequestDto) {
-
-
-        return "회원가입 성공 DTO";
-    }
+//    private final UserRepository userRepository;
+//
+//    @Autowired
+//    public UserService(UserRepository userRepository) {
+//        this.userRepository = userRepository;
+//    }
+//
+//    public String signup(SignupRequestDto signupRequestDto) {
+//
+//
+//        return "회원가입 성공 DTO";
+//    }
 }

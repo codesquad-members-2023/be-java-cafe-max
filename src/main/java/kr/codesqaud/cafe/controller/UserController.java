@@ -1,22 +1,26 @@
 package kr.codesqaud.cafe.controller;
 
 import kr.codesqaud.cafe.dto.SignupRequestDto;
-import kr.codesqaud.cafe.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import kr.codesqaud.cafe.model.User;
+import kr.codesqaud.cafe.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    private final UserRepository userRepository;
+
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
+
+
     @PostMapping
-    public String signup(SignupRequestDto signupRequestDto) {
-        userService.signup(signupRequestDto);
+    public String signup(@RequestBody SignupRequestDto signupRequestDto) {
+        userRepository.save(signupRequestDto);
         return "회원가입 성공 DTO";
     }
 
@@ -26,8 +30,8 @@ public class UserController {
     }
 
     @GetMapping
-    public String list() {
-        return "회원 목록 DTO";
+    public List<User> list() {
+        return userRepository.findAll();
     }
 
     @GetMapping("/{userId}")

@@ -113,6 +113,18 @@
     - template engine &rarr; Mustache
     - html 중복 제거 &rarr; partial 을 이용하여 별도의 template 파일로 분리
 
+13. 구현 상황
+    - DB 구현
+      - 필드로 인스턴스를 만들고 생성을 제한하여 1개의 인스턴스만 사용
+      - 인스턴스를 불러오는 메서드로 DB 이용
+      - 데이터(테이블)을 저장하기 위한 필드 추가
+        - 여러 테이블을 묶어서 Map 으로 vs 각각의 테이블
+          - `ex) Map<String, Map<Long, ArrayList>> data`   
+          vs `Map<Long, ArrayList> user`
+          - 객체를 불러오는 것 자체에 이미 안의 데이터도 다 들고 오는 거라 똑같은가??
+          - 일단은 각각 필드로 만들었는데 어떤 게 더 효율적인지?
+
+
 ### 질문 사항
 - 미션1-2)  
 템플릿 기반의 MVC 구조는 일반적인 MVC 구조와 다른 건지? 서버 사이드 렌더링 방식을 말하는 것 맞나요?

@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.db.DB;
+import kr.codesqaud.cafe.dto.SignupRequestDto;
 import kr.codesqaud.cafe.model.User;
 import org.springframework.stereotype.Repository;
 
@@ -11,16 +12,19 @@ public class UserRepositoryImpl implements UserRepository {
 
     DB db = DB.getInstance();
 
-    public void save(User user) {
-        db.create(user);
+    @Override
+    public void save(SignupRequestDto signupRequestDto) {
+        User user = signupRequestDto.toUser();
+        db.create(user, "User");
     }
+
     @Override
     public List<User> findAll() {
-        return db.read("User");
+        return db.findAll("User");
     }
     @Override
     public User findById(Long id) {
-        List<User> userList = db.read("User");
+        List<User> userList = db.findAll("User");
         User userDto = userList.stream()
                 .filter(user -> user.getId().equals(id))
                 .findFirst()
@@ -30,7 +34,4 @@ public class UserRepositoryImpl implements UserRepository {
         }
         return userDto;
     }
-
-
-
 }
