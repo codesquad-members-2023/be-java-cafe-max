@@ -76,6 +76,13 @@ public class JdbcPostRepository implements PostRepository {
     }
 
     @Override
+    public void increaseViews(Long id) {
+        String sql = "UPDATE post SET views = views + 1 WHERE id = :id";
+        SqlParameterSource mapSqlParameterSource = new MapSqlParameterSource("id",id);
+        jdbcTemplate.update(sql, mapSqlParameterSource);
+    }
+
+    @Override
     public void deleteAll() {
         String sql = "DELETE FROM post";
         jdbcTemplate.update(sql, (SqlParameterSource) null);

@@ -18,6 +18,8 @@ public interface PostRepository {
 
     void update(Post post);
 
+    void increaseViews(Long id);
+
     void deleteAll();
 
     void deleteId(Long id);
