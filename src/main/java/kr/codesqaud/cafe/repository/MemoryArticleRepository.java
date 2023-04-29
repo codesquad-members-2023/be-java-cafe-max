@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.SimpleArticle;
+import kr.codesqaud.cafe.pagination.Paging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +38,8 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public List<Article> findAll() {
-        return new ArrayList<>(articleStore.values());
+    public List<SimpleArticle> findAll(Paging paging) {
+        return null;
     }
 
     @Override
@@ -53,6 +55,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public void delete(Long id) {
 
+    }
+
+    @Override
+    public int count() {
+        return 0;
     }
 
     public void clearStore() {

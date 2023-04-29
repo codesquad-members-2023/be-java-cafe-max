@@ -1,6 +1,8 @@
 package kr.codesqaud.cafe.repository;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.SimpleArticle;
+import kr.codesqaud.cafe.pagination.Paging;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -31,21 +33,22 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findByWriter(String writer) {
-        String sql = "select * from article where writer = ?";
+        String sql = "select * from article where writer = ? and deleted = false";
         List<Article> articleList = jdbcTemplate.query(sql, articleRowMapper(), writer);
         return articleList.stream().findAny();
     }
 
     @Override
     public Optional<Article> findById(Long id) {
-        String sql = "select * from article where id = ?";
+        String sql = "select * from article where id = ? and deleted = false";
         List<Article> articleList = jdbcTemplate.query(sql, articleRowMapper(), id);
         return articleList.stream().findAny();
     }
 
     @Override
-    public List<Article> findAll() {
-        return jdbcTemplate.query("select * from article", articleRowMapper());
+    public List<SimpleArticle> findAll(Paging paging) {
+        return jdbcTemplate.query("select writer, userId, title, id, createdTime from article where deleted = false order by createdTime desc limit ?, ?"
+                , simpleArticleRowMapper(), paging.getStart(), Paging.getCntPerPage());
     }
 
     @Override
@@ -61,7 +64,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void delete(Long id) {
-        jdbcTemplate.update("delete from article where id = ?", id);
+        jdbcTemplate.update("update article set deleted = ? where id = ?", true, id);
+    }
+
+    @Override
+    public int count() {
+        List<SimpleArticle> articles = jdbcTemplate.query("select writer, userId, title, id, createdTime from article where deleted = false", simpleArticleRowMapper());
+        return articles.size();
     }
 
     private RowMapper<Article> articleRowMapper() {
@@ -76,4 +85,17 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
             return article;
         };
     }
+
+    private RowMapper<SimpleArticle> simpleArticleRowMapper() {
+        return (rs, rowNum) -> {
+            SimpleArticle article = new SimpleArticle();
+            article.setWriter(rs.getString("writer"));
+            article.setUserId(rs.getString("userId"));
+            article.setTitle(rs.getString("title"));
+            article.setId(rs.getLong("id"));
+            article.setCreatedTime(rs.getTimestamp("createdTime").toLocalDateTime());
+            return article;
+        };
+    }
 }
+

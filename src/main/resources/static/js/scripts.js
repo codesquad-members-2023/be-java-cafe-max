@@ -31,30 +31,40 @@ function addAnswer(e) {
       var template = answerTemplate.format(data.userId, data.createdTime, data.contents, data.articleId, data.id);
       $(".qna-comment-slipp-articles").prepend(template);
       $("textarea[name=contents]").val("");
+
+      // $(".delete-answer-form button[type=button]").last().on("click", deleteAnswer());
+      // $(".qna-comment-slipp-articles").on("click", ".delete-answer-form button[type=button]", deleteAnswer);
+
     },
   });
 }
 
-$("#btn-delete").click(deleteAnswer)
+$(".qna-comment-slipp-articles").on("click", ".delete-answer-form button[type=button]", deleteAnswer);
+
+
+$(".delete-answer-form button[type=button]").click(deleteAnswer);
 function deleteAnswer(e) {
 
   e.preventDefault();
 
-  var id = $("#replyId").val();
-  var url = window.location.pathname + '/' + id;
+  var replyId = e.target.dataset['replyid'];
+  var url = window.location.pathname + '/reply/' + replyId;
+
+  console.log("id: "+replyId);
+  console.log("url: "+url);
+
+  var $article = $(this).closest("article");
 
   $.ajax({
     type: "DELETE",
     url: url,
-    dataType: "text",
+    dataType: "json",
   }).done((data) => {
-    if (data == "success") {
-      alert("댓글이 삭제되었습니다.");
-      e.target.closest("article").remove();
-    } else {
-      alert("다시 시도해주세요.");
-    }
+      alert("댓글이 삭제되었습니다.")
+      $article.remove();
+
   }).fail((error) => {
-    alert("[에러발생]다시 시도해주세요.");
+    alert("댓글을 삭제할 권한이 없습니다.");
+    console.log(JSON.stringify(error));
   })
 }

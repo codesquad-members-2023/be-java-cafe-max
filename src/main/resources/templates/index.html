@@ -13,11 +13,10 @@
 <div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default qna-list">
-            <ul class="list">
+            <ul class="list" th:each="article : ${articles}">
                 <li>
                     <div class="wrap">
                         <div class="main">
-                            <span th:each="article : ${articles}">
                             <strong class="subject">
                                 <a th:href="@{/articles/{id}(id=${article.id})}" th:text="${article.title}">title</a>
                             </strong>
@@ -28,24 +27,21 @@
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
-<!--                                <span class="point" th:text="${article.id}">id</span>-->
+                                <span class="point" th:text="${article.id}">id</span>
                             </div>
-                            </span>
                         </div>
                     </div>
                 </li>
             </ul>
-            <div class="row">
+            <div class="row" th:object="${paging}">
                 <div class="col-md-3"></div>
                 <div class="col-md-6 text-center">
                     <ul class="pagination center-block" style="display:inline-block;">
-                        <li><a href="#">«</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">»</a></li>
+                        <li th:if="*{startPage != 1}"><a th:href="@{/(nowPage=*{startPage} - 1)}">«</a></li>
+                        <th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+                            <li th:class="${paging.nowPage == p} ? active"><a th:href="@{/(nowPage=${p})}" th:text="${p}"></a></li>
+                        </th:block>
+                        <li th:if="*{endPage != lastPage}"><a th:href="@{/(nowPage=*{endPage} + 1)}"></a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 qna-write">

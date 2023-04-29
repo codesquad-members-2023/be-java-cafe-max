@@ -5,17 +5,15 @@ import kr.codesqaud.cafe.constant.SessionConst;
 import kr.codesqaud.cafe.domain.Reply;
 import kr.codesqaud.cafe.dto.ArticleForm;
 import kr.codesqaud.cafe.dto.ArticleUpdateForm;
-import kr.codesqaud.cafe.dto.Result;
 import kr.codesqaud.cafe.dto.SessionDto;
-import kr.codesqaud.cafe.exception.UnauthorizedException;
+import kr.codesqaud.cafe.dto.SimpleArticle;
+import kr.codesqaud.cafe.pagination.Paging;
 import kr.codesqaud.cafe.service.ArticleService;
 import kr.codesqaud.cafe.service.ReplyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -53,13 +51,16 @@ public class ArticleController {
 
     @GetMapping(value = {"/", "index"})
     public String list(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false)
-                           SessionDto loginUser, Model model) {
+                                        SessionDto loginUser, @ModelAttribute Paging paging, @RequestParam(value = "nowPage", defaultValue = "1") int nowPage,
+                                        Model model) {
+
+        paging = new Paging(nowPage, articleService.count());
+
+        List<SimpleArticle> articles = articleService.findArticles(paging);
 
         model.addAttribute("loginUser", loginUser);
-
-        List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
-        model.addAttribute("localDateTime", LocalDateTime.now());
+        model.addAttribute("paging", paging);
 
         return "index";
     }

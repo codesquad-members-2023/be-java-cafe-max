@@ -1,7 +1,9 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Article;
+import kr.codesqaud.cafe.dto.SimpleArticle;
 import kr.codesqaud.cafe.exception.ArticleNotFoundException;
+import kr.codesqaud.cafe.pagination.Paging;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +25,12 @@ public class ArticleService {
     }
 
 
-    public List<Article> findArticles() {
-        return articleRepository.findAll();
+    public List<SimpleArticle> findArticles(Paging paging) {
+        return articleRepository.findAll(paging);
+    }
+
+    public int count() {
+        return articleRepository.count();
     }
 
     public Article findOne(Long id) {

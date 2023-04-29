@@ -79,11 +79,10 @@
                                             <a class="link-modify-article" href="/questions/413/answers/1405/form">수정</a>
                                         </li>
                                         <li>
-                                            <form class="delete-answer-form" th:action="@{/articles/{articleId}/reply/{id}(articleId=${article.id}, id=${reply.id})}" method="POST">
-<!--                                            <form class="delete-answer-form" method="POST">-->
+<!--                                            <form class="delete-answer-form" th:action="@{/articles/{articleId}/reply/{id}(articleId=${article.id}, id=${reply.id})}" method="POST">-->
+                                            <form class="delete-answer-form" method="POST">
                                                 <input type="hidden" name="_method" value="DELETE">
-                                                <input type="hidden" id="replyId" name="replyId" th:value="${reply.id}" />
-                                                <button type="submit" class="delete-answer-button">삭제</button>
+                                                <button type="button" class="delete-answer-button" th:data-replyid="${reply.id}">삭제</button>
                                             </form>
                                         </li>
                                     </ul>
@@ -96,7 +95,7 @@
                                 <div class="form-group" style="padding:14px;">
                                     <textarea class="form-control" name="contents" placeholder="댓글을 작성해주세요."></textarea>
                                 </div>
-                                <button id="btn-save" class="btn btn-success pull-right" type="submit">답변하기</button>
+                                <button class="btn btn-success pull-right" type="submit">답변하기</button>
                                 <div class="clearfix" />
                             </form>
                         </div>
@@ -127,9 +126,9 @@
                     <a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
                 </li>
                 <li>
-                    <form class="delete-answer-form" action="/api/questions/{3}/answers/{4}" method="POST">
+                    <form class="delete-answer-form" action="/articles/{3}/reply/{4}" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="delete-answer-button">삭제</button>
+                        <button type="button" class="delete-answer-button" data-replyid={4}>삭제</button>
                     </form>
                 </li>
             </ul>
