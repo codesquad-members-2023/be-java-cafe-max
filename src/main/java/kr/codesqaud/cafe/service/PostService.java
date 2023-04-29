@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.post.Pagination;
+import kr.codesqaud.cafe.dto.post.PostPagination;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
@@ -55,16 +55,16 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostResponse> findAll(Integer startPage) {
-        return postRepository.findAll(startPage, Pagination.MAX_PAGE_SIZE)
+    public List<PostResponse> findAll(Integer offset) {
+        return postRepository.findAll(offset, PostPagination.MAX_POST_SIZE)
             .stream()
             .map(PostResponse::from)
             .collect(Collectors.toUnmodifiableList());
     }
 
     @Transactional(readOnly = true)
-    public Pagination getPagination(Integer currentPage) {
-        return new Pagination(currentPage, postRepository.postsSize());
+    public PostPagination getPagination(Integer currentPage) {
+        return new PostPagination(currentPage, postRepository.postsSize());
     }
 
     @Transactional
@@ -83,11 +83,7 @@ public class PostService {
     private void validateDeleteUnauthorized(Long id, Long accountSessionId) {
         validateUnauthorized(id, accountSessionId);
 
-        boolean isNotSameWriter = commentRepository.findAllByPostId(id)
-            .stream()
-            .anyMatch(comment -> !comment.isSameWriterId(accountSessionId));
-
-        if (isNotSameWriter) {
+        if (commentRepository.existByNotWriter(id)) {
             throw new UnauthorizedException("게시글 작성자와 댓글 작성자가 다릅니다.");
         }
     }

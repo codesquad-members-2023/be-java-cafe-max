@@ -38,26 +38,30 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public Optional<Post> findById(Long id) {
         String sql = "SELECT p.id, p.title, p.content, m.id as writer_id, m.nickname as writer_name, "
-                          + "p.write_date, p.views "
+                          + "p.write_date, p.views, COUNT(c.id) as comments_size "
                     + "FROM post p "
                     + "INNER JOIN member m on m.id = p.writer_id "
+               + "LEFT OUTER JOIN comment c on c.post_id = p.id AND c.is_deleted = false "
                     + "WHERE p.id = :id "
-                    + "AND p.is_deleted = false ";
+                    + "AND p.is_deleted = false "
+                  + "GROUP BY p.id, p.title, p.content, m.id, m.nickname, p.write_date, p.views";
         SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         return Optional.ofNullable(
             DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, postRowMapper)));
     }
 
     @Override
-    public List<Post> findAll(Integer startPage, Integer pageSize) {
-        String sql = "SELECT p.id, p.title, p.content, m.id as writer_id, m.nickname as writer_name,"
-                         + " p.write_date, p.views "
+    public List<Post> findAll(Integer offset, Integer pageSize) {
+        String sql = "SELECT p.id, p.title, p.content, m.id as writer_id, m.nickname as writer_name, "
+                         + " p.write_date, p.views, COUNT(c.id) as comments_size "
                     + "FROM post p "
                     + "INNER JOIN member m on m.id = p.writer_id "
+               + "LEFT OUTER JOIN comment c on c.post_id = p.id AND c.is_deleted = false "
                     + "WHERE p.is_deleted = false "
+                    + "GROUP BY p.id, p.title, p.content, m.id, m.nickname, p.write_date, p.views "
                     + "ORDER BY id DESC "
-                    + "LIMIT :startPage, :pageSize";
-        MapSqlParameterSource param = new MapSqlParameterSource("startPage", startPage);
+                    + "LIMIT :offset, :pageSize";
+        MapSqlParameterSource param = new MapSqlParameterSource("offset", offset);
         param.addValue("pageSize", pageSize);
         return jdbcTemplate.query(sql, param, postRowMapper);
     }
@@ -100,6 +104,7 @@ public class JdbcPostRepository implements PostRepository {
         new Post(rs.getLong("id"), rs.getString("title"),
             rs.getString("content"),
             new Member(rs.getLong("writer_id"), rs.getString("writer_name")),
-            rs.getTimestamp("write_date").toLocalDateTime(), rs.getLong("views"));
+            rs.getTimestamp("write_date").toLocalDateTime(), rs.getLong("views"),
+            rs.getInt("comments_size"));
 
 }

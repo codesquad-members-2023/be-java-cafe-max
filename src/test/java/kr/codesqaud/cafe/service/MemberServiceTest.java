@@ -6,14 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.config.session.AccountSession;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
-import kr.codesqaud.cafe.dto.authentication.SignInRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.member.MemberDuplicateEmailException;
@@ -56,7 +54,7 @@ class MemberServiceTest {
     void signUpFalse() {
         // given
         SignUpRequest signUpRequest = createRequestDummy();
-        given(memberRepository.existsByEmail(any())).willReturn(true);
+        given(memberRepository.existByEmail(any())).willReturn(true);
 
         // when
 
@@ -208,7 +206,7 @@ class MemberServiceTest {
         ProfileEditRequest profileEditRequest = new ProfileEditRequest(memberId, "est@naver.com",
             "Test1234", "Test1234", "test");
         given(memberRepository.findById(any())).willReturn(Optional.of(profileEditRequest.toMember()));
-        given(memberRepository.existsByEmailAndIdNot(any(), any())).willReturn(true);
+        given(memberRepository.existByEmailAndIdNot(any(), any())).willReturn(true);
 
         // when
 

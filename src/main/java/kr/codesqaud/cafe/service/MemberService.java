@@ -30,7 +30,7 @@ public class MemberService {
     }
 
     private void validateDuplicateEmail(SignUpRequest signUpRequest) {
-        if (memberRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (memberRepository.existByEmail(signUpRequest.getEmail())) {
             throw new MemberDuplicateEmailException(signUpRequest);
         }
     }
@@ -64,7 +64,7 @@ public class MemberService {
     private void validateUpdateMember(ProfileEditRequest profileEditRequest, Long accountSessionId) {
         Member member = validateUnauthorized(profileEditRequest.getId(), accountSessionId);
 
-        if (memberRepository.existsByEmailAndIdNot(profileEditRequest.getEmail(),
+        if (memberRepository.existByEmailAndIdNot(profileEditRequest.getEmail(),
             profileEditRequest.getId())) {
             throw new MemberDuplicateEmailException(profileEditRequest);
         }

@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.stream.Stream;
 import kr.codesqaud.cafe.config.session.AccountSession;
+import kr.codesqaud.cafe.dto.comment.CommentsResponse;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
@@ -161,6 +162,7 @@ public class PostControllerTest {
         PostResponse postResponse = createPostResponseDummy();
         AccountSession accountSession = new AccountSession(postResponse.getWriter().getId(), "만두");
         given(postService.findById(1L)).willReturn(postResponse);
+        given(commentService.findAllByPostId(any(), any())).willReturn(new CommentsResponse(Collections.emptyList(), false));
 
         // when
 
@@ -382,11 +384,11 @@ public class PostControllerTest {
 
     private PostResponse createPostResponseDummy() {
         return new PostResponse(1L, "제목", "내용", new WriterResponse(1L, "만두"), LocalDateTime.now(),
-            0L);
+            0L, 0);
     }
 
     private PostResponse createPostResponseDummy2() {
         return new PostResponse(2L, "제목2", "내용2", new WriterResponse(2L, "만두2"), LocalDateTime.now(),
-            0L);
+            0L, 0);
     }
 }

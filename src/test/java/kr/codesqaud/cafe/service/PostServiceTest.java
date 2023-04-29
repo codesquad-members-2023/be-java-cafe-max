@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.domain.Member;
-import kr.codesqaud.cafe.dto.post.Pagination;
+import kr.codesqaud.cafe.dto.post.PostPagination;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
@@ -59,7 +59,7 @@ class PostServiceTest {
     @Test
     void findById() {
         // given
-        Post post = new Post(1L, "제목", "내용", new Member(1L), LocalDateTime.now(), 1L);
+        Post post = new Post(1L, "제목", "내용", new Member(1L), LocalDateTime.now(), 1L, 0);
         given(postRepository.findById(post.getId())).willReturn(Optional.of(post));
 
         // when
@@ -90,7 +90,7 @@ class PostServiceTest {
     @Test
     void findAll() {
         // given
-        given(postRepository.findAll(1, Pagination.MAX_PAGE_SIZE))
+        given(postRepository.findAll(1, PostPagination.MAX_POST_SIZE))
             .willReturn(List.of(createPostDummy(), createPostDummy2()));
 
         // when
@@ -105,7 +105,7 @@ class PostServiceTest {
     void modify() {
         // given
         PostModifyRequest postModifyRequest = new PostModifyRequest(1L, "tset", "content");
-        Post post = new Post(1L, "tset", "content", new Member(1L), LocalDateTime.now(), 0L);
+        Post post = new Post(1L, "tset", "content", new Member(1L), LocalDateTime.now(), 0L, 0);
         given(postRepository.findById(1L)).willReturn(Optional.of(post));
 
         // when
@@ -196,8 +196,8 @@ class PostServiceTest {
         Comment comment = new Comment(1L, 1L, new Member(1L), "내용", LocalDateTime.now());
         Comment comment2 = new Comment(1L, 1L, new Member(2L), "내용", LocalDateTime.now());
         given(postRepository.findById(any())).willReturn(Optional.of(createPostDummy()));
-        given(commentRepository.findAllByPostId(savedId))
-            .willReturn(List.of(comment, comment2));
+        given(commentRepository.existByNotWriter(savedId))
+            .willReturn(true);
 
         // when
 
@@ -206,10 +206,10 @@ class PostServiceTest {
     }
 
     private Post createPostDummy() {
-        return new Post(1L, "제목", "내용", new Member(1L), LocalDateTime.now(), 0L);
+        return new Post(1L, "제목", "내용", new Member(1L), LocalDateTime.now(), 0L, 0);
     }
 
     private Post createPostDummy2() {
-        return new Post(2L, "제목2", "내용2", new Member(2L), LocalDateTime.now(), 0L);
+        return new Post(2L, "제목2", "내용2", new Member(2L), LocalDateTime.now(), 0L, 0);
     }
 }

@@ -10,7 +10,7 @@ public interface PostRepository {
 
     Optional<Post> findById(Long id);
 
-    List<Post> findAll(Integer startPage, Integer pageSize);
+    List<Post> findAll(Integer offset, Integer pageSize);
 
     void update(Post post);
 

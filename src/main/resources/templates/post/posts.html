@@ -26,8 +26,7 @@
             </thead>
             <tbody>
                 <tr th:each="postResponse : ${postResponses}">
-                    <td class="title"><a class="nav-link" th:text="${postResponse.title}"
-                        th:href="@{/posts/{id}(id = ${postResponse.id})}">게시판 테스트 1</a></td>
+                    <td class="title"><a class="nav-link" th:href="@{/posts/{id}(id = ${postResponse.id})}">[[${postResponse.title}]] ([[${postResponse.commentsSize}]])</a></td>
                     <td class="writer"><a class="btn" th:href="@{/members/{id}(id=${postResponse.writer.id})}" th:text="${postResponse.writer.nickname}"></a></td>
                     <td class="writeDate" th:text="${#temporals.format(postResponse.writeDateTime, 'yyyy-MM-dd HH:mm:ss')}">2023-03-28</td>
                     <td class="views" th:text="${postResponse.views}">0</td>
@@ -38,19 +37,19 @@
     <div class="row row-cols-2 align-items-center">
         <nav class="col" aria-label="Page navigation example">
             <ul class="pagination">
-                <li class="page-item" th:classappend="${pagination.previousPage >= 1} ? '' : 'disabled'">
-                    <a class="page-link" th:href="@{/posts/(page=${pagination.previousPage})}" aria-label="Previous">
+                <li class="page-item" th:if="${pagination.previousBar}">
+                    <a class="page-link" th:href="@{/posts/(page=${pagination.startPage - 1})}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <th:block th:each="number : ${#numbers.sequence(1, pagination.lastPage)}">
+                <th:block th:each="number : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
                     <li class="page-item">
                         <a class="page-link" th:href="@{/posts/(page=${number})}" th:text="${number}"
                            th:classappend="${pagination.currentPage == number} ? 'active' : ''"></a>
                     </li>
                 </th:block>
-                <li class="page-item" th:classappend="${pagination.nextPage <= pagination.lastPage} ? '' : 'disabled'">
-                    <a class="page-link" th:href="@{/posts/(page=${pagination.nextPage})}" aria-label="Next">
+                <li class="page-item" th:if="${pagination.nextBar}">
+                    <a class="page-link" th:href="@{/posts/(page=${pagination.endPage + 1})}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

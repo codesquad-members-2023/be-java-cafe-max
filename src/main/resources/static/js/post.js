@@ -1,4 +1,6 @@
-function addComment(data) {
+let page = 1;
+
+function commentTemplate(data) {
     return `<div class="comment">
                 <strong class="comment-writer">${data.writer.nickname}</strong>
                 <pre class="comment-content">${data.content}</pre>
@@ -42,7 +44,7 @@ function writeAjax(e) {
         },
         success : function(data, status) {
             updateCommentsSize(+1);
-            $(".comments").append(addComment(data));
+            $(".comments").append(commentTemplate(data));
             $("#content").val('');
         },
     });
@@ -74,8 +76,39 @@ function deleteAjax(e) {
     });
 }
 
+function seeMore(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const url = $("#see_more").attr("href") + "?page=" + ++page;
+
+    $.ajax({
+        type : 'get',
+        url : url,
+        dataType : 'json',
+        contentType : 'application/json; charset=UTF-8',
+        error: function (request, status, error) {
+            errorAlert(request);
+        },
+        success : function(data, status) {
+            append(data);
+        },
+    });
+}
+
+function append(data) {
+    for (let index = 0; index < data.commentResponses.length; index++) {
+        $(".comments").append(commentTemplate(data.commentResponses[index]));
+    }
+
+    if (!data.next) {
+        $("#see_more").parent().remove();
+    }
+}
+
 
 document.addEventListener("DOMContentLoaded", function () {
     $(".comment-submit button[type='submit']").on("click", writeAjax);
     $(document).on("click", ".comment-delete button[type='submit']", deleteAjax);
+    $(document).on("click", "#see_more", seeMore);
 });

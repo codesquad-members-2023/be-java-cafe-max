@@ -4,7 +4,8 @@ import static kr.codesqaud.cafe.util.SignInSessionUtil.SIGN_IN_SESSION_NAME;
 
 import javax.validation.Valid;
 import kr.codesqaud.cafe.config.session.AccountSession;
-import kr.codesqaud.cafe.dto.post.Pagination;
+import kr.codesqaud.cafe.dto.comment.CommentPagination;
+import kr.codesqaud.cafe.dto.post.PostPagination;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.service.CommentService;
@@ -35,9 +36,9 @@ public class PostController {
 
     @GetMapping
     public String showPosts(@RequestParam(defaultValue = "1") Integer page, Model model) {
-        Pagination pagination = postService.getPagination(page);
-        model.addAttribute("pagination", pagination);
-        model.addAttribute("postResponses", postService.findAll(pagination.startPage()));
+        PostPagination postPagination = postService.getPagination(page);
+        model.addAttribute("pagination", postPagination);
+        model.addAttribute("postResponses", postService.findAll(postPagination.getOffset()));
         return "post/posts";
     }
 
@@ -61,7 +62,7 @@ public class PostController {
     @GetMapping("/{id}")
     public String showPost(@PathVariable Long id, Model model) {
         model.addAttribute("postResponse", postService.findById(id));
-        model.addAttribute("commentResponses", commentService.findAllByPostId(id));
+        model.addAttribute("commentsResponse", commentService.findAllByPostId(id, 1));
         return "post/post";
     }
 

@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Comment;
 import kr.codesqaud.cafe.dto.comment.CommentDeleteResponse;
+import kr.codesqaud.cafe.dto.comment.CommentPagination;
 import kr.codesqaud.cafe.dto.comment.CommentResponse;
 import kr.codesqaud.cafe.dto.comment.CommentWriteRequest;
+import kr.codesqaud.cafe.dto.comment.CommentsResponse;
 import kr.codesqaud.cafe.exception.comment.ApiUnauthorizedException;
 import kr.codesqaud.cafe.repository.comment.CommentRepository;
 import org.springframework.stereotype.Service;
@@ -28,11 +30,15 @@ public class CommentService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommentResponse> findAllByPostId(Long postId) {
-        return commentRepository.findAllByPostId(postId)
+    public CommentsResponse findAllByPostId(Long postId, Integer page) {
+        CommentPagination commentPagination = new CommentPagination(page,
+            commentRepository.existNextPaginationByPage(postId, page, CommentPagination.MAX_COMMENT_SIZE));
+        List<CommentResponse> commentResponses = commentRepository.findAllByPostId(postId,
+                commentPagination.getOffset(), CommentPagination.MAX_COMMENT_SIZE)
             .stream()
             .map(CommentResponse::from)
             .collect(Collectors.toUnmodifiableList());
+        return new CommentsResponse(commentResponses, commentPagination.isNext());
     }
 
     public CommentDeleteResponse delete(Long id, Long accountSessionId) {
