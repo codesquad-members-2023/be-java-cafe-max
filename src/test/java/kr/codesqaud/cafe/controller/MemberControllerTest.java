@@ -85,10 +85,10 @@ class MemberControllerTest {
         Member member = memberService.findByEmail(basicMemberData().getEmail());
 
         assertAll(
-                () -> assertNotNull(member),
-                () -> assertEquals(basicMemberData().getEmail(), member.getEmail()),
-                () -> assertEquals(basicMemberData().getNickname(), member.getNickname()),
-                () -> assertEquals(basicMemberData().getPassword(), member.getPassword())
+                () -> assertNotNull(memberResponseDto),
+                () -> assertEquals("test@test.com", memberResponseDto.getEmail()),
+                () -> assertEquals("차차", memberResponseDto.getNickname()),
+                () -> assertEquals("testtest", memberResponseDto.getPassword())
         );
     }
 
