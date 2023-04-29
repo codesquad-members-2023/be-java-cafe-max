@@ -21,6 +21,10 @@ public class MemberResponseDto {
         this.createDate = createDate;
     }
 
+    public static MemberResponseDto of(Member member) {
+        return new MemberResponseDto(member.getMemberId(), member.getEmail(), member.getPassword(), member.getNickname(), member.getCreateDate());
+    }
+
     public Long getMemberId() {
         return memberId;
     }
