@@ -6,7 +6,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class ProfileEditRequestDto {
-    private final Long memberId;
+    private Long memberId;
 
     @NotBlank(message = "이메일을 입력하세요")
     @Email(message = "이메일 형식이 올바르지 않습니다.")
@@ -43,6 +43,10 @@ public class ProfileEditRequestDto {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public void setMemberId(Long memberId){
+        this.memberId = memberId;
     }
 
     public static ProfileEditRequestDto of(MemberResponseDto memberResponseDto) {

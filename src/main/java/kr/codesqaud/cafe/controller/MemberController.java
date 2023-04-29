@@ -59,7 +59,7 @@ public class MemberController {
 
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("memberLoginRequestDto") @Valid MemberLoginRequestDto memberLoginRequestDto, BindingResult bindingResult, HttpServletRequest httpServletRequest) {
+    public String login(@ModelAttribute @Valid MemberLoginRequestDto memberLoginRequestDto, BindingResult bindingResult, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return "member/login";
         }
@@ -85,11 +85,12 @@ public class MemberController {
     }
 
     @PutMapping("/{email}/profile")
-    public String editProfile(@PathVariable String email, @Valid ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String editProfile(@PathVariable String email, @Valid ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes,@SessionAttribute("loginMember") LoginMemberSession loginMemberSession) {
         if (bindingResult.hasErrors()) {
             return "member/profiledEdit";
         }
 
+        profileEditRequestDto.setMemberId(loginMemberSession.getMemberId());
         memberService.update(profileEditRequestDto);
         redirectAttributes.addAttribute("email", profileEditRequestDto.getEmail());
         return "redirect:/members/{email}";
