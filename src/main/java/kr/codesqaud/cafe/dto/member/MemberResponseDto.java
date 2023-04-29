@@ -13,6 +13,7 @@ public class MemberResponseDto {
     private final String nickname;
     private final LocalDateTime createDate;
 
+
     public MemberResponseDto(Long memberId, String email, String password, String nickname, LocalDateTime createDate) {
         this.memberId = memberId;
         this.email = email;
@@ -42,10 +43,6 @@ public class MemberResponseDto {
     }
 
     public String convertLocalDateTime() {
-        return createDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    }
-
-    public static MemberResponseDto of(Member member) {
-        return new MemberResponseDto(member.getMemberId(), member.getEmail(), member.getPassword(), member.getNickname(), member.getCreateDate());
+        return createDate.format(FORMATTER);
     }
 }
