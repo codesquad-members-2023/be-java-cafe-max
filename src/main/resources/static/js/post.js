@@ -65,7 +65,7 @@ function deleteAjax(e) {
             errorAlert(request);
         },
         success: function (data, status) {
-            if (data.isDeleted) {
+            if (data.deleted) {
                 updateCommentsSize(-1);
                 form.closest('.comment').remove();
                 return;

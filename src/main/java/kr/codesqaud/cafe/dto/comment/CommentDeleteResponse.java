@@ -4,8 +4,8 @@ public class CommentDeleteResponse {
 
     private final Boolean isDeleted;
 
-    public CommentDeleteResponse(Boolean isValid) {
-        this.isDeleted = isValid;
+    public CommentDeleteResponse(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public Boolean isDeleted() {
