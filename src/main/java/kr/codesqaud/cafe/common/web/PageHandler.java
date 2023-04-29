@@ -28,7 +28,7 @@ public class PageHandler {
 		this.beginPageInPagingBar = ((getCurrentPage() - 1) / getPagingBarSize() * getPagingBarSize()) + 1;
 		this.endPageInPagingBar = Math.min(getBeginPageInPagingBar() + getPagingBarSize() - 1, getLastPage());
 		this.previousBlock = getCurrentPage() > getPagingBarSize();
-		this.nextBlock = getCurrentPage() <= getLastPage() - getPagingBarSize() + 1;
+		this.nextBlock = getCurrentPage() <= getLastPage() - (getLastPage() % getPagingBarSize());
 		this.previousPage = (getCurrentPage() - getPagingBarSize());
 		this.nextPage = Math.min(getCurrentPage() + getPagingBarSize(), getLastPage());
 		this.pagingBar = LongStream.rangeClosed(beginPageInPagingBar, endPageInPagingBar)

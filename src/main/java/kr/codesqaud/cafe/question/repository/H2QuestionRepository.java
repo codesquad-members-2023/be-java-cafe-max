@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.question.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
@@ -10,8 +11,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.question.domain.Question;
-import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
+import kr.codesqaud.cafe.question.domain.QuestionEntity;
 
 @Repository
 @Primary
@@ -22,10 +22,10 @@ public class H2QuestionRepository implements QuestionRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public void save(Question question) {
-		String sql = "INSERT INTO \"post\"(writer, title, contents) VALUES (:writer , :title, :contents)";
+	public void save(QuestionEntity question) {
+		String sql = "INSERT INTO \"post\"(writer_id, title, contents) VALUES (:writer_id , :title, :contents)";
 		SqlParameterSource parameters = new MapSqlParameterSource()
-			.addValue("writer", question.getWriter())
+			.addValue("writer_id", question.getWriter_id())
 			.addValue("title", question.getTitle())
 			.addValue("contents", question.getContents());
 
@@ -33,38 +33,86 @@ public class H2QuestionRepository implements QuestionRepository {
 	}
 
 	public long countBy() {
-		String sql = "SELECT COUNT(*) FROM \"post\";";
-		return jdbcTemplate.queryForObject(sql, (SqlParameterSource)null, Integer.class);
+		String sql = "SELECT COUNT(*) FROM \"post\" WHERE is_deleted = FALSE;";
+		return jdbcTemplate.queryForObject(sql, (SqlParameterSource)null, Long.class);
 	}
 
-	public List<Question> findAll(long offset, int pageSize) {
-		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\" ORDER BY id DESC LIMIT :pageSize OFFSET :postOffset";
+	public List<QuestionEntity> findPageBy(long offset, int pageSize) {
+		String sql =
+			"SELECT p.id, p.writer_id, u.userId as writer, p.title, p.contents, p.is_deleted, p.registrationdatetime "
+				+ "FROM \"post\" p "
+				+ "JOIN \"user\" u "
+				+ "ON p.writer_id = u.id "
+				+ "WHERE is_deleted = FALSE "
+				+ "ORDER BY id DESC "
+				+ "LIMIT :pageSize OFFSET :offset";
+
 		SqlParameterSource parameters = new MapSqlParameterSource()
-			.addValue("postOffset", offset)
+			.addValue("offset", offset)
 			.addValue("pageSize", pageSize);
 
 		return jdbcTemplate.query(sql, parameters, getQuestionRowMapper());
 	}
 
-	public Question findById(long id) throws QuestionNotExistException {
-		String sql = "SELECT id, writer, title, contents, registrationdatetime FROM \"post\"  WHERE id = :id";
+	public Optional<QuestionEntity> findById(long id) {
+		String sql =
+			"SELECT p.id, p.writer_id, u.userId as writer, p.title, p.contents, p.is_deleted, p.registrationdatetime "
+				+ "FROM \"post\" p "
+				+ "JOIN \"user\" u "
+				+ "ON p.writer_id = u.id "
+				+ "WHERE p.id = :id "
+				+ "AND is_deleted = FALSE";
+
 		SqlParameterSource parameters = new MapSqlParameterSource()
 			.addValue("id", id);
 
 		try {
-			return jdbcTemplate.queryForObject(sql, parameters, getQuestionRowMapper());
+			return Optional.ofNullable(jdbcTemplate.queryForObject(sql, parameters, getQuestionRowMapper()));
 		} catch (DataAccessException e) {
-			throw new QuestionNotExistException(id);
+			return Optional.ofNullable(null);
 		}
 
 	}
 
-	private RowMapper<Question> getQuestionRowMapper() {
+	@Override
+	public boolean update(QuestionEntity question) {
+		String sql = "UPDATE \"post\" SET title = :title, contents = :contents WHERE id = :id";
+
+		SqlParameterSource parameters = new MapSqlParameterSource()
+			.addValue("title", question.getTitle())
+			.addValue("contents", question.getContents())
+			.addValue("id", question.getId());
+
+		try {
+			jdbcTemplate.update(sql, parameters);
+			return true;
+		} catch (DataAccessException e) {
+			return false;
+		}
+	}
+
+	public boolean delete(long id) {
+		String sql = "UPDATE \"post\" SET is_deleted = TRUE WHERE id = :id";
+
+		SqlParameterSource parameters = new MapSqlParameterSource()
+			.addValue("id", id);
+
+		try {
+			jdbcTemplate.update(sql, parameters);
+			return true;
+		} catch (DataAccessException e) {
+			return false;
+		}
+	}
+
+	private RowMapper<QuestionEntity> getQuestionRowMapper() {
 		return (rs, rowNum) ->
-			new Question(rs.getInt("id"),
+			new QuestionEntity(rs.getLong("id"),
+				rs.getLong("writer_id"),
 				rs.getString("writer"),
 				rs.getString("title"),
 				rs.getString("contents"),
+				rs.getBoolean("is_deleted"),
 				rs.getTimestamp("registrationDateTime").toLocalDateTime());
 	}
 

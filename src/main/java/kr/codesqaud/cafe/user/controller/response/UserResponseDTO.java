@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.user.controller.response;
 
-import kr.codesqaud.cafe.user.domain.User;
+import kr.codesqaud.cafe.user.domain.UserEntity;
 
 public class UserResponseDTO {
 	private final long id;
@@ -31,7 +31,7 @@ public class UserResponseDTO {
 		return email;
 	}
 
-	public static UserResponseDTO from(User user) {
+	public static UserResponseDTO from(UserEntity user) {
 		return new UserResponseDTO(user.getId(), user.getUserId(), user.getName(), user.getEmail());
 	}
 

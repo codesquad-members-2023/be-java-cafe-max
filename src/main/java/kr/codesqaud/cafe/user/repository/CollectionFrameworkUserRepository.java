@@ -1,14 +1,12 @@
 package kr.codesqaud.cafe.user.repository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.common.repository.CollectionFrameworkRepositoryDummyData;
-import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
-import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
+import kr.codesqaud.cafe.user.domain.UserEntity;
 
 @Repository
 public class CollectionFrameworkUserRepository implements UserRepository {
@@ -20,38 +18,31 @@ public class CollectionFrameworkUserRepository implements UserRepository {
 		dummyData.insertUserDummyData(userTable);
 	}
 
-	public void save(User user) throws UserIdDuplicateException {
-		String userId = user.getUserId();
-		for (User exgistingUser : userTable.select()) {
-			if (exgistingUser.getUserId().equals(userId)) {
-				throw new UserIdDuplicateException(user.getUserId());
-			}
-		}
+	public void save(UserEntity user) {
 		userTable.insert(user);
 	}
 
-	public List<User> findAll() {
+	public List<UserEntity> findAll() {
 		return userTable.select();
 	}
 
-	public User findByUserId(String userId) throws NoSuchElementException {
-		for (User exgistingUser : userTable.select()) {
-			if (exgistingUser.getUserId().equals(userId)) {
-				return exgistingUser;
-			}
-		}
-		throw new NoSuchElementException(userId);
+	public Optional<UserEntity> findByUserId(String userId) {
+		return userTable.select()
+			.stream()
+			.filter(exgistingUser
+				-> exgistingUser.getUserId().equals(userId))
+			.findAny();
 	}
 
-	public void modify(User user) throws UserDoesNotMatchException {
+	public boolean update(UserEntity user) {
 		String userId = user.getUserId();
-		for (User exgistingUser : userTable.select()) {
+		for (UserEntity exgistingUser : userTable.select()) {
 			if (exgistingUser.getUserId().equals(userId)) {
 				userTable.update(exgistingUser, user);
-				return;
+				return true;
 			}
 		}
-		throw new UserDoesNotMatchException();
+		return false;
 	}
 
 }

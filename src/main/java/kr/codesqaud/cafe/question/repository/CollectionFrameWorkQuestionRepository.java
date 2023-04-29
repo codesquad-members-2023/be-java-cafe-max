@@ -2,13 +2,13 @@ package kr.codesqaud.cafe.question.repository;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.common.repository.CollectionFrameworkRepositoryDummyData;
-import kr.codesqaud.cafe.question.domain.Question;
-import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
+import kr.codesqaud.cafe.question.domain.QuestionEntity;
 
 @Repository
 public class CollectionFrameWorkQuestionRepository implements QuestionRepository {
@@ -20,7 +20,7 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 		dummyData.insertQuestionsDummyData(questionTable);
 	}
 
-	public void save(Question question) {
+	public void save(QuestionEntity question) {
 		questionTable.insert(question);
 	}
 
@@ -28,20 +28,29 @@ public class CollectionFrameWorkQuestionRepository implements QuestionRepository
 		return questionTable.count();
 	}
 
-	public List<Question> findAll(long offset, int pageSize) {
+	public List<QuestionEntity> findPageBy(long offset, int pageSize) {
 		return questionTable.select().stream()
-			.sorted(Comparator.comparing(Question::getId).reversed())
+			.sorted(Comparator.comparing(QuestionEntity::getId).reversed())
 			.skip(offset).limit(pageSize)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
-	public Question findById(long id) throws QuestionNotExistException {
-		for (Question question : questionTable.select()) {
-			if (question.getId() == id) {
-				return question;
-			}
-		}
-		throw new QuestionNotExistException(id);
+	public Optional<QuestionEntity> findById(long id) {
+		return questionTable.select()
+			.stream()
+			.filter(question
+				-> question.getId() == id)
+			.findAny();
+	}
+
+	@Override
+	public boolean update(QuestionEntity question) {
+		return questionTable.update(question);
+	}
+
+	@Override
+	public boolean delete(long id) {
+		return questionTable.delete(id);
 	}
 
 }

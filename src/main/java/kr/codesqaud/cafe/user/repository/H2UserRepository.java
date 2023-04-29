@@ -3,6 +3,7 @@ package kr.codesqaud.cafe.user.repository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
@@ -10,10 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import kr.codesqaud.cafe.user.domain.User;
-import kr.codesqaud.cafe.user.exception.UserDoesNotMatchException;
-import kr.codesqaud.cafe.user.exception.UserIdDuplicateException;
-import kr.codesqaud.cafe.user.exception.UserNotExistException;
+import kr.codesqaud.cafe.user.domain.UserEntity;
 
 @Repository
 @Primary
@@ -24,17 +22,13 @@ public class H2UserRepository implements UserRepository {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public void save(User user) throws UserIdDuplicateException {
+	public void save(UserEntity user) {
 		String sql = "INSERT INTO \"user\"(userId, password, name, email) VALUES (?, ?, ?, ?)";
-		try {
-			jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
-		} catch (DataAccessException e) {
-			throw new UserIdDuplicateException(user.getUserId());
-		}
+		jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
 	}
 
 	@Override
-	public List<User> findAll() {
+	public List<UserEntity> findAll() {
 		String sql = "SELECT id, userId, password, name, email FROM \"user\"";
 		try {
 			return Collections.unmodifiableList(jdbcTemplate.query(sql, getUserRowMapper()));
@@ -44,28 +38,29 @@ public class H2UserRepository implements UserRepository {
 	}
 
 	@Override
-	public User findByUserId(String userId) throws UserNotExistException {
+	public Optional<UserEntity> findByUserId(String userId) {
 		String sql = "SELECT id, userId, password, name, email FROM \"user\" WHERE userId = ?";
 		try {
-			return jdbcTemplate.queryForObject(sql, getUserRowMapper(), userId);
+			return Optional.ofNullable(jdbcTemplate.queryForObject(sql, getUserRowMapper(), userId));
 		} catch (DataAccessException e) {
-			throw new UserNotExistException(userId);
+			return Optional.ofNullable(null);
 		}
 	}
 
 	@Override
-	public void modify(User user) throws UserDoesNotMatchException {
+	public boolean update(UserEntity user) {
 		String sql = "UPDATE \"user\" SET name = ?, email = ? WHERE userId = ? AND password = ?";
 		try {
 			jdbcTemplate.update(sql, user.getName(), user.getEmail(), user.getUserId(), user.getPassword());
+			return true;
 		} catch (DataAccessException e) {
-			throw new UserDoesNotMatchException();
+			return false;
 		}
 	}
 
-	private RowMapper<User> getUserRowMapper() {
+	private RowMapper<UserEntity> getUserRowMapper() {
 		return (rs, rowNum) ->
-			new User(rs.getLong("id"),
+			new UserEntity(rs.getLong("id"),
 				rs.getString("userId"),
 				rs.getString("password"),
 				rs.getString("name"),

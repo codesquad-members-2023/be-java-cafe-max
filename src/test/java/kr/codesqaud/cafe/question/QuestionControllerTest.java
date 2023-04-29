@@ -13,15 +13,17 @@ import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import kr.codesqaud.cafe.question.controller.QuestionController;
-import kr.codesqaud.cafe.question.controller.response.QuestionDetailDTO;
-import kr.codesqaud.cafe.question.domain.Question;
+import kr.codesqaud.cafe.question.controller.response.QuestionDetailResponseDTO;
+import kr.codesqaud.cafe.question.domain.QuestionEntity;
 import kr.codesqaud.cafe.question.exception.QuestionNotExistException;
 import kr.codesqaud.cafe.question.service.QuestionService;
+import kr.codesqaud.cafe.user.controller.response.AuthSession;
 
 @WebMvcTest(QuestionController.class)
 public class QuestionControllerTest {
@@ -31,7 +33,9 @@ public class QuestionControllerTest {
 	@MockBean
 	private QuestionService questionService;
 
-	private static MockedStatic<QuestionDetailDTO> questionDetailDTOMockedStatic;
+	private MockHttpSession session;
+
+	private static MockedStatic<QuestionDetailResponseDTO> questionDetailDTOMockedStatic;
 
 	@Nested
 	@DisplayName("게시글 상세 보기 페이지 테스트")
@@ -39,13 +43,17 @@ public class QuestionControllerTest {
 
 		@BeforeEach
 		void initTest() throws QuestionNotExistException {
-			given(questionService.findById(1))
-				.willReturn(new Question(1, "wiriter", "title", "contents", null));
+			session = new MockHttpSession();
+			session.setAttribute("authSession", new AuthSession(1, "writer"));
 
-			questionDetailDTOMockedStatic = mockStatic(QuestionDetailDTO.class);
+			given(questionService.findById(1))
+				.willReturn(new QuestionEntity(1, 1, "writer", "title", "contents", false, null));
+
+			questionDetailDTOMockedStatic = mockStatic(QuestionDetailResponseDTO.class);
 			questionDetailDTOMockedStatic.when(
-					() -> QuestionDetailDTO.from(new Question(1, "wiriter", "title", "contents", null)))
-				.thenReturn(new QuestionDetailDTO(1, "wiriter", "title", "contents", null));
+					() -> QuestionDetailResponseDTO.from(
+						new QuestionEntity(1, 1, "writer", "title", "contents", false, null), null))
+				.thenReturn(new QuestionDetailResponseDTO(1, 1, "writer", "title", "contents", null, null));
 		}
 
 		@AfterEach
@@ -59,7 +67,7 @@ public class QuestionControllerTest {
 			MultiValueMap<String, String> paramsMap = new LinkedMultiValueMap<>();
 			paramsMap.add("id", "1");
 
-			mockMvc.perform(get("/questions/1").params(paramsMap))
+			mockMvc.perform(get("/questions/1").params(paramsMap).session(session))
 				.andExpect(status().is2xxSuccessful())
 				.andExpect(view().name("qna/show"));
 		}
@@ -70,7 +78,7 @@ public class QuestionControllerTest {
 			MultiValueMap<String, String> paramsMap = new LinkedMultiValueMap<>();
 			paramsMap.add("id", "incorrect questionId");
 
-			mockMvc.perform(get("/questions/1").params(paramsMap))
+			mockMvc.perform(get("/questions/1").params(paramsMap).session(session))
 				.andExpect(status().is2xxSuccessful())
 				.andExpect(model().attributeDoesNotExist("questionDetailDTO"))
 				.andExpect(view().name("qna/show"));
