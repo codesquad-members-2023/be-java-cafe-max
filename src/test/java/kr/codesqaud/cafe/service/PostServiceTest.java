@@ -55,7 +55,11 @@ class PostServiceTest {
         PostResponse postResponse = postService.findById(savedId);
 
         //then
-        assertAll(() -> assertEquals("피에스타", postResponse.getTitle()), () -> assertEquals("내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게", postResponse.getContent()), () -> assertEquals("test@gmail.com", postResponse.getWriter().getWriterEmail()), () -> assertEquals(basicPostData(member).getWriteDate().withNano(0), postResponse.getWriteDate().withNano(0)), () -> assertEquals(1L, postResponse.getViews()), () -> assertNotNull(savedId));
+        assertAll(() -> assertEquals("피에스타", postResponse.getTitle()),
+                () -> assertEquals("내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게", postResponse.getContent()),
+                () -> assertEquals("test@gmail.com", postResponse.getWriter().getWriterEmail()),
+                () -> assertEquals(basicPostData(member).getWriteDate().withNano(0), postResponse.getWriteDate().withNano(0)),
+                () -> assertEquals(1L, postResponse.getViews()), () -> assertNotNull(savedId));
     }
 
     @Test
