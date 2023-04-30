@@ -31,17 +31,20 @@ public class LoginController {
         User loginUser = loginService.login(loginForm.getUserId(), loginForm.getPassword());
         HttpSession session = request.getSession();
 
-        session.setAttribute("user", loginUser);
+        if (loginUser == null) {
+            return "user/login";
+        }
+        session.setAttribute("userId", loginUser.getUserId());
         return "redirect:/";
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
 
         if(session != null) {
             session.invalidate();
         }
-        return "index";
+        return "redirect:/";
     }
 }

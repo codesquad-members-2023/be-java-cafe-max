@@ -16,7 +16,7 @@ import java.util.List;
 public class ArticleService {
     private final ArticleRepository articleRepository;
 
-    public ArticleService(JdbcArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
@@ -40,6 +40,7 @@ public class ArticleService {
         Article article = articleRepository.findById(id);
 
         return ArticleDto.builder()
+                .id(article.getId())
                 .writer(article.getWriter())
                 .title(article.getTitle())
                 .contents(article.getContents())
@@ -61,5 +62,18 @@ public class ArticleService {
         }
         Collections.reverse(articleDtos);
         return articleDtos;
+    }
+
+    public void update(ArticleForm articleForm, long id) {
+        Article article = Article.builder()
+                .title(articleForm.getTitle())
+                .contents(articleForm.getContents())
+                .build();
+
+        articleRepository.update(article, id);
+    }
+
+    public void delete(long id) {
+        articleRepository.delete(id);
     }
 }
