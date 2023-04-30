@@ -1,17 +1,24 @@
 package kr.codesqaud.cafe.repository.comment;
 
 import java.util.List;
+import java.util.Optional;
 
 import kr.codesqaud.cafe.domain.Comment;
 
 public interface CommentRepository {
-	List<Comment> findByPostIndex(long index);
-
 	void create(Comment comment);
 
-	Comment findOne(Long postIndex, Long index);
+	Optional<Comment> findOne(Long commentIndex);
 
-	void delete(Long postIndex, Long index);
+	void delete(Long commentIndex);
 
-	void deleteAll(Long postIndex);
+	void deleteAll(Long articleIndex);
+
+	Integer getCommentsSize(Long articleIndex);
+
+	Boolean equalsAuthor(Long articleIndex);
+
+	List<Comment> findComments(Long articleIndex, Long commentLastIndex);
+
+	void update(Long commentIndex, Comment commentRequest);
 }

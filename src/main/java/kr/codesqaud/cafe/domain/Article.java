@@ -1,19 +1,20 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.exception.DeniedDataModificationException;
+import kr.codesqaud.cafe.exception.DeniedArticleModificationException;
 
 public class Article {
-	private Long postIndex;
+	private Long articleIndex;
 	private String title;
 	private String writer;
 	private String contents;
 	private String writeDate;
 	private long hits;
 	private boolean deleted;
+	private String modDate;
 
-	public Article(Long postIndex, String title, String writer, String contents, String writeDate, long hits,
+	public Article(Long articleIndex, String title, String writer, String contents, String writeDate, long hits,
 		boolean deleted) {
-		this.postIndex = postIndex;
+		this.articleIndex = articleIndex;
 		this.title = title;
 		this.writer = writer;
 		this.contents = contents;
@@ -22,8 +23,8 @@ public class Article {
 		this.deleted = deleted;
 	}
 
-	public Article(Long postIndex, String title, String writer, String contents, String writeDate, Long hits) {
-		this.postIndex = postIndex;
+	public Article(Long articleIndex, String title, String writer, String contents, String writeDate, Long hits) {
+		this.articleIndex = articleIndex;
 		this.title = title;
 		this.writer = writer;
 		this.contents = contents;
@@ -39,8 +40,18 @@ public class Article {
 		this.hits = hits;
 	}
 
-	public Long getPostIndex() {
-		return postIndex;
+	public Article(String writer) {
+		this.writer = writer;
+	}
+
+	public Article(String title, String contents, String modDate) {
+		this.title = title;
+		this.contents = contents;
+		this.modDate = modDate;
+	}
+
+	public Long getArticleIndex() {
+		return articleIndex;
 	}
 
 	public String getTitle() {
@@ -72,9 +83,13 @@ public class Article {
 		return deleted;
 	}
 
-	public void validateWriter(String nickname, String message) {
+	public void validateWriter(String nickname) {
 		if (!writer.equals(nickname)) {
-			throw new DeniedDataModificationException(message);
+			throw new DeniedArticleModificationException();
 		}
+	}
+
+	public String getModDate() {
+		return modDate;
 	}
 }

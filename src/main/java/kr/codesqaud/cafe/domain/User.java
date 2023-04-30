@@ -2,7 +2,7 @@ package kr.codesqaud.cafe.domain;
 
 import java.time.LocalDate;
 
-import kr.codesqaud.cafe.exception.DeniedDataModificationException;
+import kr.codesqaud.cafe.exception.DeniedUserModificationException;
 import kr.codesqaud.cafe.exception.InvalidPasswordException;
 
 public class User {
@@ -28,6 +28,13 @@ public class User {
 		this.nickname = nickname;
 		this.password = password;
 		this.signUpDate = signUpDate;
+	}
+
+	public User(String userID, String email, String nickname, String password) {
+		this.userID = userID;
+		this.email = email;
+		this.nickname = nickname;
+		this.password = password;
 	}
 
 	public Long getUserIndex() {
@@ -56,7 +63,7 @@ public class User {
 
 	public void validateUserId(String userID) {
 		if (!this.userID.equals(userID)) {
-			throw new DeniedDataModificationException("다른 사람의 정보는 수정할 수 없습니다.");
+			throw new DeniedUserModificationException();
 		}
 	}
 

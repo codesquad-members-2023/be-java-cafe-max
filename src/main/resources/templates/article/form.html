@@ -1,14 +1,14 @@
 {{> fragments/header}}
 <div></div>
 <div class="wrap">
-    <form name="question" id="question" method="post" action="/article/write" onsubmit="return validateWriting()">
+    <form name="question" id="question" method="post" action="/articles" onsubmit="return validateWriting()">
         <input type="hidden" name="writer" value="{{writer}}"/>
         <div class="h3">
             <h3>글쓰기</h3>
         </div>
         <div class="title-form">
             <label for="title">제목</label>
-            <input type="text" id="title" name="title" placeholder="글의 제목을 입력하세요." onkeyup="verifyTitle()">
+            <input type="text" id="title" name="title" placeholder="글의 제목을 입력하세요." autofocus onkeyup="verifyTitle()">
         </div>
         <div class="content-form">
             <label for="content">내용</label>
@@ -20,7 +20,7 @@
                 {{{errorMessage}}}
                 {{/errorMessage}}
             </div>
-            <button class="button complete" type="submit">작성완료</button>
+            <button class="button complete">작성완료</button>
         </div>
     </form>
 </div>

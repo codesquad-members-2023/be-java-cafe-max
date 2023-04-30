@@ -4,6 +4,7 @@
     <title>스프링 카페</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
 <nav class="header">
@@ -17,15 +18,15 @@
         {{^sessionUser}}
         <div class="bar">
             <a href="/users" class="head button" role="button">멤버리스트</a>
-            <a href="/user/login" class="head button" role="button">로그인</a>
-            <a href="/user/form" class="head button" role="button">회원가입</a>
+            <a href="/login" class="head button" role="button">로그인</a>
+            <a href="/users/form" class="head button" role="button">회원가입</a>
         </div>
         {{/sessionUser}}
         {{#sessionUser}}
         <div class="bar">
             <a href="/users" class="head button" role="button">멤버리스트</a>
-            <a href="/check/{{userID}}" class="head button" role="button">정보수정</a>
-            <a href="/user/logout" class="head button" role="button">로그아웃</a>
+            <a href="/users/check/{{userID}}" class="head button" role="button">정보수정</a>
+            <a href="/logout" class="head button" role="button">로그아웃</a>
         </div>
         {{/sessionUser}}
     </div>

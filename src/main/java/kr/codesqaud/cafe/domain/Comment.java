@@ -1,39 +1,45 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.exception.DeniedDataModificationException;
+import kr.codesqaud.cafe.exception.DeniedCommentModificationException;
 
 public class Comment {
 	private Long commentIndex;
-	private Long postIndex;
+	private Long articleIndex;
 	private String author;
 	private String comment;
 	private String createdDate;
 	private boolean deleted;
+	private String modDate;
 
-	public Comment(Long commentIndex, Long postIndex, String author, String comment, String createdDate,
+	public Comment(Long commentIndex, Long articleIndex, String author, String comment, String createdDate,
 		boolean deleted) {
 		this.commentIndex = commentIndex;
-		this.postIndex = postIndex;
+		this.articleIndex = articleIndex;
 		this.author = author;
 		this.comment = comment;
 		this.createdDate = createdDate;
 		this.deleted = deleted;
 	}
 
-	public Comment(Long postIndex, String author, String comment, String createdDate, boolean deleted) {
-		this.postIndex = postIndex;
+	public Comment(Long articleIndex, String author, String comment, String createdDate, boolean deleted) {
+		this.articleIndex = articleIndex;
 		this.author = author;
 		this.comment = comment;
 		this.createdDate = createdDate;
 		this.deleted = deleted;
+	}
+
+	public Comment(String comment, String modDate) {
+		this.comment = comment;
+		this.modDate = modDate;
 	}
 
 	public Long getCommentIndex() {
 		return commentIndex;
 	}
 
-	public Long getPostIndex() {
-		return postIndex;
+	public Long getArticleIndex() {
+		return articleIndex;
 	}
 
 	public String getAuthor() {
@@ -52,9 +58,13 @@ public class Comment {
 		return deleted;
 	}
 
-	public void validateAuthor(String nickname, String message) {
+	public void validateAuthor(String nickname) {
 		if (!author.equals(nickname)) {
-			throw new DeniedDataModificationException(message);
+			throw new DeniedCommentModificationException();
 		}
+	}
+
+	public String getModDate() {
+		return modDate;
 	}
 }

@@ -16,7 +16,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 			String urlPrior = request.getRequestURI().toString() + "?" + request.getQueryString();
 			request.getSession().setAttribute("url_prior_login", urlPrior);
 
-			response.sendRedirect(request.getContextPath() + "/user/login");
+			response.sendRedirect(request.getContextPath() + "/login");
 			return false;
 		}
 		return true;

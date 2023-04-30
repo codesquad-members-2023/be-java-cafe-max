@@ -120,7 +120,7 @@ font-size: 0;
     display: inline-block;
     width: 30px;
     height: 30px;
-    font-size: small;
+    font-size: 15px;
 }
 
 .page a.num.on {
@@ -541,6 +541,16 @@ li a  {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+}
+
+.more {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.more-button:hover {
+    color: #afb9ea;
 }
 
 @media (max-width: 700px) {

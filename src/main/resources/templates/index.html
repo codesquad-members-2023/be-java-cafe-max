@@ -6,19 +6,20 @@
         <div class="big text">HELLO JAVA! 입니다.</div>
     </div>
 </div>
+{{#paging}}
 <div class="board">
     <div class="countOfPost">
-        <p>전체 글 <span id="post_count">{{articles.size}}</span>개</p>
+        <p>전체 글 <span id="post_count">{{articleSize}}</span>개</p>
     </div>
     <div class="board_list">
         <ul class="line_list">
             {{#articles}}
             <li class="list_hover">
                 <div class="write-list">
-                    <div class="article-index">{{hits}}</div>
+                    <div class="article-index">{{commentsSize}}</div>
                     <div class="column">
                         <strong class="article-title">
-                            <a href="/article/{{postIndex}}/{{writer}}">{{title}}</a>
+                            <a href="/articles/{{articleIndex}}/{{writer}}">{{title}}</a>
                         </strong>
                         <div class="article-writer">
                             <span class="time">{{writeDate}}</span>
@@ -32,21 +33,28 @@
         <div class="write-menu">
             <div class="page">
                 <ul class="pagination">
-                    <li><a href="#" class="prev">«</a></li>
-                    <li><a href="#" class="num on">1</a></li>
-                    <li><a href="#" class="num">2</a></li>
-                    <li><a href="#" class="num">3</a></li>
-                    <li><a href="#" class="num">4</a></li>
-                    <li><a href="#" class="num">5</a></li>
-                    <li><a href="#" class="next">»</a></li>
+                    {{#prev}}
+                    <li><a href="/{{prev}}" class="prev">«</a></li>
+                    {{/prev}}
+                    {{#pagingPrevNum}}
+                    <li><a href="/{{.}}" class="num">{{.}}</a></li>
+                    {{/pagingPrevNum}}
+                    <li><a href="/{{current}}" class="num on">{{current}}</a></li>
+                    {{#pagingNextNum}}
+                    <li><a href="/{{.}}" class="num">{{.}}</a></li>
+                    {{/pagingNextNum}}
+                    {{#next}}
+                    <li><a href="/{{next}}" class="next">»</a></li>
+                    {{/next}}
                 </ul>
             </div>
             <div class="write">
                 <input type="text" id="searchInput">
                 <a id="search" class="body button" href="#">검색</a>
-                <a id="button-write" class="body button" href="/article/form">글쓰기</a>
+                <a id="button-write" class="body button" href="/articles/form">글쓰기</a>
             </div>
         </div>
     </div>
 </div>
+{{/paging}}
 {{> fragments/footer}}

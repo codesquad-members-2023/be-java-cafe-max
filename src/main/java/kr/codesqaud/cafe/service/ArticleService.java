@@ -2,14 +2,24 @@ package kr.codesqaud.cafe.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.domain.Article;
 import kr.codesqaud.cafe.domain.Comment;
-import kr.codesqaud.cafe.dto.ArticleDto;
-import kr.codesqaud.cafe.dto.CommentDto;
+import kr.codesqaud.cafe.dto.ArticleRequest;
+import kr.codesqaud.cafe.dto.ArticleResponse;
+import kr.codesqaud.cafe.dto.ArticleUpdateRequest;
+import kr.codesqaud.cafe.dto.CommentRequest;
+import kr.codesqaud.cafe.dto.CommentResponse;
+import kr.codesqaud.cafe.dto.CommentUpdateRequest;
+import kr.codesqaud.cafe.dto.Paging;
+import kr.codesqaud.cafe.exception.ArticleNotFoundException;
+import kr.codesqaud.cafe.exception.CommentNotFoundException;
+import kr.codesqaud.cafe.exception.OtherCommentExistsException;
 import kr.codesqaud.cafe.repository.article.ArticleRepository;
 import kr.codesqaud.cafe.repository.comment.CommentRepository;
 
@@ -24,11 +34,10 @@ public class ArticleService {
 		this.commentRepository = commentRepository;
 	}
 
-	public boolean createArticle(ArticleDto articleDto) {
-		Article article = new Article(articleDto.getTitle(), articleDto.getWriter(),
-			articleDto.getContents(), writeDate(), 0L);
+	public void createArticle(ArticleRequest articleRequest) {
+		Article article = new Article(articleRequest.getTitle(), articleRequest.getWriter(),
+			articleRequest.getContents(), writeDate(), 0L);
 		articleRepository.create(article);
-		return true;
 	}
 
 	private String writeDate() {
@@ -36,53 +45,118 @@ public class ArticleService {
 		return now.format(DATE_FORMATTER);
 	}
 
-	public Article findByIndex(Long postIndex) {
-		return articleRepository.findByIndex(postIndex);
+	public ArticleResponse findByIndex(Long articleIndex) {
+		Article article = articleRepository.findByArticleIndex(articleIndex).orElseThrow(ArticleNotFoundException::new);
+		return new ArticleResponse(article.getArticleIndex(), article.getTitle(), article.getWriter(),
+			article.getContents(), article.getWriteDate(), article.getHits(), article.isDeleted());
 	}
 
-	public List<Article> findArticles() {
-		return articleRepository.findAll();
+	public void increaseHits(Long articleIndex) {
+		articleRepository.increaseHits(articleIndex);
 	}
 
-	public boolean increaseHits(Long postIndex) {
-		articleRepository.increaseHits(postIndex);
-		return true;
+	public void deleteArticle(Long articleIndex) {
+		articleRepository.delete(articleIndex);
 	}
 
-	public boolean deleteArticle(Long postIndex) {
-		articleRepository.delete(postIndex);
-		return true;
+	public void updateArticle(Long articleIndex, ArticleUpdateRequest articleUpdateRequest) {
+		Article article = new Article(articleUpdateRequest.getTitle(), articleUpdateRequest.getTitle(), writeDate());
+		articleRepository.update(articleIndex, article);
 	}
 
-	public boolean updateArticle(Long postIndex, ArticleDto articleDto) {
-		articleRepository.update(postIndex, articleDto);
-		return true;
-	}
-
-	public List<Comment> createComment(CommentDto commentDto) {
-		Comment comment = new Comment(commentDto.getPostIndex(), commentDto.getAuthor(), commentDto.getComment(),
-			writeDate(), false);
+	public void createComment(CommentRequest commentRequest) {
+		Comment comment = new Comment(commentRequest.getArticleIndex(), commentRequest.getAuthor(),
+			commentRequest.getComment(), writeDate(), false);
 		commentRepository.create(comment);
-		return commentRepository.findByPostIndex(commentDto.getPostIndex());
 	}
 
-	public List<Comment> findCommentsByPostIndex(long postIndex) {
-		return commentRepository.findByPostIndex(postIndex);
+	public void deleteComment(Long commentIndex) {
+		commentRepository.delete(commentIndex);
 	}
 
-	public Comment findCommentByIndex(Long postIndex, Long commentIndex) {
-		return commentRepository.findOne(postIndex, commentIndex);
+	public void deleteAllComment(Long articleIndex) {
+		commentRepository.deleteAll(articleIndex);
 	}
 
-	public void deleteComment(Long postIndex, Long commentIndex) {
-		commentRepository.delete(postIndex, commentIndex);
+	public void checkWriterEqualsSessionUser(String nickname, Long articleIndex) {
+		Article article = articleRepository.findWriterByArticleIndex(articleIndex);
+		article.validateWriter(nickname);
 	}
 
-	public void deleteAllComment(Long postIndex) {
-		commentRepository.deleteAll(postIndex);
+	public void checkAuthorEqualsSessionUser(Long articleIndex) {
+		if (commentRepository.equalsAuthor(articleIndex)) {
+			throw new OtherCommentExistsException();
+		}
 	}
 
-	public List<Comment> showComments(Long postIndex) {
-		return commentRepository.findByPostIndex(postIndex);
+	public String checkIsWriter(String author, String writer) {
+		if (author.equals(writer)) {
+			return "true";
+		}
+		return null;
+	}
+
+	public ArticleResponse findByArticleIndexForUpdate(Long articleIndex, String nickname) {
+		Article article = articleRepository.findByArticleIndex(articleIndex).orElseThrow(ArticleNotFoundException::new);
+		article.validateWriter(nickname);
+		return new ArticleResponse(article.getArticleIndex(), article.getTitle(), article.getWriter(),
+			article.getContents(), article.getWriteDate(), article.getHits(), article.isDeleted());
+	}
+
+	public void checkIsAuthor(String nickname, Long commentIndex) {
+		Comment comment = commentRepository.findOne(commentIndex)
+			.orElseThrow(CommentNotFoundException::new);
+		comment.validateAuthor(nickname);
+	}
+
+	public List<ArticleResponse> findArticleResponsesPage(int page) {
+		List<Article> articles = articleRepository.findPage(page);
+		return articles.stream()
+			.map(a -> new ArticleResponse(a.getArticleIndex(), a.getTitle(), a.getWriter(), a.getContents(),
+				a.getWriteDate(), a.getHits(), a.isDeleted(), commentRepository.getCommentsSize(a.getArticleIndex())))
+			.collect(Collectors.toList());
+	}
+
+	public Paging paging(int page) {
+		int articleSize = getArticleSize();
+		return new Paging(page, articleSize);
+	}
+
+	public int getArticleSize() {
+		return (articleRepository.getArticleSize() == null) ? 0 : articleRepository.getArticleSize();
+	}
+
+	public List<Integer> makePagingPrevNumber(Integer start, int page) {
+		List<Integer> pagingNum = new ArrayList<>();
+		for (int i = start; i < page; i++) {
+			pagingNum.add(i);
+		}
+		return pagingNum;
+	}
+
+	public List<Integer> makePagingNextNumber(int page, Integer end) {
+		List<Integer> pagingNum = new ArrayList<>();
+		for (int i = page + 1; i <= end; i++) {
+			pagingNum.add(i);
+		}
+		return pagingNum;
+	}
+
+	public int getCommentsSize(Long articleIndex) {
+		return (commentRepository.getCommentsSize(articleIndex) == null) ? 0 :
+			commentRepository.getCommentsSize(articleIndex);
+	}
+
+	public List<CommentResponse> showComments(Long articleIndex, Long commentLastIndex) {
+		List<Comment> comments = commentRepository.findComments(articleIndex, commentLastIndex);
+		return comments.stream()
+			.map(comment -> new CommentResponse(comment.getCommentIndex(), comment.getArticleIndex(),
+				comment.getAuthor(), comment.getComment(), comment.getCreatedDate(), comment.isDeleted()))
+			.collect(Collectors.toList());
+	}
+
+	public void updateComment(Long commentIndex, CommentUpdateRequest commentUpdateRequest) {
+		Comment comment = new Comment(commentUpdateRequest.getComment(), writeDate());
+		commentRepository.update(commentIndex, comment);
 	}
 }

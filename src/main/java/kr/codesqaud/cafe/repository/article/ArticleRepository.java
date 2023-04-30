@@ -1,20 +1,24 @@
 package kr.codesqaud.cafe.repository.article;
 
 import java.util.List;
+import java.util.Optional;
 
 import kr.codesqaud.cafe.domain.Article;
-import kr.codesqaud.cafe.dto.ArticleDto;
 
 public interface ArticleRepository {
 	Article create(Article article);
 
-	Article findByIndex(Long index);
+	Optional<Article> findByArticleIndex(Long articleIndex);
 
-	List<Article> findAll();
+	List<Article> findPage(int page);
 
 	boolean increaseHits(Long index);
 
 	boolean delete(Long index);
 
-	boolean update(Long index, ArticleDto articleDto);
+	boolean update(Long articleIndex, Article article);
+
+	Article findWriterByArticleIndex(Long articleIndex);
+
+	Integer getArticleSize();
 }

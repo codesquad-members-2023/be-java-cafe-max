@@ -1,25 +1,35 @@
 package kr.codesqaud.cafe.repository.article;
 
 public class ArticleSql {
-	public static final String SELECT_ALL_FOR_WRITE_LIST
-		= "SELECT postIndex, title, writer, contents, writeDate, hits "
-		+ "FROM WRITE_INFO WHERE deleted = false";
+	public static final String SELECT_ALL_FOR_ARTICLE_LIST
+		= "SELECT articleIndex, title, writer, contents, writeDate, hits "
+		+ "FROM ARTICLE_INFO WHERE deleted = false "
+		+ "ORDER BY articleIndex DESC "
+		+ "LIMIT :page, :pageSize";
 
 	public static final String FIND_BY_INDEX
-		= "SELECT postIndex, title, writer, contents, writeDate, hits "
-		+ "FROM WRITE_INFO WHERE postIndex = :postIndex";
+		= "SELECT articleIndex, title, writer, contents, writeDate, hits "
+		+ "FROM ARTICLE_INFO WHERE articleIndex = :articleIndex AND deleted = false";
 
 	public static final String CREATE
-		= "INSERT INTO WRITE_INFO(title, writer, contents, writeDate, hits) "
+		= "INSERT INTO ARTICLE_INFO(title, writer, contents, writeDate, hits) "
 		+ "VALUES (:title, :writer, :contents, :writeDate, :hits)";
 
 	public static final String INCREASE_HITS
-		= "UPDATE WRITE_INFO SET hits = hits + 1 WHERE postIndex = :postIndex";
+		= "UPDATE ARTICLE_INFO SET hits = hits + 1 WHERE articleIndex = :articleIndex";
 
 	public static final String DELETE
-		= "UPDATE WRITE_INFO SET deleted = true WHERE postIndex = :postIndex";
+		= "UPDATE ARTICLE_INFO SET deleted = true WHERE articleIndex = :articleIndex";
 
 	public static final String UPDATE
-		= "UPDATE WRITE_INFO SET title = :title, contents = :contents, writer = :writer "
-		+ "WHERE postIndex = :postIndex";
+		= "UPDATE ARTICLE_INFO SET title = :title, contents = :contents, modDate = :modDate "
+		+ "WHERE articleIndex = :articleIndex";
+
+	public static final String SELECT_WRITER_BY_ARTICLE_INDEX
+		= "SELECT writer "
+		+ "FROM ARTICLE_INFO WHERE articleIndex = :articleIndex";
+
+	public static final String COUNT_ARTICLE_SIZE
+		= "SELECT COUNT(*) "
+		+ "FROM ARTICLE_INFO WHERE deleted = :deleted";
 }

@@ -1,18 +1,18 @@
 package kr.codesqaud.cafe.dto;
 
-public class CommentDto {
-	private Long postIndex;
+public class CommentRequest {
+	private Long articleIndex;
 	private String author;
 	private String comment;
 
-	public CommentDto(Long postIndex, String author, String comment) {
-		this.postIndex = postIndex;
+	public CommentRequest(Long articleIndex, String author, String comment) {
+		this.articleIndex = articleIndex;
 		this.author = author;
 		this.comment = comment;
 	}
 
-	public Long getPostIndex() {
-		return postIndex;
+	public Long getArticleIndex() {
+		return articleIndex;
 	}
 
 	public String getAuthor() {
