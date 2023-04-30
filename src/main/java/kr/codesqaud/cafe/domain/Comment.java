@@ -1,37 +1,31 @@
 package kr.codesqaud.cafe.domain;
 
-import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
-
-public class Article {
-
+public class Comment {
     private Long id;
-    private String title;
+    private Long articleId;
     private String content;
+    private Long userId;
     private String userName;
     private String createTime;
 
-    public Article() {
-    }
+    public Comment() {}
 
-    public Article(Long id, String title, String content, String userName, String createTime) {
+    public Comment(Long id, Long articleId, String content, Long userId, String userName, String createTime) {
         this.id = id;
-        this.title = title;
+        this.articleId = articleId;
         this.content = content;
+        this.userId = userId;
         this.userName = userName;
         this.createTime = createTime;
     }
 
-    public void create(Long id, Article article) {
+    public void create(Long id, Comment comment) {
         this.id = id;
-        this.title = article.getTitle();
-        this.content = article.getContent();
-        this.userName = article.userName;
-        this.createTime = article.getCreateTime();
-    }
-
-    public void update(ArticleDTO articleDTO) {
-        this.title = articleDTO.getTitle();
-        this.content = articleDTO.getContent();
+        this.articleId = comment.articleId;
+        this.content = comment.content;
+        this.userId = comment.userId;
+        this.userName = comment.userName;
+        this.createTime = comment.createTime;
     }
 
     public Long getId() {
@@ -42,12 +36,12 @@ public class Article {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public Long getArticleId() {
+        return articleId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 
     public String getContent() {
@@ -56,6 +50,14 @@ public class Article {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {

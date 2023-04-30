@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto;
+package kr.codesqaud.cafe.controller.dto.user;
 
 public class ModifiedUserDTO {
     private final String originPassword;

@@ -1,46 +1,54 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.ArticleDTO;
+import kr.codesqaud.cafe.controller.dto.article.ArticleDTO;
 import kr.codesqaud.cafe.service.ArticleService;
+import kr.codesqaud.cafe.service.CommentService;
+import kr.codesqaud.cafe.util.LoginSessionManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
-
 
 @Controller
 public class ArticleController {
 
     private final ArticleService articleService;
+    private final CommentService commentService;
+    private final LoginSessionManager loginSessionManager;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, CommentService commentService, LoginSessionManager loginSessionManager) {
         this.articleService = articleService;
+        this.commentService = commentService;
+        this.loginSessionManager = loginSessionManager;
     }
 
 
     @GetMapping("/posts/new")
-    public String writeForm(HttpSession session) {
-        if(isAnonymous(session)) return "redirect:/login";
+    public String writeForm() {
+        loginSessionManager.throwErrorIfAnonymous();
         return "post/form";
     }
 
     @PostMapping("/posts/new")
-    public String writePost(@ModelAttribute final ArticleDTO articleDto, HttpSession session) {
-        articleService.write(articleDto, session);
+    public String writePost(@ModelAttribute final ArticleDTO articleDto) {
+        articleService.write(articleDto);
         return "redirect:/";
     }
 
     @GetMapping("/posts/{id}")
-    public String showPost(@PathVariable final long id, final Model model, HttpSession session) {
-        if(isAnonymous(session)) return "redirect:/login";
-        ArticleDTO wantedPost = articleService.findById(id);
-        model.addAttribute("wantedPost", wantedPost);
+    public String showPost(@PathVariable final long id, final Model model) {
+        loginSessionManager.throwErrorIfAnonymous();
+        model.addAttribute("loggedUser", loginSessionManager.getLoginUser().getId());
+        model.addAttribute("wantedPost", articleService.findById(id));
+        model.addAttribute("comments", commentService.gather(id));
         return "post/show";
     }
 
     @GetMapping("/posts/{id}/revision")
     public String modifyForm(@PathVariable final long id, final Model model) {
+        if (isDifferentUser(id)) {
+            return "error/403";
+        }
+
         ArticleDTO wantedPost = articleService.findById(id);
         model.addAttribute("articleDTO", wantedPost);
         return "post/modifyForm";
@@ -53,8 +61,17 @@ public class ArticleController {
         return "redirect:/posts/{id}";
     }
 
-    public boolean isAnonymous(HttpSession session) {
-        return session.getAttribute("loginUser") == null;
+    @DeleteMapping("/posts/{id}")
+    public String deletePost(@PathVariable final long id) {
+        if (isDifferentUser(id)) {
+            return "error/403";
+        }
+        articleService.delete(id);
+        return "redirect:/";
+    }
+
+    public boolean isDifferentUser(Long id) {
+        return !articleService.isOwner(id);
     }
 }
 
