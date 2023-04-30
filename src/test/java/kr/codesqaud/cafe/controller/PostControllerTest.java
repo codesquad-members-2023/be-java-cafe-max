@@ -100,7 +100,15 @@ class PostControllerTest {
         mockMvc.perform(get("/posts/{id}", savedId).session(httpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("post/post"))
-                .andDo(print());
+                .andExpect(model().attributeExists("postResponse"))
+                .andExpect(model().attributeExists("commentListDto"));
+
+        //then
+        PostResponse postResponse = (PostResponse) mockMvc.perform(get("/posts/{id}", savedId).session(httpSession))
+                .andReturn().getModelAndView().getModel().get("postResponse");
+        assertThat(postResponse.getTitle()).isEqualTo("피에스타");
+        assertThat(postResponse.getContent()).isEqualTo("내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게");
+        assertThat(postResponse.getWriter().getWriterEmail()).isEqualTo("test@gmail.com");
     }
 
     @Test
