@@ -12,7 +12,13 @@ public interface CommentRepository {
 
     Optional<Comment> findById(Long id);
 
-    List<Comment> findAllByPostId(Long postId);
+    List<Comment> findAllByPostId(Long postId, Integer offset, Integer commentSize);
+
+    boolean existByIdAndMemberId(Long id, Long writerId);
+
+    boolean existByNotWriter(Long postId);
 
     void deleteAllByPostId(Long postId);
+
+    boolean existNextPaginationByPage(Long postId, Integer offset, Integer commentSize);
 }

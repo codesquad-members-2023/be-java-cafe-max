@@ -21,9 +21,6 @@ public class WriterRequest {
     }
 
     public Member toMember() {
-        return Member.builder()
-            .id(id)
-            .nickname(nickname)
-            .build();
+        return new Member(id, nickname);
     }
 }

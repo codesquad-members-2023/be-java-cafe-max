@@ -92,13 +92,8 @@ class MemberRepositoryTest {
         // given
         Member member = dummyData();
         Long savedId = memberRepository.save(member);
-        Member updateMember = Member.builder()
-            .id(savedId)
-            .email("mandu@gmail.com")
-            .password("Mandu12345")
-            .nickname("manduUpdat")
-            .createDate(LocalDateTime.now())
-            .build();
+        Member updateMember = new Member(savedId, "mandu@gmail.com", "Mandu12345",
+            "manduUpdat", LocalDateTime.now());
 
         // when
         memberRepository.update(updateMember);
@@ -111,20 +106,10 @@ class MemberRepositoryTest {
     }
 
     private Member dummyData() {
-        return Member.builder()
-            .email("mandu2@gmail.com")
-            .password("Mandu1234")
-            .nickname("mandu2")
-            .createDate(LocalDateTime.now())
-            .build();
+        return new Member("mandu2@gmail.com", "Mandu1234", "mandu2");
     }
 
     private Member dummyData2() {
-        return Member.builder()
-            .email("test2@gmail.com")
-            .password("Test1234")
-            .nickname("test2")
-            .createDate(LocalDateTime.now())
-            .build();
+        return new Member("test2@gmail.com", "Test1234", "test2");
     }
 }

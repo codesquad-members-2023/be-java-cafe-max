@@ -17,7 +17,7 @@ spring:
             on-profile: devDB
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/cafe
+        url: jdbc:mysql://localhost:3306/dev
         username: mandu
         password: mandu1234
 ---

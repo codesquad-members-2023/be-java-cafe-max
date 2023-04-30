@@ -16,11 +16,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.stream.Stream;
 import kr.codesqaud.cafe.config.session.AccountSession;
+import kr.codesqaud.cafe.dto.comment.CommentsResponse;
 import kr.codesqaud.cafe.dto.post.PostModifyRequest;
 import kr.codesqaud.cafe.dto.post.PostResponse;
-import kr.codesqaud.cafe.dto.post.PostWriteRequest;
 import kr.codesqaud.cafe.dto.post.WriterResponse;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.post.PostNotFoundException;
@@ -51,16 +52,31 @@ public class PostControllerTest {
     @MockBean
     private CommentService commentService;
 
+    @DisplayName("로그인을 안하고 ROOT URL 접근하면 게시글 목록 조회 페이지로 리다이렉트 된다.")
+    @Test
+    void showMain() throws Exception {
+        // given
+        given(postService.findAll(1)).willReturn(Collections.emptyList());
+
+        // when
+
+        // then
+        mockMvc.perform(get("/"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/posts"))
+            .andDo(print());
+    }
+
     @DisplayName("로그인을 했을 때 게시글 작성 페이지에 접근하면 게시글 작성 페이지로 이동한다")
     @Test
-    void writeForm() throws Exception {
+    void showWriteForm() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(1L, "만두");
 
         // when
 
         // then
-        mockMvc.perform(get("/posts/form")
+        mockMvc.perform(get("/posts/write/form")
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -72,18 +88,16 @@ public class PostControllerTest {
     @Test
     void write() throws Exception {
         // given
-        Long writerId = 1L;
-        AccountSession accountSession = new AccountSession(writerId, "만두");
-        PostWriteRequest postWriteRequest = new PostWriteRequest("게시글 제목", "게시글 내용", writerId);
-        given(postService.write(any())).willReturn(writerId);
+        AccountSession accountSession = new AccountSession(1L, "만두");
+        given(postService.write(any())).willReturn(1L);
 
         // when
 
         // then
-        mockMvc.perform(post("/posts")
-                .param("title", postWriteRequest.getTitle())
-                .param("content", postWriteRequest.getContent())
-                .param("writerId", String.valueOf(postWriteRequest.getWriterId()))
+        mockMvc.perform(post("/posts/write")
+                .param("title", "게시글 제목")
+                .param("content", "게시글 내용")
+                .param("writerId", "1")
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().is3xxRedirection())
@@ -96,17 +110,15 @@ public class PostControllerTest {
     @MethodSource("provideValueForValidatorName")
     void writeFalse(String title, String error) throws Exception {
         // given
-        Long writerId = 1L;
-        AccountSession accountSession = new AccountSession(writerId, "만두");
-        PostWriteRequest postWriteRequest = new PostWriteRequest(title, "게시글 내용", writerId);
+        AccountSession accountSession = new AccountSession(1L, "만두");
 
         // when
 
         // then
-        mockMvc.perform(post("/posts")
-                .param("title", postWriteRequest.getTitle())
-                .param("content", postWriteRequest.getContent())
-                .param("writerId", String.valueOf(postWriteRequest.getWriterId()))
+        mockMvc.perform(post("/posts/write")
+                .param("title", title)
+                .param("content", "게시글 내용")
+                .param("writerId", "1")
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().isOk())
@@ -126,17 +138,15 @@ public class PostControllerTest {
     @CsvSource(value = {",NotBlank", "호,Length"})
     void writeFalse2(String content, String error) throws Exception {
         // given
-        Long writerId = 1L;
-        AccountSession accountSession = new AccountSession(writerId, "만두");
-        PostWriteRequest postWriteRequest = new PostWriteRequest("게시글 제목", content, writerId);
+        AccountSession accountSession = new AccountSession(1L, "만두");
 
         // when
 
         // then
-        mockMvc.perform(post("/posts")
-                .param("title", postWriteRequest.getTitle())
-                .param("content", postWriteRequest.getContent())
-                .param("writerId", String.valueOf(postWriteRequest.getWriterId()))
+        mockMvc.perform(post("/posts/write")
+                .param("title", "게시글 제목")
+                .param("content", content)
+                .param("writerId", "1")
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
             .andExpect(status().isOk())
@@ -147,16 +157,17 @@ public class PostControllerTest {
 
     @DisplayName("로그인을 하고 게시글 조회할 때 게시글이 있는 아이디를 조회하면 게시글 상세 조회 페이지로 이동한다")
     @Test
-    void detailPost() throws Exception {
+    void showPost() throws Exception {
         // given
         PostResponse postResponse = createPostResponseDummy();
         AccountSession accountSession = new AccountSession(postResponse.getWriter().getId(), "만두");
         given(postService.findById(1L)).willReturn(postResponse);
+        given(commentService.findAllByPostId(any(), any())).willReturn(new CommentsResponse(Collections.emptyList(), false));
 
         // when
 
         // then
-        mockMvc.perform(get("/posts/{id}", postResponse.getId())
+        mockMvc.perform(get("/posts/{id}", 1L)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -165,9 +176,9 @@ public class PostControllerTest {
             .andDo(print());
     }
 
-    @DisplayName("로그인을 하고 게시글 상세 조회할 떄 게시글이 없는 번호를 조회하면 에러 페이지로 이동한다")
+    @DisplayName("로그인을 하고 게시글 상세 조회할 때 게시글이 없는 번호를 조회하면 에러 페이지로 이동한다")
     @Test
-    void detailPostFalse() throws Exception {
+    void showPostFalse() throws Exception {
         // given
         AccountSession accountSession = new AccountSession(1L, "만두");
         given(postService.findById(1L)).willThrow(PostNotFoundException.class);
@@ -175,7 +186,7 @@ public class PostControllerTest {
         // when
 
         // then
-        mockMvc.perform(get("/posts/{id}", "1")
+        mockMvc.perform(get("/posts/{id}", 1L)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -185,17 +196,16 @@ public class PostControllerTest {
 
     @DisplayName("글 수정 페이지에 접근할 때 로그인 회원과 글 작성자가 같다면 글 수정 페이지로 이동한다")
     @Test
-    void modifyForm() throws Exception {
+    void showModifyForm() throws Exception {
         // given
-        Long id = 1L;
         AccountSession accountSession = new AccountSession(1L, "만두");
-        given(postService.findPostModifyById(id, accountSession.getId()))
+        given(postService.findPostForModifying(1L, accountSession.getMemberId()))
             .willReturn(new PostModifyRequest(1L, "제목", "내용"));
 
         // when
 
         // then
-        mockMvc.perform(get("/posts/{id}/form", id)
+        mockMvc.perform(get("/posts/{id}/form", 1L)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isOk())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -205,17 +215,16 @@ public class PostControllerTest {
 
     @DisplayName("게시글 수정 페이지 접근할 때 로그인 회원과 게시글 작성자가 다르다면 에러페이지로 이동한다")
     @Test
-    void modifyFormFalse() throws Exception {
+    void showModifyFormFalse() throws Exception {
         // given
-        Long id = 1L;
         AccountSession accountSession = new AccountSession(2L, "만두");
-        given(postService.findPostModifyById(id, accountSession.getId()))
+        given(postService.findPostForModifying(1L, accountSession.getMemberId()))
             .willThrow(new UnauthorizedException());
 
         // when
 
         // then
-        mockMvc.perform(get("/posts/{id}/form", id)
+        mockMvc.perform(get("/posts/{id}/form", 1L)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isUnauthorized())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -223,19 +232,18 @@ public class PostControllerTest {
             .andDo(print());
     }
 
-    @DisplayName("로그인을 하고 게시글 수정 페이지 접근할 떄 게시글이 없는 번호를 조회하면 에러 페이지로 이동한다")
+    @DisplayName("로그인을 하고 게시글 수정 페이지 접근할  게시글이 없는 번호를 조회하면 에러 페이지로 이동한다")
     @Test
-    void modifyFormFalse2() throws Exception {
+    void showModifyFormFalse2() throws Exception {
         // given
-        Long id = 1L;
         AccountSession accountSession = new AccountSession(1L, "만두");
-        given(postService.findPostModifyById(id, accountSession.getId()))
+        given(postService.findPostForModifying(1L, accountSession.getMemberId()))
             .willThrow(new PostNotFoundException());
 
         // when
 
         // then
-        mockMvc.perform(get("/posts/{id}/form", id)
+        mockMvc.perform(get("/posts/{id}/form", 1L)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -247,13 +255,12 @@ public class PostControllerTest {
     @Test
     void modify() throws Exception {
         // given
-        Long id = 1L;
         AccountSession accountSession = new AccountSession(1L, "만두");
 
         // when
 
         // then
-        mockMvc.perform(put("/posts/{id}", id)
+        mockMvc.perform(put("/posts/{id}", 1L)
                 .param("title", "제목")
                 .param("content", "내용")
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
@@ -266,14 +273,13 @@ public class PostControllerTest {
     @Test
     void modifyFalse() throws Exception {
         // given
-        Long id = 1L;
         AccountSession accountSession = new AccountSession(1L, "만두");
         willThrow(new PostNotFoundException()).given(postService).modify(any(), any());
 
         // when
 
         // then
-        mockMvc.perform(put("/posts/{id}", id)
+        mockMvc.perform(put("/posts/{id}", 1L)
                 .param("title", "제목")
                 .param("content", "내용")
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
@@ -325,14 +331,13 @@ public class PostControllerTest {
     @Test
     void deleteFalse() throws Exception {
         // given
-        Long id = 1L;
         AccountSession accountSession = new AccountSession(1L, "만두");
-        willThrow(new PostNotFoundException()).given(postService).delete(id, accountSession.getId());
+        willThrow(new PostNotFoundException()).given(postService).delete(1L, accountSession.getMemberId());
 
         // when
 
         // then
-        mockMvc.perform(delete("/posts/{id}", id)
+        mockMvc.perform(delete("/posts/{id}", 1L)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isNotFound())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -344,14 +349,13 @@ public class PostControllerTest {
     @Test
     void deleteFalse2() throws Exception {
         // given
-        Long id = 1L;
         AccountSession accountSession = new AccountSession(1L, "만두");
-        willThrow(new UnauthorizedException()).given(postService).delete(id, accountSession.getId());
+        willThrow(new UnauthorizedException()).given(postService).delete(1L, accountSession.getMemberId());
 
         // when
 
         // then
-        mockMvc.perform(delete("/posts/{id}", id)
+        mockMvc.perform(delete("/posts/{id}", 1L)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isUnauthorized())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -363,15 +367,14 @@ public class PostControllerTest {
     @Test
     void deleteFalse3() throws Exception {
         // given
-        Long id = 1L;
         AccountSession accountSession = new AccountSession(1L, "만두");
         willThrow(new UnauthorizedException("게시글 작성자와 댓글 작성자가 다릅니다.")).given(postService)
-            .delete(id, accountSession.getId());
+            .delete(1L, accountSession.getMemberId());
 
         // when
 
         // then
-        mockMvc.perform(delete("/posts/{id}", id)
+        mockMvc.perform(delete("/posts/{id}", 1L)
                 .sessionAttr(SignInSessionUtil.SIGN_IN_SESSION_NAME, accountSession))
             .andExpect(status().isUnauthorized())
             .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
@@ -381,11 +384,11 @@ public class PostControllerTest {
 
     private PostResponse createPostResponseDummy() {
         return new PostResponse(1L, "제목", "내용", new WriterResponse(1L, "만두"), LocalDateTime.now(),
-            0L);
+            0L, 0);
     }
 
     private PostResponse createPostResponseDummy2() {
         return new PostResponse(2L, "제목2", "내용2", new WriterResponse(2L, "만두2"), LocalDateTime.now(),
-            0L);
+            0L, 0);
     }
 }

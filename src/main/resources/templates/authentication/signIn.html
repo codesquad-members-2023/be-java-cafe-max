@@ -11,7 +11,7 @@
         <div>
             <h2 class="title">로그인</h2>
         </div>
-        <form class="form" th:action="@{/members/sign-in}" method="post" th:object="${signInRequest}">
+        <form class="form" th:action="@{/sign-in}" method="post" th:object="${signInRequest}">
             <div class="form-floating">
                 <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력해주세요"
                        aria-describedby="validationEmailFeedback" th:errorclass="is-invalid" th:field="*{email}">

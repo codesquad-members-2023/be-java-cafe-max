@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.comment;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import kr.codesqaud.cafe.domain.Comment;
@@ -27,7 +28,7 @@ public class JdbcCommentRepository implements CommentRepository {
     @Override
     public Comment save(Comment comment) {
         String sql = "INSERT INTO comment(post_id, writer_id, content, write_date, is_deleted) "
-                   + "VALUES(:postId, :writer.id, :content, :writeDate, false)";
+                   + "VALUES(:postId, :writer.id, :content, :writeDateTime, false)";
         SqlParameterSource param = new BeanPropertySqlParameterSource(comment);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, param, keyHolder);
@@ -47,14 +48,49 @@ public class JdbcCommentRepository implements CommentRepository {
     }
 
     @Override
-    public List<Comment> findAllByPostId(Long postId) {
+    public List<Comment> findAllByPostId(Long postId, Integer offset, Integer commentSize) {
         String sql = "SELECT c.id, c.post_id, c.writer_id, m.nickname, c.content, c.write_date "
                     + "FROM comment c "
                     + "INNER JOIN member m ON m.id = c.writer_id "
                     + "WHERE c.post_id = :postId "
-                      + "AND c.is_deleted = false ";
-        SqlParameterSource param = new MapSqlParameterSource("postId", postId);
+                      + "AND c.is_deleted = false "
+                    + "LIMIT :offset, :commentSize";
+        MapSqlParameterSource param = new MapSqlParameterSource("postId", postId);
+        param.addValue("offset", offset);
+        param.addValue("commentSize", commentSize);
         return jdbcTemplate.query(sql, param, commentRowMapper);
+    }
+
+    @Override
+    public boolean existByIdAndMemberId(Long id, Long writerId) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM comment WHERE id = :id AND writer_id = :writerId AND is_deleted = false)";
+        MapSqlParameterSource param = new MapSqlParameterSource("id", id);
+        param.addValue("writerId", writerId);
+        return jdbcTemplate.queryForObject(sql, param, Boolean.class);
+    }
+
+    @Override
+    public boolean existByNotWriter(Long postId) {
+        String sql = "SELECT EXISTS(SELECT 1 "
+                                   + "FROM post p "
+                                   + "LEFT OUTER JOIN comment c ON p.id = c.post_id AND c.is_deleted = false "
+                                  + "WHERE p.id = :postId "
+                                    + "AND p.writer_id != c.writer_id)";
+        MapSqlParameterSource param = new MapSqlParameterSource("postId", postId);
+        return jdbcTemplate.queryForObject(sql, param, Boolean.class);
+    }
+
+    @Override
+    public boolean existNextPaginationByPage(Long postId, Integer page, Integer commentSize) {
+        String sql = "SELECT EXISTS(SELECT 1 "
+            + "FROM comment "
+            + "WHERE post_id = :postId "
+            + "AND is_deleted = false "
+            + "LIMIT :offset, :commentSize)";
+        MapSqlParameterSource param = new MapSqlParameterSource("postId", postId);
+        param.addValue("offset", page * commentSize);
+        param.addValue("commentSize", commentSize);
+        return jdbcTemplate.queryForObject(sql, param, Boolean.class);
     }
 
     @Override
@@ -76,14 +112,7 @@ public class JdbcCommentRepository implements CommentRepository {
     }
 
     private final RowMapper<Comment> commentRowMapper = (rs, rowNum) ->
-        Comment.builder()
-            .id(rs.getLong("id"))
-            .postId(rs.getLong("post_id"))
-            .writer(Member.builder()
-                .id(rs.getLong("writer_id"))
-                .nickname(rs.getString("nickname"))
-                .build())
-            .content(rs.getString("content"))
-            .writeDate(rs.getTimestamp("write_date").toLocalDateTime())
-            .build();
+        new Comment(rs.getLong("id"), rs.getLong("post_id"),
+            new Member(rs.getLong("writer_id"), rs.getString("nickname")),
+            rs.getString("content"), rs.getTimestamp("write_date").toLocalDateTime());
 }

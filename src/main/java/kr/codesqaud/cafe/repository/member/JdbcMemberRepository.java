@@ -26,7 +26,7 @@ public class JdbcMemberRepository implements MemberRepository {
     @Override
     public Long save(Member member) {
         String sql = "INSERT INTO member(email, password, nickname, create_date) "
-                   + "VALUES(:email, :password, :nickname, :createDate)";
+                   + "VALUES(:email, :password, :nickname, :createDateTime)";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(member);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, parameter, keyHolder);
@@ -52,25 +52,37 @@ public class JdbcMemberRepository implements MemberRepository {
     }
 
     @Override
-    public boolean existsByEmail(String email) {
+    public Optional<Member> findByEmailAndPassword(String email, String password) {
+        String sql = "SELECT id, nickname "
+                    + "FROM member "
+                   + "WHERE email = :email "
+                     + "AND password = :password";
+        MapSqlParameterSource parameter = new MapSqlParameterSource("email", email);
+        parameter.addValue("password", password);
+        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter,
+            memberIdAndNicknameRowMapper)));
+    }
+
+    @Override
+    public List<Member> findAll() {
+        String sql = "SELECT id, email, password, nickname, create_date "
+            + "FROM member";
+        return jdbcTemplate.query(sql, memberRowMapper);
+    }
+
+    @Override
+    public boolean existByEmail(String email) {
         String sql = "SELECT EXISTS(SELECT 1 FROM member WHERE email = :email)";
         MapSqlParameterSource parameter = new MapSqlParameterSource("email", email);
         return jdbcTemplate.queryForObject(sql, parameter, Boolean.class);
     }
 
     @Override
-    public boolean existsByEmailAndIdNot(String email, Long id) {
+    public boolean existByEmailAndIdNot(String email, Long id) {
         String sql = "SELECT EXISTS(SELECT 1 FROM member WHERE email = :email AND id != :id)";
         MapSqlParameterSource parameter = new MapSqlParameterSource("email", email);
         parameter.addValue("id", id);
         return jdbcTemplate.queryForObject(sql, parameter, Boolean.class);
-    }
-
-    @Override
-    public List<Member> findAll() {
-        String sql = "SELECT id, email, password, nickname, create_date "
-                     + "FROM member";
-        return jdbcTemplate.query(sql, memberRowMapper);
     }
 
     @Override
@@ -85,11 +97,10 @@ public class JdbcMemberRepository implements MemberRepository {
     }
 
     private final RowMapper<Member> memberRowMapper = (rs, rowNum) ->
-        Member.builder()
-            .id(rs.getLong("id"))
-            .email(rs.getString("email"))
-            .password(rs.getString("password"))
-            .nickname(rs.getString("nickname"))
-            .createDate(rs.getTimestamp("create_date").toLocalDateTime())
-            .build();
+        new Member(rs.getLong("id"), rs.getString("email"),
+            rs.getString("password"), rs.getString("nickname"),
+            rs.getTimestamp("create_date").toLocalDateTime());
+
+    private final RowMapper<Member> memberIdAndNicknameRowMapper = (rs, rowNum) ->
+        new Member(rs.getLong("id"), rs.getString("nickname"));
 }

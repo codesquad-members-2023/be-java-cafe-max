@@ -2,19 +2,19 @@ package kr.codesqaud.cafe.config.session;
 
 public class AccountSession {
 
-    private final Long id;
-    private final String name;
+    private final Long memberId;
+    private final String memberNickname;
 
-    public AccountSession(Long id, String name) {
-        this.id = id;
-        this.name = name;
+    public AccountSession(Long memberId, String memberNickname) {
+        this.memberId = memberId;
+        this.memberNickname = memberNickname;
     }
 
-    public Long getId() {
-        return id;
+    public Long getMemberId() {
+        return memberId;
     }
 
-    public String getName() {
-        return name;
+    public String getMemberNickname() {
+        return memberNickname;
     }
 }

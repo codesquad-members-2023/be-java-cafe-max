@@ -1,6 +1,7 @@
 package kr.codesqaud.cafe.repository.post;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import kr.codesqaud.cafe.domain.Member;
@@ -27,7 +28,7 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public Long save(Post post) {
         String sql = "INSERT INTO post(title, content, writer_id, write_date, views, is_deleted) "
-                   + "VALUES(:title, :content, :writer.id, :writeDate, :views, false)";
+            + "VALUES(:title, :content, :writer.id, :writeDateTime, :views, false)";
         SqlParameterSource parameter = new BeanPropertySqlParameterSource(post);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, parameter, keyHolder);
@@ -37,24 +38,32 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public Optional<Post> findById(Long id) {
         String sql = "SELECT p.id, p.title, p.content, m.id as writer_id, m.nickname as writer_name, "
-                          + "p.write_date, p.views "
-                     + "FROM post p "
-               + "INNER JOIN member m on m.id = p.writer_id "
-            + "        WHERE p.id = :id "
-                      + "AND p.is_deleted = false ";
+                          + "p.write_date, p.views, COUNT(c.id) as comments_size "
+                    + "FROM post p "
+                    + "INNER JOIN member m on m.id = p.writer_id "
+               + "LEFT OUTER JOIN comment c on c.post_id = p.id AND c.is_deleted = false "
+                    + "WHERE p.id = :id "
+                    + "AND p.is_deleted = false "
+                  + "GROUP BY p.id, p.title, p.content, m.id, m.nickname, p.write_date, p.views";
         SqlParameterSource parameter = new MapSqlParameterSource("id", id);
-        return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, postRowMapper)));
+        return Optional.ofNullable(
+            DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter, postRowMapper)));
     }
 
     @Override
-    public List<Post> findAll() {
-        String sql = "SELECT p.id, p.title, p.content, m.id as writer_id, m.nickname as writer_name,"
-                         + " p.write_date, p.views "
+    public List<Post> findAll(Integer offset, Integer pageSize) {
+        String sql = "SELECT p.id, p.title, p.content, m.id as writer_id, m.nickname as writer_name, "
+                         + " p.write_date, p.views, COUNT(c.id) as comments_size "
                     + "FROM post p "
-              + "INNER JOIN member m on m.id = p.writer_id "
-                   + "WHERE p.is_deleted = false "
-                   + "ORDER BY id DESC";
-        return jdbcTemplate.query(sql, postRowMapper);
+                    + "INNER JOIN member m on m.id = p.writer_id "
+               + "LEFT OUTER JOIN comment c on c.post_id = p.id AND c.is_deleted = false "
+                    + "WHERE p.is_deleted = false "
+                    + "GROUP BY p.id, p.title, p.content, m.id, m.nickname, p.write_date, p.views "
+                    + "ORDER BY id DESC "
+                    + "LIMIT :offset, :pageSize";
+        MapSqlParameterSource param = new MapSqlParameterSource("offset", offset);
+        param.addValue("pageSize", pageSize);
+        return jdbcTemplate.query(sql, param, postRowMapper);
     }
 
     @Override
@@ -70,10 +79,7 @@ public class JdbcPostRepository implements PostRepository {
     @Override
     public void increaseViews(Long id) {
         String sql = "UPDATE post "
-                      + "SET views = (SELECT p.views "
-                                    + "FROM (SELECT views + 1 as views "
-                                                + "FROM post "
-                                                + "WHERE id = :id) p) "
+                      + "SET views = views + 1 "
                     + "WHERE id = :id";
         SqlParameterSource parameter = new MapSqlParameterSource("id", id);
         jdbcTemplate.update(sql, parameter);
@@ -88,16 +94,17 @@ public class JdbcPostRepository implements PostRepository {
         jdbcTemplate.update(sql, parameter);
     }
 
+    @Override
+    public int postsSize() {
+        String sql = "SELECT count(id) FROM post WHERE is_deleted = false";
+        return jdbcTemplate.queryForObject(sql, Map.of(), Integer.class);
+    }
+
     private final RowMapper<Post> postRowMapper = (rs, rowNum) ->
-        Post.builder()
-            .id(rs.getLong("id"))
-            .title(rs.getString("title"))
-            .content(rs.getString("content"))
-            .writer(Member.builder()
-                .id(rs.getLong("writer_id"))
-                .nickname(rs.getString("writer_name"))
-                .build())
-            .writeDate(rs.getTimestamp("write_date").toLocalDateTime())
-            .views(rs.getLong("views"))
-            .build();
+        new Post(rs.getLong("id"), rs.getString("title"),
+            rs.getString("content"),
+            new Member(rs.getLong("writer_id"), rs.getString("writer_name")),
+            rs.getTimestamp("write_date").toLocalDateTime(), rs.getLong("views"),
+            rs.getInt("comments_size"));
+
 }

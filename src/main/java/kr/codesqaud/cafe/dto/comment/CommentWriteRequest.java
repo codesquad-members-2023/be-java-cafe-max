@@ -17,17 +17,17 @@ public class CommentWriteRequest {
     @Length(min = 2, max = 3000, message = "최소 {min}글자, 최대 {max}글자입니다.")
     private String content;
 
-    private LocalDateTime writeDate;
+    private LocalDateTime writeDateTime;
 
     private CommentWriteRequest() {
-        this.writeDate = LocalDateTime.now();
+        this.writeDateTime = LocalDateTime.now();
     }
 
     public CommentWriteRequest(Long postId, WriterRequest writer, String content) {
         this.postId = postId;
         this.writer = writer;
         this.content = content;
-        this.writeDate = LocalDateTime.now();
+        this.writeDateTime = LocalDateTime.now();
     }
 
     public Long getPostId() {
@@ -42,21 +42,16 @@ public class CommentWriteRequest {
         return content;
     }
 
-    public LocalDateTime getWriteDate() {
-        return writeDate;
+    public LocalDateTime getWriteDateTime() {
+        return writeDateTime;
     }
 
     public void initializeWriterAndPostId(AccountSession accountSession, Long postId) {
-        this.writer = new WriterRequest(accountSession.getId(), accountSession.getName());
+        this.writer = new WriterRequest(accountSession.getMemberId(), accountSession.getMemberNickname());
         this.postId = postId;
     }
 
     public Comment toComment(Member member) {
-        return Comment.builder()
-            .postId(postId)
-            .writer(member)
-            .content(content)
-            .writeDate(writeDate)
-            .build();
+        return new Comment(postId, member, content, writeDateTime);
     }
 }

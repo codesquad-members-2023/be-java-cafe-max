@@ -15,7 +15,7 @@
     </div>
     <div id="posts" class="row row-cols-1">
         <div id="postsCount" class="col">
-            전체글 [[${postResponses.size()}]]개
+            전체글 [[${pagination.postsSize}]]개
         </div>
         <table>
             <thead>
@@ -26,10 +26,9 @@
             </thead>
             <tbody>
                 <tr th:each="postResponse : ${postResponses}">
-                    <td class="title"><a class="nav-link" th:text="${postResponse.title}"
-                        th:href="@{/posts/{id}(id = ${postResponse.id})}">게시판 테스트 1</a></td>
-                    <td class="writer" th:text="${postResponse.writer.nickname}">만두</td>
-                    <td class="writeDate" th:text="${postResponse.getWriteDateFormat()}">2023-03-28</td>
+                    <td class="title"><a class="nav-link" th:href="@{/posts/{id}(id = ${postResponse.id})}">[[${postResponse.title}]] ([[${postResponse.commentsSize}]])</a></td>
+                    <td class="writer"><a class="btn" th:href="@{/members/{id}(id=${postResponse.writer.id})}" th:text="${postResponse.writer.nickname}"></a></td>
+                    <td class="writeDate" th:text="${#temporals.format(postResponse.writeDateTime, 'yyyy-MM-dd HH:mm:ss')}">2023-03-28</td>
                     <td class="views" th:text="${postResponse.views}">0</td>
                 </tr>
             </tbody>
@@ -38,29 +37,26 @@
     <div class="row row-cols-2 align-items-center">
         <nav class="col" aria-label="Page navigation example">
             <ul class="pagination">
-                <li class="page-item ${pageDisabled}">
-                    <a class="page-link" href="#" aria-label="Previous">
+                <li class="page-item" th:if="${pagination.previousBar}">
+                    <a class="page-link" th:href="@{/posts/(page=${pagination.startPage - 1})}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li class="page-item ${pageActive}">
-                    <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item ${pageActive}">
-                    <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item ${pageActive}">
-                    <a class="page-link" href="#">3</a>
-                </li>
-                <li class="page-item ${pageDisabled}">
-                    <a class="page-link" href="#" aria-label="Next">
+                <th:block th:each="number : ${#numbers.sequence(pagination.startPage, pagination.endPage)}">
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{/posts/(page=${number})}" th:text="${number}"
+                           th:classappend="${pagination.currentPage == number} ? 'active' : ''"></a>
+                    </li>
+                </th:block>
+                <li class="page-item" th:if="${pagination.nextBar}">
+                    <a class="page-link" th:href="@{/posts/(page=${pagination.endPage + 1})}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
             </ul>
         </nav>
         <div class="col text-end">
-            <a id="writeButton" href="#" th:href="@{/posts/form}" class="btn btn-primary btn-sm">글쓰기</a>
+            <a id="writeButton" href="#" th:href="@{/posts/write/form}" class="btn btn-primary btn-sm">글쓰기</a>
         </div>
     </div>
 </main>

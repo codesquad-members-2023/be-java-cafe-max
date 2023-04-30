@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberResponse;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequest;
-import kr.codesqaud.cafe.dto.member.SignInRequest;
 import kr.codesqaud.cafe.dto.member.SignUpRequest;
 import kr.codesqaud.cafe.exception.common.UnauthorizedException;
 import kr.codesqaud.cafe.exception.member.MemberDuplicateEmailException;
@@ -31,22 +30,8 @@ public class MemberService {
     }
 
     private void validateDuplicateEmail(SignUpRequest signUpRequest) {
-        if (memberRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (memberRepository.existByEmail(signUpRequest.getEmail())) {
             throw new MemberDuplicateEmailException(signUpRequest);
-        }
-    }
-
-    @Transactional(readOnly = true)
-    public MemberResponse signIn(SignInRequest signInRequest) {
-        Member member = memberRepository.findByEmail(signInRequest.getEmail())
-            .orElseThrow(() -> new MemberInvalidPassword(signInRequest));
-        validateSamePassword(member, signInRequest);
-        return MemberResponse.from(member);
-    }
-
-    private void validateSamePassword(Member member, SignInRequest signInRequest) {
-        if (!member.equalsPassword(signInRequest.getPassword())) {
-            throw new MemberInvalidPassword(signInRequest);
         }
     }
 
@@ -79,7 +64,7 @@ public class MemberService {
     private void validateUpdateMember(ProfileEditRequest profileEditRequest, Long accountSessionId) {
         Member member = validateUnauthorized(profileEditRequest.getId(), accountSessionId);
 
-        if (memberRepository.existsByEmailAndIdNot(profileEditRequest.getEmail(),
+        if (memberRepository.existByEmailAndIdNot(profileEditRequest.getEmail(),
             profileEditRequest.getId())) {
             throw new MemberDuplicateEmailException(profileEditRequest);
         }
@@ -90,9 +75,9 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public ProfileEditRequest findProfileEditById(Long id, Long accountSessionId) {
+    public ProfileEditRequest findProfileForEditing(Long id, Long accountSessionId) {
         Member member = validateUnauthorized(id, accountSessionId);
-        return new ProfileEditRequest(id, member.getEmail(), null, null, member.getNickname());
+        return ProfileEditRequest.of(id, member.getEmail(), member.getNickname());
     }
 
     private Member validateUnauthorized(Long id, Long accountSessionId) {

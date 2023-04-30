@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.dto.post;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.Post;
 
 public class PostResponse {
@@ -10,22 +9,25 @@ public class PostResponse {
     private final String title;
     private final String content;
     private final WriterResponse writer;
-    private final LocalDateTime writeDate;
+    private final LocalDateTime writeDateTime;
     private final Long views;
+    private final Integer commentsSize;
 
     public PostResponse(Long id, String title, String content, WriterResponse writer,
-        LocalDateTime writeDate, Long views) {
+        LocalDateTime writeDateTime, Long views, Integer commentsSize) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
-        this.writeDate = writeDate;
+        this.writeDateTime = writeDateTime;
         this.views = views;
+        this.commentsSize = commentsSize;
     }
 
     public static PostResponse from(Post post) {
         return new PostResponse(post.getId(), post.getTitle(), post.getContent(),
-            WriterResponse.from(post.getWriter()), post.getWriteDate(), post.getViews());
+            WriterResponse.from(post.getWriter()), post.getWriteDateTime(), post.getViews(),
+            post.getCommentsSize());
     }
 
     public Long getId() {
@@ -44,15 +46,15 @@ public class PostResponse {
         return writer;
     }
 
-    public String getWriteDateFormat() {
-        return writeDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    }
-
-    public LocalDateTime getWriteDate() {
-        return writeDate;
+    public LocalDateTime getWriteDateTime() {
+        return writeDateTime;
     }
 
     public Long getViews() {
         return views;
+    }
+
+    public Integer getCommentsSize() {
+        return commentsSize;
     }
 }

@@ -18,13 +18,13 @@ public class PostWriteRequest {
 
     private Long writerId;
 
-    private final LocalDateTime writeDate;
+    private final LocalDateTime writeDateTime;
 
     public PostWriteRequest(String title, String content, Long writerId) {
         this.title = title;
         this.content = content;
         this.writerId = writerId;
-        this.writeDate = LocalDateTime.now();
+        this.writeDateTime = LocalDateTime.now();
     }
 
     public String getTitle() {
@@ -43,17 +43,11 @@ public class PostWriteRequest {
         this.writerId = writerId;
     }
 
-    public LocalDateTime getWriteDate() {
-        return writeDate;
+    public LocalDateTime getWriteDateTime() {
+        return writeDateTime;
     }
 
     public Post toPost(Member member) {
-        return Post.builder()
-            .title(title)
-            .content(content)
-            .writer(member)
-            .writeDate(writeDate)
-            .views(0L)
-            .build();
+        return new Post(title, content, member, writeDateTime);
     }
 }

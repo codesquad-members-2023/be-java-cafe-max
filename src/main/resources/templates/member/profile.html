@@ -20,11 +20,11 @@
                     <div class="row row-cols-1">
                         <span class="col">이메일 : [[${memberResponse.email}]]</span>
                         <span class="col">닉네임 : [[${memberResponse.nickname}]]</span>
-                        <span class="col">생성날짜 : [[${memberResponse.getCrateDateFormat()}]]</span>
+                        <span class="col">생성날짜 : [[${#temporals.format(memberResponse.createDateTime, 'yyyy-MM-dd')}]]</span>
                     </div>
                 </div>
             </div>
-            <div class="col text-end mt-3" th:if="${session.account.id == memberResponse.id}">
+            <div class="col text-end mt-3" th:if="${session.account.memberId == memberResponse.id}">
                 <a th:href="@{/members/{id}/form(id = ${memberResponse.id})}"
                    class="btn btn-primary btn-sm">수정</a>
             </div>

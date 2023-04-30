@@ -39,10 +39,6 @@ public class PostModifyRequest {
     }
 
     public Post toPost() {
-        return Post.builder()
-            .id(id)
-            .title(title)
-            .content(content)
-            .build();
+        return new Post(id, title, content);
     }
 }

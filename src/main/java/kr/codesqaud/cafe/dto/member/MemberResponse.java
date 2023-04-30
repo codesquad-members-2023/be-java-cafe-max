@@ -1,7 +1,6 @@
 package kr.codesqaud.cafe.dto.member;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.Member;
 
 public class MemberResponse {
@@ -9,18 +8,18 @@ public class MemberResponse {
     private final Long id;
     private final String email;
     private final String nickname;
-    private final LocalDateTime createDate;
+    private final LocalDateTime createDateTime;
 
-    public MemberResponse(Long id, String email, String nickname, LocalDateTime createDate) {
+    public MemberResponse(Long id, String email, String nickname, LocalDateTime createDateTime) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
-        this.createDate = createDate;
+        this.createDateTime = createDateTime;
     }
 
     public static MemberResponse from(Member member) {
         return new MemberResponse(member.getId(), member.getEmail()
-            , member.getNickname(), member.getCreateDate());
+            , member.getNickname(), member.getCreateDateTime());
     }
 
     public Long getId() {
@@ -35,11 +34,7 @@ public class MemberResponse {
         return nickname;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public String getCrateDateFormat() {
-        return createDate.format(DateTimeFormatter.ISO_DATE);
+    public LocalDateTime getCreateDateTime() {
+        return createDateTime;
     }
 }

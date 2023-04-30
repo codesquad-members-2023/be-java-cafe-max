@@ -29,14 +29,14 @@
                         <a class="nav-link" th:href="@{/members/{id}(id = ${memberResponse.id})}" th:text="${memberResponse.nickname}">만두</a>
                     </td>
                     <td class="email" th:text="${memberResponse.email}">test@gmail.com</td>
-                    <td class="signUpDate" th:text="${memberResponse.getCrateDateFormat()}">2023-03-28</td>
+                    <td class="signUpDate" th:text="${#temporals.format(memberResponse.createDateTime, 'yyyy-MM-dd HH:mm:ss')}">2023-03-28</td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div class="row">
         <nav class="col" aria-label="Page navigation example">
-            <ul class="pagination">
+            <ul class="postPagination">
                 <li class="page-item ${pageDisabled}">
                     <a class="page-link" href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
