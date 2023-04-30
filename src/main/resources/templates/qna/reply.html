@@ -1,0 +1,46 @@
+<div class="qna-comment">
+    <div class="qna-comment-slipp">
+        <p class="qna-comment-count"><strong>{{replyCount}}</strong>개의 의견</p>
+        <div class="qna-comment-slipp-articles">
+
+            {{#reply}}
+                <article class="article">
+                    <div class="article-header">
+                        <div class="article-header-thumb">
+                            <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
+                        </div>
+                        <div class="article-header-text">
+                            <a href="/users/{{userId}}" class="article-author-name">{{userName}}</a>
+                            <div class="article-header-time">{{createdAt}}</div>
+                        </div>
+                    </div>
+                    <div class="article-doc comment-doc">
+                        <p>{{comment}}</p>
+                    </div>
+                    <div class="article-util">
+                        <ul class="article-util-list">
+                            <li>
+                                <a class="link-modify-article" href="/replies/{{replyId}}">수정</a>
+                            </li>
+                            <li>
+                                <form class="delete-answer-form" action="/replies/{{replyId}}" method="POST">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="delete-answer-button">삭제</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </article>
+            {{/reply}}
+
+            <form class="submit-write" method="POST" action="/{{articleId}}/reply">
+                <div class="form-group" style="padding:14px;">
+                    <textarea name="comment" id="comment" class="form-control" placeholder="Update your status"></textarea>
+                </div>
+                <button class="btn btn-success pull-right" type="submit" >답변하기</button>
+                <div class="clearfix"/>
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -21,7 +21,9 @@
                     <td>{{userId}}</td>
                     <td><a href="/users/{{userId}}">{{userName}}</a></td>
                     <td>{{userEmail}}</td>
+                    {{#auth}}
                     <td><a href="/profile-edit-form/{{userId}}" class="btn btn-success" role="button">수정</a></td>
+                    {{/auth}}
                 </tr>
                 </tbody>
                 {{/users}}

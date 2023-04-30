@@ -6,6 +6,7 @@ public class UserDto {
     private final String userId;
     private final String userName;
     private final String userEmail;
+    private boolean auth;
 
     private UserDto(String userId, String userName, String userEmail) {
         this.userId = userId;
@@ -15,5 +16,13 @@ public class UserDto {
 
     public static UserDto from(final User user) {
         return new UserDto(user.getUserId(), user.getUserName(), user.getUserEmail());
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setAuth(boolean check) {
+        this.auth = check;
     }
 }

@@ -25,6 +25,10 @@ public class ArticleDto {
         return new ArticleDto(article.getId(), article.getWriter(), article.getTitle(), article.getContent(), article.getCreatedAt());
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getWriter() {
         return writer;
     }

@@ -1,5 +1,6 @@
 package kr.codesqaud.cafe.repository;
 
+import kr.codesqaud.cafe.controller.dto.request.articleRequest.ArticleWithReplyCount;
 import kr.codesqaud.cafe.domain.Article;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -38,6 +39,19 @@ public class JdbcArticleRepository implements ArticleRepository{
     @Override
     public List<Article> findAll() {
         return jdbcTemplate.query("SELECT * FROM articles", articleMapper);
+    }
+
+    @Override
+    public List<ArticleWithReplyCount> findAllArticlesWithReplyCount() {
+        return jdbcTemplate.query("SELECT a.id, a.writer, a.title, a.created_at, COUNT(r.reply_id) AS reply_count "
+                        + "FROM articles AS a "
+                        + "LEFT JOIN replies AS r ON a.id = r.article_id "
+                        + "GROUP BY a.id, a.writer, a.title, a.created_at ",
+                (rs, rowNum) -> new ArticleWithReplyCount(rs.getLong("id"),
+                        rs.getString("writer"),
+                        rs.getString("title"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getLong("reply_count")));
     }
 
     @Override

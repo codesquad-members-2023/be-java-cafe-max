@@ -1,4 +1,4 @@
-package kr.codesqaud.cafe.controller.dto.request;
+package kr.codesqaud.cafe.controller.dto.request.articleRequest;
 
 public class PostEditRequest {
     private final String newTitle;

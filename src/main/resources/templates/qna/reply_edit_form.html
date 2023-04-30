@@ -1,0 +1,32 @@
+{{> fragments/header}}
+<body>
+{{> fragments/navbar}}
+<div class="container" id="main">
+  <div class="col-md-12 col-sm-12 col-lg-12">
+    <div class="panel panel-default">
+
+        <div class="qna-comment">
+          <div class="qna-comment-slipp">
+            <div class="qna-comment-slipp-articles">
+              {{#reply}}
+              <form class="submit-write" method="POST" action="/replies/{{replyId}}">
+                <input type="hidden" name="_method" value="put">
+                <div class="form-group" style="padding:14px;">
+                  <label for="newComment"></label>
+                  <textarea name="newComment" id="newComment" class="form-control" placeholder="Update your status">{{&comment}}</textarea>
+                </div>
+                <button class="btn btn-success pull-right" type="submit" >수정하기</button>
+                <div class="clearfix"/>
+              </form>
+              {{/reply}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{{> fragments/footer}}

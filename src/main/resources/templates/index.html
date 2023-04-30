@@ -19,7 +19,7 @@
                             </div>
                             <div class="reply" title="댓글">
                                 <i class="icon-reply"></i>
-                                <span class="point">{{id}}</span>
+                                <span class="point">{{replyCount}}</span>
                             </div>
                         </div>
                     </div>
@@ -39,6 +39,11 @@
                         <li><a href="#">»</a></li>
                     </ul>
                 </div>
+                {{#loginUser}}
+                <div class="col-md-3 qna-write">
+                    <a href="/article-post-form" class="btn btn-primary pull-right" role="button">질문하기</a>
+                </div>
+                {{/loginUser}}
             </div>
         </div>
     </div>

@@ -1,8 +1,9 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.controller.dto.request.JoinRequest;
-import kr.codesqaud.cafe.controller.dto.request.LoginRequest;
-import kr.codesqaud.cafe.controller.dto.request.ProfileEditRequest;
+import kr.codesqaud.cafe.controller.dto.UserDto;
+import kr.codesqaud.cafe.controller.dto.request.userRequest.JoinRequest;
+import kr.codesqaud.cafe.controller.dto.request.userRequest.LoginRequest;
+import kr.codesqaud.cafe.controller.dto.request.userRequest.ProfileEditRequest;
 import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -11,10 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -41,8 +41,19 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String listAllUsers(Model model) {
-        model.addAttribute("users", userService.getUsers());
+    public String listAllUsers(HttpServletRequest httpRequest, Model model) {
+        List<UserDto> users = userService.getUsers();
+        HttpSession session = httpRequest.getSession();
+        if (session != null) {
+            User loginUser = (User) session.getAttribute("loginUser");
+            if (loginUser != null) {
+                String loginUserId = loginUser.getUserId();
+                for (UserDto user : users) {
+                    user.setAuth(loginUserId != null && loginUserId.equals(user.getUserId()));
+                }
+            }
+        }
+        model.addAttribute("users", users);
         return "user/list";
     }
 
@@ -65,7 +76,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute LoginRequest loginRequest, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+    public String login(@Validated @ModelAttribute LoginRequest loginRequest, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "user/login";
         }
@@ -76,27 +87,20 @@ public class UserController {
             return "user/login_failed";
         }
         HttpSession session = request.getSession(true);
-        session.setAttribute("userId", loginUser.getUserId());
 
-        Cookie idCookie = new Cookie("id", String.valueOf(loginUser.getId()));
-        response.addCookie(idCookie);
-
+        session.setAttribute("loginUser", loginUser);
+        session.setAttribute("isLogin", true);
         return "redirect:/";
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
+    public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.invalidate();
+            session.removeAttribute("loginUser");
+            session.setAttribute("isLogin", false);
         }
-        expireCookie(response, "id");
         return "redirect:/";
     }
 
-    private static void expireCookie(HttpServletResponse response, String cookieName) {
-        Cookie cookie = new Cookie(cookieName, null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-    }
 }
