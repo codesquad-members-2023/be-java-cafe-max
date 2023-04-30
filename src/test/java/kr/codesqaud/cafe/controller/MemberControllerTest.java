@@ -168,10 +168,13 @@ class MemberControllerTest {
         String password = basicMemberJoinRequestDtoData().getPassword();
         String nickname = basicMemberJoinRequestDtoData().getNickname();
 
+        LoginMemberSession loginMemberSession = new LoginMemberSession(email,memberId);
+
         ProfileEditRequestDto profileEditRequestDto = new ProfileEditRequestDto(memberId, email, password, nickname);
 
         //when
         mockMvc.perform(put("/members/{email}/profile", basicMemberData().getEmail())
+                        .sessionAttr("loginMember",loginMemberSession)
                         .param("memberId", String.valueOf(profileEditRequestDto.getMemberId()))
                         .param("email", profileEditRequestDto.getEmail())
                         .param("password", profileEditRequestDto.getPassword())
@@ -201,9 +204,11 @@ class MemberControllerTest {
 
         ProfileEditRequestDto editRequestDto = new ProfileEditRequestDto(memberId, basicMemberData().getEmail(), password, nickname);
         MemberResponseDto updatedMember = memberService.findById(memberId);
+        LoginMemberSession loginMemberSession = new LoginMemberSession(updatedMember.getEmail(), memberId);
 
         // when
         mockMvc.perform(put("/members/{email}/profile", basicMemberData().getEmail())
+                        .sessionAttr("loginMember",loginMemberSession)
                         .param("memberId", String.valueOf(editRequestDto.getMemberId()))
                         .param("email", editRequestDto.getEmail())
                         .param("nickname", editRequestDto.getNickname())

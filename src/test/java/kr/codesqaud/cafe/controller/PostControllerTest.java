@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,7 +93,11 @@ class PostControllerTest {
         Member member = memberRepository.findById(memberId).orElseThrow();
         Long savedId = postRepository.save(basicPostData(member), member);
 
-        mockMvc.perform(get("/posts/{id}/", savedId))
+        //when
+        MockHttpSession httpSession = new MockHttpSession();
+        httpSession.setAttribute("loginMember", new LoginMemberSession(member.getEmail(),memberId));
+
+        mockMvc.perform(get("/posts/{id}", savedId).session(httpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("post/post"))
                 .andDo(print());
