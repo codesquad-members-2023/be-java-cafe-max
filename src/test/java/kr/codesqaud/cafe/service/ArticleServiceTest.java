@@ -18,9 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import kr.codesqaud.cafe.article.ArticleService;
 import kr.codesqaud.cafe.article.domain.Article;
+import kr.codesqaud.cafe.article.dto.ArticleListItem;
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
-import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 import kr.codesqaud.cafe.article.exception.ArticleDeleteException;
@@ -47,7 +47,7 @@ class ArticleServiceTest {
 	private ArticlePostRequest articlePostRequest;
 	private ArticleUpdateRequest articleUpdateRequest;
 	private ArticleTitleAndContentResponse articleTitleAndContentResponse;
-	private ArticleResponseForList articleResponseForList;
+	private ArticleListItem articleResponseForList;
 	private PaginationDto paginationDto;
 	private List<Article> articles;
 	private static Long ArticleIdx = 1L;
@@ -86,7 +86,7 @@ class ArticleServiceTest {
 		given(articleMapper.toArticleResponseForList(any(Article.class))).willReturn(articleResponseForList);
 
 		//when
-		List<ArticleResponseForList> result = articleService.getArticleList(paginationDto);
+		List<ArticleListItem> result = articleService.getArticleList(paginationDto);
 
 		//then
 		Assertions.assertAll(

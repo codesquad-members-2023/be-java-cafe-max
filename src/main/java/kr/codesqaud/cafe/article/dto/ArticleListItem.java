@@ -1,6 +1,6 @@
 package kr.codesqaud.cafe.article.dto;
 
-public class ArticleResponseForList {
+public class ArticleListItem {
 	private final String title;
 
 	private final Long articleIdx;
@@ -9,7 +9,7 @@ public class ArticleResponseForList {
 
 	private String nickName;
 
-	public ArticleResponseForList(String title, Long articleIdx, String date, String nickName) {
+	public ArticleListItem(String title, Long articleIdx, String date, String nickName) {
 		this.title = title;
 		this.articleIdx = articleIdx;
 		this.date = date;

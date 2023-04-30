@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.article.domain.Article;
+import kr.codesqaud.cafe.article.dto.ArticleListItem;
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
-import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 import kr.codesqaud.cafe.article.exception.ArticleDeleteException;
@@ -34,7 +34,7 @@ public class ArticleService {
 		articleRepository.save(article);
 	}
 
-	public List<ArticleResponseForList> getArticleList(PaginationDto paginationDto) {
+	public List<ArticleListItem> getArticleList(PaginationDto paginationDto) {
 		return articleRepository.findAll(paginationDto).stream()
 			.map(articleMapper::toArticleResponseForList)
 			.collect(Collectors.toUnmodifiableList());

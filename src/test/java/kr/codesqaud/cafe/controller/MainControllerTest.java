@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import kr.codesqaud.cafe.article.ArticleService;
-import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
+import kr.codesqaud.cafe.article.dto.ArticleListItem;
 import kr.codesqaud.cafe.mainPage.MainController;
 import kr.codesqaud.cafe.mainPage.PaginationDto;
 
@@ -29,10 +29,10 @@ class MainControllerTest {
 	@MockBean
 	ArticleService articleService;
 
-	private List<ArticleResponseForList> articles;
+	private List<ArticleListItem> articles;
 
 	private static final Long COUNT_OF_ARTICLES = 10L;
-	
+
 	@BeforeEach
 	void setUp() {
 		articles = new ArrayList<>();

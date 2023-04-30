@@ -3,9 +3,9 @@ package kr.codesqaud.cafe.global.mapper;
 import org.springframework.stereotype.Component;
 
 import kr.codesqaud.cafe.article.domain.Article;
+import kr.codesqaud.cafe.article.dto.ArticleListItem;
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
-import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 
@@ -30,8 +30,8 @@ public class ArticleMapper {
 		return new ArticleTitleAndContentResponse(article.getTitle(), article.getContent());
 	}
 
-	public ArticleResponseForList toArticleResponseForList(Article article) {
-		return new ArticleResponseForList(article.getTitle(), article.getArticleIdx(), article.getDate(),
+	public ArticleListItem toArticleResponseForList(Article article) {
+		return new ArticleListItem(article.getTitle(), article.getArticleIdx(), article.getDate(),
 			article.getNickName());
 	}
 

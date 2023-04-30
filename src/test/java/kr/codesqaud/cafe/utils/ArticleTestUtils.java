@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import kr.codesqaud.cafe.article.domain.Article;
+import kr.codesqaud.cafe.article.dto.ArticleListItem;
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
-import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 import kr.codesqaud.cafe.mainPage.PaginationDto;
@@ -41,8 +41,8 @@ public class ArticleTestUtils {
 		return new ArticleTitleAndContentResponse(TITLE, CONTENT);
 	}
 
-	public static ArticleResponseForList createArticleResponseForList() {
-		return new ArticleResponseForList(TITLE, ARTICLE_IDX, DATE, NICK_NAME);
+	public static ArticleListItem createArticleResponseForList() {
+		return new ArticleListItem(TITLE, ARTICLE_IDX, DATE, NICK_NAME);
 	}
 
 	public static PaginationDto createPaginationDto() {
