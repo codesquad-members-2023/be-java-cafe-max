@@ -60,7 +60,7 @@ public class JdbcMemberRepository implements MemberRepository {
         MapSqlParameterSource parameter = new MapSqlParameterSource("email", email);
         parameter.addValue("password", password);
         return Optional.ofNullable(DataAccessUtils.singleResult(jdbcTemplate.query(sql, parameter,
-            (rs, rowNum) -> new Member(rs.getLong("id"), rs.getString("nickname")))));
+            memberIdAndNicknameRowMapper)));
     }
 
     @Override
@@ -100,4 +100,7 @@ public class JdbcMemberRepository implements MemberRepository {
         new Member(rs.getLong("id"), rs.getString("email"),
             rs.getString("password"), rs.getString("nickname"),
             rs.getTimestamp("create_date").toLocalDateTime());
+
+    private final RowMapper<Member> memberIdAndNicknameRowMapper = (rs, rowNum) ->
+        new Member(rs.getLong("id"), rs.getString("nickname"));
 }

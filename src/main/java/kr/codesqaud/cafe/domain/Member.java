@@ -11,15 +11,24 @@ public class Member {
     private final String nickname;
     private final LocalDateTime createDateTime;
 
-    public Member(Long id) {
-        this(id, null, null, null, null);
+    public Member(Long id, String email, String password, String nickname,
+        LocalDateTime createDateTime) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.createDateTime = createDateTime;
     }
+    public Member(Long id) {
+        this(id, null);
+    }
+
     public Member(Long id, String nickname) {
-        this(id, null, null, nickname, null);
+        this(id, null, null, nickname);
     }
 
     public Member(String email, String password, String nickname) {
-        this(null, email, password, nickname, LocalDateTime.now());
+        this(email, password, nickname, LocalDateTime.now());
     }
 
     public Member(Long id, String email, String password, String nickname) {
@@ -28,15 +37,6 @@ public class Member {
 
     public Member(String email, String password, String nickname, LocalDateTime createDateTime) {
         this(null, email, password, nickname, createDateTime);
-    }
-
-    public Member(Long id, String email, String password, String nickname,
-        LocalDateTime createDateTime) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.nickname = nickname;
-        this.createDateTime = createDateTime;
     }
 
     public Long getId() {
