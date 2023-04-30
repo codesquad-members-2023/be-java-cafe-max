@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PageInfo {
-    private final int PAGE_SIZE = 15;
-    private final int MAX_PAGE_COUNT = 5;
+    private static final int PAGE_SIZE = 15;
+    private static final int MAX_PAGE_COUNT = 5;
 
     private final int pageNum;
     private final int startNum;
@@ -24,7 +24,7 @@ public class PageInfo {
         calculatePages();
     }
 
-    public void calculatePages() {
+    private void calculatePages() {
         int startPage = ((pageNum - 1) / MAX_PAGE_COUNT) * MAX_PAGE_COUNT + 1;
         int endPage = Math.min(startPage + (MAX_PAGE_COUNT - 1), totalPage);
         for (int i = startPage; i <= endPage; i++) {
