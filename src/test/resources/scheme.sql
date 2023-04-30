@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS reply;
 DROP TABLE IF EXISTS article;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS user;
 
-CREATE TABLE users
+CREATE TABLE user
 (
     sequence bigint NOT NULL AUTO_INCREMENT,
     userId varchar(10) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE users
     primary key (sequence, userId)
     );
 
-ALTER TABLE users ADD INDEX(userId);
+ALTER TABLE user ADD INDEX(userId);
 
 CREATE TABLE article
 (
@@ -22,19 +22,19 @@ CREATE TABLE article
     contents text(1000) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (writer)
-    REFERENCES users (userId) ON UPDATE CASCADE
+    REFERENCES user (userId) ON UPDATE CASCADE
     );
 
 CREATE TABLE reply
 (
     id bigint NOT NULL AUTO_INCREMENT,
     article_id bigint NOT NULL,
-    users_id varchar(10) NOT NULL,
+    user_id varchar(10) NOT NULL,
     contents text(1000) NOT NULL,
     create_dateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (article_id)
     REFERENCES article (id) ON UPDATE CASCADE,
-    FOREIGN KEY (users_id)
-    REFERENCES users (userId) ON UPDATE CASCADE
+    FOREIGN KEY (user_id)
+    REFERENCES user (userId) ON UPDATE CASCADE
     );

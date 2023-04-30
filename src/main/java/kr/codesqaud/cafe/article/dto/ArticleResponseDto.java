@@ -8,47 +8,39 @@ import kr.codesqaud.cafe.article.Article;
 public class ArticleResponseDto {
 
     private long id;
-    private String writer;
+    private String loginId;
     private String title;
     private String contents;
+    private boolean isDeleted;
 
-    public ArticleResponseDto fromEntity(Article article) {
-        id = article.getId();
-        writer = article.getWriter();
-        title = article.getTitle();
-        contents = article.getContents();
-        return this;
+    public ArticleResponseDto(long id, String loginId, String title, String contents, boolean isDeleted) {
+        this.id = id;
+        this.loginId = loginId;
+        this.title = title;
+        this.contents = contents;
+        this.isDeleted = isDeleted;
+    }
+
+    public static ArticleResponseDto from(Article article) {
+        return new ArticleResponseDto(
+                article.getId(), article.getLoginId(), article.getTitle(), article.getContents(), article.getIsDeleted()
+        );
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(final String writer) {
-        this.writer = writer;
+    public String getLoginId() {
+        return loginId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(final String title) {
-        this.title = title;
-    }
-
     public String getContents() {
         return contents;
     }
 
-    public void setContents(final String contents) {
-        this.contents = contents;
-    }
 }

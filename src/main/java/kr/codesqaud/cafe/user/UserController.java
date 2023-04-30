@@ -4,7 +4,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import kr.codesqaud.cafe.login.LoginRequestDto;
+import kr.codesqaud.cafe.exception.user.UserNotFoundException;
+import kr.codesqaud.cafe.user.dto.LoginRequestDto;
+import kr.codesqaud.cafe.user.dto.ProfileResponseDto;
+import kr.codesqaud.cafe.user.dto.SignUpRequestDto;
 import kr.codesqaud.cafe.web.SessionConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,17 +29,17 @@ public class UserController {
     }
 
     @GetMapping("/users/new")
-    public String signUpPage() {
+    public String signUpPage(SignUpRequestDto signUpRequestDto) {
         return "user/form";
     }
 
     @PostMapping("/users")
     public String create(@Valid final SignUpRequestDto signUpRequestDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            // TODO: 에러 내용이 출력되게끔 로직 추가
-            return "redirect:/error";
+            return "user/form";
         }
-        userService.join(signUpRequestDto);
+        User user = signUpRequestDto.toEntity();
+        userService.join(user);
         return "redirect:/users";
     }
 
@@ -49,8 +52,9 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String viewUserProfile(@PathVariable final String userId, final Model model) {
-        User findUser = userService.findOne(userId).get();
-        model.addAttribute("user", findUser);
+        User findUser = userService.findOne(userId).orElseThrow(UserNotFoundException::new);  // TODO: 예외 처리를 서비스에서 해야하는지 컨트롤러에서 해야하는지?
+        ProfileResponseDto profileResponseDto = ProfileResponseDto.from(findUser);
+        model.addAttribute("user", profileResponseDto);
         return "user/profile";
     }
 
@@ -62,7 +66,7 @@ public class UserController {
     @PostMapping("/login")
     public String login(
             @Valid LoginRequestDto loginRequestDto, BindingResult bindingResult, HttpServletRequest request) {
-        User loginUser = userService.login(loginRequestDto);
+        User loginUser = userService.login(loginRequestDto.toEntity());
 
         if (bindingResult.hasErrors()) {
             logger.info("로그인 실패");
@@ -76,7 +80,7 @@ public class UserController {
         logger.info("로그인 성공");
 
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConstant.LOGIN_USER_ID, loginUser.getUserId());
+        session.setAttribute(SessionConstant.LOGIN_USER_ID, loginUser.getLoginId());
         session.setAttribute(SessionConstant.LOGIN_USER_NAME, loginUser.getName());
 
         return "redirect:/";

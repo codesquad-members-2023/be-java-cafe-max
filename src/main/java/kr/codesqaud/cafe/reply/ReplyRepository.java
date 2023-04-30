@@ -6,6 +6,8 @@ public interface ReplyRepository {
 
     long save(Reply reply);
 
+    void updateHasReply(long articleId, boolean hasReply);
+
     // TODO: 댓글 수정 기능 구현 필요
 //    long update(Reply reply);
 
@@ -14,5 +16,7 @@ public interface ReplyRepository {
     Reply findById(long id);
 
     List<Reply> findAllByArticleId(long id);
+
+    Long getReplyCountOf(long articleId);
 
 }

@@ -3,7 +3,6 @@ package kr.codesqaud.cafe.user;
 import java.util.List;
 import java.util.Optional;
 import kr.codesqaud.cafe.exception.signUpException.InvalidUserIdException;
-import kr.codesqaud.cafe.login.LoginRequestDto;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,14 +21,13 @@ public class UserService {
     /**
      * 회원 가입
      */
-    public void join(SignUpRequestDto signUpRequestDto) {  // TODO: 정보 확인을 위해 리턴값 필요
-        validaUserIdUniqueness(signUpRequestDto);
-        User user = signUpRequestDto.toEntity();
+    public void join(User user) {
+        validaUserIdUniqueness(user);
         userRepository.save(user);
     }
 
-    private void validaUserIdUniqueness(SignUpRequestDto signUpRequestDto) {
-        findOne(signUpRequestDto.getUserId()).ifPresent(user -> {
+    private void validaUserIdUniqueness(User user) {
+        findOne(user.getLoginId()).ifPresent(findUser -> {
                     throw new InvalidUserIdException();
                 });
     }
@@ -54,9 +52,9 @@ public class UserService {
     /**
      * @return null: 로그인 실패
      */
-    public User login(LoginRequestDto loginRequestDto) {
-        return userRepository.findById(loginRequestDto.getUserId())
-                .filter(u -> u.getPassword().equals(loginRequestDto.getPassword()))
+    public User login(User loginUser) {
+        return userRepository.findById(loginUser.getLoginId())
+                .filter(u -> u.getPassword().equals(loginUser.getPassword()))
                 .orElse(null);
     }
 }

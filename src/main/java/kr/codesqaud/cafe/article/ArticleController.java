@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,9 +44,12 @@ public class ArticleController {
 
     @GetMapping("/articles/{articleId}")
     public String viewArticle(@PathVariable final long articleId, final Model model) {
-        Article findArticle = articleService.findOne(articleId).get();
-        ArticleResponseDto articleResponseDto = new ArticleResponseDto().fromEntity(findArticle);
+        Article findArticle = articleService.findOne(articleId);
+        ArticleResponseDto articleResponseDto = ArticleResponseDto.from(findArticle);
         model.addAttribute("article", articleResponseDto);
+
+        Long replyCount = replyService.getReplyCountOf(articleId);
+        model.addAttribute("replyCount", replyCount);
 
         List<Reply> findReplies = replyService.findReplies(articleId);
         model.addAttribute("replies", findReplies);
@@ -54,8 +58,8 @@ public class ArticleController {
 
     @GetMapping("/articles/{articleId}/edit")
     public String showEditPage(@PathVariable final long articleId, final Model model) {
-        Article findArticle = articleService.findOne(articleId).get();
-        ArticleResponseDto articleResponseDto = new ArticleResponseDto().fromEntity(findArticle);
+        Article findArticle = articleService.findOne(articleId);
+        ArticleResponseDto articleResponseDto = ArticleResponseDto.from(findArticle);
 
         logger.info("게시글 수정 페이지 조회 요청 / " + "제목: " + findArticle.getTitle());
 
@@ -66,12 +70,22 @@ public class ArticleController {
     @PutMapping("/articles/{articleId}")
     public String editArticle
             (@PathVariable final long articleId, HttpSession session, final ArticleRequestDto articleRequestDto) {
-        String requesterID = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
+        String requesterId = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
 
-        logger.info("requesterID: " + requesterID + " / 게시글 수정 요청");
+        logger.info("requesterId: " + requesterId + " / 게시글 수정 요청");
 
-        Article article = articleRequestDto.toEntity(requesterID);
+        Article article = articleRequestDto.toEntity(requesterId);
         articleService.edit(articleId, article);
         return "redirect:/articles/{articleId}";
+    }
+
+    @DeleteMapping("/articles/{articleId}")
+    public String deleteArticle(@PathVariable final long articleId, HttpSession session) {
+        String requesterId = (String) session.getAttribute(SessionConstant.LOGIN_USER_ID);
+
+        logger.info("requesterId: {}, articleId: {} / 게시글 삭제 요청", requesterId, articleId);
+
+        articleService.delete(articleId, requesterId);
+        return "redirect:/";
     }
 }

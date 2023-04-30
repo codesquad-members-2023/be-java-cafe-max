@@ -1,13 +1,9 @@
-package kr.codesqaud.cafe.service;
+package kr.codesqaud.cafe.article;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import java.util.List;
-import kr.codesqaud.cafe.article.Article;
-import kr.codesqaud.cafe.article.ArticleRepository;
-import kr.codesqaud.cafe.article.ArticleRepositoryImpl;
-import kr.codesqaud.cafe.article.ArticleService;
 import kr.codesqaud.cafe.user.SignUpRequestDto;
 import kr.codesqaud.cafe.user.UserRepository;
 import kr.codesqaud.cafe.user.UserRepositoryImpl;
@@ -55,7 +51,7 @@ class ArticleServiceTest {
     void saveSuccess() {
         // given
         Article article = new Article.Builder()
-                .writer("tester1")
+                .loginId("tester1")
                 .title("title1")
                 .contents("contents1")
                 .build();
@@ -69,13 +65,13 @@ class ArticleServiceTest {
     void findArticles() {
         // given
         Article article1 = new Article.Builder()
-                .writer("tester1")
+                .loginId("tester1")
                 .title("title1")
                 .contents("contents1")
                 .build();
 
         Article article2 = new Article.Builder()
-                .writer("tester2")
+                .loginId("tester2")
                 .title("title2")
                 .contents("contents2")
                 .build();
@@ -95,7 +91,7 @@ class ArticleServiceTest {
     void findOne() {
         // given
         Article article = new Article.Builder()
-                .writer("tester2")
+                .loginId("tester2")
                 .title("title2")
                 .contents("contents2")
                 .build();
@@ -105,7 +101,7 @@ class ArticleServiceTest {
         Article findArticle = articleService.findOne(id).get();
 
         // then
-        String writer = findArticle.getWriter();
+        String writer = findArticle.getLoginId();
         String title = findArticle.getTitle();
         String contents = findArticle.getContents();
 
@@ -119,14 +115,14 @@ class ArticleServiceTest {
     void edit() {
         // given
         Article article = new Article.Builder()
-                .writer("tester2")
+                .loginId("tester2")
                 .title("title2")
                 .contents("contents2")
                 .build();
         long id = articleRepository.save(article);
 
         Article request = new Article.Builder()
-                .writer("tester2")
+                .loginId("tester2")
                 .title("title2")
                 .contents("contents2")
                 .build();

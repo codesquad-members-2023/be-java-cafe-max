@@ -5,83 +5,62 @@ package kr.codesqaud.cafe.user;
  */
 public class User {
 
-    private long sequence;
-    private String userId;
+    private long id;
+    private String loginId;
     private String password;
     private String name;
     private String email;
 
-    public User(String userId, String password, String name, String email) {
-        this.userId = userId;
+    public User(String loginId, String password, String name, String email) {
+        this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.email = email;
     }
 
     private User(Builder builder) {
-        sequence = builder.sequence;
-        userId = builder.userId;
+        id = builder.id;
+        loginId = builder.loginId;
         password = builder.password;
         name = builder.name;
         email = builder.email;
     }
 
-    public long getSequence() {
-        return sequence;
+    public long getId() {
+        return id;
     }
 
-    public void setSequence(final long sequence) {
-        this.sequence = sequence;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(final String userId) {
-        this.userId = userId;
+    public String getLoginId() {
+        return loginId;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(final String password) {
-        this.password = password;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(final String email) {
-        this.email = email;
-    }
-
-
     public static class Builder {
 
-        private long sequence;
-        private String userId;
+        private long id;
+        private String loginId;
         private String password;
         private String name;
         private String email;
 
-        public Builder sequence(long sequence) {
-            this.sequence = sequence;
+        public Builder id(long id) {
+            this.id = id;
             return this;
         }
 
-        public Builder userId(String userId) {
-            this.userId = userId;
+        public Builder loginId(String loginId) {
+            this.loginId = loginId;
             return this;
         }
 

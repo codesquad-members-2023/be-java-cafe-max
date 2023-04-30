@@ -7,39 +7,28 @@ import kr.codesqaud.cafe.article.Article;
  */
 public class ArticleRequestDto {
 
-    private String writer;
-    private String title;
-    private String contents;
+    private final String title;
+    private final String contents;
 
-    public Article toEntity(String writer) {
+    public ArticleRequestDto(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
+
+    public Article toEntity(String loginId) {
         return new Article.Builder()
-                .writer(writer)
+                .loginId(loginId)
                 .title(title)
                 .contents(contents)
                 .build();
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(final String writer) {
-        this.writer = writer;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(final String title) {
-        this.title = title;
-    }
-
     public String getContents() {
         return contents;
     }
 
-    public void setContents(final String contents) {
-        this.contents = contents;
-    }
 }

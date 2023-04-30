@@ -4,6 +4,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ReplyService {
@@ -15,6 +16,7 @@ public class ReplyService {
         this.replyRepository = replyRepository;
     }
 
+    @Transactional
     public long save(long articleId, String userId, final ReplyRequestDto replyRequestDto) {
         Reply reply = new Reply.Builder()
                 .articleId(articleId)
@@ -22,6 +24,8 @@ public class ReplyService {
                 .contents(replyRequestDto.getContents())
                 .build();
         long id = replyRepository.save(reply);
+
+        replyRepository.updateHasReply(articleId, true);
         logger.info("댓글 저장 성공, 댓글 id: {}", id);
         return id;
     }
@@ -39,14 +43,22 @@ public class ReplyService {
 //    }
 
     /**
-     * @param id reply id
+     * @return 댓글 삭제 후 댓글 개수
      */
-    public long deleteByReplyId(long id, String requesterId) {
-        String originId = findOne(id).getUserId();
+    @Transactional
+    public long deleteByReplyId(long articleId, long replyId, String requesterId) {
+        String originId = findOne(replyId).getLoginId();
         if (!requesterId.equals(originId)) {
             throw new IllegalArgumentException(); // TODO: 커스텀 에러로 변경
         }
-        return replyRepository.deleteOneByReplyId(id);
+        if (replyRepository.getReplyCountOf(articleId) == 1) {
+            replyRepository.updateHasReply(articleId, false);
+        }
+
+        replyRepository.deleteOneByReplyId(replyId);
+
+        logger.info("댓글 삭제 성공, 게시글 id : {}, 댓글 id : {}", articleId, replyId);
+        return replyRepository.getReplyCountOf(articleId);
     }
 
     public Reply findOne(long id) {
@@ -58,5 +70,9 @@ public class ReplyService {
      */
     public List<Reply> findReplies(long id) {
         return replyRepository.findAllByArticleId(id);
+    }
+
+    public Long getReplyCountOf(long articleId) {
+        return replyRepository.getReplyCountOf(articleId);
     }
 }

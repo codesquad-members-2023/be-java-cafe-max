@@ -1,7 +1,8 @@
-package kr.codesqaud.cafe.user;
+package kr.codesqaud.cafe.user.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import kr.codesqaud.cafe.user.User;
 
 /**
  * 회원 DTO 객체
@@ -9,7 +10,7 @@ import javax.validation.constraints.Size;
 public class SignUpRequestDto {
 
     @Size(min = 1, max = 10)
-    private String userId;
+    private String loginId;
 
     @Size(min = 8, max = 10)
     private String password;
@@ -20,8 +21,8 @@ public class SignUpRequestDto {
     @Email
     private String email;
 
-    public SignUpRequestDto(String userId, String password, String name, String email) {
-        this.userId = userId;
+    public SignUpRequestDto(String loginId, String password, String name, String email) {
+        this.loginId = loginId;
         this.password = password;
         this.name = name;
         this.email = email;
@@ -29,15 +30,15 @@ public class SignUpRequestDto {
 
     public User toEntity() {
         return new User.Builder()
-                .userId(userId)
+                .loginId(loginId)
                 .password(password)
                 .name(name)
                 .email(email)
                 .build();
     }
 
-    public String getUserId() {
-        return userId;
+    public String getLoginId() {
+        return loginId;
     }
 
     public String getPassword() {

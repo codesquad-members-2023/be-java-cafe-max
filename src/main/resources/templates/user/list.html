@@ -21,8 +21,8 @@
               </thead>
               <tbody>
                 <tr th:each="user : ${users}">
-                    <td th:text="${user.sequence}"></td>
-                    <td><a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}"></a></td>
+                    <td th:text="${user.id}"></td>
+                    <td><a th:href="@{/users/{userId}(userId=${user.loginId})}" th:text="${user.loginId}"></a></td>
                     <td th:text="${user.name}"></td>
                     <td th:text="${user.email}"></td>
                     <td><a href="#" class="btn btn-success" role="button">수정</a></td>
