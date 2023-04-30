@@ -28,10 +28,7 @@ public class LoadMoreReplyDto {
 	}
 
 	private boolean isLoadButtonAvailable() {
-		if (countOfRepliesInDb > 5) {
-			return true;
-		}
-		return false;
+		return countOfRepliesInDb > 5;
 	}
 
 	/**
