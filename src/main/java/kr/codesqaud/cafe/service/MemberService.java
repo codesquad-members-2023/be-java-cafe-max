@@ -68,6 +68,8 @@ public class MemberService {
         }
 
         findMember.setNickname(profileEditRequestDto.getNickname());
+        findMember.setEmail(profileEditRequestDto.getEmail());
+        findMember.setPassword(profileEditRequestDto.getPassword());
         memberRepository.update(findMember);
     }
     @Transactional

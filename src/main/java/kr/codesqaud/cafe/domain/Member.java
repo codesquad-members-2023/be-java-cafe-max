@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class Member {
     private Long memberId;
     private String email;
-    private final String password;
+    private String password;
     private String nickname;
     private final LocalDateTime createDate;
 
@@ -50,6 +50,10 @@ public class Member {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public boolean isDifferentNickname(String nickname) {
