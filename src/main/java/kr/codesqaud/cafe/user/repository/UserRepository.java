@@ -25,7 +25,7 @@ public class UserRepository{
     }
 
     public String save(User user) {
-        String sql = "INSERT INTO user (userId, password, name, email) VALUES (:userId, :password, :name, :email)";
+        String sql = "INSERT INTO user_account (userId, password, name, email) VALUES (:userId, :password, :name, :email)";
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(user);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
@@ -33,12 +33,12 @@ public class UserRepository{
     }
 
     public List<User> findAll() {
-        String sql = "SELECT userId, password, name, email FROM user";
+        String sql = "SELECT userId, password, name, email FROM user_account";
         return namedParameterJdbcTemplate.query(sql, userRowMapper());
     }
 
     public Optional<User> findById(String userId) {
-        String sql = "SELECT userId, password, name, email FROM user WHERE userId = :userId";
+        String sql = "SELECT userId, password, name, email FROM user_account WHERE userId = :userId";
         SqlParameterSource namedParameters = new MapSqlParameterSource("userId", userId);
         try {
             User user = namedParameterJdbcTemplate.queryForObject(sql, namedParameters, userRowMapper());

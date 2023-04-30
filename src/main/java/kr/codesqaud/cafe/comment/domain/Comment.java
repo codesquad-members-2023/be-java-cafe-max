@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Comment {
 
-    private final long commentId;
+    private final Long commentId;
     private final long articleId;
     private final String contents;
     private final String userId;

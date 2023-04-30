@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 public class ArticleRepository {
@@ -28,7 +27,10 @@ public class ArticleRepository {
         SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(article);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
-        return Objects.requireNonNull(keyHolder.getKey()).longValue();
+        if (keyHolder.getKey() == null) {
+            throw new RuntimeException("저장시 키 값을 가져오지 못했습니다.");
+        }
+        return keyHolder.getKey() .longValue();
     }
 
 
@@ -64,5 +66,18 @@ public class ArticleRepository {
                 rs.getLong("id"),
                 rs.getTimestamp("created_time").toLocalDateTime()
         );
+    }
+
+    public int countAll() {
+        String sql = "SELECT COUNT(*) FROM article";
+        return namedParameterJdbcTemplate.queryForObject(sql, new MapSqlParameterSource(), Integer.class);
+    }
+
+    public List<Article> findByRange(int from, int range) {
+        String sql = "SELECT id, author, title, contents, created_time FROM article ORDER BY created_time DESC LIMIT :from, :range";
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("from", from);
+        parameters.addValue("range", range);
+        return namedParameterJdbcTemplate.query(sql, parameters, articleRowMapper());
     }
 }

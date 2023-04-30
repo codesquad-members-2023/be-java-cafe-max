@@ -41,8 +41,10 @@ public class ArticleController {
 
     //인덱스(홈)으로 매핑하여 글 목록을 보여줌
     @GetMapping
-    public String listArticles(Model model) {
-        model.addAttribute("articles", articleService.getPreviewDtos());
+    public String listArticles(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+        int pageSize = 3;
+        model.addAttribute("articles", articleService.findByRange((page - 1) * pageSize, pageSize));
+        model.addAttribute("paginationInfo", articleService.getPaginationInfo(page, pageSize));
         return "articles/list";
     }
 
@@ -54,6 +56,7 @@ public class ArticleController {
         if (!comments.isEmpty()) model.addAttribute("comments", comments);
         return Session.isLoggedIn(session) ? "articles/show-detail" : "redirect:/user/login";
     }
+
 
     @GetMapping("/{id}/modify")
     public String showModifyForm(@PathVariable long id, Model model, HttpSession session) {

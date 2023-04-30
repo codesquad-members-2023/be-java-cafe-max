@@ -1,4 +1,4 @@
-drop table if exists articles CASCADE;
+drop table if exists article CASCADE;
 
 CREATE TABLE article (
                          id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -8,16 +8,16 @@ CREATE TABLE article (
                          created_time DATETIME NOT NULL
 );
 
-drop table if exists users CASCADE;
+drop table if exists user_account CASCADE;
 
-CREATE TABLE [user] (
+CREATE TABLE user_account (
                             userid VARCHAR(255) PRIMARY KEY NOT NULL,
                             password VARCHAR(255) NOT NULL,
                             name VARCHAR(255) NOT NULL,
                             email VARCHAR(255) NOT NULL
 );
 
-drop table if exists comments CASCADE;
+drop table if exists comment CASCADE;
 
 CREATE TABLE comment (
                           comment_id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -28,4 +28,4 @@ CREATE TABLE comment (
 );
 
 
-INSERT INTO users (userid, password, name, email) VALUES ('test', 'Qwer1234', 'testuser', 'test@test.com');
+INSERT INTO user_account (userid, password, name, email) VALUES ('test', 'Qwer1234', 'testuser', 'test@test.com');
