@@ -185,8 +185,11 @@ class MemberControllerTest {
 
     @Test
     void profileEditForm() throws Exception {
+        Long memberId = memberService.join(basicMemberJoinRequestDtoData());
+        Member member = memberRepository.findById(memberId).orElseThrow();
+
         // when,then
-        mockMvc.perform(get("/members/{email}/profile", basicMemberData().getEmail())
+        mockMvc.perform(get("/members/{email}/profile", member.getEmail())
                         .sessionAttr("loginMember", new LoginMemberSession("test@test.com", 0L)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("member/profileEdit"))
