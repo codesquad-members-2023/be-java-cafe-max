@@ -206,6 +206,8 @@ class MemberControllerTest {
         String nickname = "피오니";
 
         ProfileEditRequestDto editRequestDto = new ProfileEditRequestDto(memberId, basicMemberData().getEmail(), password, nickname);
+        memberService.update(editRequestDto);
+
         MemberResponseDto updatedMember = memberService.findById(memberId);
         LoginMemberSession loginMemberSession = new LoginMemberSession(updatedMember.getEmail(), memberId);
 
