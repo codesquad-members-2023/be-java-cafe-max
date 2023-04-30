@@ -11,7 +11,8 @@ public enum ErrorCode {
     NOT_FOUND_SESSION(HttpStatus.BAD_REQUEST, "U0004", "로그인이 필요한 기능입니다.","error/401"),
     UNAUTHORIZED_USER(HttpStatus.UNAUTHORIZED, "U0005", "인증되지 않은 사용자입니다.", "error/401"),
     NOT_MATCH_USER_AND_ARTICLE(HttpStatus.FORBIDDEN, "U0006", "다른 사람의 글을 수정할 수 없습니다.", "error/401"),
-    NOT_MATCH_USER_AND_REPLY(HttpStatus.FORBIDDEN, "U0007", "다른 사람의 댓글을 수정할 수 없습니다.", "error/401");
+    NOT_MATCH_USER_AND_REPLY(HttpStatus.FORBIDDEN, "U0007", "다른 사람의 댓글을 수정할 수 없습니다.", "error/401"),
+    NOT_MATCH_ARTICLE_USER_AND_REPLY_USER(HttpStatus.FORBIDDEN, "U0008", "다른 사람의 댓글이 있는 게시글은 삭제할 수 없습니다.", "error/401");
 
     private final HttpStatus status;
     private final String code;

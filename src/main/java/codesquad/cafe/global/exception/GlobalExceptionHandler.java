@@ -21,7 +21,7 @@ public class GlobalExceptionHandler extends DefaultHandlerExceptionResolver {
     @ExceptionHandler(CustomException.class)
     public ModelAndView handleCustomException(CustomException e) {
         ModelAndView modelAndView = new ModelAndView();
-        ErrorResponse errorResponse = new ErrorResponse(e);
+        ErrorResponse errorResponse = new ErrorResponse(e.getErrorCode());
         modelAndView.setViewName(errorResponse.getViewName());
         modelAndView.addObject("message",errorResponse.getMessage());
         return modelAndView;
