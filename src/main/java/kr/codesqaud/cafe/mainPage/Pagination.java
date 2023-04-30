@@ -2,6 +2,8 @@ package kr.codesqaud.cafe.mainPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Pagination {
 	private List<Integer> pageNumList;
@@ -40,8 +42,8 @@ public class Pagination {
 		// 이전 페이지네이션 시작점
 		previousPage = Math.max(startPage - pageSize, 1);
 
-		for (int i = startPage; i <= endPage; i++) {
-			pageNumList.add(i);
-		}
+		pageNumList = IntStream.rangeClosed(startPage, endPage)
+			.boxed()
+			.collect(Collectors.toUnmodifiableList());
 	}
 }
