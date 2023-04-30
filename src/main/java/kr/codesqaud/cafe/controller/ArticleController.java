@@ -1,9 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
-import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.reply.Reply;
-import kr.codesqaud.cafe.dto.ArticleFormDto;
-import kr.codesqaud.cafe.dto.LoginSessionDto;
+import kr.codesqaud.cafe.dto.*;
 import kr.codesqaud.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,22 +39,26 @@ public class ArticleController {
     public String getShow(@PathVariable int index, Model model, HttpSession session) {
         LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
         articleService.checkLogin(sessionDto);
-        Article article = articleService.findByIdx(index);
+        ArticleResponseDto article = articleService.findByIdx(index);
         model.addAttribute("article", article);
         model.addAttribute("auth", articleService.checkIdentity(article.getUserId(), sessionDto.getId()));
         model.addAttribute("nickname", sessionDto.getName());
         return "qna/show";
     }
 
-    @GetMapping("/")
-    public String getIndex(Model model) {
-        model.addAttribute("articleList", articleService.getAricleList());
+    @GetMapping
+    public String getIndex(Model model, @RequestParam(defaultValue = "1")int nowPage) {
+        Paging paging = articleService.createPaging(nowPage);
+        model.addAttribute("first",1);
+        model.addAttribute("last",paging.getLastPage());
+        model.addAttribute("paging", articleService.pagingList(paging));
+        model.addAttribute("articleList", articleService.getAricleList(paging));
         return "index";
     }
 
     @GetMapping("/article/update/{index}")
     public String getUpdatePage(@PathVariable int index, Model model, HttpSession session) {
-        Article article = articleService.findByIdx(index);
+        ArticleResponseDto article = articleService.findByIdx(index);
         LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
         articleService.checkAuth(article.getUserId(), sessionDto);
         model.addAttribute("setTitle", article.getTitle());
@@ -78,10 +80,10 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/article/getReply/{index}")
+    @GetMapping("/article/reply/{index}")
     @ResponseBody
-    public List<Reply> getReply(@PathVariable int index) {
-        return articleService.replyList(index);
+    public List<ReplyResponseDto> getReply(@PathVariable int index, @RequestParam int start) {
+        return articleService.replyList(index, start);
     }
 
     @PostMapping("/article/{index}/reply")
@@ -92,11 +94,17 @@ public class ArticleController {
         return articleService.writeReply(index, contents, sessionDto.getName());
     }
 
-    @DeleteMapping("/article/{articleIndex}/delete/{index}")
+    @DeleteMapping("/article/reply/{index}")
     @ResponseBody
-    public boolean deleteReply(@PathVariable int articleIndex, @PathVariable int index, HttpSession session) {
+    public boolean deleteReply(@PathVariable int index, HttpSession session) {
         LoginSessionDto sessionDto = (LoginSessionDto) session.getAttribute("sessionId");
-        return articleService.deleteReply(articleIndex,index,sessionDto);
+        return articleService.deleteReply(index, sessionDto);
+    }
+
+    @GetMapping("/getReplyCount/{index}")
+    @ResponseBody
+    public int getReplyCount(@PathVariable int index) {
+        return articleService.replyCount(index);
     }
 
 }

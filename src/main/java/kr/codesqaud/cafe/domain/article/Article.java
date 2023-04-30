@@ -18,6 +18,8 @@ public class Article {
 
         private String date;
 
+        private int replySize;
+
         public Builder index(int val) {
             index = val;
             return this;
@@ -47,6 +49,7 @@ public class Article {
             contents = val;
             return this;
         }
+
 
         public Article build() {
             return new Article(this);
@@ -81,4 +84,10 @@ public class Article {
     public String getUserId() {
         return userId;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+
 }

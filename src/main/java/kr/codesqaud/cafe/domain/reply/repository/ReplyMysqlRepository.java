@@ -31,12 +31,24 @@ public class ReplyMysqlRepository implements ReplyRepository {
     }
 
     @Override
-    public List<Reply> findAll(int articleIdx) {
-        SqlParameterSource namedParameters = new MapSqlParameterSource("articleIdx", articleIdx);
+    public List<Reply> findAll(int articleIdx, int start) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("articleIdx", articleIdx);
+        namedParameters.addValue("start", start);
         return namedParameterJdbcTemplate.query(
-                "SELECT IDX , ARTICLE_IDX , REPLY_WRITER , REPLY_CONTENTS , DATE FROM REPLY WHERE DELETED = FALSE AND ARTICLE_IDX = :articleIdx ",
+                "SELECT IDX , ARTICLE_IDX , REPLY_WRITER , REPLY_CONTENTS , DATE " +
+                        "FROM REPLY WHERE DELETED = FALSE" +
+                        " AND ARTICLE_IDX = :articleIdx LIMIT :start , 5  ",
                 namedParameters, rowMapper()
         );
+    }
+
+    @Override
+    public int count(int articleIdx) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("articleIdx", articleIdx);
+        return namedParameterJdbcTemplate.query("SELECT COUNT(*) FROM REPLY " +
+                        "WHERE DELETED = FALSE AND ARTICLE_IDX = :articleIdx",
+                namedParameters, (rs, rowNum) -> rs.getInt(1)).get(0);
     }
 
     @Override
@@ -47,14 +59,26 @@ public class ReplyMysqlRepository implements ReplyRepository {
         );
     }
 
-//    @Override
-//    public Optional<Reply> findByIdx(int index) {
-//        SqlParameterSource namedParameters = new MapSqlParameterSource("index", index);
-//        List<Reply> replies = namedParameterJdbcTemplate.query(
-//                "SELECT  ID  WHERE IDX = :index", namedParameters, rowMapper()
-//        );
-//        return replies.stream().findFirst();
-//    }
+    @Override
+    public Optional<Reply> findByIdx(int index) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("index", index);
+        List<Reply> replies = namedParameterJdbcTemplate.query(
+                "SELECT IDX, ARTICLE_IDX , REPLY_WRITER , REPLY_CONTENTS , DATE , DELETED  " +
+                        "FROM REPLY  WHERE IDX = :index",
+                namedParameters, rowMapper()
+        );
+        return replies.stream().findFirst();
+    }
+
+    @Override
+    public int existReply(int index) {
+        SqlParameterSource namedParameters = new MapSqlParameterSource("index", index);
+        return namedParameterJdbcTemplate.queryForObject(
+                "SELECT COUNT(*) FROM ARTICLES " +
+                        "AS A LEFT JOIN REPLY AS R ON A.IDX = R.ARTICLE_IDX " +
+                        "WHERE A.IDX = :index AND R.REPLY_WRITER != A.WRITER AND R.DELETED = FALSE",
+                namedParameters, Integer.class);
+    }
 
     private RowMapper<Reply> rowMapper() {
         return (rs, rowNum) ->

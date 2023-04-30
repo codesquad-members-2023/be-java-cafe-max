@@ -4,14 +4,15 @@ import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.domain.article.repository.ArticleRepository;
 import kr.codesqaud.cafe.domain.reply.Reply;
 import kr.codesqaud.cafe.domain.reply.repository.ReplyRepository;
-import kr.codesqaud.cafe.dto.ArticleFormDto;
-import kr.codesqaud.cafe.dto.LoginSessionDto;
+import kr.codesqaud.cafe.dto.*;
 import kr.codesqaud.cafe.exception.DeniedAccessException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class ArticleService {
@@ -54,12 +55,21 @@ public class ArticleService {
     }
 
 
-    public List<Article> getAricleList() {
-        return articleRepository.findAll();
+    public List<ArticleResponseDto> getAricleList(Paging paging) {
+        return articleRepository.findAll(paging)
+                .stream()
+                .map(article -> {
+                    ArticleResponseDto dto = new ArticleResponseDto(article);
+                    dto.setReplyCount(replyRepository.count(article.getIndex()));
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
-    public Article findByIdx(int idx) {
-        return articleRepository.findByIdx(idx).orElseThrow(() -> new NotFoundException("게시글 찾을수 없음"));
+    public ArticleResponseDto findByIdx(int idx) {
+        Article article = articleRepository.findByIdx(idx)
+                .orElseThrow(() -> new NotFoundException("게시글 찾을수 없음"));
+        return new ArticleResponseDto(article);
     }
 
     public void update(int index, ArticleFormDto dto, String name) {
@@ -74,12 +84,8 @@ public class ArticleService {
     }
 
     public void delete(int index) {
-        Article article = articleRepository.findByIdx(index).orElseThrow(() -> new NotFoundException("게시글 찾을 수 없음"));
-        List<Reply> replyList = replyRepository.findAll(index);
-        for(Reply temp : replyList) {
-            if(!temp.validateAuthor(article.getWriter())){
-                throw new DeniedAccessException("다른 사람이 댓글을 남기면 지울 수 없습니다.");
-            }
+        if(replyRepository.existReply(index) != 0) {
+            throw new DeniedAccessException("다른 사람이 댓글을 남기면 지울 수 없습니다.");
         }
         articleRepository.delete(index);
     }
@@ -94,12 +100,15 @@ public class ArticleService {
         return reply;
     }
 
-    public List<Reply> replyList(int index) {
-        return replyRepository.findAll(index);
+    public List<ReplyResponseDto> replyList(int index, int start) {
+        return replyRepository.findAll(index,start)
+                .stream()
+                .map(ReplyResponseDto::new)
+                .collect(Collectors.toList());
     }
 
-    public boolean deleteReply(int articleIndex, int index, LoginSessionDto dto) {
-        if (replyRepository.exist(index) && deleteAuth(articleIndex, dto)) {
+    public boolean deleteReply( int index, LoginSessionDto dto ) {
+        if (replyRepository.exist(index) && deleteAuth(index, dto)) {
             replyRepository.delete(index);
             return true;
         }
@@ -107,10 +116,27 @@ public class ArticleService {
     }
 
     public boolean deleteAuth(int index, LoginSessionDto dto) {
-        List<Reply> list = replyRepository.findAll(index);
-        for (Reply temp : list) {
-            return temp.validateAuthor(dto.getName());
-        }
-        return true;
+        Reply reply = replyRepository.findByIdx(index).orElseThrow(() -> new NotFoundException("댓글 찾을수 없음"));
+            if(reply.validateAuthor(dto.getName())){
+                return true;
+            }
+        return false;
     }
+
+    public Paging createPaging(int nowPage){
+        int all = articleRepository.allCount();
+        return new Paging(nowPage,all);
+    }
+
+    public List<Paging> pagingList(Paging paging){
+        return IntStream.rangeClosed(paging.getStartPage(), paging.getEndPage())
+                .mapToObj(i -> new Paging(i, paging.getTotalCount()))
+                .collect(Collectors.toList());
+    }
+
+    public int replyCount(int index){
+        return replyRepository.count(index);
+    }
+
+
 }

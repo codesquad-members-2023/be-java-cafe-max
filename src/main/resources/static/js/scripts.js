@@ -1,13 +1,39 @@
-// String.prototype.format = function() {
-//   var args = arguments;
-//   return this.replace(/{(\d+)}/g, function(match, number) {
-//     return typeof args[number] != 'undefined'
-//         ? args[number]
-//         : match
-//         ;
-//   });
-// };
 
+let start = 0;
+const index = window.location.pathname.split("/")[3];
+let nickname = $("#hidden").val();
+let count = 0;
+
+
+function createArticleTemplate(reply) {
+  $(".qna-comment-count").html(count+"개 의견");
+  let template = '<article class="article re">'+
+      '  <div class="article-header">'+
+      '    <div class="article-header-thumb">'+
+      '      <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">'+
+      '    </div>'+
+      '    <div class="article-header-text">'+
+      '      <a href="#" class="article-author-name">'+ reply["replyWriter"] +'</a>'+
+      '      <div class="article-header-time">'+ reply["date"] +'</div>'+
+      '    </div>'+
+      '  </div>'+
+      '  <div class="article-doc comment-doc">'+ reply["replyContents"] +'</div>'+
+      '  <div class="article-util">';
+  if(nickname == reply["replyWriter"]) {
+    template += '<ul class="article-util-list">'+
+        '  <li>'+
+        '    <form class="delete-answer-form" action="/article/reply/'+ reply["index"] +'" method="POST">'+
+        '      <input type="hidden" name="_method" value="DELETE">'+
+        '      <button type="button" class="delete-answer-button">삭제</button>'+
+        '    </form>'+
+        '  </li>'+
+        '</ul>';
+  }
+  template += '</div>'+
+      '</article>';
+  return template;
+}
+// let replyCount = $("#replyCount").val();
 getInfo()
 $(".submit-write button").click(writeReply);
 function writeReply() {
@@ -18,59 +44,32 @@ function writeReply() {
     method : "POST",
     data : form,
     success : function(){
+      start = 0;
       getInfo();
     }
   })
 }
 
 function getInfo(){
-  const index = window.location.pathname.split("/")[3];
-  let nickname = $("#hidden").val()
+  getReplyCount()
   $.ajax({
-    url:"/article/getReply/"+index,
+    url:"/article/reply/"+index,
     method : "GET",
+    data : {"start" : start},
     success : function(result){
-      let answerTemplate = $("#answerTemplate").text();
       let template = "";
       for(let i = 0 ; i<result.length; i++){
-      template +=  '<article class="article re">'+
-        '	<div class="article-header">'+
-        '		<div class="article-header-thumb">'+
-        '			<img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">'+
-        '		</div>'+
-        '		<div class="article-header-text">'+
-        '			<a href="#" class="article-author-name">'+result[i]["replyWriter"]+'</a>'+
-        '			<div class="article-header-time">'+result[i]["date"]+'</div>'+
-        '		</div>'+
-        '	</div>'+
-        '	<div class="article-doc comment-doc">'+
-        result[i]["replyContents"]+
-        '	</div>'+
-        '	<div class="article-util">';
-        if(nickname==result[i]["replyWriter"]){
-          template +=
-              '           <ul class="article-util-list">'+
-              '               <li>'+
-              '                   <a class="link-modify-article" href="/api/qna/updateAnswer/'+result[i]["articleIdx"]+'">수정</a>'+
-              '               </li>'+
-              '               <li>'+
-              '                   <form class="delete-answer-form" action="/article/'+result[i]["articleIdx"]+'/delete/'+result[i]["index"]+'" method="POST">'+
-              '                       <input type="hidden" name="_method" value="DELETE">'+
-              '                       <button type="button" class="delete-answer-button">삭제</button>'+
-              '                   </form>'+
-              '               </li>'+
-              '           </ul>';
-        }
-          template +=
-            '	</div>'+
-            '</article>';
+        template += createArticleTemplate(result[i]);
+      }
+      if(count > 5) {
+        template += '<button id="more">더보기</button>';
       }
       $(".qna-comment-slipp-articles").html(template);
       $("textarea[name=contents]").val("");
-
     }
   })
 }
+
 $(document).on("click", ".delete-answer-button", deleteReply)
   function deleteReply() {
     const url = $(this).parent().attr("action");
@@ -79,6 +78,7 @@ $(document).on("click", ".delete-answer-button", deleteReply)
       type: 'delete',
       success: function(result) {
         if (result) {
+          start = 0;
           getInfo();
           return;
         }
@@ -87,22 +87,42 @@ $(document).on("click", ".delete-answer-button", deleteReply)
     })
   }
 
+$(document).on("click", "#more", more)
 
-// function getInfo(){
-//   const index = window.location.pathname.split("/")[3];
-//   let nickname = $("#hidden").val()
-//   $.ajax({
-//     url:"/article/getReply/"+index,
-//     method : "GET",
-//     success : function(result){
-//       let answerTemplate = $("#answerTemplate").text();
-//       let template = "";
-//       for(let i = 0 ; i<result.length; i++){
-//         template += answerTemplate.format(result[i]["replyWriter"], result[i]["date"], result[i]["replyContents"], result[i]["articleIdx"], result[i]["index"]);
-//       }
-//       $(".qna-comment-slipp-articles").html(template);
-//       $("textarea[name=contents]").val("");
-//
-//     }
-//   })
-// }
+function more (){
+  $("#more").remove();
+  start += 5;
+  $.ajax({
+    url:"/article/reply/"+index,
+    method : "GET",
+    data : {"start" : start},
+    success : function(result){
+      let template = "";
+      for(let i = 0 ; i<result.length; i++){
+        template += createArticleTemplate(result[i]);
+      }
+
+        template += '<button id="more">더보기</button>';
+
+      $(".qna-comment-slipp-articles").append(template);
+      $("textarea[name=contents]").val("");
+
+      if(start+5>=count) {
+        start-=5;
+        $("#more").remove();
+      }
+    }
+  })
+
+}
+
+function getReplyCount() {
+  $.ajax({
+    url : "/getReplyCount/"+index,
+    method:"get",
+    success(result){
+      count = result;
+    }
+  })
+}
+

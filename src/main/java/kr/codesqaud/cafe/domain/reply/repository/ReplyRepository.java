@@ -10,11 +10,15 @@ public interface ReplyRepository {
 
     void save(Reply reply);
 
-    List<Reply> findAll(int index);
+    List<Reply> findAll(int index,int start);
+
+    int count(int articleIndex);
 
     void delete(int index);
 
-//    Optional<Reply> findByIdx(int idx);
+    Optional<Reply> findByIdx(int idx);
+
+    int existReply(int idx);
 
     boolean exist(int idx);
 }
