@@ -1,10 +1,13 @@
 package kr.codesqaud.cafe.service;
 
 import kr.codesqaud.cafe.domain.Reply;
+import kr.codesqaud.cafe.domain.User;
 import kr.codesqaud.cafe.repository.reply.ReplyRepository;
+import kr.codesqaud.cafe.util.SessionConst;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +20,7 @@ public class ReplyService {
 
     @Transactional
     public Long post(String userId, String contents, Long articleId) {
-        Reply reply = new Reply(userId, contents,articleId);
+        Reply reply = new Reply(userId, contents, articleId);
         return replyRepository.save(reply).getReplyId();
     }
 
@@ -27,6 +30,12 @@ public class ReplyService {
 
     public List<Reply> findAll(Long articleId){
         return replyRepository.findByArticleId(articleId).stream().collect(Collectors.toUnmodifiableList());
+    }
+
+    // 현재 유저와 댓글 작성자의 아이디가 일치하는지 확인하고 권한 부여
+    public boolean isAuthorCurrentUser(Long replyId, HttpSession session){
+        User user = (User) session.getAttribute(SessionConst.LOGIN_USER);
+        return findOne(replyId).getWriter().equals(user.getUserId());
     }
 
     @Transactional

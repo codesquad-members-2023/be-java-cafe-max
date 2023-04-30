@@ -27,7 +27,7 @@ public class UserController {
     @PostMapping("/create")
     public String create(UserForm form){
         userService.join(form);
-        return "redirect:/users";
+        return "redirect:/login";
     }
 
     @GetMapping

@@ -30,6 +30,7 @@ public class JdbcReplyRepository implements ReplyRepository{
         parameters.put("contents", reply.getContents());
         parameters.put("created_at", reply.getCreatedAt());
         parameters.put("article_id", reply.getArticleId());
+        parameters.put("deleted", reply.getDeleted() ? 1 : 0);
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         reply.setReplyId(key.longValue());
@@ -47,30 +48,31 @@ public class JdbcReplyRepository implements ReplyRepository{
                 reply.setModifiedAt(rs.getTimestamp("modified_at").toLocalDateTime());
             }
             reply.setArticleId(rs.getLong("article_id"));
+            reply.setDeleted(rs.getInt("deleted") == 1);
             return reply;
         };
     }
 
     @Override
     public Optional<Reply> findByReplyId(Long replyId) {
-        List<Reply> result = jdbcTemplate.query("select * from reply where id = ?", replyRowMapper(), replyId);
+        List<Reply> result = jdbcTemplate.query("select * from reply where reply_id = ? and deleted = 0", replyRowMapper(), replyId);
         return result.stream().findAny();
     }
 
     @Override
     public List<Reply> findByArticleId(Long articleId) {
-        return jdbcTemplate.query("select * from reply where article_id = ?", replyRowMapper(), articleId);
+        return jdbcTemplate.query("select * from reply where article_id = ? and deleted = 0", replyRowMapper(), articleId);
     }
 
     @Override
     public Optional<Reply> update(Long replyId, String contents) {
-        jdbcTemplate.update("update reply set contents = ?, modified_at = ? where id = ?", contents, LocalDateTime.now(), replyId);
+        jdbcTemplate.update("update reply set contents = ?, modified_at = ? where reply_id = ?", contents, LocalDateTime.now(), replyId);
         return findByReplyId(replyId);
     }
 
     @Override
     public Long delete(Long replyId) {
-        jdbcTemplate.update("delete from article where id=?", replyId);
+        jdbcTemplate.update("update reply set deleted = ? where reply_id = ?", 1, replyId);
         return replyId;
     }
 }

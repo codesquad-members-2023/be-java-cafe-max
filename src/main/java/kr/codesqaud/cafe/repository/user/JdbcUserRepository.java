@@ -15,30 +15,32 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-public class JdbcUserRepository implements UserRepository{
+public class JdbcUserRepository implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    public JdbcUserRepository(DataSource dataSource){
+    public JdbcUserRepository(DataSource dataSource) {
+
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
     public User save(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("`user`").usingGeneratedKeyColumns("customer_id");
+        jdbcInsert.withTableName("users").usingGeneratedKeyColumns("customer_id");
 
         Map<String, Object> parameters = new ConcurrentHashMap<>();
         parameters.put("user_id", user.getUserId());
         parameters.put("password", user.getPassword());
         parameters.put("name", user.getName());
         parameters.put("email", user.getEmail());
+        parameters.put("deleted", user.getDeleted() ? 1 : 0);
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
         user.setCustomerId(key.longValue());
         return user;
     }
 
-    private RowMapper<User> userRowMapper(){
+    private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
             User user = new User();
             user.setCustomerId(rs.getLong("customer_id"));
@@ -46,6 +48,7 @@ public class JdbcUserRepository implements UserRepository{
             user.setPassword(rs.getString("password"));
             user.setName(rs.getString("name"));
             user.setEmail(rs.getString("email"));
+            user.setDeleted(rs.getInt("deleted") == 1);
             return user;
         };
     }
@@ -53,23 +56,23 @@ public class JdbcUserRepository implements UserRepository{
     @Override
     public Optional<User> findByUserId(String userId) {
         // 디자인 패턴 중, 템플릿 메서드 패턴의 요소가 많이 반영되어있기 때문이다.
-        List<User> result = jdbcTemplate.query("select * from `user` where user_id = ?", userRowMapper(), userId);
+        List<User> result = jdbcTemplate.query("select * from users where user_id = ? and deleted = 0", userRowMapper(), userId);
         return result.stream().findAny();
     }
 
     @Override
     public Optional<User> findByName(String name) {
-        List<User> result = jdbcTemplate.query("select * from `user` where name = ?", userRowMapper(), name);
+        List<User> result = jdbcTemplate.query("select * from users where name = ? and deleted = 0", userRowMapper(), name);
         return result.stream().findAny();
     }
 
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from `user`", userRowMapper());
+        return jdbcTemplate.query("select * from users where deleted = 0", userRowMapper());
     }
 
     @Override
     public void clearStore() {
-        jdbcTemplate.update("delete from `user`");
+        jdbcTemplate.update("delete from users");
     }
 }

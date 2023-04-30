@@ -12,6 +12,7 @@ public class Article {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private Long points;
+    private Boolean deleted;
 
     public Article(){}
 
@@ -22,6 +23,7 @@ public class Article {
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = null;
         this.points = 1L;
+        this.deleted = false;
     }
 
     public Long getId() {
@@ -78,5 +80,13 @@ public class Article {
 
     public void setPoints(Long points) {
         this.points = points;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }

@@ -22,10 +22,9 @@ dependencies {
 	// jdbc
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	// h2 db
-//	runtimeOnly 'com.h2database:h2' // 파일 경로를 입력하지 않아도 됨.
+	runtimeOnly 'com.h2database:h2' // 파일 경로를 입력하지 않아도 됨.
 	// mysql
-	implementation 'mysql:mysql-connector-java:8.0.28'
-//	runtimeOnly 'mysql:mysql-connector-j'
+//	implementation 'mysql:mysql-connector-java:8.0.28'
 }
 
 tasks.named('test') {
