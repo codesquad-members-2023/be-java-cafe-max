@@ -50,12 +50,17 @@ public class ReplyController {
 	@GetMapping("/articles/reply/loadMoreReply")
 	public List<ReplyResponse> loadMoreReply(Long articleIdx, Integer countOfRepliesInHtml) {
 		Integer countOfRepliesInDb = replyService.getCountOfReplies(articleIdx);
-		LoadMoreReplyDto loadMoreReplyDto = new LoadMoreReplyDto(articleIdx, countOfRepliesInDb, countOfRepliesInHtml);
 
-		if (loadMoreReplyDto.hasMoreRepliesToLoad()) {
+		if (hasMoreReplies(countOfRepliesInHtml, countOfRepliesInDb)) {
+			LoadMoreReplyDto loadMoreReplyDto = new LoadMoreReplyDto(articleIdx, countOfRepliesInDb,
+				countOfRepliesInHtml);
 			return replyService.getRepliesByIdx(loadMoreReplyDto);
 		}
 		return null;
+	}
+
+	private boolean hasMoreReplies(Integer countOfRepliesInHtml, Integer countOfRepliesInDb) {
+		return countOfRepliesInDb - countOfRepliesInHtml > 0;
 	}
 
 }

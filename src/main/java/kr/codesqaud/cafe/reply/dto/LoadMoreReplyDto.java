@@ -10,13 +10,13 @@ public class LoadMoreReplyDto {
 
 	private Integer countOfRepliesInHtml;
 
-	private boolean loadButton;
+	private boolean isLoad;
 
 	public LoadMoreReplyDto(Long articleIdx, Integer countOfRepliesInDb, Integer countOfRepliesInHtml) {
 		this.articleIdx = articleIdx;
 		this.countOfRepliesInHtml = countOfRepliesInHtml;
 		this.countOfRepliesInDb = countOfRepliesInDb;
-		this.loadButton = isLoadButtonAvailable();
+		this.isLoad = isLoadButtonAvailable();
 	}
 
 	public Long getArticleIdx() {
@@ -29,13 +29,6 @@ public class LoadMoreReplyDto {
 
 	private boolean isLoadButtonAvailable() {
 		if (countOfRepliesInDb > 5) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean hasMoreRepliesToLoad() {
-		if (countOfRepliesInDb - countOfRepliesInHtml > 0) {
 			return true;
 		}
 		return false;
