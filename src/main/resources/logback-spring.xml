@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <include resource="logback/console/console-appender.xml"/>
+    <include resource="logback/file/file-error-appender.xml"/>
+    <include resource="logback/file/file-warn-appender.xml"/>
+    <include resource="logback/file/file-info-appender.xml"/>
+
+    <springProfile name="prod">
+        <logger name="kr.codesqaud.cafe" level="INFO">
+            <appender-ref ref="file-error-appender"/>
+            <appender-ref ref="file-warn-appender"/>
+            <appender-ref ref="file-info-appender"/>
+        </logger>
+
+        <logger name="org.springframework" level="WARN">
+            <appender-ref ref="file-error-appender"/>
+            <appender-ref ref="file-warn-appender"/>
+            <appender-ref ref="file-info-appender"/>
+        </logger>
+    </springProfile>
+
+    <springProfile name="local">
+        <logger name="org.springframework" level="INFO" additivity="false">
+            <appender-ref ref="console-appender"/>
+        </logger>
+
+        <logger name="kr.codesqaud.cafe" level="INFO" additivity="false">
+            <appender-ref ref="console-appender"/>
+        </logger>
+    </springProfile>
+</configuration>

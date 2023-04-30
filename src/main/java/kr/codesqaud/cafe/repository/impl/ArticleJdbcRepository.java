@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import kr.codesqaud.cafe.controller.dto.ArticleWithCommentCount;
 import kr.codesqaud.cafe.domain.article.Article;
 import kr.codesqaud.cafe.repository.ArticleRepository;
+import kr.codesqaud.cafe.service.paging.Pageable;
 
 @Repository
 public class ArticleJdbcRepository implements ArticleRepository {
@@ -49,13 +50,16 @@ public class ArticleJdbcRepository implements ArticleRepository {
 	}
 
 	@Override
-	public List<ArticleWithCommentCount> findAllArticleWithCommentCount() {
+	public List<ArticleWithCommentCount> findAllArticleWithCommentCount(final Pageable pageable) {
 		return jdbcTemplate.query(
 			"SELECT a.id, a.writer, a.title, a.content, a.created_at, COUNT(ac.id) AS comment_count "
 				+ "FROM article AS a "
 				+ "LEFT JOIN comment AS ac ON a.id = ac.article_id AND ac.is_deleted = FALSE "
 				+ "WHERE a.is_deleted = FALSE "
-				+ "GROUP BY a.id, a.writer, a.title, a.content, a.created_at",
+				+ "GROUP BY a.id, a.writer, a.title, a.content, a.created_at "
+				+ "ORDER BY a.created_at DESC "
+				+ "LIMIT 15 OFFSET :offset",
+			Map.of("offset", pageable.getOffset()),
 			(rs, rowNum) -> new ArticleWithCommentCount(rs.getLong("id"),
 			                                            rs.getString("writer"),
 			                                            rs.getString("title"),
@@ -104,6 +108,15 @@ public class ArticleJdbcRepository implements ArticleRepository {
 				                            Map.of("id", id), Boolean.class));
 		} catch (EmptyResultDataAccessException e) {
 			return false;
+		}
+	}
+
+	@Override
+	public Long countAllArticles() {
+		try {
+			return jdbcTemplate.queryForObject("SELECT COUNT(id) FROM article", Map.of(), Long.class);
+		} catch (EmptyResultDataAccessException e) {
+			return 0L;
 		}
 	}
 }

@@ -25,8 +25,8 @@ public class CommentController {
 	}
 
 	@PostMapping("/comments")
-	public ResponseEntity<CommentSaveResponse> reply(@RequestBody final CommentRequest request,
-	                                                 @SessionAttribute(SESSION_USER) final String userId) {
+	public ResponseEntity<CommentSaveResponse> writeComment(@RequestBody final CommentRequest request,
+	                                                        @SessionAttribute(SESSION_USER) final String userId) {
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(commentService.reply(request, userId));
 	}

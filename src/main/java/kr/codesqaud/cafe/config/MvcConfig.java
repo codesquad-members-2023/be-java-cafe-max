@@ -1,20 +1,26 @@
 package kr.codesqaud.cafe.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import kr.codesqaud.cafe.common.argumentresolver.PageableArgumentResolver;
 import kr.codesqaud.cafe.common.interceptor.LoginInterceptor;
 
 @Configuration(proxyBeanMethods = false)
 public class MvcConfig implements WebMvcConfigurer {
 
 	private final LoginInterceptor loginInterceptor;
+	private final PageableArgumentResolver pageableArgumentResolver;
 
-	public MvcConfig(LoginInterceptor loginInterceptor) {
+	public MvcConfig(LoginInterceptor loginInterceptor, PageableArgumentResolver pageableArgumentResolver) {
 		this.loginInterceptor = loginInterceptor;
+		this.pageableArgumentResolver = pageableArgumentResolver;
 	}
 
 	@Override
@@ -32,5 +38,10 @@ public class MvcConfig implements WebMvcConfigurer {
 		registry
 			.addInterceptor(loginInterceptor)
 			.addPathPatterns(authorizePatterns);
+	}
+
+	@Override
+	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+		resolvers.add(pageableArgumentResolver);
 	}
 }

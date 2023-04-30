@@ -32,6 +32,7 @@ import kr.codesqaud.cafe.exception.NoAuthorizationException;
 import kr.codesqaud.cafe.exception.NotFoundException;
 import kr.codesqaud.cafe.repository.ArticleRepository;
 import kr.codesqaud.cafe.repository.CommentRepository;
+import kr.codesqaud.cafe.service.paging.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
@@ -84,13 +85,13 @@ class ArticleServiceTest {
 		@Test
 		void givenNothing_whenFindAll_thenReturnsArticleList() {
 			// given
-			given(articleRepository.findAllArticleWithCommentCount()).willReturn(List.of());
+			given(articleRepository.findAllArticleWithCommentCount(any(Pageable.class))).willReturn(List.of());
 
 			// when & then
 			assertAll(
-				() -> assertThatCode(() -> articleService.getArticlesWithCommentCount())
+				() -> assertThatCode(() -> articleService.getArticlesWithCommentCount(new Pageable(1)))
 					.doesNotThrowAnyException(),
-				() -> then(articleRepository).should().findAllArticleWithCommentCount()
+				() -> then(articleRepository).should().findAllArticleWithCommentCount(any(Pageable.class))
 			);
 		}
 	}

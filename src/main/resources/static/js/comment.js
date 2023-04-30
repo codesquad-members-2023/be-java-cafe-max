@@ -32,9 +32,10 @@ function commentSave() {
 }
 
 function commentDelete() {
-    $(".delete-answer-form button").on('click', function () {
+    $(".qna-comment-slipp-articles").on('click', ".delete-answer-form button", function () {
         const form = $(this).parent();
         const deleteUrl = form.attr('action');
+        const deleteBtn = $(this);
 
         $.ajax({
             type: 'DELETE',
@@ -42,7 +43,7 @@ function commentDelete() {
             dataType: 'json',
             contentType: 'application/json charset=utf-8'
         }).done(function () {
-            window.location.reload();
+            deleteBtn.closest('article').remove();
         }).fail(function () {
             alert('댓글 삭제에 실패했습니다.');
         });
