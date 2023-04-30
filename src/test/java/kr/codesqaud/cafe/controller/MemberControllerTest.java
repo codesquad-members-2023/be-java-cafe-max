@@ -219,7 +219,7 @@ class MemberControllerTest {
                         .param("nickname", editRequestDto.getNickname())
                         .param("password", editRequestDto.getPassword()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/members/{email}"));
+                .andExpect(redirectedUrl("/members/" + editRequestDto.getEmail()));
 
         // then
         assertAll(
