@@ -29,7 +29,7 @@ public class User {
     }
 
     public User(Long id, String nickname, String password) {
-        this(id, null, nickname, password, null, null, LocalDateTime.now());
+        this(id, null, nickname, password, null, null, null);
     }
 
     public Long getId() {

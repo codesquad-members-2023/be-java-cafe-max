@@ -26,7 +26,7 @@ public class Article {
     }
 
     public Article(Long id, String title, String contents) {
-        this(id, null, null, title, contents, null, LocalDateTime.now());
+        this(id, null, null, title, contents, null, null);
     }
 
     public Long getUserId() {

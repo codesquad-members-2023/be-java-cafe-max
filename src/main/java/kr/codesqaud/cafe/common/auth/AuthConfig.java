@@ -10,16 +10,13 @@ public class AuthConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor())
-                .excludePathPatterns(
-                        "/",
-                        "/articles",
-                        "/users/login",
-                        "/users/join-form",
-                        "/users"
-                )
                 .addPathPatterns(
-                        "/articles/**",
+                        "/articles/create-form",
+                        "/articles/update-form",
                         "/users/**"
-                );
+                )
+                .excludePathPatterns(
+                        "/users/login",
+                        "/users/join-form");
     }
 }
