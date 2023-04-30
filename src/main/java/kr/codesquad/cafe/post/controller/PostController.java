@@ -2,7 +2,6 @@ package kr.codesquad.cafe.post.controller;
 
 import kr.codesquad.cafe.post.Post;
 import kr.codesquad.cafe.post.PostService;
-import kr.codesquad.cafe.post.annotation.ValidPostIdPath;
 import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.user.domain.User;
 import org.springframework.stereotype.Controller;
@@ -39,16 +38,17 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public String viewPost(@PathVariable(POST_ID) Post post, Model model) {
+    public String viewPost(@PathVariable long postId, Model model) {
+        Post post = postService.findById(postId);
         model.addAttribute(post);
         return "post/detail";
     }
 
-    @ValidPostIdPath
-    @GetMapping("/posts/{postId}/edit")
-    public String viewEditPost(@PathVariable(POST_ID) Post post, Model model) {
+    @GetMapping("/posts/{postId}/editForm")
+    public String viewEditPost(@PathVariable long postId, Model model, @SessionAttribute User user) {
+        Post post = postService.findByIdForEditForm(postId, user.getId());
         model.addAttribute(PostForm.from(post));
-        model.addAttribute(POST_ID, post.getId());
+        model.addAttribute(POST_ID, postId);
         return "post/editForm";
     }
 

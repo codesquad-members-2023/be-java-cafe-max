@@ -10,24 +10,26 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "\"user\"")
 public class User {
 
     private static final String EMPTY = "";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nickname;
     private String email;
     private String password;
     @Enumerated(value = EnumType.STRING)
     private Role role;
-
     @OneToMany(mappedBy = "user")
-    private final List<Post> posts = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
 
     public User() {
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     private User(Builder builder) {
@@ -76,6 +78,12 @@ public class User {
 
     public boolean isManager() {
         return role.equals(Role.MANAGER);
+    }
+
+    public User setProfile(String nickname, String email) {
+        this.nickname = nickname;
+        this.email = email;
+        return this;
     }
 
     public static class Builder {

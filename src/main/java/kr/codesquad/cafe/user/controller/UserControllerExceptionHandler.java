@@ -1,11 +1,9 @@
-package kr.codesquad.cafe.user;
+package kr.codesquad.cafe.user.controller;
 
+import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.user.dto.LoginForm;
 import kr.codesquad.cafe.user.dto.ProfileEditForm;
-import kr.codesquad.cafe.user.exception.DuplicateEmailException;
-import kr.codesquad.cafe.user.exception.IncorrectPasswordException;
-import kr.codesquad.cafe.user.exception.InvalidPasswordException;
-import kr.codesquad.cafe.user.exception.UserNotFoundException;
+import kr.codesquad.cafe.user.exception.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -25,6 +23,12 @@ public class UserControllerExceptionHandler {
     private static final String EMAIL = "email";
     private static final String NICK_NAME = "nickname";
     private static final String EMPTY_PASSWORD = "";
+
+    private static void addJoinForm(HttpServletRequest request, Model model) {
+        String email = request.getParameter(EMAIL);
+        String nickName = request.getParameter(NICK_NAME);
+        model.addAttribute(new JoinForm(nickName, email, EMPTY_PASSWORD,EMPTY_PASSWORD));
+    }
 
     private static void addProfileEditForm(HttpServletRequest request, Model model) {
         String email = request.getParameter(EMAIL);
@@ -62,5 +66,13 @@ public class UserControllerExceptionHandler {
         addProfileEditForm(request, model);
         model.addAttribute(PASSWORD_ERROR, e.getMessage());
         return "user/profileEditFormFailed";
+    }
+
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    @ExceptionHandler(ExistsEmailException.class)
+    public String handlerExistsEmailException(HttpServletRequest request, Model model, ExistsEmailException e) {
+        addJoinForm(request, model);
+        model.addAttribute(EMAIL_ERROR, e.getMessage());
+        return "user/joinFailed";
     }
 }

@@ -4,17 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.codesquad.cafe.post.Post;
 import kr.codesquad.cafe.user.domain.User;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 @Entity
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
     @JsonIgnore
     @ManyToOne
@@ -30,10 +26,14 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(Builder builder) {
+    private Comment(Builder builder) {
         this.post = builder.post;
         this.user = builder.user;
         this.content = builder.content;
+    }
+
+    public static Builder build() {
+        return new Builder();
     }
 
     public static Comment from(String body, Post post, User user) {
@@ -60,6 +60,7 @@ public class Comment {
         return content;
     }
 
+
     public boolean isDeleted() {
         return isDeleted;
     }
@@ -69,10 +70,10 @@ public class Comment {
             isDeleted = true;
             return;
         }
-        throw new RuntimeException();
+        throw new UnauthorizedDeleteCommentException();
     }
 
-    public boolean isSameId(Long id) {
+    public boolean isSameUserId(Long id) {
         return user.isSameId(id);
     }
 

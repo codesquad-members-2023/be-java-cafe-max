@@ -5,11 +5,9 @@ import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.user.dto.LoginForm;
 import kr.codesquad.cafe.user.dto.ProfileEditForm;
 import kr.codesquad.cafe.user.dto.UserForm;
-import kr.codesquad.cafe.user.exception.DuplicateEmailException;
-import kr.codesquad.cafe.user.exception.IncorrectPasswordException;
-import kr.codesquad.cafe.user.exception.InvalidPasswordException;
-import kr.codesquad.cafe.user.exception.UserNotFoundException;
+import kr.codesquad.cafe.user.exception.*;
 import org.jasypt.encryption.StringEncryptor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,13 +32,21 @@ public class UserService {
 
     @Transactional
     public User save(JoinForm joinForm) {
+        if (existsByEmail(joinForm.getEmail())) {
+            throw new ExistsEmailException();
+        }
         User user = joinForm.toUser(encryptor);
         return userRepository.save(user);
     }
 
     public List<UserForm> getAllUsersForm(int page) {
         Pageable pageable = PageRequest.of(page, POST_DEFAULT_PAGE_SIZE);
-        return userRepository.findAll(pageable).stream()
+        Page<User> users = userRepository.findAll(pageable);
+        return toUserForm(users);
+    }
+
+    private static List<UserForm> toUserForm(Page<User> userPage) {
+        return userPage.stream()
                 .map(UserForm::from)
                 .collect(Collectors.toList());
     }
@@ -62,11 +68,6 @@ public class UserService {
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
-
-    public Optional<User> findById(Long userId) {
-        return userRepository.findById(userId);
-    }
-
 
     public User checkLoginForm(LoginForm loginForm) {
         User user = findByEmail(loginForm.getEmail()).orElseThrow(UserNotFoundException::new);

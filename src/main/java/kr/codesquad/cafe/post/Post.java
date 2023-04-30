@@ -21,7 +21,7 @@ public class Post {
     protected List<Comment> comments = new ArrayList<>();
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -67,16 +67,8 @@ public class Post {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getTextContent() {
         return textContent;
-    }
-
-    public void setTextContent(String textContent) {
-        this.textContent = textContent;
     }
 
     public LocalDateTime getCreatedDateTime() {
@@ -85,6 +77,10 @@ public class Post {
 
     public List<Comment> getComments() {
         return comments;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
     public void disable() {
@@ -97,7 +93,7 @@ public class Post {
 
     private boolean canDelete() {
         return getComments().stream()
-                .filter(comment -> !comment.isSameId(user.getId()))
+                .filter(comment -> !comment.isSameUserId(user.getId()))
                 .allMatch(Comment::isDeleted);
     }
 
@@ -110,9 +106,18 @@ public class Post {
     }
 
     public void checkPermission(long userId) {
-        if (!user.getId().equals(userId)) {
+        if (!user.isSameId(userId)) {
             throw new IllegalAccessIdException();
         }
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public void update(String textContent, String title) {
+        this.textContent = textContent;
+        this.title = title;
     }
 
     public static class Builder {

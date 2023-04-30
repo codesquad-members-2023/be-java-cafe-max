@@ -1,5 +1,7 @@
-package kr.codesquad.cafe.post;
+package kr.codesquad.cafe.post.controller;
 
+import kr.codesquad.cafe.post.Post;
+import kr.codesquad.cafe.post.PostService;
 import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.post.exception.DeletionFailedException;
 import org.springframework.core.Ordered;

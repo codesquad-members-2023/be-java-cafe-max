@@ -26,6 +26,7 @@ public class MainController {
     @GetMapping
     public String viewIndex(Model model, @RequestParam("page") Optional<Integer> page) {
         int currentPage = page.orElse(DEFAULT_PAGE);
+
         List<SimplePostForm> simpleForms = postService.getAllSimplePostForm(currentPage);
         model.addAttribute(SIMPLE_FORMS, simpleForms);
 

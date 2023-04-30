@@ -1,8 +1,9 @@
-package kr.codesquad.cafe.user;
+package kr.codesquad.cafe.user.controller;
 
 import kr.codesquad.cafe.global.PagesInfo;
 import kr.codesquad.cafe.post.PostService;
 import kr.codesquad.cafe.post.dto.SimplePostForm;
+import kr.codesquad.cafe.user.UserService;
 import kr.codesquad.cafe.user.annotation.ValidUserIdPath;
 import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.dto.ProfileEditForm;
@@ -53,14 +54,13 @@ public class UserProfileController {
     }
 
     private void addAttributeForUserPage(Model model, long userId, User user, Integer currentPage) {
-        model.addAttribute(PROFILE_FORM, ProfileForm.from(user));
-
         List<SimplePostForm> simpleForms = postService.getAllSimplePostFormByUser(userId, currentPage);
-        model.addAttribute(SIMPLE_FORMS, simpleForms);
 
         PagesInfo pagesInfo = postService.getPagesInfoByUser(currentPage, userId);
-        model.addAttribute(PAGES_INFO, pagesInfo);
+
+        model.addAttribute(PROFILE_FORM, ProfileForm.from(user));
         model.addAttribute(SIMPLE_FORMS, simpleForms);
+        model.addAttribute(PAGES_INFO, pagesInfo);
     }
 
 

@@ -1,5 +1,9 @@
 package kr.codesquad.cafe.global;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -14,6 +18,8 @@ public class PagesInfo {
     private static final int END_PAGE_OFFSET = 4;
     private static final int START_PAGE_OFFSET = 2;
     private static final int NEXT_PAGES_OFFSET = 3;
+    private static final int MAIN_PAGE_SIZE = 15;
+    private static final String CREATED_DATE_TIME = "createdDateTime";
     private final List<Integer> pageNumbers;
 
     private final boolean previous;
@@ -69,6 +75,14 @@ public class PagesInfo {
 
     private static boolean hasPrevious(int startPage) {
         return startPage != START_PAGE;
+    }
+
+    public static Pageable getPageable(int currentPage, int pageSize) {
+        return PageRequest.of(currentPage, pageSize, Sort.by(Sort.Direction.DESC, CREATED_DATE_TIME)).previous();
+    }
+
+    public static int getPages(double allCount) {
+        return (int) Math.ceil(allCount / MAIN_PAGE_SIZE);
     }
 
     public int getCurrentPage() {

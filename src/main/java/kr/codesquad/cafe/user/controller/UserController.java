@@ -1,5 +1,6 @@
-package kr.codesquad.cafe.user;
+package kr.codesquad.cafe.user.controller;
 
+import kr.codesquad.cafe.user.UserService;
 import kr.codesquad.cafe.user.domain.User;
 import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.user.dto.LoginForm;
@@ -7,9 +8,7 @@ import kr.codesquad.cafe.user.dto.UserForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -24,17 +23,9 @@ public class UserController {
     private static final int DEFAULT_PAGE = 0;
     private static final String USERS = "users";
     private final UserService userService;
-    private final JoinFormValidator joinFormValidator;
 
-    public UserController(UserService userService, JoinFormValidator joinFormValidator) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.joinFormValidator = joinFormValidator;
-    }
-
-
-    @InitBinder(value = "joinForm")
-    public void joinFormInitBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(joinFormValidator);
     }
 
     @GetMapping("/users/login")
@@ -58,7 +49,7 @@ public class UserController {
         return "user/login";
     }
 
-    @GetMapping("/users/join")
+    @GetMapping("/users/joinForm")
     public String viewJoinForm(@ModelAttribute JoinForm joinForm) {
         return "user/join";
     }

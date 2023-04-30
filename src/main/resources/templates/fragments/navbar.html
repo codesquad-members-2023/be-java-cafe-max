@@ -12,8 +12,8 @@
                     th:onclick="|location.href='@{/users/login}'|">로그인
             </button>
             <button class="d-flex btn btn-outline-success me-2 nav-item"
-                    th:if="${session.user == null && #httpServletRequest.requestURI != '/users/join'}"
-                    th:onclick="|location.href='@{/users/join}'|">회원가입
+                    th:if="${session.user == null && #httpServletRequest.requestURI != '/users/joinForm'}"
+                    th:onclick="|location.href='@{/users/joinForm}'|">회원가입
             </button>
             <button aria-expanded="false" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
                     th:if="${session.user != null}"
