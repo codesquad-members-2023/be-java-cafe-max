@@ -14,15 +14,15 @@ public class MvcConfig implements WebMvcConfigurer {
         // 우선 순위를 가장 높게
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
-        registry.addViewController("/user/form").setViewName("user/form");
-        registry.addViewController("/user/loginForm").setViewName("user/login");
+        registry.addViewController("/users/form").setViewName("user/form");
+        registry.addViewController("/users/loginForm").setViewName("user/login");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/user/**", "/board/**")
-                .excludePathPatterns("/user/loginForm", "/user/login", "/user/form", "/user", "/board/list",
+                .excludePathPatterns("/users/loginForm", "/users/login", "/users/form", "/users", "/board",
                         "/css/**", "/fonts/**", "/images/**", "/js/**", "/*.ico");
     }
 }

@@ -33,7 +33,7 @@ public class UserService {
     public SessionUser loginCheck(UserLoginForm userLoginForm) {
         if (userRepository.containsUserId(userLoginForm.getUserId())) {
             User user = userRepository.findByUserId(userLoginForm.getUserId());
-            if (userLoginForm.getPassword().equals(user.getPassword())) {
+            if (userLoginForm.isSamePassword(user.getPassword())) {
                 return SessionUser.from(user);
             } else {
                 throw new LoginFailedException("비밀번호가 틀렸습니다.");
@@ -53,24 +53,21 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public void validateAndUpdateUser(UserUpdateForm userUpdateForm) {
-        if (checkPassword(userUpdateForm)) {
-            if (checkDuplicateName(userUpdateForm.getUserName())) {
-                userRepository.update(userUpdateForm.toEntity());
-            } else {
-                throw new UserUpdateFailedException("중복된 이름이 존재합니다.", "name");
-            }
-        } else {
+    public SessionUser updateUser(UserUpdateForm userUpdateForm) {
+        validateUpdateForm(userUpdateForm);
+        User user = userUpdateForm.toEntity();
+        userRepository.update(user);
+        return SessionUser.from(user);
+    }
+
+    private void validateUpdateForm(UserUpdateForm userUpdateForm) {
+        String password = userRepository.findByUserId(userUpdateForm.getUserId()).getPassword();
+        if (!userUpdateForm.isSamePassword(password)) {
             throw new UserUpdateFailedException("비밀번호가 틀렸습니다.", "password");
+        }
+        if (userRepository.containsUserName(userUpdateForm.getUserName())) {
+            throw new UserUpdateFailedException("중복된 이름이 존재합니다.", "name");
         }
     }
 
-    private boolean checkPassword(UserUpdateForm userUpdateForm) {
-        String password = userRepository.findByUserId(userUpdateForm.getUserId()).getPassword();
-        return userUpdateForm.getPassword().equals(password);
-    }
-
-    private boolean checkDuplicateName(String userName) {
-        return !userRepository.containsUserName(userName);
-    }
 }

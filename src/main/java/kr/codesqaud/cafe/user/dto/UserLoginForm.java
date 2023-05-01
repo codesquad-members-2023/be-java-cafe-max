@@ -16,4 +16,8 @@ public class UserLoginForm {
     public String getPassword() {
         return password;
     }
+
+    public boolean isSamePassword(String otherPassword) {
+        return password.equals(otherPassword);
+    }
 }

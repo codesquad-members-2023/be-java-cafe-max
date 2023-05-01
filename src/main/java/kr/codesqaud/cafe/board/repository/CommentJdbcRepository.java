@@ -2,11 +2,14 @@ package kr.codesqaud.cafe.board.repository;
 
 import kr.codesqaud.cafe.board.domain.Comment;
 import kr.codesqaud.cafe.exception.ResourceNotFoundException;
+import kr.codesqaud.cafe.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -14,7 +17,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -27,10 +29,12 @@ public class CommentJdbcRepository {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public void save(Comment comment) {
+    public Long save(Comment comment) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
-                "INSERT INTO comment (post_id, writer, contents) VALUES (:postId, :writer, :contents)",
-                new BeanPropertySqlParameterSource(comment));
+                "INSERT INTO comment (post_id, writer, contents) VALUES (:postId, :writer.userName, :contents)",
+                new BeanPropertySqlParameterSource(comment), keyHolder);
+        return keyHolder.getKey().longValue();
     }
 
     public void delete(Long commentId) {
@@ -43,8 +47,8 @@ public class CommentJdbcRepository {
 
     public Comment findByCommentId(Long commentId) {
         try {
-            return jdbcTemplate.queryForObject("SELECT comment_id, post_id, writer, contents, write_date_time " +
-                            "FROM comment " +
+            return jdbcTemplate.queryForObject("SELECT comment_id, post_id, b.user_id AS writer_id, writer, contents, write_date_time " +
+                            "FROM comment a JOIN users b ON a.writer = b.user_name " +
                             "WHERE comment_id = :commentId",
                     Collections.singletonMap("commentId", commentId), commentRowMapper);
         } catch (DataRetrievalFailureException e) {
@@ -53,8 +57,8 @@ public class CommentJdbcRepository {
     }
 
     public List<Comment> findAllByPostId(Long postId) {
-        return jdbcTemplate.query("SELECT comment_id, post_id, writer, contents, write_date_time " +
-                        "FROM comment " +
+        return jdbcTemplate.query("SELECT comment_id, post_id, b.user_id AS writer_id, writer, contents, write_date_time " +
+                        "FROM comment a JOIN users b ON a.writer = b.user_name " +
                         "WHERE post_id = :postId AND deleted = FALSE " +
                         "ORDER BY write_date_time",
                 Collections.singletonMap("postId", postId), commentRowMapper);
@@ -63,25 +67,27 @@ public class CommentJdbcRepository {
     public RowMapper<Comment> commentRowMapper = new RowMapper<Comment>() {
         @Override
         public Comment mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new Comment.Builder()
+            return Comment.builder()
                     .commentId(rs.getLong("comment_id"))
                     .postId(rs.getLong("post_id"))
-                    .writer(rs.getString("writer"))
                     .contents(rs.getString("contents"))
                     .writeDateTime(rs.getTimestamp("write_date_time").toLocalDateTime())
+                    .writer(User.builder()
+                            .userId(rs.getString("writer_id"))
+                            .userName(rs.getString("writer"))
+                            .build())
                     .build();
         }
     };
 
     public int getCommentCountByOtherWriter(Long postId) {
-        Map<String, Long> namedParameters = Collections.singletonMap("postId", postId);
         Optional<Integer> countOfPost = Optional.ofNullable(jdbcTemplate.queryForObject(
                 "SELECT COUNT(*)\n" +
                         "FROM comment a\n" +
                         "JOIN post b ON a.post_id = b.post_id AND a.writer != b.writer\n" +
                         "WHERE a.post_id = :postId\n" +
                         "AND a.deleted = FALSE",
-                namedParameters, Integer.class));
+                Collections.singletonMap("postId", postId), Integer.class));
         return countOfPost.orElse(0);
     }
 }

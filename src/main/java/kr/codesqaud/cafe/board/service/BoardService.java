@@ -2,10 +2,12 @@ package kr.codesqaud.cafe.board.service;
 
 import kr.codesqaud.cafe.board.dto.PostResponse;
 import kr.codesqaud.cafe.board.dto.PostWriteForm;
+import kr.codesqaud.cafe.board.paging.PageInfo;
 import kr.codesqaud.cafe.board.repository.BoardJdbcRepository;
 import kr.codesqaud.cafe.board.repository.CommentJdbcRepository;
 import kr.codesqaud.cafe.exception.ForbiddenException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,22 +30,30 @@ public class BoardService {
         boardJdbcRepository.update(postResponse.toEntity());
     }
 
+    @Transactional
     public void delete(Long postId) {
-        if (commentJdbcRepository.getCommentCountByOtherWriter(postId) == 0) {
-            commentJdbcRepository.deleteAllByPostId(postId);
-            boardJdbcRepository.delete(postId);
-        } else {
+        if (hasOtherCommentWriter(postId)) {
             throw new ForbiddenException("작성자와 다른 댓글 작성자가 존재하여 삭제할 수 없습니다.");
         }
+        commentJdbcRepository.deleteAllByPostId(postId);
+        boardJdbcRepository.delete(postId);
     }
 
     public PostResponse getPost(Long postId) {
         return PostResponse.from(boardJdbcRepository.findByPostId(postId));
     }
 
-    public List<PostResponse> getPostList() {
-        return boardJdbcRepository.findAll().stream()
+    public int getTotalCount() {
+        return boardJdbcRepository.countOfTotalPost();
+    }
+
+    public List<PostResponse> getPostList(PageInfo pageInfo) {
+        return boardJdbcRepository.findAll(pageInfo).stream()
                 .map(PostResponse::from)
                 .collect(Collectors.toList());
+    }
+
+    private boolean hasOtherCommentWriter(Long postId) {
+        return commentJdbcRepository.getCommentCountByOtherWriter(postId) > 0;
     }
 }

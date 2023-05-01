@@ -6,7 +6,7 @@ public class User {
     private final String userName;
     private final String email;
 
-    public User(Builder builder) {
+    private User(Builder builder) {
         this.userId = builder.userId;
         this.password = builder.password;
         this.userName = builder.userName;
@@ -29,14 +29,15 @@ public class User {
         return email;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public static class Builder {
         private String userId;
         private String password;
         private String userName;
         private String email;
-
-        public Builder() {
-        }
 
         public Builder userId(String userId) {
             this.userId = userId;

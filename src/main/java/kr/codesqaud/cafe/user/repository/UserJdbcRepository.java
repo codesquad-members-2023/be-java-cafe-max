@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -37,24 +36,23 @@ public class UserJdbcRepository {
     }
 
     public boolean containsUserId(String userId) {
-        Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
         Optional<Integer> countOfUser = Optional.ofNullable(jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM users WHERE user_id = :user_id", namedParameters, Integer.class));
+                "SELECT COUNT(*) FROM users WHERE user_id = :user_id",
+                Collections.singletonMap("user_id", userId), Integer.class));
         return countOfUser.orElse(0) > 0;
     }
 
     public boolean containsUserName(String userName) {
-        Map<String, String> namedParameters = Collections.singletonMap("user_name", userName);
         Optional<Integer> countOfUser = Optional.ofNullable(jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM users WHERE user_name = :user_name", namedParameters, Integer.class));
+                "SELECT COUNT(*) FROM users WHERE user_name = :user_name",
+                Collections.singletonMap("user_name", userName), Integer.class));
         return countOfUser.orElse(0) > 0;
     }
 
     public User findByUserId(String userId) {
-        Map<String, String> namedParameters = Collections.singletonMap("user_id", userId);
         try {
             return jdbcTemplate.queryForObject("SELECT user_id, password, user_name, email FROM users WHERE user_id = :user_id",
-                    namedParameters, userRowMapper);
+                    Collections.singletonMap("user_id", userId), userRowMapper);
         } catch (DataRetrievalFailureException e) {
             throw new ResourceNotFoundException("요청한 데이터가 존재하지 않습니다.");
         }
@@ -67,7 +65,7 @@ public class UserJdbcRepository {
     public RowMapper<User> userRowMapper = new RowMapper<User>() {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User.Builder()
+            return User.builder()
                     .userId(rs.getString("user_id"))
                     .password(rs.getString("password"))
                     .userName(rs.getString("user_name"))

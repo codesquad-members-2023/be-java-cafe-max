@@ -14,7 +14,8 @@
                                  class="article-author-thumb" alt="">
                         </div>
                         <div class="article-header-text">
-                            <a href="/user/{{post.writer}}" class="article-author-name">{{post.writer}}</a>
+                            <a href="/users/{{post.writer.userId}}"
+                               class="article-author-name">{{post.writer.userName}}</a>
                             <a class="article-header-time">
                                 {{post.writeDateTime}}
                                 <i class="icon-link"></i>
@@ -38,7 +39,7 @@
                                 </li>
                             {{/isWriter}}
                             <li>
-                                <a class="link-modify-article" href="/board/list">목록</a>
+                                <a class="link-modify-article" href="/board">목록</a>
                             </li>
                         </ul>
                     </div>
@@ -56,7 +57,8 @@
                                                  class="article-author-thumb" alt="">
                                         </div>
                                         <div class="article-header-text">
-                                            <a href="/user/{{writer}}" class="article-author-name">{{writer}}</a>
+                                            <a href="/users/{{writer.userId}}"
+                                               class="article-author-name">{{writer.userName}}</a>
                                             <a href="#answer-1434" class="article-header-time" title="퍼머링크">
                                                 {{writeDateTime}}
                                             </a>
@@ -73,28 +75,27 @@
                                             <!--                                            </li>-->
                                             <li>
                                                 <form class="delete-answer-form"
-                                                      action="/board/{{post.postId}}/comment/{{commentId}}"
+                                                      action="/board/{{post.postId}}/comments/{{commentId}}"
                                                       method="POST">
                                                     <input type="hidden" name="_method" value="DELETE">
-                                                    <button type="submit" class="delete-answer-button">삭제</button>
+                                                    <button type="button" class="delete-answer-button">삭제</button>
                                                 </form>
                                             </li>
                                         </ul>
                                     </div>
                                 </article>
                             {{/comments}}
-
-                            <form class="submit-write" method="post" action="/board/{{post.postId}}/comment">
-                                <div class="form-group" style="padding:14px;">
-                                    <input type="hidden" class="form-control" id="postId" name="postId"
-                                           value="{{post.postId}}"/>
-                                    <textarea id="contents" name="contents" class="form-control"
-                                              placeholder="댓글 내용을 입력해주세요."></textarea>
-                                </div>
-                                <button class="btn btn-success pull-right" type="submit">댓글작성</button>
-                                <div class="clearfix"/>
-                            </form>
                         </div>
+                        <form class="submit-write" method="post" action="/board/{{post.postId}}">
+                            <div class="form-group" style="padding:14px;">
+                                <input type="hidden" class="form-control" id="postId" name="postId"
+                                       value="{{post.postId}}"/>
+                                <textarea id="contents" name="contents" class="form-control"
+                                          placeholder="댓글 내용을 입력해주세요."></textarea>
+                            </div>
+                            <button class="btn btn-success pull-right" type="submit">댓글작성</button>
+                            <div class="clearfix"></div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -109,26 +110,32 @@
                 <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb" alt="">
             </div>
             <div class="article-header-text">
-                <a href="#" class="article-author-name">{0}</a>
-                <div class="article-header-time">{1}</div>
+                <a href="/users/{0}" class="article-author-name">{1}</a>
+                <div class="article-header-time">{2}</div>
             </div>
         </div>
         <div class="article-doc comment-doc">
-            {2}
+            {3}
         </div>
         <div class="article-util">
             <ul class="article-util-list">
+                <!--                <li>-->
+                <!--                    <a class="link-modify-article" href="/api/qna/updateAnswer/{4}">수정</a>-->
+                <!--                </li>-->
                 <li>
-                    <a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
-                </li>
-                <li>
-                    <form class="delete-answer-form" action="/api/questions/{3}/answers/{4}" method="POST">
+                    <form class="delete-answer-form" action="/board/{4}/comments/{5}" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="delete-answer-button">삭제</button>
+                        <button type="button" class="delete-answer-button">삭제</button>
                     </form>
                 </li>
             </ul>
         </div>
     </article>
 </script>
-{{>layout/footer}}
+<!-- script references -->
+<script src="/js/jquery-2.2.0.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<!--<script src="/js/scripts.js"></script>-->
+<script src="/js/comment.js"></script>
+</body>
+</html>

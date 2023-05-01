@@ -16,7 +16,7 @@ public class UserUpdateForm {
     }
 
     public User toEntity() {
-        return new User.Builder()
+        return User.builder()
                 .userId(userId)
                 .password(password)
                 .userName(userName)
@@ -38,5 +38,9 @@ public class UserUpdateForm {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean isSamePassword(String otherPassword) {
+        return password.equals(otherPassword);
     }
 }
