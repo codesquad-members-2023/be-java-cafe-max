@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
+import kr.codesqaud.cafe.dto.member.MemberResponseDto;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
 import kr.codesqaud.cafe.dto.member.MemberLoginRequestDto;
 import kr.codesqaud.cafe.exception.common.CommonException;
@@ -41,9 +41,8 @@ public class MemberController {
         return "member/members";
     }
 
-    @GetMapping("/register")
-    public String registerMember(@ModelAttribute MemberJoinRequestDto memberJoinRequestDto,Model model) {
-        model.addAttribute("memberJoinRequestDto", new MemberJoinRequestDto());
+    @GetMapping("/registration")
+    public String registerMember(@ModelAttribute MemberJoinRequestDto memberJoinRequestDto) {
         return "member/register";
     }
 
@@ -60,7 +59,7 @@ public class MemberController {
 
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("memberLoginRequestDto") @Valid MemberLoginRequestDto memberLoginRequestDto, BindingResult bindingResult, HttpServletRequest httpServletRequest) {
+    public String login(@ModelAttribute @Valid MemberLoginRequestDto memberLoginRequestDto, BindingResult bindingResult, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             return "member/login";
         }
@@ -80,37 +79,38 @@ public class MemberController {
 
     @GetMapping("/{email}")
     public String profile(@PathVariable String email, Model model) {
-        Member member = memberService.findByEmail(email);
-        model.addAttribute("memberResponsesDto", memberService.findById(member.getMemberId()));
+        MemberResponseDto memberResponseDto = memberService.findByEmail(email);
+        model.addAttribute("memberResponsesDto", memberService.findById(memberResponseDto.getMemberId()));
         return "member/profile";
     }
 
     @PutMapping("/{email}/profile")
-    public String editProfile(@ModelAttribute @Valid ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String editProfile(@PathVariable String email, @Valid ProfileEditRequestDto profileEditRequestDto, BindingResult bindingResult, RedirectAttributes redirectAttributes,@SessionAttribute("loginMember") LoginMemberSession loginMemberSession) {
         if (bindingResult.hasErrors()) {
             return "member/profiledEdit";
         }
 
+        profileEditRequestDto.setMemberId(loginMemberSession.getMemberId());
         memberService.update(profileEditRequestDto);
         redirectAttributes.addAttribute("email", profileEditRequestDto.getEmail());
         return "redirect:/members/{email}";
     }
 
     @GetMapping("/{email}/profile")
-    public String profileEditForm(@PathVariable String email, Model model, @SessionAttribute("loginMember") LoginMemberSession longinMemberSession) {
-        if (longinMemberSession.isNotEqualMember(email)) {
+    public String profileEditForm(@PathVariable String email, Model model, @SessionAttribute("loginMember") LoginMemberSession loginMemberSession) {
+        if (loginMemberSession.isNotEqualMember(email)) {
             throw new CommonException(CommonExceptionType.ACCESS_DENIED);
         }
-        Member member = memberService.findByEmail(email);
-        model.addAttribute("profileEditRequestDto", ProfileEditRequestDto.of(memberService.findById(member.getMemberId())));
+        MemberResponseDto memberResponseDto = memberService.findByEmail(email);
+        model.addAttribute("profileEditRequestDto", ProfileEditRequestDto.of(memberService.findById(memberResponseDto.getMemberId())));
         return "member/profileEdit";
     }
 
 
     @DeleteMapping("/{email}")
     public void deleteId(@PathVariable String email) {
-        Member member = memberService.findByEmail(email);
-        memberService.deleteById(member.getMemberId());
+        MemberResponseDto memberResponseDto = memberService.findByEmail(email);
+        memberService.deleteById(memberResponseDto.getMemberId());
     }
 
     @PostMapping("/logout")

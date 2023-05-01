@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.NoSuchElementException;
 
+import kr.codesqaud.cafe.dto.error.ErrorDto;
 import kr.codesqaud.cafe.exception.common.CommonException;
 import kr.codesqaud.cafe.exception.common.CommonExceptionType;
 import kr.codesqaud.cafe.exception.member.MemberExceptionType;
@@ -27,7 +28,7 @@ public class ExceptionHandlerController {
         CommonExceptionType commonExceptionType = commonException.getCommonExceptionType();
 
         modelAndView.setViewName("error/error_page");
-        modelAndView.addObject("error");
+        modelAndView.addObject("error",new ErrorDto(commonExceptionType.getStatus().value(),commonExceptionType.getErrorMessage()));
         modelAndView.setStatus(commonExceptionType.getStatus());
         return modelAndView;
     }

@@ -10,7 +10,7 @@ import kr.codesqaud.cafe.domain.Post;
 public interface PostRepository {
     Long save(Post post, Member member);
 
-    Optional<Post> findById(Long postId);
+    Optional<Post> findById(Long id);
 
     List<Post> findPostByWriterEmail(String writerEmail);
 
@@ -18,7 +18,9 @@ public interface PostRepository {
 
     void update(Post post);
 
+    void increaseViews(Long id);
+
     void deleteAll();
 
-    void deletePostId(Long postId);
+    void deleteId(Long id);
 }

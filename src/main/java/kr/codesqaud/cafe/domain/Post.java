@@ -3,7 +3,7 @@ package kr.codesqaud.cafe.domain;
 import java.time.LocalDateTime;
 
 public class Post {
-    private Long postId;
+    private Long id;
     private String title;
     private String content;
     private final String writerEmail;
@@ -18,8 +18,8 @@ public class Post {
         this.views = views;
     }
 
-    public Post(Long postId, String title, String content, String writerEmail, LocalDateTime writeDate, Long views) {
-        this.postId = postId;
+    public Post(Long id, String title, String content, String writerEmail, LocalDateTime writeDate, Long views) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.writerEmail = writerEmail;
@@ -27,8 +27,8 @@ public class Post {
         this.views = views;
     }
 
-    public Long getPostId() {
-        return postId;
+    public Long getid() {
+        return id;
     }
 
     public String getTitle() {
@@ -55,8 +55,8 @@ public class Post {
         views++;
     }
 
-    public void setPostId(Long postId) {
-        this.postId = postId;
+    public void setid(Long id) {
+        this.id = id;
     }
 
     public void editPost(final String title, final String content) {

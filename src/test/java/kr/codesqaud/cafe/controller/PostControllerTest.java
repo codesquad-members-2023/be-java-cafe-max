@@ -1,19 +1,17 @@
 package kr.codesqaud.cafe.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+
 import kr.codesqaud.cafe.domain.Member;
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.member.MemberJoinRequestDto;
@@ -23,6 +21,14 @@ import kr.codesqaud.cafe.repository.post.PostRepository;
 import kr.codesqaud.cafe.service.MemberService;
 import kr.codesqaud.cafe.service.PostService;
 import kr.codesqaud.cafe.session.LoginMemberSession;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 
 @SpringBootTest
@@ -64,20 +70,20 @@ class PostControllerTest {
         Long memberId = memberService.join(requestDtoMember);
         Member member = memberRepository.findById(memberId).orElseThrow();
 
-        Long savedPostId = postRepository.save(dummyPostData(member), member);
-        PostResponse postResponse = postService.findById(savedPostId);
+        Long savedId = postRepository.save(dummyPostData(member), member);
+        PostResponse postResponse = postService.findById(savedId);
 
-        LoginMemberSession loginMemberSession = new LoginMemberSession(dummyMemberData().getEmail());
+        LoginMemberSession loginMemberSession = new LoginMemberSession(dummyMemberData().getEmail(),savedId);
 
         //when,then
         mockMvc.perform(post("/posts/write/")
                         .param("title", postResponse.getTitle())
                         .param("content", postResponse.getContent())
                         .param("writerEmail", postResponse.getWriter().getWriterEmail())
-                        .sessionAttr("loginMember",loginMemberSession)
+                        .sessionAttr("loginMember", loginMemberSession)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/write"))
+                .andExpect(view().name("redirect:/posts"))
                 .andDo(print());
     }
 
@@ -87,12 +93,24 @@ class PostControllerTest {
         MemberJoinRequestDto requestDtoMember = basicMemberData();
         Long memberId = memberService.join(requestDtoMember);
         Member member = memberRepository.findById(memberId).orElseThrow();
-        Long savedPostId = postRepository.save(basicPostData(member), member);
+        Long savedId = postRepository.save(basicPostData(member), member);
 
-        mockMvc.perform(get("/posts/{postId}/", savedPostId))
+        //when
+        MockHttpSession httpSession = new MockHttpSession();
+        httpSession.setAttribute("loginMember", new LoginMemberSession(member.getEmail(),memberId));
+
+        mockMvc.perform(get("/posts/{id}", savedId).session(httpSession))
                 .andExpect(status().isOk())
                 .andExpect(view().name("post/post"))
-                .andDo(print());
+                .andExpect(model().attributeExists("postResponse"))
+                .andExpect(model().attributeExists("commentListDto"));
+
+        //then
+        PostResponse postResponse = (PostResponse) mockMvc.perform(get("/posts/{id}", savedId).session(httpSession))
+                .andReturn().getModelAndView().getModel().get("postResponse");
+        assertThat(postResponse.getTitle()).isEqualTo("피에스타");
+        assertThat(postResponse.getContent()).isEqualTo("내맘에 태양을 꼭 삼킨채 영원토록 뜨겁게 지지 않을게");
+        assertThat(postResponse.getWriter().getWriterEmail()).isEqualTo("test@gmail.com");
     }
 
     @Test

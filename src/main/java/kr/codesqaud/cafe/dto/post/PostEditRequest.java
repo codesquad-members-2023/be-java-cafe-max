@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 
 
 public class PostEditRequest {
-    private Long postId;
+    private Long id;
 
     @Length(min = 2, max = 50)
     private final String title;
@@ -15,14 +15,14 @@ public class PostEditRequest {
     @Length(min = 2, max = 3000)
     private final String content;
 
-    public PostEditRequest(Long postId, String title, String content) {
-        this.postId = postId;
+    public PostEditRequest(Long id, String title, String content) {
+        this.id = id;
         this.title = title;
         this.content = content;
     }
 
-    public Long getPostId() {
-        return postId;
+    public Long getid() {
+        return id;
     }
 
     public String getTitle() {

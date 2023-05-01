@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,10 +18,9 @@ import javax.validation.Valid;
 
 import kr.codesqaud.cafe.domain.Post;
 import kr.codesqaud.cafe.dto.post.PostEditRequest;
-import kr.codesqaud.cafe.dto.post.PostResponse;
+
 import kr.codesqaud.cafe.dto.post.PostWriteRequest;
-import kr.codesqaud.cafe.exception.common.CommonException;
-import kr.codesqaud.cafe.exception.common.CommonExceptionType;
+import kr.codesqaud.cafe.service.CommentService;
 import kr.codesqaud.cafe.service.PostService;
 import kr.codesqaud.cafe.session.LoginMemberSession;
 
@@ -28,9 +28,11 @@ import kr.codesqaud.cafe.session.LoginMemberSession;
 @RequestMapping("/posts")
 public class PostController {
     private final PostService postService;
+    private final CommentService commentService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, CommentService commentService) {
         this.postService = postService;
+        this.commentService = commentService;
     }
 
     @GetMapping
@@ -49,39 +51,32 @@ public class PostController {
         return "redirect:/posts";
     }
 
-    @GetMapping("/{postId}/edit-form")
-    public String editForm(@PathVariable Long postId, Model model) {
+    @GetMapping("/{id}/edit-form")
+    public String editForm(@PathVariable Long id, Model model) {
         PostEditRequest postEditRequest = new PostEditRequest(0L, "", null);
-        model.addAttribute("postEditRequest", postService.findById(postId));
+        model.addAttribute("postEditRequest", postService.findById(id));
         return "post/edit";
     }
 
-    @PutMapping("/{postId}")
+    @PutMapping("/{id}")
     public String editPost(@Valid PostEditRequest postEditRequest, BindingResult bindingResult, @SessionAttribute("loginMember") LoginMemberSession loginMemberSession) {
-        PostResponse postResponse = postService.findById(postEditRequest.getPostId());
-        String postWriterEmail = postResponse.getWriter().getWriterEmail();
-        if (loginMemberSession.isNotEqualMember(postWriterEmail)) {
-            throw new CommonException(CommonExceptionType.ACCESS_DENIED);
-        }
-
         if (bindingResult.hasErrors()) {
             return "post/edit";
         }
 
-        postService.editPost(postEditRequest);
-        return "redirect:/posts/{postId}";
+        postService.editPost(postEditRequest, loginMemberSession);
+        return "redirect:/posts/{id}";
     }
 
-    @GetMapping("/{postId}")
-    public String post(@PathVariable Long postId, Model model) {
-        model.addAttribute("postResponse", postService.findById(postId));
+    @GetMapping("/{id}")
+    public String post(@PathVariable Long id, Model model) {
+        model.addAttribute("postResponse", postService.findById(id));
+        model.addAttribute("commentListDto", commentService.findComments(id));
         return "post/post";
     }
 
     @GetMapping("/write")
-    public String writeForm(Model model) {
-        PostWriteRequest postWriteRequest = new PostWriteRequest("", "", null);
-        model.addAttribute("postWriteRequest", postWriteRequest);
+    public String writeForm(@ModelAttribute PostWriteRequest postWriteRequest) {
         return "post/write";
     }
 
@@ -92,14 +87,9 @@ public class PostController {
         return "post/all";
     }
 
-    @DeleteMapping("/{postId}")
-    public String deletePost(@PathVariable final Long postId, @SessionAttribute("loginMember") LoginMemberSession loginMemberSession) {
-        PostResponse postResponse = postService.findById(postId);
-        String postWriterEmail = postResponse.getWriter().getWriterEmail();
-        if (loginMemberSession.isNotEqualMember(postWriterEmail)) {
-            throw new CommonException(CommonExceptionType.ACCESS_DENIED);
-        }
-        postService.deletePostId(postId);
+    @DeleteMapping("/{id}")
+    public String deletePost(@PathVariable final Long id, @SessionAttribute("loginMember") LoginMemberSession loginMemberSession) {
+        postService.deleteId(id,loginMemberSession);
         return "redirect:/";
     }
 }

@@ -6,11 +6,13 @@ import java.time.format.DateTimeFormatter;
 import kr.codesqaud.cafe.domain.Member;
 
 public class MemberResponseDto {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final Long memberId;
     private final String email;
     private final String password;
     private final String nickname;
     private final LocalDateTime createDate;
+
 
     public MemberResponseDto(Long memberId, String email, String password, String nickname, LocalDateTime createDate) {
         this.memberId = memberId;
@@ -18,6 +20,10 @@ public class MemberResponseDto {
         this.password = password;
         this.nickname = nickname;
         this.createDate = createDate;
+    }
+
+    public static MemberResponseDto of(Member member) {
+        return new MemberResponseDto(member.getMemberId(), member.getEmail(), member.getPassword(), member.getNickname(), member.getCreateDate());
     }
 
     public Long getMemberId() {
@@ -37,10 +43,6 @@ public class MemberResponseDto {
     }
 
     public String convertLocalDateTime() {
-        return createDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    }
-
-    public static MemberResponseDto of(Member member) {
-        return new MemberResponseDto(member.getMemberId(), member.getEmail(), member.getPassword(), member.getNickname(), member.getCreateDate());
+        return createDate.format(FORMATTER);
     }
 }

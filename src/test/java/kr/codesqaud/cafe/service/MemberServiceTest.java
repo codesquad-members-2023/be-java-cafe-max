@@ -17,7 +17,8 @@ import kr.codesqaud.cafe.dto.member.MemberResponseDto;
 import kr.codesqaud.cafe.dto.member.ProfileEditRequestDto;
 import kr.codesqaud.cafe.repository.member.MemberRepository;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Sql(scripts = "classpath:schema.sql")
@@ -44,10 +45,7 @@ class MemberServiceTest {
 
         //then
         Member targetMember = memberRepository.findById(savedMemberId).orElseThrow();
-        assertAll(() -> assertEquals(savedMemberId, targetMember.getMemberId()),
-                () -> assertEquals("test@gmail.com", targetMember.getEmail()),
-                () -> assertEquals("testtest", targetMember.getPassword()),
-                () -> assertEquals("차차", targetMember.getNickname()));
+        assertAll(() -> assertEquals(savedMemberId, targetMember.getMemberId()), () -> assertEquals("test@gmail.com", targetMember.getEmail()), () -> assertEquals("testtest", targetMember.getPassword()), () -> assertEquals("차차", targetMember.getNickname()));
     }
 
 
@@ -56,13 +54,12 @@ class MemberServiceTest {
     void findAll() {
         //given
         int memberNumber = 10;
-        IntStream.rangeClosed(1, memberNumber)
-                .forEach(count -> {
-                    String email = String.format("test%d@test.com", count);
-                    String password = String.format("test%d", count);
-                    String nickname = String.format("chacha%d", count);
-                    memberService.join(new MemberJoinRequestDto(email, password, nickname));
-                });
+        IntStream.rangeClosed(1, memberNumber).forEach(count -> {
+            String email = String.format("test%d@test.com", count);
+            String password = String.format("test%d", count);
+            String nickname = String.format("chacha%d", count);
+            memberService.join(new MemberJoinRequestDto(email, password, nickname));
+        });
 
         //when
         List<MemberResponseDto> members = memberService.findAll();
@@ -81,10 +78,7 @@ class MemberServiceTest {
         MemberResponseDto memberResponseDto = memberService.findById(memberId);
 
         //then
-        assertAll(
-                () -> assertEquals(memberId, memberResponseDto.getMemberId()),
-                () -> assertEquals(requestDtoMember.getEmail(), "test@gmail.com"),
-                () -> assertEquals(requestDtoMember.getNickname(), "차차"));
+        assertAll(() -> assertEquals(memberId, memberResponseDto.getMemberId()), () -> assertEquals(requestDtoMember.getEmail(), "test@gmail.com"), () -> assertEquals(requestDtoMember.getNickname(), "차차"));
     }
 
     @Test
@@ -95,13 +89,10 @@ class MemberServiceTest {
         String memberEmail = memberService.findById(memberId).getEmail();
 
         //when
-        Member member = memberService.findByEmail(memberEmail);
+        MemberResponseDto memberResponseDto = memberService.findByEmail(memberEmail);
 
         //then
-        assertAll(
-                () -> assertEquals(memberEmail, member.getEmail()),
-                () -> assertEquals("차차", member.getNickname()),
-                () -> assertEquals("testtest", member.getPassword()));
+        assertAll(() -> assertEquals(memberEmail, memberResponseDto.getEmail()), () -> assertEquals("차차", memberResponseDto.getNickname()), () -> assertEquals("testtest", memberResponseDto.getPassword()));
     }
 
 
@@ -116,9 +107,7 @@ class MemberServiceTest {
 
         //then
         Member targetMember = memberRepository.findById(saveId).orElseThrow();
-        assertAll(
-                () -> assertEquals(saveId, targetMember.getMemberId()),
-                () -> assertEquals("피오니", targetMember.getNickname()));
+        assertAll(() -> assertEquals(saveId, targetMember.getMemberId()), () -> assertEquals("피오니", targetMember.getNickname()));
     }
 
     @Test
