@@ -26,3 +26,4 @@ CREATE TABLE IF NOT EXISTS `REPLY`
     date        DATETIME DEFAULT (CURRENT_TIME),
     is_visible  BOOL     DEFAULT 1
 );
+

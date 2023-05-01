@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
+import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 
@@ -12,8 +13,7 @@ import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 public class ArticleMapper {
 	public Article toArticle(ArticlePostRequest articlePostRequest) {
 		return new Article(articlePostRequest.getTitle(), articlePostRequest.getContent(),
-			articlePostRequest.getUserId(),
-			articlePostRequest.getNickName());
+			articlePostRequest.getUserId(), articlePostRequest.getNickName());
 	}
 
 	public Article toArticle(ArticleUpdateRequest articleUpdateRequest) {
@@ -22,13 +22,17 @@ public class ArticleMapper {
 	}
 
 	public ArticleResponse toArticleResponse(Article article) {
-		ArticleResponse articlePostRequest = new ArticleResponse(article.getTitle(), article.getContent(),
+		return new ArticleResponse(article.getTitle(), article.getContent(),
 			article.getArticleIdx(), article.getDate(), article.getNickName());
-		return articlePostRequest;
 	}
 
 	public ArticleTitleAndContentResponse toArticleTitleAndContentResponse(Article article) {
 		return new ArticleTitleAndContentResponse(article.getTitle(), article.getContent());
+	}
+
+	public ArticleResponseForList toArticleResponseForList(Article article) {
+		return new ArticleResponseForList(article.getTitle(), article.getArticleIdx(), article.getDate(),
+			article.getNickName());
 	}
 
 }

@@ -1,10 +1,9 @@
 package kr.codesqaud.cafe.service;
 
+import static kr.codesqaud.cafe.utils.ArticleTestUtils.*;
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.mockito.BDDMockito.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,10 +20,15 @@ import kr.codesqaud.cafe.article.ArticleService;
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
+import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
+import kr.codesqaud.cafe.article.exception.ArticleDeleteException;
+import kr.codesqaud.cafe.article.exception.ArticleIdAndSessionIdMismatchException;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
 import kr.codesqaud.cafe.global.mapper.ArticleMapper;
+import kr.codesqaud.cafe.mainPage.PaginationDto;
+import kr.codesqaud.cafe.utils.ArticleTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
@@ -40,18 +44,31 @@ class ArticleServiceTest {
 
 	private Article article;
 	private ArticleResponse articleResponse;
+	private ArticlePostRequest articlePostRequest;
+	private ArticleUpdateRequest articleUpdateRequest;
+	private ArticleTitleAndContentResponse articleTitleAndContentResponse;
+	private ArticleResponseForList articleResponseForList;
+	private PaginationDto paginationDto;
+	private List<Article> articles;
+	private static Long ArticleIdx = 1L;
+	private static final String USER_ID = "testId";
 
 	@BeforeEach
 	void setUp() {
-		article = createArticle();
-		articleResponse = createArticleResponse();
+		article = ArticleTestUtils.createArticle();
+		articlePostRequest = ArticleTestUtils.createArticlePostRequest();
+		articleResponse = ArticleTestUtils.createArticleResponse();
+		articleUpdateRequest = ArticleTestUtils.createArticleUpdateRequest();
+		articleTitleAndContentResponse = ArticleTestUtils.createArticleTitleAndContentResponse();
+		articleResponseForList = createArticleResponseForList();
+		paginationDto = createPaginationDto();
+		articles = createArticles();
 	}
 
 	@Test
 	@DisplayName("articlePostRequest에 저장된 제목과 내용을 db에 저장한다.")
 	void postTest() {
 		//given
-		ArticlePostRequest articlePostRequest = createArticlePostRequest();
 		given(articleMapper.toArticle(articlePostRequest)).willReturn(article);
 
 		//when
@@ -64,25 +81,17 @@ class ArticleServiceTest {
 	@Test
 	@DisplayName("db에 저장된 모든 article을 역순으로 list에 담아 반환한다.")
 	void getArticleListTest() {
-
-		Article article1 = createArticle1ContainsIdx();
-		Article article2 = createArticle2ContainsIdx();
-		ArticleResponse articleResponse2 = createArticleResponse2();
-		List<Article> articles = new ArrayList<>(Arrays.asList(article1, article2));
-
 		//given
-		given(articleMapper.toArticleResponse(article1)).willReturn(articleResponse);
-		given(articleMapper.toArticleResponse(article2)).willReturn(articleResponse2);
-		given(articleRepository.findAll()).willReturn(articles);
+		given(articleRepository.findAll(any(PaginationDto.class))).willReturn(articles);
+		given(articleMapper.toArticleResponseForList(any(Article.class))).willReturn(articleResponseForList);
 
 		//when
-		List<ArticleResponse> result = articleService.getArticleList();
+		List<ArticleResponseForList> result = articleService.getArticleList(paginationDto);
 
 		//then
 		Assertions.assertAll(
-			() -> assertThat(result.size() == 2).isTrue(),
-			() -> assertThat(result.get(0)).isEqualTo(articleResponse2),
-			() -> assertThat(result.get(1)).isEqualTo(articleResponse)
+			() -> assertThat(result.size() == 1).isTrue(),
+			() -> assertThat(result.get(0)).isEqualTo(articleResponseForList)
 		);
 	}
 
@@ -90,12 +99,11 @@ class ArticleServiceTest {
 	@DisplayName("idx를 통해 해당 article을 articleResponse의 형태로 반환한다.")
 	void findArticleByIdxTest() {
 		//given
-		Long idx = 1l;
-		given(articleRepository.findArticleByIdx(idx)).willReturn(Optional.of(article));
+		given(articleRepository.findArticleByIdx(ArticleIdx)).willReturn(Optional.of(article));
 		given(articleMapper.toArticleResponse(article)).willReturn(articleResponse);
 
 		//when
-		ArticleResponse result = articleService.findArticleByIdx(idx);
+		ArticleResponse result = articleService.findArticleByIdx(ArticleIdx);
 
 		//then
 		Assertions.assertAll(
@@ -107,8 +115,6 @@ class ArticleServiceTest {
 	@DisplayName("ArticleUpdateRequest의 제목과 내용을 db에 업데이트 한다.")
 	void updateArticleTest() {
 		//given
-		ArticleUpdateRequest articleUpdateRequest = createArticleUpdateRequest();
-		Article article = createArticle();
 		given(articleMapper.toArticle(articleUpdateRequest)).willReturn(article);
 
 		//when
@@ -119,47 +125,53 @@ class ArticleServiceTest {
 	}
 
 	@Test
-	@DisplayName("session의 id와 article의 id가 같다면 ArticleTitleAndContentResponse형태로 반환한다.")
+	@DisplayName("session의 id와 article의 id가 같다면 ArticleTitleAndContentResponse를 반환한다.")
 	void validSessionIdAndArticleIdTest() {
-		Long idx = 1L;
-		String id = "id";
-		ArticleTitleAndContentResponse articleTitleAndContentResponse = createArticleTitleAndContentResponse();
+		//given
 		given(articleMapper.toArticleTitleAndContentResponse(article)).willReturn(articleTitleAndContentResponse);
-		given(articleRepository.findArticleByIdx(idx)).willReturn(Optional.of(article));
+		given(articleRepository.findArticleByIdx(ArticleIdx)).willReturn(Optional.of(article));
 
 		//when & then
-		assertThatCode(() -> articleService.validSessionIdAndArticleId(idx, id)).doesNotThrowAnyException();
+		assertThatCode(() -> articleService.validSessionIdAndArticleId(ArticleIdx, USER_ID)).doesNotThrowAnyException();
 	}
 
-	private static ArticleTitleAndContentResponse createArticleTitleAndContentResponse() {
-		return new ArticleTitleAndContentResponse("title", "content");
+	@Test
+	@DisplayName("session의 id와 article의 id가 다르다면 ArticleIdAndSessionIdMismatchException이 발생한다.")
+	void validSessionIdAndArticleIdTest_throwsException() {
+		//given
+		given(articleRepository.findArticleByIdx(ArticleIdx)).willReturn(Optional.of(article));
+
+		//when & then
+		assertThatThrownBy(
+			() -> articleService.validSessionIdAndArticleId(ArticleIdx, USER_ID + "different")).isInstanceOf(
+			ArticleIdAndSessionIdMismatchException.class);
 	}
 
-	private static ArticleResponse createArticleResponse() {
-		return new ArticleResponse("제목입니다", "내용입니다", 1L, "2023-4-23", "nickName");
+	@Test
+	@DisplayName("session의 id와 article의  id가 같다면 해당 게시글을 삭제할수 있다.")
+	void deleteArticleByIdxTest() {
+		//given
+		given(articleRepository.findArticleByIdx(ArticleIdx)).willReturn(Optional.of(article));
+		given(articleMapper.toArticleTitleAndContentResponse(article)).willReturn(
+			articleTitleAndContentResponse);
+		given(articleRepository.deleteArticle(ArticleIdx, USER_ID)).willReturn(true);
+
+		//when & then
+		assertThatCode(() -> articleService.deleteArticleByIdx(ArticleIdx, USER_ID)).doesNotThrowAnyException();
 	}
 
-	private static Article createArticle() {
-		return new Article("제목입니다", "내용입니다", "id", "nickName");
+	@Test
+	@DisplayName("session의 id와 article의  id가 같아도 해당 게시글에 다른 사용자의 댓글이 있다면 삭제할수 없다.")
+	void deleteArticleByIdx_throwsException() {
+		//given
+		given(articleRepository.findArticleByIdx(ArticleIdx)).willReturn(Optional.of(article));
+		given(articleMapper.toArticleTitleAndContentResponse(article)).willReturn(
+			articleTitleAndContentResponse);
+		given(articleRepository.deleteArticle(ArticleIdx, USER_ID)).willReturn(false);
+
+		//when & then
+		assertThatThrownBy(() -> articleService.deleteArticleByIdx(ArticleIdx, USER_ID)).isInstanceOf(
+			ArticleDeleteException.class);
 	}
 
-	private static ArticlePostRequest createArticlePostRequest() {
-		return new ArticlePostRequest("제목입니다", "내용입니다");
-	}
-
-	private static ArticleUpdateRequest createArticleUpdateRequest() {
-		return new ArticleUpdateRequest("새로운제목", "새로운내용");
-	}
-
-	private static ArticleResponse createArticleResponse2() {
-		return new ArticleResponse("title2", "content2", 2L, "2023-4-23", "nickName");
-	}
-
-	private static Article createArticle2ContainsIdx() {
-		return new Article("title2", "content2", 2L);
-	}
-
-	private static Article createArticle1ContainsIdx() {
-		return new Article("title1", "content1", 1L);
-	}
 }

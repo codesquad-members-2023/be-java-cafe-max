@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
+import kr.codesqaud.cafe.mainPage.PaginationDto;
 
 @Repository
 public class JDBCArticleRepository implements ArticleRepository {
@@ -32,9 +33,13 @@ public class JDBCArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public List<Article> findAll() {
+	public List<Article> findAll(PaginationDto paginationDto) {
 		return namedParameterJdbcTemplate.query(
-			"SELECT A.nickName, B.* FROM USER A INNER JOIN ARTICLE B ON A.user_id = B.user_id WHERE is_visible = true",
+			"SELECT A.nickName, B.* FROM USER A JOIN ARTICLE B ON A.user_id = B.user_id "
+				+ "WHERE is_visible = true ORDER BY B.article_idx DESC LIMIT :start,:recordSize",
+			new MapSqlParameterSource()
+				.addValue("start", paginationDto.getOffset())
+				.addValue("recordSize", paginationDto.getRecordSize()),
 			(rs, rn) -> new Article(rs));
 	}
 
@@ -61,16 +66,23 @@ public class JDBCArticleRepository implements ArticleRepository {
 	@Override
 	public boolean deleteArticle(Long articleIdx, String userId) {
 		int rowsAffected = namedParameterJdbcTemplate.update(
-			"UPDATE ARTICLE A SET A.is_visible = FALSE WHERE A.article_idx = :articleIdx "
-				+ "AND NOT EXISTS (SELECT 1 FROM REPLY B WHERE B.article_idx = A.article_idx AND B.is_visible = TRUE AND B.user_id != :userId)",
+			"UPDATE ARTICLE A "
+				+ "LEFT JOIN REPLY B ON A.article_idx = B.article_idx "
+				+ "SET A.is_visible = FALSE, B.is_visible = FALSE "
+				+ "WHERE A.article_idx = :articleIdx "
+				+ "AND NOT EXISTS (SELECT 1 FROM (SELECT 1 FROM REPLY WHERE article_idx = :articleIdx AND is_visible = TRUE AND user_id != :userId) AS t)",
 			new MapSqlParameterSource()
 				.addValue("articleIdx", articleIdx)
 				.addValue("userId", userId)
 		);
-		if (rowsAffected > 0) {
-			namedParameterJdbcTemplate.update("UPDATE REPLY SET is_visible = FALSE WHERE article_idx = :articleIdx"
-				, new MapSqlParameterSource("articleIdx", articleIdx));
-		}
 		return (rowsAffected > 0);
+	}
+
+	@Override
+	public Long getCountOfArticles() {
+		List<Long> countList = namedParameterJdbcTemplate.query(
+			"SELECT COUNT(is_visible) FROM ARTICLE WHERE is_visible = true",
+			(rs, rowNum) -> rs.getLong(1));
+		return countList.get(0);
 	}
 }

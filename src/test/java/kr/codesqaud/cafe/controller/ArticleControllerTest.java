@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import static kr.codesqaud.cafe.utils.ArticleTestUtils.*;
+import static kr.codesqaud.cafe.utils.SessionTestUtils.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -18,7 +20,6 @@ import kr.codesqaud.cafe.article.ArticleController;
 import kr.codesqaud.cafe.article.ArticleService;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
-import kr.codesqaud.cafe.global.config.Session;
 import kr.codesqaud.cafe.reply.ReplyService;
 
 @WebMvcTest(ArticleController.class)
@@ -35,11 +36,18 @@ class ArticleControllerTest {
 
 	private MockHttpSession httpSession;
 
+	private ArticleResponse articleResponse;
+
+	private ArticleTitleAndContentResponse articleTitleAndContentResponse;
+
+	private static final String TITLE = "title";
+	private static final String CONTENT = "content";
+
 	@BeforeEach
 	public void setUp() {
-		httpSession = new MockHttpSession();
-		Session session = new Session("id", "testUser");
-		httpSession.setAttribute(Session.LOGIN_USER, session);
+		httpSession = createMockHttpSession();
+		articleResponse = createArticleResponse();
+		articleTitleAndContentResponse = createArticleTitleAndContentResponse();
 	}
 
 	@Test
@@ -48,8 +56,8 @@ class ArticleControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.post("/articles")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("title", "title")
-				.param("content", "content"))
+				.param(TITLE, TITLE)
+				.param(CONTENT, CONTENT))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/"));
 	}
@@ -58,7 +66,6 @@ class ArticleControllerTest {
 	@DisplayName("detail 메서드를 통해 해당 idx의 게시물 정보를 가져온다.")
 	void detailTest() throws Exception {
 		//given
-		ArticleResponse articleResponse = createArticleResponse();
 		given(articleService.findArticleByIdx(1L)).willReturn(articleResponse);
 
 		//when & then
@@ -73,9 +80,10 @@ class ArticleControllerTest {
 	@Test
 	@DisplayName("해당 글을 작성한 사용자는 글의 내용을 업데이트 할수 있는 form으로 이동할수 있다.")
 	void updateFormTest() throws Exception {
-		ArticleTitleAndContentResponse articleTitleAndContentResponse = createArticleTitleAndContentResponse();
+		//given
 		given(articleService.validSessionIdAndArticleId(1L, "id")).willReturn(articleTitleAndContentResponse);
 
+		//when & then
 		mockMvc.perform(MockMvcRequestBuilders.get("/articles/update/1")
 				.session(httpSession))
 			.andExpect(status().isOk())
@@ -90,8 +98,8 @@ class ArticleControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.put("/articles/update/1")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("title", "제목입니다")
-				.param("content", "내용입니다"))
+				.param(TITLE, TITLE)
+				.param(CONTENT, CONTENT))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/"));
 	}
@@ -105,13 +113,4 @@ class ArticleControllerTest {
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/"));
 	}
-
-	private ArticleResponse createArticleResponse() {
-		return new ArticleResponse("제목입니다", "내용입니다", 1L, "2023-4-23", "nickName");
-	}
-
-	private static ArticleTitleAndContentResponse createArticleTitleAndContentResponse() {
-		return new ArticleTitleAndContentResponse("제목입니다", "내용입니다");
-	}
-
 }

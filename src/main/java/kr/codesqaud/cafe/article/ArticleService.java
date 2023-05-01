@@ -1,6 +1,5 @@
 package kr.codesqaud.cafe.article;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 import kr.codesqaud.cafe.article.domain.Article;
 import kr.codesqaud.cafe.article.dto.ArticlePostRequest;
 import kr.codesqaud.cafe.article.dto.ArticleResponse;
+import kr.codesqaud.cafe.article.dto.ArticleResponseForList;
 import kr.codesqaud.cafe.article.dto.ArticleTitleAndContentResponse;
 import kr.codesqaud.cafe.article.dto.ArticleUpdateRequest;
 import kr.codesqaud.cafe.article.exception.ArticleDeleteException;
@@ -16,6 +16,7 @@ import kr.codesqaud.cafe.article.exception.ArticleIdAndSessionIdMismatchExceptio
 import kr.codesqaud.cafe.article.exception.ArticleNotFoundException;
 import kr.codesqaud.cafe.article.repository.ArticleRepository;
 import kr.codesqaud.cafe.global.mapper.ArticleMapper;
+import kr.codesqaud.cafe.mainPage.PaginationDto;
 
 @Service
 public class ArticleService {
@@ -33,10 +34,9 @@ public class ArticleService {
 		articleRepository.save(article);
 	}
 
-	public List<ArticleResponse> getArticleList() {
-		return articleRepository.findAll().stream()
-			.sorted(Comparator.comparing(Article::getArticleIdx).reversed())
-			.map(articleMapper::toArticleResponse)
+	public List<ArticleResponseForList> getArticleList(PaginationDto paginationDto) {
+		return articleRepository.findAll(paginationDto).stream()
+			.map(articleMapper::toArticleResponseForList)
 			.collect(Collectors.toUnmodifiableList());
 	}
 
@@ -63,5 +63,9 @@ public class ArticleService {
 		if (!articleRepository.deleteArticle(articleIdx, userId)) {
 			throw new ArticleDeleteException();
 		}
+	}
+
+	public Long getCountOfArticles() {
+		return articleRepository.getCountOfArticles();
 	}
 }

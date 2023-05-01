@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import kr.codesqaud.cafe.reply.domain.Reply;
+import kr.codesqaud.cafe.reply.dto.LoadMoreReplyDto;
 import kr.codesqaud.cafe.reply.repository.ReplyRepository;
 
 @Repository
@@ -31,16 +32,21 @@ public class JDBCReplyRepository implements ReplyRepository {
 	}
 
 	private Reply findReplyByReplyIdx() {
-		return namedParameterJdbcTemplate.queryForObject("SELECT A.nickName,B.* FROM USER A INNER JOIN REPLY B "
+		return namedParameterJdbcTemplate.queryForObject("SELECT A.nickName,B.* FROM USER A JOIN REPLY B "
 				+ "ON A.user_id = B.user_id WHERE reply_idx = LAST_INSERT_ID()",
 			new MapSqlParameterSource(), (rs, rn) -> new Reply(rs));
 	}
 
 	@Override
-	public List<Reply> findAllReply(Long articleIdx) {
+	public List<Reply> findAllReply(LoadMoreReplyDto loadMoreReplyDto) {
 		return namedParameterJdbcTemplate.query(
-			"SELECT A.nickName, B.* FROM USER A INNER JOIN REPLY B ON A.user_id = B.user_id WHERE article_Idx = :articleIdx AND is_visible = true",
-			new MapSqlParameterSource("articleIdx", articleIdx), (rs, rn) -> new Reply(rs));
+			"SELECT A.nickName, B.* FROM USER A JOIN REPLY B ON A.user_id = B.user_id "
+				+ "WHERE article_Idx = :articleIdx AND is_visible = true LIMIT :start,:count",
+			new MapSqlParameterSource()
+				.addValue("articleIdx", loadMoreReplyDto.getArticleIdx())
+				.addValue("start", loadMoreReplyDto.getStart())
+				.addValue("count", loadMoreReplyDto.getRecordSize()),
+			(rs, rn) -> new Reply(rs));
 	}
 
 	@Override
@@ -55,5 +61,14 @@ public class JDBCReplyRepository implements ReplyRepository {
 			"SELECT user_id FROM REPLY WHERE reply_idx = :replyIdx", new MapSqlParameterSource("replyIdx", replyIdx),
 			(rs, rowNum) -> rs.getString("user_id")
 		);
+	}
+
+	@Override
+	public Integer getCountOfReplies(Long articleIdx) {
+		List<Integer> countList = namedParameterJdbcTemplate.query(
+			"SELECT COUNT(is_visible) FROM REPLY WHERE is_visible = true AND article_idx = :articleIdx ",
+			new MapSqlParameterSource("articleIdx", articleIdx),
+			(rs, rowNum) -> rs.getInt(1));
+		return countList.get(0);
 	}
 }

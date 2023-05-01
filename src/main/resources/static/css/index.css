@@ -118,12 +118,21 @@ td {
     color: white;
 }
 
-.post-btn-container {
-    display: flex;
-    justify-content: end;
-}
 
 .post-write-btn:hover {
     background-color: #ffcd00;
     color: black;
+}
+
+
+#main-page-bottom-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+#pagination {
+    display: flex;
+    flex-direction: row;
 }

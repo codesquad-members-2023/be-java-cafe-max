@@ -38,7 +38,7 @@ function handleSubmit(e) {
         error: function () {
             console.log('failure');
         },
-        success: function (data, status) {
+        success: function (data) {
             const template = replyTemplate.formatUnicorn({
                 nickName: data.nickName,
                 date: data.date,
@@ -53,19 +53,12 @@ function handleSubmit(e) {
     });
 }
 
+// 댓글 개수 count를 위한 함수
 
-const countOfReply = document.getElementById("count-of-reply");
-
-document.addEventListener('DOMContentLoaded', function () {
-    const commentBox = document.getElementById('comment-box');
-    const articles = commentBox.querySelectorAll('article');
-    const articleCount = articles.length;
-    countOfReply.textContent = "댓글 " + articleCount + "개";
-});
+let countOfReply = document.getElementById('count-of-reply');
 
 function increaseCommentCount() {
     let preCountOfReply = countOfReply.textContent;
     let postCountOfReply = parseInt(preCountOfReply.replace(/[^0-9]/g, "")) + 1;
     countOfReply.textContent = "댓글 " + postCountOfReply + "개";
 }
-

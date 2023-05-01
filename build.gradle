@@ -24,6 +24,9 @@ dependencies {
 
     //@Valid
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+
+    //swagger
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
 }
 
 tasks.named('test') {

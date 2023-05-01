@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import kr.codesqaud.cafe.global.mapper.ReplyMapper;
 import kr.codesqaud.cafe.reply.domain.Reply;
+import kr.codesqaud.cafe.reply.dto.LoadMoreReplyDto;
 import kr.codesqaud.cafe.reply.dto.ReplyRequest;
 import kr.codesqaud.cafe.reply.dto.ReplyResponse;
 import kr.codesqaud.cafe.reply.dto.Result;
@@ -29,8 +30,8 @@ public class ReplyService {
 		return replyMapper.toReplyResponse(replyRepository.saveReply(reply));
 	}
 
-	public List<ReplyResponse> getRepliesByIdx(Long articleIdx) {
-		return replyRepository.findAllReply(articleIdx).stream()
+	public List<ReplyResponse> getRepliesByIdx(LoadMoreReplyDto loadMoreReplyDto) {
+		return replyRepository.findAllReply(loadMoreReplyDto).stream()
 			.map(replyMapper::toReplyResponse)
 			.collect(Collectors.toUnmodifiableList());
 	}
@@ -49,5 +50,9 @@ public class ReplyService {
 
 	public String findIdByIdx(Long replyIdx) {
 		return replyRepository.findReplyIdByIdx(replyIdx);
+	}
+
+	public Integer getCountOfReplies(Long articleIdx) {
+		return replyRepository.getCountOfReplies(articleIdx);
 	}
 }

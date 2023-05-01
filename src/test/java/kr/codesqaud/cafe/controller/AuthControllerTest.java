@@ -1,5 +1,7 @@
 package kr.codesqaud.cafe.controller;
 
+import static kr.codesqaud.cafe.utils.SessionTestUtils.*;
+import static kr.codesqaud.cafe.utils.UserTestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -35,11 +37,20 @@ class AuthControllerTest {
 
 	private MockHttpSession httpSession;
 
+	private UserResponse userResponse;
+
+	private SignInRequest signInRequest;
+
+	private static final String NICK_NAME = "nickName";
+	private static final String EMAIL = "test@Email.com";
+	private static final String PASSWORD = "password123";
+	private static final String USER_ID = "tester";
+
 	@BeforeEach
 	public void setUp() {
-		httpSession = new MockHttpSession();
-		Session session = new Session("id", "testUser");
-		httpSession.setAttribute(Session.LOGIN_USER, session);
+		httpSession = createMockHttpSession();
+		userResponse = createUserResponse();
+		signInRequest = createSignInRequestWithCorrectPassword();
 	}
 
 	@Test
@@ -48,10 +59,10 @@ class AuthControllerTest {
 		mockMvc.perform(MockMvcRequestBuilders.post("/users/sign-up")
 				.session(httpSession)
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("nickName", "nickName")
-				.param("email", "aaaa@naver.com")
-				.param("password", "password123")
-				.param("userId", "charlie"))
+				.param("nickName", NICK_NAME)
+				.param("email", EMAIL)
+				.param("password", PASSWORD)
+				.param("userId", USER_ID))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/users/list"));
 	}
@@ -60,15 +71,13 @@ class AuthControllerTest {
 	@DisplayName("로그인성공시 id와 nickName을 session에 저장한다.")
 	void signInTest() throws Exception {
 		//given
-		SignInRequest signInRequest = createSignInRequest();
-		UserResponse userResponse = createUserResponse();
 		given(userService.getUserById(signInRequest.getUserId())).willReturn(userResponse);
 
 		//when
 		ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/users/sign-in")
 				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.param("userId", "id")
-				.param("password", "password123"))
+				.param("userId", USER_ID)
+				.param("password", PASSWORD))
 
 			//then
 			.andExpect(status().is3xxRedirection())
@@ -88,8 +97,7 @@ class AuthControllerTest {
 	@DisplayName("로그인성공시 로그인 성공창을 보여준다.")
 	void singInSuccessTest() throws Exception {
 		//given
-		UserResponse userResponse = createUserResponse();
-		given(userService.getUserById(userResponse.getUserId())).willReturn(userResponse);
+		given(userService.getUserById(any(String.class))).willReturn(userResponse);
 
 		//when
 		mockMvc.perform(MockMvcRequestBuilders.get("/users/sign-in-success")
@@ -113,14 +121,6 @@ class AuthControllerTest {
 			.andExpect(view().name("redirect:/"));
 
 		Assertions.assertThat(httpSession.isInvalid()).isTrue();
-	}
-
-	private static UserResponse createUserResponse() {
-		return new UserResponse("nickName", "aaa@naver.com", "password123", "id");
-	}
-
-	private static SignInRequest createSignInRequest() {
-		return new SignInRequest("id", "user");
 	}
 
 	private static boolean isEqualsWithSessionIdAndSignInRequestNickName(UserResponse userResponse, Session session) {

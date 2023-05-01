@@ -7,7 +7,7 @@
 <body>
 <div class="background">
     {{> fragments/navbar}}
-
+    <div id="articleIdx" data-my-value="{{article.articleIdx}}"></div>
     <div class="container" id="main">
         <div class="col-md-12 col-sm-12 col-lg-12">
             <div class="panel panel-default">
@@ -46,7 +46,10 @@
 
                     <div class="post-comment">
                         <div class="post-comment-slipp">
-                            <p id="count-of-reply" class="post-comment-count"></p>
+                            <p id="count-of-reply" class="post-comment-count">댓글 {{loadReplies.countOfRepliesInDb}}개</p>
+                            {{#loadReplies.loadButton}}
+                            <button id="button-for-more-comment">더보기</button>
+                            {{/loadReplies.loadButton}}
                             <div class="post-comment-slipp-articles">
                                 <div id="comment-box">
                                     {{#replies}}
@@ -93,5 +96,6 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/reply.js"></script>
+<script src="/js/loadMorReply.js"></script>
 <script src="/js/replyDelete.js"></script>
 </html>

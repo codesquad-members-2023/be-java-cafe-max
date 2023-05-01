@@ -184,3 +184,15 @@ li {
 .reply-button {
     margin-top: 8px;
 }
+
+#button-for-more-comment {
+    text-align: center;
+    width: 100%;
+    background-color: rgba(211, 211, 211, 0.3);
+    border-radius: 7px;
+}
+
+#button-for-more-comment:hover {
+    background-color: rgba(211, 211, 211, 0.7);
+}
+
