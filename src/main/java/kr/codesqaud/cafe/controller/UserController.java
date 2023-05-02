@@ -1,38 +1,43 @@
 package kr.codesqaud.cafe.controller;
 
+import kr.codesqaud.cafe.dto.RoginRequestDto;
 import kr.codesqaud.cafe.dto.SignupRequestDto;
+import kr.codesqaud.cafe.model.User;
+import kr.codesqaud.cafe.repository.UserRepository;
 import kr.codesqaud.cafe.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserRepository userRepository) {
+        this.userService = new UserService(userRepository);
     }
+
     @PostMapping
-    public String signup(SignupRequestDto signupRequestDto) {
-        userService.signup(signupRequestDto);
+    public String signup(@RequestBody SignupRequestDto signupRequestDto) {
+        userService.signUp(signupRequestDto);
         return "회원가입 성공 DTO";
     }
 
     @PostMapping("/login")
-    public String login(String email, String password) {
-        return "토큰 DTO";
+    public String login(@RequestBody RoginRequestDto roginRequestDto) {
+        return userService.login(roginRequestDto);
     }
 
     @GetMapping
-    public String list() {
-        return "회원 목록 DTO";
+    public List<User> list() {
+        return userService.findAll();
     }
 
     @GetMapping("/{userId}")
-    public String profile(@PathVariable Long userId) {
-        return "특정 회원 정보 DTO";
+    public User profile(@PathVariable Long userId) {
+        return userService.findById(userId);
     }
 
 }
