@@ -1,9 +1,9 @@
 package kr.codesquad.cafe.post.controller;
 
 import kr.codesquad.cafe.comment.Comment;
+import kr.codesquad.cafe.comment.CommentDeletionNotAllowedException;
 import kr.codesquad.cafe.comment.CommentNotFoundException;
 import kr.codesquad.cafe.comment.CommentService;
-import kr.codesquad.cafe.comment.UnauthorizedDeleteCommentException;
 import kr.codesquad.cafe.post.Post;
 import kr.codesquad.cafe.post.PostService;
 import kr.codesquad.cafe.post.exception.PostNotFoundException;
@@ -129,7 +129,7 @@ class PostCommentControllerTest {
     @Test
     void deleteCommentByUnauthorizedDeleteComment() throws Exception {
         Post post = getTestPost(user);
-        doThrow(UnauthorizedDeleteCommentException.class).when(commentService).delete(anyLong(), anyLong());
+        doThrow(CommentDeletionNotAllowedException.class).when(commentService).delete(anyLong(), anyLong());
 
         mockMvc.perform(delete("/posts/" + post.getId() + "/comments/" + TEST_COMMENT_ID).session(session))
                 .andExpect(status().is4xxClientError())

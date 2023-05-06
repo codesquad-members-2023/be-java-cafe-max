@@ -69,7 +69,7 @@ public class Comment {
             isDeleted = true;
             return;
         }
-        throw new UnauthorizedDeleteCommentException();
+        throw new CommentDeletionNotAllowedException();
     }
 
     public boolean isSameUserId(Long userId) {

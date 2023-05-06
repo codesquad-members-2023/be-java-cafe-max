@@ -59,7 +59,7 @@ class CommentTest {
         assertThat(comment.isDeleted()).isFalse();
 
         assertThatThrownBy(() -> comment.delete(OTHER_ID))
-                .isInstanceOf(UnauthorizedDeleteCommentException.class);
+                .isInstanceOf(CommentDeletionNotAllowedException.class);
     }
 
     @DisplayName("유저아이디를 동일한지 확인한다")
