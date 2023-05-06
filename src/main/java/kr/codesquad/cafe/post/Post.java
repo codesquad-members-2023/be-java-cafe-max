@@ -19,23 +19,17 @@ import java.util.List;
 public class Post {
     @OneToMany(mappedBy = "post")
     protected List<Comment> comments = new ArrayList<>();
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotNull
     @ManyToOne
     private User user;
-
     private String nickname;
-
     private String title;
     @Lob
     private String textContent;
-
     private LocalDateTime createdDateTime;
-
     private boolean isDeleted;
 
 
