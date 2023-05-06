@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class MainController {
 
     private static final String SIMPLE_FORMS = "simpleForms";
-    private static final int DEFAULT_PAGE = 1;
+    private static final String DEFAULT_PAGE = "1";
     private static final String PAGES_INFO = "pagesInfo";
     private final PostService postService;
 
@@ -24,13 +23,12 @@ public class MainController {
     }
 
     @GetMapping
-    public String viewIndex(Model model, @RequestParam("page") Optional<Integer> page) {
-        int currentPage = page.orElse(DEFAULT_PAGE);
+    public String viewIndex(Model model, @RequestParam(name = "page", defaultValue = DEFAULT_PAGE) int page) {
 
-        List<SimplePostForm> simpleForms = postService.getAllSimplePostForm(currentPage);
+        List<SimplePostForm> simpleForms = postService.getAllSimplePostForm(page);
         model.addAttribute(SIMPLE_FORMS, simpleForms);
 
-        PagesInfo pagesInfo = postService.getPagesInfo(currentPage);
+        PagesInfo pagesInfo = postService.getPagesInfo(page);
         model.addAttribute(PAGES_INFO, pagesInfo);
         return "index";
     }
