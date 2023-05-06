@@ -8,8 +8,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ProfileFormTest {
 
-    private static final String TEST_EMAIL = "jack@eamil.com";
     public static final String TEST_NICKNAME = "jack";
+    private static final String TEST_EMAIL = "jack@eamil.com";
 
     @DisplayName("유저 정보에서 닉네임과 이메일만 가져온다")
     @Test

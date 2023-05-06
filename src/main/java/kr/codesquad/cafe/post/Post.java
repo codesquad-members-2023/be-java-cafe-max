@@ -53,6 +53,10 @@ public class Post {
         this.user = builder.user;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public Long getId() {
         return id;
     }
@@ -111,10 +115,6 @@ public class Post {
         if (!user.isSameId(userId)) {
             throw new InsufficientPermissionException();
         }
-    }
-
-    public static Builder builder() {
-        return new Builder();
     }
 
     public void update(String textContent, String title) {

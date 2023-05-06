@@ -35,6 +35,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserProfileController.class)
 @Import({AopAutoConfiguration.class, AuthBeforeAdvice.class})
 public class UserProfileControllerTest {
+    public static final int OTHER_USER_ID = 20;
+    public static final String NO_MATCH_PASSWORD = "987654123a";
+    public static final int CURRENT_PAGE = 4;
+    public static final int TOTAL_PAGES = 10;
+    public static final String PAGE = "page";
+    public static final String PAGE_NUMBER = "1";
     private static final String JACK_NICKNAME = "jack";
     private static final String JACK_EMAIL = "jack@email.com";
     private static final String TEST_PASSWORD = "123456789a";
@@ -49,13 +55,6 @@ public class UserProfileControllerTest {
     private static final String PROFILE_FORM = "profileForm";
     private static final int NOT_MATCH_USER_ID = 200;
     private static final int NOT_EXIST_PAGE = 2000;
-    public static final int OTHER_USER_ID = 20;
-    public static final String NO_MATCH_PASSWORD = "987654123a";
-    public static final int CURRENT_PAGE = 4;
-    public static final int TOTAL_PAGES = 10;
-    public static final String PAGE = "page";
-    public static final String PAGE_NUMBER = "1";
-
     @Autowired
     private MockMvc mockMvc;
 

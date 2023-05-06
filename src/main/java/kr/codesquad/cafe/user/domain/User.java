@@ -28,13 +28,9 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private Role role;
     @OneToMany(mappedBy = "user")
-    private List<Post> posts = new ArrayList<>();
+    private final List<Post> posts = new ArrayList<>();
 
     public User() {
-    }
-
-    public static Builder builder() {
-        return new Builder();
     }
 
     private User(Builder builder) {
@@ -43,6 +39,10 @@ public class User {
         this.password = builder.password;
         this.nickname = builder.nickname;
         this.role = builder.role;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public List<Post> getPosts() {

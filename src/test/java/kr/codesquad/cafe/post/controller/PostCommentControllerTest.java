@@ -29,25 +29,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(PostCommentController.class)
 class PostCommentControllerTest {
 
-    private static final String TEST_NICKNAME = "jack";
     public static final long TEST_ID = 1L;
     public static final String TEST_TITLE = "test_title";
     public static final String TEST_CONTENT = "test_content";
     public static final String TEST_COMMENT = "testComment";
     public static final String TEST_COMMENT_ID = "1";
-
+    private static final String TEST_NICKNAME = "jack";
     @Autowired
     MockMvc mockMvc;
-
     @MockBean
     PostService postService;
-
     @MockBean
     CommentService commentService;
-
-    private MockHttpSession session;
-
     User user;
+    private MockHttpSession session;
 
     private static Post getTestPost(User user) {
         return new Post.Builder()

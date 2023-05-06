@@ -3,7 +3,11 @@ package kr.codesquad.cafe.user.controller;
 import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.user.dto.LoginForm;
 import kr.codesquad.cafe.user.dto.ProfileEditForm;
-import kr.codesquad.cafe.user.exception.*;
+import kr.codesquad.cafe.user.exception.DuplicateEmailException;
+import kr.codesquad.cafe.user.exception.ExistsEmailException;
+import kr.codesquad.cafe.user.exception.IncorrectPasswordException;
+import kr.codesquad.cafe.user.exception.InvalidPasswordException;
+import kr.codesquad.cafe.user.exception.UserNotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -27,7 +31,7 @@ public class UserControllerExceptionHandler {
     private static void addJoinForm(HttpServletRequest request, Model model) {
         String email = request.getParameter(EMAIL);
         String nickName = request.getParameter(NICK_NAME);
-        model.addAttribute(new JoinForm(nickName, email, EMPTY_PASSWORD,EMPTY_PASSWORD));
+        model.addAttribute(new JoinForm(nickName, email, EMPTY_PASSWORD, EMPTY_PASSWORD));
     }
 
     private static void addProfileEditForm(HttpServletRequest request, Model model) {

@@ -10,14 +10,13 @@ import org.jasypt.encryption.StringEncryptor;
 @ValidTwoPassword
 public class JoinForm {
     @ValidNickName
-    private String nickname;
+    private final String nickname;
     @ValidEmail
-    private String email;
+    private final String email;
     @ValidPassword
-    private String password;
-
+    private final String password;
     @ValidPassword
-    private String reconfirmPassword;
+    private final String reconfirmPassword;
 
     public JoinForm(String nickname, String email, String password, String reconfirmPassword) {
         this.nickname = nickname;

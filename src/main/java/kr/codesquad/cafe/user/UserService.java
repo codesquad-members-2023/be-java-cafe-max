@@ -5,7 +5,11 @@ import kr.codesquad.cafe.user.dto.JoinForm;
 import kr.codesquad.cafe.user.dto.LoginForm;
 import kr.codesquad.cafe.user.dto.ProfileEditForm;
 import kr.codesquad.cafe.user.dto.UserForm;
-import kr.codesquad.cafe.user.exception.*;
+import kr.codesquad.cafe.user.exception.DuplicateEmailException;
+import kr.codesquad.cafe.user.exception.ExistsEmailException;
+import kr.codesquad.cafe.user.exception.IncorrectPasswordException;
+import kr.codesquad.cafe.user.exception.InvalidPasswordException;
+import kr.codesquad.cafe.user.exception.UserNotFoundException;
 import org.jasypt.encryption.StringEncryptor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +34,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    private static List<UserForm> toUserForm(Page<User> userPage) {
+        return userPage.stream()
+                .map(UserForm::from)
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public User save(JoinForm joinForm) {
         if (existsByEmail(joinForm.getEmail())) {
@@ -43,12 +53,6 @@ public class UserService {
         Pageable pageable = PageRequest.of(page, POST_DEFAULT_PAGE_SIZE);
         Page<User> users = userRepository.findAll(pageable);
         return toUserForm(users);
-    }
-
-    private static List<UserForm> toUserForm(Page<User> userPage) {
-        return userPage.stream()
-                .map(UserForm::from)
-                .collect(Collectors.toList());
     }
 
     @Transactional

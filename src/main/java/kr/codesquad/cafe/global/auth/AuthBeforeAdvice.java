@@ -1,12 +1,8 @@
 package kr.codesquad.cafe.global.auth;
 
-import static org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes;
-
-import java.util.Arrays;
-import java.util.Objects;
-
-import javax.servlet.http.HttpSession;
-
+import kr.codesquad.cafe.global.exception.UnauthorizedAccessException;
+import kr.codesquad.cafe.post.Post;
+import kr.codesquad.cafe.user.domain.User;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -14,9 +10,11 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import kr.codesquad.cafe.global.exception.UnauthorizedAccessException;
-import kr.codesquad.cafe.post.Post;
-import kr.codesquad.cafe.user.domain.User;
+import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.Objects;
+
+import static org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes;
 
 @Aspect
 @Component
@@ -35,9 +33,9 @@ public class AuthBeforeAdvice {
 
     private static Post getPost(JoinPoint joinPoint) {
         return Arrays.stream(joinPoint.getArgs()).filter(Post.class::isInstance)
-            .map(Post.class::cast)
-            .findFirst()
-            .orElseThrow(UnauthorizedAccessException::new);
+                .map(Post.class::cast)
+                .findFirst()
+                .orElseThrow(UnauthorizedAccessException::new);
     }
 
     private static Long getPathId(JoinPoint joinPoint) {

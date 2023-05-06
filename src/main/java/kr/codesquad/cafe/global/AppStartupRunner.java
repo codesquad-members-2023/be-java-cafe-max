@@ -38,6 +38,11 @@ public class AppStartupRunner implements CommandLineRunner {
         this.postRepository = postRepository;
     }
 
+    private static File getCSVFile() {
+        String property = System.getProperty(USER_DIR);
+        return new File(property + CSV_FILE_NAME);
+    }
+
     @Override
     public void run(String... args) {
         User manager = setAdminUser();
@@ -65,11 +70,6 @@ public class AppStartupRunner implements CommandLineRunner {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static File getCSVFile() {
-        String property = System.getProperty(USER_DIR);
-        return new File(property + CSV_FILE_NAME);
     }
 
     private int savePost(User manager, User savedManager, String line, int index) {

@@ -1,19 +1,18 @@
 package kr.codesquad.cafe.global.auth;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import kr.codesquad.cafe.global.exception.InsufficientPermissionException;
+import kr.codesquad.cafe.global.exception.UnauthorizedAccessException;
+import kr.codesquad.cafe.user.domain.User;
+import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.stereotype.Component;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.HandlerInterceptor;
-
-import kr.codesquad.cafe.global.exception.InsufficientPermissionException;
-import kr.codesquad.cafe.global.exception.UnauthorizedAccessException;
-import kr.codesquad.cafe.user.domain.User;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Component
 public class AuthInterceptor implements HandlerInterceptor {

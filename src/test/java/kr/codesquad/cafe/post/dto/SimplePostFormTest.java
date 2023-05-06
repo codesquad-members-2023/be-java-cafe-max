@@ -11,13 +11,33 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SimplePostFormTest {
 
+    public static final int LONG_COUNT = 100;
     private static final long TEST_ID = 1L;
     private static final String TEST_TITLE = "title";
     private static final String TEST_NICKNAME = "jack";
     private static final String SHORT_TEXT_CONTENT = "content";
     private static final int MAX_LENGTH = 150;
     private static final int BEGIN_INDEX = 0;
-    public static final int LONG_COUNT = 100;
+
+    private static SimplePostForm getSimplePostForm(LocalDateTime now, String textContent) {
+        return new SimplePostForm.Builder()
+                .id(TEST_ID)
+                .nickname(TEST_NICKNAME)
+                .title(TEST_TITLE)
+                .textContent(textContent)
+                .createdDateTime(now)
+                .build();
+    }
+
+    private static Post getPost(LocalDateTime now, String textContent) {
+        return Post.builder()
+                .id(TEST_ID)
+                .nickname(TEST_NICKNAME)
+                .title(TEST_TITLE)
+                .textContent(textContent)
+                .createdDateTime(now)
+                .build();
+    }
 
     @DisplayName("Content 길이가 Max 길이보다 작으면 Content를 그대로 담고 및 필요한 모든 정보를 post에서 가져온다")
     @Test
@@ -42,25 +62,5 @@ class SimplePostFormTest {
 
         SimplePostForm simplePostForm = getSimplePostForm(now, longTextContent.substring(BEGIN_INDEX, MAX_LENGTH));
         assertThat(simplePostForms).contains(simplePostForm);
-    }
-
-    private static SimplePostForm getSimplePostForm(LocalDateTime now, String textContent) {
-        return new SimplePostForm.Builder()
-                .id(TEST_ID)
-                .nickname(TEST_NICKNAME)
-                .title(TEST_TITLE)
-                .textContent(textContent)
-                .createdDateTime(now)
-                .build();
-    }
-
-    private static Post getPost(LocalDateTime now, String textContent) {
-        return Post.builder()
-                .id(TEST_ID)
-                .nickname(TEST_NICKNAME)
-                .title(TEST_TITLE)
-                .textContent(textContent)
-                .createdDateTime(now)
-                .build();
     }
 }

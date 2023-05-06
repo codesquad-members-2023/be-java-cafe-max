@@ -5,23 +5,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static kr.codesquad.cafe.user.domain.Role.*;
+import static kr.codesquad.cafe.user.domain.Role.MANAGER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 class UserTest {
 
+    public static final long NO_MATCH_ID = 2L;
+    public static final String TARGET_EMAIL = "jerry@email.com";
+    public static final String TARGET_NICKNAME = "jerry";
     private static final String TEST_PASSWORD = "password";
     private static final String TEST_NICKNAME = "jack";
     private static final String TEST_EMAIL = "jack@email.com";
     private static final long TEST_ID = 1L;
     private static final String WRONG_PASSWORD = "wrongPassword";
     private static final String WRONG_EMAIL = "wrongEmail";
-    public static final long NO_MATCH_ID = 2L;
-    public static final String TARGET_EMAIL = "jerry@email.com";
-    public static final String TARGET_NICKNAME = "jerry";
-
     User user;
 
     @BeforeEach

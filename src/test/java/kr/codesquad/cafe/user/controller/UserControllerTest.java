@@ -74,6 +74,15 @@ class UserControllerTest {
         session.setAttribute(ATTR_NAME_USER, jack);
     }
 
+    @DisplayName("로그아웃 시 session에서 user 정보를 삭제 한다.")
+    @Test
+    void logout() throws Exception {
+        assertThat(session.getAttribute(ATTR_NAME_USER)).isNotNull();
+        mockMvc.perform(get("/users/logout").session(session))
+                .andExpect(view().name("user/login"));
+        assertThat(session.getAttribute(ATTR_NAME_USER)).isNull();
+    }
+
     @DisplayName("유저 리스트 페이지")
     @Nested
     class UsersPageTest {
@@ -113,7 +122,6 @@ class UserControllerTest {
                     .andExpect(view().name("error/4xx"));
         }
     }
-
 
     @DisplayName("로그인 페이지")
     @Nested
@@ -231,14 +239,5 @@ class UserControllerTest {
                     .andExpect(model().attributeExists("emailError"))
                     .andExpect(view().name("user/joinFailed"));
         }
-    }
-
-    @DisplayName("로그아웃 시 session에서 user 정보를 삭제 한다.")
-    @Test
-    void logout() throws Exception {
-        assertThat(session.getAttribute(ATTR_NAME_USER)).isNotNull();
-        mockMvc.perform(get("/users/logout").session(session))
-                .andExpect(view().name("user/login"));
-        assertThat(session.getAttribute(ATTR_NAME_USER)).isNull();
     }
 }

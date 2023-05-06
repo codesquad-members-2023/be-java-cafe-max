@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 
 public class PostForm {
     @ValidPostTitle
-    private String title;
+    private final String title;
     @ValidPostTextContent
-    private String textContent;
+    private final String textContent;
 
     public PostForm(String title, String textContent) {
         this.title = title;

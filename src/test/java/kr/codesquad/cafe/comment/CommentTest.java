@@ -5,14 +5,26 @@ import kr.codesquad.cafe.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CommentTest {
 
     public static final String TEXT_COMMENT = "textComment";
     public static final long TEST_ID = 1L;
     public static final long OTHER_ID = 2L;
+
+    private static Comment getTestComment(User user) {
+        return Comment.build()
+                .user(user)
+                .build();
+    }
+
+    private static User getTestUser() {
+        return User.builder()
+                .id(TEST_ID)
+                .build();
+    }
 
     @DisplayName("유저,포스트,텍스트 콘텐츠를 받고 댓글객체를 만든다")
     @Test
@@ -57,17 +69,5 @@ class CommentTest {
         Comment comment = getTestComment(user);
         assertThat(comment.isSameUserId(OTHER_ID)).isFalse();
         assertThat(comment.isSameUserId(TEST_ID)).isTrue();
-    }
-
-    private static Comment getTestComment(User user) {
-        return Comment.build()
-                .user(user)
-                .build();
-    }
-
-    private static User getTestUser() {
-        return User.builder()
-                .id(TEST_ID)
-                .build();
     }
 }
