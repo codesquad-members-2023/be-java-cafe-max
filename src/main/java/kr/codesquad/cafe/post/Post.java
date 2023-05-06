@@ -1,8 +1,9 @@
 package kr.codesquad.cafe.post;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import kr.codesquad.cafe.comment.Comment;
+import kr.codesquad.cafe.global.exception.InsufficientPermissionException;
+import kr.codesquad.cafe.post.exception.DeletionFailedException;
+import kr.codesquad.cafe.user.domain.User;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,21 +15,19 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-
-import kr.codesquad.cafe.comment.Comment;
-import kr.codesquad.cafe.global.exception.UnauthorizedAccessException;
-import kr.codesquad.cafe.post.exception.DeletionFailedException;
-import kr.codesquad.cafe.user.domain.User;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NamedEntityGraph(
-	name = "Post.withComments",
-	attributeNodes = @NamedAttributeNode("comments")
+        name = "Post.withComments",
+        attributeNodes = @NamedAttributeNode("comments")
 )
 @Entity
 public class Post {
-	@OneToMany(mappedBy = "post")
-	protected List<Comment> comments = new ArrayList<>();
-	@Id
+    @OneToMany(mappedBy = "post")
+    protected List<Comment> comments = new ArrayList<>();
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotNull
@@ -110,7 +109,7 @@ public class Post {
 
     public void checkPermission(long userId) {
         if (!user.isSameId(userId)) {
-			throw new UnauthorizedAccessException();
+            throw new InsufficientPermissionException();
         }
     }
 
