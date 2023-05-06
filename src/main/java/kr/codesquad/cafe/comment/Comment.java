@@ -3,7 +3,11 @@ package kr.codesquad.cafe.comment;
 import kr.codesquad.cafe.post.Post;
 import kr.codesquad.cafe.user.domain.User;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Comment {
@@ -61,15 +65,15 @@ public class Comment {
     }
 
     public void delete(long userId) {
-        if (this.user.isSameId(userId)) {
+        if (this.isSameUserId(userId)) {
             isDeleted = true;
             return;
         }
         throw new UnauthorizedDeleteCommentException();
     }
 
-    public boolean isSameUserId(Long id) {
-        return user.isSameId(id);
+    public boolean isSameUserId(Long userId) {
+        return user.isSameId(userId);
     }
 
     public static class Builder {
