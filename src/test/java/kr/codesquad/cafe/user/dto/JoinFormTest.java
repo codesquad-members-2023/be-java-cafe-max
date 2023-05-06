@@ -11,10 +11,10 @@ import static org.mockito.Mockito.mock;
 
 class JoinFormTest {
 
-    public static final String TEST_PASSWORD = "password";
-    public static final String TEST_EMAIL = "jack@email.com";
-    public static final String TEST_NAME = "jack";
-    public static final String WRONG_PASSWORD = "password2";
+    private static final String TEST_PASSWORD = "password";
+    private static final String TEST_EMAIL = "jack@email.com";
+    private static final String TEST_NAME = "jack";
+    private static final String WRONG_PASSWORD = "password2";
 
     @DisplayName("encrypt 받고 정보를 User객체에 담는다")
     @Test

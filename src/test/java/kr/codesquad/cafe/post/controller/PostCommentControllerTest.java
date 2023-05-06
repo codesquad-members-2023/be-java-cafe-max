@@ -34,7 +34,7 @@ class PostCommentControllerTest {
     public static final String TEST_CONTENT = "test_content";
     public static final String TEST_COMMENT = "testComment";
     public static final String TEST_COMMENT_ID = "1";
-    private static final String TEST_NICKNAME = "jack";
+    public static final String TEST_NICKNAME = "jack";
     @Autowired
     MockMvc mockMvc;
     @MockBean
@@ -42,7 +42,7 @@ class PostCommentControllerTest {
     @MockBean
     CommentService commentService;
     User user;
-    private MockHttpSession session;
+    MockHttpSession session;
 
     private static Post getTestPost(User user) {
         return new Post.Builder()

@@ -39,13 +39,10 @@ class UserServiceTest {
     public static final String JERRY_EMAIL = "jerry@email.com";
     public static final String NO_MATCH_PASSWORD = "123456789a";
     public static final String NOT_RIGHT_PASSWORD = "asdsdfsdfs1";
-
     @InjectMocks
     UserService userService;
-
     @Mock
     UserRepository userRepository;
-
     @Mock
     StringEncryptor stringEncryptor;
 

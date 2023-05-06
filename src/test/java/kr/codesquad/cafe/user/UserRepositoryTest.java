@@ -16,13 +16,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class UserRepositoryTest {
 
-    private static final String JACK_NICKNAME = "jack";
-    private static final String JACK_EMAIL = "jack@email.com";
-    private static final String TEST_PASSWORD = "123456789a";
-
+    public static final String JACK_NICKNAME = "jack";
+    public static final String JACK_EMAIL = "jack@email.com";
+    public static final String TEST_PASSWORD = "123456789a";
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     EntityManager entityManager;
 

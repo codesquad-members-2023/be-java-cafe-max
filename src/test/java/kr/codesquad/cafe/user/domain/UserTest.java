@@ -15,12 +15,12 @@ class UserTest {
     public static final long NO_MATCH_ID = 2L;
     public static final String TARGET_EMAIL = "jerry@email.com";
     public static final String TARGET_NICKNAME = "jerry";
-    private static final String TEST_PASSWORD = "password";
-    private static final String TEST_NICKNAME = "jack";
-    private static final String TEST_EMAIL = "jack@email.com";
-    private static final long TEST_ID = 1L;
-    private static final String WRONG_PASSWORD = "wrongPassword";
-    private static final String WRONG_EMAIL = "wrongEmail";
+    public static final String TEST_PASSWORD = "password";
+    public static final String TEST_NICKNAME = "jack";
+    public static final String TEST_EMAIL = "jack@email.com";
+    public static final long TEST_ID = 1L;
+    public static final String WRONG_PASSWORD = "wrongPassword";
+    public static final String WRONG_EMAIL = "wrongEmail";
     User user;
 
     @BeforeEach

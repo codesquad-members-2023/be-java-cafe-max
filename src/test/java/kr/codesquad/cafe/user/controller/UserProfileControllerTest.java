@@ -41,31 +41,31 @@ public class UserProfileControllerTest {
     public static final int TOTAL_PAGES = 10;
     public static final String PAGE = "page";
     public static final String PAGE_NUMBER = "1";
-    private static final String JACK_NICKNAME = "jack";
-    private static final String JACK_EMAIL = "jack@email.com";
-    private static final String TEST_PASSWORD = "123456789a";
-    private static final String NICKNAME = "nickname";
-    private static final String EMAIL = "email";
-    private static final String PASSWORD = "password";
-    private static final String ATTR_NAME_USER = "user";
-    private static final String JERRY_EMAIL = "jerry@email.com";
-    private static final String JERRY = "jerry";
-    private static final String USER_ID = "userId";
-    private static final String PROFILE_EDIT_FORM = "profileEditForm";
-    private static final String PROFILE_FORM = "profileForm";
-    private static final int NOT_MATCH_USER_ID = 200;
-    private static final int NOT_EXIST_PAGE = 2000;
+    public static final String JACK_NICKNAME = "jack";
+    public static final String JACK_EMAIL = "jack@email.com";
+    public static final String TEST_PASSWORD = "123456789a";
+    public static final String NICKNAME = "nickname";
+    public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
+    public static final String ATTR_NAME_USER = "user";
+    public static final String JERRY_EMAIL = "jerry@email.com";
+    public static final String JERRY = "jerry";
+    public static final String USER_ID = "userId";
+    public static final String PROFILE_EDIT_FORM = "profileEditForm";
+    public static final String PROFILE_FORM = "profileForm";
+    public static final int NOT_MATCH_USER_ID = 200;
+    public static final int NOT_EXIST_PAGE = 2000;
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @MockBean
-    private UserService userService;
+    UserService userService;
 
     @MockBean
-    private PostService postService;
+    PostService postService;
 
-    private MockHttpSession session;
-    private User jack;
+    MockHttpSession session;
+    User jack;
 
 
     private static User setJack() {

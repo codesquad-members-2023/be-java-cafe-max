@@ -12,12 +12,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SimplePostFormTest {
 
     public static final int LONG_COUNT = 100;
-    private static final long TEST_ID = 1L;
-    private static final String TEST_TITLE = "title";
-    private static final String TEST_NICKNAME = "jack";
-    private static final String SHORT_TEXT_CONTENT = "content";
-    private static final int MAX_LENGTH = 150;
-    private static final int BEGIN_INDEX = 0;
+    public static final long TEST_ID = 1L;
+    public static final String TEST_TITLE = "title";
+    public static final String TEST_NICKNAME = "jack";
+    public static final String SHORT_TEXT_CONTENT = "content";
+    public static final int MAX_LENGTH = 150;
+    public static final int BEGIN_INDEX = 0;
 
     private static SimplePostForm getSimplePostForm(LocalDateTime now, String textContent) {
         return new SimplePostForm.Builder()

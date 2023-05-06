@@ -8,11 +8,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ProfileEditFormTest {
 
-    public static final String TEST_NICKNAME = "jack";
-    public static final String TEST_EMAIL = "jack@eamil.com";
-    public static final String TEST_PASSWORD = "password";
-    public static final String TARGET_NICKNAME = "jerry";
-    public static final String TARGET_EMAIL = "jerry@eamil.com";
+    private static final String TEST_NICKNAME = "jack";
+    private static final String TEST_EMAIL = "jack@eamil.com";
+    private static final String TEST_PASSWORD = "password";
+    private static final String TARGET_NICKNAME = "jerry";
+    private static final String TARGET_EMAIL = "jerry@eamil.com";
 
     @DisplayName("PrifileEditForm 정보로 User를 프로필 수정")
     @Test

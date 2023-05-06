@@ -32,16 +32,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 class UserControllerTest {
     public static final String RECONFIRM_PASSWORD = "reconfirmPassword";
-    private static final String JACK_NICKNAME = "jack";
-    private static final String JACK_EMAIL = "jack@email.com";
-    private static final String TEST_PASSWORD = "123456789a";
-    private static final String NICKNAME = "nickname";
-    private static final String EMAIL = "email";
-    private static final String PASSWORD = "password";
-    private static final String JOIN_FORM = "joinForm";
-    private static final String NO_MATCH_PASSWORD = "12345678aa";
-    private static final String ATTR_NAME_USER = "user";
-    private static final String ATTR_NAME_USERS = "users";
+    public static final String JACK_NICKNAME = "jack";
+    public static final String JACK_EMAIL = "jack@email.com";
+    public static final String TEST_PASSWORD = "123456789a";
+    public static final String NICKNAME = "nickname";
+    public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
+    public static final String JOIN_FORM = "joinForm";
+    public static final String NO_MATCH_PASSWORD = "12345678aa";
+    public static final String ATTR_NAME_USER = "user";
+    public static final String ATTR_NAME_USERS = "users";
 
     @Autowired
     private MockMvc mockMvc;

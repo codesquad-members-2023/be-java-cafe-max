@@ -37,16 +37,16 @@ class PostControllerTest {
     public static final int NOT_EXISTING_POST_ID = 300;
     public static final String EDIT_TITLE = "editTitle";
     public static final String EDIT_TEXT_CONTENT = "editTextContent";
-    private static final String TITLE = "title";
-    private static final String TEXT_CONTENT = "textContent";
-    private static final String TEST_TITLE = "testTitle";
-    private static final String TEST_CONTENT = "testContent";
+    public static final String TITLE = "title";
+    public static final String TEXT_CONTENT = "textContent";
+    public static final String TEST_TITLE = "testTitle";
+    public static final String TEST_CONTENT = "testContent";
     User user;
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
     @MockBean
-    private PostService postService;
-    private MockHttpSession session;
+    PostService postService;
+    MockHttpSession session;
 
     @BeforeEach
     void setSession() {

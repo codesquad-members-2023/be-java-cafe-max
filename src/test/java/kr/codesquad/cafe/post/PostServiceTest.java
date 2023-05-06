@@ -37,7 +37,7 @@ class PostServiceTest {
     public static final long TEST_ID = 1L;
     public static final int CURRENT_PAGE = 0;
     public static final int TOTAL_PAGES = 100;
-    private static final String TEST_NICKNAME = "jack";
+    public static final String TEST_NICKNAME = "jack";
     @InjectMocks
     PostService postService;
     @Mock
