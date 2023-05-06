@@ -1,13 +1,12 @@
 package kr.codesquad.cafe.user.dto;
 
+import kr.codesquad.cafe.user.annotation.PasswordMatches;
 import kr.codesquad.cafe.user.annotation.ValidEmail;
 import kr.codesquad.cafe.user.annotation.ValidNickName;
 import kr.codesquad.cafe.user.annotation.ValidPassword;
-import kr.codesquad.cafe.user.annotation.ValidTwoPassword;
 import kr.codesquad.cafe.user.domain.User;
 import org.jasypt.encryption.StringEncryptor;
 
-@ValidTwoPassword
 public class JoinForm {
     @ValidNickName
     private final String nickname;
@@ -49,6 +48,7 @@ public class JoinForm {
                 .build();
     }
 
+    @PasswordMatches
     public boolean isSamePassword() {
         return password.equals(reconfirmPassword);
     }

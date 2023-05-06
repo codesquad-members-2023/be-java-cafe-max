@@ -1,6 +1,6 @@
 package kr.codesquad.cafe.user;
 
-import kr.codesquad.cafe.user.annotation.ValidTwoPassword;
+import kr.codesquad.cafe.user.annotation.PasswordMatches;
 import kr.codesquad.cafe.user.dto.JoinForm;
 import org.springframework.stereotype.Component;
 
@@ -8,10 +8,10 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 @Component
-public class JoinFormValidator implements ConstraintValidator<ValidTwoPassword, JoinForm> {
+public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, JoinForm> {
 
     @Override
-    public void initialize(ValidTwoPassword constraintAnnotation) {
+    public void initialize(PasswordMatches constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
