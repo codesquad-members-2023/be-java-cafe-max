@@ -7,6 +7,7 @@ import kr.codesquad.cafe.user.annotation.ValidPassword;
 import kr.codesquad.cafe.user.domain.User;
 import org.jasypt.encryption.StringEncryptor;
 
+@PasswordMatches
 public class JoinForm {
     @ValidNickName
     private final String nickname;
@@ -48,7 +49,7 @@ public class JoinForm {
                 .build();
     }
 
-    @PasswordMatches
+
     public boolean isSamePassword() {
         return password.equals(reconfirmPassword);
     }

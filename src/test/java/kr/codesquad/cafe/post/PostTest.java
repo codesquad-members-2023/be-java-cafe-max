@@ -1,7 +1,7 @@
 package kr.codesquad.cafe.post;
 
 import kr.codesquad.cafe.comment.Comment;
-import kr.codesquad.cafe.global.exception.UnauthorizedAccessException;
+import kr.codesquad.cafe.global.exception.InsufficientPermissionException;
 import kr.codesquad.cafe.post.exception.DeletionFailedException;
 import kr.codesquad.cafe.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
@@ -89,7 +89,7 @@ class PostTest {
                 .user(user1)
                 .build();
 
-        assertThatThrownBy(() -> post.checkPermission(NOT_MATCH_ID)).isInstanceOf(UnauthorizedAccessException.class);
+        assertThatThrownBy(() -> post.checkPermission(NOT_MATCH_ID)).isInstanceOf(InsufficientPermissionException.class);
     }
 
     @DisplayName("포스트 유저 아이디와 일치 할 때 아무일도 발생하지 않는다")

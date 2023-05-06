@@ -2,6 +2,7 @@ package kr.codesquad.cafe.post;
 
 import kr.codesquad.cafe.comment.Comment;
 import kr.codesquad.cafe.global.PagesInfo;
+import kr.codesquad.cafe.global.exception.InsufficientPermissionException;
 import kr.codesquad.cafe.global.exception.UnauthorizedAccessException;
 import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.post.dto.SimplePostForm;
@@ -170,7 +171,7 @@ class PostServiceTest {
 
         assertThatThrownBy(
                 () -> postService.updateFromPostForm(post.getId(), getTestPostForm(), user.getId())).isInstanceOf(
-                UnauthorizedAccessException.class);
+                InsufficientPermissionException.class);
         verify(postRepository, times(1)).findById(anyLong());
         verify(user, times(1)).isSameId(anyLong());
     }
