@@ -1,15 +1,18 @@
 package kr.codesquad.cafe.post;
 
-import kr.codesquad.cafe.comment.Comment;
-import kr.codesquad.cafe.global.exception.IllegalAccessIdException;
-import kr.codesquad.cafe.post.exception.DeletionFailedException;
-import kr.codesquad.cafe.user.domain.User;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import kr.codesquad.cafe.comment.Comment;
+import kr.codesquad.cafe.global.exception.UnauthorizedAccessException;
+import kr.codesquad.cafe.post.exception.DeletionFailedException;
+import kr.codesquad.cafe.user.domain.User;
 
 class PostTest {
 
@@ -89,7 +92,7 @@ class PostTest {
                 .user(user1)
                 .build();
 
-        assertThatThrownBy(() -> post.checkPermission(NOT_MATCH_ID)).isInstanceOf(IllegalAccessIdException.class);
+		assertThatThrownBy(() -> post.checkPermission(NOT_MATCH_ID)).isInstanceOf(UnauthorizedAccessException.class);
     }
 
     @DisplayName("포스트 유저 아이디와 일치 할 때 아무일도 발생하지 않는다")

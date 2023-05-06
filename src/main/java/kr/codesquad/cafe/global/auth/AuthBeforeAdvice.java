@@ -1,8 +1,12 @@
 package kr.codesquad.cafe.global.auth;
 
-import kr.codesquad.cafe.global.exception.IllegalAccessIdException;
-import kr.codesquad.cafe.post.Post;
-import kr.codesquad.cafe.user.domain.User;
+import static org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes;
+
+import java.util.Arrays;
+import java.util.Objects;
+
+import javax.servlet.http.HttpSession;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -10,11 +14,9 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpSession;
-import java.util.Arrays;
-import java.util.Objects;
-
-import static org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes;
+import kr.codesquad.cafe.global.exception.UnauthorizedAccessException;
+import kr.codesquad.cafe.post.Post;
+import kr.codesquad.cafe.user.domain.User;
 
 @Aspect
 @Component
@@ -33,9 +35,9 @@ public class AuthBeforeAdvice {
 
     private static Post getPost(JoinPoint joinPoint) {
         return Arrays.stream(joinPoint.getArgs()).filter(Post.class::isInstance)
-                .map(Post.class::cast)
-                .findFirst()
-                .orElseThrow(IllegalAccessIdException::new);
+            .map(Post.class::cast)
+            .findFirst()
+            .orElseThrow(UnauthorizedAccessException::new);
     }
 
     private static Long getPathId(JoinPoint joinPoint) {
@@ -54,7 +56,7 @@ public class AuthBeforeAdvice {
         User user = getUser();
         Long userId = getPathId(joinPoint);
         if (!user.isSameId(userId)) {
-            throw new IllegalAccessIdException();
+            throw new UnauthorizedAccessException();
         }
     }
 
@@ -67,7 +69,7 @@ public class AuthBeforeAdvice {
         User user = getUser();
         Post post = getPost(joinPoint);
         if (!Objects.equals(post.getUser().getId(), user.getId())) {
-            throw new IllegalAccessIdException();
+            throw new UnauthorizedAccessException();
         }
     }
 }

@@ -1,20 +1,21 @@
 package kr.codesquad.cafe.post;
 
+import static kr.codesquad.cafe.global.PagesInfo.getPageable;
+import static kr.codesquad.cafe.global.PagesInfo.getPages;
+import static kr.codesquad.cafe.post.dto.SimplePostForm.toSimplePostForm;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import kr.codesquad.cafe.comment.Comment;
 import kr.codesquad.cafe.global.PagesInfo;
-import kr.codesquad.cafe.global.exception.IllegalAccessIdException;
+import kr.codesquad.cafe.global.exception.UnauthorizedAccessException;
 import kr.codesquad.cafe.post.dto.PostForm;
 import kr.codesquad.cafe.post.dto.SimplePostForm;
 import kr.codesquad.cafe.post.exception.PostNotFoundException;
 import kr.codesquad.cafe.user.domain.User;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static kr.codesquad.cafe.global.PagesInfo.getPageable;
-import static kr.codesquad.cafe.global.PagesInfo.getPages;
-import static kr.codesquad.cafe.post.dto.SimplePostForm.toSimplePostForm;
 
 @Service
 @Transactional(readOnly = true)
@@ -52,7 +53,7 @@ public class PostService {
 
     @Transactional
     public Post updateFromPostForm(long postId, PostForm postForm, long userId) {
-        Post post = postRepository.findById(postId).orElseThrow(IllegalAccessIdException::new);
+		Post post = postRepository.findById(postId).orElseThrow(UnauthorizedAccessException::new);
         post.checkPermission(userId);
         post.update(postForm.getTextContent(),postForm.getTitle());
         return post;
