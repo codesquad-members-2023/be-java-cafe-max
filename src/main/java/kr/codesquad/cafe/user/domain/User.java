@@ -4,7 +4,13 @@ package kr.codesquad.cafe.user.domain;
 import kr.codesquad.cafe.post.Post;
 import org.jasypt.encryption.StringEncryptor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,8 +18,7 @@ import java.util.Objects;
 @Entity
 public class User {
 
-    private static final String EMPTY = "";
-
+    private static final String BLANK = "";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -88,9 +93,9 @@ public class User {
 
     public static class Builder {
         private Long id = Long.MIN_VALUE;
-        private String nickname = EMPTY;
-        private String email = EMPTY;
-        private String password = EMPTY;
+        private String nickname = BLANK;
+        private String email = BLANK;
+        private String password = BLANK;
         private Role role = Role.USER;
 
         public Builder id(Long id) {
