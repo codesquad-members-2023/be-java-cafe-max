@@ -170,7 +170,10 @@ class PostServiceTest {
         given(user.isSameId(anyLong())).willReturn(false);
 
         assertThatThrownBy(
-                () -> postService.updateFromPostForm(post.getId(), getTestPostForm(), user.getId())).isInstanceOf(
+                () -> {
+                    assert post != null;
+                    postService.updateFromPostForm(post.getId(), getTestPostForm(), user.getId());
+                }).isInstanceOf(
                 InsufficientPermissionException.class);
         verify(postRepository, times(1)).findById(anyLong());
         verify(user, times(1)).isSameId(anyLong());
@@ -182,6 +185,7 @@ class PostServiceTest {
         Post post = mock(Post.class);
         given(postRepository.findById(anyLong())).willReturn(Optional.ofNullable(post));
 
+        assert post != null;
         postService.updateFromPostForm(post.getId(), getTestPostForm(), user.getId());
 
         verify(postRepository, times(1)).findById(anyLong());

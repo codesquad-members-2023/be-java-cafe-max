@@ -4,12 +4,16 @@ import kr.codesquad.cafe.comment.Comment;
 import kr.codesquad.cafe.global.exception.InsufficientPermissionException;
 import kr.codesquad.cafe.post.exception.DeletionFailedException;
 import kr.codesquad.cafe.user.domain.User;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class PostTest {
 
@@ -56,10 +60,13 @@ class PostTest {
                 .user(user)
                 .build();
         post.addComment(comment);
-        assertThat(post.getComments()).contains(comment);
 
-        assertThatCode(post::delete).doesNotThrowAnyException();
-        assertThat(post.isDeleted()).isTrue();
+        Assertions.assertAll(
+                () -> assertThat(post.getComments()).contains(comment),
+                () -> assertThatCode(post::delete).doesNotThrowAnyException(),
+                () -> assertThat(post.isDeleted()).isTrue()
+        );
+
     }
 
     @DisplayName("유저의 댓글만 존재할 때 삭제 가능")
@@ -116,7 +123,9 @@ class PostTest {
 
         post.update(TARGET_CONTENT, TARGET_TITLE);
 
-        assertThat(post.getTitle()).isEqualTo(TARGET_TITLE);
-        assertThat(post.getTextContent()).isEqualTo(TARGET_CONTENT);
+        assertSoftly(softly -> {
+            softly.assertThat(post.getTitle()).isEqualTo(TARGET_TITLE);
+            softly.assertThat(post.getTextContent()).isEqualTo(TARGET_CONTENT);
+        });
     }
 }
