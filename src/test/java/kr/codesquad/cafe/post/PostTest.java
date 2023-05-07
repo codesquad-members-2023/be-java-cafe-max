@@ -113,7 +113,7 @@ class PostTest {
         assertThatCode(() -> post.checkPermission(TEST_ID)).doesNotThrowAnyException();
     }
 
-    @DisplayName("포스트의 타이틀과 내요을 업로드한다")
+    @DisplayName("포스트의 타이틀과 내용을 업로드한다")
     @Test
     void update() {
         Post post = Post.builder()
