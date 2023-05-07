@@ -5,6 +5,7 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -14,6 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @NotBlank
 @Size(max = 64, min = 2, message = "{error.nickname.size}")
+@Pattern(regexp = "\\S+")
 @Target({FIELD})
 @ReportAsSingleViolation
 @Retention(RUNTIME)
