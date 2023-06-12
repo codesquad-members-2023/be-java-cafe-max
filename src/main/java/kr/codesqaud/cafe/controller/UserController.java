@@ -50,17 +50,24 @@ public class UserController {
 
     @GetMapping("/users/login")
     public String loginPage(){
-        return "/user/login";
+        return "user/login";
     }
-
+    @GetMapping("/users/login_failed")
+    public String loginFailed(){
+        return "user/login_failed";
+    }
     @PostMapping("/users/login")
     public String loginLogic(String userId, String password, HttpSession session) {
         User checkedUser = userService.getUserByUserId(userId);
         if(password.equals(checkedUser.getPassword())){
             session.setAttribute("sessionedUser", checkedUser);
-            return "redirect:/";
+            return "redirect:/";  // 여기까지 작동
         }
-            return "redirect:/user/login_failed";
+            return "user/login_failed";
     }
-
+    @GetMapping("/users/logout")
+    public String logout(HttpSession session){
+        session.invalidate();
+        return "/";
+    }
 }
