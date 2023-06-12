@@ -25,15 +25,15 @@ public class BasicUserRepository implements UserRepository {
     }
     @Override
     public Optional<User> getUserById(Long Id) {
-        return Optional.ofNullable(dataBase.get(Id)); // 아 자동으로 포장해준건 좋은데;;; (그래도 fix 해야지)
-    }  // 원래 User인데 인터페이스 때문에 굳이 Optional<User>로..(;;;) -> fix 할지도
+        return Optional.ofNullable(dataBase.get(Id));
+    }
     @Override
     public List<User> getUserList() {
         return userList;
     }
-    public void clearStore(){} // 아직 필요한지도 모르는데 인터페이스 때문에 형식적으로 맞춰서.. (!?;;)
+    public void clearStore(){}
 
     @Override
-    public void update(User user) {} // ... (메모리 낭비?)
+    public void update(User user) {}
 
 }

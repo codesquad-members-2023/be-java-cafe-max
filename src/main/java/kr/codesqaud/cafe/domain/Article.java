@@ -4,18 +4,18 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Article {
-    private long id;     // 자꾸 헷갈려서 단순하게 변경완료
+    private long id;
     private String writer;
     private String title;
     private String contents;
     private LocalDateTime createdTime;
 
-    public Article(){}   // 없으면 (Row?)Mapping이 안된다고 하는데....!!!??
+    public Article(){}
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.createdTime = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)); // this.createdTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+        this.createdTime = LocalDateTime.parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE));
     }
 
     public void setId(long id) {

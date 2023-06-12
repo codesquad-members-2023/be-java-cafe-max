@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Primary
-@Repository // 자동으로 빈으로 등록
+@Repository
 public class JdbcArticleRepository implements ArticleRepository{
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert simpleJdbcInsert;
@@ -28,7 +28,7 @@ public class JdbcArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public void save(Article article) {  // SimpleJdbcInsert를 사용하고 있는데
+    public void save(Article article) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         simpleJdbcInsert.withTableName("articleTable").usingGeneratedKeyColumns("id");
         Map<String, Object> param = new ConcurrentHashMap<>();
@@ -36,28 +36,24 @@ public class JdbcArticleRepository implements ArticleRepository{
         param.put("title", article.getTitle());
         param.put("contents", article.getContents());
         param.put("createdTime", LocalDate.now());
-        simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(param));  // 이 코드 지우면 list(index)에 안 보이게 되는(!)
-        // 맵을 이용한 SqlParamaeterSource...????? --> 그냥 Map을 넣어도 작동하는데 이게 무슨....?
-        // BeanPropertySqlParameterSource("tablename")라는 것도 있다는데....
+        simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(param));
     }
 
     @Override
-    public Optional<Article> getArticleById(Long id) { // Long!
+    public Optional<Article> getArticleById(Long id) {
         List<Article> result = jdbcTemplate.query("select * from articleTable where id = ?", articleRowMapper(), id);
-        // jdbcTemplate.query(String query, RowMapper<Article>, Long id) -> List<Article> 반환(???)
         return result.stream().findAny();
     }
 
         @Override
-    public List<Article> getArticleList() { // 이거까지 작동된 듯(3-2)
-        return jdbcTemplate.query("select * from articleTable", articleRowMapper());  // -> 뭔가 DB에서 정보들 가지고 Article 객체를 만들어 준다는 느낌..!?
-        //  jdbcTemplate.query(String query, RowMapper<Article>) --> List<Article> 반환
+    public List<Article> getArticleList() {
+        return jdbcTemplate.query("select * from articleTable", articleRowMapper());
     }
 
         @Override
     public void clearStore() {
         jdbcTemplate.update("delete from articleTable");
-    } // 필요한지 모르겠는데 그냥 둘 수밖에 없는
+    }
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
