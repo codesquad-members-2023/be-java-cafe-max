@@ -45,4 +45,11 @@ public class UserController {
         userService.update(user);
         return "redirect:/users";
     }
+
+    @GetMapping("/users/login")
+    public String login(){
+        return "/user/login";
+    }
+
+
 }
