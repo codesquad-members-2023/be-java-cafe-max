@@ -53,5 +53,14 @@ public class UserController {
         return "/user/login";
     }
 
+    @PostMapping("/users/login")
+    public String loginLogin(String userId, String password, HttpSession session) {
+        User checkedUser = userService.getUserByUserId(userId);
+        if(password.equals(checkedUser.getPassword())){
+            session.setAttribute("sessionedUser", checkedUser);
+            return "redirect:/";
+        }
+            return "redirect:/user/login_failed";
+    }
 
 }
