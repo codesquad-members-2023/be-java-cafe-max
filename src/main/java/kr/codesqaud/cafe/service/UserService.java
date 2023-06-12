@@ -23,12 +23,14 @@ public class UserService {
     }
 
     public User getUserById(Long id) {
-        return userRepository.getUserById(id).get(); //
+        return userRepository.getUserById(id).get();
     }
+
     public User getUserByUserId(String userId) {
         return userRepository.getUserByUserId(userId).get();
     }
-    public void update(User user){
+
+    public void update(User user) {
         userRepository.update(user);
     }
 }

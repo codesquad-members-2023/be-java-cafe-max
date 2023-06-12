@@ -9,19 +9,15 @@ import java.util.List;
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
-
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
-
     public void save(Article article) {
         articleRepository.save(article);
     }
-
     public List<Article> getArticleList() {
         return articleRepository.getArticleList();
     }
-
     public Article getArticleById(Long id) {
         return articleRepository.getArticleById(id).get();
     }

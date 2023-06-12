@@ -28,7 +28,7 @@ public class UserController {
     @GetMapping("/users")
     public String getUserList(Model model) {
         model.addAttribute("users", userService.getUserList());
-        return "/user/list";
+        return "user/list";
     }
     @GetMapping("/users/{id}")
     public String userProfile(@PathVariable("id") Long id, Model model) {
@@ -61,7 +61,7 @@ public class UserController {
         User checkedUser = userService.getUserByUserId(userId);
         if(password.equals(checkedUser.getPassword())){
             session.setAttribute("sessionedUser", checkedUser);
-            return "redirect:/";  // 여기까지 작동
+            return "redirect:/";
         }
             return "user/login_failed";
     }
