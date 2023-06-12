@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class UserController {
     private final UserService userService;
@@ -47,7 +49,7 @@ public class UserController {
     }
 
     @GetMapping("/users/login")
-    public String login(){
+    public String loginPage(){
         return "/user/login";
     }
 

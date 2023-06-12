@@ -38,7 +38,11 @@ public class JdbcUserRepository implements UserRepository {
         List<User> result = jdbcTemplate.query("select * from userTable where id = ?", userRowMapper(), id);
         return result.stream().findAny();
     }
-
+    @Override
+    public Optional<User> getUserByUserId(String userId) {
+        List<User> result = jdbcTemplate.query("select * from userTable where userId = ?", userRowMapper(), userId);
+        return result.stream().findAny();
+    }
     @Override
     public List<User> getUserList() {
         return jdbcTemplate.query("select * from userTable", userRowMapper());
