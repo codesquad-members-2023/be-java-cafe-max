@@ -36,4 +36,8 @@ public class BasicUserRepository implements UserRepository {
     @Override
     public void update(User user) {}
 
+    @Override
+    public Optional<User> getUserByUserId(String userId){
+        return Optional.ofNullable(dataBase.get(userId));
+    }
 }
