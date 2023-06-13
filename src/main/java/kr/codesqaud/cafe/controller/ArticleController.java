@@ -25,7 +25,7 @@ public class ArticleController {
     @GetMapping("/articles")
     public String getArticleList(Model model) {
         model.addAttribute("articles", articleService.getArticleList());
-        return "index";
+        return "/";
     }
 
     @GetMapping("/articles/{id}")
